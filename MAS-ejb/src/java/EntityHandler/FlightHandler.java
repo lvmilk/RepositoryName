@@ -7,7 +7,7 @@
 package EntityHandler;
 
 /**
- *haha
+ *hahaha
  * @author victor
  */
 public interface FlightHandler {
