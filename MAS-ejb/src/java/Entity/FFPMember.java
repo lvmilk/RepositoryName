@@ -17,7 +17,7 @@ import javax.persistence.Id;
  * @author victor
  */
 @Entity
-public class Member implements Serializable, PassengerInterface, ContactPersonInterface {
+public class FFPMember implements Serializable, PassengerInterface, ContactPersonInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,10 +69,10 @@ public class Member implements Serializable, PassengerInterface, ContactPersonIn
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Member)) {
+        if (!(object instanceof FFPMember)) {
             return false;
         }
-        Member other = (Member) object;
+        FFPMember other = (FFPMember) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
