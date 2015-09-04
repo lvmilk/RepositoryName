@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel id="panel" header="New User">
+
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="firstname" value="Firstname:" />
+                    <p:inputText id="firstname" value="#{userView.firstname}" required="true" label="Firstname">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="firstname" display="icon" />
+
+                    <p:outputLabel for="lastname" value="Lastname:" />
+                    <p:inputText id="lastname" value="#{userView.lastname}" label="Lastname" required="true">
+                        <f:validateLength minimum="2" />
+                        <p:ajax update="msgLastname" event="keyup" />
+                    </p:inputText>
+                    <p:message for="lastname" id="msgLastname" display="icon" />
+
+                </h:panelGrid>
+
+                <p:commandButton value="Save" update="panel" actionListener="#{userView.save}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
