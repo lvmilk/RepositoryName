@@ -8,15 +8,19 @@ package Entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
- * @author victor
+ * @author victor/ Xu
  */
+
 @Entity
 public class Aircraft implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -25,29 +29,30 @@ public class Aircraft implements Serializable {
     private Long id;
     
     private String registrationNo;
-    private String MnufacturerName;
-    private String SerialNo;
-    private String Status;
-    private String FirstFlyDate;
-    private String DeliveryDate;
-    private String RetairDate;
-    private String AirCraftType;
-    private float MaxDistance;
-    private float CruiseSpeed;
-    private float CruiseAltitude;
-    private float Length;
-    private float Wingspan;
+    private String manufacturerName;
+    private String serialNo;
+    private String status;
+    private String firstFlyDate;
+    private String deliveryDate;
+    private String retireDate;
+    private String aircraftType;
+    private float maxDistance;
+    private float cruiseSpeed;
+    private float cruiseAltitude;
+    private float aircraftLength;
+    private float wingspan;
     
-    private int FirstClassSeatNo;
-    private int BusinessClassSeatNo;
-    private int PremiumEconomyClassSeatNo;
-    private int EconomyClassSeatNo;
+    private int fcSeatNo;               // for display aircraft information only
+    private int bcSeatNo;
+    private int pecSeatNo;
+    private int ecSeatNo;
     
+    @OneToMany
     private ArrayList<Seat> seatList;
     private long seatMapId;
     private long flightLogId;
-    private long MaintanencLogId;
-    private long TransactionLogId;
+    private long maintenanceLogId;
+    private long transactionLogId;
     
 
     public Long getId() {
@@ -101,224 +106,224 @@ public class Aircraft implements Serializable {
      * @return the MnufacturerName
      */
     public String getMnufacturerName() {
-        return MnufacturerName;
+        return manufacturerName;
     }
 
     /**
-     * @param MnufacturerName the MnufacturerName to set
+     * @param manufacturerName the manufacturerName to set
      */
-    public void setMnufacturerName(String MnufacturerName) {
-        this.MnufacturerName = MnufacturerName;
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
     }
 
     /**
-     * @return the SerialNo
+     * @return the serialNo
      */
     public String getSerialNo() {
-        return SerialNo;
+        return serialNo;
     }
 
     /**
-     * @param SerialNo the SerialNo to set
+     * @param serialNo the serialNo to set
      */
-    public void setSerialNo(String SerialNo) {
-        this.SerialNo = SerialNo;
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     /**
      * @return the Status
      */
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     /**
-     * @param Status the Status to set
+     * @param status the status to set
      */
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     /**
-     * @return the FirstFlyDate
+     * @return the firstFlyDate
      */
     public String getFirstFlyDate() {
-        return FirstFlyDate;
+        return firstFlyDate;
     }
 
     /**
-     * @param FirstFlyDate the FirstFlyDate to set
+     * @param firstFlyDate the firstFlyDate to set
      */
-    public void setFirstFlyDate(String FirstFlyDate) {
-        this.FirstFlyDate = FirstFlyDate;
+    public void setFirstFlyDate(String firstFlyDate) {
+        this.firstFlyDate = firstFlyDate;
     }
 
     /**
-     * @return the DeliveryDate
+     * @return the deliveryDate
      */
     public String getDeliveryDate() {
-        return DeliveryDate;
+        return deliveryDate;
     }
 
     /**
-     * @param DeliveryDate the DeliveryDate to set
+     * @param deliveryDate the deliveryDate to set
      */
-    public void setDeliveryDate(String DeliveryDate) {
-        this.DeliveryDate = DeliveryDate;
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
     }
 
     /**
-     * @return the RetairDate
+     * @return the retireDate
      */
-    public String getRetairDate() {
-        return RetairDate;
+    public String getRetireDate() {
+        return retireDate;
     }
 
     /**
-     * @param RetairDate the RetairDate to set
+     * @param retireDate the retireDate to set
      */
-    public void setRetairDate(String RetairDate) {
-        this.RetairDate = RetairDate;
+    public void setRetireDate(String retireDate) {
+        this.retireDate = retireDate;
     }
 
     /**
-     * @return the AirCraftType
+     * @return the aircraftType
      */
-    public String getAirCraftType() {
-        return AirCraftType;
+    public String getAircraftType() {
+        return aircraftType;
     }
 
     /**
-     * @param AirCraftType the AirCraftType to set
+     * @param aircraftType the aircraftType to set
      */
-    public void setAirCraftType(String AirCraftType) {
-        this.AirCraftType = AirCraftType;
+    public void setAircraftType(String aircraftType) {
+        this.aircraftType = aircraftType;
     }
 
     /**
-     * @return the MaxDistance
+     * @return the maxDistance
      */
     public float getMaxDistance() {
-        return MaxDistance;
+        return maxDistance;
     }
 
     /**
-     * @param MaxDistance the MaxDistance to set
+     * @param maxDistance the maxDistance to set
      */
-    public void setMaxDistance(float MaxDistance) {
-        this.MaxDistance = MaxDistance;
+    public void setMaxDistance(float maxDistance) {
+        this.maxDistance = maxDistance;
     }
 
     /**
-     * @return the CruiseSpeed
+     * @return the cruiseSpeed
      */
     public float getCruiseSpeed() {
-        return CruiseSpeed;
+        return cruiseSpeed;
     }
 
     /**
-     * @param CruiseSpeed the CruiseSpeed to set
+     * @param cruiseSpeed the cruiseSpeed to set
      */
-    public void setCruiseSpeed(float CruiseSpeed) {
-        this.CruiseSpeed = CruiseSpeed;
+    public void setCruiseSpeed(float cruiseSpeed) {
+        this.cruiseSpeed = cruiseSpeed;
     }
 
     /**
-     * @return the CruiseAltitude
+     * @return the cruiseAltitude
      */
     public float getCruiseAltitude() {
-        return CruiseAltitude;
+        return cruiseAltitude;
     }
 
     /**
-     * @param CruiseAltitude the CruiseAltitude to set
+     * @param cruiseAltitude the cruiseAltitude to set
      */
-    public void setCruiseAltitude(float CruiseAltitude) {
-        this.CruiseAltitude = CruiseAltitude;
+    public void setCruiseAltitude(float cruiseAltitude) {
+        this.cruiseAltitude = cruiseAltitude;
     }
 
     /**
-     * @return the Length
+     * @return the aircraftLength
      */
-    public float getLength() {
-        return Length;
+    public float getAircraftLength() {
+        return aircraftLength;
     }
 
     /**
-     * @param Length the Length to set
+     * @param aircraftLength the aircraftLength to set
      */
-    public void setLength(float Length) {
-        this.Length = Length;
+    public void setAircraftLength(float aircraftLength) {
+        this.aircraftLength = aircraftLength;
     }
 
     /**
-     * @return the Wingspan
+     * @return the wingspan
      */
     public float getWingspan() {
-        return Wingspan;
+        return wingspan;
     }
 
     /**
-     * @param Wingspan the Wingspan to set
+     * @param wingspan the wingspan to set
      */
-    public void setWingspan(float Wingspan) {
-        this.Wingspan = Wingspan;
+    public void setWingspan(float wingspan) {
+        this.wingspan = wingspan;
     }
 
     /**
-     * @return the FirstClassSeatNo
+     * @return the fcSeatNo
      */
-    public int getFirstClassSeatNo() {
-        return FirstClassSeatNo;
+    public int getFcSeatNo() {
+        return fcSeatNo;
     }
 
     /**
-     * @param FirstClassSeatNo the FirstClassSeatNo to set
+     * @param fcSeatNo the fcSeatNo to set
      */
-    public void setFirstClassSeatNo(int FirstClassSeatNo) {
-        this.FirstClassSeatNo = FirstClassSeatNo;
+    public void setFcSeatNo(int fcSeatNo) {
+        this.fcSeatNo = fcSeatNo;
     }
 
     /**
-     * @return the BusinessClassSeatNo
+     * @return the bcSeatNo
      */
-    public int getBusinessClassSeatNo() {
-        return BusinessClassSeatNo;
+    public int getBcSeatNo() {
+        return bcSeatNo;
     }
 
     /**
-     * @param BusinessClassSeatNo the BusinessClassSeatNo to set
+     * @param bcSeatNo the bcSeatNo to set
      */
-    public void setBusinessClassSeatNo(int BusinessClassSeatNo) {
-        this.BusinessClassSeatNo = BusinessClassSeatNo;
+    public void setBcSeatNo(int bcSeatNo) {
+        this.bcSeatNo = bcSeatNo;
     }
 
     /**
-     * @return the PremiumEconomyClassSeatNo
+     * @return the pecSeatNo
      */
-    public int getPremiumEconomyClassSeatNo() {
-        return PremiumEconomyClassSeatNo;
+    public int getPecSeatNo() {
+        return pecSeatNo;
     }
 
     /**
-     * @param PremiumEconomyClassSeatNo the PremiumEconomyClassSeatNo to set
+     * @param pecSeatNo the pecSeatNo to set
      */
-    public void setPremiumEconomyClassSeatNo(int PremiumEconomyClassSeatNo) {
-        this.PremiumEconomyClassSeatNo = PremiumEconomyClassSeatNo;
+    public void setPecSeatNo(int pecSeatNo) {
+        this.pecSeatNo = pecSeatNo;
     }
 
     /**
-     * @return the EconomyClassSeatNo
+     * @return the ecSeatNo
      */
-    public int getEconomyClassSeatNo() {
-        return EconomyClassSeatNo;
+    public int getEcSeatNo() {
+        return ecSeatNo;
     }
 
     /**
-     * @param EconomyClassSeatNo the EconomyClassSeatNo to set
+     * @param ecSeatNo the ecSeatNo to set
      */
-    public void setEconomyClassSeatNo(int EconomyClassSeatNo) {
-        this.EconomyClassSeatNo = EconomyClassSeatNo;
+    public void setEcSeatNo(int ecSeatNo) {
+        this.ecSeatNo = ecSeatNo;
     }
 
     /**
@@ -366,29 +371,29 @@ public class Aircraft implements Serializable {
     /**
      * @return the MaintanencLogId
      */
-    public long getMaintanencLogId() {
-        return MaintanencLogId;
+    public long getMaintenanceLogId() {
+        return maintenanceLogId;
     }
 
     /**
-     * @param MaintanencLogId the MaintanencLogId to set
+     * @param maintenanceLogId the maintenanceLogId to set
      */
-    public void setMaintanencLogId(long MaintanencLogId) {
-        this.MaintanencLogId = MaintanencLogId;
+    public void setMaintanencLogId(long maintenanceLogId) {
+        this.maintenanceLogId = maintenanceLogId;
     }
 
     /**
-     * @return the TransactionLogId
+     * @return the transactionLogId
      */
     public long getTransactionLogId() {
-        return TransactionLogId;
+        return transactionLogId;
     }
 
     /**
-     * @param TransactionLogId the TransactionLogId to set
+     * @param transactionLogId the transactionLogId to set
      */
-    public void setTransactionLogId(long TransactionLogId) {
-        this.TransactionLogId = TransactionLogId;
+    public void setTransactionLogId(long transactionLogId) {
+        this.transactionLogId = transactionLogId;
     }
     
 }
