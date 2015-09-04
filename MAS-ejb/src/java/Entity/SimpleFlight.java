@@ -184,6 +184,6 @@ public class SimpleFlight implements Serializable {
     public String getFlightNumber (){
         
         return genericFlight.getFlightNo();
-    }s
+    }
     
 }

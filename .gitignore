@@ -13,3 +13,9 @@ hs_err_pid*
 /MAS-war/nbproject/private/
 /nbproject/private/
 /MAS-ejb/nbproject/private/
+/MAS-ejb/build/
+/MAS-ejb/dist/
+/build/
+/dist/
+/MAS-war/dist/
+/MAS-war/build/
