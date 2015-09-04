@@ -21,7 +21,7 @@ public class GenericFlight implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private int flightNo;
+    private String flightNo;
     private int StopoverSequenceNo;
     @OneToOne
     private ODPairs route;
@@ -78,14 +78,14 @@ public class GenericFlight implements Serializable {
     /**
      * @return the flightNo
      */
-    public int getFlightNo() {
+    public String getFlightNo() {
         return flightNo;
     }
 
     /**
      * @param flightNo the flightNo to set
      */
-    public void setFlightNo(int flightNo) {
+    public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
     }
 

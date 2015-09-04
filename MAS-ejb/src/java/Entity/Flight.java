@@ -15,22 +15,13 @@ import javax.persistence.*;
  * @author victor
  */
 @Entity
-public class Flight implements Serializable {
+public class Flight extends SimpleFlight implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToOne
-    private GenericFlight genericFlight;
-    @OneToOne
-    private Aircraft aircraft;
-    private String operationStatus;
-    private String flightStatus;
-    private String EstimatedDepartureTime;
-    private String EstimatedArrivalTime;
-    private String ActualDepartureTime;
-    private String ActualArrivalTime;
+
     
     @OneToMany
     private Collection<FlightBookingRecord> booking;
@@ -71,117 +62,7 @@ public class Flight implements Serializable {
         return "Entity.Flight[ id=" + id + " ]";
     }
 
-    /**
-     * @return the genericFlight
-     */
-    public GenericFlight getGenericFlight() {
-        return genericFlight;
-    }
 
-    /**
-     * @param genericFlight the genericFlight to set
-     */
-    public void setGenericFlight(GenericFlight genericFlight) {
-        this.genericFlight = genericFlight;
-    }
-
-    /**
-     * @return the aircraft
-     */
-    public Aircraft getAircraft() {
-        return aircraft;
-    }
-
-    /**
-     * @param aircraft the aircraft to set
-     */
-    public void setAircraft(Aircraft aircraft) {
-        this.aircraft = aircraft;
-    }
-
-    /**
-     * @return the operationStatus
-     */
-    public String getOperationStatus() {
-        return operationStatus;
-    }
-
-    /**
-     * @param operationStatus the operationStatus to set
-     */
-    public void setOperationStatus(String operationStatus) {
-        this.operationStatus = operationStatus;
-    }
-
-    /**
-     * @return the flightStatus
-     */
-    public String getFlightStatus() {
-        return flightStatus;
-    }
-
-    /**
-     * @param flightStatus the flightStatus to set
-     */
-    public void setFlightStatus(String flightStatus) {
-        this.flightStatus = flightStatus;
-    }
-
-    /**
-     * @return the EstimatedDepartureTime
-     */
-    public String getEstimatedDepartureTime() {
-        return EstimatedDepartureTime;
-    }
-
-    /**
-     * @param EstimatedDepartureTime the EstimatedDepartureTime to set
-     */
-    public void setEstimatedDepartureTime(String EstimatedDepartureTime) {
-        this.EstimatedDepartureTime = EstimatedDepartureTime;
-    }
-
-    /**
-     * @return the EstimatedArrivalTime
-     */
-    public String getEstimatedArrivalTime() {
-        return EstimatedArrivalTime;
-    }
-
-    /**
-     * @param EstimatedArrivalTime the EstimatedArrivalTime to set
-     */
-    public void setEstimatedArrivalTime(String EstimatedArrivalTime) {
-        this.EstimatedArrivalTime = EstimatedArrivalTime;
-    }
-
-    /**
-     * @return the ActualDepartureTime
-     */
-    public String getActualDepartureTime() {
-        return ActualDepartureTime;
-    }
-
-    /**
-     * @param ActualDepartureTime the ActualDepartureTime to set
-     */
-    public void setActualDepartureTime(String ActualDepartureTime) {
-        this.ActualDepartureTime = ActualDepartureTime;
-    }
-
-    /**
-     * @return the ActualArrivalTime
-     */
-    public String getActualArrivalTime() {
-        return ActualArrivalTime;
-    }
-
-    /**
-     * @param ActualArrivalTime the ActualArrivalTime to set
-     */
-    public void setActualArrivalTime(String ActualArrivalTime) {
-        this.ActualArrivalTime = ActualArrivalTime;
-    }
 
     /**
      * @return the booking
@@ -210,5 +91,7 @@ public class Flight implements Serializable {
     public void setCI(Collection<FlightCheckInRecord> CI) {
         this.CI = CI;
     }
+    
+    
     
 }
