@@ -10,6 +10,6 @@ package EntityHandler;
  *haha
  * @author victor
  */
-public class AircarftHandeler {
+public class AircarftHandler {
     
 }
