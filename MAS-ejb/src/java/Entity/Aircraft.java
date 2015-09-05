@@ -19,16 +19,11 @@ import javax.persistence.OneToMany;
 @Entity
 public class Aircraft implements Serializable {
     private static final long serialVersionUID = 1L;
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
-    private Collection<Flight> flights=new ArrayList<Flight>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @ManyToOne
-    private AircraftType aircraftType;
     private String registrationNo;
-    
     private String serialNo;
     private String status;
     private String firstFlyDate;
@@ -38,7 +33,19 @@ public class Aircraft implements Serializable {
     private long flightLogId;
     private long maintenanceLogId;
     private long transactionLogId;
-        
+    
+      @ManyToOne
+      private AircraftType aircraftType = new AircraftType();
+      public AircraftType getAircraftType(){
+        return aircraftType;
+}
+      public void setAircraftType(AircraftType aircraftType){
+        this.aircraftType=aircraftType;
+    }
+  
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
+    private Collection<Flight> flights = new ArrayList<Flight>();
+    
     public Collection<Flight> getFlight(){
         return flights;
     }   
