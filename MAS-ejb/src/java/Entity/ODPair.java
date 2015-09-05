@@ -25,11 +25,11 @@ public class ODPair implements Serializable {
     @ManyToOne
     private Airport destination;
     
-    private float distance;
-    private float basicFirstClassFare;
-    private float basicBusinessClassFare;
-    private float basicPremiumEconomyClassFare;
-    private float basicEconomyClassFare;
+    private Double distance;
+    private Double basicFirstClassFare;
+    private Double basicBusinessClassFare;
+    private Double basicPremiumEconomyClassFare;
+    private Double basicEconomyClassFare;
     
     private boolean canEBP;
     
@@ -98,70 +98,70 @@ public class ODPair implements Serializable {
     /**
      * @return the distance
      */
-    public float getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
     /**
      * @param distance the distance to set
      */
-    public void setDistance(float distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 
     /**
      * @return the basicFirstClassFare
      */
-    public float getBasicFirstClassFare() {
+    public Double getBasicFirstClassFare() {
         return basicFirstClassFare;
     }
 
     /**
      * @param basicFirstClassFare the basicFirstClassFare to set
      */
-    public void setBasicFirstClassFare(float basicFirstClassFare) {
+    public void setBasicFirstClassFare(Double basicFirstClassFare) {
         this.basicFirstClassFare = basicFirstClassFare;
     }
 
     /**
      * @return the basicBusinessClassFare
      */
-    public float getBasicBusinessClassFare() {
+    public Double getBasicBusinessClassFare() {
         return basicBusinessClassFare;
     }
 
     /**
      * @param basicBusinessClassFare the basicBusinessClassFare to set
      */
-    public void setBasicBusinessClassFare(float basicBusinessClassFare) {
+    public void setBasicBusinessClassFare(Double basicBusinessClassFare) {
         this.basicBusinessClassFare = basicBusinessClassFare;
     }
 
     /**
      * @return the basicPremiumEconomyClassFare
      */
-    public float getBasicPremiumEconomyClassFare() {
+    public Double getBasicPremiumEconomyClassFare() {
         return basicPremiumEconomyClassFare;
     }
 
     /**
      * @param basicPremiumEconomyClassFare the basicPremiumEconomyClassFare to set
      */
-    public void setBasicPremiumEconomyClassFare(float basicPremiumEconomyClassFare) {
+    public void setBasicPremiumEconomyClassFare(Double basicPremiumEconomyClassFare) {
         this.basicPremiumEconomyClassFare = basicPremiumEconomyClassFare;
     }
 
     /**
      * @return the basicEconomyClassFare
      */
-    public float getBasicEconomyClassFare() {
+    public Double getBasicEconomyClassFare() {
         return basicEconomyClassFare;
     }
 
     /**
      * @param basicEconomyClassFare the basicEconomyClassFare to set
      */
-    public void setBasicEconomyClassFare(float basicEconomyClassFare) {
+    public void setBasicEconomyClassFare(Double basicEconomyClassFare) {
         this.basicEconomyClassFare = basicEconomyClassFare;
     }
 
