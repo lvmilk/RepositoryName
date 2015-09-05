@@ -10,20 +10,20 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:panel id="panel" header="New User">
+            <p:panel id="panel" header="Login">
                 
                 <p:messages id="msgs" />
                 <h:panelGrid columns="3" cellpadding="5">
                     
            
                     <p:outputLabel for="username" value="Username:" />
-                    <p:inputText id="username" value="#{login.username}" required="true" label="Username" >
+                    <p:inputText id="username" value="#{login.username}" required="true" label="Username" size="5">
                         <f:validateLength minimum="2" />
                     </p:inputText>
                     <p:message for="username" display="icon" />
 
                     <p:outputLabel for="password" value="Password:" />
-                    <p:inputText id="password" type="password" value="#{login.password}" label="Password" required="true" >
+                    <p:inputText id="password" type="password" value="#{login.password}" label="Password" required="true" size="5">
                         <f:validateLength minimum="2" />
                         <p:ajax update="msgPassword" event="keyup" />
                     </p:inputText>
@@ -31,7 +31,7 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="Save" update="panel" actionListener="#{login.save}" icon="ui-icon-check" />
+                <p:commandButton value="Login" update="panel" actionListener="#{login.logIn()}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>

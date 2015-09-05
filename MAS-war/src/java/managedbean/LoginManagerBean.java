@@ -20,7 +20,7 @@ public class LoginManagerBean {
     private String password;
  
  
-    public void save() {
+    public void logIn() {
         FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Welcome " + username + " " + password));
     }
