@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entity;
 
 import java.io.Serializable;
@@ -12,7 +6,7 @@ import javax.persistence.*;
 
 /**
  *
- * @author victor
+ * @author victor/lucy
  */
 @Entity
 public class Flight extends SimpleFlight implements Serializable {
@@ -21,13 +15,19 @@ public class Flight extends SimpleFlight implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-
-    
+     @ManyToOne
+      private Aircraft aircraft = new Aircraft();
+      public Aircraft getAircraft(){
+        return aircraft;
+}
+      public void setAircraft(Aircraft aircraft){
+        this.aircraft=aircraft;
+    }
+     
     @OneToMany
     private Collection<FlightBookingRecord> booking;
     @OneToMany
     private Collection<FlightCheckInRecord> CI;
-    
 
     public Long getId() {
         return id;

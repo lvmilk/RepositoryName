@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +12,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author victor
+ * @author victor/lucy
  */
 @Entity
 public class AircraftType implements Serializable {
@@ -23,7 +20,7 @@ public class AircraftType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String aircraftType;
+    private String type;
 
     private String manufacturerName;
     private Double maxDistance;
@@ -32,15 +29,26 @@ public class AircraftType implements Serializable {
     private Double aircraftLength;
     private Double wingspan;    
 
-    private Integer fcSeatNo;               // for display aircraft information only
-    private Integer bcSeatNo;
-    private Integer pecSeatNo;
-    private Integer ecSeatNo;
+    private int fcSeatNo;               // for display aircraft information only
+    private int bcSeatNo;
+    private int pecSeatNo;
+    private int ecSeatNo;
+   
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="AircraftType")
+    private Collection<Aircraft> aircrafts=new ArrayList<Aircraft>();
+    
+    public Collection<Aircraft> getAircraft(){
+            return aircrafts;
+            }
+    
+        public void setAircraft(Collection<Aircraft> aircrafts){
+        this.aircrafts=aircrafts;
+    }
     
     @OneToMany
     private ArrayList<Seat> seatList;
     private long seatMapId;
-
+    
     public Long getId() {
         return id;
     }
@@ -89,17 +97,17 @@ public class AircraftType implements Serializable {
     }
 
     /**
-     * @return the aircraftType
+     * @return the type
      */
-    public String getAircraftType() {
-        return aircraftType;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @param aircraftType the aircraftType to set
+     * @param type the type to set
      */
-    public void setAircraftType(String aircraftType) {
-        this.aircraftType = aircraftType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
