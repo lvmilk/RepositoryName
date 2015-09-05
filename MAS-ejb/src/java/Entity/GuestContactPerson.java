@@ -17,7 +17,8 @@ import javax.persistence.Id;
  * @author victor
  */
 @Entity
-public class GuestContactPerson implements Serializable, GuestInterface, ContactPersonInterface {
+public class GuestContactPerson implements Serializable {
+//public class GuestContactPerson implements Serializable, GuestInterface, ContactPersonInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

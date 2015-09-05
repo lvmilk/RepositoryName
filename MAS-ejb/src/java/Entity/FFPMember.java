@@ -17,7 +17,8 @@ import javax.persistence.Id;
  * @author victor
  */
 @Entity
-public class FFPMember implements Serializable, PassengerInterface, ContactPersonInterface {
+public class FFPMember implements Serializable{
+//public class FFPMember implements Serializable, PassengerInterface, ContactPersonInterface {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

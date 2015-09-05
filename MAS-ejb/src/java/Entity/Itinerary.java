@@ -33,10 +33,10 @@ public class Itinerary implements Serializable {
     
     @OneToMany
     private Collection<Ticket> ticketList;
-    @OneToMany
-    private Collection<PassengerInterface> passengerList;
-    @OneToOne
-    private ContactPersonInterface contactPerson;
+//    @OneToMany
+//    private Collection<PassengerInterface> passengerList;
+//    @OneToOne
+//    private ContactPersonInterface contactPerson;
     
 
     public Long getId() {
