@@ -36,7 +36,7 @@ public class FleetPlanning {
             throw e;
         }
         AircraftType at = new AircraftType();
-        at.setAircraftType(type);
+        at.setType(type);
     }
 
     public void setAircraftType (long id, String manufacturer, 
