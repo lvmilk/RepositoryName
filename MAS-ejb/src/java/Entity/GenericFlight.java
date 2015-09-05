@@ -24,7 +24,7 @@ public class GenericFlight implements Serializable {
     private String flightNo;
     private int StopoverSequenceNo;
     @OneToOne
-    private ODPairs route;
+    private ODPair route;
     
     private String ScheduledDepartureTime;
     private String ShceduledArrivalTime;
@@ -106,14 +106,14 @@ public class GenericFlight implements Serializable {
     /**
      * @return the route
      */
-    public ODPairs getRoute() {
+    public ODPair getRoute() {
         return route;
     }
 
     /**
      * @param route the route to set
      */
-    public void setRoute(ODPairs route) {
+    public void setRoute(ODPair route) {
         this.route = route;
     }
 
