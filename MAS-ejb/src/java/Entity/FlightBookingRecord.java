@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -29,14 +30,15 @@ public class FlightBookingRecord implements Serializable {
     @ManyToOne
     private Ticket ticket;
     private String BookingClass;
-    private float fare;
-    private float tax;
+    private Double fare;
+    private Double tax;
     
     private String ffpNo;
-    private int MileAccumulation;
+    private Integer MileAccumulation;
     
+    @OneToOne
     private Seat seatSelected;
-    private int speacialMealIndex;
+    private Integer speacialMealIndex;
     
     private String operationStatus;
     
@@ -137,14 +139,14 @@ public class FlightBookingRecord implements Serializable {
     /**
      * @return the MileAccumulation
      */
-    public int getMileAccumulation() {
+    public Integer getMileAccumulation() {
         return MileAccumulation;
     }
 
     /**
      * @param MileAccumulation the MileAccumulation to set
      */
-    public void setMileAccumulation(int MileAccumulation) {
+    public void setMileAccumulation(Integer MileAccumulation) {
         this.MileAccumulation = MileAccumulation;
     }
 
@@ -165,14 +167,14 @@ public class FlightBookingRecord implements Serializable {
     /**
      * @return the speacialMealIndex
      */
-    public int getSpeacialMealIndex() {
+    public Integer getSpeacialMealIndex() {
         return speacialMealIndex;
     }
 
     /**
      * @param speacialMealIndex the speacialMealIndex to set
      */
-    public void setSpeacialMealIndex(int speacialMealIndex) {
+    public void setSpeacialMealIndex(Integer speacialMealIndex) {
         this.speacialMealIndex = speacialMealIndex;
     }
 
@@ -188,6 +190,34 @@ public class FlightBookingRecord implements Serializable {
      */
     public void setOperationStatus(String operationStatus) {
         this.operationStatus = operationStatus;
+    }
+
+    /**
+     * @return the connectedPriorFlght
+     */
+    public Flight getConnectedPriorFlght() {
+        return connectedPriorFlght;
+    }
+
+    /**
+     * @param connectedPriorFlght the connectedPriorFlght to set
+     */
+    public void setConnectedPriorFlght(Flight connectedPriorFlght) {
+        this.connectedPriorFlght = connectedPriorFlght;
+    }
+
+    /**
+     * @return the connectedSubsequnecFlight
+     */
+    public Flight getConnectedSubsequnecFlight() {
+        return connectedSubsequnecFlight;
+    }
+
+    /**
+     * @param connectedSubsequnecFlight the connectedSubsequnecFlight to set
+     */
+    public void setConnectedSubsequnecFlight(Flight connectedSubsequnecFlight) {
+        this.connectedSubsequnecFlight = connectedSubsequnecFlight;
     }
     
 }
