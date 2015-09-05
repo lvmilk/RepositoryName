@@ -23,19 +23,19 @@ public class AircraftType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String aircraftType;
 
     private String manufacturerName;
-    private String aircraftType;
-    private float maxDistance;
-    private float cruiseSpeed;
-    private float cruiseAltitude;
-    private float aircraftLength;
-    private float wingspan;    
+    private Double maxDistance;
+    private Double cruiseSpeed;
+    private Double cruiseAltitude;
+    private Double aircraftLength;
+    private Double wingspan;    
 
-    private int fcSeatNo;               // for display aircraft information only
-    private int bcSeatNo;
-    private int pecSeatNo;
-    private int ecSeatNo;
+    private Integer fcSeatNo;               // for display aircraft information only
+    private Integer bcSeatNo;
+    private Integer pecSeatNo;
+    private Integer ecSeatNo;
     
     @OneToMany
     private ArrayList<Seat> seatList;
@@ -105,126 +105,126 @@ public class AircraftType implements Serializable {
     /**
      * @return the maxDistance
      */
-    public float getMaxDistance() {
+    public Double getMaxDistance() {
         return maxDistance;
     }
 
     /**
      * @param maxDistance the maxDistance to set
      */
-    public void setMaxDistance(float maxDistance) {
+    public void setMaxDistance(Double maxDistance) {
         this.maxDistance = maxDistance;
     }
 
     /**
      * @return the cruiseSpeed
      */
-    public float getCruiseSpeed() {
+    public Double getCruiseSpeed() {
         return cruiseSpeed;
     }
 
     /**
      * @param cruiseSpeed the cruiseSpeed to set
      */
-    public void setCruiseSpeed(float cruiseSpeed) {
+    public void setCruiseSpeed(Double cruiseSpeed) {
         this.cruiseSpeed = cruiseSpeed;
     }
 
     /**
      * @return the cruiseAltitude
      */
-    public float getCruiseAltitude() {
+    public Double getCruiseAltitude() {
         return cruiseAltitude;
     }
 
     /**
      * @param cruiseAltitude the cruiseAltitude to set
      */
-    public void setCruiseAltitude(float cruiseAltitude) {
+    public void setCruiseAltitude(Double cruiseAltitude) {
         this.cruiseAltitude = cruiseAltitude;
     }
 
     /**
      * @return the aircraftLength
      */
-    public float getAircraftLength() {
+    public Double getAircraftLength() {
         return aircraftLength;
     }
 
     /**
      * @param aircraftLength the aircraftLength to set
      */
-    public void setAircraftLength(float aircraftLength) {
+    public void setAircraftLength(Double aircraftLength) {
         this.aircraftLength = aircraftLength;
     }
 
     /**
      * @return the wingspan
      */
-    public float getWingspan() {
+    public Double getWingspan() {
         return wingspan;
     }
 
     /**
      * @param wingspan the wingspan to set
      */
-    public void setWingspan(float wingspan) {
+    public void setWingspan(Double wingspan) {
         this.wingspan = wingspan;
     }
 
     /**
      * @return the fcSeatNo
      */
-    public int getFcSeatNo() {
+    public Integer getFcSeatNo() {
         return fcSeatNo;
     }
 
     /**
      * @param fcSeatNo the fcSeatNo to set
      */
-    public void setFcSeatNo(int fcSeatNo) {
+    public void setFcSeatNo(Integer fcSeatNo) {
         this.fcSeatNo = fcSeatNo;
     }
 
     /**
      * @return the bcSeatNo
      */
-    public int getBcSeatNo() {
+    public Integer getBcSeatNo() {
         return bcSeatNo;
     }
 
     /**
      * @param bcSeatNo the bcSeatNo to set
      */
-    public void setBcSeatNo(int bcSeatNo) {
+    public void setBcSeatNo(Integer bcSeatNo) {
         this.bcSeatNo = bcSeatNo;
     }
 
     /**
      * @return the pecSeatNo
      */
-    public int getPecSeatNo() {
+    public Integer getPecSeatNo() {
         return pecSeatNo;
     }
 
     /**
      * @param pecSeatNo the pecSeatNo to set
      */
-    public void setPecSeatNo(int pecSeatNo) {
+    public void setPecSeatNo(Integer pecSeatNo) {
         this.pecSeatNo = pecSeatNo;
     }
 
     /**
      * @return the ecSeatNo
      */
-    public int getEcSeatNo() {
+    public Integer getEcSeatNo() {
         return ecSeatNo;
     }
 
     /**
      * @param ecSeatNo the ecSeatNo to set
      */
-    public void setEcSeatNo(int ecSeatNo) {
+    public void setEcSeatNo(Integer ecSeatNo) {
         this.ecSeatNo = ecSeatNo;
     }
 

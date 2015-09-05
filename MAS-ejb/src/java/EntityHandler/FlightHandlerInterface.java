@@ -6,7 +6,10 @@
 package EntityHandler;
 
 import Entity.Airport;
+import Entity.Flight;
+import Entity.GenericFlight;
 import Entity.ODPair;
+import Exception.MASException;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +21,8 @@ public interface FlightHandlerInterface {
     //For airport
     public void addAirport (Airport ap);
     public boolean deleteAirport (Airport ap);
+    public void updateAirport (Airport ap);
+    public Airport findAirport (long id) throws MASException;
     public ArrayList<Airport> findAirport (String IATA);
     public ArrayList<Airport> listAirport ();
     public boolean hasAirport(String IATA);
@@ -25,6 +30,8 @@ public interface FlightHandlerInterface {
     //For ODPairs
     public void addODPair (ODPair od);
     public boolean deleteODPair (ODPair od);
+    public void updateODPair (ODPair od);
+    public ODPair findODPair (long id) throws MASException;
     public ArrayList<ODPair> findODPair (String orgIATA, String dstIATA);
     public ArrayList<ODPair> listODPair ();
     public boolean hasODPair(String orgIATA, String dstIATA);
@@ -32,6 +39,8 @@ public interface FlightHandlerInterface {
     //For GenericFlight
     public void addGenericFlight (GenericFlight gf);
     public boolean deleteGenericFlight (GenericFlight gf);
+    public void updateGenericFlight (GenericFlight gf);
+    public GenericFlight findGenericFlight (long id) throws MASException;
     public ArrayList<GenericFlight> findGenericFlight (String flightNumber);
     public ArrayList<GenericFlight> findGenericFlight (String orgIATA, String dstIATA);
     public ArrayList<GenericFlight> listGenericFligth ();
@@ -41,6 +50,8 @@ public interface FlightHandlerInterface {
     //For Flight
     public void addFlight(Flight f);
     public boolean deleteFlight(Flight f);
+    public void updateFlight (Flight f);
+    public Flight findFlight (long id) throws MASException;
     public ArrayList<Flight> findFlight (String flightNumber, String date);
     public ArrayList<Flight> findFlight (String orgIATA, String dstIATA, String date);
     public ArrayList<Flight> listFlight ();
