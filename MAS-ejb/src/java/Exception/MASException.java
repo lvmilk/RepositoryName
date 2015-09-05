@@ -19,9 +19,13 @@ public class MASException extends Exception {
         this.setErrorCode(errorCode);
     }
     
-    /*Error Code first 
-    *AT: AircraftType
+    /*Error Code
+    *AT01: AircraftType already exist
+    *AT02: AircraftType not exist
+    *AF01: Aircraft already exist
+    *AF02: 
     */
+    
 
     /**
      * @return the errorCode

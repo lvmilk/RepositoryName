@@ -33,6 +33,8 @@ public class FleetPlanning {
         at.setAircraftType(type);
         at.setManufacturerName(manufacturer);
     }
+    
+    public void createAircraft (){}
 
     
 }
