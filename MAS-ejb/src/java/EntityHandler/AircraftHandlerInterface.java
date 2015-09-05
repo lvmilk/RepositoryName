@@ -7,6 +7,7 @@ package EntityHandler;
 
 import Entity.Aircraft;
 import Entity.AircraftType;
+import Exception.MASException;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,7 @@ public interface AircraftHandlerInterface {
     public void addAircraftType(AircraftType at);
     public boolean deleteAircraftType(AircraftType at);
     public void updateAircraftType(AircraftType at);
-    public AircraftType findAircraftType (long id) throws MASExcepton;
+    public AircraftType findAircraftType (long id) throws MASException;
     public ArrayList<AircraftType> findAircraftType(String type);
     public ArrayList<AircraftType> listAircraftType ();
     public boolean hasAircraftType(String type);

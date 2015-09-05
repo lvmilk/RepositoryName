@@ -9,6 +9,7 @@ import Entity.Airport;
 import Entity.Flight;
 import Entity.GenericFlight;
 import Entity.ODPair;
+import Exception.MASException;
 import java.util.ArrayList;
 
 /**
@@ -39,7 +40,7 @@ public interface FlightHandlerInterface {
     public void addGenericFlight (GenericFlight gf);
     public boolean deleteGenericFlight (GenericFlight gf);
     public void updateGenericFlight (GenericFlight gf);
-    public findGenericFlight (long id) throws MASException;
+    public GenericFlight findGenericFlight (long id) throws MASException;
     public ArrayList<GenericFlight> findGenericFlight (String flightNumber);
     public ArrayList<GenericFlight> findGenericFlight (String orgIATA, String dstIATA);
     public ArrayList<GenericFlight> listGenericFligth ();
@@ -50,7 +51,7 @@ public interface FlightHandlerInterface {
     public void addFlight(Flight f);
     public boolean deleteFlight(Flight f);
     public void updateFlight (Flight f);
-    public findFlight (long id) throws MASException;
+    public Flight findFlight (long id) throws MASException;
     public ArrayList<Flight> findFlight (String flightNumber, String date);
     public ArrayList<Flight> findFlight (String orgIATA, String dstIATA, String date);
     public ArrayList<Flight> listFlight ();

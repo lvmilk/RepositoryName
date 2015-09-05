@@ -5,6 +5,7 @@
  */
 package SessionBean;
 
+import Entity.Aircraft;
 import Entity.AircraftType;
 import EntityHandler.AircraftHandlerInterface;
 import Exception.MASException;
@@ -22,7 +23,11 @@ public class FleetPlanning {
 // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     
-    AircraftHandlerInterface ah;
+    private AircraftHandlerInterface ah;
+
+    public AircraftHandlerInterface getAircraftHandler (){
+        return ah;
+    }
     
     public void createAircraftType (String type) throws MASException{
     	AircraftType at = new AircraftType();
@@ -33,18 +38,31 @@ public class FleetPlanning {
         at.setAircraftType(type);
     }
 
-    public void setAircraftType (AircraftType at, String manufacturer, 
-        float MaxDis, float cruiseSpeed, float curiseAltitude,
-        float AircraftLength, float wingspan){
-
-    }
-
-    public void setSeatInformationforAircraftType (AircraftType at, 
-        int fcSeatNo, int bcSeatNo, int pecSeatNo, int ecSeatNo){
+    public void setAircraftType (long id, String manufacturer, 
+        float MaxDis, float cruiseSpeed, float cruiseAltitude,
+        float AircraftLength, float wingspan) throws MASException{
+        AircraftType af = ah.findAircraftType(id);
+        if (manufacturer.length() > 0)
+            af.setManufacturerName(manufacturer.toUpperCase());
+        if (MaxDis > 0)
+            af.setMaxDistance(new Double(MaxDis));
+        if (cruiseSpeed > 0)
+            af.setCruiseSpeed(new Double (cruiseSpeed));
+        if (cruiseAltitude > 0)
+            af.setCruiseAltitude(new Double (cruiseAltitude));
+        if (AircraftLength > 0)
+            af.setAircraftLength(new Double (AircraftLength));
+        if (wingspan > 0)
+            af.setWingspan(new Double (wingspan));
         
     }
+
+    public void setSeatforAircraftType (long id){
+    }
     
-    public void createAircraft (){}
+    public void createAircraft (String registrationNumber){
+        Aircraft af = new Aircraft ();
+    }
 
     
 }
