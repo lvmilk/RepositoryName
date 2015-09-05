@@ -20,7 +20,7 @@ public class AircraftType implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String aircraftType;
+    private String type;
 
     private String manufacturerName;
     private Double maxDistance;
@@ -97,17 +97,17 @@ public class AircraftType implements Serializable {
     }
 
     /**
-     * @return the aircraftType
+     * @return the type
      */
-    public String getAircraftType() {
-        return aircraftType;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @param aircraftType the aircraftType to set
+     * @param type the type to set
      */
-    public void setAircraftType(String aircraftType) {
-        this.aircraftType = aircraftType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**
