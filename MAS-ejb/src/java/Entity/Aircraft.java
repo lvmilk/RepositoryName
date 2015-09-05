@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package Entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,12 +12,14 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author victor/ Xu
+ * @author victor/ Xu/lucy
  */
 
 @Entity
 public class Aircraft implements Serializable {
     private static final long serialVersionUID = 1L;
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
+    private Collection<Flight> flights=new ArrayList<Flight>();
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -54,6 +50,20 @@ public class Aircraft implements Serializable {
     private long maintenanceLogId;
     private long transactionLogId;
     
+    public void create(String registrationNo, String SerialNo, String Status,  String AirCraftType){
+        this.setRegistrationNo(registrationNo);
+        this.setSerialNo(SerialNo);
+        this.setStatus(Status);
+        this.setAircraftType(aircraftType);
+    }
+        
+         public Collection<Flight> getFlight(){
+        return flights;
+    }   
+    
+    public void setFlight(Collection<Flight> flights){
+        this.flights=flights;
+    }
 
     public Long getId() {
         return id;
