@@ -10,6 +10,6 @@ package EntityHandler;
  *hahaha
  * @author victor
  */
-public interface FlightHandler {
+public class FlightHandler {
     
 }
