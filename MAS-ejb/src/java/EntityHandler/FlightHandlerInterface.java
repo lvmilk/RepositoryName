@@ -17,19 +17,33 @@ public interface FlightHandlerInterface {
     
     //For airport
     public void addAirport (Airport ap);
-    public void deleteAirport (Airport ap);
+    public boolean deleteAirport (Airport ap);
     public ArrayList<Airport> findAirport (String IATA);
     public ArrayList<Airport> listAirport ();
     public boolean hasAirport(String IATA);
     
     //For ODPairs
     public void addODPair (ODPair od);
-    public void deleteODPair (ODPair od);
+    public boolean deleteODPair (ODPair od);
     public ArrayList<ODPair> findODPair (String orgIATA, String dstIATA);
     public ArrayList<ODPair> listODPair ();
     public boolean hasODPair(String orgIATA, String dstIATA);
     
     //For GenericFlight
-    public 
-    
+    public void addGenericFlight (GenericFlight gf);
+    public boolean deleteGenericFlight (GenericFlight gf);
+    public ArrayList<GenericFlight> findGenericFlight (String flightNumber);
+    public ArrayList<GenericFlight> findGenericFlight (String orgIATA, String dstIATA);
+    public ArrayList<GenericFlight> listGenericFligth ();
+    public boolean hasGenericFlight (String flightNumber);
+    public boolean hasGenericFlight (String orgIATA, String dstIATA);
+
+    //For Flight
+    public void addFlight(Flight f);
+    public boolean deleteFlight(Flight f);
+    public ArrayList<Flight> findFlight (String flightNumber, String date);
+    public ArrayList<Flight> findFlight (String orgIATA, String dstIATA, String date);
+    public ArrayList<Flight> listFlight ();
+    public boolean hasFlight (String flightNumber, String date);
+    public boolean hasFlight (String orgIATA, String dstIATA, String date);   
 }
