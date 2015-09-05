@@ -30,11 +30,12 @@ public class FleetPlanning {
     }
     
     public void createAircraftType (String type) throws MASException{
-    	AircraftType at = new AircraftType();
+    	
         if (ah.hasAircraftType(type)){
             MASException e = new MASException("AT01");
             throw e;
         }
+        AircraftType at = new AircraftType();
         at.setAircraftType(type);
     }
 
@@ -61,6 +62,8 @@ public class FleetPlanning {
     }
     
     public void createAircraft (String registrationNumber){
+        if (ah.hasAircraft(registrationNumber)){
+        }
         Aircraft af = new Aircraft ();
     }
 
