@@ -9,31 +9,33 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
-            <p:panel id="panel" header="Login">
-                
-                <p:messages id="msgs" />
-                <h:panelGrid columns="3" cellpadding="5">
-                    
-           
-                    <p:outputLabel for="username" value="Username:" />
-                    <p:inputText id="username" value="#{login.username}" required="true" label="Username" size="5">
-                        <f:validateLength minimum="2" />
-                    </p:inputText>
-                    <p:message for="username" display="icon" />
+        <div style="width:50%; height:20%; margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
+            <h:form>
+                <p:panel id="panel" header="Login">
 
-                    <p:outputLabel for="password" value="Password:" />
-                    <p:inputText id="password" type="password" value="#{login.password}" label="Password" required="true" size="5">
-                        <f:validateLength minimum="2" />
-                        <p:ajax update="msgPassword" event="keyup" />
-                    </p:inputText>
-                    <p:message for="password" id="msgPassword" display="icon" />
+                    <p:messages id="msgs" />
+                    <h:panelGrid columns="3" cellpadding="10">
 
-                </h:panelGrid>
 
-                <p:commandButton value="Login" update="panel" actionListener="#{login.logIn()}" icon="ui-icon-check" />
-            </p:panel>
-        </h:form>
+                        <p:outputLabel for="username" value="Username:" />
+                        <p:inputText id="username" value="#{login.username}" required="true" label="Username" size="10">
+                            <f:validateLength minimum="2" />
+                        </p:inputText>
+                        <p:message for="username" display="icon" />
+
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{login.password}" label="Password" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                            <p:ajax update="msgPassword" event="keyup" />
+                        </p:inputText>
+                        <p:message for="password" id="msgPassword" display="icon" />
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="Login" update="panel" actionListener="#{login.logIn()}" icon="ui-icon-check" />
+                </p:panel>
+            </h:form>
+        </div>
     </h:body>
 </html>
 
