@@ -15,12 +15,12 @@ import javax.inject.Named;
  *
  * @author LI HAO
  */
-@Named(value = "testSslManagedBean")
+@Named(value = "SslManagedBean")
 @RequestScoped
 public class SslManagerBean {
 
     public void startSsl(ActionEvent event) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/login.xhtml");
     }
 
     public void endSsl(ActionEvent event) throws IOException {
