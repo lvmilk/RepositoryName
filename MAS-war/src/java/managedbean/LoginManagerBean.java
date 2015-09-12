@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import SessionBean.manageAccountLocal;
+import SessionBean.CommonInfaSB.manageAccountLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

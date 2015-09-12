@@ -7,7 +7,7 @@ package managedbean;
 
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
-import SessionBean.manageAccountLocal;
+import SessionBean.CommonInfaSB.manageAccountLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

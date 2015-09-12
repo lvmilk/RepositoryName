@@ -56,5 +56,33 @@ public class Staff implements Serializable {
     public String toString() {
         return "Entity.CommonInfaEntity.Staff[ id=" + id + " ]";
     }
+
+    /**
+     * @return the stfName
+     */
+    public String getStfName() {
+        return stfName;
+    }
+
+    /**
+     * @param stfName the stfName to set
+     */
+    public void setStfName(String stfName) {
+        this.stfName = stfName;
+    }
+
+    /**
+     * @return the stfPasswprd
+     */
+    public String getStfPasswprd() {
+        return stfPasswprd;
+    }
+
+    /**
+     * @param stfPasswprd the stfPasswprd to set
+     */
+    public void setStfPasswprd(String stfPasswprd) {
+        this.stfPasswprd = stfPasswprd;
+    }
     
 }
