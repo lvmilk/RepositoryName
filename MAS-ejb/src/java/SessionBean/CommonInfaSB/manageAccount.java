@@ -37,7 +37,7 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public boolean validateLogin(String username, String password) {
+    public boolean validateLogin(String username, String password, String type) {
         Query query = entityManager.createQuery("SELECT u FROM FFPMember u WHERE u.username = :inUserName and u.password=:inPassWord");
         query.setParameter("inPassWord", password);
         query.setParameter("inUserName", username);

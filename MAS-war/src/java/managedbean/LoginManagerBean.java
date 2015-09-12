@@ -22,38 +22,39 @@ public class LoginManagerBean {
 
     private String username;
     private String password;
+    private String type;
 
-    private String title;
-    private String surname;
-    private String givenName;
+//    private String title;
+//    private String surname;
+//    private String givenName;
 
-    private String mobilePhone;
-    private String officePhone;
-    private String email;
-    private String livingCountry;
-    private String livingState;
-    private String livingCity;
-    private String livingAddress;
-    private String postalCode;
-
-    private String gender;
-    private String nationality;
-    private String birthday;
-    private String travelDocumentIssueCountry;
-    private String travelDocumentType;
-    private String travelDocumentNo;
-    private String travelDocumentIssueDate;
-    private String travelDocumentExpireDate;
-
-    private String FFPNo;
-    private String JoinDate;
-    private String membershipTier;
-    private long MileAccountId;
+//    private String mobilePhone;
+//    private String officePhone;
+//    private String email;
+//    private String livingCountry;
+//    private String livingState;
+//    private String livingCity;
+//    private String livingAddress;
+//    private String postalCode;
+//
+//    private String gender;
+//    private String nationality;
+//    private String birthday;
+//    private String travelDocumentIssueCountry;
+//    private String travelDocumentType;
+//    private String travelDocumentNo;
+//    private String travelDocumentIssueDate;
+//    private String travelDocumentExpireDate;
+//
+//    private String FFPNo;
+//    private String JoinDate;
+//    private String membershipTier;
+//    private long MileAccountId;
 
     public void logIn() throws IOException {
 
         Boolean validity;
-        validity = mal.validateLogin(username, password);
+        validity = mal.validateLogin(username, password, getType());
 
         if (validity) {
             System.out.println("User exists.");
@@ -100,5 +101,19 @@ public class LoginManagerBean {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 }

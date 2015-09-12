@@ -9,10 +9,10 @@
         <title>Login</title>
     </h:head>
     <h:body>
-        <div style="width:50%; height:20%; margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
+        <div style="width:50%; margin-right:15%;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
             <h:form>
 
-                <p:panel id="panel" header="Login">
+                <p:panel id="panel" header="Login" style="width: 50%">
 
                     <p:messages id="msgs" />
                     <h:panelGrid columns="3" cellpadding="10">
@@ -30,6 +30,15 @@
                             <p:ajax update="msgPassword" event="keyup" />
                         </p:inputText>
                         <p:message for="password" id="msgPassword" display="icon" />
+                        
+                        <p:outputLabel for="domain" value="Staff domain:" />
+                        <h:selectOneMenu id="domain">
+                            <f:selectItem itemValue="admin" itemLabel="Administrator" />
+                            <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
+                            <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
+                            <f:selectItem itemValue="cockpit" itemLabel="CockpitCrew" />
+                        </h:selectOneMenu>
+                        
 
                     </h:panelGrid>
 

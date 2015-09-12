@@ -16,13 +16,11 @@ import javax.persistence.Id;
  * @author LI HAO
  */
 @Entity
-public class Staff implements Serializable {
+public class GrondStaff implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String stfName;
-    private String stfPasswprd;
 
     public Long getId() {
         return id;
@@ -42,10 +40,10 @@ public class Staff implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Staff)) {
+        if (!(object instanceof GrondStaff)) {
             return false;
         }
-        Staff other = (Staff) object;
+        GrondStaff other = (GrondStaff) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -54,35 +52,7 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.Staff[ id=" + id + " ]";
-    }
-
-    /**
-     * @return the stfName
-     */
-    public String getStfName() {
-        return stfName;
-    }
-
-    /**
-     * @param stfName the stfName to set
-     */
-    public void setStfName(String stfName) {
-        this.stfName = stfName;
-    }
-
-    /**
-     * @return the stfPasswprd
-     */
-    public String getStfPasswprd() {
-        return stfPasswprd;
-    }
-
-    /**
-     * @param stfPasswprd the stfPasswprd to set
-     */
-    public void setStfPasswprd(String stfPasswprd) {
-        this.stfPasswprd = stfPasswprd;
+        return "Entity.CommonInfaEntity.groudCrew[ id=" + id + " ]";
     }
     
 }
