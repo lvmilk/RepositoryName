@@ -22,7 +22,15 @@ public class AdminStaff implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String admName;
-    private String admPasswprd;
+    private String admPassword;
+    private String type;
+    
+    public void create(String strAdmName, String strAdmPassword, String strType)
+    {
+        this.setAdmName(strAdmName);
+        this.setAdmPasswprd(strAdmPassword);
+        this.setType(strType);
+    }
 
     public Long getId() {
         return id;
@@ -75,15 +83,29 @@ public class AdminStaff implements Serializable {
     /**
      * @return the admPasswprd
      */
-    public String getAdmPasswprd() {
-        return admPasswprd;
+    public String getAdmPassword() {
+        return admPassword;
     }
 
     /**
      * @param admPasswprd the admPasswprd to set
      */
-    public void setAdmPasswprd(String admPasswprd) {
-        this.admPasswprd = admPasswprd;
+    public void setAdmPasswprd(String admPassword) {
+        this.admPassword = admPassword;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
     
 }

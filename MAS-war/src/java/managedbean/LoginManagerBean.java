@@ -54,7 +54,7 @@ public class LoginManagerBean {
     public void logIn() throws IOException {
 
         Boolean validity;
-        validity = mal.validateLogin(username, password, getType());
+        validity = mal.validateLogin(username, password, type);
 
         if (validity) {
             System.out.println("User exists.");
@@ -71,7 +71,7 @@ public class LoginManagerBean {
 
     public void register() {
 
-        mal.addAccount(username, password);
+        mal.addAccount(username, password,type);
 
     }
 

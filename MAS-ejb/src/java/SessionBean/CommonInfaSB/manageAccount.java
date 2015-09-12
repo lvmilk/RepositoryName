@@ -7,7 +7,8 @@ package SessionBean.CommonInfaSB;
 
 import javax.ejb.Stateless;
 import java.util.*;
-import Entity.FFPMember;
+import Entity.*;
+import Entity.CommonInfaEntity.*;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -23,28 +24,33 @@ public class manageAccount implements manageAccountLocal {
 
    @PersistenceContext
     EntityManager entityManager;
-    FFPMember newUser;
+//    FFPMember newUser;
+    AdminStaff admStaff;
+    
     
     public manageAccount(){
     
     }
 
     @Override
-    public void addAccount(String username, String password) {
-        newUser = new FFPMember();
-        entityManager.persist(newUser);
+    public void addAccount(String username, String password, String stfType) {
+//        newUser = new FFPMember();
+        admStaff = new AdminStaff();
+        admStaff.create(username, password, stfType);
+        entityManager.persist(admStaff);
 
     }
 
     @Override
-    public boolean validateLogin(String username, String password, String type) {
-        Query query = entityManager.createQuery("SELECT u FROM FFPMember u WHERE u.username = :inUserName and u.password=:inPassWord");
+    public boolean validateLogin(String username, String password, String stfType) {
+        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.type=:inStfType");
         query.setParameter("inPassWord", password);
         query.setParameter("inUserName", username);
+        query.setParameter("inStfType", stfType);
     //    SystemUser user = null;
 
 
-        List resultList = new ArrayList<FFPMember>();
+        List resultList = new ArrayList<AdminStaff>();
         resultList = (List) query.getResultList();
         if (resultList.isEmpty()) {
             return false;
