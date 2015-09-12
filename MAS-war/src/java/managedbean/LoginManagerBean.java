@@ -22,12 +22,11 @@ public class LoginManagerBean {
 
     private String username;
     private String password;
-    private String type;
+    private String admType;
 
 //    private String title;
 //    private String surname;
 //    private String givenName;
-
 //    private String mobilePhone;
 //    private String officePhone;
 //    private String email;
@@ -50,15 +49,22 @@ public class LoginManagerBean {
 //    private String JoinDate;
 //    private String membershipTier;
 //    private long MileAccountId;
-
     public void logIn() throws IOException {
 
         Boolean validity;
-        validity = mal.validateLogin(username, password, type);
-
+        validity = mal.validateLogin(username, password, admType);
+        
+        System.out.println(admType);
+        
         if (validity) {
             System.out.println("User exists.");
-            FacesContext.getCurrentInstance().getExternalContext().redirect("loginSuccess.xhtml");
+            if (admType.equals("administrator")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
+            }
+            else
+            {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("staffWorkspace.xhtml");
+            }
         } else {
 
             System.out.println("User not found");
@@ -71,7 +77,7 @@ public class LoginManagerBean {
 
     public void register() {
 
-        mal.addAccount(username, password,type);
+        mal.addAccount(username, password, admType);
 
     }
 
@@ -106,14 +112,14 @@ public class LoginManagerBean {
     /**
      * @return the type
      */
-    public String getType() {
-        return type;
+    public String getAdmType() {
+        return admType;
     }
 
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setAdmType(String admType) {
+        this.admType = admType;
     }
 }
