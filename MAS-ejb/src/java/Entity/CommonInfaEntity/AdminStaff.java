@@ -23,13 +23,13 @@ public class AdminStaff implements Serializable {
     private Long id;
     private String admName;
     private String admPassword;
-    private String type;
+    private String admType;
     
-    public void create(String strAdmName, String strAdmPassword, String strType)
+    public void create(String strAdmName, String strAdmPassword, String strAdmType)
     {
         this.setAdmName(strAdmName);
         this.setAdmPasswprd(strAdmPassword);
-        this.setType(strType);
+        this.setType(strAdmType);
     }
 
     public Long getId() {
@@ -98,14 +98,14 @@ public class AdminStaff implements Serializable {
      * @return the type
      */
     public String getType() {
-        return type;
+        return admType;
     }
 
     /**
-     * @param type the type to set
+     * @param admType the type to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String admType) {
+        this.admType = admType;
     }
     
 }
