@@ -8,12 +8,25 @@
     <h:head>
         <h:outputStylesheet name="./css/default.css"/>
         <title>Skeleton</title>
+        <link type="text/css" rel="stylesheet" href="./css/default.css" />
+        <style type="text/css">
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible !important;;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+        </style>
     </h:head>
 
     <h:body>
 
-        <div id="top">
-            <h:form>
+        <p:layout fullPage="true" >
+
+            <p:layoutUnit id="top" position="north" size="50">
+
                 <p:growl id="topbar"/>
 
                 <p:menubar style="text-align: center">
@@ -47,28 +60,42 @@
                         <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
                     </f:facet>
                 </p:menubar>
-            </h:form>
-            <ui:insert name="top"></ui:insert> 
-        </div>
+            </p:layoutUnit>
 
-        <div id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
-            <p:accordionPanel>
-                <p:tab title="Menu 1">
-                    <br />
-                    <p:calendar mode="inline" navigator="none"/>
-                    <br />
-                </p:tab>
+            <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
 
-                <p:tab title="Menu 2">
-                    <h:outputText value="Menu 2 Content" />
-                </p:tab>
+                <p:accordionPanel>
+                    <p:tab title="Menu 1">
+                        <br />
+                        <p:calendar mode="inline" navigator="none"/>
+                        <br />
+                    </p:tab>
 
-                <p:tab title="Menu 3">
-                    <h:outputText value="Menu 3 Content" />
-                </p:tab>
-            </p:accordionPanel>
-            <ui:insert name="left"></ui:insert> 
-        </div>
+                    <p:tab title="Menu 2">
+                        <h:outputText value="Menu 2 Content" />
+                    </p:tab>
+
+                    <p:tab title="Menu 3">
+                        <h:outputText value="Menu 3 Content" />
+                    </p:tab>
+                </p:accordionPanel>
+
+            </p:layoutUnit>
+            
+            <p:layoutUnit id="right" position="east" size="250" header="Gallery" resizable="true" closable="false" collapsible="true"
+                          style="text-align:center">
+
+                <p:lightBox style="text-align:center;margin-top:20px;">
+     
+                </p:lightBox>
+
+
+            </p:layoutUnit>
+            <p:layoutUnit id="center" position="center" >
+
+            </p:layoutUnit>
+
+        </p:layout>
 
     </h:body>
 </html>
