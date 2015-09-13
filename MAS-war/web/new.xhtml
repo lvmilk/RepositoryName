@@ -14,6 +14,8 @@
                 <title>PrimeFaces - ShowCase</title>
             </f:facet>
 
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter.css" />
 
             <style type="text/css">
                 .ui-layout-north {
@@ -63,6 +65,7 @@
 
 
                 <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
+<!--                 
                     <p:accordionPanel>
                         <p:tab title="Menu 1">
                             <br />
@@ -77,14 +80,19 @@
                         <p:tab title="Menu 3">
                             <h:outputText value="Menu 3 Content" />
                         </p:tab>
-                    </p:accordionPanel>
+                    </p:accordionPanel>-->
+               <p:menu model="#{menuBean.model}" />
+                
                 </p:layoutUnit>
 
+               
+                
+                
                 <p:layoutUnit id="right" position="east" size="250" header="Gallery" resizable="true" closable="false" collapsible="true"
                               style="text-align:center">
 
                     <p:lightBox style="text-align:center;margin-top:20px;">
-                        <h:outputLink value="#{request.contextPath}/images/nature1.jpg" title="Nature 1" style="margin-bottom:5px;">
+                        <h:outputLink value="#{request.contextPath}/butterfly.jpg" title="Nature 1" style="margin-bottom:5px;">
                             <h:graphicImage value="/images/nature1_small.jpg"/>
                         </h:outputLink>
 
@@ -108,13 +116,13 @@
                 <p:layoutUnit id="center" position="center">
                     <h:form>
 
-
-
                     </h:form>
                 </p:layoutUnit>
 
             </p:layout>
 
+           
+            
             <p:dialog header="Basic Dialog" widgetVar="dlg" modal="true">
                 <h:outputText value="Resistance to PrimeFaces is futile!" />
             </p:dialog>
