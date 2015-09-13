@@ -10,11 +10,10 @@
             <f:facet name="first">
                 <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <h:outputStylesheet name="./css/default.css" />
                 <title>PrimeFaces - ShowCase</title>
             </f:facet>
 
-            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
-            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
 
             <style type="text/css">
                 .ui-layout-north {
@@ -62,17 +61,6 @@
                     </p:menubar>
                 </p:layoutUnit>
 
-                <p:layoutUnit id="bottom" position="south" size="60">
-                    <h:outputLink value="http://code.google.com/p/primefaces/source/browse/examples/trunk/showcase/src/main/webapp/ui/layoutComplex.xhtml">
-				View Page Source (layoutComplex.xhtml)
-                    </h:outputLink>
-
-                    <br />
-
-                    <h:outputLink value="http://code.google.com/p/primefaces/source/browse/examples/trunk/showcase/src/main/java/org/primefaces/examples/view/LayoutBean.java">
-				View Backing Bean Source (LayoutBean.java)
-                    </h:outputLink>
-                </p:layoutUnit>
 
                 <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
                     <p:accordionPanel>

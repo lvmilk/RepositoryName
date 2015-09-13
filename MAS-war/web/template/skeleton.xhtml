@@ -6,13 +6,15 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
+        <h:outputStylesheet name="./css/default.css"/>
         <title>Skeleton</title>
     </h:head>
-    <h:body>
-        <div id="header">
-            <h:form>
 
-                <p:growl id="messages"/>
+    <h:body>
+
+        <div id="top">
+            <h:form>
+                <p:growl id="topbar"/>
 
                 <p:menubar style="text-align: center">
                     <p:submenu label="File" icon="ui-icon-document" >
@@ -40,17 +42,34 @@
                         </p:submenu>
                     </p:submenu>
 
-                    <p:menuitem value="Quit" url="http://www.primefaces.org" icon="ui-icon-close" />
 
                     <f:facet name="options">
-                        <p:inputText style="margin-right:10px" placeholder="Search"/>
                         <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
                     </f:facet>
                 </p:menubar>
-
             </h:form>
-            <ui:insert name="header"></ui:insert> 
+            <ui:insert name="top"></ui:insert> 
         </div>
+
+        <div id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
+            <p:accordionPanel>
+                <p:tab title="Menu 1">
+                    <br />
+                    <p:calendar mode="inline" navigator="none"/>
+                    <br />
+                </p:tab>
+
+                <p:tab title="Menu 2">
+                    <h:outputText value="Menu 2 Content" />
+                </p:tab>
+
+                <p:tab title="Menu 3">
+                    <h:outputText value="Menu 3 Content" />
+                </p:tab>
+            </p:accordionPanel>
+            <ui:insert name="left"></ui:insert> 
+        </div>
+
     </h:body>
 </html>
 
