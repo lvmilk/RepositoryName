@@ -31,9 +31,10 @@
 
         <h:body>
 
-  <p:layout fullPage="true">
+  <p:layout fullPage="false">
 
-                <p:layoutUnit id="top" position="north" size="50">
+           <ui:define name="northpart">
+                <p:layoutUnit id="top" position="north" size="1000">
 
                     <p:menubar>
                         <p:submenu label="File" icon="ui-icon-document">
@@ -62,7 +63,9 @@
                     </p:menubar>
                 </p:layoutUnit>
 
-                <p:layoutUnit id="bottom" position="south" size="60">
+         
+      
+          <p:layoutUnit id="bottom" position="south" size="60">
                     <h:outputLink value="http://code.google.com/p/primefaces/source/browse/examples/trunk/showcase/src/main/webapp/ui/layoutComplex.xhtml">
 				View Page Source (layoutComplex.xhtml)
                     </h:outputLink>
@@ -73,8 +76,11 @@
 				View Backing Bean Source (LayoutBean.java)
                     </h:outputLink>
                 </p:layoutUnit>
+           </ui:define>
+      
 
-<!--               <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
+      
+      <!--               <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
                     
                     <p:menu model="#{MenuBean.model}" toggleable="true" />
 
@@ -84,8 +90,8 @@
 
                
                 
-                
-                <p:layoutUnit id="right" position="east" size="250" header="Gallery" resizable="true" closable="false" collapsible="true"
+           <ui:define name="eastpart">  
+           <p:layoutUnit id="right" position="east" size="250" header="Gallery" resizable="true" closable="false" collapsible="true"
                               style="text-align:center">
 
                     <p:lightBox style="text-align:center;margin-top:20px;">
@@ -109,13 +115,18 @@
                     <p:commandButton id="basic" value="Show Dialog" onclick="PF('dlg').show();" type="button" style="margin-top:10px"/>
 
                 </p:layoutUnit>
-
-                <p:layoutUnit id="center" size="1000" position="center" resizable="true">
+           </ui:define>
+      
+               <ui:define name="centerpart">
+                <p:layoutUnit id="center" size="1000" position="center" resizable="false">
                     <h:form>
 
                     </h:form>
                 </p:layoutUnit>
+                   </ui:define>
 
+      
+        
             </p:layout>
 
            
