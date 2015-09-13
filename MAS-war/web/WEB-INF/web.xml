@@ -22,6 +22,12 @@
             30
         </session-timeout>
     </session-config>
+    
+    <context-param>
+   <param-name>facelets.SKIP_COMMENTS</param-name>
+   <param-value>true</param-value>
+</context-param>
+
     <welcome-file-list>
         <welcome-file>staffMain.xhtml</welcome-file>
     </welcome-file-list>

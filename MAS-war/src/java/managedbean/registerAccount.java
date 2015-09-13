@@ -31,8 +31,8 @@ private manageAccountLocal mal;
     public registerAccount() {
    
     
-    
-    
     }
+    
+    
     
 }
