@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+       <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+              <h:form>
+
+                <p:panel id="panel" header="Booking Class Specification" style="width: 50%">
+
+                    <p:messages id="msgs" />
+                    <h:panelGrid columns="2"  style="margin-bottom:200px" cellpadding="20">
+
+
+                        <p:outputLabel for="annotation" value="annotation:" />
+                        <p:inputText id="annotation" value="#{bookingClassBean.annotation}" required="true" label="annotation" size="10">
+                          
+                        </p:inputText>
+                        
+                        
+                        <p:outputLabel for="price_percentage" value="Price as percentage of full fare: " />
+                        <p:inputText id="price_percentage"  value="#{bookingClassBean.price_percentage}" label="Price as percentage of full fare" required="true" size="10">
+                      
+                        </p:inputText>
+                        
+<!--                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.refund_percentage}" label=" refunded percentage upon cancellation" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                          
+                        </p:inputText>
+                        
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_route_percentage}" label="Penalty rate charged for route change" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                            
+                        </p:inputText>
+                        <p:outputLabel for="password" value="Password:" />
+                        
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_date_percentage}" label="Penalty rate to change date of flight" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                     
+                        </p:inputText>
+                        
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_passenger_percentage}" label="Penalty rate to change passenger of flight" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                           
+                        </p:inputText>
+                        
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.open_jaw_percentage}" label="Penalty rate for open jaw flights" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                            <p:ajax update="msgPassword" event="keyup" />
+                        </p:inputText>
+                        
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:inputText id="password" type="password" value="#{bookingClassBean.earn_mile_percentage}" label="Rate for miles to be earned" required="true" size="10">
+                            <f:validateLength minimum="2" />
+                           
+                        </p:inputText>-->
+                        
+                        
+                        
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkCabin()}" icon="ui-icon-check" />
+                </p:panel>
+                  
+                  <p:draggable for="panel" /><p:resizable for="panel" />
+            </h:form>
+        
+       </div>
+    </h:body>
+</html>
+

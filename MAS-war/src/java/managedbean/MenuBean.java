@@ -29,38 +29,72 @@ public class MenuBean {
 
     public MenuBean() {
         model = new DefaultMenuModel();
+        
 //First submenu
-        DefaultSubMenu firstSubmenu = new DefaultSubMenu("Dynamic Submenu");
-        DefaultMenuItem item = new DefaultMenuItem("External");
+        DefaultSubMenu firstSubmenu = new DefaultSubMenu("Airline Planning");
+        DefaultMenuItem item = new DefaultMenuItem("Fleet Planning");
         item.setUrl("http://www.primefaces.org");
         item.setIcon("ui-icon-home");
         firstSubmenu.addElement(item);
         model.addElement(firstSubmenu);
+        
+         item = new DefaultMenuItem("Route Planning");
+        item.setUrl("http://www.primefaces.org");
+        item.setIcon("ui-icon-home");
+        firstSubmenu.addElement(item);
+       
+          item = new DefaultMenuItem("Flight scheduling");
+        item.setUrl("http://www.primefaces.org");
+        item.setIcon("ui-icon-home");
+        firstSubmenu.addElement(item);
+        
+        
 //Second submenu
-        //Second submenu
-//        DefaultSubMenu secondSubmenu = new DefaultSubMenu("Dynamic Actions");
-//        item = new DefaultMenuItem("Save");
-//        item.setIcon("ui-icon-disk");
-//        item.setCommand("#{menuBean.save}");
+        DefaultSubMenu secondSubmenu = new DefaultSubMenu("Airline Inventory Management");
+        item = new DefaultMenuItem("Seat Arrangement");
+         item.setUrl("./seat_aircraft.xhtml");
+        item.setIcon("ui-icon-disk");
+        
+//        item.setCommand("#{MenuBean.save}");
 //        item.setUpdate("messages");
-//        secondSubmenu.addElement(item);
-//        item = new DefaultMenuItem("Delete");
-//        item.setIcon("ui-icon-close");
-//        item.setCommand("#{menuBean.delete}");
+        secondSubmenu.addElement(item);
+        
+        
+        item = new DefaultMenuItem("Booking Class Management");
+         item.setUrl("http://www.primefaces.org");
+        item.setIcon("ui-icon-close");
+//        item.setCommand("#{MenuBean.delete}");
 //        item.setAjax(false);
-//        secondSubmenu.addElement(item);
-//        item = new DefaultMenuItem("Redirect");
-//        item.setIcon("ui-icon-search");
-//        item.setCommand("#{menuBean.redirect}");
-//        secondSubmenu.addElement(item);
-//        model.addElement(secondSubmenu);
+        secondSubmenu.addElement(item);
+        
+        
+        item = new DefaultMenuItem("Pricing");
+         item.setUrl("http://www.primefaces.org");
+       item.setIcon("ui-icon-search");
+//        item.setCommand("#{MenuBean.redirect}");
+        secondSubmenu.addElement(item);
+        
+            item = new DefaultMenuItem("Seat Inventory");
+         item.setUrl("http://www.primefaces.org");
+       item.setIcon("ui-icon-search");
+//        item.setCommand("#{MenuBean.redirect}");
+        secondSubmenu.addElement(item);
+        
+        
+        
+        model.addElement(secondSubmenu);
     }
 
-
-public MenuModel getModel() {
+    public MenuModel getModel() {
         return model;
     }
-    public void redirect(){}
-    public void save(){}
-    public void delete(){}
+
+    public void redirect() {
+    }
+
+    public void save() {
+    }
+
+    public void delete() {
+    }
 }

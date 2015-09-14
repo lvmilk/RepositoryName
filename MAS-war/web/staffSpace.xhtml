@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces - ShowCase</title>
+            </f:facet>
+
+            <link type="text/css" rel="stylesheet" href="./css/default.css" />
+            <link type="text/css" rel="stylesheet" href="./css/syntaxhighlighter.css" />
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+
+            </style>
+        </h:head>
+
+
+        <h:body>
+
+            <p:layout fullPage="true" >
+
+                <p:layoutUnit id="top" position="north" size="50">
+                    <h:form>
+                        <p:menubar>
+                            <p:submenu label="Account" icon="ui-icon-document">
+                                <p:submenu label="Manage personal profile" icon="ui-icon-contact">
+                                    <p:menuitem value="view profile" url="#" />
+                                    <p:menuitem value="Edit profile" url="#" />
+                                </p:submenu>
+                                <p:submenu label="Security settings" icon="ui-icon-contact">
+                                    <p:menuitem value="reset password" url="#" />
+                                    <p:menuitem value="information privacy" url="#" />
+                                </p:submenu>
+                                <p:menuitem value="Logout" url="#" />
+                            </p:submenu>
+
+                            <p:submenu label="Timetable" icon="ui-icon-pencil">
+                                <p:menuitem value="view flights schedule" url="#" icon="ui-icon-arrowreturnthick-1-w"></p:menuitem>
+                                <p:menuitem value="view personal schedule" url="#" icon="ui-icon-arrowreturnthick-1-e"></p:menuitem>
+                            </p:submenu>
+
+                            <p:submenu label="Communication" icon="ui-icon-help">
+                                <p:submenu label="Contacts" icon="ui-icon-search">
+                                    <p:menuitem value="View contacts" url="#" />
+                                     <p:menuitem value="Edit Contacts contacts" url="#" />
+                                </p:submenu>
+                                <p:menuitem value="New message" url="#" />
+                            </p:submenu>
+                        </p:menubar>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit id="bottom" position="south" size="60">
+                    <h:outputLink value="http://code.google.com/p/primefaces/source/browse/examples/trunk/showcase/src/main/webapp/ui/layoutComplex.xhtml">
+                        View Page Source (layoutComplex.xhtml)
+                    </h:outputLink>
+
+                    <br />
+
+                    <h:outputLink value="http://code.google.com/p/primefaces/source/browse/examples/trunk/showcase/src/main/java/org/primefaces/examples/view/LayoutBean.java">
+                        View Backing Bean Source (LayoutBean.java)
+                    </h:outputLink>
+                </p:layoutUnit>
+
+               
+                
+                <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Functionality List" minSize="200">
+
+                    <div style="width:50%; p {font-size: 10vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:30%; border:0px ;">
+
+
+
+                        <p:menu model="#{MenuBean.model}"  id="leftmenu" toggleable="true"   style="text-align:center;margin-top:20px;"/>
+                        <p:draggable for="leftmenu"/>
+                        <p:resizable for="leftmenu" />
+                        <!--                    <p:accordionPanel>
+                                                <p:tab title="Menu 1">
+                                                    <br />
+                                                    <p:calendar mode="inline" navigator="none"/>
+                                                    <br />
+                                                </p:tab>
+                        
+                                                <p:tab title="Menu 2">
+                                                    <h:outputText value="Menu 2 Content" />
+                                                </p:tab>
+                        
+                                                <p:tab title="Menu 3">
+                                                    <h:outputText value="Menu 3 Content" />
+                                                </p:tab>
+                                            </p:accordionPanel>-->
+                    </div>
+                </p:layoutUnit>
+
+               <p:layoutUnit id="right" position="east" size="250" header="Customized Zone" resizable="true" closable="false" collapsible="true"
+                              style="text-align:center">
+
+
+                    <p:accordionPanel style="text-align:center;margin-top:20px">
+                        <p:tab title="Calendar">
+                            <br />
+                            <p:calendar mode="inline" style="text-align:center" navigator="none"/>
+                            <br />
+                        </p:tab>
+                        </p:accordionPanel>
+                        <br/>
+                        <br/>
+
+                         <p:lightBox style="text-align:center;margin-top:20px;">
+                        <h:outputLink value="#{request.contextPath}/images/nature3.jpg" title="Nature 3" style="margin-bottom:4px;">
+                            <h:graphicImage value="/images/nature3.jpg"  width="200" height="100"/>
+                        </h:outputLink>
+
+                        <h:outputLink value="#{request.contextPath}/images/nature4.jpg" title="Nature 4" style="margin-bottom:2px;">
+                            <h:graphicImage value="/images/nature4.jpg"  width="200" height="100"/>
+                        </h:outputLink>
+                    </p:lightBox>
+
+                    
+
+                </p:layoutUnit>
+
+                <p:layoutUnit id="center" position="center">
+                    <h:form>
+
+
+
+                    </h:form>
+                </p:layoutUnit>
+
+            </p:layout>
+
+           
+
+        </h:body>
+
+    </f:view>
+</html>
