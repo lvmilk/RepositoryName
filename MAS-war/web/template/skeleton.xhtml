@@ -17,86 +17,31 @@
 
             .ui-layout-north .ui-layout-unit-content {
                 overflow:visible !important;
+                
             }
         </style>
     </h:head>
 
     <h:body>
-
         <p:layout fullPage="true" >
 
             <p:layoutUnit id="top" position="north" size="50">
-
-                <p:growl id="topbar"/>
-
-                <p:menubar style="text-align: center">
-                    <p:submenu label="File" icon="ui-icon-document" >
-                        <p:submenu label="New" icon="ui-icon-contact">
-                            <p:menuitem value="Project" url="#" />
-                            <p:menuitem value="Other" url="#" />
-                        </p:submenu>
-                        <p:menuitem value="Open" url="#" />
-                        <p:separator />
-                        <p:menuitem value="Quit" url="#" />
-                    </p:submenu>
-
-                    <p:submenu label="Edit" icon="ui-icon-pencil">
-                        <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />
-                        <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
-                    </p:submenu>
-
-                    <p:submenu label="Help" icon="ui-icon-help">
-                        <p:menuitem value="Contents" url="#" />
-                        <p:submenu label="Search" icon="ui-icon-search">
-                            <p:submenu label="Text">
-                                <p:menuitem value="Workspace" url="#" />
-                            </p:submenu>
-                            <p:menuitem value="File" url="#" />
-                        </p:submenu>
-                    </p:submenu>
-
-
-                    <f:facet name="options">
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
-                    </f:facet>
-                </p:menubar>
+                `<ui:insert name="top"></ui:insert>
             </p:layoutUnit>
 
-            <p:layoutUnit id="left" position="west" size="300" resizable="true" closable="false" collapsible="true" header="Options" minSize="200">
-
-                <p:accordionPanel>
-                    <p:tab title="Menu 1">
-                        <br />
-                        <p:calendar mode="inline" navigator="none"/>
-                        <br />
-                    </p:tab>
-
-                    <p:tab title="Menu 2">
-                        <h:outputText value="Menu 2 Content" />
-                    </p:tab>
-
-                    <p:tab title="Menu 3">
-                        <h:outputText value="Menu 3 Content" />
-                    </p:tab>
-                </p:accordionPanel>
-
+            <p:layoutUnit id="left" position="west" size="300" collapsible="true" header="Options" minSize="200">
+                <ui:insert name="left"></ui:insert>
             </p:layoutUnit>
             
             <p:layoutUnit id="right" position="east" size="250" header="Gallery" resizable="true" closable="false" collapsible="true"
-                          style="text-align:center">
-
-                <p:lightBox style="text-align:center;margin-top:20px;">
-     
-                </p:lightBox>
-
-
+                style="text-align:center">
+                <ui:insert name="right"></ui:insert>
             </p:layoutUnit>
+            
             <p:layoutUnit id="center" position="center" >
-
+                <ui:insert name="center"></ui:insert>
             </p:layoutUnit>
-
         </p:layout>
-
     </h:body>
 </html>
 
