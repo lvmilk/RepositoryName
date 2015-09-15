@@ -1,51 +1,51 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-             xmlns:ui="http://java.sun.com/jsf/facelets"
-             xmlns:p="http://primefaces.org/ui"
-             xmlns:f="http://xmlns.jcp.org/jsf/core"
-             xmlns:h="http://xmlns.jcp.org/jsf/html"
-             xmlns:pm="http://primefaces.org/mobile">
-    
-    
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        
-       <h:form> 
-           <p:panel id="panel" header="Airline Inventory Tool List" >
-           <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
-        <p:menu id='AIS'  style="width:250px" toggleable="true">
-        <p:submenu label="Seat Arrangement">
-            <p:menuitem value="View Seat Arrangement" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-        </p:submenu>
-        <p:submenu label="Booking Class Management">
-            <p:menuitem value="View Booking Class" url="./DisplayAircraftSeat.xhtml"  icon="ui-icon-disk" />
-            <p:menuitem value="Add Booking Class" url="./addBookingClass.xhtml"  icon="ui-icon-disk" />
-            <p:menuitem value="Edit Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-           <p:menuitem value="Drop Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-        </p:submenu>
-        <p:submenu label="Pricing Management">
-            <p:menuitem value="Determine Full Fare" url="http://www.primefaces.org" icon="ui-icon-home"/>
-            <p:menuitem value="Assign Price to Booking Class" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
-            <p:menuitem value="View Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-            <p:menuitem value="Modify Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-        </p:submenu>
-            
-            <p:submenu label="Seat Inventory Management">
-            <p:menuitem value="Seat allocation(pre-sale)" url="http://www.primefaces.org" icon="ui-icon-home"/>
-            <p:menuitem value="View Seat Allocation" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
-            <p:menuitem value="Seat-reallocation(pre-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-            <p:menuitem value="Seat-reallocation(during-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-        </p:submenu>
-    </p:menu>
-                  <p:draggable for="AIS"/>
-                        <p:resizable for="AIS" />
-               
-           </h:panelGrid>
-           </p:panel>
-</h:form>
+
+        <h:form> 
+            <p:panel id="panel" header="Airline Inventory Tool List" >
+                <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
+                    <p:menu id='AIS'  style="width:250px" toggleable="true">
+                        <p:submenu label="Seat Arrangement">
+                            <p:menuitem value="View Seat Arrangement" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+                        <p:submenu label="Booking Class Management">
+                            <p:menuitem value="View Booking Class" url="./DisplayAircraftSeat.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Add Booking Class" url="./addBookingClass.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Edit Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Drop Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+                        <p:submenu label="Pricing Management">
+                            <p:menuitem value="Determine Full Fare" url="http://www.primefaces.org" icon="ui-icon-home"/>
+                            <p:menuitem value="Assign Price to Booking Class" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
+                            <p:menuitem value="View Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Modify Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+
+                        <p:submenu label="Seat Inventory Management">
+                            <p:menuitem value="Seat allocation(pre-sale)" url="http://www.primefaces.org" icon="ui-icon-home"/>
+                            <p:menuitem value="View Seat Allocation" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
+                            <p:menuitem value="Seat-reallocation(pre-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Seat-reallocation(during-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+                    </p:menu>
+                    <p:draggable for="AIS"/>
+                    <p:resizable for="AIS" />
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
     </h:body>
 </html>
 
