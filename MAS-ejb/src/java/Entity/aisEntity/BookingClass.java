@@ -3,33 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AISmanagedbean;
-import java.io.IOException;
-import java.util.*;
+package Entity.aisEntity;
 
-import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.ejb.EJB;
-import SessionBean.AirlineInventory.BookingClassBeanLocal;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author LIU YUQI'
  */
-@Named(value = "bookingClassBean")
-@SessionScoped
-public class BookingClassBean implements Serializable {
+@Entity
+public class BookingClass implements Serializable {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     
-    @EJB
-    private BookingClassBeanLocal bcb;
-
-    private String cabin;
-    private String annotation;  //annotation of booking class like K,N etc
-
-   
-    private double price_percentage;
+   private String annotation ;
+   private String cabinName;
+   private double price_percentage;
     private double refund_percentage;
     private double change_route_percentage;
     private double change_date_percentage;
@@ -47,45 +42,14 @@ public class BookingClassBean implements Serializable {
      private boolean  gds_available; // whether tickets from this class is available in GDS
     
     
-    public BookingClassBean() {
-        
-        
-    }
-    
-    public void checkCabin () throws IOException{
-    if(cabin!=null && !(cabin.isEmpty())) {
-    System.out.println(" Cabin selected is "+cabin);
-     FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute1.xhtml");
-    }
-    else
-        System.out.println("No cabin is chosen");
-    }
-    
-   
-    
-    public void checkFirst() throws IOException{
-    System.out.println("annotation is："+annotation);
-      System.out.println("price percentage is："+price_percentage);
-      System.out.println("refund_percentage is："+refund_percentage);
-    System.out.println("change_route_percentage is："+change_route_percentage);
-    System.out.println("change_date_percentage is："+change_date_percentage);
-    System.out.println("change_passenger_percentage is："+change_passenger_percentage);
-    System.out.println("open_jaw_percentage is" +price_percentage);
-     System.out.println("earn_mile_percentage is" +earn_mile_percentage);
-     FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
-   
-    }
     
 
-    
-    
-    
-    public String getCabin() {
-        return cabin;
+    public Long getId() {
+        return id;
     }
 
-    public void setCabin(String cabin) {
-        this.cabin = cabin;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAnnotation() {
@@ -95,6 +59,18 @@ public class BookingClassBean implements Serializable {
     public void setAnnotation(String annotation) {
         this.annotation = annotation;
     }
+
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
+    }
+    
+    
+    
+    
 
     public double getPrice_percentage() {
         return price_percentage;
@@ -152,31 +128,6 @@ public class BookingClassBean implements Serializable {
         this.earn_mile_percentage = earn_mile_percentage;
     }
 
-    public boolean isCan_standby() {
-        return can_standby;
-    }
-    
-
-    public void setCan_standby(boolean can_standby) {
-        this.can_standby = can_standby;
-    }
-
-    public boolean isDds_available() {
-        return dds_available;
-    }
-
-    public void setDds_available(boolean dds_available) {
-        this.dds_available = dds_available;
-    }
-
-    public boolean isGds_available() {
-        return gds_available;
-    }
-
-    public void setGds_available(boolean gds_available) {
-        this.gds_available = gds_available;
-    }
-
     public Integer getMin_stay() {
         return min_stay;
     }
@@ -208,20 +159,63 @@ public class BookingClassBean implements Serializable {
     public void setTicket_advance(Integer ticket_advance) {
         this.ticket_advance = ticket_advance;
     }
-    
-   
-    public void checkSecond() throws IOException{
-    
-  
-     FacesContext.getCurrentInstance().getExternalContext().redirect("./DisplayAircraftSeat.xhtml");
-     
-       
-     bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage, 
-             earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
-    
-    
-    
+
+    public boolean isCan_standby() {
+        return can_standby;
     }
-  
+
+    public void setCan_standby(boolean can_standby) {
+        this.can_standby = can_standby;
+    }
+
+    public boolean isDds_available() {
+        return dds_available;
+    }
+
+    public void setDds_available(boolean dds_available) {
+        this.dds_available = dds_available;
+    }
+
+    public boolean isGds_available() {
+        return gds_available;
+    }
+
+    public void setGds_available(boolean gds_available) {
+        this.gds_available = gds_available;
+    }
+
+    
+    
+    
+    
+    
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof BookingClass)) {
+            return false;
+        }
+        BookingClass other = (BookingClass) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity.aisEntity.BookingClass[ id=" + id + " ]";
+    }
+    
+    
+    
     
 }
