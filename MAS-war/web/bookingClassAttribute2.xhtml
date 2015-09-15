@@ -3,63 +3,84 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+
     </h:head>
     <h:body>
-       <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:50px; margin-bottom:auto;margin-left:20%; border:0px ;">
-  
-           <h:form>
-                <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
-           <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-        <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
-        <p:selectOneRadio id="can_standby" value="#{bookingClassBean.can_standby}" >
-            <f:selectItem itemLabel="Yes" itemValue="true" />
-            <f:selectItem itemLabel="No" itemValue="false" />
-          </p:selectOneRadio>
-        
-         <p:outputLabel for="dds_available" value="Allow to be sold in DDS?: :" />
-        <p:selectOneRadio id="dds_available" value="#{bookingClassBean.dds_available}" >
-            <f:selectItem itemLabel="Yes" itemValue="true" />
-            <f:selectItem itemLabel="No" itemValue="false" />
-          </p:selectOneRadio>
-        
-         <p:outputLabel for="gds_available " value="Allow to be sold in GDS? :" />
-        <p:selectOneRadio id="gds_available" value="#{bookingClassBean.dds_available}" >
-            <f:selectItem itemLabel="Yes" itemValue="true" />
-            <f:selectItem itemLabel="No" itemValue="false" />
-          </p:selectOneRadio>
-         
-         <p:outputLabel for="min_stay" value="Minimum days of stay:" />
-                        <p:inputText id="min_stay" value="#{bookingClassBean.min_stay}" label="min_stay" required="true" size="10">
-                            <f:validateLongRange minimum="1" maximum="730" />
-                        </p:inputText>
-           <p:outputLabel for="max_stay" value="Maximum days of stay:" />
-                        <p:inputText id="max_stay" value="#{bookingClassBean.max_stay}" label="max_stay" required="true" size="10">
-                            <f:validateLongRange minimum="1" maximum="730" />
-                        </p:inputText>
-           
-           <p:outputLabel for="reserve_advance" value="Minimum days in advance must the reservation made:" />
-                        <p:inputText id="reserve_advance" value="#{bookingClassBean.reserve_advance}" label="reserve_advance" required="true" size="10">
-                            <f:validateLongRange minimum="1" maximum="730" />
-                        </p:inputText>
-           
-           <p:outputLabel for="ticket_advance" value="Minimum days in advance must the ticketing be done:" />
-                        <p:inputText id="ticket_advance" value="#{bookingClassBean.ticket_advance}" label="ticket_advance" required="true" size="10">
-                            <f:validateLongRange minimum="1" maximum="730" />
-                        </p:inputText>
-                        
-    
-           
-           </h:panelGrid>
-                    <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkSecond()}"  icon="ui-icon-check" />
-                </p:panel>
-           </h:form>
-           
-           
-        
-        </div>
+
+        <ui:decorate template="./template/skeleton.xhtml">
+            <ui:define name="top">
+                <ui:include src="./template/topFragment.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="left">
+                <ui:include src="./template/aisTemplate/LeftMenu.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="right">
+                <ui:include src="./template/rightFragment.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="center">
+                <ui:include src="./template/centerFragment.xhtml"></ui:include>
+
+                <div style="width:60%; p {font-size: 100vmax !important;} margin-right:10%;margin-top:5%; margin-bottom:auto;margin-left:20%; border:0px ;">
+                  
+
+                    <h:form>
+                        <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
+                            <h:panelGrid columns="2" style="margin-bottom:50px; width:300px" cellpadding="15">
+                                
+                                <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
+                                <p:selectOneRadio id="can_standby" value="#{bookingClassBean.can_standby}" >
+                                    <f:selectItem itemLabel="Yes" itemValue="true" />
+                                    <f:selectItem itemLabel="No" itemValue="false" />
+                                </p:selectOneRadio>
+                               
+                                <p:outputLabel for="dds_available" value="Allow to be sold in DDS?: :" />
+                                <p:selectOneRadio id="dds_available" value="#{bookingClassBean.dds_available}" >
+                                    <f:selectItem itemLabel="Yes" itemValue="true" />
+                                    <f:selectItem itemLabel="No" itemValue="false" />
+                                </p:selectOneRadio>
+                                  
+                                <p:outputLabel for="gds_available " value="Allow to be sold in GDS? :" />
+                                <p:selectOneRadio id="gds_available" value="#{bookingClassBean.dds_available}" >
+                                    <f:selectItem itemLabel="Yes" itemValue="true" />
+                                    <f:selectItem itemLabel="No" itemValue="false" />
+                                </p:selectOneRadio>
+
+                                <p:outputLabel for="min_stay" value="Minimum days of stay:" />
+                                <p:inputText id="min_stay" value="#{bookingClassBean.min_stay}" label="min_stay" required="true" requiredMessage="Please enter an integer" size="10">
+                                    <f:validateLongRange minimum="0" maximum="730" />
+                                </p:inputText>
+                                <p:outputLabel for="max_stay" value="Maximum days of stay:" />
+                                <p:inputText id="max_stay" value="#{bookingClassBean.max_stay}" label="max_stay" required="true"  requiredMessage="Please enter an integer" size="10">
+                                    <f:validateLongRange minimum="0" maximum="730" />
+                                </p:inputText>
+
+                                <p:outputLabel for="reserve_advance" value="Minimum days in advance must the reservation made:" />
+                                <p:inputText id="reserve_advance" value="#{bookingClassBean.reserve_advance}" label="reserve_advance" required="true"  requiredMessage="Please enter an integer" size="10">
+                                    <f:validateLongRange minimum="0" maximum="730" />
+                                </p:inputText>
+
+                                <p:outputLabel for="ticket_advance" value="Minimum days in advance must the ticketing be done:" />
+                                <p:inputText id="ticket_advance" value="#{bookingClassBean.ticket_advance}" label="ticket_advance" required="true"  requiredMessage="Please enter an integer" size="10">
+                                    <f:validateLongRange minimum="0" maximum="730" />
+                                </p:inputText>
+          
+                            </h:panelGrid>
+                            <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkSecond()}"  icon="ui-icon-check" />
+                        </p:panel>
+                    </h:form>
+
+
+
+                </div>
+
+
+
+
+            </ui:define>
+        </ui:decorate>
     </h:body>
 </html>
 
