@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -18,6 +19,8 @@ import org.primefaces.model.menu.MenuModel;
  *
  * @author LI HAO
  */
+@Named(value = "MenuView")
+
 public class MenuView {
 
     private MenuModel model;
