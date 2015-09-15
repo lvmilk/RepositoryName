@@ -61,7 +61,7 @@ public class MenuBean {
         
         
         item = new DefaultMenuItem("Booking Class Management");
-         item.setUrl("http://www.primefaces.org");
+         item.setUrl("./addBookingClass.xhtml");
         item.setIcon("ui-icon-close");
 //        item.setCommand("#{MenuBean.delete}");
 //        item.setAjax(false);

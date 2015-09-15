@@ -8,68 +8,71 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-       <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+       <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:50px; margin-bottom:auto;margin-left:20%; border:0px ;">
               <h:form>
 
-                <p:panel id="panel" header="Booking Class Specification" style="width: 50%">
+                <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
 
                     <p:messages id="msgs" />
-                    <h:panelGrid columns="2"  style="margin-bottom:200px" cellpadding="20">
+                    <h:panelGrid columns="4"  style="margin-bottom:50px; width:300px" cellpadding="20">
 
 
-                        <p:outputLabel for="annotation" value="annotation:" />
-                        <p:inputText id="annotation" value="#{bookingClassBean.annotation}" required="true" label="annotation" size="10">
-                          
+                        <p:outputLabel for="annotation" value="Class Annotation:" />
+                        <p:inputText id="annotation" value="#{bookingClassBean.annotation}" required="true" requiredMessage="Please enter an alphabet" label="Class Annotation" size="10">
+
+                           <f:validateRegex pattern="((?=.*[A-Z]).{1,1})" />
                         </p:inputText>
-                        
+            
                         
                         <p:outputLabel for="price_percentage" value="Price as percentage of full fare: " />
-                        <p:inputText id="price_percentage"  value="#{bookingClassBean.price_percentage}" label="Price as percentage of full fare" required="true" size="10">
-                      
+                        <p:inputText id="price_percentage"  value="#{bookingClassBean.price_percentage}" label="Price as percentage of full fare" required="true" requiredMessage="Please enter a number less than 1" size="10">
+                           
+                            <f:validateDoubleRange minimum="0.0" maximum="1.0" />
+                       
                         </p:inputText>
                         
-<!--                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.refund_percentage}" label=" refunded percentage upon cancellation" required="true" size="10">
-                            <f:validateLength minimum="2" />
+                        <p:outputLabel for="refund_percentage" value="Refund rate upon cancellation:" />
+                        <p:inputText id="refund_percentage" value="#{bookingClassBean.refund_percentage}" label=" refunded percentage upon cancellation" required="true" size="10">
+                           <f:validateDoubleRange minimum="0.0" maximum="1.0" />
                           
                         </p:inputText>
                         
-                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_route_percentage}" label="Penalty rate charged for route change" required="true" size="10">
-                            <f:validateLength minimum="2" />
+                        <p:outputLabel for="route_percentage" value="Penalty rate to change route:" />
+                        <p:inputText id="route_percentage"  value="#{bookingClassBean.change_route_percentage}" label="Penalty rate charged for route change" required="true" size="10">
+                            <f:validateDoubleRange minimum="0.0" maximum="1.0" />
                             
                         </p:inputText>
-                        <p:outputLabel for="password" value="Password:" />
+                        <p:outputLabel for="date_percentage" value="Penalty rate to change date:" />
                         
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_date_percentage}" label="Penalty rate to change date of flight" required="true" size="10">
-                            <f:validateLength minimum="2" />
+                        <p:inputText id="date_percentage"  value="#{bookingClassBean.change_date_percentage}" label="Penalty rate to change date of flight" required="true" size="10">
+                            <f:validateDoubleRange minimum="0.0" maximum="1.0" />
                      
                         </p:inputText>
                         
-                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.change_passenger_percentage}" label="Penalty rate to change passenger of flight" required="true" size="10">
-                            <f:validateLength minimum="2" />
+                        <p:outputLabel for="change_passenger_rate" value="Penalty rate to change passenger:" />
+                        <p:inputText id="change_passenger_rate"  value="#{bookingClassBean.change_passenger_percentage}" label="Penalty rate to change passenger of flight" required="true" size="10">
+                             <f:validateDoubleRange minimum="0.0" maximum="1.0" />
                            
                         </p:inputText>
                         
-                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.open_jaw_percentage}" label="Penalty rate for open jaw flights" required="true" size="10">
-                            <f:validateLength minimum="2" />
-                            <p:ajax update="msgPassword" event="keyup" />
+                        <p:outputLabel for="open_jaw_rate" value="Penalty rate for open jaw flight:" />
+                        <p:inputText id="open_jaw_rate" value="#{bookingClassBean.open_jaw_percentage}" label="Penalty rate for open jaw flights" required="true" size="10">
+                            <f:validateDoubleRange minimum="0.0" maximum="1.0" />
+                        </p:inputText>
+                        <p:outputLabel for="earn_mile_rate" value="Rate for miles earned:" />
+                        <p:inputText id="earn_mile_rate" value="#{bookingClassBean.earn_mile_percentage}" label="Rate for miles to be earned" required="true" size="10">
+                             <f:validateDoubleRange minimum="0.0" maximum="1.0" />
+                           
                         </p:inputText>
                         
-                        <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{bookingClassBean.earn_mile_percentage}" label="Rate for miles to be earned" required="true" size="10">
-                            <f:validateLength minimum="2" />
-                           
-                        </p:inputText>-->
                         
-                        
+                       
+
                         
 
                     </h:panelGrid>
 
-                    <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkCabin()}" icon="ui-icon-check" />
+                    <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkFirst()}"  icon="ui-icon-check" />
                 </p:panel>
                   
                   <p:draggable for="panel" /><p:resizable for="panel" />

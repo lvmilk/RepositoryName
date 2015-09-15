@@ -49,13 +49,36 @@ public class BookingClassBean {
     public void checkCabin () throws IOException{
     if(cabin!=null && !(cabin.isEmpty())) {
     System.out.println(" Cabin selected is "+cabin);
-     FacesContext.getCurrentInstance().getExternalContext().redirect("DisplayAircraftSeat.xhtml");
+     FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute1.xhtml");
     }
     else
         System.out.println("No cabin is chosen");
     }
     
-     public String getCabin() {
+   
+    
+    public void checkFirst() throws IOException{
+    System.out.println("annotation is："+annotation);
+      System.out.println("price percentage is："+price_percentage);
+      System.out.println("refund_percentage is："+refund_percentage);
+    System.out.println("change_route_percentage is："+change_route_percentage);
+    System.out.println("change_date_percentage is："+change_date_percentage);
+    System.out.println("change_passenger_percentage is："+change_passenger_percentage);
+    System.out.println("open_jaw_percentage is" +price_percentage);
+     System.out.println("earn_mile_percentage is" +earn_mile_percentage);
+     FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
+   
+    }
+    
+  
+    
+    
+    
+    
+    
+    
+    
+    public String getCabin() {
         return cabin;
     }
 
@@ -78,7 +101,124 @@ public class BookingClassBean {
     public void setPrice_percentage(double price_percentage) {
         this.price_percentage = price_percentage;
     }
+
+    public double getRefund_percentage() {
+        return refund_percentage;
+    }
+
+    public void setRefund_percentage(double refund_percentage) {
+        this.refund_percentage = refund_percentage;
+    }
+
+    public double getChange_route_percentage() {
+        return change_route_percentage;
+    }
+
+    public void setChange_route_percentage(double change_route_percentage) {
+        this.change_route_percentage = change_route_percentage;
+    }
+
+    public double getChange_date_percentage() {
+        return change_date_percentage;
+    }
+
+    public void setChange_date_percentage(double change_date_percentage) {
+        this.change_date_percentage = change_date_percentage;
+    }
+
+    public double getChange_passenger_percentage() {
+        return change_passenger_percentage;
+    }
+
+    public void setChange_passenger_percentage(double change_passenger_percentage) {
+        this.change_passenger_percentage = change_passenger_percentage;
+    }
+
+    public double getOpen_jaw_percentage() {
+        return open_jaw_percentage;
+    }
+
+    public void setOpen_jaw_percentage(double open_jaw_percentage) {
+        this.open_jaw_percentage = open_jaw_percentage;
+    }
+
+    public double getEarn_mile_percentage() {
+        return earn_mile_percentage;
+    }
+
+    public void setEarn_mile_percentage(double earn_mile_percentage) {
+        this.earn_mile_percentage = earn_mile_percentage;
+    }
+
+    public boolean isCan_standby() {
+        return can_standby;
+    }
+    
+
+    public void setCan_standby(boolean can_standby) {
+        this.can_standby = can_standby;
+    }
+
+    public boolean isDds_available() {
+        return dds_available;
+    }
+
+    public void setDds_available(boolean dds_available) {
+        this.dds_available = dds_available;
+    }
+
+    public boolean isGds_available() {
+        return gds_available;
+    }
+
+    public void setGds_available(boolean gds_available) {
+        this.gds_available = gds_available;
+    }
+
+    public Integer getMin_stay() {
+        return min_stay;
+    }
+
+    public void setMin_stay(Integer min_stay) {
+        this.min_stay = min_stay;
+    }
+
+    public Integer getMax_stay() {
+        return max_stay;
+    }
+
+    public void setMax_stay(Integer max_stay) {
+        this.max_stay = max_stay;
+    }
+
+    public Integer getReserve_advance() {
+        return reserve_advance;
+    }
+
+    public void setReserve_advance(Integer reserve_advance) {
+        this.reserve_advance = reserve_advance;
+    }
+
+    public Integer getTicket_advance() {
+        return ticket_advance;
+    }
+
+    public void setTicket_advance(Integer ticket_advance) {
+        this.ticket_advance = ticket_advance;
+    }
     
     
+    
+    
+    
+    
+    
+    
+    public void checkSecond() throws IOException{
+    
+  
+     FacesContext.getCurrentInstance().getExternalContext().redirect("./DisplayAircraftSeat.xhtml");
+    }
+  
     
 }
