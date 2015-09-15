@@ -12,6 +12,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 @Named(value = "login")
 @RequestScoped
@@ -121,5 +122,11 @@ public class LoginManagerBean {
      */
     public void setAdmType(String admType) {
         this.admType = admType;
+    }
+    
+    public void valueChanged(ValueChangeEvent event)
+    {
+        Object newValue=event.getNewValue();
+        System.out.println(newValue);
     }
 }
