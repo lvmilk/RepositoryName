@@ -5,7 +5,10 @@
  */
 package SessionBean.AirlineInventory;
 
+import java.util.ArrayList;
 import javax.ejb.Local;
+import Entity.aisEntity.*;
+import java.util.List;
 
 /**
  *
@@ -19,5 +22,6 @@ public interface BookingClassBeanLocal {
      Integer ticket_advance, Integer reserve_advance, boolean can_standby, boolean dds_available, boolean gds_available );
         
         public boolean checkDuplicate(String annotation);
+        public List<BookingClass> getAllBookingClasses();
     
 }

@@ -78,4 +78,20 @@ public class BookingClassBean implements BookingClassBeanLocal {
 
    
    }
+   
+   public List<BookingClass> getAllBookingClasses(){
+    Query query = entityManager.createQuery("SELECT b FROM BookingClass b ");
+   List<BookingClass> resultList=(List)query.getResultList();
+if(resultList.isEmpty())
+    System.out.println("List is empty");
+  else
+    System.out.println("List data exists");
+
+
+    return resultList;
+        
+   
+  
+            }
+   
 }
