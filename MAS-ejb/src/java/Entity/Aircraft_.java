@@ -44,13 +44,13 @@ public class Aircraft_ implements Serializable {
     }
   
     @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
-    private Collection<Flight> flights = new ArrayList<Flight>();
+    private Collection<Flight_> flights = new ArrayList<Flight_>();
     
-    public Collection<Flight> getFlight(){
+    public Collection<Flight_> getFlight(){
         return flights;
     }   
     
-    public void setFlight(Collection<Flight> flights){
+    public void setFlight(Collection<Flight_> flights){
         this.flights=flights;
     }
 

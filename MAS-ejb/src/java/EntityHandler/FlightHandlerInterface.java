@@ -6,7 +6,7 @@
 package EntityHandler;
 
 import Entity.Airport;
-import Entity.Flight;
+import Entity.Flight_;
 import Entity.GenericFlight;
 import Entity.ODPair;
 import Exception.MASException;
@@ -48,13 +48,13 @@ public interface FlightHandlerInterface {
     public boolean hasGenericFlight (String orgIATA, String dstIATA);
 
     //For Flight
-    public void addFlight(Flight f);
-    public boolean deleteFlight(Flight f);
-    public void updateFlight (Flight f);
-    public Flight findFlight (long id) throws MASException;
-    public ArrayList<Flight> findFlight (String flightNumber, String date);
-    public ArrayList<Flight> findFlight (String orgIATA, String dstIATA, String date);
-    public ArrayList<Flight> listFlight ();
+    public void addFlight(Flight_ f);
+    public boolean deleteFlight(Flight_ f);
+    public void updateFlight (Flight_ f);
+    public Flight_ findFlight (long id) throws MASException;
+    public ArrayList<Flight_> findFlight (String flightNumber, String date);
+    public ArrayList<Flight_> findFlight (String orgIATA, String dstIATA, String date);
+    public ArrayList<Flight_> listFlight ();
     public boolean hasFlight (String flightNumber, String date);
     public boolean hasFlight (String orgIATA, String dstIATA, String date);   
 }

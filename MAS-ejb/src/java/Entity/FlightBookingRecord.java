@@ -26,7 +26,7 @@ public class FlightBookingRecord implements Serializable {
     private Long id;
     
     @ManyToOne
-    private Flight flight;
+    private Flight_ flight;
     @ManyToOne
     private Ticket ticket;
     private String BookingClass;
@@ -43,9 +43,9 @@ public class FlightBookingRecord implements Serializable {
     private String operationStatus;
     
     @ManyToOne
-    private Flight connectedPriorFlght;
+    private Flight_ connectedPriorFlght;
     @ManyToOne
-    private Flight connectedSubsequnecFlight;
+    private Flight_ connectedSubsequnecFlight;
 
     public Long getId() {
         return id;
@@ -83,14 +83,14 @@ public class FlightBookingRecord implements Serializable {
     /**
      * @return the flight
      */
-    public Flight getFlight() {
+    public Flight_ getFlight() {
         return flight;
     }
 
     /**
      * @param flight the flight to set
      */
-    public void setFlight(Flight flight) {
+    public void setFlight(Flight_ flight) {
         this.flight = flight;
     }
 
@@ -195,28 +195,28 @@ public class FlightBookingRecord implements Serializable {
     /**
      * @return the connectedPriorFlght
      */
-    public Flight getConnectedPriorFlght() {
+    public Flight_ getConnectedPriorFlght() {
         return connectedPriorFlght;
     }
 
     /**
      * @param connectedPriorFlght the connectedPriorFlght to set
      */
-    public void setConnectedPriorFlght(Flight connectedPriorFlght) {
+    public void setConnectedPriorFlght(Flight_ connectedPriorFlght) {
         this.connectedPriorFlght = connectedPriorFlght;
     }
 
     /**
      * @return the connectedSubsequnecFlight
      */
-    public Flight getConnectedSubsequnecFlight() {
+    public Flight_ getConnectedSubsequnecFlight() {
         return connectedSubsequnecFlight;
     }
 
     /**
      * @param connectedSubsequnecFlight the connectedSubsequnecFlight to set
      */
-    public void setConnectedSubsequnecFlight(Flight connectedSubsequnecFlight) {
+    public void setConnectedSubsequnecFlight(Flight_ connectedSubsequnecFlight) {
         this.connectedSubsequnecFlight = connectedSubsequnecFlight;
     }
     
