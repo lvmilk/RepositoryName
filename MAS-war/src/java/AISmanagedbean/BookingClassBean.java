@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.util.*;
 
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 import javax.ejb.EJB;
 import Entity.aisEntity.*;
 import SessionBean.AirlineInventory.BookingClassBeanLocal;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
 /**
  *
  * @author LIU YUQI'
@@ -28,6 +28,8 @@ public class BookingClassBean implements Serializable {
     @EJB
     private BookingClassBeanLocal bcb;
 
+    private UIComponent uIComponent;
+    
     private String cabin;
     private String annotation;  //annotation of booking class like K,N etc
 
@@ -49,6 +51,7 @@ public class BookingClassBean implements Serializable {
     private boolean  dds_available; // whether tickets from this class is available in DDS
      private boolean  gds_available; // whether tickets from this class is available in GDS
     
+     private BookingClass selectedBkClass; 
      private List<BookingClass> classList;
 
     public List<BookingClass> getClassList() {
@@ -232,8 +235,8 @@ public class BookingClassBean implements Serializable {
     }
     
    
-    public void checkSecond() throws IOException{
-        
+    public void checkSecond(ActionEvent event) throws IOException{
+        System.err.println("clidntID: " + uIComponent.getClientId());
         System.out.println("min stay is "+min_stay);
         System.out.println("max stay is "+max_stay);
         System.out.println("reserve day is "+reserve_advance);
@@ -253,7 +256,7 @@ public class BookingClassBean implements Serializable {
             }
             
             else
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: " , ""));
+                 FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: " , ""));
         }
         
         else
@@ -261,6 +264,53 @@ public class BookingClassBean implements Serializable {
      
     
     
+    }
+
+    
+    public void EditBookClassInfo(BookingClass BookClass) throws IOException {
+        
+        
+           selectedBkClass=BookClass;
+            setAnnotation(BookClass.getAnnotation());
+            setCabin(BookClass.getCabinName());
+            setCan_standby(BookClass.getCan_standby());
+            setChange_date_percentage(BookClass.getChange_date_percentage());
+            setChange_passenger_percentage(BookClass.getChange_passenger_percentage());
+            setChange_route_percentage(BookClass.getChange_route_percentage());
+            setDds_available(BookClass.getDds_available());
+            setEarn_mile_percentage(BookClass.getEarn_mile_percentage());            
+            setGds_available(BookClass.getGds_available());
+            setMax_stay(BookClass.getMax_stay());
+            setMin_stay(BookClass.getMin_stay());
+             setOpen_jaw_percentage(BookClass.getOpen_jaw_percentage());
+             setPrice_percentage(BookClass.getPrice_percentage());
+             setRefund_percentage(BookClass.getRefund_percentage());
+             setReserve_advance(BookClass.getReserve_advance());
+             setTicket_advance(BookClass.getTicket_advance());
+           
+              
+
+            
+
+           
+          FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClassInfo.xhtml");
+    
+    
+    
+    }
+    
+    /**
+     * @return the uIComponent
+     */
+    public UIComponent getuIComponent() {
+        return uIComponent;
+    }
+
+    /**
+     * @param uIComponent the uIComponent to set
+     */
+    public void setuIComponent(UIComponent uIComponent) {
+        this.uIComponent = uIComponent;
     }
   
     

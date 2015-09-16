@@ -26,9 +26,9 @@
                 <div style="width:60%; p {font-size: 100vmax !important;} margin-right:10%;margin-top:5%; margin-bottom:auto;margin-left:20%; border:0px ;">
                   
 
-                    <h:form>
+                    <h:form id="formMain">
                         <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
-                            <p:messages id="msgs" />
+                            <!--<p:messages id="msgs" />-->
                             <h:panelGrid columns="2" style="margin-bottom:50px; width:300px" cellpadding="15">
                                 
                                 <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
@@ -50,9 +50,12 @@
                                 </p:selectOneRadio>
 
                                 <p:outputLabel for="min_stay" value="Minimum days of stay:" />
-                                <p:inputText id="min_stay" value="#{bookingClassBean.min_stay}" label="min_stay" required="true" requiredMessage="Please enter an integer" size="10">
+                                <p:inputText binding="#{bookingClassBean.uIComponent}" id="min_stay" value="#{bookingClassBean.min_stay}" label="min_stay" required="true" requiredMessage="Please enter an integer" size="10">
                                     <f:validateLongRange minimum="0" maximum="730" />
                                 </p:inputText>
+                                
+<!--                                <p:message for="min_stay" />-->
+                                
                                 <p:outputLabel for="max_stay" value="Maximum days of stay:" />
                                 <p:inputText id="max_stay" value="#{bookingClassBean.max_stay}" label="max_stay" required="true"  requiredMessage="Please enter an integer" size="10">
                                     <f:validateLongRange minimum="0" maximum="730" />
@@ -69,7 +72,7 @@
                                 </p:inputText>
           
                             </h:panelGrid>
-                            <p:commandButton value="Next" update="panel" actionListener="#{bookingClassBean.checkSecond()}"  icon="ui-icon-check" />
+                            <p:commandButton value="Next" update="@form" actionListener="#{bookingClassBean.checkSecond}"  icon="ui-icon-check" />
                         </p:panel>
                     </h:form>
 

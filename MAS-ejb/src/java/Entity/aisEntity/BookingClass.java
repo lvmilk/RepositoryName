@@ -160,7 +160,7 @@ public class BookingClass implements Serializable {
         this.ticket_advance = ticket_advance;
     }
 
-    public boolean isCan_standby() {
+    public boolean getCan_standby() {
         return can_standby;
     }
 
@@ -168,7 +168,7 @@ public class BookingClass implements Serializable {
         this.can_standby = can_standby;
     }
 
-    public boolean isDds_available() {
+    public boolean getDds_available() {
         return dds_available;
     }
 
@@ -176,7 +176,7 @@ public class BookingClass implements Serializable {
         this.dds_available = dds_available;
     }
 
-    public boolean isGds_available() {
+    public boolean getGds_available() {
         return gds_available;
     }
 
