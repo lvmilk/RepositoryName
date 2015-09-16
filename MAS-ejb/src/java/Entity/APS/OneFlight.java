@@ -12,15 +12,14 @@ import javax.persistence.ManyToOne;
  * @author lucy
  */
 @Entity
-public class Flight implements Serializable {
+public class OneFlight implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String flightNo;
-    private Integer stopoverNo;
+//    private String flightNo;
+//    private Integer stopoverNo;
     
-    //ER with aircraft
     @ManyToOne
       private Aircraft aircraft = new Aircraft();
       public Aircraft getAircraft(){
@@ -39,22 +38,6 @@ public class Flight implements Serializable {
         this.id = id;
     }
 
-    public String getFlightNo() {
-        return flightNo;
-    }
-
-    public void setFlightNo(String flightNo) {
-        this.flightNo = flightNo;
-    }
-
-    public Integer getStopoverNo() {
-        return stopoverNo;
-    }
-
-    public void setStopoverNo(Integer stopoverNo) {
-        this.stopoverNo = stopoverNo;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -65,10 +48,10 @@ public class Flight implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Flight)) {
+        if (!(object instanceof OneFlight)) {
             return false;
         }
-        Flight other = (Flight) object;
+        OneFlight other = (OneFlight) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

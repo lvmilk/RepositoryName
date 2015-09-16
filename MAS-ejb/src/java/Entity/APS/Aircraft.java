@@ -42,14 +42,19 @@ public class Aircraft implements Serializable {
     }
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
-    private Collection<Flight> flight = new ArrayList<Flight>();
+    private Collection<OneFlight> flight = new ArrayList<OneFlight>();
     
-    public Collection<Flight> getFlight(){
+    public Collection<OneFlight> getFlight(){
         return flight;
     }   
-    public void setFlight(Collection<Flight> flights){
+    public void setFlight(Collection<OneFlight> flights){
         this.flight=flight;
     }
+    
+    public void create(String registrationNo,String serialNo,String status,String firstFlyDate,String deliveryDate,String retireDate,Long flightLogId,Long maintenanceLogId,Long transactionLogId){
+        
+    }
+    
     
     public Long getId() {
         return id;
