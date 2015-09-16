@@ -33,10 +33,11 @@
                         
                         <p:outputLabel for="domain" value="Staff domain:" />
                         <h:selectOneMenu id="domain" value="#{login.admType}">
-                            <f:selectItem itemValue="administrator" itemLabel="Administrator" />
+                            <f:selectItem itemValue="administrator" itemLabel="Admin Staff" />
+                            <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
                             <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                             <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
-                            <f:selectItem itemValue="cockpit" itemLabel="CockpitCrew" />
+                            <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
                         </h:selectOneMenu>
                         
 
