@@ -5,8 +5,8 @@
  */
 package SessionBean;
 
-import Entity.Aircraft;
-import Entity.AircraftType;
+import Entity.Aircraft_;
+import Entity.AircraftType_;
 import EntityHandler.AircraftHandlerInterface;
 import Exception.MASException;
 import javax.ejb.Stateless;
@@ -35,14 +35,14 @@ public class FleetPlanning {
             MASException e = new MASException("AT01");
             throw e;
         }
-        AircraftType at = new AircraftType();
+        AircraftType_ at = new AircraftType_();
         at.setType(type);
     }
 
     public void setAircraftType (long id, String manufacturer, 
         float MaxDis, float cruiseSpeed, float cruiseAltitude,
         float AircraftLength, float wingspan) throws MASException{
-        AircraftType af = ah.findAircraftType(id);
+        AircraftType_ af = ah.findAircraftType(id);
         if (manufacturer.length() > 0)
             af.setManufacturerName(manufacturer.toUpperCase());
         if (MaxDis > 0)
@@ -64,7 +64,7 @@ public class FleetPlanning {
     public void createAircraft (String registrationNumber){
         if (ah.hasAircraft(registrationNumber)){
         }
-        Aircraft af = new Aircraft ();
+        Aircraft_ af = new Aircraft_ ();
     }
 
     

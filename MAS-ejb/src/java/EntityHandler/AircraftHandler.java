@@ -1,7 +1,7 @@
 package EntityHandler;
 
-import Entity.Aircraft;
-import Entity.AircraftType;
+import Entity.Aircraft_;
+import Entity.AircraftType_;
 import Exception.MASException;
 import java.util.ArrayList;
 import javax.persistence.EntityManager;
@@ -13,20 +13,20 @@ import javax.persistence.PersistenceContext;
 public class AircraftHandler implements AircraftHandlerInterface{
     @PersistenceContext()
     EntityManager em;
-    Aircraft aircraft;
+    Aircraft_ aircraft;
 
     @Override
-    public void addAircraftType(AircraftType at){
+    public void addAircraftType(AircraftType_ at){
 
     }
 
     @Override
-    public boolean deleteAircraftType(AircraftType at){
+    public boolean deleteAircraftType(AircraftType_ at){
         return true;
     }
 
     @Override
-    public ArrayList<AircraftType> findAircraftType(String type){
+    public ArrayList<AircraftType_> findAircraftType(String type){
         return null;
     }
 
@@ -36,17 +36,17 @@ public class AircraftHandler implements AircraftHandlerInterface{
     }
 
     @Override
-    public void addAircraft(Aircraft af){
+    public void addAircraft(Aircraft_ af){
         
     }
 
     @Override
-    public boolean deleteAircraft(Aircraft af){
+    public boolean deleteAircraft(Aircraft_ af){
         return false;
     }
 
     @Override
-    public ArrayList<AircraftType> findAircraft(String registrationNumber){
+    public ArrayList<AircraftType_> findAircraft(String registrationNumber){
         return null;
     }
 
@@ -56,32 +56,32 @@ public class AircraftHandler implements AircraftHandlerInterface{
     }
 
     @Override
-    public void updateAircraftType(AircraftType at) {
+    public void updateAircraftType(AircraftType_ at) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public AircraftType findAircraftType(long id) throws MASException {
+    public AircraftType_ findAircraftType(long id) throws MASException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<AircraftType> listAircraftType() {
+    public ArrayList<AircraftType_> listAircraftType() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateAircraft(Aircraft af) {
+    public void updateAircraft(Aircraft_ af) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Aircraft findAircraft(long id) throws MASException {
+    public Aircraft_ findAircraft(long id) throws MASException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<AircraftType> listAircraft() {
+    public ArrayList<AircraftType_> listAircraft() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
