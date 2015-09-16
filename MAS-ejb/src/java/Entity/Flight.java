@@ -16,11 +16,11 @@ public class Flight extends SimpleFlight implements Serializable {
     private Long id;
     
      @ManyToOne
-      private Aircraft aircraft = new Aircraft();
-      public Aircraft getAircraft(){
+      private Aircraft_ aircraft = new Aircraft_();
+      public Aircraft_ getAircraft(){
         return aircraft;
 }
-      public void setAircraft(Aircraft aircraft){
+      public void setAircraft(Aircraft_ aircraft){
         this.aircraft=aircraft;
     }
      

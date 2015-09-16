@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
  */
 
 @Entity
-public class Aircraft implements Serializable {
+public class Aircraft_ implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,11 +35,11 @@ public class Aircraft implements Serializable {
     private long transactionLogId;
     
       @ManyToOne
-      private AircraftType aircraftType = new AircraftType();
-      public AircraftType getAircraftType(){
+      private AircraftType_ aircraftType = new AircraftType_();
+      public AircraftType_ getAircraftType(){
         return aircraftType;
 }
-      public void setAircraftType(AircraftType aircraftType){
+      public void setAircraftType(AircraftType_ aircraftType){
         this.aircraftType=aircraftType;
     }
   
@@ -72,10 +72,10 @@ public class Aircraft implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Aircraft)) {
+        if (!(object instanceof Aircraft_)) {
             return false;
         }
-        Aircraft other = (Aircraft) object;
+        Aircraft_ other = (Aircraft_) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

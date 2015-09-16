@@ -26,7 +26,7 @@ public class SimpleFlight implements Serializable {
     @OneToOne
     private GenericFlight genericFlight;
     @OneToOne
-    private Aircraft aircraft;
+    private Aircraft_ aircraft;
     private String operationStatus;
     private String flightStatus;
     private String EstimatedDepartureTime;
@@ -59,14 +59,14 @@ public class SimpleFlight implements Serializable {
     /**
      * @return the aircraft
      */
-    public Aircraft getAircraft() {
+    public Aircraft_ getAircraft() {
         return aircraft;
     }
 
     /**
      * @param aircraft the aircraft to set
      */
-    public void setAircraft(Aircraft aircraft) {
+    public void setAircraft(Aircraft_ aircraft) {
         this.aircraft = aircraft;
     }
 

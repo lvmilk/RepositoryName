@@ -5,8 +5,8 @@
  */
 package EntityHandler;
 
-import Entity.Aircraft;
-import Entity.AircraftType;
+import Entity.Aircraft_;
+import Entity.AircraftType_;
 import Exception.MASException;
 import java.util.ArrayList;
 
@@ -16,22 +16,22 @@ import java.util.ArrayList;
  */
 public interface AircraftHandlerInterface {
     //For AircraftType
-    public void addAircraftType(AircraftType at);
-    public boolean deleteAircraftType(AircraftType at);
-    public void updateAircraftType(AircraftType at);
-    public AircraftType findAircraftType (long id) throws MASException;
-    public ArrayList<AircraftType> findAircraftType(String type);
-    public ArrayList<AircraftType> listAircraftType ();
+    public void addAircraftType(AircraftType_ at);
+    public boolean deleteAircraftType(AircraftType_ at);
+    public void updateAircraftType(AircraftType_ at);
+    public AircraftType_ findAircraftType (long id) throws MASException;
+    public ArrayList<AircraftType_> findAircraftType(String type);
+    public ArrayList<AircraftType_> listAircraftType ();
     public boolean hasAircraftType(String type);
     
     //For Aircraft
-    public void addAircraft(Aircraft af);
-    public void updateAircraft(Aircraft af);
-    public boolean deleteAircraft(Aircraft af);
-    public Aircraft findAircraft (long id) throws MASException;
-    public ArrayList<AircraftType> findAircraft(String registrationNumber);
+    public void addAircraft(Aircraft_ af);
+    public void updateAircraft(Aircraft_ af);
+    public boolean deleteAircraft(Aircraft_ af);
+    public Aircraft_ findAircraft (long id) throws MASException;
+    public ArrayList<AircraftType_> findAircraft(String registrationNumber);
     public boolean hasAircraft(String registrationNumber);
-    public ArrayList<AircraftType> listAircraft ();
+    public ArrayList<AircraftType_> listAircraft ();
 
 
 }

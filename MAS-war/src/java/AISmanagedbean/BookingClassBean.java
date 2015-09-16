@@ -10,14 +10,23 @@ import java.util.*;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
-
+import javax.faces.application.FacesMessage;
+import javax.ejb.EJB;
+import Entity.aisEntity.*;
+import SessionBean.AirlineInventory.BookingClassBeanLocal;
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 /**
  *
  * @author LIU YUQI'
  */
 @Named(value = "bookingClassBean")
-@RequestScoped
-public class BookingClassBean {
+@SessionScoped
+public class BookingClassBean implements Serializable {
+    
+    @EJB
+    private BookingClassBeanLocal bcb;
 
     private String cabin;
     private String annotation;  //annotation of booking class like K,N etc
@@ -31,7 +40,7 @@ public class BookingClassBean {
     private double open_jaw_percentage;
     private double earn_mile_percentage;
     
-    private Integer min_stay;
+    private Integer min_stay;   
     private Integer max_stay;
     private Integer reserve_advance; // min no. of days reservation must be made in advance to flight
     private Integer ticket_advance; //min no. of dats ticketing must be done in advance to flight
@@ -40,6 +49,17 @@ public class BookingClassBean {
     private boolean  dds_available; // whether tickets from this class is available in DDS
      private boolean  gds_available; // whether tickets from this class is available in GDS
     
+     private List<BookingClass> classList;
+
+    public List<BookingClass> getClassList() {
+        classList=bcb.getAllBookingClasses();
+       System.out.println("Class List size is "+classList.size());
+        return  classList;
+    }
+
+    public void setClassList(List<BookingClass> classList) {
+        this.classList = classList;
+    }
     
     public BookingClassBean() {
         
@@ -58,21 +78,25 @@ public class BookingClassBean {
    
     
     public void checkFirst() throws IOException{
-    System.out.println("annotation is："+annotation);
-      System.out.println("price percentage is："+price_percentage);
-      System.out.println("refund_percentage is："+refund_percentage);
-    System.out.println("change_route_percentage is："+change_route_percentage);
-    System.out.println("change_date_percentage is："+change_date_percentage);
-    System.out.println("change_passenger_percentage is："+change_passenger_percentage);
-    System.out.println("open_jaw_percentage is" +price_percentage);
-     System.out.println("earn_mile_percentage is" +earn_mile_percentage);
-     FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
+//    System.out.println("annotation is："+annotation);
+//      System.out.println("price percentage is："+price_percentage);
+//      System.out.println("refund_percentage is："+refund_percentage);
+//    System.out.println("change_route_percentage is："+change_route_percentage);
+//    System.out.println("change_date_percentage is："+change_date_percentage);
+//    System.out.println("change_passenger_percentage is："+change_passenger_percentage);
+//    System.out.println("open_jaw_percentage is" +price_percentage);
+//     System.out.println("earn_mile_percentage is" +earn_mile_percentage);
+     
+     if(!bcb.checkDuplicate(annotation))
+          FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
+     
+     else
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Annotation already been used: " , ""));
    
     }
     
-  
-    
-    
+
+
     
     
     
@@ -207,17 +231,36 @@ public class BookingClassBean {
         this.ticket_advance = ticket_advance;
     }
     
-    
-    
-    
-    
-    
-    
-    
+   
     public void checkSecond() throws IOException{
-    
+        
+        System.out.println("min stay is "+min_stay);
+        System.out.println("max stay is "+max_stay);
+        System.out.println("reserve day is "+reserve_advance);
+        System.out.println("ticket advance is "+ticket_advance);
+        
+        if(min_stay  <= max_stay){
+            System.out.println("max greater than min");
+        
+            if(reserve_advance>=ticket_advance){
+                
+                System.out.println("reserve earlier than ticketing");
+        
+     bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage, 
+             earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
   
      FacesContext.getCurrentInstance().getExternalContext().redirect("./DisplayAircraftSeat.xhtml");
+            }
+            
+            else
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: " , ""));
+        }
+        
+        else
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: " , ""));
+     
+    
+    
     }
   
     
