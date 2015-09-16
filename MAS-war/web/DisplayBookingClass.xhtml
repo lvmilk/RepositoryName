@@ -27,8 +27,8 @@
 
                     <h:form>
 
-                        <p:panel id="panel" header="View All Boooking Classes"  style="width:100%">
-                            <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="#{bookingClassBean.classList.size()}" emptyMessage="No Booking Classes">
+                        <p:panel id="panel" header="View All Booking Classes"  style="width:100%">
+                            <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
                                 
                                 
                                 <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
