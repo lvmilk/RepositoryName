@@ -15,7 +15,7 @@
         <h:form>
             <p:growl id="msgs" showDetail="true" />
 
-            <h:panelGrid columns="2" cellpadding="5">
+            <p:panelGrid columns="2" >
                 <p:outputLabel for="domain" value="Staff domain:" />
                 <h:selectOneMenu id="domain" value="#{login.admType}" valueChangeListener="#{login.valueChanged}">
                     <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
@@ -24,9 +24,10 @@
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
                     <f:ajax event="change" execute="@form" render="output"/>
                 </h:selectOneMenu>
-                
-                <h:outputText id="output" value="#{login.admType}"/>
-            </h:panelGrid>
+
+            </p:panelGrid>
+            <h:outputText  id="output" value="#{login.admType}" />
         </h:form>
+
     </h:body>
 </html>

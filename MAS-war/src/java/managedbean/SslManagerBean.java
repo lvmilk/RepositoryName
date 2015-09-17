@@ -20,7 +20,7 @@ import javax.inject.Named;
 public class SslManagerBean {
 
     public void startSsl(ActionEvent event) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/login.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/InfraPages/login.xhtml");
     }
 
     public void endSsl(ActionEvent event) throws IOException {
