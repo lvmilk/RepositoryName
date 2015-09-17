@@ -6,6 +6,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
+          <style type="text/css">
+              
+              #p_columnid{
+                  width:18px;
+              }
+
+          </style>
 
 
     <h:head>
@@ -17,11 +24,19 @@
 
             <h:form>
 
-                <p:panel id="panel" header="View All Booking Classes"  style="width:100%">
-                    <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
+                <p:panel id="panel" header="Delete Booking Classes"  style="width:100%">
+
+                    <p:dataTable var="BookClass"  value="#{bookingClassBean.classList}" selection="#{bookingClassBean.selectedClass}" rowKey ="#{BookClass.annotation}"  paginator="true" rows="10" emptyMessage="No Booking Classes">
+
+                       
+                        <f:facet name="header">  
+                            Checkbox Based Deletion  
+                        </f:facet>  
+
+                        <p:column selectionMode="multiple" id="p_columnid" />      
 
 
-                        <p:column headerText="Annotation" sortBy="#{BookClass.annotation2}">
+                        <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                             <h:outputText value="#{BookClass.annotation}" />
                         </p:column>
 
@@ -70,17 +85,15 @@
                             <h:outputText value="#{BookClass.gds_available}" />
                         </p:column>
 
-                                                <p:column headerText="Edit">
-                                                    <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
-                           
-                        </p:column>
-                        
-<!--                        <p:column>
-                        <p:commandLink action="#{BookingClassBean.EditBookClassInfo(BookClass)}" ajax="false" value="Edit" />
 
-                        </p:column>-->
+
+
 
                     </p:dataTable>
+
+
+
+                    <p:commandButton value="Delete"  action="#{bookingClassBean.confirmDelete()}" icon="ui-icon-check" />
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />
@@ -97,3 +110,4 @@
 
     </h:body>
 </html>
+

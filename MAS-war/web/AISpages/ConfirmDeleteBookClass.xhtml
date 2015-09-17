@@ -28,7 +28,7 @@
                     <h:form>
 
                         <p:panel id="panel" header="View All Booking Classes"  style="width:100%">
-                            <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
+                            <p:dataTable var="BookClass" value="#{bookingClassBean.selectedClass}" paginator="true" rows="10" emptyMessage="No Booking Classes">
                                 
                                 
                                 <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
@@ -83,6 +83,8 @@
                                 
 
                             </p:dataTable>
+                            <p:commandButton value="Back"  action="./DeleteBookingClass.xhtml" icon="ui-icon-check" />
+                            <p:commandButton value="Delete"  action="#{bookingClassBean.deleteBookClass}" icon="ui-icon-check" />
                         </p:panel>
 
                         <p:draggable for="panel" /><p:resizable for="panel" />

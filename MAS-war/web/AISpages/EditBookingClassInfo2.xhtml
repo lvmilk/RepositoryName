@@ -10,16 +10,16 @@
     </h:head>
     <h:body>
 
-        <ui:decorate template="./../resources/template/skeleton.xhtml">
+        <ui:decorate template="./../resources/template/aisTemplate/ais_skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-            <ui:define name="right">
-                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>
+<!--            <ui:define name="right">
+                <ui:include src="./cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>-->
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
@@ -72,7 +72,7 @@
                                 </p:inputText>
           
                             </h:panelGrid>
-                            <p:commandButton value="Next" update="@form" actionListener="#{bookingClassBean.checkSecond}"  icon="ui-icon-check" />
+                            <p:commandButton value="Next" update="@form" actionListener="#{bookingClassBean.editSecond}"  icon="ui-icon-check" />
                         </p:panel>
                     </h:form>
 
