@@ -20,8 +20,6 @@ public class Aircraft implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
     private String registrationNo;
     private String serialNo;
     private String status;
@@ -42,26 +40,25 @@ public class Aircraft implements Serializable {
     }
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
-    private Collection<OneFlight> flight = new ArrayList<OneFlight>();
+    private Collection<FlightSchedule> flightSchedule = new ArrayList<FlightSchedule>();
     
-    public Collection<OneFlight> getFlight(){
-        return flight;
+    public Collection<FlightSchedule> getFlightSchedule(){
+        return flightSchedule;
     }   
-    public void setFlight(Collection<OneFlight> flights){
-        this.flight=flight;
+    public void setFlightSchedule(Collection<FlightSchedule> flightSchedule){
+        this.flightSchedule=flightSchedule;
     }
     
     public void create(String registrationNo,String serialNo,String status,String firstFlyDate,String deliveryDate,String retireDate,Long flightLogId,Long maintenanceLogId,Long transactionLogId){
-        
-    }
-    
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.setRegistrationNo(registrationNo);
+        this.setSerialNo(serialNo);
+        this.setStatus(status);
+        this.setFirstFlyDate(firstFlyDate);
+        this.setDeliveryDate(deliveryDate);
+        this.setRetireDate(retireDate);
+        this.setFlightLogId(flightLogId);
+        this.setMaintenanceLogId(maintenanceLogId);
+        this.setTransactionLogId(transactionLogId);
     }
 
     public String getRegistrationNo() {
@@ -139,7 +136,7 @@ public class Aircraft implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (registrationNo != null ? registrationNo.hashCode() : 0);
         return hash;
     }
 
@@ -150,7 +147,7 @@ public class Aircraft implements Serializable {
             return false;
         }
         Aircraft other = (Aircraft) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.registrationNo == null && other.registrationNo != null) || (this.registrationNo != null && !this.registrationNo.equals(other.registrationNo))) {
             return false;
         }
         return true;
@@ -158,7 +155,7 @@ public class Aircraft implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Aircraft[ id=" + id + " ]";
+        return "Entity.APS.Aircraft[ id=" + registrationNo + " ]";
     }
     
 }

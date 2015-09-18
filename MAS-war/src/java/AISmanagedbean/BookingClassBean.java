@@ -55,7 +55,7 @@ public class BookingClassBean implements Serializable {
     
      
      private List<BookingClass> classList;
-      private BookingClass selectedClass[];
+      private ArrayList<BookingClass> selectedClass;
 
     public List<BookingClass> getClassList() {
         classList=bcb.getAllBookingClasses();
@@ -69,7 +69,7 @@ public class BookingClassBean implements Serializable {
     
     public BookingClassBean() {
         
-        
+        selectedClass = new ArrayList<>();
     }
     
     public void checkCabin () throws IOException{
@@ -318,11 +318,11 @@ public class BookingClassBean implements Serializable {
         this.ticket_advance = ticket_advance;
     }
 
-    public BookingClass[] getSelectedClass() {
+    public ArrayList<BookingClass> getSelectedClass() {
         return selectedClass;
     }
 
-    public void setSelectedClass(BookingClass[] selectedClass) {
+    public void setSelectedClass(ArrayList<BookingClass> selectedClass) {
         this.selectedClass = selectedClass;
     }
     
