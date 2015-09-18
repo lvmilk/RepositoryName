@@ -75,6 +75,13 @@
                         <f:validateLength minimum="2" />
                     </p:inputText>
                     <p:message for="cpEmail" display="icon" />
+                    
+                    <p:outputLabel for="cpLicence" value="Licence: " />
+                    <p:inputText id="cpLicence" value="#{login.licence}" required="true" label="Licence" size="10">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="cpLicence" display="icon" />
+                    
                 </h:panelGrid>
             </p:panel>
         </h:form>

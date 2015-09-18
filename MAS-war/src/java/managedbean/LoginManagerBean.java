@@ -28,7 +28,7 @@ public class LoginManagerBean {
     private Boolean visibility = true;
     private Boolean visiCockpit;
 
-
+    private String licence;
 
     public void logIn() throws IOException {
 
@@ -160,5 +160,19 @@ public class LoginManagerBean {
      */
     public void setVisiCockpit(Boolean visiCockpit) {
         this.visiCockpit = visiCockpit;
+    }
+
+    /**
+     * @return the licence
+     */
+    public String getLicence() {
+        return licence;
+    }
+
+    /**
+     * @param licence the licence to set
+     */
+    public void setLicence(String licence) {
+        this.licence = licence;
     }
 }
