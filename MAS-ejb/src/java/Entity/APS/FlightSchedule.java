@@ -13,9 +13,8 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class FlightSchedule implements Serializable {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 //    private String flightNo;
 //    private Integer stopoverNo;

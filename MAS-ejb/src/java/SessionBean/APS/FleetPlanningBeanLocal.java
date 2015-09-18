@@ -7,6 +7,7 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,8 +17,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface FleetPlanningBeanLocal {
-
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double cruiseSpeed, Double cruiseAltitude, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
     public void editAircraftType(String type, String manufacturer, Double maxDistance, Double cruiseSpeed, Double cruiseAltitude, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
@@ -36,6 +35,8 @@ public interface FleetPlanningBeanLocal {
     public Aircraft getAircraft(String registrationNo);
 
     public AircraftType aircraftType(String type);
+
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
     
 }

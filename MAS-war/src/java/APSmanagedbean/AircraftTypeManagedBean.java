@@ -1,23 +1,32 @@
-package Entity.APS;
+package APSmanagedbean;
 
+import javax.inject.Named;
+
+import java.io.IOException;
+import java.util.*;
+import javax.faces.context.FacesContext;
+import javax.ejb.EJB;
+import Entity.APS.*;
+import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.Serializable;
-import java.util.ArrayList;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.util.Collection;
-
+import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.SelectableDataModel; 
 /**
  *
- * @author lucy
+ * @author Lu Xi
  */
-@Entity
-public class AircraftType implements Serializable {
-   // private static final long serialVersionUID = 1L;
-    @Id
+@Named(value = "aircraftTypeManagedBean")
+@ViewScoped
+public class AircraftTypeManagedBean {
+    @EJB
+    private FleetPlanningBeanLocal fpb;
+    private AircraftType newType = new AircraftType();
+ 
     private String type;
     private String manufacturer;
     private Double maxDistance;
@@ -32,32 +41,27 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
     
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="AircraftType")
-    private Collection<Aircraft> aircraft=new ArrayList<Aircraft>();
+    private List <AircraftType> typeList;
+    private List <AircraftType> selectedList;
     
-    public Collection<Aircraft> getAircraft(){
-            return aircraft;
-            }
+        
+    public AircraftTypeManagedBean() {
+    }
     
-    public void setAircraft(Collection<Aircraft> aircraft){
-        this.aircraft=aircraft;
+    public void addAircraftType() throws Exception {
+        fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+    }
+    
+    public List<AircraftType> getTypeList() {
+    typeList=fpb.getAllAircraftType();
+    System.out.println("Type List size is "+typeList.size());
+    return  typeList;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, 
-                        Integer suiteNo,Integer fcSeatNo,Integer bcSeatNo,Integer pecSeatNo,Integer ecSeatNo){
-        this.setType(type);
-        this.setManufacturer(manufacturer);
-        this.setMaxDistance(maxDistance);
-//        this.setCruiseSpeed(cruiseSpeed);
-//        this.setCruiseAltitude(cruiseAltitude);
-        this.setAircraftLength(aircraftLength);
-        this.setWingspan(wingspan);
-        this.setSuiteNo(suiteNo);
-        this.setFcSeatNo(fcSeatNo);
-        this.setBcSeatNo(bcSeatNo);
-        this.setPecSeatNo(pecSeatNo);
-        this.setEcSeatNo(ecSeatNo);
+    public void setTypeList(List<AircraftType> typeList) {
+        this.typeList = typeList;
     }
+
     
     public String getType() {
         return type;
@@ -153,34 +157,6 @@ public class AircraftType implements Serializable {
 
     public void setEcSeatNo(Integer ecSeatNo) {
         this.ecSeatNo = ecSeatNo;
-    }
-
-    
-    
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (type != null ? type.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof AircraftType)) {
-            return false;
-        }
-        AircraftType other = (AircraftType) object;
-        if ((this.type == null && other.type != null) || (this.type != null && !this.type.equals(other.type))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Entity.APS.AircraftType[ id=" + type + " ]";
     }
     
 }

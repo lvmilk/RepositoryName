@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:decorate template="./../resources/template/apsTemplate/aps_skeleton.xhtml">
+            <ui:define name="top">
+                <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="left">
+                <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="center">
+                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
+
+                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+                    <h:form>
+                        <p:panel id="panel" header="Aircraft Information" style="width: 100%">
+
+                            <p:messages id="msgs" />
+                            <h:panelGrid columns="2"  style="margin-bottom:100px; width:500px" cellpadding="40">
+
+
+                                <p:outputLabel for="type" value="Aircraft Type:" />
+                                <p:inputText id="type" value="#{AircraftTypeManagedBean.type}" required="true" validatorMessage="Please enter an Uppercase Alhpabet" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z\\s])(?=.*[-]).{1,20})" />
+                                </p:inputText>
+
+                                <p:outputLabel for="manufacturer" value="Manufacturer: " />
+                                <p:inputText id="manufacturer"  value="#{AircraftTypeManagedBean.manufacturer}" label="manufacturer" required="true"   requiredMessage="Please enter the manufacturer name" size="10">
+                                    <f:validateRegex pattern="[a-zA-Z\\s]*"/>
+                                </p:inputText>
+
+                                <p:outputLabel for="maxDistance" value="Maximum Distance (km):" />
+                                <p:inputText id="maxDistance" value="#{AircraftTypeManagedBean.maxDistance}" label="Maximum Distance (km)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter maximum distance of the aircraft type" size="10">
+                                    <f:validateDoubleRange minimum="0.0" />
+                                </p:inputText>
+
+                                <p:outputLabel for="aircraftLength" value="Overall Length(m):" />
+                                <p:inputText id="aircraftLength" value="#{AircraftTypeManagedBean.aircraftLength}" label="Overall Length(m)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter overall length of the aircraft type" size="10">
+                                    <f:validateDoubleRange minimum="0.0" />
+                                </p:inputText>
+
+                                <p:outputLabel for="wingspan" value="Wingspan(m):" />
+                                <p:inputText id="wingspan" value="#{AircraftTypeManagedBean.wingspan}" label="Wingspan(m)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter wingspan of the aircraft type" size="10">
+                                    <f:validateDoubleRange minimum="0.0" />
+                                </p:inputText>
+
+                                <p:outputLabel for="suiteNo" value="Number of Seats (Suite):" />
+                                <p:inputText id="suiteNo" value="#{AircraftTypeManagedBean.suiteNo}" label="Number of Seats (Suite)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter Number of Seats (Suite) of the aircraft type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> 
+                                </p:inputText>
+
+                                <p:outputLabel for="fcSeatNo" value="Number of Seats (First Class):" />
+                                <p:inputText id="fcSeatNo" value="#{AircraftTypeManagedBean.fcSeatNo}" label="Number of Seats (First Class)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter Number of Seats (First Class) of the aircraft type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d).{0,100})" /> 
+                                </p:inputText>
+
+                                <p:outputLabel for="bcSeatNo" value="Number of Seats (Business Class):" />
+                                <p:inputText id="bcSeatNo" value="#{AircraftTypeManagedBean.bcSeatNo}" label="Number of Seats (Business Class)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter Number of Seats (Business Class) of the aircraft type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d).{0,200})" /> 
+                                </p:inputText>
+
+                                <p:outputLabel for="pecSeatNo" value="Number of Seats (Premium Economy Class):" />
+                                <p:inputText id="pecSeatNo" value="#{AircraftTypeManagedBean.pecSeatNo}" label="Number of Seats (Premium Economy Class)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter Number of Seats (Premium Economy Class) of the aircraft type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d).{0,400})" /> 
+                                </p:inputText>
+
+                                <p:outputLabel for="ecSeatNo" value="Number of Seats (Economy Class):" />
+                                <p:inputText id="ecSeatNo" value="#{AircraftTypeManagedBean.ecSeatNo}" label="Number of Seats (Economy Class)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter Number of Seats (Economy Class) of the aircraft type" size="10">
+                                    <f:validateRegex pattern="((?=.*\d).{0,400})" /> 
+                                </p:inputText>
+
+                            </h:panelGrid>
+
+                            <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{AircraftTypeManagedBean.check()}"  icon="ui-icon-check" />
+                        </p:panel>
+
+                        <p:draggable for="panel" /><p:resizable for="panel" />
+
+
+                    </h:form>
+
+                </div>
+
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+
