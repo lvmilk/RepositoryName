@@ -43,7 +43,7 @@ public class manageAccount implements manageAccountLocal {
 
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
-        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.admType=:inStfType");
+        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
         query.setParameter("inPassWord", password);
         query.setParameter("inUserName", username);
         query.setParameter("inStfType", stfType);
