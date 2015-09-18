@@ -22,12 +22,13 @@
                     <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-                    <!--                    <f:ajax event="change" execute="@form" render="output"/>-->
+                                        <f:ajax event="change" execute="@form" render="output"/>
                     <p:ajax event="change" update="staff" rendered="staff"/>
                 </h:selectOneMenu>
 
             </p:panelGrid>
             <h:outputText  id="output" value="#{login.stfType}" />
+            
 
 
         </h:form>
@@ -52,7 +53,7 @@
                         <f:validateLength minimum="2" />
                     </p:inputText>
                     <p:message for="otrEmail" display="icon" />
-
+                    <p:commandButton value="Confirm" update="addOtrStaff" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
                 </h:panelGrid>
             </p:panel>
 
@@ -82,6 +83,7 @@
                     </p:inputText>
                     <p:message for="cpLicence" display="icon" />
                     
+                    <p:commandButton value="Confirm" update="addCockpit" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
                 </h:panelGrid>
             </p:panel>
         </h:form>

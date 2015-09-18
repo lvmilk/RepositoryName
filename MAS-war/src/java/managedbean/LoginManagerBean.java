@@ -55,6 +55,12 @@ public class LoginManagerBean {
 
         }
     }
+    
+    public void createAcc()
+    {
+        
+    }
+            
 
     public void register() {
 

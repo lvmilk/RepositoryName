@@ -16,6 +16,6 @@ public interface manageAccountLocal {
     
     
     public boolean validateLogin (String username, String password, String staffType);
-    public void addAccount(String username, String password,String type);
+    public void addAccount(String username, String password,String stfType);
     
 }
