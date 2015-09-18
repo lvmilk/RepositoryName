@@ -24,6 +24,7 @@ public class LoginManagerBean {
     private String username;
     private String password;
     private String admType;
+    private String email;
 
 //    private String title;
 //    private String surname;
@@ -128,5 +129,19 @@ public class LoginManagerBean {
     {
         Object newValue=event.getNewValue();
         System.out.println(newValue);
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

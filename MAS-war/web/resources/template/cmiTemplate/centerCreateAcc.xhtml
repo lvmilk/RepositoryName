@@ -15,19 +15,68 @@
         <h:form>
             <p:growl id="msgs" showDetail="true" />
 
-            <p:panelGrid columns="2" >
+            <p:panelGrid columns="2">
                 <p:outputLabel for="domain" value="Staff domain:" />
                 <h:selectOneMenu id="domain" value="#{login.admType}" valueChangeListener="#{login.valueChanged}">
                     <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
                     <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-                    <f:ajax event="change" execute="@form" render="output"/>
+                    <!--                    <f:ajax event="change" execute="@form" render="output"/>-->
+                    <p:ajax event="change" update="@form" rendered="output"/>
                 </h:selectOneMenu>
 
             </p:panelGrid>
             <h:outputText  id="output" value="#{login.admType}" />
+
+
         </h:form>
 
+        <h:form>
+            <p:panel id="addOtrStaff"  visible="true" style="margin-bottom:20px">
+                <h:panelGrid columns="3" cellpadding="10">
+                    <p:outputLabel for="otrUsername" value="User Name: " />
+                    <p:inputText id="otrUsername" value="#{login.username}" required="true" label="Username" size="10">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="otrUsername" display="icon" />
+
+                    <p:outputLabel for="otrPassword" value="Password: " />
+                    <p:inputText id="otrPassword" value="#{login.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="otrPassword" display="icon" />
+
+                    <p:outputLabel for="otrEmail" value="Email: " />
+                    <p:inputText id="otrEmail" value="#{login.email}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="otrEmail" display="icon" />
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+        <h:form>
+            <p:panel id="addCockpit"  visible="true" style="margin-bottom:20px">
+                <p:outputLabel for="cpUsername" value="User Name: " />
+                <p:inputText id="cpUsername" value="#{login.username}" required="true" label="Username" size="10">
+                    <f:validateLength minimum="2" />
+                </p:inputText>
+                <p:message for="cpUsername" display="icon" />
+
+                <p:outputLabel for="cpPassword" value="Password: " />
+                <p:inputText id="cpPassword" value="#{login.password}" required="true" label="Password" size="10">
+                    <f:validateLength minimum="2" />
+                </p:inputText>
+                <p:message for="cpPassword" display="icon" />
+
+                <p:outputLabel for="cpEmail" value="Email: " />
+                <p:inputText id="cpEmail" value="#{login.email}" required="true" label="Email" size="10">
+                    <f:validateLength minimum="2" />
+                </p:inputText>
+                <p:message for="cpPassword" display="icon" />
+            </p:panel>
+        </h:form>
     </h:body>
 </html>
