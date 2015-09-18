@@ -88,7 +88,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
     
     @Override
-    public AircraftType aircraftType(String type){
+    public AircraftType getAircraftType(String type){
         aircraftType = em.find(AircraftType.class, type);
         return aircraftType;
     }

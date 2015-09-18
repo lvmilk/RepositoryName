@@ -34,7 +34,7 @@ public interface FleetPlanningBeanLocal {
 
     public Aircraft getAircraft(String registrationNo);
 
-    public AircraftType aircraftType(String type);
+    public AircraftType getAircraftType(String type);
 
     public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
