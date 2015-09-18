@@ -17,9 +17,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Aircraft implements Serializable {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String registrationNo;
     private String serialNo;
     private String status;
