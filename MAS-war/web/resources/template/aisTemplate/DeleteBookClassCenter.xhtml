@@ -6,13 +6,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
-          <style type="text/css">
-              
-              #p_columnid{
-                  width:18px;
-              }
-
-          </style>
 
 
     <h:head>
@@ -26,15 +19,17 @@
 
                 <p:panel id="panel" header="Delete Booking Classes"  style="width:100%">
 
-                    <p:dataTable var="BookClass"  value="#{bookingClassBean.classList}" selection="#{bookingClassBean.selectedClass}" rowKey ="#{BookClass.annotation}"  paginator="true" rows="10" emptyMessage="No Booking Classes">
+                    <p:dataTable var="BookClass" rowKey ="#{BookClass.id}" selection="#{bookingClassBean.selectedClass}" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
 
-                       
+                        <p:ajax event="rowSelectCheckbox" listener="#{bookngClassBean.check}"   />  
+                        
                         <f:facet name="header">  
                             Checkbox Based Deletion  
                         </f:facet>  
 
-                        <p:column selectionMode="multiple" id="p_columnid" />      
+                        <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
 
+                         
 
                         <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                             <h:outputText value="#{BookClass.annotation}" />
@@ -84,9 +79,6 @@
                         <p:column headerText="Available In GDS">
                             <h:outputText value="#{BookClass.gds_available}" />
                         </p:column>
-
-
-
 
 
                     </p:dataTable>
