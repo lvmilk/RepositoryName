@@ -16,7 +16,7 @@ import javax.persistence.Id;
  * @author LI HAO
  */
 @Entity
-public class GrondStaff implements Serializable {
+public class GroundStaff implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,10 +40,10 @@ public class GrondStaff implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof GrondStaff)) {
+        if (!(object instanceof GroundStaff)) {
             return false;
         }
-        GrondStaff other = (GrondStaff) object;
+        GroundStaff other = (GroundStaff) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
