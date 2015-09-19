@@ -24,10 +24,10 @@ public class Flight implements Serializable, Comparable<Flight>{
 
     private String operationStatus;
     private String flightStatus;
-    private String EstimatedDepartureTime;
-    private String EstimatedArrivalTime;
-    private String ActualDepartureTime;
-    private String ActualArrivalTime;
+    private String estimatedDepartureTime;
+    private String estimatedArrivalTime;
+    private String actualDepartureTime;
+    private String actualArrivalTime;
     
     private Aircraft aircraft;
 //    private List<FlightBookingRecord> booking = new ArrayList<FlightBookingRecord>();
@@ -184,56 +184,56 @@ public class Flight implements Serializable, Comparable<Flight>{
      * @return the EstimatedDepartureTime
      */
     public String getEstimatedDepartureTime() {
-        return EstimatedDepartureTime;
+        return estimatedDepartureTime;
     }
 
     /**
      * @param EstimatedDepartureTime the EstimatedDepartureTime to set
      */
     public void setEstimatedDepartureTime(String EstimatedDepartureTime) {
-        this.EstimatedDepartureTime = EstimatedDepartureTime;
+        this.estimatedDepartureTime = EstimatedDepartureTime;
     }
 
     /**
      * @return the EstimatedArrivalTime
      */
     public String getEstimatedArrivalTime() {
-        return EstimatedArrivalTime;
+        return estimatedArrivalTime;
     }
 
     /**
      * @param EstimatedArrivalTime the EstimatedArrivalTime to set
      */
     public void setEstimatedArrivalTime(String EstimatedArrivalTime) {
-        this.EstimatedArrivalTime = EstimatedArrivalTime;
+        this.estimatedArrivalTime = EstimatedArrivalTime;
     }
 
     /**
      * @return the ActualDepartureTime
      */
     public String getActualDepartureTime() {
-        return ActualDepartureTime;
+        return actualDepartureTime;
     }
 
     /**
      * @param ActualDepartureTime the ActualDepartureTime to set
      */
     public void setActualDepartureTime(String ActualDepartureTime) {
-        this.ActualDepartureTime = ActualDepartureTime;
+        this.actualDepartureTime = ActualDepartureTime;
     }
 
     /**
      * @return the ActualArrivalTime
      */
     public String getActualArrivalTime() {
-        return ActualArrivalTime;
+        return actualArrivalTime;
     }
 
     /**
      * @param ActualArrivalTime the ActualArrivalTime to set
      */
     public void setActualArrivalTime(String ActualArrivalTime) {
-        this.ActualArrivalTime = ActualArrivalTime;
+        this.actualArrivalTime = ActualArrivalTime;
     }
 
     /**
@@ -251,8 +251,8 @@ public class Flight implements Serializable, Comparable<Flight>{
     }
     
     public int compareTo(Flight fl){
-        DateTime thisTime = new DateTime(this.EstimatedDepartureTime);
-        DateTime flTime = new DateTime (fl.EstimatedDepartureTime);
+        DateTime thisTime = new DateTime(this.estimatedDepartureTime);
+        DateTime flTime = new DateTime (fl.estimatedDepartureTime);
         return thisTime.compareTo(flTime);
     }
     

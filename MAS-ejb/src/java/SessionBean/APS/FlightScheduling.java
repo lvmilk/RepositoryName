@@ -52,7 +52,7 @@ public class FlightScheduling implements FlightSchedulingInterface {
 
     @Override
     public void createFlight() throws MASException{
-        //for test
+            //for test
             String orgIATA = "SIN";
             String dstIATA = "LHR";
             String OBflightNo = "MR91";

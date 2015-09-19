@@ -24,12 +24,12 @@ public class Airport implements Serializable {
     private Long id;
     
     private String IATA;
-    private String AirportName;
-    private String CityName;
-    private String Spec;
-    private String CountryCode;
-    private String TimeZone;
-    private String OperationalStatus;
+    private String airportName;
+    private String cityName;
+    private String spec;
+    private String countryCode;
+    private String timeZone;
+    private String OoperationalStatus;
     private String StrategicLevel;
     
     //new added
@@ -82,12 +82,12 @@ public class Airport implements Serializable {
         String st = "";
         st += this.id + "\t";
         st += this.IATA + "\t";
-        st += this.AirportName + "\t";
-        st += this.CityName + "\t";
-        st += this.Spec + "\t";
-        st += this.CountryCode + "\t";
-        st += this.TimeZone + "\t";
-        st += this.OperationalStatus + "\t";
+        st += this.airportName + "\t";
+        st += this.cityName + "\t";
+        st += this.spec + "\t";
+        st += this.countryCode + "\t";
+        st += this.timeZone + "\t";
+        st += this.OoperationalStatus + "\t";
         st += this.StrategicLevel + "\t";
         st += this.Airspace + "\t";
         return st;
@@ -113,70 +113,70 @@ public class Airport implements Serializable {
      * @return the AirportName
      */
     public String getAirportName() {
-        return AirportName;
+        return airportName;
     }
 
     /**
      * @param AirportName the AirportName to set
      */
     public void setAirportName(String AirportName) {
-        this.AirportName = AirportName;
+        this.airportName = AirportName;
     }
 
     /**
      * @return the CityName
      */
     public String getCityName() {
-        return CityName;
+        return cityName;
     }
 
     /**
      * @param CityName the CityName to set
      */
     public void setCityName(String CityName) {
-        this.CityName = CityName;
+        this.cityName = CityName;
     }
 
     /**
      * @return the CountryCode
      */
     public String getCountryCode() {
-        return CountryCode;
+        return countryCode;
     }
 
     /**
      * @param CountryCode the CountryCode to set
      */
     public void setCountryCode(String CountryCode) {
-        this.CountryCode = CountryCode;
+        this.countryCode = CountryCode;
     }
 
     /**
      * @return the TimeZone
      */
     public String getTimeZone() {
-        return TimeZone;
+        return timeZone;
     }
 
     /**
      * @param TimeZone the TimeZone to set
      */
     public void setTimeZone(String TimeZone) {
-        this.TimeZone = TimeZone;
+        this.timeZone = TimeZone;
     }
 
     /**
      * @return the OperationalStatus
      */
     public String getOperationalStatus() {
-        return OperationalStatus;
+        return OoperationalStatus;
     }
 
     /**
      * @param OperationalStatus the OperationalStatus to set
      */
     public void setOperationalStatus(String OperationalStatus) {
-        this.OperationalStatus = OperationalStatus;
+        this.OoperationalStatus = OperationalStatus;
     }
 
     /**
@@ -197,14 +197,14 @@ public class Airport implements Serializable {
      * @return the Spec
      */
     public String getSpec() {
-        return Spec;
+        return spec;
     }
 
     /**
      * @param Spec the Spec to set
      */
     public void setSpec(String Spec) {
-        this.Spec = Spec;
+        this.spec = Spec;
     }
 
     /**

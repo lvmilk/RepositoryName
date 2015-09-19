@@ -31,8 +31,8 @@ public class GenericFlight implements Serializable {
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
     
-    private String ScheduledDepartureTime;
-    private String ScheduledArrivalTime;
+    private String scheduledDepartureTime;
+    private String scheduledArrivalTime;
     private int dateAdjust;
     
     /*To indicate the frequency of this flight*/
@@ -88,8 +88,8 @@ public class GenericFlight implements Serializable {
         st += this.StopoverSequenceNo + "\t";
         st += this.getRoute().getOrigin().getIATA() + "\t";
         st += this.getRoute().getDestination().getIATA() + "\t";
-        st += this.ScheduledDepartureTime + "\t";
-        st += this.ScheduledArrivalTime + "\t";
+        st += this.scheduledDepartureTime + "\t";
+        st += this.scheduledArrivalTime + "\t";
 
         return st;
     }
@@ -140,28 +140,28 @@ public class GenericFlight implements Serializable {
      * @return the ScheduledDepartureTime
      */
     public String getScheduledDepartureTime() {
-        return ScheduledDepartureTime;
+        return scheduledDepartureTime;
     }
 
     /**
      * @param ScheduledDepartureTime the ScheduledDepartureTime to set
      */
     public void setScheduledDepartureTime(String ScheduledDepartureTime) {
-        this.ScheduledDepartureTime = ScheduledDepartureTime;
+        this.scheduledDepartureTime = ScheduledDepartureTime;
     }
 
     /**
      * @return the ShceduledArrivalTime
      */
     public String getScheduledArrivalTime() {
-        return ScheduledArrivalTime;
+        return scheduledArrivalTime;
     }
 
     /**
      * @param ShceduledArrivalTime the ShceduledArrivalTime to set
      */
     public void setScheduledArrivalTime(String ShceduledArrivalTime) {
-        this.ScheduledArrivalTime = ShceduledArrivalTime;
+        this.scheduledArrivalTime = ShceduledArrivalTime;
     }
 
     /**
