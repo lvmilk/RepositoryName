@@ -26,8 +26,8 @@ public class Airport implements Serializable {
     private String countryCode;
     private String timeZone;
 
-    @ManyToOne
-    private Collection<Route> routeList = new ArrayList<Route> ();
+//    @ManyToOne
+//    private Collection<Route> routeList = new ArrayList<Route> ();
     
     public void create(String IATA, String airportName, String cityName, String countryCode, String timeZone) {
         this.IATA = IATA;
@@ -77,13 +77,13 @@ public class Airport implements Serializable {
         this.timeZone = timeZone;
     }
 
-    public Collection<Route> getRouteList() {
-        return routeList;
-    }
-
-    public void setRouteList(Collection<Route> routeList) {
-        this.routeList = routeList;
-    }
+//    public Collection<Route> getRouteList() {
+//        return routeList;
+//    }
+//
+//    public void setRouteList(Collection<Route> routeList) {
+//        this.routeList = routeList;
+//    }
 
     @Override
     public int hashCode() {
