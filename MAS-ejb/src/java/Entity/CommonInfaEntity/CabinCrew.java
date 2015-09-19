@@ -17,13 +17,10 @@ import javax.persistence.Id;
  */
 @Entity
 public class CabinCrew implements Serializable {
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String cbName;
     private String cbPassword;
-    private String cbType;
+    private String stfType;
     private String email;
 
     public void create(String strCbName, String strCbPassword, String email, String strStfType)
@@ -31,21 +28,14 @@ public class CabinCrew implements Serializable {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
-        this.setCbType(strStfType);
+        this.setStfType(strStfType);
     }
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (cbName != null ? cbName.hashCode() : 0);
         return hash;
     }
 
@@ -56,7 +46,7 @@ public class CabinCrew implements Serializable {
             return false;
         }
         CabinCrew other = (CabinCrew) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.cbName == null && other.cbName != null) || (this.cbName != null && !this.cbName.equals(other.cbName))) {
             return false;
         }
         return true;
@@ -64,7 +54,7 @@ public class CabinCrew implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.CabinCrew[ id=" + id + " ]";
+        return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
     }
 
     /**
@@ -96,17 +86,17 @@ public class CabinCrew implements Serializable {
     }
 
     /**
-     * @return the cbType
+     * @return the stfType
      */
-    public String getCbType() {
-        return cbType;
+    public String getStfType() {
+        return stfType;
     }
 
     /**
-     * @param cbType the cbType to set
+     * @param stfType the stfType to set
      */
-    public void setCbType(String cbType) {
-        this.cbType = cbType;
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
     }
 
     /**

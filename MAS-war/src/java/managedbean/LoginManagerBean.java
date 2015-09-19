@@ -26,7 +26,7 @@ public class LoginManagerBean implements Serializable{
 
     private String username;
     private String password;
-    private String stfType;
+    private String stfType="officeStaff";
     private String email;
 
 
@@ -72,7 +72,7 @@ public class LoginManagerBean implements Serializable{
     public void createCockpitAcc()
     {
         System.out.println("We are in createCockpitAcc managed bean");
-        mal.addCocpitAcc(username, password,email,stfType, licence);
+        mal.addCocpitAcc(username, password,email,stfType,licence);
     }
     
 

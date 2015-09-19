@@ -18,10 +18,8 @@ import javax.persistence.Id;
 @Entity
 public class OfficeStaff implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String offName;
     private String offPassword;
     private String stfType;
@@ -34,18 +32,11 @@ public class OfficeStaff implements Serializable {
         this.setStfType(strStfType);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (offName != null ? offName.hashCode() : 0);
         return hash;
     }
 
@@ -56,7 +47,7 @@ public class OfficeStaff implements Serializable {
             return false;
         }
         OfficeStaff other = (OfficeStaff) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.offName == null && other.offName != null) || (this.offName != null && !this.offName.equals(other.offName))) {
             return false;
         }
         return true;
@@ -64,7 +55,7 @@ public class OfficeStaff implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.OfficeStaff[ id=" + id + " ]";
+        return "Entity.CommonInfaEntity.OfficeStaff[ id=" + offName + " ]";
     }
 
     /**

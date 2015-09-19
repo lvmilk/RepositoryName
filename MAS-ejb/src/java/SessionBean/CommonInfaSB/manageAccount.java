@@ -23,7 +23,7 @@ import javax.persistence.Query;
 @Stateless
 public class manageAccount implements manageAccountLocal {
 
-   @PersistenceContext
+    @PersistenceContext
     EntityManager em;
 //    FFPMember newUser;
     AdminStaff admStaff;
@@ -31,59 +31,82 @@ public class manageAccount implements manageAccountLocal {
     GroundStaff grdStaff;
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
-    
-    
-    public manageAccount(){
-    
+
+    public manageAccount() {
+
     }
 
     @Override
-    public void addAccount(String username, String password, String email,String stfType) {
+    public void addAccount(String username, String password, String email, String stfType) {
 //        newUser = new FFPMember();
         System.out.println("Currently in addAccount");
-        if(stfType.equals("administrator"))
-        {
+        if (stfType.equals("administrator")) {
             admStaff = new AdminStaff();
             admStaff.create(username, password, stfType);
             em.persist(admStaff);
-        }
-        else if (stfType.equals("officeStaff"))
-        {
-            offStaff=new OfficeStaff();
-            offStaff.create(stfType, password,email,stfType);
+        } else if (stfType.equals("officeStaff")) {
+            offStaff = new OfficeStaff();
+            offStaff.create(stfType, password, email, stfType);
             em.persist(offStaff);
-        }
-        else if (stfType.equals("groundStaff"))
-        {
-            grdStaff=new GroundStaff();
-            
-            
-        }
-        else if(stfType.equals("cabin"))
-        {
+        } else if (stfType.equals("groundStaff")) {
+            grdStaff = new GroundStaff();
+            grdStaff.create(username, password, email, stfType);
+            em.persist(grdStaff);
+        } else if (stfType.equals("cabin")) {
             System.out.println(stfType);
-            cbCrew= new CabinCrew();
+            cbCrew = new CabinCrew();
             cbCrew.create(username, password, email, stfType);
             em.persist(cbCrew);
         }
 
     }
-   
+
     @Override
-    public void addCocpitAcc(String username, String password, String email, String stfType, String licence)
-    {
-        
+    public void addCocpitAcc(String username, String password, String email, String stfType, String licence) {
+        cpCrew = new CockpitCrew();
+        cpCrew.create(username, password, email, stfType, licence);
+        em.persist(cpCrew);
     }
-    
+
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
-        Query query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
-        query.setParameter("inPassWord", password);
-        query.setParameter("inUserName", username);
-        query.setParameter("inStfType", stfType);
-    //    SystemUser user = null;
-
-
+        Query query = null;
+        if (stfType.equals("administrator")) {
+            query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
+            query.setParameter("inPassWord", password);
+            query.setParameter("inUserName", username);
+            query.setParameter("inStfType", stfType);
+        }
+        else if(stfType.equals("officeStaff"))
+        {
+            query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.offName = :inUserName and u.offPassword=:inPassWord and u.stfType=:inStfType");
+            query.setParameter("inPassWord", password);
+            query.setParameter("inUserName", username);
+            query.setParameter("inStfType", stfType);
+        }
+        else if(stfType.equals("groundStaff"))
+        {
+            query = em.createQuery("SELECT u FROM GroundStaff u WHERE u.grdName = :inUserName and u.grdPassword=:inPassWord and u.stfType=:inStfType");
+            query.setParameter("inPassWord", password);
+            query.setParameter("inUserName", username);
+            query.setParameter("inStfType", stfType);
+        }
+        else if(stfType.equals("cabin"))
+        {
+            query = em.createQuery("SELECT u FROM CabinCrew u WHERE u.cbName = :inUserName and u.cbPassword=:inPassWord and u.stfType=:inStfType");
+            query.setParameter("inPassWord", password);
+            query.setParameter("inUserName", username);
+            query.setParameter("inStfType", stfType);
+        }
+        else if(stfType.equals("cockpit"))
+        {
+            query = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.cpName = :inUserName and u.cpPassword=:inPassWord and u.stfType=:inStfType");
+            query.setParameter("inPassWord", password);
+            query.setParameter("inUserName", username);
+            query.setParameter("inStfType", stfType);
+        }
+        
+        
         List resultList = new ArrayList<AdminStaff>();
         resultList = (List) query.getResultList();
         if (resultList.isEmpty()) {
@@ -94,5 +117,5 @@ public class manageAccount implements manageAccountLocal {
         }
 
     }
-    
+
 }
