@@ -31,7 +31,7 @@ public class Route implements Serializable {
     private Double basicPremiumEconomyClassFare;
     private Double basicEconomyClassFare;
     
-    private boolean canEBP;
+    private boolean canEBP;  //Can issue e boarding pass
     
 
     public Long getId() {
