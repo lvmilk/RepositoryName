@@ -17,13 +17,22 @@ import javax.persistence.Id;
  */
 @Entity
 public class OfficeStaff implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String offName;
     private String offPassword;
-    private String offType;
+    private String stfType;
+    private String email;
+
+    public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType) {
+        this.setOffName(strOffName);
+        this.setOffPassword(strOffPassword);
+        this.setEmail(strOffEmail);
+        this.setStfType(strStfType);
+    }
 
     public Long getId() {
         return id;
@@ -87,17 +96,31 @@ public class OfficeStaff implements Serializable {
     }
 
     /**
-     * @return the offType
+     * @return the stfType
      */
-    public String getOffType() {
-        return offType;
+    public String getStfType() {
+        return stfType;
     }
 
     /**
-     * @param offType the offType to set
+     * @param stfType the stfType to set
      */
-    public void setOffType(String offType) {
-        this.offType = offType;
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
     }
-    
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

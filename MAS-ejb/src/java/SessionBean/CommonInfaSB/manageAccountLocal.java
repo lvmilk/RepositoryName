@@ -17,6 +17,6 @@ public interface manageAccountLocal {
     
     public boolean validateLogin (String username, String password, String staffType);
     public void addAccount(String username, String password,String email, String stfType);
-    public void addCocpitAcc(String username, String password,String stfType, String licence);
+    public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     
 }

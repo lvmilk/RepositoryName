@@ -49,10 +49,14 @@ public class manageAccount implements manageAccountLocal {
         }
         else if (stfType.equals("officeStaff"))
         {
-            
+            offStaff=new OfficeStaff();
+            offStaff.create(stfType, password,email,stfType);
+            em.persist(offStaff);
         }
         else if (stfType.equals("groundStaff"))
         {
+            grdStaff=new GroundStaff();
+            
             
         }
         else if(stfType.equals("cabin"))
@@ -66,7 +70,7 @@ public class manageAccount implements manageAccountLocal {
     }
    
     @Override
-    public void addCocpitAcc(String username, String password,String stfType, String licence)
+    public void addCocpitAcc(String username, String password, String email, String stfType, String licence)
     {
         
     }

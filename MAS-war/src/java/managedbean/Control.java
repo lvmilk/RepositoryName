@@ -14,6 +14,7 @@ import javax.inject.Named;
  * @author LI HAO
  */
 @Named(value="ctl")
+@RequestScoped
 public class Control {
 
     private Boolean visibility = true;

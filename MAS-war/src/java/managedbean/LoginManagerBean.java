@@ -11,14 +11,14 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage; 
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 
 @Named(value = "login")
-@SessionScoped
+@ViewScoped
 public class LoginManagerBean implements Serializable{
 
     @EJB
@@ -60,6 +60,10 @@ public class LoginManagerBean implements Serializable{
     
     public void createAcc()
     {
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(email);
+        System.out.println(stfType);
         System.out.println("We are in createAcc managed bean");
         mal.addAccount(username, password, email, stfType);
     }
@@ -68,6 +72,7 @@ public class LoginManagerBean implements Serializable{
     public void createCockpitAcc()
     {
         System.out.println("We are in createCockpitAcc managed bean");
+        mal.addCocpitAcc(username, password,email,stfType, licence);
     }
     
 
