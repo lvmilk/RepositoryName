@@ -19,9 +19,21 @@ import javax.persistence.Id;
 public class CabinCrew implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String cbName;
+    private String cbPassword;
+    private String cbType;
+    private String email;
 
+    public void create(String strCbName, String strCbPassword, String email, String strStfType)
+    {
+        this.setCbName(strCbName);
+        this.setCbPassword(strCbPassword);
+        this.setEmail(email);
+        this.setCbType(strStfType);
+    }
+    
     public Long getId() {
         return id;
     }
@@ -53,6 +65,62 @@ public class CabinCrew implements Serializable {
     @Override
     public String toString() {
         return "Entity.CommonInfaEntity.CabinCrew[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the cbName
+     */
+    public String getCbName() {
+        return cbName;
+    }
+
+    /**
+     * @param cbName the cbName to set
+     */
+    public void setCbName(String cbName) {
+        this.cbName = cbName;
+    }
+
+    /**
+     * @return the cbPassword
+     */
+    public String getCbPassword() {
+        return cbPassword;
+    }
+
+    /**
+     * @param cbPassword the cbPassword to set
+     */
+    public void setCbPassword(String cbPassword) {
+        this.cbPassword = cbPassword;
+    }
+
+    /**
+     * @return the cbType
+     */
+    public String getCbType() {
+        return cbType;
+    }
+
+    /**
+     * @param cbType the cbType to set
+     */
+    public void setCbType(String cbType) {
+        this.cbType = cbType;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }

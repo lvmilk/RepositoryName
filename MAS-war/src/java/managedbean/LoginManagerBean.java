@@ -7,16 +7,19 @@ package managedbean;
 
 import SessionBean.CommonInfaSB.manageAccountLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.view.ViewScoped;
 
 @Named(value = "login")
-@RequestScoped
-public class LoginManagerBean {
+@SessionScoped
+public class LoginManagerBean implements Serializable{
 
     @EJB
     private manageAccountLocal mal;
@@ -25,8 +28,7 @@ public class LoginManagerBean {
     private String password;
     private String stfType;
     private String email;
-    private Boolean visibility = true;
-    private Boolean visiCockpit;
+
 
     private String licence;
 
@@ -58,15 +60,16 @@ public class LoginManagerBean {
     
     public void createAcc()
     {
-        
+        System.out.println("We are in createAcc managed bean");
+        mal.addAccount(username, password, email, stfType);
     }
             
 
-    public void register() {
-
-        mal.addAccount(username, password, stfType);
-
+    public void createCockpitAcc()
+    {
+        System.out.println("We are in createCockpitAcc managed bean");
     }
+    
 
     /**
      * @return the username
@@ -110,21 +113,7 @@ public class LoginManagerBean {
         this.stfType = stfType;
     }
     
-    public void valueChanged(ValueChangeEvent event)
-    {
-        Object newValue=event.getNewValue();
-        System.out.println(newValue);
-        if (newValue.equals("cockpit"))
-        {       
-            this.setVisiCockpit(true);
-            this.setVisibility(false);
-        }
-        else
-        {
-            this.setVisibility(true);
-            this.setVisiCockpit(false);
-        }
-    }
+
 
     /**
      * @return the email
@@ -140,33 +129,7 @@ public class LoginManagerBean {
         this.email = email;
     }
 
-    /**
-     * @return the visibility
-     */
-    public Boolean getVisibility() {
-        return visibility;
-    }
 
-    /**
-     * @param visibility the visibility to set
-     */
-    public void setVisibility(Boolean visibility) {
-        this.visibility = visibility;
-    }
-
-    /**
-     * @return the visiCockpit
-     */
-    public Boolean getVisiCockpit() {
-        return visiCockpit;
-    }
-
-    /**
-     * @param visiCockpit the visiCockpit to set
-     */
-    public void setVisiCockpit(Boolean visiCockpit) {
-        this.visiCockpit = visiCockpit;
-    }
 
     /**
      * @return the licence

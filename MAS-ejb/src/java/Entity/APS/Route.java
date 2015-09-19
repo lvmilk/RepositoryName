@@ -3,131 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package Entity.APS;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 /**
  *
- * @author Xu
+ * @author victor/ Xu
  */
 @Entity
 public class Route implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String originIATA;
-    private String destIATA;
+    
+    @ManyToOne
+    private Airport origin = new Airport();
+    @ManyToOne
+    private Airport destination = new Airport();
+    
     private Double distance;
-    private Double basicFcFare;
-    private Double basicBcFare;
-    private Double basicPecFare;
-    private Double basicEcFare;
-    // havenot added aircraft type yet
+    private Double basicFirstClassFare;
+    private Double basicBusinessClassFare;
+    private Double basicPremiumEconomyClassFare;
+    private Double basicEconomyClassFare;
     
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="route")
-    private Airport origin;
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="route")
-    private Airport dest;
+    private boolean canEBP;
+    
 
-    public void create(String originIATA, String destIATA, Double distance, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) {
-        this.originIATA = originIATA;
-        this.destIATA = destIATA;
-        this.distance = distance;
-        this.basicFcFare = basicFcFare;
-        this.basicBcFare = basicBcFare;
-        this.basicPecFare = basicPecFare;
-        this.basicEcFare = basicEcFare;
-    }
-    
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public String getOriginIATA() {
-        return originIATA;
-    }
-
-    public void setOriginIATA(String originIATA) {
-        this.originIATA = originIATA;
-    }
-
-    public String getDestIATA() {
-        return destIATA;
-    }
-
-    public void setDestIATA(String destIATA) {
-        this.destIATA = destIATA;
-    }
-
-    public Double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
-    public Double getBasicFcFare() {
-        return basicFcFare;
-    }
-
-    public void setBasicFcFare(Double basicFcFare) {
-        this.basicFcFare = basicFcFare;
-    }
-
-    public Double getBasicBcFare() {
-        return basicBcFare;
-    }
-
-    public void setBasicBcFare(Double basicBcFare) {
-        this.basicBcFare = basicBcFare;
-    }
-
-    public Double getBasicPecFare() {
-        return basicPecFare;
-    }
-
-    public void setBasicPecFare(Double basicPecFare) {
-        this.basicPecFare = basicPecFare;
-    }
-
-    public Double getBasicEcFare() {
-        return basicEcFare;
-    }
-
-    public void setBasicEcFare(Double basicEcFare) {
-        this.basicEcFare = basicEcFare;
-    }
-
-    public Airport getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Airport origin) {
-        this.origin = origin;
-    }
-
-    public Airport getDest() {
-        return dest;
-    }
-
-    public void setDest(Airport dest) {
-        this.dest = dest;
     }
 
     @Override
@@ -152,7 +64,125 @@ public class Route implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Route[ id=" + id + " ]";
+        String st = "";
+        st += this.id + "\t";
+        st += this.origin.getAirportName() + "\t";
+        st += this.destination.getAirportName() + "\t";
+        st += this.distance + "\t";
+        return st;
     }
 
+    /**
+     * @return the origin
+     */
+    public Airport getOrigin() {
+        return origin;
+    }
+
+    /**
+     * @param origin the origin to set
+     */
+    public void setOrigin(Airport origin) {
+        this.origin = origin;
+    }
+
+    /**
+     * @return the destination
+     */
+    public Airport getDestination() {
+        return destination;
+    }
+
+    /**
+     * @param destination the destination to set
+     */
+    public void setDestination(Airport destination) {
+        this.destination = destination;
+    }
+
+    /**
+     * @return the distance
+     */
+    public Double getDistance() {
+        return distance;
+    }
+
+    /**
+     * @param distance the distance to set
+     */
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    /**
+     * @return the basicFirstClassFare
+     */
+    public Double getBasicFirstClassFare() {
+        return basicFirstClassFare;
+    }
+
+    /**
+     * @param basicFirstClassFare the basicFirstClassFare to set
+     */
+    public void setBasicFirstClassFare(Double basicFirstClassFare) {
+        this.basicFirstClassFare = basicFirstClassFare;
+    }
+
+    /**
+     * @return the basicBusinessClassFare
+     */
+    public Double getBasicBusinessClassFare() {
+        return basicBusinessClassFare;
+    }
+
+    /**
+     * @param basicBusinessClassFare the basicBusinessClassFare to set
+     */
+    public void setBasicBusinessClassFare(Double basicBusinessClassFare) {
+        this.basicBusinessClassFare = basicBusinessClassFare;
+    }
+
+    /**
+     * @return the basicPremiumEconomyClassFare
+     */
+    public Double getBasicPremiumEconomyClassFare() {
+        return basicPremiumEconomyClassFare;
+    }
+
+    /**
+     * @param basicPremiumEconomyClassFare the basicPremiumEconomyClassFare to set
+     */
+    public void setBasicPremiumEconomyClassFare(Double basicPremiumEconomyClassFare) {
+        this.basicPremiumEconomyClassFare = basicPremiumEconomyClassFare;
+    }
+
+    /**
+     * @return the basicEconomyClassFare
+     */
+    public Double getBasicEconomyClassFare() {
+        return basicEconomyClassFare;
+    }
+
+    /**
+     * @param basicEconomyClassFare the basicEconomyClassFare to set
+     */
+    public void setBasicEconomyClassFare(Double basicEconomyClassFare) {
+        this.basicEconomyClassFare = basicEconomyClassFare;
+    }
+
+    /**
+     * @return the canEBP
+     */
+    public boolean isCanEBP() {
+        return canEBP;
+    }
+
+    /**
+     * @param canEBP the canEBP to set
+     */
+    public void setCanEBP(boolean canEBP) {
+        this.canEBP = canEBP;
+    }
+    
 }
+

@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import java.util.*;
 import Entity.*;
 import Entity.CommonInfaEntity.*;
+import static java.time.Clock.system;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -23,9 +24,13 @@ import javax.persistence.Query;
 public class manageAccount implements manageAccountLocal {
 
    @PersistenceContext
-    EntityManager entityManager;
+    EntityManager em;
 //    FFPMember newUser;
     AdminStaff admStaff;
+    OfficeStaff offStaff;
+    GroundStaff grdStaff;
+    CabinCrew cbCrew;
+    CockpitCrew cpCrew;
     
     
     public manageAccount(){
@@ -33,13 +38,14 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void addAccount(String username, String password, String stfType) {
+    public void addAccount(String username, String password, String email,String stfType) {
 //        newUser = new FFPMember();
+        System.out.println("Currently in addAccount");
         if(stfType.equals("administrator"))
         {
             admStaff = new AdminStaff();
             admStaff.create(username, password, stfType);
-            entityManager.persist(admStaff);
+            em.persist(admStaff);
         }
         else if (stfType.equals("officeStaff"))
         {
@@ -51,18 +57,23 @@ public class manageAccount implements manageAccountLocal {
         }
         else if(stfType.equals("cabin"))
         {
-            
-        }
-        else if(stfType.equals("cockpit"))
-        {
-            
+            System.out.println(stfType);
+            cbCrew= new CabinCrew();
+            cbCrew.create(username, password, email, stfType);
+            em.persist(cbCrew);
         }
 
     }
-
+   
+    @Override
+    public void addCocpitAcc(String username, String password,String stfType, String licence)
+    {
+        
+    }
+    
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
-        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
+        Query query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
         query.setParameter("inPassWord", password);
         query.setParameter("inUserName", username);
         query.setParameter("inStfType", stfType);

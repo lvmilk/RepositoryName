@@ -2,166 +2,55 @@ package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
 
 /**
  *
- * @author lucy
+ * @author victor/lucy
  */
 @Entity
 public class AircraftType implements Serializable {
-   // private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String type;
-    private String manufacturer;
+
+    private String manufacturerName;
     private Double maxDistance;
-//    private Double cruiseSpeed;
-//    private Double cruiseAltitude;
+    private Double cruiseSpeed;
+    private Double cruiseAltitude;
     private Double aircraftLength;
     private Double wingspan;    
+    private String minAirspaceClassReq;
+   
+    private Collection<Aircraft> aircrafts = new ArrayList<Aircraft>();
+    private Collection<Seat> SuiteSeatList = new ArrayList<Seat>();
+    private Collection<Seat> fcSeatList = new ArrayList<Seat>();
+    private Collection<Seat> bcSeatList = new ArrayList<Seat>();
+    private Collection<Seat> pecSeatList = new ArrayList<Seat>();
+    private Collection<Seat> ecSeatList = new ArrayList<Seat>();
 
-    private Integer suiteNo;                //number of seat in suite
-    private Integer fcSeatNo;               //number of seat in first class
-    private Integer bcSeatNo;               //number of seat in business class
-    private Integer pecSeatNo;              //number of seat in premium economy class
-    private Integer ecSeatNo;               //number of seat in economy class
+    private long seatMapId;
     
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="AircraftType")
-    private Collection<Aircraft> aircraft=new ArrayList<Aircraft>();
-    
-    public Collection<Aircraft> getAircraft(){
-            return aircraft;
-            }
-    
-    public void setAircraft(Collection<Aircraft> aircraft){
-        this.aircraft=aircraft;
+    public Long getId() {
+        return id;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, 
-                        Integer suiteNo,Integer fcSeatNo,Integer bcSeatNo,Integer pecSeatNo,Integer ecSeatNo){
-        this.setType(type);
-        this.setManufacturer(manufacturer);
-        this.setMaxDistance(maxDistance);
-//        this.setCruiseSpeed(cruiseSpeed);
-//        this.setCruiseAltitude(cruiseAltitude);
-        this.setAircraftLength(aircraftLength);
-        this.setWingspan(wingspan);
-        this.setSuiteNo(suiteNo);
-        this.setFcSeatNo(fcSeatNo);
-        this.setBcSeatNo(bcSeatNo);
-        this.setPecSeatNo(pecSeatNo);
-        this.setEcSeatNo(ecSeatNo);
-    }
-    
-    public String getType() {
-        return type;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public Double getMaxDistance() {
-        return maxDistance;
-    }
-
-    public void setMaxDistance(Double maxDistance) {
-        this.maxDistance = maxDistance;
-    }
-
-//    public Double getCruiseSpeed() {
-//        return cruiseSpeed;
-//    }
-//
-//    public void setCruiseSpeed(Double cruiseSpeed) {
-//        this.cruiseSpeed = cruiseSpeed;
-//    }
-//
-//    public Double getCruiseAltitude() {
-//        return cruiseAltitude;
-//    }
-//
-//    public void setCruiseAltitude(Double cruiseAltitude) {
-//        this.cruiseAltitude = cruiseAltitude;
-//    }
-
-    public Double getAircraftLength() {
-        return aircraftLength;
-    }
-
-    public void setAircraftLength(Double aircraftLength) {
-        this.aircraftLength = aircraftLength;
-    }
-
-    public Double getWingspan() {
-        return wingspan;
-    }
-
-    public void setWingspan(Double wingspan) {
-        this.wingspan = wingspan;
-    }
-
-    public Integer getSuiteNo() {
-        return suiteNo;
-    }
-
-    public void setSuiteNo(Integer suiteNo) {
-        this.suiteNo = suiteNo;
-    }
-
-    public Integer getFcSeatNo() {
-        return fcSeatNo;
-    }
-
-    public void setFcSeatNo(Integer fcSeatNo) {
-        this.fcSeatNo = fcSeatNo;
-    }
-
-    public Integer getBcSeatNo() {
-        return bcSeatNo;
-    }
-
-    public void setBcSeatNo(Integer bcSeatNo) {
-        this.bcSeatNo = bcSeatNo;
-    }
-
-    public Integer getPecSeatNo() {
-        return pecSeatNo;
-    }
-
-    public void setPecSeatNo(Integer pecSeatNo) {
-        this.pecSeatNo = pecSeatNo;
-    }
-
-    public Integer getEcSeatNo() {
-        return ecSeatNo;
-    }
-
-    public void setEcSeatNo(Integer ecSeatNo) {
-        this.ecSeatNo = ecSeatNo;
-    }
-
-    
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (type != null ? type.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -172,7 +61,7 @@ public class AircraftType implements Serializable {
             return false;
         }
         AircraftType other = (AircraftType) object;
-        if ((this.type == null && other.type != null) || (this.type != null && !this.type.equals(other.type))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -180,7 +69,240 @@ public class AircraftType implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.AircraftType[ id=" + type + " ]";
+        String st = "";
+        st += this.id + "\t";
+        st += this.type + "\t";
+        st += this.manufacturerName + "\t";
+        st += this.maxDistance + "\t";
+        st += this.cruiseSpeed + "\t";
+        st += this.cruiseAltitude + "\t";
+        st += this.aircraftLength + "\t";
+        st += this.wingspan + "\t";
+        return st;
+    }
+
+    /**
+     * @return the manufacturerName
+     */
+    public String getManufacturerName() {
+        return manufacturerName;
+    }
+
+    /**
+     * @param manufacturerName the manufacturerName to set
+     */
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    /**
+     * @return the maxDistance
+     */
+    public Double getMaxDistance() {
+        return maxDistance;
+    }
+
+    /**
+     * @param maxDistance the maxDistance to set
+     */
+    public void setMaxDistance(Double maxDistance) {
+        this.maxDistance = maxDistance;
+    }
+
+    /**
+     * @return the cruiseSpeed
+     */
+    public Double getCruiseSpeed() {
+        return cruiseSpeed;
+    }
+
+    /**
+     * @param cruiseSpeed the cruiseSpeed to set
+     */
+    public void setCruiseSpeed(Double cruiseSpeed) {
+        this.cruiseSpeed = cruiseSpeed;
+    }
+
+    /**
+     * @return the cruiseAltitude
+     */
+    public Double getCruiseAltitude() {
+        return cruiseAltitude;
+    }
+
+    /**
+     * @param cruiseAltitude the cruiseAltitude to set
+     */
+    public void setCruiseAltitude(Double cruiseAltitude) {
+        this.cruiseAltitude = cruiseAltitude;
+    }
+
+    /**
+     * @return the aircraftLength
+     */
+    public Double getAircraftLength() {
+        return aircraftLength;
+    }
+
+    /**
+     * @param aircraftLength the aircraftLength to set
+     */
+    public void setAircraftLength(Double aircraftLength) {
+        this.aircraftLength = aircraftLength;
+    }
+
+    /**
+     * @return the wingspan
+     */
+    public Double getWingspan() {
+        return wingspan;
+    }
+
+    /**
+     * @param wingspan the wingspan to set
+     */
+    public void setWingspan(Double wingspan) {
+        this.wingspan = wingspan;
+    }
+
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Aircraft> getAircraft(){
+            return aircrafts;
+    }
+    
+    public void setAircraft(Collection<Aircraft> aircrafts){
+        this.aircrafts=aircrafts;
+    }
+
+    /**
+     * @return the seatMapId
+     */
+    public long getSeatMapId() {
+        return seatMapId;
+    }
+
+    /**
+     * @param seatMapId the seatMapId to set
+     */
+    public void setSeatMapId(long seatMapId) {
+        this.seatMapId = seatMapId;
+    }
+
+//    /**
+//     * @return the seatList
+//     */
+//    public Collection<Seat> getSeatList() {
+//        return seatList;
+//    }
+//
+//    /**
+//     * @param seatList the seatList to set
+//     */
+//    public void setSeatList(Collection<Seat> seatList) {
+//        this.seatList = seatList;
+//    }
+
+    /**
+     * @return the SuiteSeatList
+     */
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Seat> getSuiteSeatList() {
+        return SuiteSeatList;
+    }
+
+    /**
+     * @param SuiteSeatList the SuiteSeatList to set
+     */
+    public void setSuiteSeatList(Collection<Seat> SuiteSeatList) {
+        this.SuiteSeatList = SuiteSeatList;
+    }
+
+    /**
+     * @return the fcSeatList
+     */
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Seat> getFcSeatList() {
+        return fcSeatList;
+    }
+
+    /**
+     * @param fcSeatList the fcSeatList to set
+     */
+    public void setFcSeatList(Collection<Seat> fcSeatList) {
+        this.fcSeatList = fcSeatList;
+    }
+
+    /**
+     * @return the bcSeatList
+     */
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Seat> getBcSeatList() {
+        return bcSeatList;
+    }
+
+    /**
+     * @param bcSeatList the bcSeatList to set
+     */
+    public void setBcSeatList(Collection<Seat> bcSeatList) {
+        this.bcSeatList = bcSeatList;
+    }
+
+    /**
+     * @return the pecSeatList
+     */
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Seat> getPecSeatList() {
+        return pecSeatList;
+    }
+
+    /**
+     * @param pecSeatList the pecSeatList to set
+     */
+    public void setPecSeatList(Collection<Seat> pecSeatList) {
+        this.pecSeatList = pecSeatList;
+    }
+
+    /**
+     * @return the ecSeatList
+     */
+    @OneToMany(cascade={CascadeType.ALL})
+    public Collection<Seat> getEcSeatList() {
+        return ecSeatList;
+    }
+
+    /**
+     * @param ecSeatList the ecSeatList to set
+     */
+    public void setEcSeatList(Collection<Seat> ecSeatList) {
+        this.ecSeatList = ecSeatList;
+    }
+
+    /**
+     * @return the minAirspaceClassReq
+     */
+    public String getMinAirspaceClassReq() {
+        return minAirspaceClassReq;
+    }
+
+    /**
+     * @param minAirspaceClassReq the minAirspaceClassReq to set
+     */
+    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
+        this.minAirspaceClassReq = minAirspaceClassReq;
     }
     
 }
