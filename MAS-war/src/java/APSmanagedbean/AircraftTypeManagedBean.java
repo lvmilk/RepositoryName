@@ -30,16 +30,12 @@ public class AircraftTypeManagedBean {
     private String type;
     private String manufacturer;
     private Double maxDistance;
-//    private Double cruiseSpeed;
-//    private Double cruiseAltitude;
+    private Double cruiseSpeed;
+    private Double cruiseAltitude;
     private Double aircraftLength;
-    private Double wingspan;    
+    private Double wingspan;
+    private String minAirspaceClassReq;    
 
-    private Integer suiteNo;                //number of seat in suite
-    private Integer fcSeatNo;               //number of seat in first class
-    private Integer bcSeatNo;               //number of seat in business class
-    private Integer pecSeatNo;              //number of seat in premium economy class
-    private Integer ecSeatNo;               //number of seat in economy class
     
     private List <AircraftType> typeList;
     private List <AircraftType> selectedList;
@@ -49,7 +45,7 @@ public class AircraftTypeManagedBean {
     }
     
     public void addAircraftType() throws Exception {
-        fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        
     }
     
     public List<AircraftType> getTypeList() {
@@ -62,7 +58,6 @@ public class AircraftTypeManagedBean {
         this.typeList = typeList;
     }
 
-    
     public String getType() {
         return type;
     }
@@ -87,21 +82,21 @@ public class AircraftTypeManagedBean {
         this.maxDistance = maxDistance;
     }
 
-//    public Double getCruiseSpeed() {
-//        return cruiseSpeed;
-//    }
-//
-//    public void setCruiseSpeed(Double cruiseSpeed) {
-//        this.cruiseSpeed = cruiseSpeed;
-//    }
-//
-//    public Double getCruiseAltitude() {
-//        return cruiseAltitude;
-//    }
-//
-//    public void setCruiseAltitude(Double cruiseAltitude) {
-//        this.cruiseAltitude = cruiseAltitude;
-//    }
+    public Double getCruiseSpeed() {
+        return cruiseSpeed;
+    }
+
+    public void setCruiseSpeed(Double cruiseSpeed) {
+        this.cruiseSpeed = cruiseSpeed;
+    }
+
+    public Double getCruiseAltitude() {
+        return cruiseAltitude;
+    }
+
+    public void setCruiseAltitude(Double cruiseAltitude) {
+        this.cruiseAltitude = cruiseAltitude;
+    }
 
     public Double getAircraftLength() {
         return aircraftLength;
@@ -119,44 +114,12 @@ public class AircraftTypeManagedBean {
         this.wingspan = wingspan;
     }
 
-    public Integer getSuiteNo() {
-        return suiteNo;
+    public String getMinAirspaceClassReq() {
+        return minAirspaceClassReq;
     }
 
-    public void setSuiteNo(Integer suiteNo) {
-        this.suiteNo = suiteNo;
-    }
-
-    public Integer getFcSeatNo() {
-        return fcSeatNo;
-    }
-
-    public void setFcSeatNo(Integer fcSeatNo) {
-        this.fcSeatNo = fcSeatNo;
-    }
-
-    public Integer getBcSeatNo() {
-        return bcSeatNo;
-    }
-
-    public void setBcSeatNo(Integer bcSeatNo) {
-        this.bcSeatNo = bcSeatNo;
-    }
-
-    public Integer getPecSeatNo() {
-        return pecSeatNo;
-    }
-
-    public void setPecSeatNo(Integer pecSeatNo) {
-        this.pecSeatNo = pecSeatNo;
-    }
-
-    public Integer getEcSeatNo() {
-        return ecSeatNo;
-    }
-
-    public void setEcSeatNo(Integer ecSeatNo) {
-        this.ecSeatNo = ecSeatNo;
+    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
+        this.minAirspaceClassReq = minAirspaceClassReq;
     }
     
 }
