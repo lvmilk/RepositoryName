@@ -6,6 +6,7 @@
 package SessionBean.APS;
 
 
+import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Exception.MASException;
 import java.util.ArrayList;
