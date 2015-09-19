@@ -19,8 +19,7 @@ import javax.ejb.Remote;
 @Remote
 public interface FleetPlanningInterface {
     public void start();
-    
-    public AircraftType createAircraftType (String type, String manufacturer,Double MaxDis,Double cruiseSpeed, Double cruiseAltitude,Double AircraftLength, Double wingspan,String airspace) throws MASException;
+   public AircraftType createAircraftType (String type, String manufacturer,Double MaxDis,Double cruiseSpeed, Double cruiseAltitude,Double AircraftLength, Double wingspan,String airspace) throws MASException;
     public void deleteAircraftType (long id) throws MASException;
     
 

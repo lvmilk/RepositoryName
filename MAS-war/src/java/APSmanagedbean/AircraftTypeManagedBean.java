@@ -7,26 +7,28 @@ import java.util.*;
 import javax.faces.context.FacesContext;
 import javax.ejb.EJB;
 import Entity.APS.*;
-import SessionBean.APS.FleetPlanningBeanLocal;
+import SessionBean.APS.FleetPlanningInterface;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.ViewScoped;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.SelectableDataModel; 
 /**
  *
  * @author Lu Xi
  */
-@Named(value = "aircraftTypeManagedBean")
+@Named(value = "ATMB")
 @ViewScoped
-public class AircraftTypeManagedBean {
+public class AircraftTypeManagedBean implements Serializable{
     @EJB
-    private FleetPlanningBeanLocal fpb;
+    private FleetPlanningInterface fpi;
     private AircraftType newType = new AircraftType();
- 
+    private List <AircraftType> typeList;
+    private List <AircraftType> selectedList;
     private String type;
     private String manufacturer;
     private Double maxDistance;
@@ -35,24 +37,36 @@ public class AircraftTypeManagedBean {
     private Double aircraftLength;
     private Double wingspan;
     private String minAirspaceClassReq;    
-
-    
-    private List <AircraftType> typeList;
-    private List <AircraftType> selectedList;
-    
+ 
         
     public AircraftTypeManagedBean() {
     }
     
     public void addAircraftType() throws Exception {
+        System.out.println(type);
+        System.out.println(manufacturer);
+        System.out.println(maxDistance);
+        System.out.println(cruiseSpeed);
+        System.out.println(cruiseAltitude);
+        System.out.println(aircraftLength);
         
+        System.out.println(wingspan);
+        System.out.println(minAirspaceClassReq);
+        
+        fpi.createAircraftType(type, manufacturer, maxDistance, cruiseSpeed, cruiseAltitude, aircraftLength, wingspan,minAirspaceClassReq);
+//        typeList.add(newType);
     }
     
-    public List<AircraftType> getTypeList() {
-    typeList=fpb.getAllAircraftType();
-    System.out.println("Type List size is "+typeList.size());
-    return  typeList;
-    }
+//        
+//         public void confirmAdd() throws IOException{
+//           FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");   
+//    }
+    
+//    public List<AircraftType> getTypeList() {
+//    typeList=fpi.getAllAircraftType();
+//    System.out.println("Type List size is "+typeList.size());
+//    return  typeList;
+//    }
 
     public void setTypeList(List<AircraftType> typeList) {
         this.typeList = typeList;

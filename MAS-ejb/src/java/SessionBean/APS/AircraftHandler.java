@@ -43,12 +43,15 @@ public class AircraftHandler{
             ("SELECT AT FROM AircraftType AT WHERE "
                     + "AT.type = :type");
         query.setParameter("type", type);
+        System.out.println("fINDDDDDDDDDDDDDDDDDDDDDD");
         List<AircraftType> result = query.getResultList();
+        System.out.println("fINDDDDDDDDDDDDDDDDDDDDDDDD22222222222222222");
         return result;
     }
 
     
     public boolean hasAircraftType(String type){
+        System.out.println("HASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         List find = this.findAircraftType(type);
         return !find.isEmpty();
     }

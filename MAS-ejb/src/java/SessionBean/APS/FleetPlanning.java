@@ -41,10 +41,17 @@ public class FleetPlanning implements FleetPlanningInterface {
     public AircraftType createAircraftType (String type, String manufacturer, 
         Double MaxDis, Double cruiseSpeed, Double cruiseAltitude,
         Double AircraftLength, Double wingspan, String airspaceReq) throws MASException{
+       
+        System.out.println("00000000000000000AHAHAHAHAHAHAHHAHAHAHA");
+      
         if (handler.hasAircraftType(type)){
             throw new MASException("AT01");
         }
+       
+        System.out.println("11111111111111hAHAHAHAHAHAHAHHAHAHAHA");
+        
         AircraftType at = new AircraftType();
+        System.out.println(at.getId());
         if (type.length() > 0)
             at.setType(type);
         if (manufacturer.length() > 0)
@@ -61,7 +68,9 @@ public class FleetPlanning implements FleetPlanningInterface {
             at.setWingspan(wingspan);  
         if (airspaceReq.length() > 0)
             at.setMinAirspaceClassReq(airspaceReq);
+        System.out.println("hehehehehehehehe");
         handler.addAircraftType(at);
+        System.out.println("CACACACAACCACACACACCACA");
         return at;  
     }
 
