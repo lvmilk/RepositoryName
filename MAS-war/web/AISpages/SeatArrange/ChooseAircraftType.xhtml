@@ -26,36 +26,32 @@
                 <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
 
 
-
                     <h:form>
+                        <p:growl id="msgs" showDetail="true" />
 
+                        <p:panel header="Select An Aircraft Type" style="margin-bottom:10px;">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="AirType" value="Aircraft Type: " />
+                                <p:selectOneMenu id="AirType" value="#{SeatArrangeBean.aircraftType}" style="width:150px">
+                                    <p:ajax listener="#{SeatArrangeBean.onCountryChange}" update="city" />
+                                    <f:selectItem itemLabel="Select Aircraft Type" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{SeatArrangeBean.airTypes}" />
+                                </p:selectOneMenu>
 
+                                
+                        
+                            <p:separator />
 
-                        <!--                            <div><h1>Choose an aircraft model </h1></div>-->
-                        <h:form>
-                            <p:growl id="msgs" showDetail="true" />
-
-                            <p:panel header="Select a Location" style="margin-bottom:10px;">
-                                <h:panelGrid columns="2" cellpadding="5">
-                                    <p:outputLabel for="country" value="Country: " />
-                                    <p:selectOneMenu id="country" value="#{AircraftTypeView.country}" required="true" requiredMessage="Please select one aircraft type" style="width:150px">
-                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                        <f:selectItem itemLabel="Select Country" itemValue="#{null}"  />
-                                        <f:selectItems value="#{dropdownView.countries}" />
-                                    </p:selectOneMenu>
-
-                               
-                                </h:panelGrid>
-
-                                <p:separator />
-
-                                <p:commandButton value="Submit" update="msgs" actionListener="#{dropdownView.displayLocation}" icon="ui-icon-check" />
-                            </p:panel>
-                        </h:form>
-                        <p:resizable for="selectOne" /><p:draggable for="selectOne" />
-
-
+                            <p:commandButton value="Submit" update="msgs" actionListener="#{dropdownView.displayLocation}" icon="ui-icon-check" />
+                        </p:panel>
                     </h:form>
+
+
+
+
+
+
+
 
 
 
