@@ -23,44 +23,23 @@ public class LoginManagerBean {
 
     private String username;
     private String password;
-    private String admType;
+    private String stfType;
     private String email;
+    private Boolean visibility = true;
+    private Boolean visiCockpit;
 
-//    private String title;
-//    private String surname;
-//    private String givenName;
-//    private String mobilePhone;
-//    private String officePhone;
-//    private String email;
-//    private String livingCountry;
-//    private String livingState;
-//    private String livingCity;
-//    private String livingAddress;
-//    private String postalCode;
-//
-//    private String gender;
-//    private String nationality;
-//    private String birthday;
-//    private String travelDocumentIssueCountry;
-//    private String travelDocumentType;
-//    private String travelDocumentNo;
-//    private String travelDocumentIssueDate;
-//    private String travelDocumentExpireDate;
-//
-//    private String FFPNo;
-//    private String JoinDate;
-//    private String membershipTier;
-//    private long MileAccountId;
+    private String licence;
+
     public void logIn() throws IOException {
 
         Boolean validity;
-        validity = mal.validateLogin(username, password, admType);
+        validity = mal.validateLogin(username, password, stfType);
         
-        System.out.println(admType);
+        System.out.println(stfType);
         
         if (validity) {
             System.out.println("User exists.");
-            if (admType.equals("administrator")) {
+            if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
             }
             else
@@ -76,10 +55,16 @@ public class LoginManagerBean {
 
         }
     }
+    
+    public void createAcc()
+    {
+        
+    }
+            
 
     public void register() {
 
-        mal.addAccount(username, password, admType);
+        mal.addAccount(username, password, stfType);
 
     }
 
@@ -114,21 +99,31 @@ public class LoginManagerBean {
     /**
      * @return the type
      */
-    public String getAdmType() {
-        return admType;
+    public String getStfType() {
+        return stfType;
     }
 
     /**
      * @param type the type to set
      */
-    public void setAdmType(String admType) {
-        this.admType = admType;
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
     }
     
     public void valueChanged(ValueChangeEvent event)
     {
         Object newValue=event.getNewValue();
         System.out.println(newValue);
+        if (newValue.equals("cockpit"))
+        {       
+            this.setVisiCockpit(true);
+            this.setVisibility(false);
+        }
+        else
+        {
+            this.setVisibility(true);
+            this.setVisiCockpit(false);
+        }
     }
 
     /**
@@ -143,5 +138,47 @@ public class LoginManagerBean {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the visibility
+     */
+    public Boolean getVisibility() {
+        return visibility;
+    }
+
+    /**
+     * @param visibility the visibility to set
+     */
+    public void setVisibility(Boolean visibility) {
+        this.visibility = visibility;
+    }
+
+    /**
+     * @return the visiCockpit
+     */
+    public Boolean getVisiCockpit() {
+        return visiCockpit;
+    }
+
+    /**
+     * @param visiCockpit the visiCockpit to set
+     */
+    public void setVisiCockpit(Boolean visiCockpit) {
+        this.visiCockpit = visiCockpit;
+    }
+
+    /**
+     * @return the licence
+     */
+    public String getLicence() {
+        return licence;
+    }
+
+    /**
+     * @param licence the licence to set
+     */
+    public void setLicence(String licence) {
+        this.licence = licence;
     }
 }

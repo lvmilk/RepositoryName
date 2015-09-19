@@ -35,15 +35,34 @@ public class manageAccount implements manageAccountLocal {
     @Override
     public void addAccount(String username, String password, String stfType) {
 //        newUser = new FFPMember();
-        admStaff = new AdminStaff();
-        admStaff.create(username, password, stfType);
-        entityManager.persist(admStaff);
+        if(stfType.equals("administrator"))
+        {
+            admStaff = new AdminStaff();
+            admStaff.create(username, password, stfType);
+            entityManager.persist(admStaff);
+        }
+        else if (stfType.equals("officeStaff"))
+        {
+            
+        }
+        else if (stfType.equals("groundStaff"))
+        {
+            
+        }
+        else if(stfType.equals("cabin"))
+        {
+            
+        }
+        else if(stfType.equals("cockpit"))
+        {
+            
+        }
 
     }
 
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
-        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.admType=:inStfType");
+        Query query = entityManager.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
         query.setParameter("inPassWord", password);
         query.setParameter("inUserName", username);
         query.setParameter("inStfType", stfType);
