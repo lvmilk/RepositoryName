@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Flight;
-import EntityMAS.APS.FlightPackage;
-import EntityMAS.APS.GenericFlight;
+import Entity.APS.Flight;
+import Entity.APS.FlightPackage;
+import Entity.APS.GenericFlight;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;

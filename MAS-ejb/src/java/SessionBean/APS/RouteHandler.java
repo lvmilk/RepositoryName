@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Airport;
-import EntityMAS.APS.Route;
+import Entity.APS.Airport;
+import Entity.APS.Route;
 import java.util.List;
 
 import javax.persistence.EntityManager;

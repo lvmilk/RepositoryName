@@ -1,4 +1,4 @@
-package EntityMAS.APS;
+package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;

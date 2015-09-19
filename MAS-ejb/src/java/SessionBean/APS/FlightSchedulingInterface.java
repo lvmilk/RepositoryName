@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
 import Exception.MASException;
 import java.util.ArrayList;

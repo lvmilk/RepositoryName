@@ -1,7 +1,7 @@
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Aircraft;
-import EntityMAS.APS.AircraftType;
+import Entity.APS.Aircraft;
+import Entity.APS.AircraftType;
 import Exception.MASException;
 import java.sql.ResultSet;
 import java.util.ArrayList;

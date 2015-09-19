@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package EntityMAS.APS;
+package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Aircraft;
-import EntityMAS.APS.AircraftType;
+
+import Entity.APS.AircraftType;
 import Exception.MASException;
 import java.util.ArrayList;
 import javax.ejb.Remote;
@@ -22,7 +22,6 @@ public interface FleetPlanningInterface {
     public AircraftType createAircraftType (String type, String manufacturer,Double MaxDis,Double cruiseSpeed, Double cruiseAltitude,Double AircraftLength, Double wingspan,String airspace) throws MASException;
     public void deleteAircraftType (long id) throws MASException;
     
-    public void printTest();
 
     public ArrayList listAircraftType();
 

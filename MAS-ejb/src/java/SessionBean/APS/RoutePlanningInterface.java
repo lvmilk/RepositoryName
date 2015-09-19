@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Airport;
-import EntityMAS.APS.Route;
+import Entity.APS.Airport;
+import Entity.APS.Route;
 import Exception.MASException;
 import java.util.ArrayList;
 import javax.ejb.Remote;

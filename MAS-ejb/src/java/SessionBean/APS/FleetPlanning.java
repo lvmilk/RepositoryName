@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBeanMAS.APS;
+package SessionBean.APS;
 
-import EntityMAS.APS.Aircraft;
-import EntityMAS.APS.AircraftType;
-import EntityMAS.APS.TestEntity;
+import Entity.APS.Aircraft;
+import Entity.APS.AircraftType;
 import Exception.MASException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +31,7 @@ public class FleetPlanning implements FleetPlanningInterface {
         handler = new AircraftHandler();
         handler.setEm(em);
     }
-    @Override
-    public void printTest(){
-        System.out.println("Sessionbean set!");
-        TestEntity te = new TestEntity();
-        te.setValue("Hello!");
-        em.persist(te);
-        System.out.println("Entity persisted!");
-    }
+
     public AircraftHandler getAircraftHandler (){
         return handler;
     }
