@@ -19,27 +19,17 @@
 
 
                         <p:outputLabel for="type" value="Aircraft Type:" />
-                        <p:inputText id="type" value="#{ATMB.type}" required="true" validatorMessage="Please enter an Uppercase Alphabet" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
-                            <!--<f:validateRegex pattern="((?=.*\d)(?=.*[A-Z\\s])(?=.*[-]).{1,20})" />-->
+                        <p:inputText id="type" value="#{ATMB.type}" required="true" validatorMessage="Aircraft Type: please enter an UPPERCASE Alphabet" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
+                            <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z\\s])(?=.*[-]).{1,20})" />
                         </p:inputText>
 
                         <p:outputLabel for="manufacturer" value="Manufacturer: " />
-                        <p:inputText id="manufacturer"  value="#{ATMB.manufacturer}" label="manufacturer" required="true"   requiredMessage="Please enter the manufacturer name" size="50">
-                            <!--<f:validateRegex pattern="[a-zA-Z\\s]*"/>-->
+                        <p:inputText id="manufacturer"  value="#{ATMB.manufacturer}" label="manufacturer" required="true" validatorMessage="Manufacturer: please enter a valid alphabet"  requiredMessage="Please enter the manufacturer name" size="50">
+                            <f:validateRegex pattern="[a-zA-Z\\s]*"/>
                         </p:inputText>
 
                         <p:outputLabel for="maxDistance" value="Maximum Distance (km):" />
                         <p:inputText id="maxDistance" value="#{ATMB.maxDistance}" label="Maximum Distance (km)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter maximum distance of the aircraft type" size="50">
-                            <f:validateDoubleRange minimum="0.0" />
-                        </p:inputText>
-
-                        <p:outputLabel for="cruiseSpeed" value="Normal Cruise Speed (knots):" />
-                        <p:inputText id="cruiseSpeed" value="#{ATMB.cruiseSpeed}" label="Normal Cruise Speed (knots)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter normal cruise speed of the aircraft type" size="50">
-                            <f:validateDoubleRange minimum="0.0" />
-                        </p:inputText>
-                        
-                         <p:outputLabel for="cruiseAltitude" value="Max Cruise Altitude (ft):" />
-                         <p:inputText id="cruiseAltitude" value="#{ATMB.cruiseAltitude}" label="Max Cruise Altitude (ft)" required="true" validatorMessage="Please enter a valid number"  requiredMessage="Please enter max cruise altitude of the aircraft type" size="50">
                             <f:validateDoubleRange minimum="0.0" />
                         </p:inputText>
                                                   
@@ -53,15 +43,10 @@
                             <f:validateDoubleRange minimum="0.0" />
                         </p:inputText>
 
-                        <p:outputLabel for="minAirspaceClassReq" value="Min Airspace Class Requirement (e.g. 4F):" />
-                        <p:inputText id="minAirspaceClassReq" value="#{ATMB.minAirspaceClassReq}" label="Min Airspace Class Requirement" required="true" validatorMessage="Please enter a number + an Uppercase Alphabet"  requiredMessage="Please enter minimum airspace class requirement of the aircraft type" size="50">
-                            <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z]).{1,2})"  /> 
-                        </p:inputText>
-
 
                     </h:panelGrid>
 
-                    <p:commandButton value="Next" update="@form" style="margin-right:50" actionListener="#{ATMB.addAircraftType()}"  icon="ui-icon-check" />
+                    <p:commandButton value="Submit" update="@form" style="margin-right:50" actionListener="#{ATMB.addAircraftType()}"  icon="ui-icon-check" />
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />
