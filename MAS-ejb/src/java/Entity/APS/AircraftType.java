@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class AircraftType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,18 +28,24 @@ public class AircraftType implements Serializable {
     private Double cruiseSpeed;
     private Double cruiseAltitude;
     private Double aircraftLength;
-    private Double wingspan;    
+    private Double wingspan;
     private String minAirspaceClassReq;
-   
-    private Collection<Aircraft> aircrafts = new ArrayList<Aircraft>();
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Collection<Aircraft> aircrafts ;
+    @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Seat> SuiteSeatList = new ArrayList<Seat>();
+    @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Seat> fcSeatList = new ArrayList<Seat>();
+    @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Seat> bcSeatList = new ArrayList<Seat>();
+    @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Seat> pecSeatList = new ArrayList<Seat>();
+    @OneToMany(cascade = {CascadeType.ALL})
     private Collection<Seat> ecSeatList = new ArrayList<Seat>();
 
     private long seatMapId;
-    
+
     public Long getId() {
         return id;
     }
@@ -179,13 +186,12 @@ public class AircraftType implements Serializable {
         this.wingspan = wingspan;
     }
 
-    @OneToMany(cascade={CascadeType.ALL})
-    public Collection<Aircraft> getAircraft(){
-            return aircrafts;
+    public Collection<Aircraft> getAircraft() {
+        return aircrafts;
     }
-    
-    public void setAircraft(Collection<Aircraft> aircrafts){
-        this.aircrafts=aircrafts;
+
+    public void setAircraft(Collection<Aircraft> aircrafts) {
+        this.aircrafts = aircrafts;
     }
 
     /**
@@ -215,11 +221,9 @@ public class AircraftType implements Serializable {
 //    public void setSeatList(Collection<Seat> seatList) {
 //        this.seatList = seatList;
 //    }
-
     /**
      * @return the SuiteSeatList
      */
-    @OneToMany(cascade={CascadeType.ALL})
     public Collection<Seat> getSuiteSeatList() {
         return SuiteSeatList;
     }
@@ -234,7 +238,6 @@ public class AircraftType implements Serializable {
     /**
      * @return the fcSeatList
      */
-    @OneToMany(cascade={CascadeType.ALL})
     public Collection<Seat> getFcSeatList() {
         return fcSeatList;
     }
@@ -249,7 +252,6 @@ public class AircraftType implements Serializable {
     /**
      * @return the bcSeatList
      */
-    @OneToMany(cascade={CascadeType.ALL})
     public Collection<Seat> getBcSeatList() {
         return bcSeatList;
     }
@@ -264,7 +266,6 @@ public class AircraftType implements Serializable {
     /**
      * @return the pecSeatList
      */
-    @OneToMany(cascade={CascadeType.ALL})
     public Collection<Seat> getPecSeatList() {
         return pecSeatList;
     }
@@ -279,7 +280,6 @@ public class AircraftType implements Serializable {
     /**
      * @return the ecSeatList
      */
-    @OneToMany(cascade={CascadeType.ALL})
     public Collection<Seat> getEcSeatList() {
         return ecSeatList;
     }
@@ -304,5 +304,5 @@ public class AircraftType implements Serializable {
     public void setMinAirspaceClassReq(String minAirspaceClassReq) {
         this.minAirspaceClassReq = minAirspaceClassReq;
     }
-    
+
 }
