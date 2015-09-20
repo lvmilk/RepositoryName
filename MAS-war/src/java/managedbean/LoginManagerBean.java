@@ -11,7 +11,7 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage; 
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
@@ -19,16 +19,15 @@ import javax.faces.view.ViewScoped;
 
 @Named(value = "login")
 @ViewScoped
-public class LoginManagerBean implements Serializable{
+public class LoginManagerBean implements Serializable {
 
     @EJB
     private manageAccountLocal mal;
 
     private String username;
     private String password;
-    private String stfType="officeStaff";
+    private String stfType = "officeStaff";
     private String email;
-
 
     private String licence;
 
@@ -36,16 +35,14 @@ public class LoginManagerBean implements Serializable{
 
         Boolean validity;
         validity = mal.validateLogin(username, password, stfType);
-        
+
         System.out.println(stfType);
-        
+
         if (validity) {
             System.out.println("User exists.");
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
-            }
-            else
-            {
+            } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("staffWorkspace.xhtml");
             }
         } else {
@@ -57,24 +54,32 @@ public class LoginManagerBean implements Serializable{
 
         }
     }
-    
-    public void createAcc()
-    {
-        System.out.println(username);
-        System.out.println(password);
-        System.out.println(email);
-        System.out.println(stfType);
-        System.out.println("We are in createAcc managed bean");
-        mal.addAccount(username, password, email, stfType);
-    }
-            
 
-    public void createCockpitAcc()
-    {
-        System.out.println("We are in createCockpitAcc managed bean");
-        mal.addCocpitAcc(username, password,email,stfType,licence);
+    public void createAcc() {
+        boolean blCreateAcc;
+
+        blCreateAcc = mal.checkAccDuplicate(username, stfType);
+
+        if (!blCreateAcc) {
+            System.out.println("Account exists");
+            System.out.println(username);
+            System.out.println(password);
+            System.out.println(email);
+            System.out.println(stfType);
+            System.out.println("We are in createAcc managed bean");
+            mal.addAccount(username, password, email, stfType);
+        } else {
+            System.out.println("Account exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account exists"));
+        }
+
     }
-    
+
+    public void createCockpitAcc() {
+        System.out.println("We are in createCockpitAcc managed bean");
+        mal.addCocpitAcc(username, password, email, stfType, licence);
+    }
 
     /**
      * @return the username
@@ -117,8 +122,6 @@ public class LoginManagerBean implements Serializable{
     public void setStfType(String stfType) {
         this.stfType = stfType;
     }
-    
-
 
     /**
      * @return the email
@@ -133,8 +136,6 @@ public class LoginManagerBean implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
     /**
      * @return the licence

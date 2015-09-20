@@ -35,7 +35,14 @@ public class manageAccount implements manageAccountLocal {
     public manageAccount() {
 
     }
-
+    
+    @Override
+    public boolean checkAccDuplicate(String username,String stfType)
+    {
+        return false;
+        
+    }
+    
     @Override
     public void addAccount(String username, String password, String email, String stfType) {
 //        newUser = new FFPMember();
@@ -58,7 +65,7 @@ public class manageAccount implements manageAccountLocal {
             cbCrew.create(username, password, email, stfType);
             em.persist(cbCrew);
         }
-
+        
     }
 
     @Override
