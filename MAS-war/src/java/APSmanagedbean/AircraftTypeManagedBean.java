@@ -7,7 +7,7 @@ import java.util.*;
 import javax.faces.context.FacesContext;
 import javax.ejb.EJB;
 import Entity.APS.*;
-import SessionBean.APS.FleetPlanningInterface;
+import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 
@@ -25,18 +25,18 @@ import org.primefaces.model.SelectableDataModel;
 @ViewScoped
 public class AircraftTypeManagedBean implements Serializable{
     @EJB
-    private FleetPlanningInterface fpi;
+    private FleetPlanningBeanLocal fpb;
     private AircraftType newType = new AircraftType();
     private List <AircraftType> typeList;
     private List <AircraftType> selectedList;
     private String type;
     private String manufacturer;
     private Double maxDistance;
-    private Double cruiseSpeed;
-    private Double cruiseAltitude;
+//    private Double cruiseSpeed;
+//    private Double cruiseAltitude;
     private Double aircraftLength;
     private Double wingspan;
-    private String minAirspaceClassReq;    
+//    private String minAirspaceClassReq;    
  
         
     public AircraftTypeManagedBean() {
@@ -46,15 +46,15 @@ public class AircraftTypeManagedBean implements Serializable{
         System.out.println(type);
         System.out.println(manufacturer);
         System.out.println(maxDistance);
-        System.out.println(cruiseSpeed);
-        System.out.println(cruiseAltitude);
+//        System.out.println(cruiseSpeed);
+//        System.out.println(cruiseAltitude);
         System.out.println(aircraftLength);
-        
         System.out.println(wingspan);
-        System.out.println(minAirspaceClassReq);
-        
-        fpi.createAircraftType(type, manufacturer, maxDistance, cruiseSpeed, cruiseAltitude, aircraftLength, wingspan,minAirspaceClassReq);
-//        typeList.add(newType);
+//        System.out.println(minAirspaceClassReq);
+
+        fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
+ //       typeList.add(newType);
     }
     
 //        
@@ -96,21 +96,21 @@ public class AircraftTypeManagedBean implements Serializable{
         this.maxDistance = maxDistance;
     }
 
-    public Double getCruiseSpeed() {
-        return cruiseSpeed;
-    }
-
-    public void setCruiseSpeed(Double cruiseSpeed) {
-        this.cruiseSpeed = cruiseSpeed;
-    }
-
-    public Double getCruiseAltitude() {
-        return cruiseAltitude;
-    }
-
-    public void setCruiseAltitude(Double cruiseAltitude) {
-        this.cruiseAltitude = cruiseAltitude;
-    }
+//    public Double getCruiseSpeed() {
+//        return cruiseSpeed;
+//    }
+//
+//    public void setCruiseSpeed(Double cruiseSpeed) {
+//        this.cruiseSpeed = cruiseSpeed;
+//    }
+//
+//    public Double getCruiseAltitude() {
+//        return cruiseAltitude;
+//    }
+//
+//    public void setCruiseAltitude(Double cruiseAltitude) {
+//        this.cruiseAltitude = cruiseAltitude;
+//    }
 
     public Double getAircraftLength() {
         return aircraftLength;
@@ -127,13 +127,13 @@ public class AircraftTypeManagedBean implements Serializable{
     public void setWingspan(Double wingspan) {
         this.wingspan = wingspan;
     }
-
-    public String getMinAirspaceClassReq() {
-        return minAirspaceClassReq;
-    }
-
-    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
-        this.minAirspaceClassReq = minAirspaceClassReq;
-    }
+//
+//    public String getMinAirspaceClassReq() {
+//        return minAirspaceClassReq;
+//    }
+//
+//    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
+//        this.minAirspaceClassReq = minAirspaceClassReq;
+//    }
     
 }

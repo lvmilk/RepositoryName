@@ -28,14 +28,13 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, 
-                        Integer suiteNo,Integer fcSeatNo,Integer bcSeatNo,Integer pecSeatNo,Integer ecSeatNo)throws Exception{
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan)throws Exception{
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
             throw new Exception("AircraftType exists.");
         }
         aircraftType =new AircraftType();
-//        aircraftType.create(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        aircraftType.create(type, manufacturer, maxDistance, aircraftLength, wingspan);
         em.persist(aircraftType); 
         em.flush();
     }
@@ -47,12 +46,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist..");
         }
-//        aircraftType.setManufacturer(manufacturer);
+        aircraftType.setManufacturer(manufacturer);
         aircraftType.setMaxDistance(maxDistance);
-//        aircraftType.setCruiseSpeed(cruiseSpeed);
-//        aircraftType.setCruiseAltitude(cruiseAltitude);
-//        aircraftType.setAircraftLength(aircraftLength);
-//        aircraftType.setWingspan(wingspan);
+        aircraftType.setAircraftLength(aircraftLength);
+        aircraftType.setWingspan(wingspan);
 //        aircraftType.setSuiteNo(suiteNo);
 //        aircraftType.setFcSeatNo(fcSeatNo);
 //        aircraftType.setBcSeatNo(bcSeatNo);
