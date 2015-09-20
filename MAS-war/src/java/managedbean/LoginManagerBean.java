@@ -16,6 +16,7 @@ import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
+import managedbean.Control;
 
 @Named(value = "login")
 @ViewScoped
@@ -68,6 +69,9 @@ public class LoginManagerBean implements Serializable {
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
             mal.addAccount(username, password, email, stfType);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Created Successfully"));
+            
         } else {
             System.out.println("Account exists");
             FacesContext.getCurrentInstance().addMessage(null,
@@ -77,8 +81,18 @@ public class LoginManagerBean implements Serializable {
     }
 
     public void createCockpitAcc() {
-        System.out.println("We are in createCockpitAcc managed bean");
-        mal.addCocpitAcc(username, password, email, stfType, licence);
+        boolean blCreateAcc;
+        blCreateAcc = mal.checkAccDuplicate(username, stfType);
+        if (!blCreateAcc) {
+            System.out.println("We are in createCockpitAcc managed bean");
+            mal.addCocpitAcc(username, password, email, stfType, licence);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Created Successfully"));
+        } else {
+            System.out.println("Account exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account exists"));
+        }
     }
 
     /**
