@@ -19,4 +19,5 @@ public interface manageAccountLocal {
     public void addAccount(String username, String password,String email, String stfType);
     public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     public boolean checkAccDuplicate(String username,String stfType);
+    public void delAcc(String username, String stfType);
 }

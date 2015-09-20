@@ -144,5 +144,12 @@ public class manageAccount implements manageAccountLocal {
         }
 
     }
+    
+    @Override
+    public void delAcc(String username, String stfType)
+    {
+        
+    }
+    
 
 }
