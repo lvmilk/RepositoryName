@@ -17,17 +17,8 @@
 
             <h:form>
 
-                <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
-
-                    <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
-
-                        <p:ajax event="rowSelectCheckbox" listener="#{ATMB.check}"   />  
-
-                        <f:facet name="header">  
-                            Checkbox Based Deletion  
-                        </f:facet>  
-
-                        <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      
+                <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
+                    <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
 
                         <p:column headerText="Type" sortBy="#{AircraftType.type}">
@@ -61,10 +52,13 @@
                         <p:column headerText="# of Seat in Economy Class">
                             <h:outputText value="#{AircraftType.ecSeatNo}" />
                         </p:column>
-                        
-                    </p:dataTable>
 
-                    <p:commandButton value="Delete"  action="#{ATMB.confirmDeleteType()}" icon="ui-icon-check" />
+                        <p:column headerText="Edit">
+                            <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />
+
+                        </p:column>
+
+                    </p:dataTable>
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />
@@ -81,4 +75,3 @@
 
     </h:body>
 </html>
-

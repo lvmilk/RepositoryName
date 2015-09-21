@@ -52,7 +52,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
     
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double cruiseSpeed, Double cruiseAltitude, Double aircraftLength, Double wingspan, 
+    public void editAircraftType(String type,String manufacturer, Double maxDistance,  Double aircraftLength, Double wingspan, 
                         Integer suiteNo,Integer fcSeatNo,Integer bcSeatNo,Integer pecSeatNo,Integer ecSeatNo)throws Exception{
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
@@ -70,18 +70,31 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         em.merge(aircraftType);
         em.flush();
     }
+//    
+//    @Override
+//    public void deleteAircraftType(String type)throws Exception{
+//        aircraftType = em.find(AircraftType.class, type);
+//        if (aircraftType == null) {
+//            throw new Exception("AircraftType does not exist.");
+//        }
+//        if(aircraftType.getAircraft().isEmpty())
+//            em.remove(aircraftType);
+//        else
+//            throw new Exception("Cannot delete.This aircraft type is linked with an aircraft.");
+//        em.flush();
+//    }
     
     @Override
-    public void deleteAircraftType(String type)throws Exception{
-        aircraftType = em.find(AircraftType.class, type);
-        if (aircraftType == null) {
-            throw new Exception("AircraftType does not exist.");
+        public boolean deleteAircraftType(ArrayList<AircraftType> selectedClass) {
+        if (selectedClass.size() > 0) {
+            for (int i = 0; i < selectedClass.size(); i++) {
+                String keyType = selectedClass.get(i).getType();
+                AircraftType aircraftType = em.find(AircraftType.class, keyType);
+                em.remove(aircraftType);
+            }
+            return true;
         }
-        if(aircraftType.getAircraft().isEmpty())
-            em.remove(aircraftType);
-        else
-            throw new Exception("Cannot delete.This aircraft type is linked with an aircraft.");
-        em.flush();
+        return false;
     }
     
     @Override
