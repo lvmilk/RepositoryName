@@ -104,6 +104,56 @@ public class manageAccount implements manageAccountLocal {
         em.persist(cpCrew);
     }
 
+    public boolean checkNameDuplicate(String username, String usernameEdited) {
+        if (username.equals(usernameEdited)) {
+            return false;
+        } else {
+            Query query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.offName = :inUserName");
+            query.setParameter("inUserName", usernameEdited);
+            List resultList = new ArrayList<OfficeStaff>();
+            resultList = (List) query.getResultList();
+
+            if (resultList.isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    public boolean checkEmailDuplicate(String email, String emailEdited) {
+        if (email.equals(emailEdited)) {
+            return false;
+        } else {
+            Query query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.email = :inUserEmail");
+            query.setParameter("inUserEmail", emailEdited);
+            List resultList = new ArrayList<OfficeStaff>();
+            resultList = (List) query.getResultList();
+
+            if (resultList.isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    public void editOfficeStaff(String usernameEdited, String stfType, String password, String emailEdited) {
+        OfficeStaff officeStaff = em.find(OfficeStaff.class, usernameEdited);
+        if (officeStaff == null) {
+            addAccount(usernameEdited, stfType, password, emailEdited);
+        } else {
+            officeStaff.setOffName(usernameEdited);
+            officeStaff.setStfType(stfType);
+            officeStaff.setOffPassword(password);
+            officeStaff.setEmail(emailEdited);
+
+            em.merge(officeStaff);
+            em.flush();
+        }
+
+    }
+
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
         Query query = null;
@@ -150,7 +200,7 @@ public class manageAccount implements manageAccountLocal {
         if (selectedOffStf.size() > 0) {
             for (int i = 0; i < selectedOffStf.size(); i++) {
                 String pKey = selectedOffStf.get(i).getOffName();
-                OfficeStaff oStaff = em.find(OfficeStaff.class,pKey);
+                OfficeStaff oStaff = em.find(OfficeStaff.class, pKey);
 
                 em.remove(oStaff);
 
@@ -160,7 +210,6 @@ public class manageAccount implements manageAccountLocal {
 
         }
         return false;
-
 
     }
 
@@ -172,6 +221,10 @@ public class manageAccount implements manageAccountLocal {
             System.out.println("List is empty");
         } else {
             System.out.println("List data exists");
+            System.out.println(resultList.get(0).getOffName());
+            System.out.println(resultList.get(0).getStfType());
+            System.out.println(resultList.get(0).getOffPassword());
+            System.out.println(resultList.get(0).getEmail());
         }
 
         return resultList;
@@ -185,6 +238,7 @@ public class manageAccount implements manageAccountLocal {
             System.out.println("List is empty");
         } else {
             System.out.println("List data exists");
+
         }
 
         return resultList;
