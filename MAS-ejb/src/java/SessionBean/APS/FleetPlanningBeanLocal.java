@@ -38,5 +38,7 @@ public interface FleetPlanningBeanLocal {
 
        public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan) throws Exception;
 
+    public boolean checkDuplicate(String type);
+
     
 }

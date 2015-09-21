@@ -16,60 +16,62 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.SelectableDataModel; 
+import org.primefaces.model.SelectableDataModel;
+
 /**
  *
  * @author Lu Xi
  */
 @Named(value = "ATMB")
 @ViewScoped
-public class AircraftTypeManagedBean implements Serializable{
+public class AircraftTypeManagedBean implements Serializable {
+
     @EJB
     private FleetPlanningBeanLocal fpb;
     private AircraftType newType = new AircraftType();
-    private List <AircraftType> typeList;
-    private List <AircraftType> selectedList;
+    private List<AircraftType> typeList;
+    private List<AircraftType> selectedList;
     private String type;
     private String manufacturer;
     private Double maxDistance;
-//    private Double cruiseSpeed;
-//    private Double cruiseAltitude;
     private Double aircraftLength;
     private Double wingspan;
-//    private String minAirspaceClassReq;    
- 
-        
+
     public AircraftTypeManagedBean() {
+        selectedList = new ArrayList<>();
     }
-    
+
     public void addAircraftType() throws Exception {
         System.out.println(type);
         System.out.println(manufacturer);
         System.out.println(maxDistance);
-//        System.out.println(cruiseSpeed);
-//        System.out.println(cruiseAltitude);
         System.out.println(aircraftLength);
         System.out.println(wingspan);
-//        System.out.println(minAirspaceClassReq);
 
-        fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
- //       typeList.add(newType);
+        if (!fpb.checkDuplicate(type)) {
+            fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
+        }
     }
-    
-//        
-//         public void confirmAdd() throws IOException{
-//           FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");   
-//    }
-    
-//    public List<AircraftType> getTypeList() {
-//    typeList=fpi.getAllAircraftType();
-//    System.out.println("Type List size is "+typeList.size());
-//    return  typeList;
-//    }
+
+    public List<AircraftType> getTypeList() {
+        typeList = fpb.getAllAircraftType();
+        System.out.println("Type List size is " + typeList.size());
+        return typeList;
+    }
 
     public void setTypeList(List<AircraftType> typeList) {
         this.typeList = typeList;
+    }
+
+    public List<AircraftType> getSelectedClass() {
+        return selectedList;
+    }
+
+    public void setSelectedClass(List<AircraftType> selectedList) {
+        this.selectedList = selectedList;
     }
 
     public String getType() {
@@ -96,22 +98,6 @@ public class AircraftTypeManagedBean implements Serializable{
         this.maxDistance = maxDistance;
     }
 
-//    public Double getCruiseSpeed() {
-//        return cruiseSpeed;
-//    }
-//
-//    public void setCruiseSpeed(Double cruiseSpeed) {
-//        this.cruiseSpeed = cruiseSpeed;
-//    }
-//
-//    public Double getCruiseAltitude() {
-//        return cruiseAltitude;
-//    }
-//
-//    public void setCruiseAltitude(Double cruiseAltitude) {
-//        this.cruiseAltitude = cruiseAltitude;
-//    }
-
     public Double getAircraftLength() {
         return aircraftLength;
     }
@@ -127,13 +113,5 @@ public class AircraftTypeManagedBean implements Serializable{
     public void setWingspan(Double wingspan) {
         this.wingspan = wingspan;
     }
-//
-//    public String getMinAirspaceClassReq() {
-//        return minAirspaceClassReq;
-//    }
-//
-//    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
-//        this.minAirspaceClassReq = minAirspaceClassReq;
-//    }
-    
+
 }

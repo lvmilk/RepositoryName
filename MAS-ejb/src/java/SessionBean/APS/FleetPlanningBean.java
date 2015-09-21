@@ -7,6 +7,7 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -25,6 +26,16 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     Aircraft aircraft;
 
     public FleetPlanningBean(){    
+    }
+    
+    @Override
+        public boolean checkDuplicate(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        if (aircraftType==null) {
+            return false;    //not exist,no duplicate
+        } else {
+            return true;
+        }
     }
 
     @Override
