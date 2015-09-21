@@ -23,14 +23,15 @@ import org.joda.time.DateTime;
  */
 @Entity
 public class FlightPackage implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    
+
     private List<Flight> flightList = new ArrayList<Flight>();
 //    private Collection<Flight> flightList = new ArrayList<Flight>();
+
     public Long getId() {
         return id;
     }
@@ -62,10 +63,13 @@ public class FlightPackage implements Serializable {
     @Override
     public String toString() {
         String result = "";
-        for (Flight fl : flightList){
+        for (Flight fl : flightList) {
+//            result += fl.getDate().substring(0, 10) + "\t" + fl.getGenericFlight().getFlightNo()
+//                    + "\t" + fl.getGenericFlight().getRoute().getOrigin().getIATA()
+//                    + "\t" + fl.getGenericFlight().getRoute().getDestination().getIATA() + "\n";
             result += fl.getDate().substring(0, 10) + "\t" + fl.getGenericFlight().getFlightNo()
                     + "\t" + fl.getGenericFlight().getRoute().getOrigin().getIATA()
-                    + "\t" + fl.getGenericFlight().getRoute().getDestination().getIATA() + "\n";
+                    + "\t" + fl.getGenericFlight().getRoute().getDest().getIATA() + "\n";
         }
         return result;
     }
@@ -80,44 +84,45 @@ public class FlightPackage implements Serializable {
 //    public void addFlight(Flight flight){
 //        this.flList.add(flight);
 //    }
-    
-    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy ="genericFlight")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "genericFlight")
     public List<Flight> getFlightList() {
         return flightList;
     }
+
     public void setFlightList(List<Flight> flightList) {
         this.flightList = flightList;
     }
-    public void addFlight(Flight fl){
+
+    public void addFlight(Flight fl) {
         fl.setFlightPackage(this);
         this.flightList.add(fl);
     }
-    
-    
-    public DateTime getStartTime(){
+
+    public DateTime getStartTime() {
         DateTime dt = null;
-        for (Flight fl : flightList){
-            if (dt == null){
-                dt = new DateTime (fl.getEstimatedDepartureTime());
-            }
-            else{
-                DateTime current = new DateTime (fl.getEstimatedDepartureTime());
-                if (current.compareTo(dt) <= 0)
+        for (Flight fl : flightList) {
+            if (dt == null) {
+                dt = new DateTime(fl.getEstimatedDepartureTime());
+            } else {
+                DateTime current = new DateTime(fl.getEstimatedDepartureTime());
+                if (current.compareTo(dt) <= 0) {
                     dt = current;
+                }
             }
         }
         return dt;
     }
-    public DateTime getEndTime(){
+
+    public DateTime getEndTime() {
         DateTime dt = null;
-        for (Flight fl : flightList){
-            if (dt == null){
-                dt = new DateTime (fl.getEstimatedArrivalTime());
-            }
-            else{
-                DateTime current = new DateTime (fl.getEstimatedArrivalTime());
-                if (current.compareTo(dt) >= 0)
+        for (Flight fl : flightList) {
+            if (dt == null) {
+                dt = new DateTime(fl.getEstimatedArrivalTime());
+            } else {
+                DateTime current = new DateTime(fl.getEstimatedArrivalTime());
+                if (current.compareTo(dt) >= 0) {
                     dt = current;
+                }
             }
         }
         return dt;
