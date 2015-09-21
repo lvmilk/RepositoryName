@@ -5,8 +5,10 @@
  */
 package managedbean;
 
+import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -14,8 +16,8 @@ import javax.inject.Named;
  * @author LI HAO
  */
 @Named(value="ctl")
-@RequestScoped
-public class Control {
+@ViewScoped
+public class Control implements Serializable{
 
     private Boolean visibility = true;
     private Boolean visiCockpit;

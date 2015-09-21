@@ -17,19 +17,19 @@
 
             <h:form>
 
-                <p:panel id="panel" header="Delete Booking Classes"  style="width:100%">
+                <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
 
-                    <p:dataTable var="BookClass" rowKey ="#{BookClass.id}" selection="#{bookingClassBean.selectedClass}" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
+                    <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedClass}" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
                         <p:ajax event="rowSelectCheckbox" listener="#{bookngClassBean.check}"   />  
-
+                        
                         <f:facet name="header">  
                             Checkbox Based Deletion  
                         </f:facet>  
 
                         <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
 
-
+                         
 
                         <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                             <h:outputText value="#{BookClass.annotation}" />

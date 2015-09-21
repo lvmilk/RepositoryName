@@ -16,60 +16,68 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.SelectableDataModel; 
+import org.primefaces.model.SelectableDataModel;
+
 /**
  *
  * @author Lu Xi
  */
 @Named(value = "ATMB")
 @ViewScoped
-public class AircraftTypeManagedBean implements Serializable{
+public class AircraftTypeManagedBean implements Serializable {
+
     @EJB
     private FleetPlanningBeanLocal fpb;
     private AircraftType newType = new AircraftType();
-    private List <AircraftType> typeList;
-    private List <AircraftType> selectedList;
+    private List<AircraftType> typeList;
+    private List<AircraftType> selectedList;
     private String type;
     private String manufacturer;
     private Double maxDistance;
-//    private Double cruiseSpeed;
-//    private Double cruiseAltitude;
     private Double aircraftLength;
     private Double wingspan;
-//    private String minAirspaceClassReq;    
- 
-        
-    public AircraftTypeManagedBean() {
-    }
+
+    private Integer suiteNo;                //number of seat in suite
+    private Integer fcSeatNo;               //number of seat in first class
+    private Integer bcSeatNo;               //number of seat in business class
+    private Integer pecSeatNo;              //number of seat in premium economy class
+    private Integer ecSeatNo;               //number of seat in economy class
     
+    public AircraftTypeManagedBean() {
+        selectedList = new ArrayList<>();
+    }
+
     public void addAircraftType() throws Exception {
         System.out.println(type);
         System.out.println(manufacturer);
         System.out.println(maxDistance);
-//        System.out.println(cruiseSpeed);
-//        System.out.println(cruiseAltitude);
         System.out.println(aircraftLength);
         System.out.println(wingspan);
-//        System.out.println(minAirspaceClassReq);
 
-        fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
- //       typeList.add(newType);
+        if (!fpb.checkDuplicate(type)) {
+            fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
+        }
     }
-    
-//        
-//         public void confirmAdd() throws IOException{
-//           FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");   
-//    }
-    
-//    public List<AircraftType> getTypeList() {
-//    typeList=fpi.getAllAircraftType();
-//    System.out.println("Type List size is "+typeList.size());
-//    return  typeList;
-//    }
+
+    public List<AircraftType> getTypeList() {
+        typeList = fpb.getAllAircraftType();
+        System.out.println("Type List size is " + typeList.size());
+        return typeList;
+    }
 
     public void setTypeList(List<AircraftType> typeList) {
         this.typeList = typeList;
+    }
+
+    public List<AircraftType> getSelectedClass() {
+        return selectedList;
+    }
+
+    public void setSelectedClass(List<AircraftType> selectedList) {
+        this.selectedList = selectedList;
     }
 
     public String getType() {
@@ -96,22 +104,6 @@ public class AircraftTypeManagedBean implements Serializable{
         this.maxDistance = maxDistance;
     }
 
-//    public Double getCruiseSpeed() {
-//        return cruiseSpeed;
-//    }
-//
-//    public void setCruiseSpeed(Double cruiseSpeed) {
-//        this.cruiseSpeed = cruiseSpeed;
-//    }
-//
-//    public Double getCruiseAltitude() {
-//        return cruiseAltitude;
-//    }
-//
-//    public void setCruiseAltitude(Double cruiseAltitude) {
-//        this.cruiseAltitude = cruiseAltitude;
-//    }
-
     public Double getAircraftLength() {
         return aircraftLength;
     }
@@ -127,13 +119,45 @@ public class AircraftTypeManagedBean implements Serializable{
     public void setWingspan(Double wingspan) {
         this.wingspan = wingspan;
     }
-//
-//    public String getMinAirspaceClassReq() {
-//        return minAirspaceClassReq;
-//    }
-//
-//    public void setMinAirspaceClassReq(String minAirspaceClassReq) {
-//        this.minAirspaceClassReq = minAirspaceClassReq;
-//    }
-    
+        
+    public Integer getSuiteNo() {
+        return suiteNo;
+    }
+
+    public void setSuiteNo(Integer suiteNo) {
+        this.suiteNo = suiteNo;
+    }
+
+    public Integer getFcSeatNo() {
+        return fcSeatNo;
+    }
+
+    public void setFcSeatNo(Integer fcSeatNo) {
+        this.fcSeatNo = fcSeatNo;
+    }
+
+    public Integer getBcSeatNo() {
+        return bcSeatNo;
+    }
+
+    public void setBcSeatNo(Integer bcSeatNo) {
+        this.bcSeatNo = bcSeatNo;
+    }
+
+    public Integer getPecSeatNo() {
+        return pecSeatNo;
+    }
+
+    public void setPecSeatNo(Integer pecSeatNo) {
+        this.pecSeatNo = pecSeatNo;
+    }
+
+    public Integer getEcSeatNo() {
+        return ecSeatNo;
+    }
+
+    public void setEcSeatNo(Integer ecSeatNo) {
+        this.ecSeatNo = ecSeatNo;
+    }
+
 }
