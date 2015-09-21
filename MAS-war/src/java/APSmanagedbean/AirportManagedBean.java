@@ -1,22 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package Entity.APS;
+package APSmanagedbean;
 
+import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.ejb.EJB;
+import javax.inject.Named;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author Xu
  */
-@Entity
-public class Airport implements Serializable {
+@Named(value = "AirportManagedBean")
+@ViewScoped
+public class AirportManagedBean implements Serializable {
 
-    @Id
+    @EJB
+    private RoutePlanningBeanLocal rpb;
+
+    private UIComponent uIComponent;
+
     private String IATA;
     private String airportName;
     private String cityName;
@@ -27,19 +32,21 @@ public class Airport implements Serializable {
     private String strategicLevel;
     private String airspace;
 
-//    private Collection<Route> routeList = new ArrayList<Route>();
-    public void create(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) {
-        this.IATA = IATA;
-        this.airportName = airportName;
-        this.cityName = cityName;
-        this.countryCode = countryCode;
-        this.spec = spec;
-        this.timeZone = timeZone;
-        this.opStatus = opStatus;
-        this.strategicLevel = strategicLevel;
-        this.airspace = airspace;
+    public AirportManagedBean() {
+    }
+         
+    public void addAirport() throws Exception{
+        if(rpb.addAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace)) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Airport IATA has already been added." , ""));
+        }
     }
 
+    public void viewAirport() {
+        
+    }
+    
     public String getIATA() {
         return IATA;
     }
@@ -79,7 +86,7 @@ public class Airport implements Serializable {
     public void setSpec(String spec) {
         this.spec = spec;
     }
-
+    
     public String getTimeZone() {
         return timeZone;
     }
@@ -111,38 +118,13 @@ public class Airport implements Serializable {
     public void setAirspace(String airspace) {
         this.airspace = airspace;
     }
-
-//    public Collection<Route> getRouteList() {
-//        return routeList;
-//    }
-//
-//    public void setRouteList(Collection<Route> routeList) {
-//        this.routeList = routeList;
-//}
-
-@Override
-        public int hashCode() {
-        int hash = 0;
-        hash += (IATA != null ? IATA.hashCode() : 0);
-        return hash;
+    
+    public UIComponent getuIComponent() {
+        return uIComponent;
     }
 
-    @Override
-        public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Airport)) {
-            return false;
-        }
-        Airport other = (Airport) object;
-        if ((this.IATA == null && other.IATA != null) || (this.IATA != null && !this.IATA.equals(other.IATA))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-        public String toString() {
-        return "Entity.APS.Airport[ id=" + IATA + " ]";
+    public void setuIComponent(UIComponent uIComponent) {
+        this.uIComponent = uIComponent;
     }
 
 }

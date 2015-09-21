@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>MAS</title>
+    </h:head>
+    <h:body>
+
+<!--        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;"> -->
+
+            <h:form>
+                <p:panel id="panel" header="Aircraft Information" style="width: 100%">
+                    <!--                            <p:ajaxStatus style="width:16px;height:16px;">
+                                                    <f:facet name="start">
+                                                        <h:graphicImage value="/images/spinner.gif" />
+                                                    </f:facet>
+                                                    <f:facet name="complete">
+                                                        <h:outputText value="" />
+                                                    </f:facet>
+                                                </p:ajaxStatus>-->
+
+                    <p:messages id="msgs" />
+                    <h:panelGrid columns="2"  style="margin-bottom:100px; width:500px" cellpadding="40">
+
+                        <p:outputLabel for="IATA" value="Airport IATA: " />
+                        <p:inputText id="IATA" value="#{AirportManagedBean.IATA}" label="IATA" required="true" validatorMessage="Please enter three-digit uppercase alphabets" requiredMessage="Please enter airport IATA" size="10">
+                            <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                        </p:inputText>
+
+                        <p:outputLabel for="airportName" value="Airport Name: " />
+                        <p:inputText id="airportName"  value="#{AirportManagedBean.airportName}" label="airportName" required="true"  requiredMessage="Please enter airport name" size="10">
+                        </p:inputText>
+
+                        <p:outputLabel for="cityName" value="City Name: " />
+                        <p:inputText id="cityName" value="#{AirportManagedBean.cityName}" label="cityName" required="true" requiredMessage="Please enter city name" size="10">
+                        </p:inputText>
+
+                        <p:outputLabel for="countryCode" value="Country Code: " />
+                        <p:inputText id="countryCode" value="#{AirportManagedBean.countryCode}" label="countryCode" required="true" requiredMessage="Please enter country code" size="10">
+                        </p:inputText>
+
+                          <p:outputLabel for="spec" value="Specification: " />
+                        <p:inputText id="spec" value="#{AirportManagedBean.spec}" label="spec" required="true" requiredMessage="Please enter airport specification" size="10">
+                        </p:inputText>
+                        
+                        <p:outputLabel for="timeZone" value="Time Zone: " />
+                        <p:inputText id="timeZone" value="#{AirportManagedBean.timeZone}" label="timeZone" required="true" requiredMessage="Please enter timezone" size="10"> 
+                        </p:inputText>
+
+                        <p:outputLabel for="operationalStatus" value="Operational Status: " />
+                        <p:inputText id="operationalStatus" value="#{AirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="10"> 
+                        </p:inputText>
+
+                        <p:outputLabel for="strategicLevel" value="Strategic Level: " />
+                        <p:inputText id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="10"> 
+                        </p:inputText>
+
+                        <p:outputLabel for="airspace" value="Airspace: " />
+                        <p:inputText id="airspace" value="#{AirportManagedBean.airspace}" label="airspace" required="true" validatorMessage="Please enter a number and an uppercase alphabet"  requiredMessage="Please enter airspace" size="10">
+                            <!--                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> -->
+                        </p:inputText>
+
+                    </h:panelGrid>
+
+<!--                            <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{AirportManagedBean.addAirport()}"  icon="ui-icon-check" />-->
+                    <p:commandButton id="addAirportBtn" value="Add Airport" update="panel" style="margin-right:0" actionListener="#{AirportManagedBean.addAirport()}"  icon="ui-icon-check" ajax="true" />
+
+                </p:panel>
+
+                <p:draggable for="panel" /><p:resizable for="panel" />
+
+            </h:form>
+
+<!--        </div>-->
+    </h:body>
+
+</html>
+

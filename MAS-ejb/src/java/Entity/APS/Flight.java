@@ -12,14 +12,15 @@ import org.joda.time.DateTime;
  * @author victor/lucy
  */
 @Entity
-public class Flight implements Serializable, Comparable<Flight>{
+public class Flight implements Serializable, Comparable<Flight> {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private GenericFlight genericFlight;
-    
+
     private String date;
 
     private String operationStatus;
@@ -28,11 +29,11 @@ public class Flight implements Serializable, Comparable<Flight>{
     private String estimatedArrivalTime;
     private String actualDepartureTime;
     private String actualArrivalTime;
-    
+
     private Aircraft aircraft;
 //    private List<FlightBookingRecord> booking = new ArrayList<FlightBookingRecord>();
 //    private List<FlightCheckInRecord> CI = new ArrayList<FlightCheckInRecord>();
-    
+
     private FlightPackage flightPackage;
 
     public Flight() {
@@ -76,7 +77,8 @@ public class Flight implements Serializable, Comparable<Flight>{
         st += this.getGenericFlight().getFlightNo() + "\t";
         st += this.getGenericFlight().getRoute().getOrigin().getIATA() + "\t";
         st += this.getEstimatedDepartureTime() + "\t";
-        st += this.getGenericFlight().getRoute().getDestination().getIATA() + "\t";
+//        st += this.getGenericFlight().getRoute().getDestination().getIATA() + "\t";
+        st += this.getGenericFlight().getRoute().getDest().getIATA() + "\t";
         st += this.getEstimatedArrivalTime() + "\t";
         st += this.getOperationStatus() + "\t";
 //        try{
@@ -87,7 +89,6 @@ public class Flight implements Serializable, Comparable<Flight>{
 //        }
         return st;
     }
-    
 
 //    /**
 //     * @return the booking
@@ -118,20 +119,20 @@ public class Flight implements Serializable, Comparable<Flight>{
 //    public void setCI(List<FlightCheckInRecord> CI) {
 //        this.CI = CI;
 //    }
-
-    
-    @ManyToOne(cascade={CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     public GenericFlight getGenericFlight() {
         return genericFlight;
     }
+
     public void setGenericFlight(GenericFlight genericFlight) {
         this.genericFlight = genericFlight;
     }
-    
-    @ManyToOne(cascade={CascadeType.PERSIST})
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
     public FlightPackage getFlightPackage() {
         return flightPackage;
     }
+
     public void setFlightPackage(FlightPackage flightPackage) {
         this.flightPackage = flightPackage;
     }
@@ -143,15 +144,15 @@ public class Flight implements Serializable, Comparable<Flight>{
 //    public void setFlightPackage(FlightPackage pk) {
 //        this.flightPackage = pk;
 //    }
-    
-    @ManyToOne(cascade={CascadeType.PERSIST})
-    public Aircraft getAircraft(){
-         return aircraft;
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    public Aircraft getAircraft() {
+        return aircraft;
     }
-    public void setAircraft(Aircraft aircraft){
-        this.aircraft=aircraft;
+
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
-    
+
     /**
      * @return the operationStatus
      */
@@ -249,13 +250,11 @@ public class Flight implements Serializable, Comparable<Flight>{
     public void setDate(String date) {
         this.date = date;
     }
-    
-    public int compareTo(Flight fl){
+
+    public int compareTo(Flight fl) {
         DateTime thisTime = new DateTime(this.estimatedDepartureTime);
-        DateTime flTime = new DateTime (fl.estimatedDepartureTime);
+        DateTime flTime = new DateTime(fl.estimatedDepartureTime);
         return thisTime.compareTo(flTime);
     }
-    
-    
-    
+
 }
