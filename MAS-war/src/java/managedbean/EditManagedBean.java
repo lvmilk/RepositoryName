@@ -33,6 +33,7 @@ public class EditManagedBean implements Serializable {
     private manageAccountLocal mal;
 
     private String username;
+    private String username_origin;
     private String usernameEdited;
     private String stfType;
     private String password;
@@ -46,6 +47,8 @@ public class EditManagedBean implements Serializable {
     private List<GroundStaff> grdStfList;
     private List<CabinCrew> cbCrewList;
     private List<CockpitCrew> cpCrewList;
+    
+    
 
     public EditManagedBean() {
         selectedOffStf = new ArrayList();
@@ -54,8 +57,19 @@ public class EditManagedBean implements Serializable {
     /**
      * @return the username
      */
+    public void SelectEditOfficeStaff(OfficeStaff officeStaff) throws IOException{
+        setUsername(officeStaff.getOffName()); 
+        setUsernameEdited(officeStaff.getOffName());
+        setEmail(officeStaff.getEmail());
+        setEmailEdited(officeStaff.getEmail());
+        setStfType(officeStaff.getStfType());
+        setPassword(officeStaff.getOffPassword());
+       FacesContext.getCurrentInstance().getExternalContext().redirect("./EditOfStaffPage.xhtml");
+    
+    }
+    
     public void editOfStaffAcc() throws IOException {
-
+        
         if (!mal.checkNameDuplicate(username, usernameEdited)){
 
             if (!mal.checkEmailDuplicate(email, emailEdited)){
@@ -81,6 +95,14 @@ public class EditManagedBean implements Serializable {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUsername_origin() {
+        return username_origin;
+    }
+
+    public void setUsername_origin(String username_origin) {
+        this.username_origin = username_origin;
     }
 
     /**

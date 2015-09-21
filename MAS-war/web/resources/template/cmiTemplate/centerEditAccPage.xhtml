@@ -1,41 +1,21 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:pm="http://primefaces.org/mobile">
-
-
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form >
-            <p:growl id="msgs" showDetail="true" />
-
-            <p:panelGrid columns="2">
-                <p:outputLabel for="domain" value="Staff domain:" />
-                <h:selectOneMenu id="domain" value="#{login.stfType}" valueChangeListener="#{ctl.valueChanged}">
-                    <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
-                    <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
-                    <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
-                    <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-                    <!--                                        <f:ajax event="change" execute="@form" render="output"/>-->
-                    <p:ajax event="change" update="staff,cockpit"/>
-                </h:selectOneMenu>
-
-            </p:panelGrid>
-        </h:form>
-
-        <h:form id="staff">
-            <p:panel id="editOtrStaff"  style="margin-bottom:20px">
+     <h:form id="staff">
+            <p:panel id="addOtrStaff"  style="margin-bottom:20px">
                 <p:messages id="msgs" />
                 <h:panelGrid columns="3" cellpadding="10">
 
                     <p:outputLabel for="otrUsername" value="User Name: " />
-                    <p:inputText id="otrUsername" value="#{etManagedBean.username}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
+                    <p:inputText id="otrUsername" value="#{etManagedBean.usernameEdited}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
                         <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
                     </p:inputText>
                     <p:message for="otrUsername" display="icon" />
@@ -53,15 +33,15 @@
                     <p:message for="otrEmail" display="icon" />
 
                     <p:outputLabel value="staff type: "/>
-                    <p:outputLabel value="#{login.stfType}"/>
+                    <p:outputLabel value="#{etManagedBean.stfType}"/>
 
 
                 </h:panelGrid>
-                <p:commandButton value="Confirm" update="addOtrStaff" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
+                <p:commandButton value="Edit" update="addOtrStaff" actionListener="#{etManagedBean.editOfStaffAcc}" icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
 
-
     </h:body>
 </html>
+
