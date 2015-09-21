@@ -144,12 +144,76 @@ public class manageAccount implements manageAccountLocal {
         }
 
     }
-    
+
     @Override
-    public void delAcc(String username, String stfType)
-    {
-        
+    public boolean delAcc(List<OfficeStaff> selectedOffStf) {
+        if (selectedOffStf.size() > 0) {
+            for (int i = 0; i < selectedOffStf.size(); i++) {
+                String pKey = selectedOffStf.get(i).getOffName();
+                OfficeStaff oStaff = em.find(OfficeStaff.class,pKey);
+
+                em.remove(oStaff);
+
+            }
+
+            return true;
+
+        }
+        return false;
+
+
     }
-    
+
+    @Override
+    public List<OfficeStaff> getAllOfficeStaff() {
+        Query query = em.createQuery("SELECT a FROM OfficeStaff a ");
+        List<OfficeStaff> resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            System.out.println("List is empty");
+        } else {
+            System.out.println("List data exists");
+        }
+
+        return resultList;
+    }
+
+    @Override
+    public List<GroundStaff> getAllGoundStaff() {
+        Query query = em.createQuery("SELECT a FROM GroundStaff a ");
+        List<GroundStaff> resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            System.out.println("List is empty");
+        } else {
+            System.out.println("List data exists");
+        }
+
+        return resultList;
+    }
+
+    @Override
+    public List<CabinCrew> getAllCabinCrew() {
+        Query query = em.createQuery("SELECT a FROM CabinCrew a ");
+        List<CabinCrew> resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            System.out.println("List is empty");
+        } else {
+            System.out.println("List data exists");
+        }
+
+        return resultList;
+    }
+
+    @Override
+    public List<CockpitCrew> getAllCockpitCrew() {
+        Query query = em.createQuery("SELECT a FROM CockpitCrew a ");
+        List<CockpitCrew> resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            System.out.println("List is empty");
+        } else {
+            System.out.println("List data exists");
+        }
+
+        return resultList;
+    }
 
 }

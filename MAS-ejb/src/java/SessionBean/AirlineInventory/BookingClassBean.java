@@ -117,7 +117,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
     public boolean deleteBookingClass(ArrayList<BookingClass> selectedClass) {
         if (selectedClass.size() > 0) {
             for (int i = 0; i < selectedClass.size(); i++) {
-                Long pKey = selectedClass.get(0).getId();
+                Long pKey = selectedClass.get(i).getId();
                 BookingClass bookClass = entityManager.find(BookingClass.class, pKey);
 
                 entityManager.remove(bookClass);

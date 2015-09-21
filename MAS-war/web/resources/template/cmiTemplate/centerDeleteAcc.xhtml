@@ -20,7 +20,7 @@
                     <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-<!--                    <p:ajax event="change" update="staff,cockpit"/>-->
+                    <!--                    <p:ajax event="change" update="staff,cockpit"/>-->
                 </h:selectOneMenu>
 
             </p:panelGrid>
@@ -30,73 +30,35 @@
 
             <p:panel id="offStfPanel" header="Delete Office Staff Account"  style="width:100%">
 
-                <p:dataTable var="OfficeStaff" rowKey ="" selection="#{bookingClassBean.selectedClass}" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
+                <p:dataTable var="OfficeStaff" rowKey ="#{OfficeStaff.offName}" selection="#{dlManagedBean.selectedOffStf}" value="#{dlManagedBean.offStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
-                    <p:ajax event="rowSelectCheckbox" listener="#{bookngClassBean.check}"   />  
+<!--                    <p:ajax event="rowSelectCheckbox" listener="#{bookingClassBean.check}"   />  -->
 
                     <f:facet name="header">  
-                        Staff Account 
+                        Office Staff Account 
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
 
-
-
-                    <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
-                        <h:outputText value="#{BookClass.annotation}" />
+                    <p:column headerText="Username" sortBy="#{OfficeStaff.offName}">
+                        <h:outputText value="#{OfficeStaff.offName}" />
                     </p:column>
 
-                    <p:column headerText="Cabin Class" sortBy="#{BookClass.cabinName}">
-                        <h:outputText value="#{BookClass.cabinName}" />
+                    <p:column headerText="Password" sortBy="#{OfficeStaff.offPassword}">
+                        <h:outputText value="#{OfficeStaff.offPassword}" />
                     </p:column>
 
-                    <p:column headerText="Price as percentage of full fare">
-                        <h:outputText value="#{BookClass.price_percentage}" />
-                    </p:column>
-                    <p:column headerText="Refund Rate">
-                        <h:outputText value="#{BookClass.refund_percentage}" />
-                    </p:column>
-                    <p:column headerText="Change Route Rate">
-                        <h:outputText value="#{BookClass.change_route_percentage}" />
-                    </p:column>
-                    <p:column headerText="Change Date rate">
-                        <h:outputText value="#{BookClass.change_date_percentage}" />
-                    </p:column>
-                    <p:column headerText="Open Jaw Penalty Rate" >
-                        <h:outputText value="#{BookClass.open_jaw_percentage}" />
-                    </p:column>
-                    <p:column headerText="Mile Earning Rate">
-                        <h:outputText value="#{BookClass.earn_mile_percentage}" />
+                    <p:column headerText="Staff type" sortBy="#{OfficeStaff.stfType}">
+                        <h:outputText value="#{OfficeStaff.stfType}" />
                     </p:column>
 
-                    <p:column headerText="Min Days Stay">
-                        <h:outputText value="#{BookClass.min_stay}" />
+                    <p:column headerText="Email" sortBy="#{OfficeStaff.email}">
+                        <h:outputText value="#{OfficeStaff.email}" />
                     </p:column>
-                    <p:column headerText="Max Days Stay">
-                        <h:outputText value="#{BookClass.max_stay}" />
-                    </p:column>
-                    <p:column headerText="Min Days Reserve In Advance">
-                        <h:outputText value="#{BookClass.reserve_advance}" />
-                    </p:column>
-                    <p:column headerText="Min Days Ticketing In Advance">
-                        <h:outputText value="#{BookClass.ticket_advance}" />
-                    </p:column>
-                    <p:column headerText="Allow Standby Checkin">
-                        <h:outputText value="#{BookClass.can_standby}" />
-                    </p:column>
-                    <p:column headerText="Available In DDS">
-                        <h:outputText value="#{BookClass.dds_available}" />
-                    </p:column>
-                    <p:column headerText="Available In GDS">
-                        <h:outputText value="#{BookClass.gds_available}" />
-                    </p:column>
-
 
                 </p:dataTable>
 
-
-
-                <p:commandButton value="Delete"  action="#{bookingClassBean.confirmDelete()}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount()}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>
