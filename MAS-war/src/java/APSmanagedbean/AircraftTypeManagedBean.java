@@ -37,6 +37,12 @@ public class AircraftTypeManagedBean implements Serializable {
     private Double aircraftLength;
     private Double wingspan;
 
+    private Integer suiteNo;                //number of seat in suite
+    private Integer fcSeatNo;               //number of seat in first class
+    private Integer bcSeatNo;               //number of seat in business class
+    private Integer pecSeatNo;              //number of seat in premium economy class
+    private Integer ecSeatNo;               //number of seat in economy class
+    
     public AircraftTypeManagedBean() {
         selectedList = new ArrayList<>();
     }
@@ -49,7 +55,7 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(wingspan);
 
         if (!fpb.checkDuplicate(type)) {
-            fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan);
+            fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
@@ -112,6 +118,46 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void setWingspan(Double wingspan) {
         this.wingspan = wingspan;
+    }
+        
+    public Integer getSuiteNo() {
+        return suiteNo;
+    }
+
+    public void setSuiteNo(Integer suiteNo) {
+        this.suiteNo = suiteNo;
+    }
+
+    public Integer getFcSeatNo() {
+        return fcSeatNo;
+    }
+
+    public void setFcSeatNo(Integer fcSeatNo) {
+        this.fcSeatNo = fcSeatNo;
+    }
+
+    public Integer getBcSeatNo() {
+        return bcSeatNo;
+    }
+
+    public void setBcSeatNo(Integer bcSeatNo) {
+        this.bcSeatNo = bcSeatNo;
+    }
+
+    public Integer getPecSeatNo() {
+        return pecSeatNo;
+    }
+
+    public void setPecSeatNo(Integer pecSeatNo) {
+        this.pecSeatNo = pecSeatNo;
+    }
+
+    public Integer getEcSeatNo() {
+        return ecSeatNo;
+    }
+
+    public void setEcSeatNo(Integer ecSeatNo) {
+        this.ecSeatNo = ecSeatNo;
     }
 
 }
