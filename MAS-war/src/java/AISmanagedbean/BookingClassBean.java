@@ -97,7 +97,6 @@ public class BookingClassBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Annotation already been used: ", ""));
         }
-
     }
 
     public void editFirst() throws IOException {

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>MAS</title>
+    </h:head>
+    <h:body>
+
+        <!--        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;"> -->
+
+        <h:form>
+            <p:panel id="panel" header="Route Information" style="width: 100%">
+
+                <p:messages id="msgs" />
+                <h:panelGrid columns="2"  style="margin-bottom:100px; width:500px" cellpadding="40">
+
+                    <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
+                    <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="10">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                    </p:inputText>
+
+                    <p:outputLabel for="destIATA" value="Destination Airport IATA: " />
+                    <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="10">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                    </p:inputText>
+
+                    <p:outputLabel for="distance" value="Route Distance: " />
+                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="10">
+                    </p:inputText>
+
+                </h:panelGrid>
+
+                <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
+
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+
+        </h:form>
+
+        <!--        </div>-->
+    </h:body>
+
+</html>
+

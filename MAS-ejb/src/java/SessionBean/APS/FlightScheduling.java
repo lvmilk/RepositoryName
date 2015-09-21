@@ -427,7 +427,8 @@
 //            if (ibrt == null){
 //                //throw new MASException("RT02");
 //                ibrt.setOrigin(org);
-//                ibrt.setDestination(dst);
+////                ibrt.setDestination(dst);
+//                                ibrt.setDest(dst);
 //                rh.addRoute(ibrt);
 //            }
 //            ibgf.setRoute(ibrt);

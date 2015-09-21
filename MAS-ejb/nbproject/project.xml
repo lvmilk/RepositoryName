@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>MAS-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
+            <included-library dirs="200">file.reference.joda-time-2.8.2.jar-1</included-library>
             <included-library dirs="200">file.reference.joda-time-2.8.2.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entity.APS;
 
 import java.io.Serializable;
@@ -18,23 +17,24 @@ import javax.persistence.*;
  */
 @Entity
 public class GenericFlight implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private String flightNo;
     private int StopoverSequenceNo;
-    
+
     @ManyToOne
     private Route route = new Route();
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
-    
+
     private String scheduledDepartureTime;
     private String scheduledArrivalTime;
     private int dateAdjust;
-    
+
     /*To indicate the frequency of this flight*/
     private String startDate;
     private String endDate;
@@ -45,7 +45,7 @@ public class GenericFlight implements Serializable {
     private boolean Fri;
     private boolean Sat;
     private boolean Sun;
-    
+
     private String Operator;
     private ArrayList<String> codeshare;
     private List<Flight> flightList = new ArrayList<Flight>();
@@ -79,7 +79,6 @@ public class GenericFlight implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         String st = "";
@@ -87,7 +86,8 @@ public class GenericFlight implements Serializable {
         st += this.flightNo + "\t";
         st += this.StopoverSequenceNo + "\t";
         st += this.getRoute().getOrigin().getIATA() + "\t";
-        st += this.getRoute().getDestination().getIATA() + "\t";
+//        st += this.getRoute().getDestination().getIATA() + "\t";
+        st += this.getRoute().getDest().getIATA() + "\t";
         st += this.scheduledDepartureTime + "\t";
         st += this.scheduledArrivalTime + "\t";
 
@@ -307,14 +307,16 @@ public class GenericFlight implements Serializable {
     /**
      * @return the flightList
      */
-    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy ="genericFlight")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "genericFlight")
     public List<Flight> getFlightList() {
         return flightList;
     }
+
     public void setFlightList(List<Flight> flightList) {
         this.flightList = flightList;
     }
-    public void addFlight(Flight fl){
+
+    public void addFlight(Flight fl) {
         fl.setGenericFlight(this);
         this.flightList.add(fl);
     }
@@ -360,5 +362,5 @@ public class GenericFlight implements Serializable {
     public void setAircraftType(AircraftType aircraftType) {
         this.aircraftType = aircraftType;
     }
-    
+
 }
