@@ -41,6 +41,16 @@
                                 <f:validateDoubleRange minimum="0.0" />
                             </p:inputText>
 
+                            <p:outputLabel for="leaseCost" value="Lease Cost (SGD per year):" />
+                            <p:inputText id="leaseCost" value="#{ATMB.leaseCost}" label="Lease Cost (per year)" required="true" validatorMessage="Lease Cost (per year): Please enter a valid number"  requiredMessage="Please enter lease cost of the aircraft type" size="50">
+                                <f:validateDoubleRange minimum="0.0" />
+                            </p:inputText>
+                            
+                            <p:outputLabel for="fuelCost" value="Fuel Cost (SGD per hour):" />
+                            <p:inputText id="fuelCost" value="#{ATMB.fuelCost}" label="Fuel Cost (per hour)" required="true" validatorMessage="Fuel Cost (per hour): Please enter a valid number"  requiredMessage="Please enter fuel cost of the aircraft type" size="50">
+                                <f:validateDoubleRange minimum="0.0" />
+                            </p:inputText>
+                                
                             <p:outputLabel for="aircraftLength" value="Overall Length(m):" />
                             <p:inputText id="aircraftLength" value="#{ATMB.aircraftLength}" label="Overall Length(m)" required="true" validatorMessage="Overall Length: Please enter a valid number"  requiredMessage="Please enter overall length of the aircraft type" size="50">
                                 <f:validateDoubleRange minimum="0.0" />
