@@ -15,7 +15,8 @@
         <h:form> 
             <p:growl id="topbar"/>
 
-            <p:menubar styleClass = "menu" style="text-align: center">
+            <p:menubar  styleClass = "menu" style="text-align: center">
+
                 <p:submenu label="Home" icon="ui-icon-home" style="margin-right: 30px!important;" >
                     <p:menuitem value="My Profile" icon="ui-icon-gear" url="#" />
                     <p:menuitem value="My Workspace" icon="ui-icon-bookmark" url="#" />
@@ -25,22 +26,22 @@
                     <p:menuitem value="Quit" url="#" />
                 </p:submenu>
 
-                <p:menuitem value="APS"  style="margin-right: 30px !important;" url="./APSpages/APSworkspace.xhtml" icon="ui-icon-clock"/>
-                
+                <p:menuitem value="APS"  style="margin-right: 30px !important;" url="/APSpages/APSworkspace.xhtml" icon="ui-icon-clock"/>
+
                 <p:menuitem value="AFOS" style="margin-right: 30px !important;" url="#" icon="ui-icon-clipboard"/>
-              
-                <p:menuitem value="AIS"  style="margin-right: 30px !important;" url="./AISpages/aisPage.xhtml" icon="ui-icon-pencil"/>
-              
+
+                <p:menuitem value="AIS"  style="margin-right: 30px !important;" url="/AISpages/aisPage.xhtml" icon="ui-icon-pencil"/>
+
                 <p:menuitem value="ADS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-calendar"/>
-         
+
                 <p:menuitem value="DCS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-flag"/>
-            
+
                 <p:menuitem value="AAS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-calculator"/>
-                   
-               <p:menuitem value="CRM"   style="margin-right: 30px !important;" url="#" icon="ui-icon-person"/>
-                  
-              
-                <p:submenu label="Help" icon="ui-icon-help">
+
+                <p:menuitem value="CRM"   style="margin-right: 30px !important;" url="#" icon="ui-icon-person"/>
+
+
+                <p:submenu label="Help" icon="ui-icon-help" style="margin-right: 30px !important;">
                     <p:menuitem value="FAQs" url="#" />
                     <p:submenu label="Search" icon="ui-icon-search">
                         <p:submenu label="Text">
@@ -50,11 +51,10 @@
                     </p:submenu>
                 </p:submenu>
 
+                <p:menuitem value="Logout" style="margin-right: 30px !important;" actionListener="#{SslManagedBean.endSsl(event)}"  icon="ui-icon-extlink" />
 
-                <f:facet name="options">
-                    <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
-                </f:facet>
             </p:menubar>
         </h:form>
+
     </h:body>
 </html>

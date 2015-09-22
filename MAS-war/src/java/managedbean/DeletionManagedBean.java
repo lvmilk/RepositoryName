@@ -39,22 +39,46 @@ public class DeletionManagedBean implements Serializable {
 
     private String licence;
 
-    private List<OfficeStaff> selectedOffStf;
+    private List<OfficeStaff> selectedOffStf =new ArrayList();
     private List<OfficeStaff> offStfList;
     private List<GroundStaff> grdStfList;
     private List<CabinCrew> cbCrewList;
     private List<CockpitCrew> cpCrewList;
+    
+    private List<GroundStaff> selectedGrdList = new ArrayList();
+    private List<CabinCrew> selectedCbCrewList =new ArrayList();
+    private List<CockpitCrew> selectedCpCrewList=new ArrayList();
 
     public DeletionManagedBean()
     {
-        selectedOffStf = new ArrayList();
+
     }
     
     /**
      * @return the username
      */
     public void deleteAccount() throws IOException {
-        boolean check = mal.delAcc(selectedOffStf);
+        
+        boolean check=false; 
+        if (!selectedOffStf.isEmpty())
+        {
+            System.out.println("hahahaha");
+            check = mal.delAcc(selectedOffStf);
+            System.out.println(check);
+        }
+        else if(!selectedGrdList.isEmpty())
+        {
+            check=mal.delGrdAcc(selectedGrdList);
+        }
+        else if(!selectedCbCrewList.isEmpty())
+        {
+            check=mal.delCabinAcc(selectedCbCrewList);
+        }
+        else if(!selectedCpCrewList.isEmpty())
+        {
+            check=mal.delCockpitAcc(selectedCpCrewList);
+        }
+        
         if (check) {
             System.out.println("Delete Successful!");
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteBookClassSuccess.xhtml");
@@ -203,6 +227,48 @@ public class DeletionManagedBean implements Serializable {
      */
     public void setLicence(String licence) {
         this.licence = licence;
+    }
+
+    /**
+     * @return the selectedGrdList
+     */
+    public List<GroundStaff> getSelectedGrdList() {
+        return selectedGrdList;
+    }
+
+    /**
+     * @param selectedGrdList the selectedGrdList to set
+     */
+    public void setSelectedGrdList(List<GroundStaff> selectedGrdList) {
+        this.selectedGrdList = selectedGrdList;
+    }
+
+    /**
+     * @return the selectedCbCrewList
+     */
+    public List<CabinCrew> getSelectedCbCrewList() {
+        return selectedCbCrewList;
+    }
+
+    /**
+     * @param selectedCbCrewList the selectedCbCrewList to set
+     */
+    public void setSelectedCbCrewList(List<CabinCrew> selectedCbCrewList) {
+        this.selectedCbCrewList = selectedCbCrewList;
+    }
+
+    /**
+     * @return the selectedCpCrewList
+     */
+    public List<CockpitCrew> getSelectedCpCrewList() {
+        return selectedCpCrewList;
+    }
+
+    /**
+     * @param selectedCpCrewList the selectedCpCrewList to set
+     */
+    public void setSelectedCpCrewList(List<CockpitCrew> selectedCpCrewList) {
+        this.selectedCpCrewList = selectedCpCrewList;
     }
 
 }

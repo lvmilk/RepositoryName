@@ -24,26 +24,26 @@
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
-                         <h:form>
+                <h:form>
 
-                        <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
-                            <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
+                    <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
+                        <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
 
-                                <p:column headerText="Type" sortBy="#{AircraftType.type}">
-                                    <h:outputText value="#{AircraftType.type}" />
-                                </p:column>
+                            <p:column headerText="Type" sortBy="#{AircraftType.type}">
+                                <h:outputText value="#{AircraftType.type}" />
+                            </p:column>
 
-                                <p:column headerText="View">
-                                    <p:commandButton value="View" action="#{ATMB.viewAircraftType(AircraftType)}"  />
+                            <p:column headerText="View">
+                                <p:commandButton value="View" action="#{ATMB.viewAircraftType(AircraftType)}"  />
 
-                                </p:column>
+                            </p:column>
 
-                            </p:dataTable>
-                        </p:panel>
+                        </p:dataTable>
+                    </p:panel>
 
-                        <p:draggable for="panel" /><p:resizable for="panel" />
-                    </h:form>
+                    <p:draggable for="panel" /><p:resizable for="panel" />
+                </h:form>
             </ui:define>
         </ui:decorate>
     </h:body>

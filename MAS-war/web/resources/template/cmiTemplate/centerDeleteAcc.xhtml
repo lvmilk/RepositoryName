@@ -15,24 +15,24 @@
 
             <p:panelGrid columns="2">
                 <p:outputLabel for="domain" value="Staff domain:" />
-                <h:selectOneMenu id="domain" value="#{login.stfType}" valueChangeListener="#{ctl.valueChanged}">
+                <h:selectOneMenu id="domain" value="#{login.stfType}" valueChangeListener="#{ctl.valueChangedForDelete}">
                     <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
                     <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
                     <!--                    <p:ajax event="change" update="staff,cockpit"/>-->
+                    
+                    <p:ajax event="change" update="delOff,delGrd,delCb,delCp"/>
                 </h:selectOneMenu>
 
             </p:panelGrid>
         </h:form>
 
-        <h:form>
+        <h:form id="delOff">
 
-            <p:panel id="offStfPanel" header="Delete Office Staff Account"  style="width:100%">
+            <p:panel id="offStfPanel"  visible="#{ctl.visiDelOff}" header="Delete Office Staff Account"  style="width:100%">
 
-                <p:dataTable var="OfficeStaff" rowKey ="#{OfficeStaff.offName}" selection="#{dlManagedBean.selectedOffStf}" value="#{dlManagedBean.offStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
-
-<!--                    <p:ajax event="rowSelectCheckbox" listener="#{bookingClassBean.check}"   />  -->
+                <p:dataTable var="OfficeStaff" rowKey ="#{OfficeStaff.offName}" selection="#{dlManagedBean.selectedOffStf}" value="#{dlManagedBean.offStfList}"  paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
                     <f:facet name="header">  
                         Office Staff Account 
@@ -58,9 +58,116 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount()}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
+        
+        <h:form id="delGrd">
+
+            <p:panel id="grdStfPanel" visible="#{ctl.visiDelGrd}" header="Delete Ground Staff Account"  style="width:100%">
+
+                <p:dataTable var="GroundStaff" rowKey ="#{GroundStaff.grdName}" selection="#{dlManagedBean.selectedGrdList}" value="#{dlManagedBean.grdStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
+
+                    <f:facet name="header">  
+                        Ground Staff Account 
+                    </f:facet>  
+
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
+
+                    <p:column headerText="Username" sortBy="#{GroundStaff.grdName}">
+                        <h:outputText value="#{GroundStaff.grdName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{GroundStaff.grdPassword}">
+                        <h:outputText value="#{GroundStaff.grdPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type" sortBy="#{GroundStaff.stfType}">
+                        <h:outputText value="#{GroundStaff.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{GroundStaff.email}">
+                        <h:outputText value="#{GroundStaff.email}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        
+        <h:form id="delCb">
+
+            <p:panel id="cbCrewPanel" visible="#{ctl.visiDelCb}" header="Delete Cabin Crew Account"  style="width:100%">
+
+                <p:dataTable var="CabinCrew" rowKey ="#{CabinCrew.cbName}" selection="#{dlManagedBean.selectedCbCrewList}" value="#{dlManagedBean.cbCrewList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
+
+                    <f:facet name="header">  
+                        Cabin Crew Account 
+                    </f:facet>  
+
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
+
+                    <p:column headerText="Username" sortBy="#{CabinCrew.cbName}">
+                        <h:outputText value="#{CabinCrew.cbName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{CabinCrew.cbPassword}">
+                        <h:outputText value="#{CabinCrew.cbPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type" sortBy="#{CabinCrew.stfType}">
+                        <h:outputText value="#{CabinCrew.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{CabinCrew.email}">
+                        <h:outputText value="#{CabinCrew.email}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        
+         <h:form id="delCp">
+
+             <p:panel id="cpCrewPanel" visible="#{ctl.visiDelCp}" header="Delete Cabin Crew Account"  style="width:100%">
+
+                <p:dataTable var="CockpitCrew" rowKey ="#{CockpitCrew.cpName}" selection="#{dlManagedBean.selectedCpCrewList}" value="#{dlManagedBean.cpCrewList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
+
+                    <f:facet name="header">  
+                        Cockpit Crew Account 
+                    </f:facet>  
+
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
+
+                    <p:column headerText="Username" sortBy="#{CockpitCrew.cpName}">
+                        <h:outputText value="#{CockpitCrew.cpName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{CockpitCrew.cpPassword}">
+                        <h:outputText value="#{CockpitCrew.cpPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type" sortBy="#{CockpitCrew.stfType}">
+                        <h:outputText value="#{CockpitCrew.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email" sortBy="#{CockpitCrew.email}">
+                        <h:outputText value="#{CockpitCrew.email}" />
+                    </p:column>
+                    
+                    <p:column headerText="Licence" sortBy="#{CockpitCrew.licence}">
+                        <h:outputText value="#{CockpitCrew.licence}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        
     </h:body>
 </html>
 

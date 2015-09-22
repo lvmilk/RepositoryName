@@ -33,6 +33,8 @@ public class AircraftTypeManagedBean implements Serializable {
     private String manufacturer;
     private Double maxDistance;
     private Double aircraftLength;
+    private Double leaseCost;
+    private Double fuelCost;
     private Double wingspan;
     private String minAirspace;
 
@@ -53,12 +55,12 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(aircraftLength);
         System.out.println(wingspan);
         if (!fpb.checkDuplicate(type)) {
-            fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, minAirspace,suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
         }
-      //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public void confirmDeleteType() throws IOException {
@@ -73,7 +75,7 @@ public class AircraftTypeManagedBean implements Serializable {
         try {
             fpb.deleteAircraftType(selectedList);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
-        //    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            //    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -83,6 +85,8 @@ public class AircraftTypeManagedBean implements Serializable {
         setType(aircraftType.getType());
         setManufacturer(aircraftType.getManufacturer());
         setMaxDistance(aircraftType.getMaxDistance());
+        setLeaseCost(aircraftType.getLeaseCost());
+        setFuelCost(aircraftType.getFuelCost());
         setAircraftLength(aircraftType.getAircraftLength());
         setWingspan(aircraftType.getWingspan());
         setMinAirspace(aircraftType.getMinAirspace());
@@ -96,15 +100,17 @@ public class AircraftTypeManagedBean implements Serializable {
     }
 
     public void editAircraftTypeInfo() throws Exception {
-        fpb.editAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, minAirspace,suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
-      //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public void viewAircraftType(AircraftType aircraftType) throws IOException {
         setType(aircraftType.getType());
         setManufacturer(aircraftType.getManufacturer());
         setMaxDistance(aircraftType.getMaxDistance());
+         setLeaseCost(aircraftType.getLeaseCost());
+        setFuelCost(aircraftType.getFuelCost());
         setAircraftLength(aircraftType.getAircraftLength());
         setWingspan(aircraftType.getWingspan());
         setMinAirspace(aircraftType.getMinAirspace());
@@ -120,7 +126,7 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void viewAircraftTypeConfirm() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./APSworkspace.xhtml");
-      //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public List<AircraftType> getTypeList() {
@@ -171,6 +177,22 @@ public class AircraftTypeManagedBean implements Serializable {
         this.maxDistance = maxDistance;
     }
 
+    public Double getLeaseCost() {
+        return leaseCost;
+    }
+
+    public void setLeaseCost(Double leaseCost) {
+        this.leaseCost = leaseCost;
+    }
+
+    public Double getFuelCost() {
+        return fuelCost;
+    }
+
+    public void setFuelCost(Double fuelCost) {
+        this.fuelCost = fuelCost;
+    }
+
     public Double getAircraftLength() {
         return aircraftLength;
     }
@@ -195,7 +217,7 @@ public class AircraftTypeManagedBean implements Serializable {
         this.minAirspace = minAirspace;
     }
 
-        public Integer getSuiteNo() {
+    public Integer getSuiteNo() {
         return suiteNo;
     }
 

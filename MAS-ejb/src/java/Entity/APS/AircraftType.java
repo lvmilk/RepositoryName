@@ -16,15 +16,17 @@ import java.util.Collection;
  */
 @Entity
 public class AircraftType implements Serializable {
-   // private static final long serialVersionUID = 1L;
+
+    // private static final long serialVersionUID = 1L;
+
     @Id
     private String type;
     private String manufacturer;
     private Double maxDistance;
-//    private Double cruiseSpeed;
-//    private Double cruiseAltitude;
+    private Double leaseCost;
+    private Double fuelCost;
     private Double aircraftLength;
-    private Double wingspan;    
+    private Double wingspan;
     private String minAirspace;
 
     private Integer suiteNo;                //number of seat in suite
@@ -32,25 +34,25 @@ public class AircraftType implements Serializable {
     private Integer bcSeatNo;               //number of seat in business class
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
-    
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="AircraftType")
-    private Collection<Aircraft> aircraft=new ArrayList<Aircraft>();
-    
-    public Collection<Aircraft> getAircraft(){
-            return aircraft;
-            }
-    
-    public void setAircraft(Collection<Aircraft> aircraft){
-        this.aircraft=aircraft;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
+    private Collection<Aircraft> aircraft = new ArrayList<Aircraft>();
+
+    public Collection<Aircraft> getAircraft() {
+        return aircraft;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo){
+    public void setAircraft(Collection<Aircraft> aircraft) {
+        this.aircraft = aircraft;
+    }
+
+    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
-//        this.setCruiseSpeed(cruiseSpeed);
-//        this.setCruiseAltitude(cruiseAltitude);
+        this.setLeaseCost(leaseCost);
+        this.setFuelCost(fuelCost);
         this.setAircraftLength(aircraftLength);
         this.setWingspan(wingspan);
         this.setMinAirspace(minAirspace);
@@ -60,7 +62,7 @@ public class AircraftType implements Serializable {
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
     }
-    
+
     public String getType() {
         return type;
     }
@@ -85,21 +87,21 @@ public class AircraftType implements Serializable {
         this.maxDistance = maxDistance;
     }
 
-//    public Double getCruiseSpeed() {
-//        return cruiseSpeed;
-//    }
-//
-//    public void setCruiseSpeed(Double cruiseSpeed) {
-//        this.cruiseSpeed = cruiseSpeed;
-//    }
-//
-//    public Double getCruiseAltitude() {
-//        return cruiseAltitude;
-//    }
-//
-//    public void setCruiseAltitude(Double cruiseAltitude) {
-//        this.cruiseAltitude = cruiseAltitude;
-//    }
+    public Double getLeaseCost() {
+        return leaseCost;
+    }
+
+    public void setLeaseCost(Double leaseCost) {
+        this.leaseCost = leaseCost;
+    }
+
+    public Double getFuelCost() {
+        return fuelCost;
+    }
+
+    public void setFuelCost(Double fuelCost) {
+        this.fuelCost = fuelCost;
+    }
 
     public Double getAircraftLength() {
         return aircraftLength;
@@ -124,8 +126,8 @@ public class AircraftType implements Serializable {
     public void setMinAirspace(String minAirspace) {
         this.minAirspace = minAirspace;
     }
-    
-        public Integer getSuiteNo() {
+
+    public Integer getSuiteNo() {
         return suiteNo;
     }
 
@@ -165,9 +167,21 @@ public class AircraftType implements Serializable {
         this.ecSeatNo = ecSeatNo;
     }
 
-    
-    
-    
+    //    public Double getCruiseSpeed() {
+//        return cruiseSpeed;
+//    }
+//
+//    public void setCruiseSpeed(Double cruiseSpeed) {
+//        this.cruiseSpeed = cruiseSpeed;
+//    }
+//
+//    public Double getCruiseAltitude() {
+//        return cruiseAltitude;
+//    }
+//
+//    public void setCruiseAltitude(Double cruiseAltitude) {
+//        this.cruiseAltitude = cruiseAltitude;
+//    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -192,5 +206,5 @@ public class AircraftType implements Serializable {
     public String toString() {
         return "Entity.APS.AircraftType[ id=" + type + " ]";
     }
-    
+
 }
