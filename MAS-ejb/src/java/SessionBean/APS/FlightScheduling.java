@@ -164,8 +164,7 @@
 //                obrt2 = rh.findRoute(stp.getId(), dst.getId()).get(0);
 //            }catch (Exception e){
 //                obrt2.setOrigin(stp);
-////                obrt2.setDestination(dst);
-//                                obrt2.setDest(dst);
+//                obrt2.setDestination(dst);
 //                rh.addRoute(obrt2);
 //            }
 //            obgf2.setRoute(obrt2);
@@ -204,8 +203,7 @@
 //                ibrt1= rh.findRoute(dst.getId(), stp.getId()).get(0);
 //            }catch(Exception e){
 //                ibrt1.setOrigin(dst);
-////                ibrt1.setDestination(stp);
-//                                ibrt1.setDest(stp);
+//                ibrt1.setDestination(stp);
 //                rh.addRoute(ibrt1);
 //            }
 //            ibgf1.setRoute(ibrt1);
@@ -244,8 +242,7 @@
 //                ibrt2 = rh.findRoute(stp.getId(), org.getId()).get(0);
 //            }catch(Exception e){
 //                ibrt2.setOrigin(stp);
-////                ibrt2.setDestination(org);
-//                                ibrt2.setDest(org);
+//                ibrt2.setDestination(org);
 //                rh.addRoute(ibrt2);
 //            }
 //            ibgf2.setRoute(ibrt2);
@@ -395,8 +392,7 @@
 //            if (obrt == null){
 //                //throw new MASException("RT02");
 //                obrt.setOrigin(org);
-////                obrt.setDestination(dst);
-//                                obrt.setDest(dst);
+//                obrt.setDestination(dst);
 //                rh.addRoute(obrt);
 //            }
 //            obgf.setRoute(obrt);

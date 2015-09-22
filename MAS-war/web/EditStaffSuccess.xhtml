@@ -10,23 +10,20 @@
     </h:head>
     <h:body>
 
-        <ui:decorate template="./../resources/template/apsTemplate/aps_skeleton.xhtml">
+        <ui:decorate template="./resources/template/skeleton.xhtml">
             <ui:define name="top">
-                <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
+                <ui:include src="./resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
-                <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
+                <ui:include src="./resources/template/cmiTemplate/leftFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="right">
-                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+                <ui:include src="./resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/apsTemplate/AddAircraftTypeCenter.xhtml"></ui:include>
-
-
-
+<!--                <ui:include src="./resources/template/cmiTemplate/centerEditAccPage.xhtml"></ui:include>-->
+                 Edit successful!
             </ui:define>
         </ui:decorate>
     </h:body>
 </html>
-

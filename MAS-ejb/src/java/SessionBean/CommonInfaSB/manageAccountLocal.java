@@ -21,6 +21,9 @@ public interface manageAccountLocal {
     public void addAccount(String username, String password,String email, String stfType);
     public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     public boolean checkAccDuplicate(String username,String stfType);
+    public boolean checkNameDuplicate(String username, String usernameEdited);
+    public boolean checkEmailDuplicate(String email, String emailEdited);
+    public void editOfficeStaff(String usernameEdited, String stfType, String password, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public List<OfficeStaff> getAllOfficeStaff();
     public List<GroundStaff> getAllGoundStaff();

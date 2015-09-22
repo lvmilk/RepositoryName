@@ -21,7 +21,7 @@
                     <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
 
 
-                        <p:column headerText="Annotation" sortBy="#{BookClass.annotation2}">
+                        <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                             <h:outputText value="#{BookClass.annotation}" />
                         </p:column>
 
@@ -70,8 +70,8 @@
                             <h:outputText value="#{BookClass.gds_available}" />
                         </p:column>
 
-                                                <p:column headerText="Edit">
-                                                    <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                         <p:column headerText="Edit">
+                             <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
                            
                         </p:column>
                         

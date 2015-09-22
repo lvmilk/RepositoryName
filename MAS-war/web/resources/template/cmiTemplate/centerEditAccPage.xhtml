@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+     <h:form id="staff">
+            <p:panel id="addOtrStaff"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="otrUsername" value="User Name: " />
+                    <p:inputText id="otrUsername" value="#{etManagedBean.usernameEdited}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
+                    </p:inputText>
+                    <p:message for="otrUsername" display="icon" />
+
+                    <p:outputLabel for="otrPassword" value="Password: " />
+                    <p:inputText id="otrPassword" value="#{etManagedBean.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="otrPassword" display="icon" />
+
+                    <p:outputLabel for="otrEmail" value="Email: " />
+                    <p:inputText id="otrEmail" value="#{etManagedBean.emailEdited}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="otrEmail" display="icon" />
+
+                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="#{etManagedBean.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Edit" update="addOtrStaff" actionListener="#{etManagedBean.editOfStaffAcc}" icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
+
