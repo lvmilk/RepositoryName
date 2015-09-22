@@ -3,18 +3,18 @@ package APSmanagedbean;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author Xu
  */
 @Named(value = "RouteManagedBean")
-@ViewScoped
+@SessionScoped
 public class RouteManagedBean implements Serializable{
 
     @EJB
