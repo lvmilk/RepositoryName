@@ -65,7 +65,8 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
         q1.setParameter("airport", airport);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Cannot delete. The airport" + airport.getIATA() + "is linked with a route.");
+            System.out.println("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+//            throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
         } else {
             airport = em.merge(airport);
             em.remove(airport);
@@ -75,14 +76,9 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public boolean deleteAirportList(List<Airport> airportList) throws Exception {
-        if (airportList.isEmpty()) {
-            return false;
-        } else {
-            for (Airport a : airportList) {
-                deleteAirport(a);
-            }
-            return true;
+    public void deleteAirportList(List<Airport> airportList) throws Exception {
+        for (Airport a : airportList) {
+            deleteAirport(a);
         }
     }
 

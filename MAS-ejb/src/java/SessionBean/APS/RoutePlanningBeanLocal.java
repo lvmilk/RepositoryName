@@ -23,7 +23,7 @@ public interface RoutePlanningBeanLocal {
 
     public void deleteAirport(Airport airport) throws Exception;
 
-    public boolean deleteAirportList(List<Airport> airportList) throws Exception;
+    public void deleteAirportList(List<Airport> airportList) throws Exception;
 
     public Airport viewAirport(String IATA) throws Exception;
 

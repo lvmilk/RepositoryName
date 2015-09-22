@@ -52,18 +52,18 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
-    public void confirmDeleteAirport() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
+    public void confirmDeleteAirport() throws Exception {
+        if (selectedAirport.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot delete airport: No airport selected.", ""));
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
+        }
     }
 
-    public void deleteAirport() throws IOException {
+    public void deleteAirport() throws Exception {
         try {
-            boolean check = rpb.deleteAirportList(selectedAirport);
-            if (check) {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No airport selected. ", ""));
-            }
+            rpb.deleteAirportList(selectedAirport);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
