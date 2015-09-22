@@ -18,16 +18,16 @@
             <h:form>
 
                 <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
-
+                    <p:messages id="msgs" />
                     <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.airportList}" paginator="true" rows="10" emptyMessage="No Serving Airports">
 
                         <p:ajax event="rowSelectCheckbox" listener="#{AirportManagedBean.check}"   />  
 
                         <f:facet name="header">  
-                            Checkbox Based Deletion  
+                            Serving Airport List  
                         </f:facet>  
 
-                        <p:column selectionMode="multiple" headerText="Select all" style="width:40px" />      
+                        <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
 
                         <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
                             <h:outputText value="#{Airport.IATA}" />
@@ -58,11 +58,11 @@
                         </p:column>
 
                     </p:dataTable>
-                    
-                    <p:commandButton value="Delete"  action="#{AirportManagedBean.confirmDeleteAirport()}" icon="ui-icon-check" />
+
+                    <p:commandButton value="Delete" update="panel" action="#{AirportManagedBean.confirmDeleteAirport()}" icon="ui-icon-check" />
                 </p:panel>
 
-                <p:draggable for="panel" /><p:resizable for="panel" />
+                <p:draggable for="panel"/><p:resizable for="panel" />
             </h:form>
 
         </div>
