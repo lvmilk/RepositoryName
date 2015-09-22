@@ -12,69 +12,57 @@
         <title>Create Account_Center panel</title>
     </h:head>
     <h:body>
+        <h:form>
 
-        <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
-
-            <h:form>
-
-                <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
-                    <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
+            <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
+                <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
 
-                        <p:column headerText="Type" sortBy="#{AircraftType.type}">
-                            <h:outputText value="#{AircraftType.type}" />
-                        </p:column>
+                    <p:column headerText="Type" sortBy="#{AircraftType.type}">
+                        <h:outputText value="#{AircraftType.type}" />
+                    </p:column>
 
-                        <p:column headerText="Manufacturer">
-                            <h:outputText value="#{AircraftType.manufacturer}" />
-                        </p:column>
-                        <p:column headerText="Max Distance">
-                            <h:outputText value="#{AircraftType.maxDistance}" />
-                        </p:column>
-                        <p:column headerText="Length">
-                            <h:outputText value="#{AircraftType.aircraftLength}" />
-                        </p:column>
-                        <p:column headerText="Wingspan">
-                            <h:outputText value="#{AircraftType.wingspan}" />
-                        </p:column>
-                        <p:column headerText="Min Airspace">
-                            <h:outputText value="#{AircraftType.minAirspace}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Suite">
-                            <h:outputText value="#{AircraftType.suiteNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in First Class" >
-                            <h:outputText value="#{AircraftType.fcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Business Class">
-                            <h:outputText value="#{AircraftType.bcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Premium Economy Class">
-                            <h:outputText value="#{AircraftType.fcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Economy Class">
-                            <h:outputText value="#{AircraftType.ecSeatNo}" />
-                        </p:column>
+                    <p:column headerText="Manufacturer">
+                        <h:outputText value="#{AircraftType.manufacturer}" />
+                    </p:column>
+                    <p:column headerText="Max Distance">
+                        <h:outputText value="#{AircraftType.maxDistance}" />
+                    </p:column>
+                    <p:column headerText="Length">
+                        <h:outputText value="#{AircraftType.aircraftLength}" />
+                    </p:column>
+                    <p:column headerText="Wingspan">
+                        <h:outputText value="#{AircraftType.wingspan}" />
+                    </p:column>
+                    <p:column headerText="Min Airspace">
+                        <h:outputText value="#{AircraftType.minAirspace}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Suite">
+                        <h:outputText value="#{AircraftType.suiteNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in First Class" >
+                        <h:outputText value="#{AircraftType.fcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Business Class">
+                        <h:outputText value="#{AircraftType.bcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Premium Economy Class">
+                        <h:outputText value="#{AircraftType.fcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Economy Class">
+                        <h:outputText value="#{AircraftType.ecSeatNo}" />
+                    </p:column>
 
-                        <p:column headerText="Edit">
-                            <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />
 
-                        </p:column>
+                    </p:column>
 
-                    </p:dataTable>
-                </p:panel>
+                </p:dataTable>
+            </p:panel>
 
-                <p:draggable for="panel" /><p:resizable for="panel" />
-            </h:form>
-
-
-
-        </div>
-
-
-
-
-
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
 
     </h:body>
 </html>
