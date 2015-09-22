@@ -26,7 +26,8 @@ public class SslManagerBean {
     public void endSsl(ActionEvent event) throws IOException {
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
         String serverPort = "8080";
-        FacesContext.getCurrentInstance().getExternalContext().redirect("http://" + serverName + ":" + serverPort + "staffMain.xhtml");
+        System.out.println(serverName);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("http://" + serverName + ":" + serverPort + "/MAS-war/staffMain.xhtml");
     }
 
 }
