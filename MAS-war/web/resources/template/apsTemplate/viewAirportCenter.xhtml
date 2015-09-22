@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Airport Detail_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View All Serving Airport"  style="width:100%">
+                <p:dataTable var="airport" value="#{AirportManagedBean.airportList}" paginator="true" rows="40" emptyMessage="No Serving Airport">
+
+                    <p:column headerText="IATA" sortBy="#{airport.IATA}">
+                        <h:outputText value="#{airport.IATA}" />
+                    </p:column>
+
+                    <p:column headerText="Country Code" >
+                        <h:outputText value="#{airport.countryCode}" />
+                    </p:column>
+
+                    <p:column headerText="City Name" >
+                        <h:outputText value="#{airport.cityName}" />
+                    </p:column>
+
+                    <p:column headerText="Specification" >
+                        <h:outputText value="#{airport.spec}" />
+                    </p:column>
+
+                    <p:column headerText="View Detail">
+                        <p:commandButton value="View Detail" action="#{AirportManagedBean.viewAirport(airport)}"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+    </h:body>
+</html>

@@ -33,12 +33,12 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     public boolean addAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
         airport = em.find(Airport.class, IATA);
         if (airport != null) {
-            System.out.println("Airport exists.");
+            System.out.println("rpb.addAirport(): Airport exists.");
             return false;
         }
         airport = new Airport();
         airport.create(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
-        System.out.println("Airport added!");
+        System.out.println("rpb.addAirport(): Airport added!");
         em.persist(airport);
         em.flush();
         return true;
@@ -56,7 +56,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         airport.setSpec(spec);
         airport.setTimeZone(timeZone);
         em.merge(airport);
-        System.out.println("Airport updated!");
+        System.out.println("rpb.editAirport(): Airport updated!");
         em.flush();
     }
 
@@ -65,13 +65,13 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
         q1.setParameter("airport", airport);
         if (!q1.getResultList().isEmpty()) {
-            System.out.println("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
 //            throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
         } else {
             airport = em.merge(airport);
             em.remove(airport);
             em.flush();
-            System.out.println("Airport " + airport.getIATA() + " is deleted!");
+            System.out.println("rpb.deleteAirport(): Airport " + airport.getIATA() + " is deleted!");
         }
     }
 
@@ -101,6 +101,20 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             System.out.println("rpb.viewAllAirport(): Airport list exists.");
         }
         return airportList;
+    }
+
+    @Override
+    public List<Route> viewApAsOriginRoute(Airport airport) {
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport");
+        q1.setParameter("airport", airport);
+        return q1.getResultList();
+    }
+
+    @Override
+    public List<Route> viewApAsDestRoute(Airport airport) {
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.dest =:airport");
+        q1.setParameter("airport", airport);
+        return q1.getResultList();
     }
 
     @Override

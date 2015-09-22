@@ -1,6 +1,7 @@
 package APSmanagedbean;
 
 import Entity.APS.Airport;
+import Entity.APS.Route;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +28,7 @@ public class AirportManagedBean implements Serializable {
 
     private UIComponent uIComponent;
 
+    private Airport viewAp = new Airport();
     private String IATA;
     private String airportName;
     private String cityName;
@@ -36,6 +38,8 @@ public class AirportManagedBean implements Serializable {
     private String opStatus;
     private String strategicLevel;
     private String airspace;
+    private List<Route> apOriginRouteList;
+    private List<Route> apDestRouteList;
 
     private List<Airport> selectedAirport = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
@@ -52,6 +56,27 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
+    public void viewAirport(Airport airport) throws IOException{
+        viewAp = airport;
+        setIATA(viewAp.getIATA());
+        setAirportName(viewAp.getAirportName());
+        setCityName(viewAp.getCityName());
+        setCountryCode(viewAp.getCountryCode());
+        setSpec(viewAp.getSpec());
+        setTimeZone(viewAp.getTimeZone());
+        setOpStatus(viewAp.getOpStatus());
+        setStrategicLevel(viewAp.getStrategicLevel());
+        setAirspace(viewAp.getAirspace());
+        getApOriginRouteList();
+        getApDestRouteList();
+        System.out.println("amb.viewAiport(): Airport " + viewAp.getIATA() + " detail is displayed. ");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirportDetail.xhtml");
+    }
+    
+    public void viewAirportDetail() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./APSworkspace.xhtml");
+    }
+    
     public void confirmDeleteAirport() throws Exception {
         if (selectedAirport.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot delete airport: No airport selected.", ""));
@@ -81,10 +106,6 @@ public class AirportManagedBean implements Serializable {
         airportList = rpb.viewAllAirport();
         System.out.println("amb.getAirportList(): Airport list size is " + airportList.size());
         return airportList;
-    }
-
-    public void viewAirport() {
-
     }
 
     public String getIATA() {
@@ -165,6 +186,30 @@ public class AirportManagedBean implements Serializable {
 
     public void setSelectedAirport(List<Airport> selectedAirport) {
         this.selectedAirport = selectedAirport;
+    }
+
+    public List<Route> getApOriginRouteList() {
+        return rpb.viewApAsOriginRoute(viewAp);
+    }
+
+//    public void setApOriginRouteList(List<Route> apOriginRouteList) {
+//        this.apOriginRouteList = apOriginRouteList;
+//    }
+
+    public List<Route> getApDestRouteList() {
+        return rpb.viewApAsDestRoute(viewAp);
+    }
+
+//    public void setApDestRouteList(List<Route> apDestRouteList) {
+//        this.apDestRouteList = apDestRouteList;
+//    }
+
+    public Airport getViewAp() {
+        return viewAp;
+    }
+
+    public void setViewAp(Airport viewAp) {
+        this.viewAp = viewAp;
     }
 
     public UIComponent getuIComponent() {

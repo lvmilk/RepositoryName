@@ -40,4 +40,8 @@ public interface RoutePlanningBeanLocal {
 
     public Route viewRoute(String originIATA, String destIATA) throws Exception;
 
+    public List<Route> viewApAsOriginRoute(Airport airport);
+
+    public List<Route> viewApAsDestRoute(Airport airport);
+
 }
