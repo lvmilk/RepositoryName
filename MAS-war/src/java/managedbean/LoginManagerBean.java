@@ -16,7 +16,9 @@ import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
+import javax.servlet.http.HttpSession;
 import managedbean.Control;
+import managedbean.SessionUtil;
 
 @Named(value = "login")
 @ViewScoped
@@ -41,6 +43,8 @@ public class LoginManagerBean implements Serializable {
 
         if (validity) {
             System.out.println("User exists.");
+            HttpSession session= SessionUtil.getSession();
+            session.setAttribute("username",username);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
             } else {
@@ -55,14 +59,26 @@ public class LoginManagerBean implements Serializable {
 
         }
     }
-
+    
+    public void createAdmin()
+    {
+        boolean blCreateAcc;
+        blCreateAcc=mal.checkAccDuplicate("admin", "administrator");
+        if (!blCreateAcc) {
+            mal.addAdmin("admin", "admin", "administrator");
+        }else {
+            System.out.println("Account exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account exists"));
+        }
+    }
+    
     public void createAcc() {
         boolean blCreateAcc;
 
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
 
         if (!blCreateAcc) {
-            System.out.println("Account exists");
             System.out.println(username);
             System.out.println(password);
             System.out.println(email);

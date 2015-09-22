@@ -9,30 +9,39 @@
 
 
     <h:head>
-        <title>Super Administrator Left panel</title>
+        <title>Top Fragment for logged-in staff</title>
     </h:head>
     <h:body>
         <h:form> 
             <p:growl id="topbar"/>
 
-            <p:menubar style="text-align: center">
-                <p:submenu label="File" icon="ui-icon-document" >
-                    <p:submenu label="New" icon="ui-icon-contact">
-                        <p:menuitem value="Project" url="#" />
-                        <p:menuitem value="Other" url="#" />
-                    </p:submenu>
-                    <p:menuitem value="Open" url="#" />
+            <p:menubar styleClass = "menu" style="text-align: center">
+                <p:submenu label="Home" icon="ui-icon-home" style="margin-right: 30px!important;" >
+                    <p:menuitem value="My Profile" icon="ui-icon-gear" url="#" />
+                    <p:menuitem value="My Workspace" icon="ui-icon-bookmark" url="#" />
+                    <p:menuitem value="Contact HR" icon="ui-icon-contact" url="#" />
+                    <p:menuitem value= "Internal Messaging" icon="ui-icon-comment" url = "#"/>
                     <p:separator />
                     <p:menuitem value="Quit" url="#" />
                 </p:submenu>
 
-                <p:submenu label="Edit" icon="ui-icon-pencil">
-                    <p:menuitem value="Undo" url="#" icon="ui-icon-arrowreturnthick-1-w" />
-                    <p:menuitem value="Redo" url="#" icon="ui-icon-arrowreturnthick-1-e" />
-                </p:submenu>
-
+                <p:menuitem value="APS"  style="margin-right: 30px !important;" url="http://localhost:8080/MAS-war/APSpages/APSworkspace.xhtml" icon="ui-icon-clock"/>
+                
+                <p:menuitem value="AFOS" style="margin-right: 30px !important;" url="#" icon="ui-icon-clipboard"/>
+              
+                <p:menuitem value="AIS"  style="margin-right: 30px !important;" url="http://localhost:8080/MAS-war/AISpages/aisPage.xhtml" icon="ui-icon-pencil"/>
+              
+                <p:menuitem value="ADS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-calendar"/>
+         
+                <p:menuitem value="DCS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-flag"/>
+            
+                <p:menuitem value="AAS"  style="margin-right: 30px !important;" url="#" icon="ui-icon-calculator"/>
+                   
+               <p:menuitem value="CRM"   style="margin-right: 30px !important;" url="#" icon="ui-icon-person"/>
+                  
+              
                 <p:submenu label="Help" icon="ui-icon-help">
-                    <p:menuitem value="Contents" url="#" />
+                    <p:menuitem value="FAQs" url="#" />
                     <p:submenu label="Search" icon="ui-icon-search">
                         <p:submenu label="Text">
                             <p:menuitem value="Workspace" url="#" />
@@ -49,12 +58,3 @@
         </h:form>
     </h:body>
 </html>
-
-
-
-
-
-
-
-
-

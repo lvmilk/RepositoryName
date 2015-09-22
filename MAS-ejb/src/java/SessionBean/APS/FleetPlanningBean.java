@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package SessionBean.APS;
 
 import Entity.APS.Aircraft;
@@ -40,20 +35,20 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan,
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
             throw new Exception("AircraftType exists.");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        aircraftType.create(type, manufacturer, maxDistance, aircraftLength, wingspan, minAirspace,suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
         em.persist(aircraftType);
         em.flush();
     }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan,
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
@@ -63,6 +58,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setMaxDistance(maxDistance);
         aircraftType.setAircraftLength(aircraftLength);
         aircraftType.setWingspan(wingspan);
+        aircraftType.setMinAirspace(minAirspace);
         aircraftType.setSuiteNo(suiteNo);
         aircraftType.setFcSeatNo(fcSeatNo);
         aircraftType.setBcSeatNo(bcSeatNo);
@@ -121,20 +117,22 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType = em.find(AircraftType.class, type);
         return aircraftType;
     }
-
+    
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     @Override
     public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate,
-            Long flightLogId, Long maintenanceLogId, Long transactionLogId) throws Exception {
+            Long flightLogId, Long maintenanceLogId) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft != null) {
-            throw new Exception("Aircraft exists.");
+            throw new Exception("Aircraft has already existed.");
         }
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
         }
         aircraft = new Aircraft();
-//        aircraft.create(registrationNo, serialNo, status, firstFlyDate, deliveryDate, retireDate, flightLogId, maintenanceLogId, transactionLogId);
+        aircraft.create(registrationNo, serialNo, status, firstFlyDate, deliveryDate, retireDate, flightLogId, maintenanceLogId);
         aircraft.setAircraftType(aircraftType);
         em.persist(aircraft);
         em.flush();
@@ -161,8 +159,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft.setDeliveryDate(deliveryDate);
         aircraft.setRetireDate(retireDate);
         aircraft.setFlightLogId(flightLogId);
-//        aircraft.setMaintenanceLogId(maintenanceLogId);
-        aircraft.setTransactionLogId(transactionLogId);
+        aircraft.setMaintenanceLogId(maintenanceLogId);
+//        aircraft.setTransactionLogId(transactionLogId);
         aircraft.setAircraftType(aircraftType);
         em.merge(aircraft);
         em.flush();
