@@ -12,13 +12,13 @@
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="Aircraft Type Information" style="width: 100%">
+            <p:panel id="panel" header="Aircraft Information" style="width: 100%">
 
                 <p:messages id="msgs" />
                 <h:panelGrid columns="2"  style="margin-bottom:10px; width:800px" cellpadding="20">
 
 
-                    <p:outputLabel for="type" value="Aircraft Type:" />
+                    <p:outputLabel for="registrationNo" value="Registration No:" />
                     <p:inputText id="type" value="#{ATMB.type}" required="true" validatorMessage="Aircraft Type: please enter UPPERCASE Alphabet and valid number" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
                         <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z\\s]).{1,20})" />
                     </p:inputText>
