@@ -25,6 +25,7 @@ public class AircraftType implements Serializable {
 //    private Double cruiseAltitude;
     private Double aircraftLength;
     private Double wingspan;    
+    private String minAirspace;
 
     private Integer suiteNo;                //number of seat in suite
     private Integer fcSeatNo;               //number of seat in first class
@@ -43,7 +44,7 @@ public class AircraftType implements Serializable {
         this.aircraft=aircraft;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan,
+    public void create(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo){
         this.setType(type);
         this.setManufacturer(manufacturer);
@@ -52,6 +53,7 @@ public class AircraftType implements Serializable {
 //        this.setCruiseAltitude(cruiseAltitude);
         this.setAircraftLength(aircraftLength);
         this.setWingspan(wingspan);
+        this.setMinAirspace(minAirspace);
         this.setSuiteNo(suiteNo);
         this.setFcSeatNo(fcSeatNo);
         this.setBcSeatNo(bcSeatNo);
@@ -115,7 +117,15 @@ public class AircraftType implements Serializable {
         this.wingspan = wingspan;
     }
 
-    public Integer getSuiteNo() {
+    public String getMinAirspace() {
+        return minAirspace;
+    }
+
+    public void setMinAirspace(String minAirspace) {
+        this.minAirspace = minAirspace;
+    }
+    
+        public Integer getSuiteNo() {
         return suiteNo;
     }
 

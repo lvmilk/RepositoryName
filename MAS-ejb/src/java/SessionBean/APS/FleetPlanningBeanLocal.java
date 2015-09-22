@@ -20,7 +20,7 @@ public interface FleetPlanningBeanLocal {
 
        public List<AircraftType> getAllAircraftType();
 
-    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId, Long transactionLogId) throws Exception;
+    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) throws Exception;
 
     public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId, Long transactionLogId) throws Exception;
 
@@ -34,11 +34,9 @@ public interface FleetPlanningBeanLocal {
 
     public boolean checkDuplicate(String type);
 
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
-
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace,Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
   
-
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
     public void deleteAircraftType(ArrayList<AircraftType> selectedClass) throws Exception;
 
