@@ -22,6 +22,11 @@ public class Control implements Serializable{
     private Boolean visibility = true;
     private Boolean visiCockpit;
     private String stfType;
+    
+    private Boolean visiDelOff=true;
+    private Boolean visiDelGrd;
+    private Boolean visiDelCb;
+    private Boolean visiDelCp;
 
     public void valueChanged(ValueChangeEvent event) {
         Object newValue = event.getNewValue();
@@ -35,6 +40,40 @@ public class Control implements Serializable{
         }
         
     }
+    
+    public void valueChangedForDelete(ValueChangeEvent event)
+    {
+        Object newValue = event.getNewValue();
+        System.out.println(newValue);
+        if (newValue.equals("cockpit")) {
+            this.setVisiDelCp(true);
+            this.setVisiDelCb(false);
+            this.setVisiDelGrd(false);
+            this.setVisiDelOff(false);
+        }
+        else if (newValue.equals("cabin"))
+        {
+            this.setVisiDelCp(false);
+            this.setVisiDelCb(true);
+            this.setVisiDelGrd(false);
+            this.setVisiDelOff(false);
+        }
+        else if(newValue.equals("officeStaff"))
+        {
+            this.setVisiDelCp(false);
+            this.setVisiDelCb(false);
+            this.setVisiDelGrd(false);
+            this.setVisiDelOff(true);
+        }
+        else if(newValue.equals("groundStaff"))
+        {
+            this.setVisiDelCp(false);
+            this.setVisiDelCb(false);
+            this.setVisiDelGrd(true);
+            this.setVisiDelOff(false);
+        }
+    }
+    
     /**
      * @return the type
      */
@@ -74,6 +113,62 @@ public class Control implements Serializable{
      */
     public void setVisiCockpit(Boolean visiCockpit) {
         this.visiCockpit = visiCockpit;
+    }
+
+    /**
+     * @return the visiDelOff
+     */
+    public Boolean getVisiDelOff() {
+        return visiDelOff;
+    }
+
+    /**
+     * @param visiDelOff the visiDelOff to set
+     */
+    public void setVisiDelOff(Boolean visiDelOff) {
+        this.visiDelOff = visiDelOff;
+    }
+
+    /**
+     * @return the visiDelGrd
+     */
+    public Boolean getVisiDelGrd() {
+        return visiDelGrd;
+    }
+
+    /**
+     * @param visiDelGrd the visiDelGrd to set
+     */
+    public void setVisiDelGrd(Boolean visiDelGrd) {
+        this.visiDelGrd = visiDelGrd;
+    }
+
+    /**
+     * @return the visiDelCb
+     */
+    public Boolean getVisiDelCb() {
+        return visiDelCb;
+    }
+
+    /**
+     * @param visiDelCb the visiDelCb to set
+     */
+    public void setVisiDelCb(Boolean visiDelCb) {
+        this.visiDelCb = visiDelCb;
+    }
+
+    /**
+     * @return the visiDelCp
+     */
+    public Boolean getVisiDelCp() {
+        return visiDelCp;
+    }
+
+    /**
+     * @param visiDelCp the visiDelCp to set
+     */
+    public void setVisiDelCp(Boolean visiDelCp) {
+        this.visiDelCp = visiDelCp;
     }
 
 }

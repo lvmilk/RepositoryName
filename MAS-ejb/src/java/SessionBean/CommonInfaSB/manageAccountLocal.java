@@ -26,6 +26,9 @@ public interface manageAccountLocal {
     public boolean checkEmailDuplicate(String email, String emailEdited);
     public void editOfficeStaff(String usernameEdited, String stfType, String password, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
+    public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
+    public boolean delCabinAcc(List<CabinCrew> selectedCbCrew);
+    public boolean delCockpitAcc(List<CockpitCrew> selectedCpCrew);
     public List<OfficeStaff> getAllOfficeStaff();
     public List<GroundStaff> getAllGoundStaff();
     public List<CabinCrew> getAllCabinCrew();

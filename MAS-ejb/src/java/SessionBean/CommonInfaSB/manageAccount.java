@@ -35,17 +35,16 @@ public class manageAccount implements manageAccountLocal {
     public manageAccount() {
 
     }
-    
+
     @Override
-    public void addAdmin(String username,String password, String stfType)
-    {
+    public void addAdmin(String username, String password, String stfType) {
         if (stfType.equals("administrator")) {
             admStaff = new AdminStaff();
             admStaff.create(username, password, stfType);
             em.persist(admStaff);
         }
     }
-    
+
     @Override
     public boolean checkAccDuplicate(String username, String stfType) {
         Query query = null;
@@ -207,6 +206,7 @@ public class manageAccount implements manageAccountLocal {
 
     @Override
     public boolean delAcc(List<OfficeStaff> selectedOffStf) {
+        System.out.println("Currently in delAcc");
         if (selectedOffStf.size() > 0) {
             for (int i = 0; i < selectedOffStf.size(); i++) {
                 String pKey = selectedOffStf.get(i).getOffName();
@@ -215,12 +215,52 @@ public class manageAccount implements manageAccountLocal {
                 em.remove(oStaff);
 
             }
-
+            
+            System.out.println("return true in delAcc");
             return true;
 
         }
         return false;
 
+    }
+
+    @Override
+    public boolean delGrdAcc(List<GroundStaff> selectedGrdStf) {
+        if (selectedGrdStf.size() > 0) {
+            for (int i = 0; i < selectedGrdStf.size(); i++) {
+                String pKey = selectedGrdStf.get(i).getGrdName();
+                GroundStaff gStaff = em.find(GroundStaff.class, pKey);
+                em.remove(gStaff);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delCabinAcc(List<CabinCrew> selectedCbCrew) {
+        if (selectedCbCrew.size() > 0) {
+            for (int i = 0; i < selectedCbCrew.size(); i++) {
+                String pKey = selectedCbCrew.get(i).getCbName();
+                CabinCrew cbCrew = em.find(CabinCrew.class, pKey);
+                em.remove(cbCrew);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delCockpitAcc(List<CockpitCrew> selectedCpCrew) {
+        if (selectedCpCrew.size() > 0) {
+            for (int i = 0; i < selectedCpCrew.size(); i++) {
+                String pKey = selectedCpCrew.get(i).getCpName();
+                CockpitCrew cpCrew = em.find(CockpitCrew.class, pKey);
+                em.remove(cpCrew);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
