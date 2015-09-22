@@ -44,13 +44,6 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         return true;
     }
 
-//    private boolean checkAirportDuplicate(String IATA) {
-//        airport = em.find(Airport.class, IATA);
-//        if (airport != null) {
-//            return true;
-//        }
-//        return false;
-//    }
     @Override
     public void editAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
         airport = em.find(Airport.class, IATA);
@@ -68,19 +61,28 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void deleteAirport(String IATA) throws Exception {
-        airport = em.find(Airport.class, IATA);
-        if (airport == null) {
-            throw new Exception("Airport does not exist.");
-        }
+    public void deleteAirport(Airport airport) throws Exception {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
         q1.setParameter("airport", airport);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Cannot delete. This airport is linked with a route.");
+            throw new Exception("Cannot delete. The airport" + airport.getIATA() + "is linked with a route.");
         } else {
+            airport = em.merge(airport);
             em.remove(airport);
-            System.out.println("Airport deleted!");
             em.flush();
+            System.out.println("Airport " + airport.getIATA() + " is deleted!");
+        }
+    }
+
+    @Override
+    public boolean deleteAirportList(List<Airport> airportList) throws Exception {
+        if (airportList.isEmpty()) {
+            return false;
+        } else {
+            for (Airport a : airportList) {
+                deleteAirport(a);
+            }
+            return true;
         }
     }
 
@@ -95,12 +97,12 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     @Override
     public List<Airport> viewAllAirport() {
-        Query q1 = em.createNamedQuery("SELECT a FROM Airport a");
+        Query q1 = em.createQuery("SELECT a FROM Airport a");
         List<Airport> airportList = (List) q1.getResultList();
         if (airportList.isEmpty()) {
-            System.out.println("No airport has been added.");
+            System.out.println("rpb.viewAllAirport(): No airport has been added.");
         } else {
-            System.out.println("Airport list exists.");
+            System.out.println("rpb.viewAllAirport(): Airport list exists.");
         }
         return airportList;
     }
@@ -115,7 +117,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Origin airport does not exist.");
         }
         if (dest == null) {
-           throw new Exception("Destination airport does not exist.");
+            throw new Exception("Destination airport does not exist.");
         }
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
         q1.setParameter("origin", origin);

@@ -16,20 +16,20 @@
             <p:panel id="panel" header="Route Information" style="width: 100%">
 
                 <p:messages id="msgs" />
-                <h:panelGrid columns="2"  style="margin-bottom:100px; width:500px" cellpadding="40">
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="30">
 
                     <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
-                    <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="10">
+                    <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="15">
                         <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
                     </p:inputText>
 
                     <p:outputLabel for="destIATA" value="Destination Airport IATA: " />
-                    <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="10">
+                    <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="15">
                         <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
                     </p:inputText>
 
                     <p:outputLabel for="distance" value="Route Distance: " />
-                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="10">
+                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="15">
                     </p:inputText>
 
                 </h:panelGrid>

@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Delete Airport Confirmation_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
+
+            <h:form>
+
+                <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
+
+                    <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" value="#{AirportManagedBean.selectedAirport}" paginator="true" rows="10" emptyMessage="No Airports Selected">
+    
+                        <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
+                            <h:outputText value="#{Airport.IATA}" />
+                        </p:column>
+                        <p:column headerText="Airport Name">
+                            <h:outputText value="#{Airport.airportName}" />
+                        </p:column>
+                        <p:column headerText="City Name">
+                            <h:outputText value="#{Airport.cityName}" />
+                        </p:column>
+                        <p:column headerText="Country Code">
+                            <h:outputText value="#{Airport.countryCode}" />
+                        </p:column>
+                        <p:column headerText="Specification">
+                            <h:outputText value="#{Airport.spec}" />
+                        </p:column>
+                        <p:column headerText="Timezone">
+                            <h:outputText value="#{Airport.timeZone}" />
+                        </p:column>
+                        <p:column headerText="Operational Status" >
+                            <h:outputText value="#{Airport.opStatus}" />
+                        </p:column>
+                        <p:column headerText="Strategic Level">
+                            <h:outputText value="#{Airport.strategicLevel}" />
+                        </p:column>
+                        <p:column headerText="Airspace">
+                            <h:outputText value="#{Airport.airspace}" />
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:commandButton value="Back"  action="./deleteAirport.xhtml" icon="ui-icon-check" />
+                    <p:commandButton value="Confirm Delete"  action="#{AirportManagedBean.deleteAirport()}" icon="ui-icon-check" />
+                </p:panel>
+
+                <p:draggable for="panel" /><p:resizable for="panel" />
+            </h:form>
+
+        </div>
+
+    </h:body>
+</html>
+
