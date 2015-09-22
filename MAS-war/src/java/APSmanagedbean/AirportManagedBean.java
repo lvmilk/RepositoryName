@@ -1,20 +1,25 @@
 package APSmanagedbean;
 
+import Entity.APS.Airport;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
  * @author Xu
  */
 @Named(value = "AirportManagedBean")
-@ViewScoped
+@SessionScoped
 public class AirportManagedBean implements Serializable {
 
     @EJB
@@ -32,21 +37,56 @@ public class AirportManagedBean implements Serializable {
     private String strategicLevel;
     private String airspace;
 
+    private List<Airport> selectedAirport = new ArrayList<>();
+    private List<Airport> airportList = new ArrayList<>();
+
     public AirportManagedBean() {
     }
-         
-    public void addAirport() throws Exception{
-        if(rpb.addAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace)) {
+
+    public void addAirport() throws Exception {
+        try {
+            rpb.addAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Airport IATA has already been added." , ""));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
-    public void viewAirport() {
-        
+    public void confirmDeleteAirport() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
     }
-    
+
+    public void deleteAirport() throws IOException {
+        try {
+            boolean check = rpb.deleteAirportList(selectedAirport);
+            if (check) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No airport selected. ", ""));
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
+    public void check(SelectEvent event) {
+        System.out.println("amb.check(): In check");
+    }
+
+    public void setAirportList(List<Airport> airportList) {
+        this.airportList = airportList;
+    }
+
+    public List<Airport> getAirportList() {
+        airportList = rpb.viewAllAirport();
+        System.out.println("amb.getAirportList(): Airport list size is " + airportList.size());
+        return airportList;
+    }
+
+    public void viewAirport() {
+
+    }
+
     public String getIATA() {
         return IATA;
     }
@@ -86,7 +126,7 @@ public class AirportManagedBean implements Serializable {
     public void setSpec(String spec) {
         this.spec = spec;
     }
-    
+
     public String getTimeZone() {
         return timeZone;
     }
@@ -118,7 +158,15 @@ public class AirportManagedBean implements Serializable {
     public void setAirspace(String airspace) {
         this.airspace = airspace;
     }
-    
+
+    public List<Airport> getSelectedAirport() {
+        return selectedAirport;
+    }
+
+    public void setSelectedAirport(List<Airport> selectedAirport) {
+        this.selectedAirport = selectedAirport;
+    }
+
     public UIComponent getuIComponent() {
         return uIComponent;
     }

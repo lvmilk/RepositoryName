@@ -21,7 +21,9 @@ public interface RoutePlanningBeanLocal {
 
     public void editAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception;
 
-    public void deleteAirport(String IATA) throws Exception;
+    public void deleteAirport(Airport airport) throws Exception;
+
+    public boolean deleteAirportList(List<Airport> airportList) throws Exception;
 
     public Airport viewAirport(String IATA) throws Exception;
 
@@ -37,7 +39,5 @@ public interface RoutePlanningBeanLocal {
     public List<Route> viewAllRoute();
 
     public Route viewRoute(String originIATA, String destIATA) throws Exception;
-
-//    public boolean checkAirportDuplicate(String IATA);
 
 }
