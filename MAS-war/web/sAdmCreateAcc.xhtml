@@ -9,25 +9,8 @@
 
     </h:head>
     <h:body>
-        <p:growl id="messages" showDetail="true" autoUpdate="true"/>
-
-        <p:idleMonitor timeout="6000" onidle="PF('idleDialog').show();"/>
-
-        <p:confirmDialog id="confirmDialog"
-                         message="You are not in front of workspace.
-                         Please click ok to continue."
-                         header="Session out" severity="alert" widgetVar="idleDialog">
-
-            <p:commandButton id="confirm" value="Ok" update="messages"
-                             oncomplete="PF('idleDialog').hide()"
-                             actionListener="#{sessionOutBean.backListener}" />
-
-            <p:commandButton id="Logout" value="Log Out" update="messages"
-                             oncomplete="idleDialog.hide()"
-                             actionListener="#{sessionOutBean.sessionOutListener}" />
-
-        </p:confirmDialog>
-
+        <ui:include src="./resources/template/cmiTemplate/sessionOut.xhtml"></ui:include>
+        
         <ui:decorate template="./resources/template/skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./resources/template/topFragment.xhtml"></ui:include>
