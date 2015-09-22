@@ -59,14 +59,26 @@ public class LoginManagerBean implements Serializable {
 
         }
     }
-
+    
+    public void createAdmin()
+    {
+        boolean blCreateAcc;
+        blCreateAcc=mal.checkAccDuplicate("admin", "administrator");
+        if (!blCreateAcc) {
+            mal.addAdmin("admin", "admin", "administrator");
+        }else {
+            System.out.println("Account exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account exists"));
+        }
+    }
+    
     public void createAcc() {
         boolean blCreateAcc;
 
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
 
         if (!blCreateAcc) {
-            System.out.println("Account exists");
             System.out.println(username);
             System.out.println(password);
             System.out.println(email);

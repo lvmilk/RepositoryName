@@ -35,7 +35,17 @@ public class manageAccount implements manageAccountLocal {
     public manageAccount() {
 
     }
-
+    
+    @Override
+    public void addAdmin(String username,String password, String stfType)
+    {
+        if (stfType.equals("administrator")) {
+            admStaff = new AdminStaff();
+            admStaff.create(username, password, stfType);
+            em.persist(admStaff);
+        }
+    }
+    
     @Override
     public boolean checkAccDuplicate(String username, String stfType) {
         Query query = null;
