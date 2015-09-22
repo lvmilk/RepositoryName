@@ -43,15 +43,14 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public AircraftTypeManagedBean() {
         selectedList = new ArrayList<>();
-       }
-    
+    }
+
     public void addAircraftType() throws Exception {
         System.out.println(type);
         System.out.println(manufacturer);
         System.out.println(maxDistance);
         System.out.println(aircraftLength);
         System.out.println(wingspan);
-
         if (!fpb.checkDuplicate(type)) {
             fpb.addAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
@@ -66,16 +65,17 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(selectedList.get(0).getType());
     }
 
-    public void deleteAircraftType() throws IOException {
-        boolean check = fpb.deleteAircraftType(selectedList);
-        if (check) {
+    public void deleteAircraftType() throws Exception {
+        try {
+            fpb.deleteAircraftType(selectedList);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Aircraft Type is selected: ", ""));
+            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    
-    public void editAircraftType(AircraftType aircraftType) throws IOException{
+
+    public void editAircraftType(AircraftType aircraftType) throws IOException {
         setType(aircraftType.getType());
         setManufacturer(aircraftType.getManufacturer());
         setMaxDistance(aircraftType.getMaxDistance());
@@ -89,12 +89,33 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println("Which type is changed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeInfo.xhtml");
     }
-    
+
     public void editAircraftTypeInfo() throws Exception {
         fpb.editAircraftType(type, manufacturer, maxDistance, aircraftLength, wingspan, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
-    
+
+    public void viewAircraftType(AircraftType aircraftType) throws IOException {
+        setType(aircraftType.getType());
+        setManufacturer(aircraftType.getManufacturer());
+        setMaxDistance(aircraftType.getMaxDistance());
+        setAircraftLength(aircraftType.getAircraftLength());
+        setWingspan(aircraftType.getWingspan());
+        setSuiteNo(aircraftType.getSuiteNo());
+        setFcSeatNo(aircraftType.getFcSeatNo());
+        setBcSeatNo(aircraftType.getBcSeatNo());
+        setPecSeatNo(aircraftType.getPecSeatNo());
+        setEcSeatNo(aircraftType.getEcSeatNo());
+        System.out.println("Which type is displayed? : " + aircraftType.getType());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewAircraftTypeConfirm.xhtml");
+
+    }
+
+    public void viewAircraftTypeConfirm() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./APSworkspace.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+    }
 
     public List<AircraftType> getTypeList() {
         typeList = fpb.getAllAircraftType();

@@ -36,9 +36,11 @@ public interface FleetPlanningBeanLocal {
 
     public void addAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
 
-    public boolean deleteAircraftType(ArrayList<AircraftType> selectedClass);
+  
 
     public void editAircraftType(String type, String manufacturer, Double maxDistance, Double aircraftLength, Double wingspan, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception;
+
+    public void deleteAircraftType(ArrayList<AircraftType> selectedClass) throws Exception;
 
     
 }
