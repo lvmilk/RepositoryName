@@ -13,11 +13,11 @@
     </h:head>
     <h:body>
 
-        <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
 
             <h:form>
 
                 <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
+                      <p:messages id="msgs" />  
 
                     <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
@@ -64,7 +64,7 @@
                         
                     </p:dataTable>
 
-                    <p:commandButton value="Delete"  action="#{ATMB.confirmDeleteType()}" icon="ui-icon-check" />
+                    <p:commandButton value="Delete"  action="#{ATMB.confirmDeleteType()}" icon="ui-icon-check" update="panel"/>
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />
@@ -72,7 +72,6 @@
 
 
 
-        </div>
 
 
 

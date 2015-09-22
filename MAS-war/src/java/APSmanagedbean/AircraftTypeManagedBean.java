@@ -61,8 +61,11 @@ public class AircraftTypeManagedBean implements Serializable {
     }
 
     public void confirmDeleteType() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeConfirm.xhtml");
-        System.out.println(selectedList.get(0).getType());
+        if (selectedList.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an Aircraft Type to delete! ", ""));
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeConfirm.xhtml");
+        }
     }
 
     public void deleteAircraftType() throws Exception {
