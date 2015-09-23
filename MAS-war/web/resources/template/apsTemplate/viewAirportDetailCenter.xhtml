@@ -18,6 +18,91 @@
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:300px" cellpadding="10">
 
                     <p:outputLabel value="Airport IATA: " />
+                    <p:outputLabel value="#{IATA}" />
+
+                    <p:outputLabel value="Airport Name: " />
+                    <p:outputLabel value="#{airportName}" />
+
+                    <p:outputLabel value="City: " />
+                    <p:outputLabel value="#{cityName}" />
+
+                    <p:outputLabel value="Country Code: " />
+                    <p:outputLabel value="#{countryCode}" />
+
+                    <p:outputLabel value="Specification: " />
+                    <p:outputLabel value="#{spec}" />
+
+                    <p:outputLabel value="Time Zone: " />
+                    <p:outputLabel value="#{timeZone}" />
+
+                    <p:outputLabel value="Operational Status: " />
+                    <p:outputLabel value="#{opStatus}" />
+
+                    <p:outputLabel value="Strategic Level: " />
+                    <p:outputLabel value="#{strategicLevel}" />
+
+                    <p:outputLabel value="Airspace: " />
+                    <p:outputLabel value="#{airspace}" />
+
+                    <p:outputLabel value="Number of route(s) from the Airport: " />
+                    <p:outputLabel value="#{apOriginRouteList.size()}" />
+
+                    <p:outputLabel value="Number of route(s) to the Airport: " />
+                    <p:outputLabel value="#{apDestRouteList.size()}" />
+
+                </h:panelGrid>
+
+                <p:dataTable var="asOrgRoutes" value="#{apOriginRouteList}" style="width:100%">
+                    <f:facet name="header">
+                        <h:outputText value="Route(s) from the airport" />
+                    </f:facet>
+                    <p:column headerText="Origin - Destination">
+                        <h:outputText value="#{asOrgRoutes.origin.IATA} - #{asOrgRoutes.dest.IATA}" />
+                    </p:column>
+                    <p:column headerText="Frequency">
+                        <h:outputText value="0" />
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable var="asDestRoutes" value="#{apDestRouteList}" style="width:100%">
+                    <f:facet name="header">
+                        <h:outputText value="Route(s) to the airport" />
+                    </f:facet>
+                    <p:column headerText="Origin - Destination">
+                        <h:outputText value="#{asDestRoutes.origin.IATA} - #{asDestRoutes.dest.IATA}" /> 
+                    </p:column>
+                    <p:column headerText="Frequency">
+                        <h:outputText value="0" />
+                    </p:column>
+                </p:dataTable>
+
+            </p:panel>
+
+            <p:commandButton value="Back"  action="#{AirportManagedBean.viewAirportBack}" icon="ui-icon-check" />
+        </h:form>
+    </h:body>
+</html>
+
+
+<!--<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Airport Detail_Center panel</title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="View Airport Detail"  style="width:90%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:300px" cellpadding="10">
+
+                    <p:outputLabel value="Airport IATA: " />
                     <p:outputLabel value="#{AirportManagedBean.IATA}" />
 
                     <p:outputLabel value="Airport Name: " />
@@ -77,47 +162,7 @@
 
             </p:panel>
 
-            <p:commandButton value="OK"  action="#{AirportManagedBean.viewAirportDetail()}" icon="ui-icon-check" />
+            <p:commandButton value="Back"  action="#{AirportManagedBean.viewAirportBack}" icon="ui-icon-check" />
         </h:form>
     </h:body>
-</html>
-
-<!--<f:facet name="header">
-    View Airport Detail
-</f:facet>
-<p:row>
-    <p:column> <h:outputText value="Airport IATA"/> </p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.IATA}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Airport Name"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.airportName}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="City Name"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.cityName}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Country Code"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.countryCode}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Specification"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.spec}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Time Zone"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.timeZone}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Operational Status"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.opStatus}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Strategic Level"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.strategicLevel}"/> </p:column>
-</p:row>
-<p:row>
-    <p:column> <h:outputText value="Airspace"/></p:column>
-    <p:column> <h:outputText value="#{AirportManagedBean.airspace}"/> </p:column>
-</p:row>-->
+</html>-->

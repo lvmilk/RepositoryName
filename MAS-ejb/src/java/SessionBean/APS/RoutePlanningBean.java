@@ -30,18 +30,17 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public boolean addAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
+    public void addAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
         airport = em.find(Airport.class, IATA);
         if (airport != null) {
-            System.out.println("rpb.addAirport(): Airport exists.");
-            return false;
+            System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " exists.");
+            throw new Exception("Airport " + airport.getIATA() + " exists.");
         }
         airport = new Airport();
         airport.create(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
-        System.out.println("rpb.addAirport(): Airport added!");
         em.persist(airport);
         em.flush();
-        return true;
+        System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " added!");
     }
 
     @Override
@@ -55,6 +54,9 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         airport.setCountryCode(countryCode);
         airport.setSpec(spec);
         airport.setTimeZone(timeZone);
+        airport.setOpStatus(opStatus);
+        airport.setStrategicLevel(strategicLevel);
+        airport.setAirspace(airspace);
         em.merge(airport);
         System.out.println("rpb.editAirport(): Airport updated!");
         em.flush();
@@ -65,13 +67,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
         q1.setParameter("airport", airport);
         if (!q1.getResultList().isEmpty()) {
-            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
-//            throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+//            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+            throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
         } else {
             airport = em.merge(airport);
             em.remove(airport);
             em.flush();
             System.out.println("rpb.deleteAirport(): Airport " + airport.getIATA() + " is deleted!");
+            System.out.println("1");
         }
     }
 
@@ -186,7 +189,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         em.merge(route);
         em.flush();
     }
-    
+
     @Override
     public void deleteRoute(String originIATA, String destIATA) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);

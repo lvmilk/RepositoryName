@@ -22,7 +22,7 @@
 
                 <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
 
-                    Airport <h:outputText value="#{AirportManagedBean.IATA}" /> is deleted!
+                    Successfully deleted airport <ui:repeat var="ap" value="#{AirportManagedBean.deletedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat>
 
                 </div>
 
