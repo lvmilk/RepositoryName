@@ -35,21 +35,19 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
             throw new Exception("AircraftType exists.");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace);
         em.persist(aircraftType);
         em.flush();
     }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist..");
@@ -61,11 +59,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setAircraftLength(aircraftLength);
         aircraftType.setWingspan(wingspan);
         aircraftType.setMinAirspace(minAirspace);
-        aircraftType.setSuiteNo(suiteNo);
-        aircraftType.setFcSeatNo(fcSeatNo);
-        aircraftType.setBcSeatNo(bcSeatNo);
-        aircraftType.setPecSeatNo(pecSeatNo);
-        aircraftType.setEcSeatNo(ecSeatNo);
+//        aircraftType.setSuiteNo(suiteNo);
+//        aircraftType.setFcSeatNo(fcSeatNo);
+//        aircraftType.setBcSeatNo(bcSeatNo);
+//        aircraftType.setPecSeatNo(pecSeatNo);
+//        aircraftType.setEcSeatNo(ecSeatNo);
         em.merge(aircraftType);
         em.flush();
     }
@@ -144,7 +142,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
     @Override
     public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate,
-            Long flightLogId, Long maintenanceLogId, Long transactionLogId) throws Exception {
+            Long flightLogId, Long maintenanceLogId) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft == null) {
             throw new Exception("Aircraft does not exist.");

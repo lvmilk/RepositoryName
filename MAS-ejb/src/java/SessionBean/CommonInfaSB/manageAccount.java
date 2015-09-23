@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.CryptoHelper;
 
 /**
  *
@@ -31,6 +32,9 @@ public class manageAccount implements manageAccountLocal {
     GroundStaff grdStaff;
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
+    
+    private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
+    String hPwd;
 
     public manageAccount() {
 
@@ -85,22 +89,24 @@ public class manageAccount implements manageAccountLocal {
     public void addAccount(String username, String password, String email, String stfType) {
 //        newUser = new FFPMember();
         System.out.println("Currently in addAccount");
+        hPwd=this.encrypt(username, password);
+        
         if (stfType.equals("administrator")) {
             admStaff = new AdminStaff();
             admStaff.create(username, password, stfType);
             em.persist(admStaff);
         } else if (stfType.equals("officeStaff")) {
             offStaff = new OfficeStaff();
-            offStaff.create(username, password, email, stfType);
+            offStaff.create(username, hPwd, email, stfType);
             em.persist(offStaff);
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
-            grdStaff.create(username, password, email, stfType);
+            grdStaff.create(username, hPwd, email, stfType);
             em.persist(grdStaff);
         } else if (stfType.equals("cabin")) {
             System.out.println(stfType);
             cbCrew = new CabinCrew();
-            cbCrew.create(username, password, email, stfType);
+            cbCrew.create(username, hPwd, email, stfType);
             em.persist(cbCrew);
         }
 
@@ -109,8 +115,20 @@ public class manageAccount implements manageAccountLocal {
     @Override
     public void addCocpitAcc(String username, String password, String email, String stfType, String licence) {
         cpCrew = new CockpitCrew();
-        cpCrew.create(username, password, email, stfType, licence);
+        hPwd=this.encrypt(username, password);
+        cpCrew.create(username, hPwd, email, stfType, licence);
         em.persist(cpCrew);
+    }
+    
+    public String encrypt(String username, String password)
+    {
+        String temp;
+        if(!username.isEmpty() && !password.isEmpty())
+        {
+            temp=cryptoHelper.doMD5Hashing(username+password);
+            return temp;
+        }
+        return password;
     }
 
     public boolean checkNameDuplicate(String username, String usernameEdited) {
