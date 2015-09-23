@@ -46,8 +46,8 @@ public class AircraftType implements Serializable {
         this.aircraft = aircraft;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace
-            /*Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo*/) {
+    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace) {
+          /*Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo*/
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
