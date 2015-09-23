@@ -125,6 +125,7 @@ public class manageAccount implements manageAccountLocal {
         String temp;
         if(!username.isEmpty() && !password.isEmpty())
         {
+            System.out.println("*****The original password is "+ password +"*****");
             temp=cryptoHelper.doMD5Hashing(username+password);
             return temp;
         }
@@ -184,6 +185,7 @@ public class manageAccount implements manageAccountLocal {
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
         Query query = null;
+        hPwd=this.encrypt(username, password);
         if (stfType.equals("administrator")) {
             query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", password);
@@ -191,22 +193,22 @@ public class manageAccount implements manageAccountLocal {
             query.setParameter("inStfType", stfType);
         } else if (stfType.equals("officeStaff")) {
             query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.offName = :inUserName and u.offPassword=:inPassWord and u.stfType=:inStfType");
-            query.setParameter("inPassWord", password);
+            query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
         } else if (stfType.equals("groundStaff")) {
             query = em.createQuery("SELECT u FROM GroundStaff u WHERE u.grdName = :inUserName and u.grdPassword=:inPassWord and u.stfType=:inStfType");
-            query.setParameter("inPassWord", password);
+            query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
         } else if (stfType.equals("cabin")) {
             query = em.createQuery("SELECT u FROM CabinCrew u WHERE u.cbName = :inUserName and u.cbPassword=:inPassWord and u.stfType=:inStfType");
-            query.setParameter("inPassWord", password);
+            query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
         } else if (stfType.equals("cockpit")) {
             query = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.cpName = :inUserName and u.cpPassword=:inPassWord and u.stfType=:inStfType");
-            query.setParameter("inPassWord", password);
+            query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
         }
