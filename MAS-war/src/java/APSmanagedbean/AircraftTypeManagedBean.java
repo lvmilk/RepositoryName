@@ -38,11 +38,11 @@ public class AircraftTypeManagedBean implements Serializable {
     private Double wingspan;
     private String minAirspace;
 
-    private Integer suiteNo;                //number of seat in suite
-    private Integer fcSeatNo;               //number of seat in first class
-    private Integer bcSeatNo;               //number of seat in business class
-    private Integer pecSeatNo;              //number of seat in premium economy class
-    private Integer ecSeatNo;               //number of seat in economy class
+//    private Integer suiteNo;                //number of seat in suite
+//    private Integer fcSeatNo;               //number of seat in first class
+//    private Integer bcSeatNo;               //number of seat in business class
+//    private Integer pecSeatNo;              //number of seat in premium economy class
+//    private Integer ecSeatNo;               //number of seat in economy class
 
     public AircraftTypeManagedBean() {
         selectedList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(aircraftLength);
         System.out.println(wingspan);
         if (!fpb.checkDuplicate(type)) {
-            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
@@ -90,17 +90,17 @@ public class AircraftTypeManagedBean implements Serializable {
         setAircraftLength(aircraftType.getAircraftLength());
         setWingspan(aircraftType.getWingspan());
         setMinAirspace(aircraftType.getMinAirspace());
-        setSuiteNo(aircraftType.getSuiteNo());
-        setFcSeatNo(aircraftType.getFcSeatNo());
-        setBcSeatNo(aircraftType.getBcSeatNo());
-        setPecSeatNo(aircraftType.getPecSeatNo());
-        setEcSeatNo(aircraftType.getEcSeatNo());
+//        setSuiteNo(aircraftType.getSuiteNo());
+//        setFcSeatNo(aircraftType.getFcSeatNo());
+//        setBcSeatNo(aircraftType.getBcSeatNo());
+//        setPecSeatNo(aircraftType.getPecSeatNo());
+//        setEcSeatNo(aircraftType.getEcSeatNo());
         System.out.println("Which type is changed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeInfo.xhtml");
     }
 
     public void editAircraftTypeInfo() throws Exception {
-        fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
         //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
@@ -114,11 +114,11 @@ public class AircraftTypeManagedBean implements Serializable {
         setAircraftLength(aircraftType.getAircraftLength());
         setWingspan(aircraftType.getWingspan());
         setMinAirspace(aircraftType.getMinAirspace());
-        setSuiteNo(aircraftType.getSuiteNo());
-        setFcSeatNo(aircraftType.getFcSeatNo());
-        setBcSeatNo(aircraftType.getBcSeatNo());
-        setPecSeatNo(aircraftType.getPecSeatNo());
-        setEcSeatNo(aircraftType.getEcSeatNo());
+//        setSuiteNo(aircraftType.getSuiteNo());
+//        setFcSeatNo(aircraftType.getFcSeatNo());
+//        setBcSeatNo(aircraftType.getBcSeatNo());
+//        setPecSeatNo(aircraftType.getPecSeatNo());
+//        setEcSeatNo(aircraftType.getEcSeatNo());
         System.out.println("Which type is displayed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewAircraftTypeConfirm.xhtml");
 
@@ -216,45 +216,45 @@ public class AircraftTypeManagedBean implements Serializable {
     public void setMinAirspace(String minAirspace) {
         this.minAirspace = minAirspace;
     }
-
-    public Integer getSuiteNo() {
-        return suiteNo;
-    }
-
-    public void setSuiteNo(Integer suiteNo) {
-        this.suiteNo = suiteNo;
-    }
-
-    public Integer getFcSeatNo() {
-        return fcSeatNo;
-    }
-
-    public void setFcSeatNo(Integer fcSeatNo) {
-        this.fcSeatNo = fcSeatNo;
-    }
-
-    public Integer getBcSeatNo() {
-        return bcSeatNo;
-    }
-
-    public void setBcSeatNo(Integer bcSeatNo) {
-        this.bcSeatNo = bcSeatNo;
-    }
-
-    public Integer getPecSeatNo() {
-        return pecSeatNo;
-    }
-
-    public void setPecSeatNo(Integer pecSeatNo) {
-        this.pecSeatNo = pecSeatNo;
-    }
-
-    public Integer getEcSeatNo() {
-        return ecSeatNo;
-    }
-
-    public void setEcSeatNo(Integer ecSeatNo) {
-        this.ecSeatNo = ecSeatNo;
-    }
+//
+//    public Integer getSuiteNo() {
+//        return suiteNo;
+//    }
+//
+//    public void setSuiteNo(Integer suiteNo) {
+//        this.suiteNo = suiteNo;
+//    }
+//
+//    public Integer getFcSeatNo() {
+//        return fcSeatNo;
+//    }
+//
+//    public void setFcSeatNo(Integer fcSeatNo) {
+//        this.fcSeatNo = fcSeatNo;
+//    }
+//
+//    public Integer getBcSeatNo() {
+//        return bcSeatNo;
+//    }
+//
+//    public void setBcSeatNo(Integer bcSeatNo) {
+//        this.bcSeatNo = bcSeatNo;
+//    }
+//
+//    public Integer getPecSeatNo() {
+//        return pecSeatNo;
+//    }
+//
+//    public void setPecSeatNo(Integer pecSeatNo) {
+//        this.pecSeatNo = pecSeatNo;
+//    }
+//
+//    public Integer getEcSeatNo() {
+//        return ecSeatNo;
+//    }
+//
+//    public void setEcSeatNo(Integer ecSeatNo) {
+//        this.ecSeatNo = ecSeatNo;
+//    }
 
 }
