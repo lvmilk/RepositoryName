@@ -88,26 +88,26 @@ public class PricingManagedBean implements Serializable {
         AircraftType aircraftType = pb.getAircraftType(type);
         fuelCost=aircraftType.getFuelCost()*blockHour*annualDepartures;
         ownershipCost=aircraftType.getLeaseCost();
-        if (aircraftType.getSuiteNo() > 0) {
-            cabinInfo.put("Suite", aircraftType.getSuiteNo());
-            suiteNo = aircraftType.getSuiteNo();
-        }
-        if (aircraftType.getFcSeatNo() > 0) {
-            cabinInfo.put("First Class", aircraftType.getFcSeatNo());
-            fcSeatNo = aircraftType.getFcSeatNo();
-        }
-        if (aircraftType.getEcSeatNo() > 0) {
-            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
-            ecSeatNo = aircraftType.getEcSeatNo();
-        }
-        if (aircraftType.getPecSeatNo() > 0) {
-            cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
-            pecSeatNo = aircraftType.getPecSeatNo();
-        }
-        if (aircraftType.getBcSeatNo() > 0) {
-            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
-            bcSeatNo = aircraftType.getBcSeatNo();
-        }
+//        if (aircraftType.getSuiteNo() > 0) {
+//            cabinInfo.put("Suite", aircraftType.getSuiteNo());
+//            suiteNo = aircraftType.getSuiteNo();
+//        }
+//        if (aircraftType.getFcSeatNo() > 0) {
+//            cabinInfo.put("First Class", aircraftType.getFcSeatNo());
+//            fcSeatNo = aircraftType.getFcSeatNo();
+//        }
+//        if (aircraftType.getEcSeatNo() > 0) {
+//            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
+//            ecSeatNo = aircraftType.getEcSeatNo();
+//        }
+//        if (aircraftType.getPecSeatNo() > 0) {
+//            cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
+//            pecSeatNo = aircraftType.getPecSeatNo();
+//        }
+//        if (aircraftType.getBcSeatNo() > 0) {
+//            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
+//            bcSeatNo = aircraftType.getBcSeatNo();
+//        }
         totalSeatNo=suiteNo+fcSeatNo+ecSeatNo+pecSeatNo+bcSeatNo;
         crewNo=pb.calculateCrewNo(totalSeatNo);
     }

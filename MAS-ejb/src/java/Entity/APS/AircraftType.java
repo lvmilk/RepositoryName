@@ -29,11 +29,11 @@ public class AircraftType implements Serializable {
     private Double wingspan;
     private String minAirspace;
 
-    private Integer suiteNo;                //number of seat in suite
-    private Integer fcSeatNo;               //number of seat in first class
-    private Integer bcSeatNo;               //number of seat in business class
-    private Integer pecSeatNo;              //number of seat in premium economy class
-    private Integer ecSeatNo;               //number of seat in economy class
+//    private Integer suiteNo;                //number of seat in suite
+//    private Integer fcSeatNo;               //number of seat in first class
+//    private Integer bcSeatNo;               //number of seat in business class
+//    private Integer pecSeatNo;              //number of seat in premium economy class
+//    private Integer ecSeatNo;               //number of seat in economy class
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
     private Collection<Aircraft> aircraft = new ArrayList<Aircraft>();
@@ -46,8 +46,8 @@ public class AircraftType implements Serializable {
         this.aircraft = aircraft;
     }
 
-    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
+    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace
+            /*Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo*/) {
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
@@ -56,11 +56,11 @@ public class AircraftType implements Serializable {
         this.setAircraftLength(aircraftLength);
         this.setWingspan(wingspan);
         this.setMinAirspace(minAirspace);
-        this.setSuiteNo(suiteNo);
-        this.setFcSeatNo(fcSeatNo);
-        this.setBcSeatNo(bcSeatNo);
-        this.setPecSeatNo(pecSeatNo);
-        this.setEcSeatNo(ecSeatNo);
+//        this.setSuiteNo(suiteNo);
+//        this.setFcSeatNo(fcSeatNo);
+//        this.setBcSeatNo(bcSeatNo);
+//        this.setPecSeatNo(pecSeatNo);
+//        this.setEcSeatNo(ecSeatNo);
     }
 
     public String getType() {
@@ -126,46 +126,46 @@ public class AircraftType implements Serializable {
     public void setMinAirspace(String minAirspace) {
         this.minAirspace = minAirspace;
     }
-
-    public Integer getSuiteNo() {
-        return suiteNo;
-    }
-
-    public void setSuiteNo(Integer suiteNo) {
-        this.suiteNo = suiteNo;
-    }
-
-    public Integer getFcSeatNo() {
-        return fcSeatNo;
-    }
-
-    public void setFcSeatNo(Integer fcSeatNo) {
-        this.fcSeatNo = fcSeatNo;
-    }
-
-    public Integer getBcSeatNo() {
-        return bcSeatNo;
-    }
-
-    public void setBcSeatNo(Integer bcSeatNo) {
-        this.bcSeatNo = bcSeatNo;
-    }
-
-    public Integer getPecSeatNo() {
-        return pecSeatNo;
-    }
-
-    public void setPecSeatNo(Integer pecSeatNo) {
-        this.pecSeatNo = pecSeatNo;
-    }
-
-    public Integer getEcSeatNo() {
-        return ecSeatNo;
-    }
-
-    public void setEcSeatNo(Integer ecSeatNo) {
-        this.ecSeatNo = ecSeatNo;
-    }
+//
+//    public Integer getSuiteNo() {
+//        return suiteNo;
+//    }
+//
+//    public void setSuiteNo(Integer suiteNo) {
+//        this.suiteNo = suiteNo;
+//    }
+//
+//    public Integer getFcSeatNo() {
+//        return fcSeatNo;
+//    }
+//
+//    public void setFcSeatNo(Integer fcSeatNo) {
+//        this.fcSeatNo = fcSeatNo;
+//    }
+//
+//    public Integer getBcSeatNo() {
+//        return bcSeatNo;
+//    }
+//
+//    public void setBcSeatNo(Integer bcSeatNo) {
+//        this.bcSeatNo = bcSeatNo;
+//    }
+//
+//    public Integer getPecSeatNo() {
+//        return pecSeatNo;
+//    }
+//
+//    public void setPecSeatNo(Integer pecSeatNo) {
+//        this.pecSeatNo = pecSeatNo;
+//    }
+//
+//    public Integer getEcSeatNo() {
+//        return ecSeatNo;
+//    }
+//
+//    public void setEcSeatNo(Integer ecSeatNo) {
+//        this.ecSeatNo = ecSeatNo;
+//    }
 
     //    public Double getCruiseSpeed() {
 //        return cruiseSpeed;
