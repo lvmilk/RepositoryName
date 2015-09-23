@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "RouteManagedBean")
 @SessionScoped
-public class RouteManagedBean implements Serializable{
+public class RouteManagedBean implements Serializable {
 
     @EJB
     private RoutePlanningBeanLocal rpb;
@@ -23,17 +23,18 @@ public class RouteManagedBean implements Serializable{
     private UIComponent uIComponent;
 
     private Double distance;
+    private Double blockhour;
     private String originIATA;
     private String destIATA;
 
     public RouteManagedBean() {
     }
 
-    public void addRoute() throws Exception{
-        try{ 
-            rpb.addRoute(originIATA, destIATA, distance);
+    public void addRoute() throws Exception {
+        try {
+            rpb.addRoute(originIATA, destIATA, distance, blockhour);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addRouteSuccess.xhtml");
-        } catch(Exception ex) {
+        } catch (Exception ex) {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route has already been added.", ""));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -45,6 +46,14 @@ public class RouteManagedBean implements Serializable{
 
     public void setDistance(Double distance) {
         this.distance = distance;
+    }
+
+    public Double getBlockhour() {
+        return blockhour;
+    }
+
+    public void setBlockhour(Double blockhour) {
+        this.blockhour = blockhour;
     }
 
     public String getOriginIATA() {

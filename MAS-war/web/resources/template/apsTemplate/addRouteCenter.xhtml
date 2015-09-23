@@ -30,6 +30,10 @@
                         <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="15">
                         </p:inputText>
 
+                        <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
+                        <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="15">
+                        </p:inputText>
+
                     </h:panelGrid>
 
                     <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
@@ -37,7 +41,7 @@
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />
-                
+
             </h:form>
         </div>
     </h:body>

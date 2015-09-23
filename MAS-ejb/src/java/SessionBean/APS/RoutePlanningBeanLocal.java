@@ -29,11 +29,12 @@ public interface RoutePlanningBeanLocal {
 
     public List<Airport> viewAllAirport();
 
-    public boolean addRoute(String originIATA, String destIATA, Double distance) throws Exception;
+    public boolean addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception;
 
     public void editRoute(String originIATA, String destIATA, Double distance) throws Exception;
 
-//    public void editRouteFare(String originIATA, String destIATA, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
+    public void editRouteFare(String originIATA, String destIATA, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
+    
     public void deleteRoute(String originIATA, String destIATA) throws Exception;
 
     public List<Route> viewAllRoute();
