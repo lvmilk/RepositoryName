@@ -18,9 +18,9 @@
             <h:form>
 
                 <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
-
+                    <p:messages id="msgs" />
                     <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" value="#{AirportManagedBean.selectedAirport}" paginator="true" rows="10" emptyMessage="No Airports Selected">
-    
+
                         <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
                             <h:outputText value="#{Airport.IATA}" />
                         </p:column>
@@ -51,7 +51,7 @@
 
                     </p:dataTable>
                     <p:commandButton value="Back"  action="./deleteAirport.xhtml" icon="ui-icon-check" />
-                    <p:commandButton value="Confirm Delete"  action="#{AirportManagedBean.deleteAirport}" icon="ui-icon-check" />
+                    <p:commandButton value="Confirm Delete"  update="panel" action="#{AirportManagedBean.deleteAirport}" icon="ui-icon-check" />
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />

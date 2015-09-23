@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import static java.util.concurrent.ThreadLocalRandom.current;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -20,7 +23,7 @@ import org.primefaces.event.SelectEvent;
  * @author Xu
  */
 @Named(value = "AirportManagedBean")
-@SessionScoped
+@ViewScoped
 public class AirportManagedBean implements Serializable {
 
     @EJB
@@ -28,6 +31,7 @@ public class AirportManagedBean implements Serializable {
 
     private UIComponent uIComponent;
 
+//    @ManagedProperty("#{viewAp}")
     private Airport viewAp = new Airport();
     private String IATA;
     private String airportName;
@@ -43,8 +47,14 @@ public class AirportManagedBean implements Serializable {
 
     private List<Airport> selectedAirport = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
+    private List<Airport> deletedAirport = new ArrayList<>();
 
     public AirportManagedBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+
     }
 
     public void addAirport() throws Exception {
@@ -56,30 +66,68 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
-    public void viewAirport(Airport airport) throws IOException{
-        viewAp = airport;
-        setIATA(viewAp.getIATA());
-        setAirportName(viewAp.getAirportName());
-        setCityName(viewAp.getCityName());
-        setCountryCode(viewAp.getCountryCode());
-        setSpec(viewAp.getSpec());
-        setTimeZone(viewAp.getTimeZone());
-        setOpStatus(viewAp.getOpStatus());
-        setStrategicLevel(viewAp.getStrategicLevel());
-        setAirspace(viewAp.getAirspace());
-        getApOriginRouteList();
-        getApDestRouteList();
-        System.out.println("amb.viewAiport(): Airport " + viewAp.getIATA() + " detail is displayed. ");
+    public void viewAirport(Airport airport) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", airport.getIATA());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airportName", airport.getAirportName());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryCode", airport.getCountryCode());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airspace", airport.getAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apOriginRouteList", getApOriginRouteList(airport));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apDestRouteList", getApDestRouteList(airport));
+        System.out.println("amb.viewAiport(): Airport " + airport.getIATA() + " detail is displayed. ");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirportDetail.xhtml");
     }
-    
-    public void viewAirportDetail() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./APSworkspace.xhtml");
+
+//    public void viewAirport() throws IOException {
+//        viewAp = (Airport) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("viewAp");
+//        setIATA(viewAp.getIATA());
+//        setAirportName(viewAp.getAirportName());
+//        setCityName(viewAp.getCityName());
+//        setCountryCode(viewAp.getCountryCode());
+//        setSpec(viewAp.getSpec());
+//        setTimeZone(viewAp.getTimeZone());
+//        setOpStatus(viewAp.getOpStatus());
+//        setStrategicLevel(viewAp.getStrategicLevel());
+//        setAirspace(viewAp.getAirspace());
+//        getApOriginRouteList();
+//        getApDestRouteList();
+//        System.out.println("amb.viewAiport(): Airport " + viewAp.getIATA() + " detail is displayed. ");
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirportDetail.xhtml");
+//    }
+    public void viewAirportBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirport.xhtml");
     }
-    
+
+    public void editAirport(Airport airport) throws IOException {
+        setIATA(airport.getIATA());
+        setAirportName(airport.getAirportName());
+        setCityName(airport.getCityName());
+        setCountryCode(airport.getCountryCode());
+        setSpec(airport.getSpec());
+        setTimeZone(airport.getTimeZone());
+        setOpStatus(airport.getOpStatus());
+        setStrategicLevel(airport.getStrategicLevel());
+        setAirspace(airport.getAirspace());
+        System.out.println("amb.viewAiport(): Airport " + airport.getIATA() + " information will be updated. ");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportDetail.xhtml");
+    }
+
+    public void editAirportDetail() throws Exception {
+        try {
+            rpb.editAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
     public void confirmDeleteAirport() throws Exception {
         if (selectedAirport.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot delete airport: No airport selected.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Please select airport(s) to be deleted.", ""));
         } else {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
         }
@@ -87,6 +135,7 @@ public class AirportManagedBean implements Serializable {
 
     public void deleteAirport() throws Exception {
         try {
+            deletedAirport = selectedAirport;
             rpb.deleteAirportList(selectedAirport);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -188,22 +237,28 @@ public class AirportManagedBean implements Serializable {
         this.selectedAirport = selectedAirport;
     }
 
-    public List<Route> getApOriginRouteList() {
-        return rpb.viewApAsOriginRoute(viewAp);
+    public List<Airport> getDeletedAirport() {
+        return deletedAirport;
+    }
+
+    public void setDeletedAirport(List<Airport> deletedAirport) {
+        this.deletedAirport = deletedAirport;
+    }
+
+    public List<Route> getApOriginRouteList(Airport airport) {
+        return rpb.viewApAsOriginRoute(airport);
     }
 
 //    public void setApOriginRouteList(List<Route> apOriginRouteList) {
 //        this.apOriginRouteList = apOriginRouteList;
 //    }
-
-    public List<Route> getApDestRouteList() {
-        return rpb.viewApAsDestRoute(viewAp);
+    public List<Route> getApDestRouteList(Airport airport) {
+        return rpb.viewApAsDestRoute(airport);
     }
 
 //    public void setApDestRouteList(List<Route> apDestRouteList) {
 //        this.apDestRouteList = apDestRouteList;
 //    }
-
     public Airport getViewAp() {
         return viewAp;
     }
