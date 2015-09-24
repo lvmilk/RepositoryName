@@ -103,15 +103,18 @@ public class AirportManagedBean implements Serializable {
     }
 
     public void editAirport(Airport airport) throws IOException {
-        setIATA(airport.getIATA());
-        setAirportName(airport.getAirportName());
-        setCityName(airport.getCityName());
-        setCountryCode(airport.getCountryCode());
-        setSpec(airport.getSpec());
-        setTimeZone(airport.getTimeZone());
-        setOpStatus(airport.getOpStatus());
-        setStrategicLevel(airport.getStrategicLevel());
-        setAirspace(airport.getAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", airport.getIATA());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airportName", airport.getAirportName());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryCode", airport.getCountryCode());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airspace", airport.getAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apOriginRouteList", getApOriginRouteList(airport));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apDestRouteList", getApDestRouteList(airport));
+
         System.out.println("amb.viewAiport(): Airport " + airport.getIATA() + " information will be updated. ");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportDetail.xhtml");
     }
@@ -125,17 +128,26 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
-    public void confirmDeleteAirport() throws Exception {
+    public void tryDeleteAirport() throws Exception {
         if (selectedAirport.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Please select airport(s) to be deleted.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select airport(s) to be deleted.", ""));
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
+            try {
+                System.out.println("amb.tryDeleteAirport(): before check");
+                rpb.tryDeleteAirportList(selectedAirport);
+                System.out.println("amb.tryDeleteAirport(): pass check");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deleteConditionFlag", true);
+                System.out.println("amb.tryDeleteAirport(): send flag back");
+//                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmDeleteAirport.xhtml");
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deleteConditionFlag", false);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+            }
         }
     }
 
-    public void deleteAirport() throws Exception {
+    public void confirmDeleteAirport() throws Exception {
         try {
-            deletedAirport = selectedAirport;
             rpb.deleteAirportList(selectedAirport);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -143,6 +155,15 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
+//    public void deleteAirport() throws Exception {
+//        try {
+//            deletedAirport = selectedAirport;
+//            rpb.deleteAirportList(selectedAirport);
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
+//        } catch (Exception ex) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+//        }
+//    }
     public void check(SelectEvent event) {
         System.out.println("amb.check(): In check");
     }

@@ -7,6 +7,7 @@ package SessionBean.APS;
 
 import Entity.APS.Airport;
 import Entity.APS.Route;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -63,11 +64,31 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
+    public void tryDeleteAirport(Airport airport) throws Exception {
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
+        q1.setParameter("airport", airport);
+        if (!q1.getResultList().isEmpty()) {
+            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+            throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+        } else {
+            System.out.println("rpb.deleteAirport(): Airport " + airport.getIATA() + " can be deleted!");
+        }
+    }
+
+    @Override
+    public boolean tryDeleteAirportList(List<Airport> airportList) throws Exception {
+        for (Airport a : airportList) {
+            tryDeleteAirport(a);
+        }
+        return true;
+    }
+
+    @Override
     public void deleteAirport(Airport airport) throws Exception {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport or r.dest =:airport");
         q1.setParameter("airport", airport);
         if (!q1.getResultList().isEmpty()) {
-//            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
+            System.out.println("rpb.deleteAirport(): Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
             throw new Exception("Cannot delete. The airport " + airport.getIATA() + " is linked with a route.");
         } else {
             airport = em.merge(airport);
@@ -207,12 +228,12 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     @Override
     public List<Route> viewAllRoute() {
-        Query q1 = em.createNamedQuery("SELECT r FROM Route r");
+        Query q1 = em.createQuery("SELECT r FROM Route r");
         List<Route> routeList = (List) q1.getResultList();
         if (routeList.isEmpty()) {
-            System.out.println("No route has been added.");
+            System.out.println("rpb.viewAllRoute(): No route has been added.");
         } else {
-            System.out.println("Route list exists");
+            System.out.println("rpb.viewAllRoute(): Return route list.");
         }
         return routeList;
     }
@@ -229,6 +250,22 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
         route = (Route) q1.getResultList().get(0);
         return route;
+    }
+
+    @Override
+    public List<String> viewAllRouteString() {
+        Query q1 = em.createQuery("SELECT r FROM Route r");
+        List<Route> routeList = (List) q1.getResultList();
+        List<String> routeListString = new ArrayList<String>();
+        if (routeList.isEmpty()) {
+            return null;
+        } else {
+            for (Route aroute : routeList) {
+                String routeString = aroute.getOrigin() + " - " + aroute.getDest();
+                routeListString.add(routeString);
+            }
+            return routeListString;
+        }
     }
 
 }

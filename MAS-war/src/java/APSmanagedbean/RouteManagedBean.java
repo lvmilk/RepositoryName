@@ -1,7 +1,12 @@
 package APSmanagedbean;
 
+import Entity.APS.Route;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
@@ -27,7 +32,15 @@ public class RouteManagedBean implements Serializable {
     private String originIATA;
     private String destIATA;
 
+    private List<Route> routeList = new ArrayList<>();
+    private List<Route> filteredRouteList = new ArrayList<>();
+
     public RouteManagedBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+
     }
 
     public void addRoute() throws Exception {
@@ -38,6 +51,40 @@ public class RouteManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route has already been added.", ""));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
+    }
+
+    public void viewRoute(Route route) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
+        // have not set serving aircraft yet
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("acType", route.getAcType().getType());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("blockhour", route.getBlockhour());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", route.getStatus());
+        System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
+    }
+
+    public void viewRouteBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRoute.xhtml");
+    }
+
+    public List<Route> getRouteList() {
+        routeList = rpb.viewAllRoute();
+        System.out.println("amb.getAirportList(): Route list size is " + routeList.size());
+        return routeList;
+    }
+
+    public void setRouteList(List<Route> routeList) {
+        this.routeList = routeList;
+    }
+
+    public List<Route> getFilteredRouteList() {
+        return filteredRouteList;
+    }
+
+    public void setFilteredRouteList(List<Route> filteredRouteList) {
+        this.filteredRouteList = filteredRouteList;
     }
 
     public Double getDistance() {

@@ -45,4 +45,10 @@ public interface RoutePlanningBeanLocal {
 
     public List<Route> viewApAsDestRoute(Airport airport);
 
+    public void tryDeleteAirport(Airport airport) throws Exception;
+
+    public boolean tryDeleteAirportList(List<Airport> airportList) throws Exception;
+
+    public List<String> viewAllRouteString();
+
 }

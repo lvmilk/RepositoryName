@@ -13,55 +13,66 @@
     </h:head>
     <h:body>
 
-            <h:form>
+        <h:form>
 
-                <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
-                    <p:messages id="msgs" />
-                    <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.airportList}" paginator="true" rows="10" emptyMessage="No Serving Airports">
+            <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
+                <p:messages id="msgs" styleClass="buttonUpdate"/>
+                <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.airportList}" paginator="true" rows="10" emptyMessage="No Serving Airports">
 
-                        <p:ajax event="rowSelectCheckbox" listener="#{AirportManagedBean.check}"   />  
+                    <p:ajax event="rowSelectCheckbox" listener="#{AirportManagedBean.check}"   />  
 
-                        <f:facet name="header">  
-                            Serving Airport List  
-                        </f:facet>  
+                    <f:facet name="header">  
+                        Serving Airport List  
+                    </f:facet>  
 
-                        <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
 
-                        <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
-                            <h:outputText value="#{Airport.IATA}" />
-                        </p:column>
-                        <p:column headerText="Airport Name">
-                            <h:outputText value="#{Airport.airportName}" />
-                        </p:column>
-                        <p:column headerText="City Name">
-                            <h:outputText value="#{Airport.cityName}" />
-                        </p:column>
-                        <p:column headerText="Country Code">
-                            <h:outputText value="#{Airport.countryCode}" />
-                        </p:column>
-                        <p:column headerText="Specification">
-                            <h:outputText value="#{Airport.spec}" />
-                        </p:column>
-                        <p:column headerText="Timezone">
-                            <h:outputText value="#{Airport.timeZone}" />
-                        </p:column>
-                        <p:column headerText="Operational Status" >
-                            <h:outputText value="#{Airport.opStatus}" />
-                        </p:column>
-                        <p:column headerText="Strategic Level">
-                            <h:outputText value="#{Airport.strategicLevel}" />
-                        </p:column>
-                        <p:column headerText="Airspace">
-                            <h:outputText value="#{Airport.airspace}" />
-                        </p:column>
+                    <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
+                        <h:outputText value="#{Airport.IATA}" />
+                    </p:column>
+                    <p:column headerText="Airport Name">
+                        <h:outputText value="#{Airport.airportName}" />
+                    </p:column>
+                    <p:column headerText="City Name">
+                        <h:outputText value="#{Airport.cityName}" />
+                    </p:column>
+                    <p:column headerText="Country Code">
+                        <h:outputText value="#{Airport.countryCode}" />
+                    </p:column>
+                    <p:column headerText="Specification">
+                        <h:outputText value="#{Airport.spec}" />
+                    </p:column>
+                    <p:column headerText="Timezone">
+                        <h:outputText value="#{Airport.timeZone}" />
+                    </p:column>
+                    <p:column headerText="Operational Status" >
+                        <h:outputText value="#{Airport.opStatus}" />
+                    </p:column>
+                    <p:column headerText="Strategic Level">
+                        <h:outputText value="#{Airport.strategicLevel}" />
+                    </p:column>
+                    <p:column headerText="Airspace">
+                        <h:outputText value="#{Airport.airspace}" />
+                    </p:column>
 
-                    </p:dataTable>
+                </p:dataTable>
 
-                    <p:commandButton value="Delete" update="panel" action="#{AirportManagedBean.confirmDeleteAirport()}" icon="ui-icon-check" />
-                </p:panel>
+                <p:commandButton value="Delete" update="@(.buttonUpdate)" actionListener="#{AirportManagedBean.tryDeleteAirport}"
+                                 oncomplete="if(#{deleteConditionFlag}) {PF('dlg').show()}"  icon="ui-icon-check" />
+            </p:panel> 
+<!--           update="@this, :dialogForm, :dialogForm:dlg"  -->
 
-                <p:draggable for="panel"/><p:resizable for="panel" />
+            <h:form id="dialogForm" styleClass="buttonUpdate">
+                <p:dialog id="dlg" header="Delete Airport" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:outputText value="Delete airport "/> <ui:repeat var="ap" value="#{AirportManagedBean.selectedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  update="" action="#{AirportManagedBean.confirmDeleteAirport()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
+
+        </h:form>
 
     </h:body>
 </html>
