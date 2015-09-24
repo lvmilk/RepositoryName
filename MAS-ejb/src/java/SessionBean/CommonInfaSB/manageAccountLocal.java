@@ -23,6 +23,10 @@ public interface manageAccountLocal {
     public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     public boolean checkAccDuplicate(String username,String stfType);
     public boolean checkNameDuplicate(String username, String usernameEdited);
+    
+    //used when creating email
+    public boolean checkEmailExists(String email);
+    //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
     public void editOfficeStaff(String usernameEdited, String stfType, String password, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);

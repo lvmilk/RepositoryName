@@ -4,17 +4,18 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pm="http://primefaces.org/mobile">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Login</title>
     </h:head>
     <h:body>
+
         <div style="width:50%; margin-right:15%;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
             <h:form>
 
                 <p:panel id="panel" header="Login" style="width: 50%">
 
-                    <p:messages id="msgs" />
+                    <p:messages id="msgs" showDetail="true" />
                     <h:panelGrid columns="3" cellpadding="10">
                         <p:outputLabel for="username" value="Username:" />
                         <p:inputText id="username" value="#{login.username}" required="true" label="Username" size="10">
@@ -28,7 +29,7 @@
                             <p:ajax update="msgPassword" event="keyup" />
                         </p:inputText>
                         <p:message for="password" id="msgPassword" display="icon" />
-                        
+
                         <p:outputLabel for="domain" value="Staff domain:" />
                         <h:selectOneMenu id="domain" value="#{login.stfType}">
                             <f:selectItem itemValue="administrator" itemLabel="Admin Staff" />
@@ -37,14 +38,16 @@
                             <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                             <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
                         </h:selectOneMenu>
-                        
 
                     </h:panelGrid>
-
-                    <p:commandButton value="Login" update="panel" actionListener="#{login.logIn()}" icon="ui-icon-check" />
+<!--                    <p:captcha id="captcha" secure="true"></p:captcha>-->
+                    <p:commandButton value="Login" update='panel' ajax="false" actionListener="#{login.logIn()}" icon="ui-icon-check" />
                 </p:panel>
             </h:form>
+
+
         </div>
+
     </h:body>
 </html>
 

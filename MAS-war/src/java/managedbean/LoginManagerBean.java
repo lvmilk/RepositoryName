@@ -43,8 +43,8 @@ public class LoginManagerBean implements Serializable {
 
         if (validity) {
             System.out.println("User exists.");
-            HttpSession session= SessionUtil.getSession();
-            session.setAttribute("username",username);
+            HttpSession session = SessionUtil.getSession();
+            session.setAttribute("username", username);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
             } else {
@@ -59,26 +59,27 @@ public class LoginManagerBean implements Serializable {
 
         }
     }
-    
-    public void createAdmin()
-    {
+
+    public void createAdmin() {
         boolean blCreateAcc;
-        blCreateAcc=mal.checkAccDuplicate("admin", "administrator");
+        blCreateAcc = mal.checkAccDuplicate("admin", "administrator");
         if (!blCreateAcc) {
             mal.addAdmin("admin", "admin", "administrator");
-        }else {
+        } else {
             System.out.println("Account exists");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account exists"));
         }
     }
-    
+
     public void createAcc() {
-        boolean blCreateAcc;
+        boolean blCreateAcc, blCreateEmail;
 
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
-
-        if (!blCreateAcc) {
+        blCreateEmail = mal.checkEmailExists(email);
+        
+        System.out.println("!!! Create Acc email: "+ blCreateEmail);
+        if (!blCreateAcc && !blCreateEmail) {
             System.out.println(username);
             System.out.println(password);
             System.out.println(email);
@@ -87,28 +88,47 @@ public class LoginManagerBean implements Serializable {
             mal.addAccount(username, password, email, stfType);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
-            
-        } else {
+
+        } else if (!blCreateEmail && blCreateAcc) {
             System.out.println("Account exists");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account exists"));
+        } else if (!blCreateAcc && blCreateEmail) {
+            System.out.println("Email exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email exists"));
+        } else {
+            System.out.println("Email & Account exist");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email & Account exist"));
         }
 
     }
 
     public void createCockpitAcc() {
-        boolean blCreateAcc;
+        boolean blCreateAcc, blCreateEmail;
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
-        if (!blCreateAcc) {
+        blCreateEmail = mal.checkEmailExists(email);
+        System.out.println("!!!Create Cockpit email: "+ blCreateEmail);
+        if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
             mal.addCocpitAcc(username, password, email, stfType, licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
-        } else {
+        } else if (!blCreateEmail && blCreateAcc) {
             System.out.println("Account exists");
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account exists"));
+        } else if (!blCreateAcc && blCreateEmail) {
+            System.out.println("Email exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email exists"));
+        } else {
+            System.out.println("Email & Account exist");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email & Account exist"));
         }
+
     }
 
     /**

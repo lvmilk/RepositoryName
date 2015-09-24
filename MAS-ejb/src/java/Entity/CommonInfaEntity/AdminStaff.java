@@ -21,6 +21,7 @@ public class AdminStaff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+   
     private String admName;
     private String admPassword;
     private String stfType;
