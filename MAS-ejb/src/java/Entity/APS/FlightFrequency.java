@@ -3,18 +3,20 @@ package Entity.APS;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
- * @author lucy /Xu
+ * @author Xu
  */
 @Entity
-public class FlightSchedule implements Serializable {
+public class FlightFrequency implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,7 +49,8 @@ public class FlightSchedule implements Serializable {
     private String operator;
     private ArrayList<String> codeshare;
     
-    private List<Flight> flightList = new ArrayList<Flight>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
+    private List<FlightInstance> flightList = new ArrayList<>();
     
     public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust, AircraftType acType, 
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
@@ -218,11 +221,11 @@ public class FlightSchedule implements Serializable {
         this.codeshare = codeshare;
     }
 
-    public List<Flight> getFlightList() {
+    public List<FlightInstance> getFlightList() {
         return flightList;
     }
 
-    public void setFlightList(List<Flight> flightList) {
+    public void setFlightList(List<FlightInstance> flightList) {
         this.flightList = flightList;
     }
 
@@ -236,10 +239,10 @@ public class FlightSchedule implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof FlightSchedule)) {
+        if (!(object instanceof FlightFrequency)) {
             return false;
         }
-        FlightSchedule other = (FlightSchedule) object;
+        FlightFrequency other = (FlightFrequency) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -248,7 +251,16 @@ public class FlightSchedule implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Flight[ id=" + id + " ]";
+        return "Entity.APS.Flight[ id=" + id + " ]";       
+//        String st = "";
+//        st += this.id + "\t";
+//        st += this.flightNo + "\t";
+//        st += this.StopoverSequenceNo + "\t";
+//        st += this.getRoute().getOrigin().getIATA() + "\t";
+//        st += this.getRoute().getDest().getIATA() + "\t";
+//        st += this.scheduledDepartureTime + "\t";
+//        st += this.scheduledArrivalTime + "\t";
+//        return st;
     }
     
 }

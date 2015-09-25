@@ -7,7 +7,6 @@ package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,7 +18,7 @@ import org.joda.time.DateTime;
 
 /**
  *
- * @author victor
+ * @author Xu
  */
 @Entity
 public class FlightPackage implements Serializable {
@@ -29,8 +28,8 @@ public class FlightPackage implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private List<Flight> flightList = new ArrayList<Flight>();
-//    private Collection<Flight> flightList = new ArrayList<Flight>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightPackage")
+    private List<FlightInstance> flightList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -63,13 +62,13 @@ public class FlightPackage implements Serializable {
     @Override
     public String toString() {
         String result = "";
-        for (Flight fl : flightList) {
+        for (FlightInstance fl : flightList) {
 //            result += fl.getDate().substring(0, 10) + "\t" + fl.getGenericFlight().getFlightNo()
 //                    + "\t" + fl.getGenericFlight().getRoute().getOrigin().getIATA()
 //                    + "\t" + fl.getGenericFlight().getRoute().getDestination().getIATA() + "\n";
-            result += fl.getDate().substring(0, 10) + "\t" + fl.getGenericFlight().getFlightNo()
-                    + "\t" + fl.getGenericFlight().getRoute().getOrigin().getIATA()
-                    + "\t" + fl.getGenericFlight().getRoute().getDest().getIATA() + "\n";
+            result += fl.getDate().substring(0, 10) + "\t" + fl.getFlightFrequency().getFlightNo()
+                    + "\t" + fl.getFlightFrequency().getRoute().getOrigin().getIATA()
+                    + "\t" + fl.getFlightFrequency().getRoute().getDest().getIATA() + "\n";
         }
         return result;
     }
@@ -84,27 +83,27 @@ public class FlightPackage implements Serializable {
 //    public void addFlight(Flight flight){
 //        this.flList.add(flight);
 //    }
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "genericFlight")
-    public List<Flight> getFlightList() {
+    
+    public List<FlightInstance> getFlightList() {
         return flightList;
     }
 
-    public void setFlightList(List<Flight> flightList) {
+    public void setFlightList(List<FlightInstance> flightList) {
         this.flightList = flightList;
     }
 
-    public void addFlight(Flight fl) {
+    public void addFlight(FlightInstance fl) {
         fl.setFlightPackage(this);
         this.flightList.add(fl);
     }
 
     public DateTime getStartTime() {
         DateTime dt = null;
-        for (Flight fl : flightList) {
+        for (FlightInstance fl : flightList) {
             if (dt == null) {
-                dt = new DateTime(fl.getEstimatedDepartureTime());
+                dt = new DateTime(fl.getEstimatedDepTime());
             } else {
-                DateTime current = new DateTime(fl.getEstimatedDepartureTime());
+                DateTime current = new DateTime(fl.getEstimatedDepTime());
                 if (current.compareTo(dt) <= 0) {
                     dt = current;
                 }
@@ -115,11 +114,11 @@ public class FlightPackage implements Serializable {
 
     public DateTime getEndTime() {
         DateTime dt = null;
-        for (Flight fl : flightList) {
+        for (FlightInstance fl : flightList) {
             if (dt == null) {
-                dt = new DateTime(fl.getEstimatedArrivalTime());
+                dt = new DateTime(fl.getEstimatedArrTime());
             } else {
-                DateTime current = new DateTime(fl.getEstimatedArrivalTime());
+                DateTime current = new DateTime(fl.getEstimatedArrTime());
                 if (current.compareTo(dt) >= 0) {
                     dt = current;
                 }
