@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Pricing: step 1 Center</title>
+    </h:head>
+    <h:body>
+
+          
+                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+
+
+                    <h:form>
+                        
+                                                    <!--<div><h1>Choose an aircraft model </h1></div>-->
+                        <h:form id="selectOne">
+                            <p:messages autoUpdate="true" />
+                            <p:panel id="panel" header="Choose a route" >
+                                <h:panelGrid columns="2" style="margin-bottom:200px" cellpadding="20">
+                                    <p:outputLabel for="console" value="Route :" />
+                                    <p:selectOneMenu id="console" value="#{pricingManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
+                                        <f:selectItem itemLabel="Select One Route" itemValue="#{null}" />
+                                        <f:selectItems value="#{pricingManagedBean.routeInfo}" />
+                                    </p:selectOneMenu>
+
+                                    <p:draggable for="panel" /><p:resizable for="panel" />
+
+                                </h:panelGrid>
+
+                                <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{pricingManagedBean.checkRoute()}"  icon="ui-icon-check" />
+
+                            </p:panel>
+
+                        </h:form>
+                        <p:resizable for="selectOne" /><p:draggable for="selectOne" />
+
+
+                    </h:form>
+
+                </div>
+
+    </h:body>
+</html>
+
