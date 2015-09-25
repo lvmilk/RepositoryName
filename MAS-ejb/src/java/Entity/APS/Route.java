@@ -22,7 +22,7 @@ public class Route implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 //    not in session bean  private String originIATA;
 //    not in session bean  private String destIATA;
@@ -33,6 +33,7 @@ public class Route implements Serializable {
     private Double basicPecFare;
     private Double basicEcFare;
     // private boolean canEBP;
+    private String status;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private AircraftType acType;
@@ -43,6 +44,7 @@ public class Route implements Serializable {
 
     public void create(Airport origin, Airport dest, Double distance, Double blockhour) {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
+        this.status = "Pending";
         this.origin = origin;
         this.dest = dest;
         this.distance = distance;
@@ -149,6 +151,14 @@ public class Route implements Serializable {
         this.dest = dest;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 //     public boolean getCanEBP() {
 //        return canEBP;
 //    }
@@ -178,7 +188,7 @@ public class Route implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Route[ id=" + id + " ]";
+        return this.getOrigin().getIATA() + " - " + this.getDest().getIATA();
     }
 
 }

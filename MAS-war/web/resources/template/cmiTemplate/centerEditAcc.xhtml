@@ -15,8 +15,6 @@
             <p:panel id="panel" header="Edit Staff Account"  style="width:100%">
                 <p:dataTable var="OfficeStaff" value="#{etManagedBean.offStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
-
-
                     <p:column headerText="Username" sortBy="#{OfficeStaff.offName}">
                         <h:outputText value="#{OfficeStaff.offName}" />
                     </p:column>
@@ -36,13 +34,9 @@
                         <p:commandButton value="Edit" action="#{etManagedBean.SelectEditOfficeStaff(OfficeStaff)}"  />
 
                     </p:column>
-
-             
-
                 </p:dataTable>
             </p:panel>
 
-            <p:draggable for="panel" /><p:resizable for="panel" />
         </h:form>
 
     </h:body>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Route</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View All Route"  style="width:100%">
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="40" emptyMessage="No routes found with given criteria." filteredValue="#{routeManagedBean.filteredRouteList}">
+
+<!--                    <p:subTable> 
+                        <p:row>
+                            <p:column colspan="1"/>
+                            <p:column colspan="3" headerText="Origin Airport"/>
+                            <p:column colspan="3" headerText="Destination Airport"/>
+                            <p:column colspan="2"/>
+                        </p:row>
+                    </p:subTable>-->
+
+                    <p:column headerText="Route Id">
+                        <h:outputText value="#{route.id}" />
+                    </p:column>
+
+<!--                    <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.IATA}" />
+                    </p:column>-->
+
+                    <p:column headerText="IATA" sortBy="#{route.origin.IATA}"  filterBy="#{route.origin.IATA}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.IATA}" />
+                    </p:column>
+
+                    <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.cityName}" />
+                    </p:column>
+
+                    <p:column headerText="Country" filterBy="#{route.origin.countryCode}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.countryCode}" />
+                    </p:column>
+
+<!--                    <p:column headerText="IATA" filterBy="#{route.dest.IATA}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.IATA}" />
+                    </p:column>-->
+
+                    <p:column headerText="IATA" filterBy="#{route.dest.IATA}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.IATA}" />
+                    </p:column>
+
+                    <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.cityName}" />
+                    </p:column>
+
+                    <p:column headerText="Country" filterBy="#{route.dest.countryCode}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.countryCode}" />
+                    </p:column>
+
+                    <p:column headerText="Status" >
+                        <h:outputText value="#{route.status}" />
+                    </p:column>
+
+                    <p:column headerText="View Detail">
+                        <p:commandButton value="View Detail" action="#{RouteManagedBean.viewRoute(route)}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>

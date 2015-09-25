@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Collection;
+import java.util.List;
 
 /**
  *
@@ -17,7 +18,6 @@ import java.util.Collection;
 public class AircraftType implements Serializable {
 
     // private static final long serialVersionUID = 1L;
-
     @Id
     private String type;
     private String manufacturer;
@@ -36,6 +36,8 @@ public class AircraftType implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
     private Collection<Aircraft> aircraft = new ArrayList<Aircraft>();
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
+    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
 
     public Collection<Aircraft> getAircraft() {
         return aircraft;
@@ -47,6 +49,13 @@ public class AircraftType implements Serializable {
 
     public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
+    }
+    
+    
+    
+    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) {
+        /*Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo*/
+
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
@@ -60,6 +69,16 @@ public class AircraftType implements Serializable {
         this.setBcSeatNo(bcSeatNo);
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
+    }
+
+   
+
+    public List<FlightFrequency> getFlightMatchList() {
+        return flightMatchList;
+    }
+
+    public void setFlightMatchList(List<FlightFrequency> flightMatchList) {
+        this.flightMatchList = flightMatchList;
     }
 
     public String getType() {

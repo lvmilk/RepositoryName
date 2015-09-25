@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Route Detail</title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="View Route Detail"  style="width:90%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:300px" cellpadding="10">
+
+                    <p:outputLabel value="Origin Airport --------------------" />
+                    <p:outputLabel value=" " />
+
+                    <p:outputLabel value="IATA: " />
+                    <p:outputLabel value="#{origin.IATA}" />
+
+                    <p:outputLabel value="Airport Name: " />
+                    <p:outputLabel value="#{origin.airportName}" />
+
+                    <p:outputLabel value="City: " />
+                    <p:outputLabel value="#{origin.cityName}" />
+
+                    <p:outputLabel value="Country: " />
+                    <p:outputLabel value="#{origin.countryCode}" />
+
+                    <p:outputLabel value="Destination Airport ------------------" />
+                    <p:outputLabel value=" " />
+
+                    <p:outputLabel value="IATA: " />
+                    <p:outputLabel value="#{dest.IATA}" />
+
+                    <p:outputLabel value="Airport Name: " />
+                    <p:outputLabel value="#{dest.airportName}" />
+
+                    <p:outputLabel value="City: " />
+                    <p:outputLabel value="#{dest.cityName}" />
+
+                    <p:outputLabel value="Country: " />
+                    <p:outputLabel value="#{dest.countryCode}" />
+
+                    <p:outputLabel value="Distance:" />
+                    <p:outputLabel value="#{distance}" />
+
+                    <p:outputLabel value="Block Hour: " />
+                    <p:outputLabel value="#{blockhour}" />
+
+                    <p:outputLabel value="Serving Aircraft Type " />
+                    <p:outputLabel value="#{acType}" />
+
+                </h:panelGrid>
+
+            </p:panel>
+
+            <p:commandButton value="Back"  action="#{RouteManagedBean.viewRouteBack}" icon="ui-icon-check" />
+        </h:form>
+    </h:body>
+</html>
+

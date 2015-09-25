@@ -2,11 +2,9 @@ package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -17,7 +15,8 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class Aircraft implements Serializable {
-      @Id
+
+    @Id
     private String registrationNo;
     private String serialNo;
     private String status;
@@ -26,27 +25,14 @@ public class Aircraft implements Serializable {
     private String retireDate;
     private Long flightLogId;
     private Long maintenanceLogId;
-    
+
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
-    public AircraftType getAircraftType(){
-        return aircraftType;
-    }
-    public void setAircraftType(AircraftType aircraftType){
-        this.aircraftType=aircraftType;
-    }
-    
-//    @OneToMany(cascade={CascadeType.ALL},mappedBy="Aircraft")
-//    private Collection<FlightSchedule> flightSchedule = new ArrayList<FlightSchedule>();
-//    
-//    public Collection<FlightSchedule> getFlightSchedule(){
-//        return flightSchedule;
-//    }   
-//    public void setFlightSchedule(Collection<FlightSchedule> flightSchedule){
-//        this.flightSchedule=flightSchedule;
-//    }
-    
-    public void create(String registrationNo,String serialNo,String status,String firstFlyDate,String deliveryDate,String retireDate,Long flightLogId,Long maintenanceLogId){
+
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
+    private List<FlightInstance> flightList = new ArrayList<>();
+
+    public void create(String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) {
         this.setRegistrationNo(registrationNo);
         this.setSerialNo(serialNo);
         this.setStatus(status);
@@ -121,6 +107,22 @@ public class Aircraft implements Serializable {
         this.maintenanceLogId = maintenanceLogId;
     }
 
+    public AircraftType getAircraftType() {
+        return aircraftType;
+    }
+
+    public void setAircraftType(AircraftType aircraftType) {
+        this.aircraftType = aircraftType;
+    }
+
+    public List<FlightInstance> getFlightList() {
+        return flightList;
+    }
+
+    public void setFlightList(List<FlightInstance> flightList) {
+        this.flightList = flightList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -145,5 +147,5 @@ public class Aircraft implements Serializable {
     public String toString() {
         return "Entity.APS.Aircraft[ id=" + registrationNo + " ]";
     }
-    
+
 }

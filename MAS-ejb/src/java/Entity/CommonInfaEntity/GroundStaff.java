@@ -6,6 +6,7 @@
 package Entity.CommonInfaEntity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,6 +24,7 @@ public class GroundStaff implements Serializable {
     private String grdName;
     private String grdPassword;
     private String stfType;
+    @Column(unique=true)
     private String email;
 
     public void create(String strGrdName, String strGrdPassword, String email, String strType) {
