@@ -48,7 +48,7 @@ public class manageAccount implements manageAccountLocal {
             em.persist(admStaff);
         }
     }
-    
+
     @Override
     public boolean checkEmailExists(String email) {
         Boolean offBl, grdBl, cpBl, cbBl;
@@ -186,7 +186,7 @@ public class manageAccount implements manageAccountLocal {
     public String encrypt(String username, String password) {
         String temp;
         if (!username.isEmpty() && !password.isEmpty()) {
-            System.out.println("*****The original password is " + password + "*****");
+            System.out.println("*****The original password for "+ username+ " is " + password + "*****");
             temp = cryptoHelper.doMD5Hashing(username + password);
             return temp;
         }
@@ -214,31 +214,35 @@ public class manageAccount implements manageAccountLocal {
         if (email.equals(emailEdited)) {
             return false;
         } else {
-            Query query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.email = :inUserEmail");
-            query.setParameter("inUserEmail", emailEdited);
-            List resultList = new ArrayList<OfficeStaff>();
-            resultList = (List) query.getResultList();
-
-            if (resultList.isEmpty()) {
-                return false;
-            } else {
-                return true;
-            }
+            return checkEmailExists(emailEdited);
         }
     }
 
-    public void editOfficeStaff(String usernameEdited, String stfType, String password, String emailEdited) {
-        OfficeStaff officeStaff = em.find(OfficeStaff.class, usernameEdited);
-        if (officeStaff == null) {
-            addAccount(usernameEdited, stfType, password, emailEdited);
-        } else {
-            officeStaff.setOffName(usernameEdited);
+    @Override
+    public void editStaff(String username, String stfType, String password, String emailEdited) {
+
+        if (stfType.equals("officeStaff")) {
+            OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+
+            officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
             officeStaff.setOffPassword(password);
             officeStaff.setEmail(emailEdited);
 
             em.merge(officeStaff);
             em.flush();
+        } else if (stfType.equals("groundStaff")) {
+            GroundStaff grdStaff=em.find(GroundStaff.class, username);
+            
+            grdStaff.setGrdName(username);
+            grdStaff.setEmail(emailEdited);
+            grdStaff.setStfType(stfType);
+            hPwd = this.encrypt(username, password);
+            grdStaff.setGrdPassword(hPwd);
+
+        } else if (stfType.equals("cabin")) {
+
+        } else if (stfType.equals("cockpit")) {
         }
 
     }

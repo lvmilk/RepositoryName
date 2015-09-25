@@ -47,8 +47,6 @@ public class EditManagedBean implements Serializable {
     private List<GroundStaff> grdStfList;
     private List<CabinCrew> cbCrewList;
     private List<CockpitCrew> cpCrewList;
-    
-    
 
     public EditManagedBean() {
         selectedOffStf = new ArrayList();
@@ -57,35 +55,28 @@ public class EditManagedBean implements Serializable {
     /**
      * @return the username
      */
-    public void SelectEditOfficeStaff(OfficeStaff officeStaff) throws IOException{
-        setUsername(officeStaff.getOffName()); 
+    public void SelectEditOfficeStaff(OfficeStaff officeStaff) throws IOException {
+        setUsername(officeStaff.getOffName());
         setUsernameEdited(officeStaff.getOffName());
         setEmail(officeStaff.getEmail());
         setEmailEdited(officeStaff.getEmail());
         setStfType(officeStaff.getStfType());
         setPassword(officeStaff.getOffPassword());
-       FacesContext.getCurrentInstance().getExternalContext().redirect("./EditOfStaffPage.xhtml");
-    
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditOfStaffPage.xhtml");
+
     }
-    
+
     public void editOfStaffAcc() throws IOException {
-        
-        if (!mal.checkNameDuplicate(username, usernameEdited)){
 
-            if (!mal.checkEmailDuplicate(email, emailEdited)){
-                mal.editOfficeStaff(usernameEdited, stfType, password, emailEdited);
-                 FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
-            }
-
+        if (!mal.checkEmailDuplicate(email, emailEdited)) {
+            mal.editStaff(username, stfType, password, emailEdited);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username has already been used ", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
 
     }
 
- 
     public String getUsername() {
         return username;
     }
@@ -249,7 +240,5 @@ public class EditManagedBean implements Serializable {
     public void setEmailEdited(String emailEdited) {
         this.emailEdited = emailEdited;
     }
-    
-    
 
 }

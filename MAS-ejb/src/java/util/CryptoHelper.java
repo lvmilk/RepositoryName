@@ -30,7 +30,7 @@ public class CryptoHelper {
     // Crytographic constants
     private final String DEFAULT_KEYSTORE_TYPE = "JKS";
     private final String DEFAULT_KEYSTORE_PROVIDER = "SUN";
-    private final String DEFAULT_DOMAIN_CONFIG_DIRECTORY = System.getProperty("user.dir").toString() + System.getProperty("file.separator") + "config";
+    private final String DEFAULT_DOMAIN_CONFIG_DIRECTORY = System.getProperty("user.dir").toString() + System.getProperty("file.separator");
     private final String DEFAULT_KEYSTORE_NAME = "keystore.jks";
     private final char[] DEFAULT_KEYSTORE_PASSWORD = new char[]{'c', 'h', 'a', 'n', 'g', 'e', 'i', 't'};
     private final int DEFAULT_PRIVATEKEY_LENGTH = 633;

@@ -15,9 +15,7 @@
                 <h:panelGrid columns="3" cellpadding="10">
 
                     <p:outputLabel for="otrUsername" value="User Name: " />
-                    <p:inputText id="otrUsername" value="#{etManagedBean.usernameEdited}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
-                    </p:inputText>
+                    <p:outputLabel id="otrUsername" value="#{etManagedBean.usernameEdited}"  />
                     <p:message for="otrUsername" display="icon" />
 
                     <p:outputLabel for="otrPassword" value="Password: " />
