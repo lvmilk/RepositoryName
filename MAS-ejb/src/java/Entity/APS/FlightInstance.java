@@ -23,8 +23,9 @@ public class FlightInstance implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    private FlightSchedule flightSchedule;
+    @ManyToOne
+    private FlightFrequency flightFrequency;
+    
     private String date;
     private String opStatus;
     private String flightStatus;
@@ -33,13 +34,14 @@ public class FlightInstance implements Serializable{
     private String actualDepTime;
     private String actualArrTime;
     
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     private Aircraft aircraft;
     
-//    private FlightPackage flightPackage;
+    @ManyToOne
+    private FlightPackage flightPackage;
 
-    public void create (FlightSchedule flightSchedule, String date){
-        this.flightSchedule = flightSchedule;
+    public void create (FlightFrequency flightSchedule, String date){
+        this.flightFrequency = flightSchedule;
         this.date = date;
 }
     
@@ -51,12 +53,12 @@ public class FlightInstance implements Serializable{
         this.id = id;
     }
 
-    public FlightSchedule getFlightSchedule() {
-        return flightSchedule;
+    public FlightFrequency getFlightFrequency() {
+        return flightFrequency;
     }
 
-    public void setFlightSchedule(FlightSchedule flightSchedule) {
-        this.flightSchedule = flightSchedule;
+    public void setFlightFrequency(FlightFrequency flightFrequency) {
+        this.flightFrequency = flightFrequency;
     }
 
     public String getDate() {
@@ -122,7 +124,14 @@ public class FlightInstance implements Serializable{
     public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
     }
+
+    public FlightPackage getFlightPackage() {
+        return flightPackage;
+    }
+
+    public void setFlightPackage(FlightPackage flightPackage) {
+        this.flightPackage = flightPackage;
+    }
     
-    
-    
+
 }
