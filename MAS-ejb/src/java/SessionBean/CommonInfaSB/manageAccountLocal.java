@@ -28,7 +28,8 @@ public interface manageAccountLocal {
     public boolean checkEmailExists(String email);
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editStaff(String username, String stfType, String password, String emailEdited);
+    public void editStaff(String username, String stfType, String password,String pswEdited, String emailEdited);
+    public void editCpCrew(String username, String stfType, String password,String pswEdited, String emailEdited, String licence);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
     public boolean delCabinAcc(List<CabinCrew> selectedCbCrew);
