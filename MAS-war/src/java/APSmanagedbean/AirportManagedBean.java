@@ -48,13 +48,16 @@ public class AirportManagedBean implements Serializable {
     private List<Airport> selectedAirport = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
     private List<Airport> deletedAirport = new ArrayList<>();
+    private List<Airport> canDeleteAirport = new ArrayList<>();
+    private List<Airport> cannotDeleteAirport = new ArrayList<>();
 
     public AirportManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-
+        airportList = rpb.viewAllAirport();
+        canDeleteAirport = rpb.canDeleteAirportList();
     }
 
     public void addAirport() throws Exception {
@@ -115,7 +118,7 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apOriginRouteList", getApOriginRouteList(airport));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apDestRouteList", getApDestRouteList(airport));
 
-        System.out.println("amb.viewAiport(): Airport " + airport.getIATA() + " information will be updated. ");
+        System.out.println("amb.editAiport(): Airport " + airport.getIATA() + " information will be updated. ");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportDetail.xhtml");
     }
 
@@ -148,6 +151,7 @@ public class AirportManagedBean implements Serializable {
 
     public void confirmDeleteAirport() throws Exception {
         try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAirport", selectedAirport);
             rpb.deleteAirportList(selectedAirport);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -155,15 +159,10 @@ public class AirportManagedBean implements Serializable {
         }
     }
 
-//    public void deleteAirport() throws Exception {
-//        try {
-//            deletedAirport = selectedAirport;
-//            rpb.deleteAirportList(selectedAirport);
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirportSuccess.xhtml");
-//        } catch (Exception ex) {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
-//        }
-//    }
+    public void deleteAirportBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAirport.xhtml");
+    }
+
     public void check(SelectEvent event) {
         System.out.println("amb.check(): In check");
     }
@@ -173,9 +172,25 @@ public class AirportManagedBean implements Serializable {
     }
 
     public List<Airport> getAirportList() {
-        airportList = rpb.viewAllAirport();
+//        airportList = rpb.viewAllAirport();
         System.out.println("amb.getAirportList(): Airport list size is " + airportList.size());
         return airportList;
+    }
+
+    public List<Airport> getCanDeleteAirport() {
+        return canDeleteAirport;
+    }
+
+    public void setCanDeleteAirport(List<Airport> canDeleteAirport) {
+        this.canDeleteAirport = canDeleteAirport;
+    }
+
+    public List<Airport> getCannotDeleteAirport() {
+        return cannotDeleteAirport;
+    }
+
+    public void setCannotDeleteAirport(List<Airport> cannotDeleteAirport) {
+        this.cannotDeleteAirport = cannotDeleteAirport;
     }
 
     public String getIATA() {

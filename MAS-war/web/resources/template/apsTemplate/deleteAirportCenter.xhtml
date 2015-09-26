@@ -16,16 +16,20 @@
         <h:form>
 
             <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
-                <p:messages id="msgs" styleClass="buttonUpdate"/>
-                <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.airportList}" paginator="true" rows="10" emptyMessage="No Serving Airports">
+                <p:messages id="msgs" />
+                <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.canDeleteAirport}" paginator="true" rows="10" emptyMessage="No airports can be deleted.">
 
                     <p:ajax event="rowSelectCheckbox" listener="#{AirportManagedBean.check}"   />  
 
                     <f:facet name="header">  
-                        Serving Airport List  
+                        Airport List (Only airports can be deleted are shown.)
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
+                    
+<!--                    <p:column>
+                        <p:selectBooleanCheckbox value=""  />
+                    </p:column>-->
 
                     <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
                         <h:outputText value="#{Airport.IATA}" />
@@ -57,12 +61,10 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete" update="@(.buttonUpdate)" actionListener="#{AirportManagedBean.tryDeleteAirport}"
-                                 oncomplete="if(#{deleteConditionFlag}) {PF('dlg').show()}"  icon="ui-icon-check" />
+                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" />
             </p:panel> 
-<!--           update="@this, :dialogForm, :dialogForm:dlg"  -->
 
-            <h:form id="dialogForm" styleClass="buttonUpdate">
+            <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Airport" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
                     <h:outputText value="Delete airport "/> <ui:repeat var="ap" value="#{AirportManagedBean.selectedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>
                     <h:panelGrid columns="2" cellpadding="10">
