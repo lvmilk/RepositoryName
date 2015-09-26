@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Edit Route</title>
+    </h:head>
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="All Route"  style="width:100%">
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="20" emptyMessage="No routes found.">
+
+                    <p:column headerText="Route Id">
+                        <h:outputText value="#{route.id}" />
+                    </p:column>
+                    <p:column headerText="Origin IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}">
+                        <h:outputText value="#{route.origin.IATA}" />
+                    </p:column>
+                    <p:column headerText="Destination IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}">
+                        <h:outputText value="#{route.dest.IATA}" />
+                    </p:column>
+                    <p:column headerText="Distance" sortBy="#{route.distance}">
+                        <h:outputText value="#{route.distance}" />
+                    </p:column>
+                    <p:column headerText="Status" >
+                        <h:outputText value="#{route.status}" />
+                    </p:column>
+
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{RouteManagedBean.editRoute(route)}"  />
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+            <p:draggable for="panel" /><p:resizable for="panel" />
+
+        </h:form>
+
+    </h:body>
+</html>

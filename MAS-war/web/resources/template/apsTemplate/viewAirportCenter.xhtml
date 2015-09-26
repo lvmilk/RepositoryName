@@ -8,15 +8,15 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>View Airport Detail_Center panel</title>
+        <title>View Airport</title>
     </h:head>
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="View All Serving Airport"  style="width:100%">
-                <p:dataTable var="airport" value="#{AirportManagedBean.airportList}" paginator="true" rows="40" emptyMessage="No Serving Airport">
+            <p:panel id="panel" header="View All Airport"  style="width:100%">
+                <p:dataTable var="airport" value="#{AirportManagedBean.airportList}" paginator="true" rows="40" emptyMessage="No airports found.">
 
-                    <p:column headerText="IATA" sortBy="#{airport.IATA}">
+                    <p:column headerText="IATA" sortBy="#{airport.IATA}" filterBy="#{airport.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{airport.IATA}" />
                     </p:column>
 
@@ -24,11 +24,11 @@
                         <h:outputText value="#{airport.airportName}" />
                     </p:column>
 
-                    <p:column headerText="Country Code" >
+                    <p:column headerText="Country Code" filterBy="#{airport.countryCode}" filterMatchMode="contains">
                         <h:outputText value="#{airport.countryCode}" />
                     </p:column>
 
-                    <p:column headerText="City Name" >
+                    <p:column headerText="City Name" filterBy="#{airport.cityName}" filterMatchMode="contains">
                         <h:outputText value="#{airport.cityName}" />
                     </p:column>
 

@@ -16,9 +16,18 @@ import javax.ejb.Local;
  */
 @Local
 public interface PricingBeanLocal {
+     // public void setAircraftType(String type);
       public AircraftType getAircraftType(String type);
+      
       public Integer calculateCrewNo(Integer seatNo);
-      public Double calculateCrewCost(Integer crewNo,Double crewCost,Double blockHour,Integer annualDepartures);
+      
+     // public void calculateCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures);
+      public Double getCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures);
+      
+     // public void setRouteList();
       public List<Route> getRouteList();
-     public Route getRouteInfo(Long ID);
+      
+      //public void setRouteInfo(Long ID);
+      public Route getRouteInfo(Long ID);
+     
 }

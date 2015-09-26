@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Edit Route Detail</title>
+    </h:head>
+
+    <h:body>
+
+        <h:form id="formMain">
+            <p:panel id="basic" header="Airport Basic Information" style="width: 100%" toggleable="true">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+
+                    <p:outputLabel value="Origin Airport IATA: " />
+                    <p:outputLabel value="#{editRouteManagedBean.route.origin.IATA}" />
+
+                    <p:outputLabel value="Destination Airport IATA: " />
+                    <p:outputLabel value="#{editRouteManagedBean.route.dest.IATA}" />
+
+                    <p:outputLabel for="distance" value="Route Distance: " />
+                    <p:inputText id="distance" value="#{editAirportManagedBean.route.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="30">
+                    </p:inputText>
+
+                    <p:outputLabel for="aircraftType" value="Aircraft Type: " />
+                    
+                    <p:inputText id="aircraftType" value="#{editAirportManagedBean.route.aircraftType}" label="aircraftType" required="true" requiredMessage="Please enter city name" size="30">
+                    </p:inputText>
+
+                    <p:outputLabel for="blockhour" value="Blockhour: " />
+                    <p:inputText id="blockhour" value="#{editAirportManagedBean.route.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
+                    </p:inputText>
+
+                </h:panelGrid>
+                <p:commandButton value="Update Basic Info" update="basic" actionListener="#{editAirportManagedBean.editRouteBasic}"  icon="ui-icon-check" />
+            </p:panel>
+
+            <p:panel id="fare" header="Edit Route Fare" style="width: 100%" toggleable="true">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+                    
+                    <p:outputLabel for="suite" value="Suite Basic Fare: " />
+                    <p:inputText id="suite" value="#{editAirportManagedBean.route.basicScFare}" label="suite" required="false"  requiredMessage="Please enter suite basic fare" size="30">
+                    </p:inputText>
+                    
+                    <p:outputLabel for="first" value="First Class Basic Fare: " />
+                    <p:inputText id="first" value="#{editAirportManagedBean.route.basicFcFare}" label="first" required="false"  requiredMessage="Please enter first class basic fare" size="30">
+                    </p:inputText>
+                    
+                    <p:outputLabel for="biz" value="Business Class Basic Fare: " />
+                    <p:inputText id="biz" value="#{editAirportManagedBean.route.basicBcFare}" label="biz" required="false"  requiredMessage="Please enter business class basic fare" size="30">
+                    </p:inputText>
+                    
+                    <p:outputLabel for="pec" value="Premium Economic Class Basic Fare: " />
+                    <p:inputText id="pec" value="#{editAirportManagedBean.route.basicPecFare}" label="pec" required="false"  requiredMessage="Please enter premium economic class basic fare" size="30">
+                    </p:inputText>
+                    
+                    <p:outputLabel for="ec" value="Economic Class Basic Fare: " />
+                    <p:inputText id="ec" value="#{editAirportManagedBean.route.basicEcFare}" label="ec" required="false"  requiredMessage="Please enter economic class basic fare" size="30">
+                    </p:inputText>
+                
+                </h:panelGrid>
+                <p:commandButton value="Update Route Fare" update="fare" actionListener="#{editRouteManagedBean.editRouteFare}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
+

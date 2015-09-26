@@ -24,7 +24,7 @@ public class FlightInstance implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @ManyToOne
     private FlightFrequency flightFrequency;
     

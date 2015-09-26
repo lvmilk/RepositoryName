@@ -8,7 +8,7 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Edit Airport Detail_Center panel</title>
+        <title>Edit Airport Detail</title>
     </h:head>
 
     <h:body>
@@ -18,52 +18,44 @@
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
                     <p:outputLabel value="Airport IATA: " />
-                    <p:outputLabel value="#{IATA}" />
+                    <p:outputLabel value="#{editAirportManagedBean.IATA}" />
 
                     <p:outputLabel for="airportName" value="Airport Name: " />
-                    <p:inputText id="airportName" placeholder="#{airportName}" value="#{AirportManagedBean.airportName}" label="airportName" required="true"  requiredMessage="Please enter airport name" size="30">
-<!--                    <p:watermark for="airportName" value="#{airportName}" /> -->
+                    <p:inputText id="airportName" value="#{editAirportManagedBean.airportName}" label="airportName" required="true"  requiredMessage="Please enter airport name" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="cityName" value="City Name: " />
-                    <p:inputText id="cityName" value="#{AirportManagedBean.cityName}" label="cityName" required="true" requiredMessage="Please enter city name" size="30">
-                    <p:watermark for="cityName" value="#{cityName}" /> 
+                    <p:inputText id="cityName" value="#{editAirportManagedBean.cityName}" label="cityName" required="true" requiredMessage="Please enter city name" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="countryCode" value="Country Code: " />
-                    <p:inputText id="countryCode" value="#{AirportManagedBean.countryCode}" label="countryCode" required="true" requiredMessage="Please enter country code" size="30">
-                    <p:watermark for="countryCode" value="#{countryCode}" /> 
+                    <p:inputText id="countryCode" value="#{editAirportManagedBean.countryCode}" label="countryCode" required="true" requiredMessage="Please enter country code" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="spec" value="Specification: " />
-                    <p:inputText id="spec" value="#{AirportManagedBean.spec}" label="spec" required="true" requiredMessage="Please enter airport specification" size="30">
-                    <p:watermark for="spec" value="#{spec}" /> 
+                    <p:inputText id="spec" value="#{editAirportManagedBean.spec}" label="spec" required="true" requiredMessage="Please enter airport specification" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="timeZone" value="Time Zone: " />
-                    <p:inputText id="timeZone" value="#{AirportManagedBean.timeZone}" label="timeZone" required="true" requiredMessage="Please enter timezone" size="30"> 
-                    <p:watermark for="timeZone" value="#{timeZone}" /> 
+                    <p:inputText id="timeZone" value="#{editAirportManagedBean.timeZone}" label="timeZone" required="true" requiredMessage="Please enter timezone" size="30"> 
                     </p:inputText>
 
                     <p:outputLabel for="operationalStatus" value="Operational Status: " />
-                    <p:inputText id="operationalStatus" value="#{AirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
-                    <p:watermark for="operationalStatus" value="#{opStatus}" /> 
+                    <p:inputText id="operationalStatus" value="#{editAirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
                     </p:inputText>
 
                     <p:outputLabel for="strategicLevel" value="Strategic Level: " />
-                    <p:inputText id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
-                    <p:watermark for="strategicLevel" value="#{strategicLevel}" /> 
+                    <p:inputText id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
                     </p:inputText>
 
                     <p:outputLabel for="airspace" value="Airspace: " />
-                    <p:inputText id="airspace" value="#{AirportManagedBean.airspace}" label="airspace" required="true" validatorMessage="Please enter a number and an uppercase alphabet"  requiredMessage="Please enter airspace" size="30">
+                    <p:inputText id="airspace" value="#{editAirportManagedBean.airspace}" label="airspace" required="true" validatorMessage="Please enter a number and an uppercase alphabet"  requiredMessage="Please enter airspace" size="30">
                         <!--                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> -->
-                    <p:watermark for="airspace" value="#{airspace}" /> 
                     </p:inputText>
 
 
                 </h:panelGrid>
-                <p:commandButton value="Update" update="@form" actionListener="#{AirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />
+                <p:commandButton value="Update" update="@form" actionListener="#{editAirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />
             </p:panel>
         </h:form>
 
