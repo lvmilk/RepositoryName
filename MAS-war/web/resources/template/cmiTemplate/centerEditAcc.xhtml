@@ -10,10 +10,28 @@
         <title> Edit Staff Account</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form >
+            <p:growl id="msgs" showDetail="true" />
 
-            <p:panel id="panel" header="Edit Staff Account"  style="width:100%">
-                <p:dataTable var="OfficeStaff" value="#{etManagedBean.offStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
+            <p:panelGrid columns="2">
+                <p:outputLabel for="domain" value="Staff domain:" />
+                <h:selectOneMenu id="domain" value="#{login.stfType}" valueChangeListener="#{ctl.valueChangedForDelete}">
+                    <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
+                    <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
+                    <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
+                    <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
+
+                    <p:ajax event="change" update="editOff,editGrd,editCb,editCp"/>
+                </h:selectOneMenu>
+
+            </p:panelGrid>
+        </h:form>
+
+
+        <h:form id="editOff">
+
+            <p:panel id="offPanel" visible="#{ctl.visiDelOff}" header="Edit Office Staff Account"  style="width:100%">
+                <p:dataTable var="OfficeStaff" value="#{etManagedBean.offStfList}" paginator="true" rows="10" emptyMessage="No such Office Staff Account">
 
                     <p:column headerText="Username" sortBy="#{OfficeStaff.offName}">
                         <h:outputText value="#{OfficeStaff.offName}" />
@@ -38,6 +56,94 @@
             </p:panel>
 
         </h:form>
+        
+        
+        <h:form id="editGrd">
+            <p:panel id="grdPanel" visible="#{ctl.visiDelGrd}" header="Edit Ground Staff Account"  style="width:100%">
+                <p:dataTable var="GroundStaff" value="#{etManagedBean.grdStfList}" paginator="true" rows="10" emptyMessage="No such Ground Staff Account">
+
+                    <p:column headerText="Username" sortBy="#{GroundStaff.grdName}">
+                        <h:outputText value="#{GroundStaff.grdName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{GroundStaff.grdPassword}">
+                        <h:outputText value="#{GroundStaff.grdPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type">
+                        <h:outputText value="#{GroundStaff.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email">
+                        <h:outputText value="#{GroundStaff.email}" />
+                    </p:column>
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditGroundStaff(GroundStaff)}"  />
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        
+        <h:form id="editCb">
+            <p:panel id="cbPanel" visible="#{ctl.visiDelCb}" header="Edit Cabin Crew Account"  style="width:100%">
+                <p:dataTable var="CabinCrew" value="#{etManagedBean.cbCrewList}" paginator="true" rows="10" emptyMessage="No such Cabin Crew Account">
+
+                    <p:column headerText="Username" sortBy="#{CabinCrew.cbName}">
+                        <h:outputText value="#{CabinCrew.cbName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{CabinCrew.cbPassword}">
+                        <h:outputText value="#{CabinCrew.cbPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type">
+                        <h:outputText value="#{CabinCrew.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email">
+                        <h:outputText value="#{CabinCrew.email}" />
+                    </p:column>
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditCabinCrew(CabinCrew)}"  />
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        
+        <h:form id="editCp">
+            <p:panel id="cpPanel" visible="#{ctl.visiDelCp}" header="Edit Cockpit Crew Account"  style="width:100%">
+                <p:dataTable var="CockpitCrew" value="#{etManagedBean.cpCrewList}" paginator="true" rows="10" emptyMessage="No such Cockpit Crew Account">
+
+                    <p:column headerText="Username" sortBy="#{CockpitCrew.cpName}">
+                        <h:outputText value="#{CockpitCrew.cpName}" />
+                    </p:column>
+
+                    <p:column headerText="Password" sortBy="#{CockpitCrew.cpPassword}">
+                        <h:outputText value="#{CockpitCrew.cpPassword}" />
+                    </p:column>
+
+                    <p:column headerText="Staff type">
+                        <h:outputText value="#{CockpitCrew.stfType}" />
+                    </p:column>
+
+                    <p:column headerText="Email">
+                        <h:outputText value="#{CockpitCrew.email}" />
+                    </p:column>
+                    
+                    <p:column headerText="Licence">
+                        <h:outputText value="#{CockpitCrew.licence}" />
+                    </p:column>
+                    
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditCockpitCrew(CockpitCrew)}"  />
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+        
 
     </h:body>
 </html>

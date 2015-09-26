@@ -37,6 +37,7 @@ public class EditManagedBean implements Serializable {
     private String usernameEdited;
     private String stfType;
     private String password;
+    private String pswEdited;
     private String email;
     private String emailEdited;
 
@@ -57,24 +58,65 @@ public class EditManagedBean implements Serializable {
      */
     public void SelectEditOfficeStaff(OfficeStaff officeStaff) throws IOException {
         setUsername(officeStaff.getOffName());
-        setUsernameEdited(officeStaff.getOffName());
+//        setUsernameEdited(officeStaff.getOffName());
         setEmail(officeStaff.getEmail());
         setEmailEdited(officeStaff.getEmail());
         setStfType(officeStaff.getStfType());
         setPassword(officeStaff.getOffPassword());
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditOfStaffPage.xhtml");
+        setPswEdited(officeStaff.getOffPassword());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
 
+    }
+
+    public void SelectedEditGroundStaff(GroundStaff grdStaff) throws IOException {
+        setUsername(grdStaff.getGrdName());
+        setEmail(grdStaff.getEmail());
+        setEmailEdited(grdStaff.getEmail());
+        setStfType(grdStaff.getStfType());
+        setPassword(grdStaff.getGrdPassword());
+        setPswEdited(grdStaff.getGrdPassword());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
+    }
+
+    public void SelectedEditCabinCrew(CabinCrew cbCrew) throws IOException {
+        setUsername(cbCrew.getCbName());
+        setEmail(cbCrew.getEmail());
+        setEmailEdited(cbCrew.getEmail());
+        setStfType(cbCrew.getStfType());
+        setPassword(cbCrew.getCbPassword());
+        setPswEdited(cbCrew.getCbPassword());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
+    }
+
+    public void SelectedEditCockpitCrew(CockpitCrew cpCrew) throws IOException {
+        setUsername(cpCrew.getCpName());
+        setEmail(cpCrew.getEmail());
+        setEmailEdited(cpCrew.getEmail());
+        setStfType(cpCrew.getStfType());
+        setPassword(cpCrew.getCpPassword());
+        setPswEdited(cpCrew.getCpPassword());
+        setLicence(cpCrew.getLicence());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCockpitPage.xhtml");
     }
 
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, emailEdited);
+            mal.editStaff(username, stfType, password, pswEdited, emailEdited);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
 
+    }
+
+    public void editCpStaffAcc() throws IOException {
+        if (!mal.checkEmailDuplicate(email, emailEdited)) {
+            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited,licence);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
+        }
     }
 
     public String getUsername() {
@@ -239,6 +281,20 @@ public class EditManagedBean implements Serializable {
 
     public void setEmailEdited(String emailEdited) {
         this.emailEdited = emailEdited;
+    }
+
+    /**
+     * @return the pswEdited
+     */
+    public String getPswEdited() {
+        return pswEdited;
+    }
+
+    /**
+     * @param pswEdited the pswEdited to set
+     */
+    public void setPswEdited(String pswEdited) {
+        this.pswEdited = pswEdited;
     }
 
 }
