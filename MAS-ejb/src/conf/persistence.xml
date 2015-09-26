@@ -5,8 +5,8 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
-      <property name="javax.persistence.sql-load-script-source"
-          value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />
+<!--      <property name="javax.persistence.sql-load-script-source"
+          value="E:\MAS\MAS\data.sql" />-->
     </properties>
   </persistence-unit>
 </persistence>

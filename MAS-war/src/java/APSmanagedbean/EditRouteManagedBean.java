@@ -8,8 +8,10 @@ package APSmanagedbean;
 import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.Route;
+import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -27,6 +29,9 @@ public class EditRouteManagedBean implements Serializable {
 
     @EJB
     private RoutePlanningBeanLocal rpb;
+    
+    @EJB
+    private FleetPlanningBeanLocal fpb;
 
     private Route route;
     private Double distance;
@@ -40,11 +45,12 @@ public class EditRouteManagedBean implements Serializable {
 
     private String originIATA;
     private String destIATA;
-    private String aircraftType;
 
     private AircraftType acType;
     private Airport origin;
     private Airport dest;
+    
+    private List<AircraftType> acTypeList;
 
     public EditRouteManagedBean() {
     }
@@ -55,7 +61,7 @@ public class EditRouteManagedBean implements Serializable {
         originIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.origin.IATA");
         destIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.dest.IATA");
         distance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.distance");
-        aircraftType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.aircraftType");
+        acType = (AircraftType) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.aircraftType");
         blockhour = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.blockhour");
         basicScFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicScFare");
         basicFcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicFcFare");
@@ -64,9 +70,14 @@ public class EditRouteManagedBean implements Serializable {
         basicEcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicEcFare");
     }
 
+    
     public void editRouteBasic() throws Exception{ 
-        rpb.editRouteBasic(originIATA, destIATA, distance, aircraftType, blockhour);
-        
+         try {
+            rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }        
     }
     
     public void editRouteFare() throws Exception{
@@ -77,5 +88,125 @@ public class EditRouteManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    public Double getBlockhour() {
+        return blockhour;
+    }
+
+    public void setBlockhour(Double blockhour) {
+        this.blockhour = blockhour;
+    }
+
+    public Double getBasicScFare() {
+        return basicScFare;
+    }
+
+    public void setBasicScFare(Double basicScFare) {
+        this.basicScFare = basicScFare;
+    }
+
+    public Double getBasicFcFare() {
+        return basicFcFare;
+    }
+
+    public void setBasicFcFare(Double basicFcFare) {
+        this.basicFcFare = basicFcFare;
+    }
+
+    public Double getBasicBcFare() {
+        return basicBcFare;
+    }
+
+    public void setBasicBcFare(Double basicBcFare) {
+        this.basicBcFare = basicBcFare;
+    }
+
+    public Double getBasicPecFare() {
+        return basicPecFare;
+    }
+
+    public void setBasicPecFare(Double basicPecFare) {
+        this.basicPecFare = basicPecFare;
+    }
+
+    public Double getBasicEcFare() {
+        return basicEcFare;
+    }
+
+    public void setBasicEcFare(Double basicEcFare) {
+        this.basicEcFare = basicEcFare;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOriginIATA() {
+        return originIATA;
+    }
+
+    public void setOriginIATA(String originIATA) {
+        this.originIATA = originIATA;
+    }
+
+    public String getDestIATA() {
+        return destIATA;
+    }
+
+    public void setDestIATA(String destIATA) {
+        this.destIATA = destIATA;
+    }
+
+    public AircraftType getAcType() {
+        return acType;
+    }
+
+    public void setAcType(AircraftType acType) {
+        this.acType = acType;
+    }
+
+    public Airport getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Airport origin) {
+        this.origin = origin;
+    }
+
+    public Airport getDest() {
+        return dest;
+    }
+
+    public void setDest(Airport dest) {
+        this.dest = dest;
+    }
+
+    public List<AircraftType> getAcTypeList() {
+        return fpb.getAllAircraftType();
+    }
+
+    public void setAcTypeList(List<AircraftType> acTypeList) {
+        this.acTypeList = acTypeList;
+    }
+
 }

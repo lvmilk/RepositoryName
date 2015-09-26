@@ -229,7 +229,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void editRouteBasic(String originIATA, String destIATA, Double distance, String acType, Double blockhour) throws Exception {
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
@@ -240,8 +240,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
         route = (Route) q1.getResultList().get(0);
         route.setDistance(distance);
-        AircraftType aircraftType = em.find(AircraftType.class, acType);
-        route.setAcType(aircraftType);
+        route.setAcType(acType);
         route.setBlockhour(blockhour);
         em.merge(route);
         em.flush();
