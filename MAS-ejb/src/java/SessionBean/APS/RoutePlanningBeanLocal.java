@@ -5,6 +5,7 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.Route;
 import java.util.List;
@@ -55,6 +56,6 @@ public interface RoutePlanningBeanLocal {
 
     public List<Airport> cannotDeleteAirportList();
 
-    public void editRouteBasic(String originIATA, String destIATA, Double distance, String acType, Double blockhour) throws Exception;
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception;
 
 }
