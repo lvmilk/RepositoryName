@@ -38,11 +38,11 @@ public class AircraftTypeManagedBean implements Serializable {
     private Double wingspan;
     private String minAirspace;
 
-//    private Integer suiteNo;                //number of seat in suite
-//    private Integer fcSeatNo;               //number of seat in first class
-//    private Integer bcSeatNo;               //number of seat in business class
-//    private Integer pecSeatNo;              //number of seat in premium economy class
-//    private Integer ecSeatNo;               //number of seat in economy class
+    private Integer suiteNo;                //number of seat in suite
+    private Integer fcSeatNo;               //number of seat in first class
+    private Integer bcSeatNo;               //number of seat in business class
+    private Integer pecSeatNo;              //number of seat in premium economy class
+    private Integer ecSeatNo;               //number of seat in economy class
 
     public AircraftTypeManagedBean() {
         selectedList = new ArrayList<>();
@@ -55,7 +55,7 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(aircraftLength);
         System.out.println(wingspan);
         if (!fpb.checkDuplicate(type)) {
-            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace);
+            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));

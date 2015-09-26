@@ -7,6 +7,7 @@ package SessionBean.AirlineInventory;
 
 import Entity.APS.AircraftType;
 import Entity.APS.Route;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -22,34 +23,62 @@ public class PricingBean implements PricingBeanLocal {
     @PersistenceContext
     EntityManager em;
     
+    
+    
     AircraftType aircraftType= new AircraftType();
     Route route = new Route();
+   private  List<Route> routeList= new ArrayList<>();
+    Double crewCost;
     
-    @Override
-    public AircraftType getAircraftType(String type){
+    
+    
+    public void setAircraftType(String type){
         Query query= em.createQuery("SELECT a FROM AircraftType a where a.type=:atype ");
         query.setParameter("atype", type);
         List<AircraftType> resultList= query.getResultList();
-        
-        return resultList.get(0);  //Since the aircraft is selected, but be non-empty
-        
-    }
+        if(resultList.size()!=0)
+           aircraftType= resultList.get(0);  
+      }
     
     @Override
-    public List<Route> getRouteList(){
+    public AircraftType getAircraftType(String type){
+        setAircraftType(type);
+        return aircraftType;
+    }
+    
+    public void setRouteList(){
         Query query= em.createQuery("SELECT r FROM Route r");
         List<Route> resultList= query.getResultList();
-        return resultList;
+        if (resultList.size()!=0)
+        this.routeList= resultList;
+        System.out.println("SessionBean:setRouteList: size "+this.routeList.size());
+    }
+    
+
+    public List<Route> getRouteList(){
+        setRouteList();
+        System.out.println("SessionBean:getRouteList "+routeList.size());
+        return routeList;
+    }
+    
+    
+    
+    public void setRouteInfo(Long ID){
+    Query query=em.createQuery("SELECT r FROM Route r where r.id=:rID ");
+    query.setParameter("rID",ID);
+    List<Route> resultList =query.getResultList();
+     if(resultList.size()!=0)
+        route=resultList.get(0);
+     System.out.println("SessionBean:setRouteInfo: size "+resultList.size());
     }
     
     @Override
     public Route getRouteInfo(Long ID){
-    Query query=em.createQuery("SELECT r FROM Route r where r.id=:rID ");
-    query.setParameter("rID",ID);
-    List<Route> resultList =query.getResultList();
-    return resultList.get(0);
+        setRouteInfo(ID);
+        return route;
     }
     
+   
     @Override
     public Integer calculateCrewNo(Integer seatNo){
         Integer crewNo;
@@ -65,10 +94,15 @@ public class PricingBean implements PricingBeanLocal {
       return crewNo;
     }
     
-    @Override
-    public Double calculateCrewCost(Integer crewNo,Double crewCost,Double blockHour,Integer annualDepartures){
-       return crewNo*crewCost*blockHour*annualDepartures;
+    
+    public void calculateCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures){
+        if (crewNo*crewUnitCost*blockHour*annualDepartures>0)
+           crewCost= crewNo*crewUnitCost*blockHour*annualDepartures; 
        
+    }
+    public Double getCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures){
+        calculateCrewCost(crewNo,crewUnitCost,blockHour,annualDepartures);
+        return crewCost;
     }
 
     // Add business logic below. (Right-click in editor and choose

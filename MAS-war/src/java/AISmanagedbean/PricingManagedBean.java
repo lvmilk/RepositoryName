@@ -8,13 +8,16 @@ package AISmanagedbean;
 import Entity.APS.AircraftType;
 import Entity.APS.Route;
 import SessionBean.AirlineInventory.PricingBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -31,26 +34,33 @@ public class PricingManagedBean implements Serializable {
     //Direct Cost
     private String type;
 
-    //Construct a hashtable<String, Integer> to record <Cabinclass,SeatNo> 
-    private Hashtable<String, Integer> cabinInfo;
-    private String routeName;   
-            
+    //Construct a hashmap<String, Integer> to record <Cabinclass,SeatNo> 
+    private Map<String, Integer> cabinInfo =new HashMap<String,Integer>();
+   
     private Integer crewNo;
-    private Double crewUniteCost;
+    private Double crewUnitCost;
     private Double crewCost;       //Per pax per block hour
     private Double fuelCost;       // per block hour 
     private Double ownershipCost;  //per block hour
-    private Double maintenance;    //per block hour
+    private Double maintenance; 
+    
+    
+    
+    //per block hour
     //Indirect cost
     private Double adminCost; //per block hour
     private Double otherCost; //per block hour
     //Route Info
-    private List<Route>routeList;
-    private Map<Long, String> routeInfo;
-    private Double blockHour;
+    private List<Route> routeList;
+    private Map<String,Long> routeInfo = new HashMap<String,Long>();
+    private String routeName;
+    private Long routeID;
+    private Double blockHour;   ///test 
     private Double distance;
     private Integer annualDepartures;
-
+    private AircraftType aircraftType;
+    
+    private Double loadFactor;   // generic: in order to trigger a setter to get all load factors 
     private Double econFactor;
     private Double bizFactor;
     private Double suiteFactor;
@@ -66,54 +76,139 @@ public class PricingManagedBean implements Serializable {
 
     private Double expectedRev;
     private Double profitMargin;// profit margin=(revenue-cost)/cost
+
+    private List<String> keyList = new ArrayList<String>();
     
     public PricingManagedBean() {
 
     }
-    public void getRouteList(){
-    routeList=pb.getRouteList();
-    for(int i=0;i<routeList.size();i++){
-       routeInfo.put(routeList.get(i).getId(), routeList.get(i).getOrigin().getCityName()+"-"+routeList.get(i).getDest().getCityName());
+    
+    //test init()
+    
+//     @PostConstruct
+//     public void init() {
+//     getRouteList();
+//     System.out.print("TEST: init run\n");
+//    }
+//    
+    
+ 
+
+    public void checkRoute() throws IOException {
+        if (routeID != null ) {
+            System.out.println(" Route selected is " + routeID);
+            retrieveRouteInfo(routeID);
+            retrieveAircraftTypeInfo(aircraftType);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingAttribute2.xhtml");
+        } else {
+            System.out.println("No route is chosen");
+        }
     }
+    public void getRouteList() {
+        routeList = pb.getRouteList();
+        System.out.println("MB:getRouteList: list size: "+routeList.size());
+        for (int i = 0; i < routeList.size(); i++) {
+            routeInfo.put(routeList.get(i).getOrigin().getCityName() + "-" + routeList.get(i).getDest().getCityName(),routeList.get(i).getId());
+        System.out.print("TEST: routeInfo added\n");
+        }
+    }
+
+    public Map<String,Long> getRouteInfo() {
+        getRouteList();
+        System.out.print("TEST: getRouteInfo run\n");
+        return routeInfo;
+    }
+
+    public void setRouteInfo(Map<String,Long> routeInfo) {
+        this.routeInfo = routeInfo;
+    }
+
+    public AircraftType getAircraftType() {
+        return aircraftType;
+    }
+
+    public void setAircraftType(AircraftType aircraftType) {
+        this.aircraftType = aircraftType;
     }
     
+
+    public void retrieveRouteInfo(Long ID) {
+        route = pb.getRouteInfo(ID);
+        distance = route.getDistance();
+        blockHour=route.getBlockhour();   
+        aircraftType=route.getAcType();
+        System.out.println("routeInfo Retrieved!" );
+        System.out.println("routeInfo Retrieved! distance: "+distance);
+        System.out.println("routeInfo Retrieved! Type: "+aircraftType.getManufacturer());
+    }
+//    public void onRouteNameChange() {
+//        if(routeName !=null && !routeName.equals("")){
+//            routeID = routeInfo.get(routeName);
+//            System.out.println("MB: routeID set!");
+//            retrieveRouteInfo(routeID);
+//        }
+//        else
+//           System.out.println("No that route");   // Never happen
+//    }
+
+    public String getRouteName() {
+        return routeName;
+    }
+
+    public void setRouteName(String routeName) {
+        this.routeName = routeName;
+    }
+
+    public Long getRouteID() {
+        return routeID;
+    }
+
+    public void setRouteID(Long routeID) {
+        this.routeID = routeID;
+    }
     
-    public void retrieveRouteInfo(Long ID){
-    route=pb.getRouteInfo(ID);
-    distance=route.getDistance();
-    //blockHour=route.getBlockHour();              //Rightnow  block Hour is not added
+    public void retrieveAircraftTypeInfo(AircraftType aircraftType) {
+       // fuelCost = aircraftType.getFuelCost() * blockHour * annualDepartures;
+        System.out.println("MB: Enter retrieveAircraftTypeInfo");
+        ownershipCost = aircraftType.getLeaseCost()*12;
+        if (aircraftType.getSuiteNo() > 0) {
+            cabinInfo.put("Suite", aircraftType.getSuiteNo());
+            suiteNo = aircraftType.getSuiteNo();
+        }
+        if (aircraftType.getFcSeatNo() > 0) {
+            cabinInfo.put("First Class", aircraftType.getFcSeatNo());
+            fcSeatNo = aircraftType.getFcSeatNo();
+        }
+        if (aircraftType.getEcSeatNo() > 0) {
+            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
+            ecSeatNo = aircraftType.getEcSeatNo();
+        }
+        if (aircraftType.getPecSeatNo() > 0) {
+            cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
+            pecSeatNo = aircraftType.getPecSeatNo();
+        }
+        if (aircraftType.getBcSeatNo() > 0) {
+            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
+            bcSeatNo = aircraftType.getBcSeatNo();
+        }
+        totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
+        System.out.println("MB: AircraftType Seat No: "+totalSeatNo);
+        crewNo = pb.calculateCrewNo(totalSeatNo);
+        System.out.println("MB: AircraftType Crew No: "+crewNo);
+        keyList= new ArrayList<String>(cabinInfo.keySet());
+        System.out.println("MB: AircraftType key List Size: "+keyList.size());
+        System.out.println("AircraftInfo Retrieved!");
     
     }
-    public void retrieveAircraftTypeInfo(String type) {
-        AircraftType aircraftType = pb.getAircraftType(type);
-        fuelCost=aircraftType.getFuelCost()*blockHour*annualDepartures;
-        ownershipCost=aircraftType.getLeaseCost();
-//        if (aircraftType.getSuiteNo() > 0) {
-//            cabinInfo.put("Suite", aircraftType.getSuiteNo());
-//            suiteNo = aircraftType.getSuiteNo();
-//        }
-//        if (aircraftType.getFcSeatNo() > 0) {
-//            cabinInfo.put("First Class", aircraftType.getFcSeatNo());
-//            fcSeatNo = aircraftType.getFcSeatNo();
-//        }
-//        if (aircraftType.getEcSeatNo() > 0) {
-//            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
-//            ecSeatNo = aircraftType.getEcSeatNo();
-//        }
-//        if (aircraftType.getPecSeatNo() > 0) {
-//            cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
-//            pecSeatNo = aircraftType.getPecSeatNo();
-//        }
-//        if (aircraftType.getBcSeatNo() > 0) {
-//            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
-//            bcSeatNo = aircraftType.getBcSeatNo();
-//        }
-        totalSeatNo=suiteNo+fcSeatNo+ecSeatNo+pecSeatNo+bcSeatNo;
-        crewNo=pb.calculateCrewNo(totalSeatNo);
+
+    public List<String> getKeyList() {
+        return keyList;
+    }
+
+    public void setKeyList(List<String> keyList) {
+        this.keyList = keyList;
     }
     
-    
-   
     public Route getRoute() {
         return route;
     }
@@ -122,11 +217,11 @@ public class PricingManagedBean implements Serializable {
         this.route = route;
     }
 
-    public Hashtable<String, Integer> getCabinInfo() {
+    public Map<String, Integer> getCabinInfo() {
         return cabinInfo;
     }
 
-    public void setCabinInfo(Hashtable<String, Integer> cabinInfo) {
+    public void setCabinInfo(Map<String, Integer> cabinInfo) {
         this.cabinInfo = cabinInfo;
     }
 
@@ -145,11 +240,13 @@ public class PricingManagedBean implements Serializable {
     public void setCrewCost(Double crewCost) {
         this.crewCost = crewCost;
     }
+
     //Override setCrewCost
-    public void setCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures) {
-       crewCost=pb.calculateCrewCost(crewNo,crewUnitCost,blockHour,annualDepartures);
+
+    public void setCrewCost(Integer crewNo, Double crewUnitCost, Double blockHour, Integer annualDepartures) {
+        crewCost = pb.getCrewCost(crewNo, crewUnitCost, blockHour, annualDepartures);
     }
-    
+
     public Double getFuelCost() {
         return fuelCost;
     }
@@ -158,7 +255,6 @@ public class PricingManagedBean implements Serializable {
         this.fuelCost = fuelCost;
     }
 
-    
     public Double getOwnershipCost() {
         return ownershipCost;
     }
