@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 /**
  *
  * @author Lu Xi
@@ -131,6 +132,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 //        aircraftType.setEcSeatNo(ecSeatNo);
         em.merge(aircraftType);
         em.flush();
+  
     }
 //    
 //    @Override

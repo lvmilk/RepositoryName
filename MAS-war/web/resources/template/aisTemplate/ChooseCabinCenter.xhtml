@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Create Account_Center panel</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form>
+
+            <p:panel id="panel" header="Set Cabin Class Information"  style="width:100%">
+                <p:dataTable var="cabinClass" value="#{addCabinDetailBean.cabinList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
+
+
+                    <p:column headerText="Cabin Class" sortBy="#{cabinClass.cabinName}">
+                        <h:outputText value="#{cabinClass.cabinName}" />
+                    </p:column>
+
+                    <p:column headerText="Total No. of Seats" sortBy="#{cabinClass.seatCount}">
+                        <h:outputText value="#{cabinClass.seatCount}" />
+                    </p:column>
+
+                    <p:column headerText="Set details">
+                        <p:commandButton value="Select" action="#{addCabinDetailBean.editDetail(cabinClass)}"  />
+                    </p:column>
+
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+
+    </h:body>
+</html>
