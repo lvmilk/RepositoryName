@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Pricing: step 2 Center</title>
+    </h:head>
+    <h:body>
+
+
+        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+
+
+            <h:form id="display">
+                <p:panel id="panel" header="Fill in load factors"  style="width:100%">
+                    <p:messages id="msgs" />
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="route_ID" value="Route ID" />
+                        <h:outputText id="route_ID"  value="#{pricingManagedBean.routeID}" />
+                        <p:outputLabel for="route_Name" value="Route Name" />
+                        <h:outputText id="route_Name" value="#{pricingManagedBean.routeName}" />
+                      </h:panelGrid>
+                        <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
+                            <p:column headerText="Cabin Class Name" sortBy="#{key}">
+                                <h:outputText value="#{key}" />
+                            </p:column>
+                            <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
+                                <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
+                            </p:column>
+                            <p:column headerText="Fare" sortBy="#{pricingManagedBean.fareMap[key]}">
+                                <h:outputText value="#{pricingManagedBean.fareMap[key]}" >
+                                <f:convertNumber pattern="#0.00" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+
+<!--                        <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />-->
+                    
+                </p:panel>
+
+            </h:form>
+            <p:resizable for="display" /><p:draggable for="display" />
+
+
+
+
+        </div>
+
+    </h:body>
+</html>

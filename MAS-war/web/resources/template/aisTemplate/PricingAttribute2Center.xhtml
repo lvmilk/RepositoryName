@@ -12,38 +12,52 @@
     </h:head>
     <h:body>
 
-          
-                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
 
 
 
-                    <h:form id="cabinInfo">
-                        <p:panel id="panel" header="View All Booking Classes"  style="width:100%">
-                            <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
-                                <p:column headerText="Cabin Class Name" sortBy="#{key}">
-                                    <h:outputText value="#{key}" />
-                                </p:column>
-                                <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
-                                    <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
-                                </p:column>
-                                
-<!--                                <p:column headerText="Load Factor">
-                                    <p:inputText id="annotation" value="#{bookingClassBean.annotation}" required="true" validatorMessage="Please enter an Uppercase Alhpabet" requiredMessage="Please enter an alphabet" label="Class Annotation" size="10">
+            <h:form id="cabinInfo">
+                <p:panel id="panel" header="Fill in load factors"  style="width:100%">
+                     <p:messages id="msgs" />
 
-                                    <f:validateRegex pattern="((?=.*[A-Z]).{1,1})" />
-                                -->
-                               
-                                
-                            </p:dataTable>
-                        </p:panel>
+                    <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
+                        <p:column headerText="Cabin Class Name" sortBy="#{key}">
+                            <h:outputText value="#{key}" />
+                        </p:column>
+                        <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
+                            <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
+                        </p:column>
+                        <p:column headerText="Load Factor(0.0-1.0)">  
+                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor" validatorMessage="Please check load factor is between 0 to 1" size="10">
+                                <f:validateDoubleRange minimum="0.01" maximum="1.0" />
+                            </p:inputText>
+                        </p:column>
 
-                        </h:form>
-                        <p:resizable for="cabinInfo" /><p:draggable for="cabinInfo" />
+                    </p:dataTable>
+                   <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel for="profit_margin" value="Expected Net Profit Margin(net profit/cost) in decimal number: " />
+                    <p:inputText id="profit_margin"  value="#{pricingManagedBean.profitMargin}" label="Expected Net Profit Margin" required="true" requiredMessage="Please enter an expected net profit margin" validatorMessage="Please check net profit margin is decimal number"  size="10">
+                         <f:validateDoubleRange minimum="0.0" maximum="15.0" />
+                    </p:inputText>
+
+                    <p:outputLabel for="annual_departures" value="Number of Annual Departures" />
+                    <p:inputText id="annual_departures"  value="#{pricingManagedBean.annualDepartures}" label="Number of Annual Departures" required="true" requiredMessage="Please enter number of annual departures" validatorMessage="Pleaseccheck annual departures is a integer between 10 to 10000"  size="10">
+                       <f:validateLongRange minimum="10" maximum="10000" />
+                    </p:inputText>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />
+                </p:panel>
+
+            </h:form>
+            <p:resizable for="cabinInfo" /><p:draggable for="cabinInfo" />
 
 
-           
 
-                </div>
+
+        </div>
 
     </h:body>
 </html>
