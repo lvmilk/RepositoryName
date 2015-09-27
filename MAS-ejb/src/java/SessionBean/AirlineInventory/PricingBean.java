@@ -29,7 +29,7 @@ public class PricingBean implements PricingBeanLocal {
     Route route = new Route();
    private  List<Route> routeList= new ArrayList<>();
     Double crewCost;
-    
+    Double calculatedFare;
     
     
     public void setAircraftType(String type){
@@ -104,7 +104,29 @@ public class PricingBean implements PricingBeanLocal {
         calculateCrewCost(crewNo,crewUnitCost,blockHour,annualDepartures);
         return crewCost;
     }
-
+    
+    //NEW!!!!!!!
+    public void calculateFare(Double expectedRev,Integer totalSeatNo,Double loadFactor,Integer annualDepartures,String cabin){
+     Double fare = expectedRev/(totalSeatNo*loadFactor*annualDepartures);
+     System.out.println("SessionBean: fare calculated: for "+cabin+" = "+fare);
+     if(cabin.equals("Suite"))
+         System.out.println("Suite Fare: "+fare);  //notice here!!!!!
+     else if(cabin.equals("First Class"))
+         route.setBasicFcFare(fare);
+       else if(cabin.equals("Economy Class"))
+         route.setBasicEcFare(fare); 
+       else if(cabin.equals("Premier Economy Class"))
+         route.setBasicPecFare(fare); 
+       else if(cabin.equals("Business Class"))
+         route.setBasicBcFare(fare);   
+       else 
+           System.out.println("Invalid!");
+     calculatedFare=fare;
+    }
+    public Double getFare(){
+        return calculatedFare;
+    }
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }
