@@ -24,8 +24,8 @@
                         <h:outputText value="#{airport.airportName}" />
                     </p:column>
 
-                    <p:column headerText="Country Code" filterBy="#{airport.countryCode}" filterMatchMode="contains">
-                        <h:outputText value="#{airport.countryCode}" />
+                    <p:column headerText="Country Name" filterBy="#{airport.countryName}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.countryName}" />
                     </p:column>
 
                     <p:column headerText="City Name" filterBy="#{airport.cityName}" filterMatchMode="contains">
@@ -37,7 +37,7 @@
                     </p:column>
 
                     <p:column headerText="View Detail">
-                        <p:commandButton value="View Detail" action="#{AirportManagedBean.viewAirport(airport)}" />
+                        <p:commandButton value="View Detail" actionListener="#{AirportManagedBean.viewAirport(airport)}" ajax="true"/>
                     </p:column>
 
                 </p:dataTable>

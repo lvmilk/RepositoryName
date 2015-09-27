@@ -36,7 +36,7 @@ public class AirportManagedBean implements Serializable {
     private String IATA;
     private String airportName;
     private String cityName;
-    private String countryCode;
+    private String countryName;
     private String spec;
     private String timeZone;
     private String opStatus;
@@ -62,7 +62,7 @@ public class AirportManagedBean implements Serializable {
 
     public void addAirport() throws Exception {
         try {
-            rpb.addAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -73,7 +73,7 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", airport.getIATA());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airportName", airport.getAirportName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryCode", airport.getCountryCode());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryName", airport.getCountryName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
@@ -90,7 +90,7 @@ public class AirportManagedBean implements Serializable {
 //        setIATA(viewAp.getIATA());
 //        setAirportName(viewAp.getAirportName());
 //        setCityName(viewAp.getCityName());
-//        setCountryCode(viewAp.getCountryCode());
+//        setCountryName(viewAp.getCountryName());
 //        setSpec(viewAp.getSpec());
 //        setTimeZone(viewAp.getTimeZone());
 //        setOpStatus(viewAp.getOpStatus());
@@ -109,7 +109,7 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", airport.getIATA());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airportName", airport.getAirportName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryCode", airport.getCountryCode());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryName", airport.getCountryName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
@@ -124,7 +124,7 @@ public class AirportManagedBean implements Serializable {
 
     public void editAirportDetail() throws Exception {
         try {
-            rpb.editAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -217,12 +217,12 @@ public class AirportManagedBean implements Serializable {
         this.cityName = cityName;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
     public String getSpec() {

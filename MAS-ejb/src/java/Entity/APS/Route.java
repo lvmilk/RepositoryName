@@ -36,20 +36,20 @@ public class Route implements Serializable {
     // private boolean canEBP;
     private String status;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+//    @ManyToOne(cascade = {CascadeType.PERSIST})
     private AircraftType acType;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Airport origin;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Airport dest;
 
-    public void create(Airport origin, Airport dest, Double distance, Double blockhour) {
+    public void create(Airport origin, Airport dest, Double distance) {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         this.status = "Pending";
         this.origin = origin;
         this.dest = dest;
         this.distance = distance;
-        this.blockhour = blockhour;
+//        this.blockhour = blockhour;
     }
 
     public Long getId() {

@@ -9,40 +9,38 @@
         <title>MAS</title>
     </h:head>
     <h:body>
- 
-            <h:form>
-                <p:panel id="panel" header="Route Information" style="width: 100%">
 
-                    <p:messages id="msgs" />
-                    <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="30">
+        <h:form>
+            <p:panel id="panel" header="Route Information" style="width: 100%">
 
-                        <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
-                        <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="15">
-                            <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
-                        </p:inputText>
+                <p:messages id="msgs" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="30">
 
-                        <p:outputLabel for="destIATA" value="Destination Airport IATA: " />
-                        <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="15">
-                            <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
-                        </p:inputText>
+                    <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
+                    <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="15">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                    </p:inputText>
 
-                        <p:outputLabel for="distance" value="Route Distance: " />
-                        <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="15">
-                        </p:inputText>
+                    <p:outputLabel for="destIATA" value="Destination Airport IATA: " />
+                    <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="15">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                    </p:inputText>
 
-                        <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
-                        <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="15">
-                        </p:inputText>
+                    <p:outputLabel for="distance" value="Route Distance: " />
+                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="15">
+                    </p:inputText>
 
-                    </h:panelGrid>
+                </h:panelGrid>
+                <p:selectBooleanCheckbox value="#{RouteManagedBean.addReturnRoute}" />
+                <h:outputText value="Add return route" />
 
-                    <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
+                <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
 
-                </p:panel>
+            </p:panel>
 
-                <p:draggable for="panel" /><p:resizable for="panel" />
+            <p:draggable for="panel" /><p:resizable for="panel" />
 
-            </h:form>
+        </h:form>
 
     </h:body>
 

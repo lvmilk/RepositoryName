@@ -30,7 +30,7 @@ public class EditAirportManagedBean implements Serializable{
     private String IATA;
     private String airportName;
     private String cityName;
-    private String countryCode;
+    private String countryName;
     private String spec;
     private String timeZone;
     private String opStatus;
@@ -45,7 +45,7 @@ public class EditAirportManagedBean implements Serializable{
         IATA = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("IATA");
         airportName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airportName");
         cityName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cityName");
-        countryCode = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryCode");
+        countryName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryName");
         spec = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("spec");
         timeZone = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("timeZone");
         opStatus = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opStatus");
@@ -55,11 +55,15 @@ public class EditAirportManagedBean implements Serializable{
     
     public void editAirportDetail() throws Exception{
         try {
-            rpb.editAirport(IATA, airportName, cityName, countryCode, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
+    }
+    
+    public void editAirportCancel() throws Exception{
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirport.xhtml");
     }
 
     public Airport getAirport() {
@@ -94,12 +98,12 @@ public class EditAirportManagedBean implements Serializable{
         this.cityName = cityName;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
     public String getSpec() {
