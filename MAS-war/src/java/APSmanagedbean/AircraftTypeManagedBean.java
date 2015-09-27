@@ -216,45 +216,45 @@ public class AircraftTypeManagedBean implements Serializable {
     public void setMinAirspace(String minAirspace) {
         this.minAirspace = minAirspace;
     }
-//
-//    public Integer getSuiteNo() {
-//        return suiteNo;
-//    }
-//
-//    public void setSuiteNo(Integer suiteNo) {
-//        this.suiteNo = suiteNo;
-//    }
-//
-//    public Integer getFcSeatNo() {
-//        return fcSeatNo;
-//    }
-//
-//    public void setFcSeatNo(Integer fcSeatNo) {
-//        this.fcSeatNo = fcSeatNo;
-//    }
-//
-//    public Integer getBcSeatNo() {
-//        return bcSeatNo;
-//    }
-//
-//    public void setBcSeatNo(Integer bcSeatNo) {
-//        this.bcSeatNo = bcSeatNo;
-//    }
-//
-//    public Integer getPecSeatNo() {
-//        return pecSeatNo;
-//    }
-//
-//    public void setPecSeatNo(Integer pecSeatNo) {
-//        this.pecSeatNo = pecSeatNo;
-//    }
-//
-//    public Integer getEcSeatNo() {
-//        return ecSeatNo;
-//    }
-//
-//    public void setEcSeatNo(Integer ecSeatNo) {
-//        this.ecSeatNo = ecSeatNo;
-//    }
+
+    public Integer getSuiteNo() {
+        return suiteNo;
+    }
+
+    public void setSuiteNo(Integer suiteNo) {
+        this.suiteNo = suiteNo;
+    }
+
+    public Integer getFcSeatNo() {
+        return fcSeatNo;
+    }
+
+    public void setFcSeatNo(Integer fcSeatNo) {
+        this.fcSeatNo = fcSeatNo;
+    }
+
+    public Integer getBcSeatNo() {
+        return bcSeatNo;
+    }
+
+    public void setBcSeatNo(Integer bcSeatNo) {
+        this.bcSeatNo = bcSeatNo;
+    }
+
+    public Integer getPecSeatNo() {
+        return pecSeatNo;
+    }
+
+    public void setPecSeatNo(Integer pecSeatNo) {
+        this.pecSeatNo = pecSeatNo;
+    }
+
+    public Integer getEcSeatNo() {
+        return ecSeatNo;
+    }
+
+    public void setEcSeatNo(Integer ecSeatNo) {
+        this.ecSeatNo = ecSeatNo;
+    }
 
 }

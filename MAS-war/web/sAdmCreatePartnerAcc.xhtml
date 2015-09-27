@@ -4,21 +4,23 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Staff workspace</title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
+        <ui:include src="./resources/template/cmiTemplate/sessionOut.xhtml"></ui:include>
+        
         <ui:decorate template="./resources/template/skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
-<!--                <ui:include src="./resources/template/cmiTemplate/leftFragment.xhtml"></ui:include>-->
+                <ui:include src="./resources/template/cmiTemplate/leftFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="right">
                 <ui:include src="./resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="center">
-                <ui:include src="./resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
+                <ui:include src="./resources/template/cmiTemplate/centerCreatePartnerAcc.xhtml"></ui:include>
             </ui:define>
         </ui:decorate>
     </h:body>

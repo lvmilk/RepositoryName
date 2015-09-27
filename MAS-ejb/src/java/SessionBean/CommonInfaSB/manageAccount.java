@@ -19,7 +19,7 @@ import util.CryptoHelper;
 
 /**
  *
- * @author LIU YUQI'
+ * @author LIU YUQI & LI HAO'
  */
 @Stateless
 public class manageAccount implements manageAccountLocal {
@@ -32,12 +32,66 @@ public class manageAccount implements manageAccountLocal {
     GroundStaff grdStaff;
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
+    Agency agency;
+    AirAlliances alliance;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
     String hPwd;
 
     public manageAccount() {
 
+    }
+
+    @Override
+    public boolean checkPartenrIDDuplicate(String partnerID, String stfType) {
+        Query query = null;
+        List resultList;
+        if (stfType.equals("agency")) {
+            query = em.createQuery("SELECT u FROM Agency u WHERE u.agencyID = :inUserName and u.pType = :inStfType");
+            query.setParameter("inUserName", partnerID);
+            query.setParameter("inStfType", stfType);
+            resultList = new ArrayList<Agency>();
+        } else if (stfType.equals("alliance")) {
+            query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName and u.pType = :inStfType");
+            query.setParameter("inUserName", partnerID);
+            query.setParameter("inStfType", stfType);
+            resultList = new ArrayList<AirAlliances>();
+        }
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
+
+    }
+
+    @Override
+    public boolean checkPartnerEmailDuplicate(String pEmail) {
+        Boolean agBl, alBl;
+        agBl = checkAgEmail(pEmail);
+        alBl = checkAlEmail(pEmail);
+
+        if (agBl == true || alBl == true ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void addPartnerAcc(String pid, String pPwd, String email, String stfType) {
+        System.out.println("Currently in create partner account");
+        hPwd = this.encrypt(pid, pPwd);
+        if (stfType.equals("agency")) {
+            agency = new Agency();
+            agency.createAgencyAcc(pid, pPwd, email, stfType);
+            em.persist(agency);
+        } else if (stfType.equals("alliance")) {
+            alliance = new AirAlliances();
+            alliance.createAllianceAcc(pid, pPwd, email, stfType);
+            em.persist(alliance);
+        }
     }
 
     @Override
@@ -94,6 +148,24 @@ public class manageAccount implements manageAccountLocal {
         query = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.email = :inUserEmail");
         query.setParameter("inUserEmail", email);
         return checkList(query);
+    }
+    
+    private boolean checkAgEmail(String email)
+    {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Agency u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        return checkList(query);
+    }
+    
+    private boolean checkAlEmail(String email) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        return checkList(query);
+
     }
 
     private boolean checkList(Query query) {
@@ -292,7 +364,7 @@ public class manageAccount implements manageAccountLocal {
             em.persist(cbCrew);
             em.flush();
 
-        } 
+        }
     }
 
     @Override

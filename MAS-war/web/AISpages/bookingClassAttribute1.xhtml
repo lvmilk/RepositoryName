@@ -39,7 +39,6 @@
                                     <f:validateRegex pattern="((?=.*[A-Z]).{1,1})" />
                                 </p:inputText>
 
-
                                 <p:outputLabel for="price_percentage" value="Price as percentage of full fare: " />
                                 <p:inputText id="price_percentage"  value="#{bookingClassBean.price_percentage}" label="Price as percentage of full fare" required="true"  validatorMessage="Please enter a number between 0 and 1"  requiredMessage="Please enter a number between 0 and 1" size="10">
 
@@ -56,13 +55,11 @@
                                 <p:outputLabel for="route_percentage" value="Penalty rate to change route:" />
                                 <p:inputText id="route_percentage"  value="#{bookingClassBean.change_route_percentage}" label="Penalty rate charged for route change" required="true" requiredMessage="Please enter a number between 0 and 1" size="10">
                                     <f:validateDoubleRange minimum="0.0" maximum="1.0" />
-
                                 </p:inputText>
+                                
                                 <p:outputLabel for="date_percentage" value="Penalty rate to change date:" />
-
                                 <p:inputText id="date_percentage"  value="#{bookingClassBean.change_date_percentage}" label="Penalty rate to change date of flight" required="true" validatorMessage="Please enter a number between 0 and 1"  size="10">
                                     <f:validateDoubleRange minimum="0.0" maximum="1.0" />
-
                                 </p:inputText>
 
                                 <p:outputLabel for="change_passenger_rate" value="Penalty rate to change passenger:" />

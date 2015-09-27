@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,6 +26,9 @@ public class CabinClass implements Serializable {
     private String cabinName;
     private Integer seatCount;
     private Double fullFare;
+    
+    @ManyToOne
+    AircraftType aircraftType=new AircraftType();
 
     public Long getId() {
         return cabinID;
@@ -56,6 +60,22 @@ public class CabinClass implements Serializable {
 
     public void setFullFare(Double fullFare) {
         this.fullFare = fullFare;
+    }
+
+    public Long getCabinID() {
+        return cabinID;
+    }
+
+    public void setCabinID(Long cabinID) {
+        this.cabinID = cabinID;
+    }
+
+    public AircraftType getAircraftType() {
+        return aircraftType;
+    }
+
+    public void setAircraftType(AircraftType aircraftType) {
+        this.aircraftType = aircraftType;
     }
 
     

@@ -29,5 +29,6 @@ public interface PricingBeanLocal {
       
       //public void setRouteInfo(Long ID);
       public Route getRouteInfo(Long ID);
-     
+      public void calculateFare(Double expectedRev,Integer totalSeatNo,Double loadFactor,Integer annualDepartures, String cabin);
+      public Double getFare();
 }
