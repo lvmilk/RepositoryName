@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Pricing: step 3 Center</title>
+    </h:head>
+    <h:body>
+
+
+        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+
+
+            <h:form id="cost">
+                <p:panel id="panel" header="Input Cost(in dollars)"  style="width:100%">
+                    <p:messages id="msgs" />
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <p:outputLabel for="crew_cost" value="Crew cost per block hour per person" />
+                        <p:inputText id="crew_cost"  value="#{pricingManagedBean.crewUnitCost}" label="Crew cost per block hour per person" required="true" requiredMessage="Please enter crew cost per block hour per person" validatorMessage="Please check crew cost"  size="10">
+                            <f:validateDoubleRange minimum="0.0" maximum="10000.0000" />
+                        </p:inputText>
+
+                        <p:outputLabel for="maintenance" value="Maintenance cost per year" />
+                        <p:inputText id="maintenance"  value="#{pricingManagedBean.maintenance}" label="Maintenance cost per year" required="true" requiredMessage="Please enter maintenance cost per year" validatorMessage="Please check maintenance cost"  size="10">
+                            <f:validateDoubleRange minimum="0.0" maximum="1000000.0000" />
+                        </p:inputText>
+
+                        <p:outputLabel for="ownership" value="Ownership cost per year" />
+                        <h:outputText id="ownership" value="#{pricingManagedBean.ownershipCost}" />
+                        
+                        <p:outputLabel for="fuel_cost" value="Fuel cost per year" />
+                        <h:outputText id="fuel_cost" value="#{pricingManagedBean.fuelCost}" />
+
+                        
+                        <p:outputLabel for="admin" value="Admin cost per block hour" />
+                        <p:inputText id="admin"  value="#{pricingManagedBean.adminCost}" label="Admin cost per block hour" required="true" requiredMessage="Please enter admin cost per block hour" validatorMessage="Please check admin cost"  size="10">
+                            <f:validateDoubleRange minimum="0" maximum="1000000" />
+                        </p:inputText>
+                        
+                        <p:outputLabel for="otherCost" value="Other costs per block hour" />
+                        <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please enter an number for other costs"  size="10">
+                            <f:validateDoubleRange minimum="0" maximum="1000000" />
+                        </p:inputText>
+                        
+                    </h:panelGrid>
+
+                  
+                    <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFinal()}"  icon="ui-icon-check" />
+                </p:panel>
+
+            </h:form>
+            <p:resizable for="cost" /><p:draggable for="cost" />
+
+
+
+
+        </div>
+
+    </h:body>
+</html>

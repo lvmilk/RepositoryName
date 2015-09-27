@@ -2,7 +2,9 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
+import Entity.APS.CabinClass;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -45,7 +47,69 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
         em.persist(aircraftType);
         em.flush();
+        addCabin(aircraftType,suiteNo,fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
     }
+    
+        public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo){
+        
+          AircraftType AirType=em.find( AircraftType.class,aircraftType.getType());
+          System.out.println("Aircraft Type found is "+aircraftType.getType());
+            
+            Collection<CabinClass> cabinSet = new ArrayList<CabinClass>();
+            AirType.setCabinList(cabinSet);
+        if (suiteNo > 0) {
+            CabinClass suite = new CabinClass();
+            suite.setCabinName("Suite");
+            suite.setSeatCount(suiteNo);
+            suite.setAircraftType(AirType);
+//            em.persist(suite);
+           AirType.getCabinList().add(suite);
+        }
+
+        if (fcSeatNo > 0) {
+            CabinClass First = new CabinClass();
+            First.setCabinName("First Class");
+            First.setSeatCount(fcSeatNo);
+            First.setAircraftType(AirType);
+//            em.persist(First);
+
+        AirType.getCabinList().add(First);
+        }
+
+        if (bcSeatNo > 0) {
+            CabinClass biz = new CabinClass();
+            biz.setCabinName("Business Class");
+            biz.setSeatCount(bcSeatNo);
+            biz.setAircraftType(AirType);
+//            em.persist(biz);
+         AirType.getCabinList().add(biz);
+        }
+
+        if (pecSeatNo > 0) {
+            CabinClass Pecon = new CabinClass();
+            Pecon.setCabinName("Premium Economic Class");
+            Pecon.setSeatCount(pecSeatNo);
+            Pecon.setAircraftType(AirType);
+//            em.persist(Pecon);
+            cabinSet.add(Pecon);
+        }
+
+        if (ecSeatNo > 0) {
+            CabinClass econ = new CabinClass();
+            econ.setCabinName("Economic Class");
+            econ.setSeatCount(ecSeatNo);
+            econ.setAircraftType(AirType);
+//            em.persist(econ);
+           AirType.getCabinList().add(econ);
+        }
+//        AirType.setCabinList(cabinSet);
+        System.out.println("in addCabin: aircraftType is "+AirType.getType());
+        System.out.println("No. of cabin class in this type is "+AirType.getCabinList().size());
+        
+        em.merge(AirType);
+
+    }
+
 
     @Override
     public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) throws Exception {
