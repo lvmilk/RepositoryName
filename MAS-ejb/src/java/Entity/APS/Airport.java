@@ -20,7 +20,7 @@ public class Airport implements Serializable {
     private String IATA;
     private String airportName;
     private String cityName;
-    private String countryCode;
+    private String countryName;
     private String spec;
     private String timeZone;
     private String opStatus;
@@ -28,11 +28,11 @@ public class Airport implements Serializable {
     private String airspace;
 
 //    private Collection<Route> routeList = new ArrayList<Route>();
-    public void create(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) {
+    public void create(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) {
         this.IATA = IATA;
         this.airportName = airportName;
         this.cityName = cityName;
-        this.countryCode = countryCode;
+        this.countryName = countryName;
         this.spec = spec;
         this.timeZone = timeZone;
         this.opStatus = opStatus;
@@ -64,12 +64,12 @@ public class Airport implements Serializable {
         this.cityName = cityName;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public String getCountryName() {
+        return countryName;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
     public String getSpec() {

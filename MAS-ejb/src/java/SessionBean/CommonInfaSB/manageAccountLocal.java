@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author LIU YUQI'
+ * @author LIU YUQI & LI HAO'
  */
 @Local
 public interface manageAccountLocal {
@@ -20,9 +20,14 @@ public interface manageAccountLocal {
     public boolean validateLogin (String username, String password, String staffType);
     public void addAdmin(String username,String password, String stfType);
     public void addAccount(String username, String password,String email, String stfType);
+    public void addPartnerAcc(String pid, String pPwd, String email, String stfType);
+    
     public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     public boolean checkAccDuplicate(String username,String stfType);
     public boolean checkNameDuplicate(String username, String usernameEdited);
+    
+    public boolean checkPartenrIDDuplicate(String partnerID, String stfType);
+    public boolean checkPartnerEmailDuplicate(String pEmail);
     
     //used when creating email
     public boolean checkEmailExists(String email);

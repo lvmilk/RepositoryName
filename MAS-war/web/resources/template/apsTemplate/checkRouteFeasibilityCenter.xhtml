@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Check Route Feasibility</title>
+    </h:head>
+    <h:body>
+
+                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
+
+  
+                         
+                        <h:form id="formMain">
+                            <p:messages autoUpdate="true" />
+                            <p:panel id="panel" header="Check Route Feasibility" >
+                                <h:panelGrid columns="2" style="margin-bottom:200px" cellpadding="20">
+                                    <p:outputLabel for="console" value="Select a route: " />
+                                    <p:selectOneMenu id="console" value="#{routeManagedBean.route}" required="true" requiredMessage="Please select a route" style="width:250px">
+                                        <f:selectItem itemLabel="- Select One Route -" itemValue="#{null}" />
+                                        <f:selectItems value="#{routeManagedBean.routeList}" />
+                                    </p:selectOneMenu>
+
+                                    <p:draggable for="panel" /><p:resizable for="panel" />
+
+                                </h:panelGrid>
+
+                                <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{routeManagedBean.checkRouteFeasibility(route)}"  icon="ui-icon-check" />
+
+                            </p:panel>
+
+                        </h:form>
+                        <p:resizable for="selectOne" /><p:draggable for="selectOne" />
+
+ 
+
+                </div>
+    </h:body>
+</html>
+

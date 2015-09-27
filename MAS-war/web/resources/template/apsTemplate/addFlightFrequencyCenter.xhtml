@@ -9,27 +9,18 @@
         <title>MAS</title>
     </h:head>
     <h:body>
-        <!--        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;"> -->
         <h:form>
-            <p:panel id="panel" header="Airport Information" style="width: 100%">
-<!--                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/spinner.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>-->
+            
+            <p:panel id="panel" header="Flight Information" style="width: 100%">
 
                 <p:messages id="msgs" showDetail="true" autoUpdate="true" />
                 <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
 
-                    <p:outputLabel for="IATA" value="Airport IATA: " />
-                    <p:inputText id="IATA" value="#{AirportManagedBean.IATA}" label="IATA" required="true" validatorMessage="Please enter three-digit uppercase alphabets" requiredMessage="Please enter airport IATA" size="30">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
+                    <p:outputLabel for="route" value="Select Route: " />
+                    <p:inputText id="route" value="#{FlightManagedBean.route}" required="true" validatorMessage="Please enter three-digit uppercase alphabets" requiredMessage="Please select a route" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="airportName" value="Airport Name: " />
+                    <p:outputLabel for="" value="Airport Name: " />
                     <p:inputText id="airportName"  value="#{AirportManagedBean.airportName}" label="airportName" required="true"  requiredMessage="Please enter airport name" size="30">
                     </p:inputText>
 

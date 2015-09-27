@@ -5,10 +5,29 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.FlightFrequency;
+import Entity.APS.FlightInstance;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  *
  * @author Xu
  */
-public class FlightSchedulingBean {
+@Stateless
+public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
+
+    @PersistenceContext
+    EntityManager em;
     
+    FlightFrequency flightFreq;
+    FlightInstance flightInst;
+    
+    public FlightSchedulingBean() {
+    }
+    
+    public void addFlightFrequency() {
+    
+        }
 }

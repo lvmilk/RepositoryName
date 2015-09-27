@@ -20,6 +20,7 @@ import managedbean.Control;
 import Entity.CommonInfaEntity.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 
 /**
  *
@@ -39,46 +40,47 @@ public class DeletionManagedBean implements Serializable {
 
     private String licence;
 
-    private List<OfficeStaff> selectedOffStf =new ArrayList();
+    private List<OfficeStaff> selectedOffStf = new ArrayList();
     private List<OfficeStaff> offStfList;
     private List<GroundStaff> grdStfList;
     private List<CabinCrew> cbCrewList;
     private List<CockpitCrew> cpCrewList;
-    
-    private List<GroundStaff> selectedGrdList = new ArrayList();
-    private List<CabinCrew> selectedCbCrewList =new ArrayList();
-    private List<CockpitCrew> selectedCpCrewList=new ArrayList();
 
-    public DeletionManagedBean()
-    {
+    private List<GroundStaff> selectedGrdList = new ArrayList();
+    private List<CabinCrew> selectedCbCrewList = new ArrayList();
+    private List<CockpitCrew> selectedCpCrewList = new ArrayList();
+
+    public DeletionManagedBean() {
 
     }
-    
+
+    @PostConstruct
+    public void init() {
+        offStfList = mal.getAllOfficeStaff();
+        grdStfList = mal.getAllGoundStaff();
+        cbCrewList = mal.getAllCabinCrew();
+        cpCrewList = mal.getAllCockpitCrew();
+
+    }
+
     /**
      * @return the username
      */
     public void deleteAccount() throws IOException {
-        
-        boolean check=false; 
-        if (!selectedOffStf.isEmpty())
-        {
+
+        boolean check = false;
+        if (!selectedOffStf.isEmpty()) {
             System.out.println("hahahaha");
             check = mal.delAcc(selectedOffStf);
             System.out.println(check);
+        } else if (!selectedGrdList.isEmpty()) {
+            check = mal.delGrdAcc(selectedGrdList);
+        } else if (!selectedCbCrewList.isEmpty()) {
+            check = mal.delCabinAcc(selectedCbCrewList);
+        } else if (!selectedCpCrewList.isEmpty()) {
+            check = mal.delCockpitAcc(selectedCpCrewList);
         }
-        else if(!selectedGrdList.isEmpty())
-        {
-            check=mal.delGrdAcc(selectedGrdList);
-        }
-        else if(!selectedCbCrewList.isEmpty())
-        {
-            check=mal.delCabinAcc(selectedCbCrewList);
-        }
-        else if(!selectedCpCrewList.isEmpty())
-        {
-            check=mal.delCockpitAcc(selectedCpCrewList);
-        }
-        
+
         if (check) {
             System.out.println("Delete Successful!");
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteBookClassSuccess.xhtml");
@@ -116,11 +118,10 @@ public class DeletionManagedBean implements Serializable {
     public List<OfficeStaff> getOffStfList() {
         offStfList = mal.getAllOfficeStaff();
         System.out.println("OfficeStaff List size is " + offStfList.size());
-        for(Integer i=0;i<offStfList.size();i++)
-        {
+        for (Integer i = 0; i < offStfList.size(); i++) {
             System.out.println(offStfList.get(i).getOffName());
         }
-        
+
         return offStfList;
     }
 

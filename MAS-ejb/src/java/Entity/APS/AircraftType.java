@@ -35,6 +35,11 @@ public class AircraftType implements Serializable {
     private Integer ecSeatNo;               //number of seat in economy class
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
+    private Collection<Aircraft> aircraft = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
+//    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "acType")
+    private List<Route> routeMatchList = new ArrayList<> ();
     private Collection<Aircraft> aircraft = new ArrayList<Aircraft>();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
     private List<FlightFrequency> flightMatchList = new ArrayList<> ();
@@ -42,13 +47,6 @@ public class AircraftType implements Serializable {
         @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
     private Collection<CabinClass> cabinList = new ArrayList<CabinClass> ();
 
-    public Collection<Aircraft> getAircraft() {
-        return aircraft;
-    }
-
-    public void setAircraft(Collection<Aircraft> aircraft) {
-        this.aircraft = aircraft;
-    }
 
     public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
@@ -91,13 +89,12 @@ public class AircraftType implements Serializable {
 //    }
 
    
-
-    public List<FlightFrequency> getFlightMatchList() {
-        return flightMatchList;
+    public Collection<Aircraft> getAircraft() {
+        return aircraft;
     }
 
-    public void setFlightMatchList(List<FlightFrequency> flightMatchList) {
-        this.flightMatchList = flightMatchList;
+    public void setAircraft(Collection<Aircraft> aircraft) {
+        this.aircraft = aircraft;
     }
 
     public String getType() {
@@ -204,16 +201,14 @@ public class AircraftType implements Serializable {
         this.ecSeatNo = ecSeatNo;
     }
 
-    public Collection<CabinClass> getCabinList() {
-        return cabinList;
+    public List<Route> getRouteMatchList() {
+        return routeMatchList;
     }
 
-    public void setCabinList(Collection<CabinClass> cabinList) {
-        this.cabinList = cabinList;
+    public void setRouteMatchList(List<Route> routeMatchList) {
+        this.routeMatchList = routeMatchList;
     }
 
-    
-    
     //    public Double getCruiseSpeed() {
 //        return cruiseSpeed;
 //    }

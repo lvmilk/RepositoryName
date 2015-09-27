@@ -6,6 +6,7 @@
 package Entity.APS;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -14,7 +15,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import org.joda.time.DateTime;
 
 /**
  *
@@ -63,10 +63,7 @@ public class FlightPackage implements Serializable {
     public String toString() {
         String result = "";
         for (FlightInstance fl : flightList) {
-//            result += fl.getDate().substring(0, 10) + "\t" + fl.getGenericFlight().getFlightNo()
-//                    + "\t" + fl.getGenericFlight().getRoute().getOrigin().getIATA()
-//                    + "\t" + fl.getGenericFlight().getRoute().getDestination().getIATA() + "\n";
-            result += fl.getDate().substring(0, 10) + "\t" + fl.getFlightFrequency().getFlightNo()
+            result += fl.getDate() + "\t" + fl.getFlightFrequency().getFlightNo()
                     + "\t" + fl.getFlightFrequency().getRoute().getOrigin().getIATA()
                     + "\t" + fl.getFlightFrequency().getRoute().getDest().getIATA() + "\n";
         }
@@ -97,33 +94,33 @@ public class FlightPackage implements Serializable {
         this.flightList.add(fl);
     }
 
-    public DateTime getStartTime() {
-        DateTime dt = null;
-        for (FlightInstance fl : flightList) {
-            if (dt == null) {
-                dt = new DateTime(fl.getEstimatedDepTime());
-            } else {
-                DateTime current = new DateTime(fl.getEstimatedDepTime());
-                if (current.compareTo(dt) <= 0) {
-                    dt = current;
-                }
-            }
-        }
-        return dt;
-    }
-
-    public DateTime getEndTime() {
-        DateTime dt = null;
-        for (FlightInstance fl : flightList) {
-            if (dt == null) {
-                dt = new DateTime(fl.getEstimatedArrTime());
-            } else {
-                DateTime current = new DateTime(fl.getEstimatedArrTime());
-                if (current.compareTo(dt) >= 0) {
-                    dt = current;
-                }
-            }
-        }
-        return dt;
-    }
+//    public LocalTime getStartTime() {
+//        LocalTime dt = null;
+//        for (FlightInstance fl : flightList) {
+//            if (dt == null) {
+//                dt = new LocalTime(fl.getEstimatedDepTime());
+//            } else {
+//                LocalTime current = new LocalTime(fl.getEstimatedDepTime());
+//                if (current.compareTo(dt) <= 0) {
+//                    dt = current;
+//                }
+//            }
+//        }
+//        return dt;
+//    }
+//
+//    public LocalTime getEndTime() {
+//        LocalTime dt = null;
+//        for (FlightInstance fl : flightList) {
+//            if (dt == null) {
+//                dt = new LocalTime(fl.getEstimatedArrTime());
+//            } else {
+//                LocalTime current = new LocalTime(fl.getEstimatedArrTime());
+//                if (current.compareTo(dt) >= 0) {
+//                    dt = current;
+//                }
+//            }
+//        }
+//        return dt;
+//    }
 }

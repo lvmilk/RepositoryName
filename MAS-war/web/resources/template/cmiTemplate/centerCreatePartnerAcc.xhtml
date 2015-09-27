@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form >
+            <p:growl id="msgs" showDetail="true" />
+
+            <p:panelGrid columns="2">
+                <p:outputLabel for="domain" value="Staff domain:" />
+                <h:selectOneMenu id="domain" value="#{cPartnerMB.stfType}" valueChangeListener="#{cPartnerMB.valueChanged}">
+                    <f:selectItem itemValue="agency" itemLabel="Agency" />
+                    <f:selectItem itemValue="alliance" itemLabel="Airline Alliance" />
+                    <!--                                        <f:ajax event="change" execute="@form" render="output"/>-->
+                    <p:ajax event="change" update="agency,alliance"/>
+                </h:selectOneMenu>
+
+            </p:panelGrid>
+        </h:form>
+
+
+
+        <h:form id="agency">
+            <p:panel id="addAgency"  visible="#{cPartnerMB.visiAg}" style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="pid" value="Patner Account: " />
+                    <p:inputText id="pid" value="#{cPartnerMB.partnerID}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="pid" size="10">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
+                    </p:inputText>
+                    <p:message for="pid" display="icon" />
+
+                    <p:outputLabel for="pPwd" value="Password: " />
+                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="pPwd" display="icon" />
+
+                    <p:outputLabel for="pEmail" value="Email: " />
+                    <p:inputText id="pEmail" value="#{cPartnerMB.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="pEmail" display="icon" />
+
+                    <p:outputLabel value="Partner type: "/>
+                    <p:outputLabel value="#{cPartnerMB.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Confirm" update="addAgency" actionListener="#{cPartnerMB.createPartnerAcc()}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        
+        <h:form id="alliance">
+            <p:panel id="addAlliance" visible="#{cPartnerMB.visiAl}"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="pid" value="Patner Account: " />
+                    <p:inputText id="pid" value="#{cPartnerMB.partnerID}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="pid" size="10">
+                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
+                    </p:inputText>
+                    <p:message for="pid" display="icon" />
+
+                    <p:outputLabel for="pPwd" value="Password: " />
+                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="pPwd" display="icon" />
+
+                    <p:outputLabel for="pEmail" value="Email: " />
+                    <p:inputText id="pEmail" value="#{cPartnerMB.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="pEmail" display="icon" />
+
+                    <p:outputLabel value="Partner type: "/>
+                    <p:outputLabel value="#{cPartnerMB.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Confirm" update="addAlliance" actionListener="#{cPartnerMB.createPartnerAcc()}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+        
+        
+        
+    </h:body>
+</html>
+
