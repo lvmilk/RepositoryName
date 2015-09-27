@@ -186,7 +186,7 @@ public class manageAccount implements manageAccountLocal {
     public String encrypt(String username, String password) {
         String temp;
         if (!username.isEmpty() && !password.isEmpty()) {
-            System.out.println("*****The original password for "+ username+ " is " + password + "*****");
+            System.out.println("*****The original password for " + username + " is " + password + "*****");
             temp = cryptoHelper.doMD5Hashing(username + password);
             return temp;
         }
@@ -219,32 +219,80 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String emailEdited) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String emailEdited, String licence) {
+        CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+
+        cpCrew.setCpName(username);
+        cpCrew.setStfType(stfType);
+        cpCrew.setEmail(emailEdited);
+        cpCrew.setLicence(licence);
+
+        if (password.equals(pswEdited)) {
+            System.out.println("***Password does not changed***");
+            cpCrew.setCpPassword(password);
+        } else {
+            hPwd = this.encrypt(username, password);
+            cpCrew.setCpPassword(hPwd);
+        }
+
+        em.persist(cpCrew);
+        em.flush();
+    }
+
+    @Override
+    public void editStaff(String username, String stfType, String password, String pswEdited, String emailEdited) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
 
             officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
-            officeStaff.setOffPassword(password);
+            if (password.equals(pswEdited)) {
+                System.out.println("***Password does not changed***");
+                officeStaff.setOffPassword(password);
+            } else {
+                hPwd = this.encrypt(username, password);
+                officeStaff.setOffPassword(hPwd);
+            }
             officeStaff.setEmail(emailEdited);
 
             em.merge(officeStaff);
             em.flush();
         } else if (stfType.equals("groundStaff")) {
-            GroundStaff grdStaff=em.find(GroundStaff.class, username);
-            
+            GroundStaff grdStaff = em.find(GroundStaff.class, username);
+
             grdStaff.setGrdName(username);
             grdStaff.setEmail(emailEdited);
             grdStaff.setStfType(stfType);
-            hPwd = this.encrypt(username, password);
-            grdStaff.setGrdPassword(hPwd);
+            if (password.equals(pswEdited)) {
+                System.out.println("***Password does not changed***");
+                grdStaff.setGrdPassword(password);
+            } else {
+                hPwd = this.encrypt(username, password);
+                grdStaff.setGrdPassword(hPwd);
+            }
+
+            em.persist(grdStaff);
+            em.flush();
 
         } else if (stfType.equals("cabin")) {
+            CabinCrew cbCrew = em.find(CabinCrew.class, username);
 
-        } else if (stfType.equals("cockpit")) {
-        }
+            cbCrew.setCbName(username);
+            cbCrew.setStfType(stfType);
+            cbCrew.setEmail(emailEdited);
 
+            if (password.equals(pswEdited)) {
+                System.out.println("***Password does not changed***");
+                cbCrew.setCbPassword(password);
+            } else {
+                hPwd = this.encrypt(username, password);
+                cbCrew.setCbPassword(hPwd);
+            }
+            em.persist(cbCrew);
+            em.flush();
+
+        } 
     }
 
     @Override

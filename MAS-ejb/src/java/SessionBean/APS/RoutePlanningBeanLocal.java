@@ -5,6 +5,7 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.Route;
 import java.util.List;
@@ -31,10 +32,10 @@ public interface RoutePlanningBeanLocal {
 
     public boolean addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception;
 
-    public void editRoute(String originIATA, String destIATA, Double distance) throws Exception;
+    public void editRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception;
 
-    public void editRouteFare(String originIATA, String destIATA, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
-    
+    public void editRouteFare(String originIATA, String destIATA, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
+
     public void deleteRoute(String originIATA, String destIATA) throws Exception;
 
     public List<Route> viewAllRoute();
@@ -50,5 +51,11 @@ public interface RoutePlanningBeanLocal {
     public boolean tryDeleteAirportList(List<Airport> airportList) throws Exception;
 
     public List<String> viewAllRouteString();
+
+    public List<Airport> canDeleteAirportList();
+
+    public List<Airport> cannotDeleteAirportList();
+
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception;
 
 }

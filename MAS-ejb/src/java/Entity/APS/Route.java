@@ -28,6 +28,7 @@ public class Route implements Serializable {
 //    not in session bean  private String destIATA;
     private Double distance;
     private Double blockhour;
+    private Double basicScFare;
     private Double basicFcFare;
     private Double basicBcFare;
     private Double basicPecFare;
@@ -49,10 +50,6 @@ public class Route implements Serializable {
         this.dest = dest;
         this.distance = distance;
         this.blockhour = blockhour;
-//        this.basicFcFare = basicFcFare;
-//        this.basicBcFare = basicBcFare;
-//        this.basicPecFare = basicPecFare;
-//        this.basicEcFare = basicEcFare;
     }
 
     public Long getId() {
@@ -93,6 +90,14 @@ public class Route implements Serializable {
 
     public void setBlockhour(Double blockhour) {
         this.blockhour = blockhour;
+    }
+
+    public Double getBasicScFare() {
+        return basicScFare;
+    }
+
+    public void setBasicScFare(Double basicScFare) {
+        this.basicScFare = basicScFare;
     }
 
     public Double getBasicFcFare() {
