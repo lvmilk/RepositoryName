@@ -52,8 +52,8 @@ public class FlightFrequency implements Serializable {
     private String operator;
     private ArrayList<String> codeshare;
     
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
-    private List<FlightInstance> flightList = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
+//    private List<FlightInstance> flightList = new ArrayList<>();
     
     public void create(Route route, String flightNo, LocalTime depTime, LocalTime arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
@@ -223,14 +223,14 @@ public class FlightFrequency implements Serializable {
     public void setCodeshare(ArrayList<String> codeshare) {
         this.codeshare = codeshare;
     }
-
-    public List<FlightInstance> getFlightList() {
-        return flightList;
-    }
-
-    public void setFlightList(List<FlightInstance> flightList) {
-        this.flightList = flightList;
-    }
+//
+//    public List<FlightInstance> getFlightList() {
+//        return flightList;
+//    }
+//
+//    public void setFlightList(List<FlightInstance> flightList) {
+//        this.flightList = flightList;
+//    }
 
     @Override
     public int hashCode() {

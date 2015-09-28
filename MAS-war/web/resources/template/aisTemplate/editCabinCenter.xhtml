@@ -32,18 +32,20 @@
                         
                         <p:outputLabel for="rowcount" value="Total number of rows:" />
                         <p:inputText id="rowcount" value="#{cabinDetailBean.rowCount}"  required="true" validatorMessage="Please enter a number between 0 and 100"  requiredMessage="Please enter a number between 0 and 100" size="10">
-                           <f:validateLongRange minimum="0" maximum="100" />
+<!--                            <p:message for="rowcount" />   -->
+                        <f:validateLongRange minimum="0" maximum="100" />
                           
                         </p:inputText>
                         
                         <p:outputLabel for="rowseatcount" value="Number of seats in a row:" />
                         <p:inputText id="rowseatcount"  value="#{cabinDetailBean.rowSeatCount}"  required="true" requiredMessage="Please enter a number between 0 and 15" size="10">
-                            <f:validateLongRange minimum="0" maximum="15" />
+<!--                            <p:message for="rowseatcount" />  -->
+                           <f:validateLongRange minimum="0" maximum="15" />
                         </p:inputText>
                             
                                <p:outputLabel for="rowconfig" value="Row Configuration:" />
                                <p:inputMask id="rowconfig"  value="#{cabinDetailBean.rowConfig}"  mask="9-9-9" required="true" requiredMessage="Please enter a number between 0 and 1" size="10">
-                            
+<!--                             <p:message for="rowconfig" /> -->
 <!--                                <f:validateRegex pattern="((?=.*[A-Z]).{2,3})" />-->
                                </p:inputMask>
                             
@@ -51,6 +53,7 @@
                                <p:inputText id="seatwidth"  value="#{cabinDetailBean.seatWidth}" required="true" requiredMessage="Please enter a number between 0 and 50" size="10">
                              <f:validateDoubleRange minimum="0" maximum="50" />
                                </p:inputText>
+<!--                               <p:message for="seatwidth" /> -->
                             
       
                     </h:panelGrid>

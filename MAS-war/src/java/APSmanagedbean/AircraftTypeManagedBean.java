@@ -55,6 +55,7 @@ public class AircraftTypeManagedBean implements Serializable {
         System.out.println(aircraftLength);
         System.out.println(wingspan);
         if (!fpb.checkDuplicate(type)) {
+            System.out.println("No duplicates");
             fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {

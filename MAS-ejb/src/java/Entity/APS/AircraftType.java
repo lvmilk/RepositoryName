@@ -40,11 +40,11 @@ public class AircraftType implements Serializable {
 //    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "acType")
     private List<Route> routeMatchList = new ArrayList<> ();
-    private Collection<Aircraft> aircraft = new ArrayList<Aircraft>();
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
-    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
+
+//    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
+//    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
     
-        @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
+        @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private Collection<CabinClass> cabinList = new ArrayList<CabinClass> ();
 
 
@@ -209,6 +209,24 @@ public class AircraftType implements Serializable {
         this.routeMatchList = routeMatchList;
     }
 
+//    public List<FlightFrequency> getFlightMatchList() {
+//        return flightMatchList;
+//    }
+//
+//    public void setFlightMatchList(List<FlightFrequency> flightMatchList) {
+//        this.flightMatchList = flightMatchList;
+//    }
+
+    public Collection<CabinClass> getCabinList() {
+        return cabinList;
+    }
+
+    public void setCabinList(Collection<CabinClass> cabinList) {
+        this.cabinList = cabinList;
+    }
+
+    
+    
     //    public Double getCruiseSpeed() {
 //        return cruiseSpeed;
 //    }

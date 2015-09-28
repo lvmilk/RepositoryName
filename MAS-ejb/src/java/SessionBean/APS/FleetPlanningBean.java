@@ -40,6 +40,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     @Override
     public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+        System.out.println("get in addAircraftType");
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
             throw new Exception("AircraftType exists.");
