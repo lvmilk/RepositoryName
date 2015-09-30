@@ -9,10 +9,11 @@ import javax.ejb.EJB;
 import Entity.APS.*;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.SelectableDataModel;
 
@@ -21,14 +22,19 @@ import org.primefaces.model.SelectableDataModel;
  * @author Lu Xi
  */
 @Named(value = "ATMB")
-@SessionScoped
+@ViewScoped
 public class AircraftTypeManagedBean implements Serializable {
 
     @EJB
     private FleetPlanningBeanLocal fpb;
+
+    private UIComponent uIComponent;
+
     private AircraftType newType = new AircraftType();
-    private List<AircraftType> typeList;
-    private ArrayList<AircraftType> selectedList;
+    private List<AircraftType> typeList = new ArrayList<>();
+    private List<AircraftType> selectedList = new ArrayList<>();
+    private List<AircraftType> deletedList = new ArrayList<>();
+
     private String type;
     private String manufacturer;
     private Double maxDistance;
@@ -45,93 +51,115 @@ public class AircraftTypeManagedBean implements Serializable {
     private Integer ecSeatNo;               //number of seat in economy class
 
     public AircraftTypeManagedBean() {
-        selectedList = new ArrayList<>();
+    }
+
+    @PostConstruct
+    public void init() {
+        typeList = fpb.getAllAircraftType();
+        deletedList = fpb.canDeleteTypeList();
     }
 
     public void addAircraftType() throws Exception {
-        System.out.println(type);
-        System.out.println(manufacturer);
-        System.out.println(maxDistance);
-        System.out.println(aircraftLength);
-        System.out.println(wingspan);
         if (!fpb.checkDuplicate(type)) {
             System.out.println("No duplicates");
-            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
+            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
         }
-        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
-    public void confirmDeleteType() throws IOException {
+//    public void tryDeleteAircraftType() throws IOException {
+//        if (selectedList.isEmpty()) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an Aircraft Type to delete! ", ""));
+//        } else {
+//            try {
+//                System.out.println("tryDeleteType: before check");
+//                fpb.tryDeleteTypeList(selectedList);
+//                System.out.println("tryDeleteType: pass check");
+//                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deleteConditionFlag", true);
+//                System.out.println("tryDeleteType: flag back");
+//            } catch (Exception ex) {
+//                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deleteConditionFlag", false);
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
+//            }
+//        }
+//    }
+    public void checkSelect() throws IOException {
+        System.out.println("checking anything be selected?!");
         if (selectedList.isEmpty()) {
+            System.out.println("empty selected list. ");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an Aircraft Type to delete! ", ""));
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeConfirm.xhtml");
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeCenter.xhtml");
         }
     }
 
-    public void deleteAircraftType() throws Exception {
+    public void confirmDeleteAircraftType() throws Exception {
         try {
-            fpb.deleteAircraftType(selectedList);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
-            //    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+            if (selectedList.isEmpty()) {
+                System.out.println("empty selected list. ");
+                FacesContext.getCurrentInstance().addMessage("dlg", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please SELECT an aircraft type to delete! ", ""));
+            } else {
+                System.out.println("get the selected list!");
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAircraftType", selectedList);
+                fpb.deleteAircraftTypeList(selectedList);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
+            }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
+    public void deleteBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftType.xhtml");
+    }
+
     public void editAircraftType(AircraftType aircraftType) throws IOException {
-        setType(aircraftType.getType());
-        setManufacturer(aircraftType.getManufacturer());
-        setMaxDistance(aircraftType.getMaxDistance());
-        setLeaseCost(aircraftType.getLeaseCost());
-        setFuelCost(aircraftType.getFuelCost());
-        setAircraftLength(aircraftType.getAircraftLength());
-        setWingspan(aircraftType.getWingspan());
-        setMinAirspace(aircraftType.getMinAirspace());
-//        setSuiteNo(aircraftType.getSuiteNo());
-//        setFcSeatNo(aircraftType.getFcSeatNo());
-//        setBcSeatNo(aircraftType.getBcSeatNo());
-//        setPecSeatNo(aircraftType.getPecSeatNo());
-//        setEcSeatNo(aircraftType.getEcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraftType.getType());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manufacturer", aircraftType.getManufacturer());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maxDistance", aircraftType.getMaxDistance());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fuelCost", aircraftType.getFuelCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftLength", aircraftType.getAircraftLength());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wingspan", aircraftType.getWingspan());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minAirspace", aircraftType.getMinAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("suiteNo", aircraftType.getSuiteNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fcSeatNo", aircraftType.getFcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bcSeatNo", aircraftType.getBcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
         System.out.println("Which type is changed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeInfo.xhtml");
     }
 
-    public void editAircraftTypeInfo() throws Exception {
-        fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
-        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-    }
 
     public void viewAircraftType(AircraftType aircraftType) throws IOException {
-        setType(aircraftType.getType());
-        setManufacturer(aircraftType.getManufacturer());
-        setMaxDistance(aircraftType.getMaxDistance());
-         setLeaseCost(aircraftType.getLeaseCost());
-        setFuelCost(aircraftType.getFuelCost());
-        setAircraftLength(aircraftType.getAircraftLength());
-        setWingspan(aircraftType.getWingspan());
-        setMinAirspace(aircraftType.getMinAirspace());
-//        setSuiteNo(aircraftType.getSuiteNo());
-//        setFcSeatNo(aircraftType.getFcSeatNo());
-//        setBcSeatNo(aircraftType.getBcSeatNo());
-//        setPecSeatNo(aircraftType.getPecSeatNo());
-//        setEcSeatNo(aircraftType.getEcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraftType.getType());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manufacturer", aircraftType.getManufacturer());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maxDistance", aircraftType.getMaxDistance());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fuelCost", aircraftType.getFuelCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftLength", aircraftType.getAircraftLength());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wingspan", aircraftType.getWingspan());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minAirspace", aircraftType.getMinAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("suiteNo", aircraftType.getSuiteNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fcSeatNo", aircraftType.getFcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bcSeatNo", aircraftType.getBcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
         System.out.println("Which type is displayed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewAircraftTypeConfirm.xhtml");
-
     }
 
     public void viewAircraftTypeConfirm() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./APSworkspace.xhtml");
-        //  FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewAircraftType.xhtml");
     }
 
     public List<AircraftType> getTypeList() {
-        typeList = fpb.getAllAircraftType();
+        //typeList = fpb.getAllAircraftType();
         System.out.println("Type List size is " + typeList.size());
         return typeList;
     }
@@ -149,7 +177,15 @@ public class AircraftTypeManagedBean implements Serializable {
         this.selectedList = selectedList;
     }
 
-    //deleting 
+    public List<AircraftType> getDeletedList() {
+        return deletedList;
+    }
+
+    public void setDeletedList(List<AircraftType> deletedList) {
+        this.deletedList = deletedList;
+    }
+
+    //////////////////////////////////
     public void check(SelectEvent event) {
         System.out.println("in check");
     }
@@ -256,6 +292,14 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void setEcSeatNo(Integer ecSeatNo) {
         this.ecSeatNo = ecSeatNo;
+    }
+
+    public UIComponent getuIComponent() {
+        return uIComponent;
+    }
+
+    public void setuIComponent(UIComponent uIComponent) {
+        this.uIComponent = uIComponent;
     }
 
 }
