@@ -61,14 +61,15 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" />
+<!--                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" />-->
+<p:commandButton value="Delete" action="AirportManagedBean.toDeleteAirport"  icon="ui-icon-check" />
             </p:panel> 
 
             <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Airport" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
                     <h:outputText value="Delete airport "/> <ui:repeat var="ap" value="#{AirportManagedBean.selectedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>
                     <h:panelGrid columns="2" cellpadding="10">
-                        <p:commandButton value="Delete"  update="" action="#{AirportManagedBean.confirmDeleteAirport()}" />
+                        <p:commandButton value="Delete"  update="" action="#{AirportManagedBean.confirmDeleteAirport}" />
                         <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
                     </h:panelGrid>
                 </p:dialog>
