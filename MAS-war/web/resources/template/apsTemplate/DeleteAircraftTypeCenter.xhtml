@@ -9,84 +9,90 @@
 
 
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>Delete Aircraft Type_Center panel</title>
     </h:head>
     <h:body>
 
 
-            <h:form>
+        <h:form>
 
-                <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
-                      <p:messages id="msgs" />  
+            <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
+                <p:messages id="msgs" />  
+                <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.deletedList}" paginator="true" rows="10" emptyMessage="No aircraft type can be deleted!">
 
-                    <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
+                    <p:ajax event="rowSelectCheckbox" listener="#{ATMB.check}"   />  
 
-                        <p:ajax event="rowSelectCheckbox" listener="#{ATMB.check}"   />  
+                    <f:facet name="header">  
+                        Aircraft Type List (Note: only aircraft types can be deleted are shown)
+                    </f:facet>  
 
-                        <f:facet name="header">  
-                            Checkbox Based Deletion  
-                        </f:facet>  
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      
+                    <p:column headerText="Type" sortBy="#{AircraftType.type}">
+                        <h:outputText value="#{AircraftType.type}" />
+                    </p:column>
+                    <p:column headerText="Manufacturer">
+                        <h:outputText value="#{AircraftType.manufacturer}" />
+                    </p:column>
+                    <p:column headerText="Max Distance">
+                        <h:outputText value="#{AircraftType.maxDistance}" />
+                    </p:column>
+                    <p:column headerText="Lease Cost/month (SGD)">
+                        <h:outputText value="#{AircraftType.leaseCost}" />
+                    </p:column>
+                    <p:column headerText="Fuel Cost/hour (SGD)">
+                        <h:outputText value="#{AircraftType.fuelCost}" />
+                    </p:column>
+                    <p:column headerText="Length">
+                        <h:outputText value="#{AircraftType.aircraftLength}" />
+                    </p:column>
+                    <p:column headerText="Wingspan">
+                        <h:outputText value="#{AircraftType.wingspan}" />
+                    </p:column>
+                    <p:column headerText="Min Airspace">
+                        <h:outputText value="#{AircraftType.minAirspace}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Suite">
+                        <h:outputText value="#{AircraftType.suiteNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in First Class" >
+                        <h:outputText value="#{AircraftType.fcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Business Class">
+                        <h:outputText value="#{AircraftType.bcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Premium Economy Class">
+                        <h:outputText value="#{AircraftType.fcSeatNo}" />
+                    </p:column>
+                    <p:column headerText="# of Seat in Economy Class">
+                        <h:outputText value="#{AircraftType.ecSeatNo}" />
+                    </p:column>
 
-                        <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      
+                </p:dataTable>
+                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check"/>
+
+<!--oncomplete="PF('dlg').show()" <p:commandButton value="Delete"  action="#{ATMB.checkSelect()}" icon="ui-icon-check" update="panel"/> update="dialogForm:dlg"-->
+                <!--<p:commandButton value="Delete"  update="dialogForm:dlg" oncomplete="$('#CheckSelect').click();"  icon="ui-icon-check" />-->
+                <!--<p:commandButton value="CheckSelect"  id="CheckSelect"   ajax="false" action="#{ATMB.checkSelect()}" />-->
+
+            </p:panel>
 
 
-                        <p:column headerText="Type" sortBy="#{AircraftType.type}">
-                            <h:outputText value="#{AircraftType.type}" />
-                        </p:column>
+            <h:form id="dialogForm">
 
-                        <p:column headerText="Manufacturer">
-                            <h:outputText value="#{AircraftType.manufacturer}" />
-                        </p:column>
-                        <p:column headerText="Max Distance">
-                            <h:outputText value="#{AircraftType.maxDistance}" />
-                        </p:column>
-                        <p:column headerText="Lease Cost/year (SGD)">
-                            <h:outputText value="#{AircraftType.leaseCost}" />
-                        </p:column>
-                        <p:column headerText="Fuel Cost/hour (SGD)">
-                            <h:outputText value="#{AircraftType.fuelCost}" />
-                        </p:column>
-                        <p:column headerText="Length">
-                            <h:outputText value="#{AircraftType.aircraftLength}" />
-                        </p:column>
-                        <p:column headerText="Wingspan">
-                            <h:outputText value="#{AircraftType.wingspan}" />
-                        </p:column>
-                        <p:column headerText="Min Airspace">
-                            <h:outputText value="#{AircraftType.minAirspace}" />
-                        </p:column>
-<!--                        <p:column headerText="# of Seat in Suite">
-                            <h:outputText value="#{AircraftType.suiteNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in First Class" >
-                            <h:outputText value="#{AircraftType.fcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Business Class">
-                            <h:outputText value="#{AircraftType.bcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Premium Economy Class">
-                            <h:outputText value="#{AircraftType.fcSeatNo}" />
-                        </p:column>
-                        <p:column headerText="# of Seat in Economy Class">
-                            <h:outputText value="#{AircraftType.ecSeatNo}" />
-                        </p:column>-->
-                        
-                    </p:dataTable>
+                <p:dialog id="dlg" header="Delete Aircraft Type" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true" height="200" width="500">
+                    <h:outputText value="Delete aircraft type "/> <ui:repeat var="at" value="#{ATMB.selectedList}"> <h:outputText value="#{at.type} "/> </ui:repeat> <h:outputText value="?"/>
+                    <h:panelGrid columns="2" cellpadding="10" >
+                        <p:commandButton value="Delete"  id="Delete" update="" action="#{ATMB.confirmDeleteAircraftType()}" />
+                        <br/>
+                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                        <br/>
+                        <p:messages autoUpdate="true" />
+                    </h:panelGrid>
+                </p:dialog>
 
-                    <p:commandButton value="Delete"  action="#{ATMB.confirmDeleteType()}" icon="ui-icon-check" update="panel"/>
-                </p:panel>
-
-                <p:draggable for="panel" /><p:resizable for="panel" />
             </h:form>
 
-
-
-
-
-
-
-
-
+        </h:form>
     </h:body>
 </html>
 

@@ -9,7 +9,7 @@
 
 
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>Edit Aircraft Type_Center panel</title>
     </h:head>
     <h:body>
         <h:form>
@@ -18,7 +18,7 @@
                 <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
 
 
-                    <p:column headerText="Type" sortBy="#{AircraftType.type}">
+                    <p:column headerText="Type" sortBy="#{AircraftType.type}" filterBy="#{AircraftType.type}">
                         <h:outputText value="#{AircraftType.type}" />
                     </p:column>
 
@@ -28,7 +28,7 @@
                     <p:column headerText="Max Distance">
                         <h:outputText value="#{AircraftType.maxDistance}" />
                     </p:column>
-                    <p:column headerText="Lease Cost/year (SGD)">
+                    <p:column headerText="Lease Cost/month (SGD)">
                         <h:outputText value="#{AircraftType.leaseCost}" />
                     </p:column>
                     <p:column headerText="Fuel Cost/hour (SGD)">
@@ -43,7 +43,7 @@
                     <p:column headerText="Min Airspace">
                         <h:outputText value="#{AircraftType.minAirspace}" />
                     </p:column>
-<!--                    <p:column headerText="# of Seat in Suite">
+                    <p:column headerText="# of Seat in Suite">
                         <h:outputText value="#{AircraftType.suiteNo}" />
                     </p:column>
                     <p:column headerText="# of Seat in First Class" >
@@ -57,7 +57,7 @@
                     </p:column>
                     <p:column headerText="# of Seat in Economy Class">
                         <h:outputText value="#{AircraftType.ecSeatNo}" />
-                    </p:column>-->
+                    </p:column>
 
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />

@@ -37,7 +37,7 @@ public class FlightInstance implements Serializable{
     private LocalTime actualArrTime;
     
     @ManyToOne
-    private Aircraft aircraft;
+    private Aircraft aircraft = new Aircraft();
     
     @ManyToOne
     private FlightPackage flightPackage;

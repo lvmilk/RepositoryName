@@ -17,65 +17,52 @@
                 <p:messages id="msgs" />
                 <h:panelGrid columns="2"  style="margin-bottom:10px; width:800px" cellpadding="20">
 
-
-                    <p:outputLabel for="registrationNo" value="Registration No:" />
-                    <p:inputText id="type" value="#{ATMB.type}" required="true" validatorMessage="Aircraft Type: please enter UPPERCASE Alphabet and valid number" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z\\s]).{1,20})" />
+                    <p:outputLabel for="registrationNo" value="Registration No.:" />
+                    <p:inputText id="registrationNo" value="#{AMB.registrationNo}" required="true" validatorMessage="Registration No.: please enter a valid number from 9V-AAA to 9V-ZZZ." requiredMessage="Please enter a valid registraction number" label="registrationNo" size="50">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z]).{1,20})" />
                     </p:inputText>
 
-                    <p:outputLabel for="manufacturer" value="Manufacturer: " />
-                    <p:inputText id="manufacturer"  value="#{ATMB.manufacturer}" label="manufacturer" required="true" validatorMessage="Manufacturer: please enter a valid alphabet"  requiredMessage="Please enter the manufacturer name" size="50">
-                        <f:validateRegex pattern="[a-zA-Z\\s]*"/>
+                    <p:outputLabel for="serialNo" value="Serial No.: " />
+                    <p:inputText id="serialNo"  value="#{AMB.serialNo}" label="serialNo" required="true" validatorMessage="Serial No.: please enter a valid serial number"  requiredMessage="Please enter serial number" size="50">
+                        <f:validateRegex pattern="((?=.*\d).{1,20})"/>
                     </p:inputText>
 
-                    <p:outputLabel for="maxDistance" value="Maximum Distance (km):" />
-                    <p:inputText id="maxDistance" value="#{ATMB.maxDistance}" label="Maximum Distance (km)" required="true" validatorMessage="Max Distance: Please enter a valid number"  requiredMessage="Please enter maximum distance of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="0.0" />
+                    <p:outputLabel for="status" value="Status:" />
+                    <p:inputText id="status" value="#{AMB.status}" label="Status" required="true" validatorMessage="Status: please enter a valid status"  requiredMessage="Please enter status of the aircraft" size="50">
                     </p:inputText>
 
-                    <p:outputLabel for="aircraftLength" value="Overall Length(m):" />
-                    <p:inputText id="aircraftLength" value="#{ATMB.aircraftLength}" label="Overall Length(m)" required="true" validatorMessage="Overall Length: Please enter a valid number"  requiredMessage="Please enter overall length of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="0.0" />
+                    <p:outputLabel for="firstFlyDate" value="First Fly Date (MM/dd/yyyy):" />
+                    <p:inputText id="firstFlyDate" value="#{AMB.firstFlyDate}" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format MM/dd/yyyy"  requiredMessage="Please enter the first fly date of the aircraft" size="50">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
                     </p:inputText>
 
-                    <p:outputLabel for="wingspan" value="Wingspan(m):" />
-                    <p:inputText id="wingspan" value="#{ATMB.wingspan}" label="Wingspan(m)" required="true" validatorMessage="Wingspan: Please enter a valid number"  requiredMessage="Please enter wingspan of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="0.0" />
+                    <p:outputLabel for="deliveryDate" value="Delivery Date (MM/dd/yyyy):" />
+                    <p:inputText id="deliveryDate" value="#{AMB.deliveryDate}" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format MM/dd/yyy"  requiredMessage="Please enter the delivery date of the aircraft" size="50">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
                     </p:inputText>
                     
-                    <p:outputLabel for="minAirspace" value="Minimum Airspace:" />
-                    <p:inputText id="minAirspace" value="#{ATMB.minAirspace}" label="Minimum Airspace" required="true" validatorMessage="Minimum Airspace: Please enter a valid number with an UPPERCASE alphabet"  requiredMessage="Please enter minimum airspace of the aircraft type" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z]).{0,2})" />
+                    <p:outputLabel for="retireDate" value="Retire Date (MM/dd/yyyy):" />
+                    <p:inputText id="retireDate" value="#{AMB.retireDate}" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format MM/dd/yyy"  requiredMessage="Please enter the retire date of the aircraft" size="50">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
                     </p:inputText>
                     
-                    <p:outputLabel for="suiteNo" value="Number of Seat in Suite:" />
-                    <p:inputText id="suiteNo" value="#{ATMB.suiteNo}" label="Number of Seat in Suite" required="true" validatorMessage="Suite: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Suite of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="10" />
+                    <p:outputLabel for="flightLogId" value="Flight Log ID:" />
+                    <p:inputText id="flightLogId" value="#{AMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">
+                            </p:inputText>
+                    
+                    <p:outputLabel for="maintenanceLogId" value="Maintenance ID:" />
+                    <p:inputText id="maintenanceLogId" value="#{AMB.maintenanceLogId}" label="maintenanceLogId" required="true" validatorMessage="Maintenance ID: Please enter a valid ID number"  requiredMessage="Please enter maintenance ID" size="50">
                     </p:inputText>
 
-                    <p:outputLabel for="fcSeatNo" value="Number of Seat in First Class:" />
-                    <p:inputText id="fcSeatNo" value="#{ATMB.fcSeatNo}" label="Number of Seat in First Class" required="true" validatorMessage="First Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in First Class of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="100" />
-                    </p:inputText>
-
-                    <p:outputLabel for="bcSeatNo" value="Number of Seat in Business Class:" />
-                    <p:inputText id="bcSeatNo" value="#{ATMB.bcSeatNo}" label="Number of Seat in Business Class" required="true" validatorMessage="Business Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Business Class of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="200" />
-                    </p:inputText>
-
-                    <p:outputLabel for="pecSeatNo" value="Number of Seat in Premium Economy Class:" />
-                    <p:inputText id="pecSeatNo" value="#{ATMB.pecSeatNo}" label="Number of Seat in Premium Economy Class" required="true" validatorMessage="Premium Economy Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Premium Economy Class of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="400" />
+                    <p:outputLabel for="type" value="Aircraft Type:" />
+                    <p:inputText id="type" value="#{AMB.type}" required="true" validatorMessage="Aircraft Type: please enter UPPERCASE Alphabet and valid number" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
+                        <f:validateRegex pattern="((?=.*\d).{1,20})" />
                     </p:inputText>
                     
-                    <p:outputLabel for="ecSeatNo" value="Number of Seat in Economy Class:" />
-                    <p:inputText id="ecSeatNo" value="#{ATMB.ecSeatNo}" label="Number of Seat in Economy Class" required="true" validatorMessage="Economy Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Economy Class of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="400" />
-                    </p:inputText>
-
+                    
                 </h:panelGrid>
 
-                <p:commandButton value="Submit" update="@form" style="margin-right:50" actionListener="#{ATMB.addAircraftType()}"  icon="ui-icon-check" />
+                <p:commandButton value="Submit" update="@form" style="margin-right:50" actionListener="#{AMB.addAircraft()}"  icon="ui-icon-check" />
             </p:panel>
 
             <p:draggable for="panel" /><p:resizable for="panel" />
