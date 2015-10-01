@@ -30,7 +30,7 @@ public class Aircraft implements Serializable {
     private AircraftType aircraftType = new AircraftType();
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
-    private List<FlightInstance> flightList = new ArrayList<>();
+    private List<FlightInstance> flightInstance = new ArrayList<>();
 
     public void create(String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) {
         this.setRegistrationNo(registrationNo);
@@ -115,12 +115,12 @@ public class Aircraft implements Serializable {
         this.aircraftType = aircraftType;
     }
 
-    public List<FlightInstance> getFlightList() {
-        return flightList;
+    public List<FlightInstance> getFlightInstance() {
+        return flightInstance;
     }
 
-    public void setFlightList(List<FlightInstance> flightList) {
-        this.flightList = flightList;
+    public void setFlightInstance(List<FlightInstance> flightInstance) {
+        this.flightInstance = flightInstance;
     }
 
     @Override
