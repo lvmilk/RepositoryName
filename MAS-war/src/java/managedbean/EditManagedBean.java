@@ -103,7 +103,8 @@ public class EditManagedBean implements Serializable {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
             mal.editStaff(username, stfType, password, pswEdited, emailEdited);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
@@ -112,8 +113,9 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited,licence);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffSuccess.xhtml");
+            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited, licence);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
