@@ -73,7 +73,7 @@ public class manageAccount implements manageAccountLocal {
         agBl = checkAgEmail(pEmail);
         alBl = checkAlEmail(pEmail);
 
-        if (agBl == true || alBl == true ) {
+        if (agBl == true || alBl == true) {
             return true;
         } else {
             return false;
@@ -149,16 +149,15 @@ public class manageAccount implements manageAccountLocal {
         query.setParameter("inUserEmail", email);
         return checkList(query);
     }
-    
-    private boolean checkAgEmail(String email)
-    {
+
+    private boolean checkAgEmail(String email) {
         Query query = null;
 
         query = em.createQuery("SELECT u FROM Agency u WHERE u.email = :inUserEmail");
         query.setParameter("inUserEmail", email);
         return checkList(query);
     }
-    
+
     private boolean checkAlEmail(String email) {
         Query query = null;
 
@@ -307,8 +306,61 @@ public class manageAccount implements manageAccountLocal {
             cpCrew.setCpPassword(hPwd);
         }
 
-        em.persist(cpCrew);
+        em.merge(cpCrew);
         em.flush();
+    }
+
+    @Override
+    public void editProfile(String username, String stfType, String pswEdited, String email) {
+        if (stfType.equals("officeStaff")) {
+            OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                officeStaff.setOffPassword(hPwd);
+            }
+            officeStaff.setEmail(email);
+
+            em.merge(officeStaff);
+            em.flush();
+        } else if (stfType.equals("groundStaff")) {
+            GroundStaff grdStaff = em.find(GroundStaff.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                grdStaff.setGrdPassword(hPwd);
+            }
+            grdStaff.setEmail(email);
+
+            em.merge(grdStaff);
+            em.flush();
+        } else if (stfType.equals("cabin")) {
+            CabinCrew cbCrew = em.find(CabinCrew.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                cbCrew.setCbPassword(hPwd);
+            }
+            cbCrew.setEmail(email);
+
+            em.merge(cbCrew);
+            em.flush();
+        } else if (stfType.equals("cockpit")) {
+            CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                cpCrew.setCpPassword(hPwd);
+            }
+            cpCrew.setEmail(email);
+
+            em.merge(cpCrew);
+            em.flush();
+        }
     }
 
     @Override
@@ -344,7 +396,7 @@ public class manageAccount implements manageAccountLocal {
                 grdStaff.setGrdPassword(hPwd);
             }
 
-            em.persist(grdStaff);
+            em.merge(grdStaff);
             em.flush();
 
         } else if (stfType.equals("cabin")) {
@@ -361,7 +413,7 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, password);
                 cbCrew.setCbPassword(hPwd);
             }
-            em.persist(cbCrew);
+            em.merge(cbCrew);
             em.flush();
 
         }
@@ -523,6 +575,30 @@ public class manageAccount implements manageAccountLocal {
         }
 
         return resultList;
+    }
+
+    @Override
+    public OfficeStaff getOfficeStaff(String username) {
+        OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+        return officeStaff;
+    }
+
+    @Override
+    public GroundStaff getGroundStaff(String username) {
+        GroundStaff grdStaff = em.find(GroundStaff.class, username);
+        return grdStaff;
+    }
+
+    @Override
+    public CabinCrew getCabinCrew(String username) {
+        CabinCrew cbCrew = em.find(CabinCrew.class, username);
+        return cbCrew;
+    }
+
+    @Override
+    public CockpitCrew getCockpitCrew(String username) {
+        CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+        return cpCrew;
     }
 
 }

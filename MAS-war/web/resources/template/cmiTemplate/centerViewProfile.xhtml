@@ -8,25 +8,20 @@
         <title>Profile</title>
     </h:head>
     <h:body>
-        <h:form >
-
-            <p:panel id="editProfile"  style="margin-bottom:20px">
+        <p:panel id="viewProfile"  style="margin-bottom:20px">
                 <p:messages id="msgs" />
                 <h:panelGrid columns="3" cellpadding="10">
 
                     <p:outputLabel for="otrUsername" value="User Name: " />
                     <p:outputLabel id="otrUsername" value="#{edProfile.username}"  />
                     <p:message for="otrUsername" display="icon" />
-
+                                      
                     <p:outputLabel for="otrPassword" value="Password: " />
-                    <p:inputText id="otrPassword" value="#{edProfile.pswEdited}" label="Password" size="10">
-                    </p:inputText>
+                    <p:outputLabel id="otrPassword" value="#{edProfile.password}"  />
                     <p:message for="otrPassword" display="icon" />
 
                     <p:outputLabel for="otrEmail" value="Email: " />
-                    <p:inputText id="otrEmail" value="#{edProfile.emailEdited}" required="true" validatorMessage="Invalid email format"  label="Email" size="10">
-                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                    </p:inputText>
+                    <p:outputLabel id="otrEmail" value="#{edProfile.email}"  />
                     <p:message for="otrEmail" display="icon" />
 
                     <p:outputLabel value="staff type: "/>
@@ -34,10 +29,8 @@
 
 
                 </h:panelGrid>
-                <p:commandButton value="Edit" update="editProfile" actionListener="#{edProfile.editOtrStaffAcc}" icon="ui-icon-check" />
+                <p:commandButton value="Edit" update="viewProfile" actionListener="#{edProfile.editStaffAcc()}" icon="ui-icon-check" />
             </p:panel>
-
-        </h:form>
     </h:body>
 </html>
 

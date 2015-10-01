@@ -29,12 +29,14 @@ public interface manageAccountLocal {
     public boolean checkPartenrIDDuplicate(String partnerID, String stfType);
     public boolean checkPartnerEmailDuplicate(String pEmail);
     
+    
     //used when creating email
     public boolean checkEmailExists(String email);
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
     public void editStaff(String username, String stfType, String password,String pswEdited, String emailEdited);
     public void editCpCrew(String username, String stfType, String password,String pswEdited, String emailEdited, String licence);
+    public void editProfile(String username, String stfType, String pswEdited, String email);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
     public boolean delCabinAcc(List<CabinCrew> selectedCbCrew);
@@ -43,4 +45,11 @@ public interface manageAccountLocal {
     public List<GroundStaff> getAllGoundStaff();
     public List<CabinCrew> getAllCabinCrew();
     public List<CockpitCrew> getAllCockpitCrew();
+    
+    public OfficeStaff getOfficeStaff(String username);
+    public GroundStaff getGroundStaff(String username);
+    public CabinCrew getCabinCrew(String username);
+    public CockpitCrew getCockpitCrew(String username);
+
+    
 }
