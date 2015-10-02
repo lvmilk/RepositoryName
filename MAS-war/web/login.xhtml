@@ -42,6 +42,9 @@
                     </h:panelGrid>
 <!--                    <p:captcha id="captcha" secure="true"></p:captcha>-->
                     <p:commandButton value="Login" update='panel' ajax="false" actionListener="#{login.logIn()}" icon="ui-icon-check" />
+                    <br></br>
+                    <h:commandLink value="Forgot password" style="font-size:10px" actionListener="#{login.createAdmin()}" />
+                    
                 </p:panel>
             </h:form>
 
