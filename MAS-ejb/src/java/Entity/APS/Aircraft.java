@@ -25,7 +25,7 @@ public class Aircraft implements Serializable {
     private String retireDate;
     private Long flightLogId;
     private Long maintenanceLogId;
-
+   
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
 
