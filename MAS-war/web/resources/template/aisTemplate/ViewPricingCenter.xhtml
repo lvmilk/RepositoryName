@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Pricing Center</title>
+    </h:head>
+    <h:body>
+
+
+
+
+
+            <h:form id="display">
+                <p:panel id="panel" header="View Pricing"  style="width:100%">
+                    <p:messages id="msgs" />
+
+                    <h:panelGrid columns="2" cellpadding="5">
+                     
+                        
+                        <p:outputLabel for="console" value="Route :" />
+                                    <p:selectOneMenu id="console" value="#{viewPricingManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
+                                        <f:selectItem itemLabel="Select One Route" itemValue="#{null}" />
+                                        <f:selectItems value="#{viewPricingManagedBean.routeInfo}" />
+                                    </p:selectOneMenu>
+                        
+                        
+
+                    <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{viewPricingManagedBean.checkRoute()}"  icon="ui-icon-check" />
+                   </h:panelGrid>
+                </p:panel>
+
+            </h:form>
+            <p:resizable for="display" />
+            <p:draggable for="display" />
+
+
+
+
+     
+
+    </h:body>
+</html>
