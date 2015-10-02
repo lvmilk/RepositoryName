@@ -7,15 +7,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import static java.util.concurrent.ThreadLocalRandom.current;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -31,7 +30,6 @@ public class AirportManagedBean implements Serializable {
 
     private UIComponent uIComponent;
 
-//    @ManagedProperty("#{viewAp}")
     private Airport viewAp = new Airport();
     private String IATA;
     private String airportName;
@@ -63,6 +61,7 @@ public class AirportManagedBean implements Serializable {
     public void addAirport() throws Exception {
         try {
             rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", IATA);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -146,6 +145,18 @@ public class AirportManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deleteConditionFlag", false);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, ex.getMessage(), ""));
             }
+        }
+    }
+
+    public void toDeleteAirport() throws Exception {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (selectedAirport.isEmpty()) {
+            System.out.println("a");
+            context.execute("alert('Please select the airport(s) to be deleted.');");
+        } else {
+            System.out.println("b");
+            context.execute("PF('dlg').show();");
+//            context.execute("alert('Please aaaaa.');");
         }
     }
 

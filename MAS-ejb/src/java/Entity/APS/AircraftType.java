@@ -40,8 +40,6 @@ public class AircraftType implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "acType")
     private List<Route> routeMatchList = new ArrayList<>();
 
-//    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
-//    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private Collection<CabinClass> cabinList = new ArrayList<CabinClass>();
 
@@ -61,6 +59,7 @@ public class AircraftType implements Serializable {
         this.setBcSeatNo(bcSeatNo);
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
+
     }
 
 //    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) {

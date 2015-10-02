@@ -36,7 +36,7 @@ public class Route implements Serializable {
     // private boolean canEBP;
     private String status;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     private AircraftType acType;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Airport origin;

@@ -46,6 +46,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println("User exists.");
             HttpSession session = SessionUtil.getSession();
             session.setAttribute("username", username);
+            session.setAttribute("stfType", stfType);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
             if (stfType.equals("administrator")) {
@@ -62,6 +63,12 @@ public class LoginManagerBean implements Serializable {
 
         }
     }
+    
+    public void foget()
+    {
+        
+    }
+    
 
     public void createAdmin() {
         boolean blCreateAcc;
