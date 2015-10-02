@@ -8,33 +8,34 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Pricing: step 2 Center</title>
+        <title>View Pricing Center 2</title>
     </h:head>
     <h:body>
 
 
-     
+   
+
 
 
             <h:form id="display">
-                <p:panel id="panel" header="Fill in load factors"  style="width:100%">
+                <p:panel id="panel" header="View Pricing"  style="width:100%">
                     <p:messages id="msgs" />
 
                     <h:panelGrid columns="2" cellpadding="5">
                         <p:outputLabel for="route_ID" value="Route ID" />
-                        <h:outputText id="route_ID"  value="#{pricingManagedBean.routeID}" />
+                        <h:outputText id="route_ID"  value="#{viewPricingManagedBean.routeID}" />
                         <p:outputLabel for="route_Name" value="Route Name" />
-                        <h:outputText id="route_Name" value="#{pricingManagedBean.routeName}" />
+                        <h:outputText id="route_Name" value="#{viewPricingManagedBean.routeName}" />
                       </h:panelGrid>
-                        <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
+                        <p:dataTable var="key" value="#{viewPricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
                             <p:column headerText="Cabin Class Name" sortBy="#{key}">
                                 <h:outputText value="#{key}" />
                             </p:column>
-                            <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
-                                <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
+                            <p:column headerText="Seat Count" sortBy="#{viewPricingManagedBean.cabinInfo[key]}">
+                                <h:outputText value="#{viewPricingManagedBean.cabinInfo[key]}" />
                             </p:column>
-                            <p:column headerText="Fare" sortBy="#{pricingManagedBean.fareMap[key]}">
-                                <h:outputText value="#{pricingManagedBean.fareMap[key]}" >
+                            <p:column headerText="Fare" sortBy="#{viewPricingManagedBean.fareMap[key]}">
+                                <h:outputText value="#{viewPricingManagedBean.fareMap[key]}" >
                                 <f:convertNumber pattern="#0.00" />
                                 </h:outputText>
                             </p:column>
@@ -51,6 +52,7 @@
 
 
 
-      
+ 
+
     </h:body>
 </html>

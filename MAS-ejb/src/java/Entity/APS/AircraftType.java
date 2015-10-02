@@ -34,7 +34,7 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private Collection<Aircraft> aircraft = new ArrayList<>();
  
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "acType")
@@ -79,6 +79,7 @@ public class AircraftType implements Serializable {
 //        this.setPecSeatNo(pecSeatNo);
 //        this.setEcSeatNo(ecSeatNo);
 //    }
+
     public Collection<Aircraft> getAircraft() {
         return aircraft;
     }
