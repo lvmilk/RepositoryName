@@ -17,11 +17,18 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-            <ui:define name="right">
-                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/apsTemplate/EditAircraftTypeInfoCenter.xhtml"></ui:include>
+                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
+                <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
+                    Aircraft is successfully deleted <ui:repeat var="at" value="#{deletedAircraftType}"> <h:outputText value="#{at.type} "/> </ui:repeat> !
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div style="width:100%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:10%; border:0px ;">
+                    <p:commandButton value="Back"  action="#{AMB.deleteBack()}" />
+                    </div>
+                </div>
+
             </ui:define>
         </ui:decorate>
     </h:body>

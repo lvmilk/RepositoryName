@@ -26,44 +26,19 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     public FleetPlanningBean() {
     }
 
-    @Override
-    public boolean checkDuplicate(String type) {
-        aircraftType = em.find(AircraftType.class, type);
-        if (aircraftType == null) {
-            return false;    //not exist,no duplicate
-        } else {
-            return true;
-        }
-    }
+    public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
+        AircraftType AirType = em.find(AircraftType.class, aircraftType.getType());
+        System.out.println("Aircraft Type found is " + aircraftType.getType());
+        Collection<CabinClass> cabinSet = new ArrayList<CabinClass>();
+        AirType.setCabinList(cabinSet);
 
-    @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost,Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
-        aircraftType = em.find(AircraftType.class, type);
-        if (aircraftType != null) {
-            throw new Exception("AircraftType exists.");
-        }
-        aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
-        em.persist(aircraftType);
-        em.flush();
-        addCabin(aircraftType,suiteNo,fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo);
-    }
-    
-        public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo){
-        
-          AircraftType AirType=em.find( AircraftType.class,aircraftType.getType());
-          System.out.println("Aircraft Type found is "+aircraftType.getType());
-            
-            Collection<CabinClass> cabinSet = new ArrayList<CabinClass>();
-            AirType.setCabinList(cabinSet);
         if (suiteNo > 0) {
             CabinClass suite = new CabinClass();
             suite.setCabinName("Suite");
             suite.setSeatCount(suiteNo);
             suite.setAircraftType(AirType);
 //            em.persist(suite);
-           AirType.getCabinList().add(suite);
+            AirType.getCabinList().add(suite);
         }
 
         if (fcSeatNo > 0) {
@@ -73,7 +48,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             First.setAircraftType(AirType);
 //            em.persist(First);
 
-        AirType.getCabinList().add(First);
+            AirType.getCabinList().add(First);
         }
 
         if (bcSeatNo > 0) {
@@ -82,7 +57,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             biz.setSeatCount(bcSeatNo);
             biz.setAircraftType(AirType);
 //            em.persist(biz);
-         AirType.getCabinList().add(biz);
+            AirType.getCabinList().add(biz);
         }
 
         if (pecSeatNo > 0) {
@@ -100,19 +75,45 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             econ.setSeatCount(ecSeatNo);
             econ.setAircraftType(AirType);
 //            em.persist(econ);
-           AirType.getCabinList().add(econ);
+            AirType.getCabinList().add(econ);
         }
 //        AirType.setCabinList(cabinSet);
-        System.out.println("in addCabin: aircraftType is "+AirType.getType());
-        System.out.println("No. of cabin class in this type is "+AirType.getCabinList().size());
-        
+        System.out.println("in addCabin: aircraftType is " + AirType.getType());
+        System.out.println("No. of cabin class in this type is " + AirType.getCabinList().size());
+
         em.merge(AirType);
 
     }
 
+    @Override
+    public boolean checkDuplicate(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        if (aircraftType == null) {
+            return false;    //not exist,no duplicate
+        } else {
+            return true;
+        }
+    }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) throws Exception {
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+        System.out.println("get in addAircraftType");
+        aircraftType = em.find(AircraftType.class, type);
+        if (aircraftType != null) {
+            throw new Exception("AircraftType exists.");
+        }
+        aircraftType = new AircraftType();
+        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        em.persist(aircraftType);
+        em.flush();
+        System.out.println("Aircrat Type is added!");
+        addCabin(aircraftType, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+    }
+
+    @Override
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist..");
@@ -124,13 +125,15 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setAircraftLength(aircraftLength);
         aircraftType.setWingspan(wingspan);
         aircraftType.setMinAirspace(minAirspace);
-//        aircraftType.setSuiteNo(suiteNo);
-//        aircraftType.setFcSeatNo(fcSeatNo);
-//        aircraftType.setBcSeatNo(bcSeatNo);
-//        aircraftType.setPecSeatNo(pecSeatNo);
-//        aircraftType.setEcSeatNo(ecSeatNo);
+        aircraftType.setSuiteNo(suiteNo);
+        aircraftType.setFcSeatNo(fcSeatNo);
+        aircraftType.setBcSeatNo(bcSeatNo);
+        aircraftType.setPecSeatNo(pecSeatNo);
+        aircraftType.setEcSeatNo(ecSeatNo);
         em.merge(aircraftType);
         em.flush();
+        System.out.println("Aircrat Type is edited!");
+
     }
 //    
 //    @Override
@@ -147,21 +150,74 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 //    }
 
     @Override
-    public void deleteAircraftType(ArrayList<AircraftType> selectedClass) throws Exception {
-        if (selectedClass.size() > 0) {
-            for (int i = 0; i < selectedClass.size(); i++) {
-                String type = selectedClass.get(i).getType();
-                aircraftType = em.find(AircraftType.class, type);
-                if (aircraftType.getAircraft().isEmpty()) {
-                    em.remove(aircraftType);
-                } else {
-                    throw new Exception("Cannot delete. This aircraft type is linked with an aircraft.");
-                }
-                em.flush();
-            }
+    public void tryDeleteAircraftType(AircraftType aircraftType) throws Exception {
+        Query q = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
+        q.setParameter("aircraftType", aircraftType);
+        if (!q.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. This aircraft type is linked with an aircraft.");
         } else {
-            throw new Exception("No Aircraft Type is selected.");
+            System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
         }
+    }
+
+    @Override
+    public boolean tryDeleteTypeList(List<AircraftType> typeList) throws Exception {
+        for (AircraftType a : typeList) {
+            tryDeleteAircraftType(a);
+        }
+        return true;
+    }
+
+    @Override
+    public void deleteAircraftType(AircraftType aircraftType) throws Exception {
+        Query q = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
+        q.setParameter("aircraftType", aircraftType);
+        if (!q.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. The aircraft type " + aircraftType.getType() + " is linked with a aircraft.");
+        } else {
+            aircraftType = em.merge(aircraftType);
+            em.remove(aircraftType);
+            em.flush();
+            System.out.println("This aircraft type " + aircraftType.getType() + " is deleted!");
+        }
+    }
+
+    @Override
+    public void deleteAircraftTypeList(List<AircraftType> typeList) throws Exception {
+        for (AircraftType at : typeList) {
+            deleteAircraftType(at);
+        }
+    }
+
+    @Override
+    public List<AircraftType> canDeleteTypeList() {
+        Query q = em.createQuery("SELECT at FROM AircraftType at");
+        List<AircraftType> typeList = q.getResultList();
+        List<AircraftType> typeList2 = q.getResultList();
+        AircraftType at = new AircraftType();
+        for (int i = 0; i < typeList.size(); i++) {
+            at = typeList.get(i);
+            Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType").setParameter("aircraftType", at);
+            if (!q2.getResultList().isEmpty()) {
+                typeList2.remove(at);
+            }
+        }
+        return typeList2;
+    }
+
+    @Override
+    public List<AircraftType> cannotDeleteTypeList() {
+        Query q = em.createQuery("SELECT at FROM AircraftType at");
+        List<AircraftType> typeList = (List<AircraftType>) q.getResultList();
+        List<AircraftType> typeList2 = new ArrayList<>();
+        for (AircraftType at : typeList) {
+            Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
+            q2.setParameter("aircraftType", at);
+            if (!q2.getResultList().isEmpty()) {
+                typeList2.add(at);
+            }
+        }
+        return typeList2;
     }
 
     @Override
@@ -216,7 +272,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
         }
-
+        System.out.println("Fleet Planning Bean is editing Aircraft...");
         aircraft.setSerialNo(serialNo);
         aircraft.setStatus(status);
         aircraft.setFirstFlyDate(firstFlyDate);
@@ -224,27 +280,28 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft.setRetireDate(retireDate);
         aircraft.setFlightLogId(flightLogId);
         aircraft.setMaintenanceLogId(maintenanceLogId);
-//        aircraft.setTransactionLogId(transactionLogId);
         aircraft.setAircraftType(aircraftType);
         em.merge(aircraft);
         em.flush();
-
     }
 
     @Override
-    public void deleteAircraft(String type, String registrationNo) throws Exception {
-        aircraft = em.find(Aircraft.class, registrationNo);
-        if (registrationNo == null) {
-            throw new Exception("Aircraft does not exist.");
+    public void deleteAircraft(ArrayList<Aircraft> selectedList) throws Exception {
+        if (selectedList.size() > 0) {
+            for (int i = 0; i < selectedList.size(); i++) {
+                String registrationNo = selectedList.get(i).getRegistrationNo();
+                String type = selectedList.get(i).getAircraftType().getType();
+                aircraft = em.find(Aircraft.class, registrationNo);
+                aircraftType = em.find(AircraftType.class, type);
+                aircraftType.getAircraft().remove(aircraft);
+                em.remove(aircraft);
+                em.flush();
+            }
+        } else {
+            throw new Exception("No Aircraft Type is selected.");
         }
-        aircraftType = em.find(AircraftType.class, type);
-        if (type == null) {
-            throw new Exception("AircraftType does not exist.");
-        }
-        aircraftType.getAircraft().remove(aircraft);
-        em.remove(aircraft);
-        em.flush();
     }
+
 
     @Override
     public List<Aircraft> getAllAircraft() {
@@ -259,7 +316,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public Aircraft getAircraft(String registrationNo) {
+    public Aircraft
+            getAircraft(String registrationNo) {
         aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }

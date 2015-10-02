@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Aircraft_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View All Aircraft"  style="width:100%">
+                <p:dataTable var="aircraft" value="#{AMB.aircraftList}" paginator="true" rows="40" emptyMessage="No Aircraft">
+
+                    <p:column headerText="Aircraft Registration No" sortBy="#{aircraft.registrationNo}">
+                        <h:outputText value="#{aircraft.registrationNo}" />
+                    </p:column>
+
+                    <p:column headerText="Aircraft Type" >
+                        <h:outputText value="#{aircraft.aircraftType.type}" />
+                    </p:column>
+
+                    <p:column headerText="View">
+                        <p:commandButton value="View" action="#{AMB.viewAircraft(aircraft)}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+    </h:body>
+</html>
