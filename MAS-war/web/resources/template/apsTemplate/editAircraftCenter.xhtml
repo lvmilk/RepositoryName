@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Edit Aircraft _Center panel</title>
+    </h:head>
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="View All Aircraft"  style="width:100%">
+                <p:dataTable var="Aircraft" value="#{AMB.aircraftList}" paginator="true" rows="10" emptyMessage="No Aircraft">
+
+
+                    <p:column headerText="Registration No." sortBy="#{Aircraft.registrationNo}" filterBy="#{Aircraft.registrationNo}">
+                        <h:outputText value="#{Aircraft.registrationNo}" />
+                    </p:column>
+
+                    <p:column headerText="Aircraft Type">
+                        <h:outputText value="#{Aircraft.aircraftType.type}" />
+                    </p:column>
+                    <p:column headerText="Serial No.">
+                        <h:outputText value="#{Aircraft.serialNo}" />
+                    </p:column>
+                    <p:column headerText="Status">
+                        <h:outputText value="#{Aircraft.status}" />
+                    </p:column>
+                    <p:column headerText="First Fly Date">
+                        <h:outputText value="#{Aircraft.firstFlyDate}" />
+                    </p:column>
+                    <p:column headerText="Delivery Date">
+                        <h:outputText value="#{Aircraft.deliveryDate}" />
+                    </p:column>
+                    <p:column headerText="Retire Date">
+                        <h:outputText value="#{Aircraft.retireDate}" />
+                    </p:column>
+                    <p:column headerText="Flight Log ID">
+                        <h:outputText value="#{Aircraft.flightLogId}" />
+                    </p:column>
+                    <p:column headerText="Maintenance Log ID">
+                        <h:outputText value="#{Aircraft.maintenanceLogId}" />
+                    </p:column>
+
+                    <p:column headerText="Edit">
+                        <p:commandButton value="Edit" action="#{AMB.editAircraft(Aircraft)}"  />
+
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+
+    </h:body>
+</html>

@@ -9,9 +9,10 @@
 
 
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>View Aircraft Type Confirm_Center panel</title>
     </h:head>
     <h:body>
+
         <ui:decorate template="./../resources/template/apsTemplate/aps_skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
@@ -19,59 +20,12 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-
+            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
-
-                <h:form id="formMain">
-                    <p:panel id="panel" header="View This Aircraft Type" style="width: 100%">
-                        <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="10">
-
-                            <p:outputLabel value="Aircraft Type: " />
-                            <p:outputLabel value="#{ATMB.type}" />
-
-                            <p:outputLabel value="Manufacturer: " />
-                            <p:outputLabel value="#{ATMB.manufacturer}" />
-
-                            <p:outputLabel value="Max Distance: " />
-                            <p:outputLabel value="#{ATMB.maxDistance}" />
-
-                            <p:outputLabel value="Length: " />
-                            <p:outputLabel value="#{ATMB.aircraftLength}" />
-                            
-                            <p:outputLabel value="Lease Cost/year (SGD): " />
-                            <p:outputLabel value="#{ATMB.leaseCost}" />
-
-                            <p:outputLabel value="Fuel Cost/hour (SGD):" />
-                            <p:outputLabel value="#{ATMB.fuelCost}" />
-                            
-                            <p:outputLabel value="Wingspan: " />
-                            <p:outputLabel value="#{ATMB.wingspan}" />
-                            
-                            <p:outputLabel value="Minimum Airspace: " />
-                            <p:outputLabel value="#{ATMB.minAirspace}" />
-
-<!--                            <p:outputLabel value="# of Seat in Suite"/>
-                            <p:outputLabel value="#{ATMB.suiteNo}" />
-
-                            <p:outputLabel value="# of Seat in First Class" />
-                            <p:outputLabel value="#{ATMB.fcSeatNo}" />
-
-                            <p:outputLabel value="# of Seat in Business Class"/>
-                            <p:outputLabel value="#{ATMB.bcSeatNo}" />
-
-                            <p:outputLabel value="# of Seat in Premium Economy Class"/>
-                            <p:outputLabel value="#{ATMB.fcSeatNo}" />
-
-                            <p:outputLabel value="# of Seat in Economy Class"/>
-                            <p:outputLabel value="#{ATMB.ecSeatNo}" />-->
-
-                        </h:panelGrid>
-                        <p:commandButton value="OK"  action="#{ATMB.viewAircraftTypeConfirm()}" icon="ui-icon-check" />
-                    </p:panel>
-                </h:form>
+                <ui:include src="./../resources/template/apsTemplate/ViewAircraftTypeConfirmCenter.xhtml"></ui:include>
             </ui:define>
         </ui:decorate>
-
     </h:body>
 </html>

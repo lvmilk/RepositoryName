@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Profile</title>
+    </h:head>
+    <h:body>
+        <p:panel id="viewProfile"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="otrUsername" value="User Name: " />
+                    <p:outputLabel id="otrUsername" value="#{edProfile.username}"  />
+                    <p:message for="otrUsername" display="icon" />
+                                      
+                    <p:outputLabel for="otrPassword" value="Password: " />
+                    <p:outputLabel id="otrPassword" value="#{edProfile.password}"  />
+                    <p:message for="otrPassword" display="icon" />
+
+                    <p:outputLabel for="otrEmail" value="Email: " />
+                    <p:outputLabel id="otrEmail" value="#{edProfile.email}"  />
+                    <p:message for="otrEmail" display="icon" />
+
+                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="#{edProfile.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Edit" update="viewProfile" actionListener="#{edProfile.editStaffAcc()}" icon="ui-icon-check" />
+            </p:panel>
+    </h:body>
+</html>
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>View Aircraft Type_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+
+            <p:panel id="panel" header="View All Aircraft Type"  style="width:100%">
+                <p:dataTable var="AircraftType" value="#{ATMB.typeList}" paginator="true" rows="10" emptyMessage="No Aircraft Type">
+
+
+                    <p:column headerText="Aircraft Type" sortBy="#{AircraftType.type}" filterBy="#{AircraftType.type}">
+                        <h:outputText value="#{AircraftType.type}" />
+                    </p:column>
+
+                    <p:column headerText="Manufacturer" sortBy="#{AircraftType.manufacturer}">
+                        <h:outputText value="#{AircraftType.manufacturer}" />
+                    </p:column>
+
+                    <p:column headerText="View Detail">
+                        <p:commandButton value="View" action="#{ATMB.viewAircraftType(AircraftType)}"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+    </h:body>
+</html>

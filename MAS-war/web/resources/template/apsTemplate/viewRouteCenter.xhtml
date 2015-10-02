@@ -32,8 +32,8 @@
                     <p:column headerText="IATA" filterBy="#{route.origin.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
-                    <p:column headerText="Country" filterBy="#{route.origin.countryCode}" filterMatchMode="contains">
-                        <h:outputText value="#{route.origin.countryCode}" />
+                    <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.countryName}" />
                     </p:column>
                     <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains">
                         <h:outputText value="#{route.origin.cityName}" />
@@ -45,8 +45,8 @@
                     <p:column headerText="IATA" filterBy="#{route.dest.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{route.dest.IATA}" />
                     </p:column>
-                    <p:column headerText="Country" filterBy="#{route.dest.countryCode}" filterMatchMode="contains">
-                        <h:outputText value="#{route.dest.countryCode}" />
+                    <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.countryName}" />
                     </p:column>
                     <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains">
                         <h:outputText value="#{route.dest.cityName}" />
@@ -60,7 +60,7 @@
                     </p:column>
 
                     <p:column headerText="View Detail">
-                        <p:commandButton value="View Detail" action="#{RouteManagedBean.viewRoute(route)}" />
+                        <p:commandButton value="View Detail" actionListener="#{RouteManagedBean.viewRoute(route)}"/>
                     </p:column>
 
                 </p:dataTable>

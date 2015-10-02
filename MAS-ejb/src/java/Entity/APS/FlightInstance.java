@@ -6,8 +6,8 @@
 package Entity.APS;
 
 import java.io.Serializable;
-import java.util.Date;
-import javax.persistence.CascadeType;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,22 +28,22 @@ public class FlightInstance implements Serializable{
     @ManyToOne
     private FlightFrequency flightFrequency;
     
-    private String date;
+    private LocalDate date;
     private String opStatus;
     private String flightStatus;
-    private String estimatedDepTime;
-    private String estimatedArrTime;
-    private String actualDepTime;
-    private String actualArrTime;
+    private LocalTime estimatedDepTime;
+    private LocalTime estimatedArrTime;
+    private LocalTime actualDepTime;
+    private LocalTime actualArrTime;
     
     @ManyToOne
-    private Aircraft aircraft;
+    private Aircraft aircraft = new Aircraft();
     
     @ManyToOne
     private FlightPackage flightPackage;
 
-    public void create (FlightFrequency flightSchedule, String date){
-        this.flightFrequency = flightSchedule;
+    public void create (FlightFrequency flightFrequency, LocalDate date){
+        this.flightFrequency = flightFrequency;
         this.date = date;
 }
     
@@ -63,14 +63,6 @@ public class FlightInstance implements Serializable{
         this.flightFrequency = flightFrequency;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getOpStatus() {
         return opStatus;
     }
@@ -87,38 +79,6 @@ public class FlightInstance implements Serializable{
         this.flightStatus = flightStatus;
     }
 
-    public String getEstimatedDepTime() {
-        return estimatedDepTime;
-    }
-
-    public void setEstimatedDepTime(String estimatedDepTime) {
-        this.estimatedDepTime = estimatedDepTime;
-    }
-
-    public String getEstimatedArrTime() {
-        return estimatedArrTime;
-    }
-
-    public void setEstimatedArrTime(String estimatedArrTime) {
-        this.estimatedArrTime = estimatedArrTime;
-    }
-
-    public String getActualDepTime() {
-        return actualDepTime;
-    }
-
-    public void setActualDepTime(String actualDepTime) {
-        this.actualDepTime = actualDepTime;
-    }
-
-    public String getActualArrTime() {
-        return actualArrTime;
-    }
-
-    public void setActualArrTime(String actualArrTime) {
-        this.actualArrTime = actualArrTime;
-    }
-
     public Aircraft getAircraft() {
         return aircraft;
     }
@@ -133,6 +93,46 @@ public class FlightInstance implements Serializable{
 
     public void setFlightPackage(FlightPackage flightPackage) {
         this.flightPackage = flightPackage;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalTime getEstimatedDepTime() {
+        return estimatedDepTime;
+    }
+
+    public void setEstimatedDepTime(LocalTime estimatedDepTime) {
+        this.estimatedDepTime = estimatedDepTime;
+    }
+
+    public LocalTime getEstimatedArrTime() {
+        return estimatedArrTime;
+    }
+
+    public void setEstimatedArrTime(LocalTime estimatedArrTime) {
+        this.estimatedArrTime = estimatedArrTime;
+    }
+
+    public LocalTime getActualDepTime() {
+        return actualDepTime;
+    }
+
+    public void setActualDepTime(LocalTime actualDepTime) {
+        this.actualDepTime = actualDepTime;
+    }
+
+    public LocalTime getActualArrTime() {
+        return actualArrTime;
+    }
+
+    public void setActualArrTime(LocalTime actualArrTime) {
+        this.actualArrTime = actualArrTime;
     }
     
 

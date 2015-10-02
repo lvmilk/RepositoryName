@@ -23,10 +23,10 @@
                             <p:menuitem value="Delete Aircraft Type" url="DeleteAircraftType.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
                         <p:submenu label="Aircraft Management">
-                            <p:menuitem value="View Aircraft" url="ViewAircraft.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Add Aircraft" url="AddAircraft.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Edit Aircraft" url="EditAircraft.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Delete Aircraft" url="DeleteAircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="View Aircraft" url="viewAircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Add Aircraft" url="addAircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Edit Aircraft" url="editAircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Delete Aircraft" url="deleteAircraft.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
                         <p:submenu label="Airport Management">
                             <p:menuitem value="View Serving Airport" url="viewAirport.xhtml"  icon="ui-icon-disk" />
@@ -40,8 +40,18 @@
                             <p:menuitem value="Add Serving Route" url="addRoute.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="Edit Serving Route" url="editRoute.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="Delete Serving Route" url="deleteRoute.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Check Route Feasibility" url="checkRouteFeasibility.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Check Route Profitability" url="checkRouteProfitability.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
 
+                        <p:submenu label="Flight Management">
+                            <p:menuitem value="View Flight Frequency" url="viewFlight.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Add Flight Frequency" url="addFlight.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Edit Flight Frequency" url="editFlight.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Delete Flight Frequency" url="deleteFlight.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Generate Flight Instance" url="generateFlight.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+                        
                     </p:menu>
                     <p:draggable for="APS"/>
                     <p:resizable for="APS" />

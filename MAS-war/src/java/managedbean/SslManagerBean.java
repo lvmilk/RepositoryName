@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,6 +28,9 @@ public class SslManagerBean {
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
         String serverPort = "8080";
         System.out.println(serverName);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
+//        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).removeAttribute("UserId");
+//        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).removeAttribute("StaffType");
         FacesContext.getCurrentInstance().getExternalContext().redirect("http://" + serverName + ":" + serverPort + "/MAS-war/staffMain.xhtml");
     }
 

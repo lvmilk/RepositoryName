@@ -19,6 +19,7 @@ import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
 import managedbean.Control;
 import managedbean.SessionUtil;
+import managedbean.EditProfileManagedBean;
 
 @Named(value = "login")
 @ViewScoped
@@ -45,6 +46,8 @@ public class LoginManagerBean implements Serializable {
             System.out.println("User exists.");
             HttpSession session = SessionUtil.getSession();
             session.setAttribute("username", username);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
             } else {

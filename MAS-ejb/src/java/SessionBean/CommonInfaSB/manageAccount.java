@@ -19,7 +19,7 @@ import util.CryptoHelper;
 
 /**
  *
- * @author LIU YUQI'
+ * @author LIU YUQI & LI HAO'
  */
 @Stateless
 public class manageAccount implements manageAccountLocal {
@@ -32,12 +32,66 @@ public class manageAccount implements manageAccountLocal {
     GroundStaff grdStaff;
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
+    Agency agency;
+    AirAlliances alliance;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
     String hPwd;
 
     public manageAccount() {
 
+    }
+
+    @Override
+    public boolean checkPartenrIDDuplicate(String partnerID, String stfType) {
+        Query query = null;
+        List resultList;
+        if (stfType.equals("agency")) {
+            query = em.createQuery("SELECT u FROM Agency u WHERE u.agencyID = :inUserName and u.pType = :inStfType");
+            query.setParameter("inUserName", partnerID);
+            query.setParameter("inStfType", stfType);
+            resultList = new ArrayList<Agency>();
+        } else if (stfType.equals("alliance")) {
+            query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName and u.pType = :inStfType");
+            query.setParameter("inUserName", partnerID);
+            query.setParameter("inStfType", stfType);
+            resultList = new ArrayList<AirAlliances>();
+        }
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
+
+    }
+
+    @Override
+    public boolean checkPartnerEmailDuplicate(String pEmail) {
+        Boolean agBl, alBl;
+        agBl = checkAgEmail(pEmail);
+        alBl = checkAlEmail(pEmail);
+
+        if (agBl == true || alBl == true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void addPartnerAcc(String pid, String pPwd, String email, String stfType) {
+        System.out.println("Currently in create partner account");
+        hPwd = this.encrypt(pid, pPwd);
+        if (stfType.equals("agency")) {
+            agency = new Agency();
+            agency.createAgencyAcc(pid, pPwd, email, stfType);
+            em.persist(agency);
+        } else if (stfType.equals("alliance")) {
+            alliance = new AirAlliances();
+            alliance.createAllianceAcc(pid, pPwd, email, stfType);
+            em.persist(alliance);
+        }
     }
 
     @Override
@@ -94,6 +148,23 @@ public class manageAccount implements manageAccountLocal {
         query = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.email = :inUserEmail");
         query.setParameter("inUserEmail", email);
         return checkList(query);
+    }
+
+    private boolean checkAgEmail(String email) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Agency u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        return checkList(query);
+    }
+
+    private boolean checkAlEmail(String email) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        return checkList(query);
+
     }
 
     private boolean checkList(Query query) {
@@ -235,8 +306,61 @@ public class manageAccount implements manageAccountLocal {
             cpCrew.setCpPassword(hPwd);
         }
 
-        em.persist(cpCrew);
+        em.merge(cpCrew);
         em.flush();
+    }
+
+    @Override
+    public void editProfile(String username, String stfType, String pswEdited, String email) {
+        if (stfType.equals("officeStaff")) {
+            OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                officeStaff.setOffPassword(hPwd);
+            }
+            officeStaff.setEmail(email);
+
+            em.merge(officeStaff);
+            em.flush();
+        } else if (stfType.equals("groundStaff")) {
+            GroundStaff grdStaff = em.find(GroundStaff.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                grdStaff.setGrdPassword(hPwd);
+            }
+            grdStaff.setEmail(email);
+
+            em.merge(grdStaff);
+            em.flush();
+        } else if (stfType.equals("cabin")) {
+            CabinCrew cbCrew = em.find(CabinCrew.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                cbCrew.setCbPassword(hPwd);
+            }
+            cbCrew.setEmail(email);
+
+            em.merge(cbCrew);
+            em.flush();
+        } else if (stfType.equals("cockpit")) {
+            CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+            if (pswEdited.isEmpty()) {
+                System.out.println("***Password does not changed***");
+            } else {
+                hPwd = this.encrypt(username, pswEdited);
+                cpCrew.setCpPassword(hPwd);
+            }
+            cpCrew.setEmail(email);
+
+            em.merge(cpCrew);
+            em.flush();
+        }
     }
 
     @Override
@@ -272,7 +396,7 @@ public class manageAccount implements manageAccountLocal {
                 grdStaff.setGrdPassword(hPwd);
             }
 
-            em.persist(grdStaff);
+            em.merge(grdStaff);
             em.flush();
 
         } else if (stfType.equals("cabin")) {
@@ -289,10 +413,10 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, password);
                 cbCrew.setCbPassword(hPwd);
             }
-            em.persist(cbCrew);
+            em.merge(cbCrew);
             em.flush();
 
-        } 
+        }
     }
 
     @Override
@@ -451,6 +575,30 @@ public class manageAccount implements manageAccountLocal {
         }
 
         return resultList;
+    }
+
+    @Override
+    public OfficeStaff getOfficeStaff(String username) {
+        OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+        return officeStaff;
+    }
+
+    @Override
+    public GroundStaff getGroundStaff(String username) {
+        GroundStaff grdStaff = em.find(GroundStaff.class, username);
+        return grdStaff;
+    }
+
+    @Override
+    public CabinCrew getCabinCrew(String username) {
+        CabinCrew cbCrew = em.find(CabinCrew.class, username);
+        return cbCrew;
+    }
+
+    @Override
+    public CockpitCrew getCockpitCrew(String username) {
+        CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+        return cpCrew;
     }
 
 }

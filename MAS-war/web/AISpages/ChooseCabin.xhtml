@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:decorate template="./../resources/template/aisTemplate/ais_skeleton.xhtml">
+            <ui:define name="top">
+                <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
+            </ui:define>
+            <ui:define name="left">
+                <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
+            </ui:define>
+<!--            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>-->
+            <ui:define name="center">
+                <ui:include src="./../resources/template/aisTemplate/ChooseCabinCenter.xhtml"></ui:include>
+<!--
+                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">-->
+
+
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>

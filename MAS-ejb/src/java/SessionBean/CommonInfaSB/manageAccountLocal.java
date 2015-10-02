@@ -11,7 +11,7 @@ import javax.ejb.Local;
 
 /**
  *
- * @author LIU YUQI'
+ * @author LIU YUQI & LI HAO'
  */
 @Local
 public interface manageAccountLocal {
@@ -20,9 +20,15 @@ public interface manageAccountLocal {
     public boolean validateLogin (String username, String password, String staffType);
     public void addAdmin(String username,String password, String stfType);
     public void addAccount(String username, String password,String email, String stfType);
+    public void addPartnerAcc(String pid, String pPwd, String email, String stfType);
+    
     public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
     public boolean checkAccDuplicate(String username,String stfType);
     public boolean checkNameDuplicate(String username, String usernameEdited);
+    
+    public boolean checkPartenrIDDuplicate(String partnerID, String stfType);
+    public boolean checkPartnerEmailDuplicate(String pEmail);
+    
     
     //used when creating email
     public boolean checkEmailExists(String email);
@@ -30,6 +36,7 @@ public interface manageAccountLocal {
     public boolean checkEmailDuplicate(String email, String emailEdited);
     public void editStaff(String username, String stfType, String password,String pswEdited, String emailEdited);
     public void editCpCrew(String username, String stfType, String password,String pswEdited, String emailEdited, String licence);
+    public void editProfile(String username, String stfType, String pswEdited, String email);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
     public boolean delCabinAcc(List<CabinCrew> selectedCbCrew);
@@ -38,4 +45,11 @@ public interface manageAccountLocal {
     public List<GroundStaff> getAllGoundStaff();
     public List<CabinCrew> getAllCabinCrew();
     public List<CockpitCrew> getAllCockpitCrew();
+    
+    public OfficeStaff getOfficeStaff(String username);
+    public GroundStaff getGroundStaff(String username);
+    public CabinCrew getCabinCrew(String username);
+    public CockpitCrew getCockpitCrew(String username);
+
+    
 }

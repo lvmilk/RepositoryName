@@ -27,6 +27,12 @@ public class CabinClass implements Serializable {
     private Integer seatCount;
     private Double fullFare;
     
+    private Double seatWidth;
+    private Integer rowCount;//no. of rows
+    private Integer rowSeatCount; //no. of seat counts per row
+    private String rowConfig; //e.g for 7 seats/row, 2-3-2
+    
+    
     @ManyToOne
     AircraftType aircraftType=new AircraftType();
 
@@ -76,6 +82,38 @@ public class CabinClass implements Serializable {
 
     public void setAircraftType(AircraftType aircraftType) {
         this.aircraftType = aircraftType;
+    }
+
+    public Double getSeatWidth() {
+        return seatWidth;
+    }
+
+    public void setSeatWidth(Double seatWidth) {
+        this.seatWidth = seatWidth;
+    }
+
+    public Integer getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(Integer rowCount) {
+        this.rowCount = rowCount;
+    }
+
+    public Integer getRowSeatCount() {
+        return rowSeatCount;
+    }
+
+    public void setRowSeatCount(Integer rowSeatCount) {
+        this.rowSeatCount = rowSeatCount;
+    }
+
+    public String getRowConfig() {
+        return rowConfig;
+    }
+
+    public void setRowConfig(String rowConfig) {
+        this.rowConfig = rowConfig;
     }
 
     

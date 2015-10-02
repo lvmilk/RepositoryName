@@ -9,13 +9,13 @@
 
 
     <h:head>
-        <title>Delete Airport_Center panel</title>
+        <title>Delete Airport</title>
     </h:head>
     <h:body>
 
         <h:form>
 
-            <p:panel id="panel" header="Delete Serving Airport"  style="width:100%">
+            <p:panel id="panel" header="Delete Airport"  style="width:100%">
                 <p:messages id="msgs" />
                 <p:dataTable var="Airport" rowKey ="#{Airport.IATA}" selection="#{AirportManagedBean.selectedAirport}" value="#{AirportManagedBean.canDeleteAirport}" paginator="true" rows="10" emptyMessage="No airports can be deleted.">
 
@@ -40,8 +40,8 @@
                     <p:column headerText="City Name">
                         <h:outputText value="#{Airport.cityName}" />
                     </p:column>
-                    <p:column headerText="Country Code">
-                        <h:outputText value="#{Airport.countryCode}" />
+                    <p:column headerText="Country Name">
+                        <h:outputText value="#{Airport.countryName}" />
                     </p:column>
                     <p:column headerText="Specification">
                         <h:outputText value="#{Airport.spec}" />

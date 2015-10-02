@@ -14,7 +14,7 @@
     <h:body>
 
         <h:form id="formMain">
-            <p:message id="msgs">
+            <p:message id="msgs"/>
             <p:panel id="basic" header="Airport Basic Information" style="width: 100%" toggleable="true">
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
@@ -28,7 +28,7 @@
                     <p:inputText id="distance" value="#{editRouteManagedBean.route.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="aircraftType" value="Aircraft Type: " />
+                    <p:outputLabel for="aircraftType" value="Serving Aircraft Type: " />
                     <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeList}" required="true" requiredMessage="Please select aircraft type " style="width:250px">
                         <f:selectItem itemLabel="--Select One--" itemValue="#{null}" />
                         <f:selectItems value="#{editRouteManagedBean.acTypeList}" />
@@ -36,7 +36,7 @@
 <!--                    <p:inputText id="aircraftType" value="#{editRouteManagedBean.route.aircraftType}" label="aircraftType" required="true" requiredMessage="Please enter city name" size="30">
                     </p:inputText>-->
 
-                    <p:outputLabel for="blockhour" value="Blockhour: " />
+                    <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
                     <p:inputText id="blockhour" value="#{editRouteManagedBean.route.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
                     </p:inputText>
 
