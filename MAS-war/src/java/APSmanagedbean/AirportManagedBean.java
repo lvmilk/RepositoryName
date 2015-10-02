@@ -61,6 +61,7 @@ public class AirportManagedBean implements Serializable {
     public void addAirport() throws Exception {
         try {
             rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", IATA);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -150,9 +151,12 @@ public class AirportManagedBean implements Serializable {
     public void toDeleteAirport() throws Exception {
         RequestContext context = RequestContext.getCurrentInstance();
         if (selectedAirport.isEmpty()) {
+            System.out.println("a");
             context.execute("alert('Please select the airport(s) to be deleted.');");
         } else {
-            context.execute("dlg.show()");
+            System.out.println("b");
+            context.execute("PF('dlg').show();");
+//            context.execute("alert('Please aaaaa.');");
         }
     }
 
