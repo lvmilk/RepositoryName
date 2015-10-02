@@ -1,3 +1,22 @@
+<<<<<<< HEAD
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="MAS-ejbPU" transaction-type="JTA">
+    <jta-data-source>jdbc/MerlionCore</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      
+<!--      kindly replace your address and comment the others-->
+     <property name="javax.persistence.sql-load-script-source"
+          value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />
+<!--      <property name="javax.persistence.sql-load-script-source"
+          value="file:///G:/Neatbeans_project/MAS/data.sql" />-->
+      
+    </properties>
+  </persistence-unit>
+</persistence>
+=======
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
     <persistence-unit name="MAS-ejbPU" transaction-type="JTA">
@@ -17,3 +36,4 @@
     </properties>
   </persistence-unit>
 </persistence>
+>>>>>>> origin/master

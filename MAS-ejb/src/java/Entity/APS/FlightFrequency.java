@@ -56,7 +56,7 @@ public class FlightFrequency implements Serializable {
 //    private List<FlightInstance> flightList = new ArrayList<>();
     
     public void create(Route route, String flightNo, LocalTime depTime, LocalTime arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, LocalDate startDate, LocalDate endDate) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -69,6 +69,8 @@ public class FlightFrequency implements Serializable {
         this.onFri = onFri;
         this.onSat = onSat;
         this.onSun = onSun;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
     
     public Long getId() {
