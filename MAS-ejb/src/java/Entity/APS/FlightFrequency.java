@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -28,7 +29,6 @@ public class FlightFrequency implements Serializable {
     private Route route = new Route();
    
     private String flightNo;
-    private Integer stopoverNo;
     
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
@@ -97,13 +97,6 @@ public class FlightFrequency implements Serializable {
         this.flightNo = flightNo;
     }
 
-    public Integer getStopoverNo() {
-        return stopoverNo;
-    }
-
-    public void setStopoverNo(Integer stopoverNo) {
-        this.stopoverNo = stopoverNo;
-    }
 //
 //    public AircraftType getAircraftType() {
 //        return aircraftType;
