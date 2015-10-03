@@ -38,6 +38,7 @@ public class LoginManagerBean implements Serializable {
     public void logIn() throws IOException {
 
         Boolean validity;
+        int status;
         validity = mal.validateLogin(username, password, stfType);
 
         System.out.println(stfType);
@@ -46,6 +47,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println("User exists.");
             HttpSession session = SessionUtil.getSession();
             session.setAttribute("username", username);
+            session.setAttribute("stfType", stfType);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
             if (stfType.equals("administrator")) {
@@ -54,13 +56,21 @@ public class LoginManagerBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("staffWorkspace.xhtml");
             }
         } else {
-
-            System.out.println("User not found");
-
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage("Username or password incorrect"));
-
+            status = mal.getLockedOutStatus(username, stfType);
+            if (status == 1) {
+                System.out.println("Your Account has been locked out");
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage("Your Account has been locked out, contact administrator to unlock account for you"));
+            } else {
+                System.out.println("Username or password incorrect");
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage("Username or password incorrect"));
+            }
         }
+    }
+
+    public void foget() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./CMIpages/forgetPwd.xhtml");
     }
 
     public void createAdmin() {
@@ -80,8 +90,8 @@ public class LoginManagerBean implements Serializable {
 
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
         blCreateEmail = mal.checkEmailExists(email);
-        
-        System.out.println("!!! Create Acc email: "+ blCreateEmail);
+
+        System.out.println("!!! Create Acc email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println(username);
             System.out.println(password);
@@ -112,7 +122,7 @@ public class LoginManagerBean implements Serializable {
         boolean blCreateAcc, blCreateEmail;
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
         blCreateEmail = mal.checkEmailExists(email);
-        System.out.println("!!!Create Cockpit email: "+ blCreateEmail);
+        System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
             mal.addCocpitAcc(username, password, email, stfType, licence);

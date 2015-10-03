@@ -270,7 +270,6 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 //    public boolean checkAirportFeasible(Route route, List<AircraftType> actList) {
 //        
 //    }
-    
     @Override
     public void deleteRoute(String originIATA, String destIATA) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
@@ -310,6 +309,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
         route = (Route) q1.getResultList().get(0);
         return route;
+    }
+
+    @Override
+    public Route findRoute(Long routeID) {
+//        em.refresh(route);
+        System.out.println("rpb.findRoute(): routeID = " + routeID);
+        System.out.println("rpb.findRoute(): " + em.find(Route.class, routeID).toString());
+        return em.find(Route.class, routeID);
     }
 
     @Override

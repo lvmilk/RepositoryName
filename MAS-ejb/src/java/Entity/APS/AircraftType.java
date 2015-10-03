@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 public class AircraftType implements Serializable {
 
-    // private static final long serialVersionUID = 1L;
     @Id
     private String type;
     private String manufacturer;
@@ -33,16 +32,14 @@ public class AircraftType implements Serializable {
     private Integer bcSeatNo;               //number of seat in business class
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
-
+    
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
-    private Collection<Aircraft> aircraft = new ArrayList<>();
+    private List<Aircraft> aircraft = new ArrayList<>();
 //    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
 //    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "acType")
     private List<Route> routeMatchList = new ArrayList<>();
 
-//    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "AircraftType")
-//    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private Collection<CabinClass> cabinList = new ArrayList<CabinClass>();
 
@@ -62,6 +59,7 @@ public class AircraftType implements Serializable {
         this.setBcSeatNo(bcSeatNo);
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
+
     }
 
 //    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace) {
@@ -82,11 +80,11 @@ public class AircraftType implements Serializable {
 //        this.setEcSeatNo(ecSeatNo);
 //    }
     
-    public Collection<Aircraft> getAircraft() {
+    public List<Aircraft> getAircraft() {
         return aircraft;
     }
 
-    public void setAircraft(Collection<Aircraft> aircraft) {
+    public void setAircraft(List<Aircraft> aircraft) {
         this.aircraft = aircraft;
     }
 

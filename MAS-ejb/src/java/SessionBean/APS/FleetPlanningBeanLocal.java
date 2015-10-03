@@ -50,5 +50,7 @@ public interface FleetPlanningBeanLocal {
 
     public void deleteAircraft(ArrayList<Aircraft> selectedList) throws Exception;
 
+    public Integer getTypeSize(String type);
+
     
 }

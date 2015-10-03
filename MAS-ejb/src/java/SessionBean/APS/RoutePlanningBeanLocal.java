@@ -56,4 +56,6 @@ public interface RoutePlanningBeanLocal {
 
     public List<Airport> cannotDeleteAirportList();
 
+    public Route findRoute(Long routeID);
+
 }
