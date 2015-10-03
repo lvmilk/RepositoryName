@@ -40,8 +40,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
         LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-          
-        
+
         if(depTime.isAfter(arrTime)) {
             if(dateAdjust == 0)
             throw new Exception("Departure time should before arrival time.");
@@ -53,7 +52,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         
         flightFreq = new FlightFrequency();
+
         flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun);
+
         em.persist(flightFreq);
         em.flush();
     }
