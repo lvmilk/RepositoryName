@@ -33,8 +33,8 @@ public class FlightFrequency implements Serializable {
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
 
-    private LocalTime scheduleDepTime;
-    private LocalTime scheduleArrTime;
+    private String scheduleDepTime;
+    private String  scheduleArrTime;
     private Integer dateAdjust;
 
     // frequency of the flight
@@ -55,7 +55,7 @@ public class FlightFrequency implements Serializable {
 //    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
 //    private List<FlightInstance> flightList = new ArrayList<>();
     
-    public void create(Route route, String flightNo, LocalTime depTime, LocalTime arrTime, Integer dateAdjust,
+    public void create(Route route, String flightNo, String depTime, String  arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
         this.flightNo = flightNo;
         this.route = route;
@@ -111,19 +111,19 @@ public class FlightFrequency implements Serializable {
 //        this.aircraftType = aircraftType;
 //    }
 
-    public LocalTime getScheduleDepTime() {
+    public String getScheduleDepTime() {
         return scheduleDepTime;
     }
 
-    public void setScheduleDepTime(LocalTime scheduleDepTime) {
+    public void setScheduleDepTime(String  scheduleDepTime) {
         this.scheduleDepTime = scheduleDepTime;
     }
 
-    public LocalTime getScheduleArrTime() {
+    public String  getScheduleArrTime() {
         return scheduleArrTime;
     }
 
-    public void setScheduleArrTime(LocalTime scheduleArrTime) {
+    public void setScheduleArrTime(String scheduleArrTime) {
         this.scheduleArrTime = scheduleArrTime;
     }
 

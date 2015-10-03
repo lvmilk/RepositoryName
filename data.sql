@@ -22,3 +22,10 @@ INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE) values("CB888888",
 
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP777777","829d214cbc0fd94b7e16a52e526d3a56","555@555.com","cockpit","L12345")
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP888888","91da5b4c6cb97677b5b66f0f07ef993b","666@666.com","cockpit","L12345")
+
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (2,2,'MR001',0,'True','False','True','False','True','False','True')
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (3,3,'MR002',0,'True','False','True','False','True','False','True')
+
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date) values(2,2,'2015-10-01');
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date) values(3,3,'2015-10-01');
+
