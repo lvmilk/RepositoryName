@@ -3,11 +3,14 @@ package APSmanagedbean;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import SessionBean.APS.FleetPlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -29,8 +32,7 @@ public class FleetManagedBean implements Serializable {
     private List<Aircraft> aircraftList = new ArrayList<>();
     private List<AircraftType> typeList = new ArrayList<>();
     private AircraftType aircraftType = new AircraftType();
-    private ArrayList<String> thisList = new ArrayList<>();
-    private String[][] multiList = new String[0][0];
+    private Aircraft aircraft = new Aircraft();
 
     private String type;
     private String manufacturer;
@@ -38,7 +40,12 @@ public class FleetManagedBean implements Serializable {
     private String registrationNo;
     private String status;
 
-    private Integer typeSize;
+    private Integer numAircraft;
+
+    private Map<String, Integer> sizeMap = new HashMap<String, Integer>();
+    private Map<String, String> manufacturerMap = new HashMap<String, String>();
+    private Map<String, List<String>> registrationMap = new HashMap<String, List<String>>();
+    private List<String> keyList = new ArrayList<String>();
 
     public FleetManagedBean() {
     }
@@ -46,58 +53,48 @@ public class FleetManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         typeList = fpb.getAllAircraftType();
-        //type = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("type");
-        //aircraftType=fpb.getAircraftType(type);
-        //typeSize = fpb.getTypeSize(type);
+        numAircraft = fpb.getAllAircraft().size();
         for (int i = 0; i < typeList.size(); i++) {
-
             type = typeList.get(i).getType();
-            manufacturer = typeList.get(i).getManufacturer();
-            typeSize = fpb.getTypeSize(type);
-            System.out.println("Type Size:" + typeSize);
+            keyList.add(type);
+            sizeMap = fpb.getAllSize(type);
+            manufacturerMap = fpb.getAllManufacturer(type);
 
-            thisList = new ArrayList<>();
-            thisList.add(type);
-            thisList.add(manufacturer);
-            thisList.add(typeSize.toString());
-            multiList[i][i] = thisList.get(0);
-            multiList[i][i + 1] = thisList.get(1);
-            multiList[i][i + 2] = thisList.get(2);
+            registrationMap = fpb.getAllNum(type);
+
         }
-        System.out.println(multiList[0][0]);
-        System.out.println(multiList[0][1]);
-        System.out.println(multiList[0][2]);
-        System.out.println(multiList[1][0]);
-        System.out.println(multiList[1][1]);
-        System.out.println(multiList[1][2]);
-    }
-//
-//    public Integer thisTypeSize() {
-//        for (int i = 0; i < typeList.size(); i++) {
-//            if (type.equals(typeList.get(i).getType())) {
-//                typeSize++;
-//            } else {
-//                System.out.println("Fleet Size = 0");
-//            }
-//        }
-//        return typeSize;
-//    }
-
-    ///////////////////////////////////////////////
-    public ArrayList<String> getThisList() {
-        return thisList;
     }
 
-    public void setThisList(ArrayList<String> thisList) {
-        this.thisList = thisList;
+    public Map<String, List<String>> getRegistrationMap() {
+        return registrationMap;
     }
 
-    public String[][] getMultiList() {
-        return multiList;
+    public void setRegistrationMap(Map<String, List<String>> registrationMap) {
+        this.registrationMap = registrationMap;
     }
 
-    public void setMultiList(String[][] multiList) {
-        this.multiList = multiList;
+    public Map<String, String> getManufacturerMap() {
+        return manufacturerMap;
+    }
+
+    public void setManufacturerMap(Map<String, String> manufacturerMap) {
+        this.manufacturerMap = manufacturerMap;
+    }
+
+    public Map<String, Integer> getSizeMap() {
+        return sizeMap;
+    }
+
+    public void setSizeMap(Map<String, Integer> sizeMap) {
+        this.sizeMap = sizeMap;
+    }
+
+    public List<String> getKeyList() {
+        return keyList;
+    }
+
+    public void setKeyList(List<String> keyList) {
+        this.keyList = keyList;
     }
 
     public List<Aircraft> getAircraftList() {
@@ -157,13 +154,12 @@ public class FleetManagedBean implements Serializable {
         this.aircraftType = aircraftType;
     }
 
-    public Integer getTypeSize() {
-        //size=aircraftType.getAircraft().size();
-        return typeSize;
+    public Integer getNumAircraft() {
+        return numAircraft;
     }
 
-    public void setTypeSize(Integer typeSize) {
-        this.typeSize = typeSize;
+    public void setNumAircraft(Integer numAircraft) {
+        this.numAircraft = numAircraft;
     }
 
 }

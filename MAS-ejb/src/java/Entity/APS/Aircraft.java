@@ -2,7 +2,10 @@ package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
+import java.sql.Time;
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,7 +25,7 @@ public class Aircraft implements Serializable {
     private String status;
     private String firstFlyDate;
     private String deliveryDate;
-    private String retireDate;
+    private String retireDate;   //Lease Expiration Date
     private Long flightLogId;
     private Long maintenanceLogId;
    
@@ -90,6 +93,7 @@ public class Aircraft implements Serializable {
     public void setRetireDate(String retireDate) {
         this.retireDate = retireDate;
     }
+
 
     public Long getFlightLogId() {
         return flightLogId;

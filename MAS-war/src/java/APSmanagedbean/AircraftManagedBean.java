@@ -2,7 +2,6 @@ package APSmanagedbean;
 
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import java.io.IOException;
 import java.util.*;
@@ -10,10 +9,12 @@ import javax.faces.context.FacesContext;
 import Entity.APS.*;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.event.ActionEvent;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -22,7 +23,7 @@ import org.primefaces.event.SelectEvent;
  */
 @Named(value = "AMB")
 @ViewScoped
-public class AircraftManagedBean implements Serializable{
+public class AircraftManagedBean implements Serializable {
 
     @EJB
     private FleetPlanningBeanLocal fpb;
@@ -30,39 +31,54 @@ public class AircraftManagedBean implements Serializable{
     private String registrationNo;
     private String serialNo;
     private String status;
-    private String firstFlyDate;
-    private String deliveryDate;
-    private String retireDate;
+    private Date firstFlyDate;
+    private Date deliveryDate;
+    private Date retireDate;  //Lease Expiration Date
     private Long flightLogId;
     private Long maintenanceLogId;
-    
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
     private Aircraft newAircraft;
     private List<Aircraft> aircraftList;
     private ArrayList<Aircraft> selectedList;
+    
+    private UIComponent component;
 
     public AircraftManagedBean() {
     }
 
+    @PostConstruct
+    public void init() {
+        aircraftList = fpb.getAllAircraft();
+        selectedList = new ArrayList<Aircraft>();
+    }
+
     public void addAircraft() throws Exception {
         try {
-            fpb.addAircraft(type, registrationNo, serialNo, status, firstFlyDate, deliveryDate, retireDate, flightLogId, maintenanceLogId);
+            if(firstFlyDate.after(deliveryDate) && retireDate.after(firstFlyDate)){
+            String ffd = df.format(firstFlyDate);
+            String dd = df.format(deliveryDate);
+            String rd = df.format(retireDate);
+            fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
+            }
+            else
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (delivery date < first fly date < lease expiration date)"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
-
     }
-    
+
     public void viewAircraft(Aircraft aircraft) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("registrationNo", aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraft.getAircraftType().getType());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo",aircraft.getSerialNo());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status",aircraft.getStatus());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate",aircraft.getFirstFlyDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate",aircraft.getRetireDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate",aircraft.getRetireDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId",aircraft.getFlightLogId());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId",aircraft.getMaintenanceLogId());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo", aircraft.getSerialNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", aircraft.getStatus());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate", aircraft.getFirstFlyDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate", aircraft.getDeliveryDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate", aircraft.getRetireDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
         System.out.println("Type got? : " + aircraft.getAircraftType().getType());
         System.out.println("Which aircraft is displayed? : " + aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAircraftInfo.xhtml");
@@ -71,22 +87,22 @@ public class AircraftManagedBean implements Serializable{
     public void viewAircraftTypeConfirm() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAircraft.xhtml");
     }
-    
-    public void editAircraft(Aircraft aircraft) throws IOException{
+
+    public void editAircraft(Aircraft aircraft) throws IOException, ParseException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("registrationNo", aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraft.getAircraftType().getType());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo",aircraft.getSerialNo());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status",aircraft.getStatus());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate",aircraft.getFirstFlyDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate",aircraft.getRetireDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate",aircraft.getRetireDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId",aircraft.getFlightLogId());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId",aircraft.getMaintenanceLogId());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo", aircraft.getSerialNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", aircraft.getStatus());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate", df.parse(aircraft.getFirstFlyDate()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate", df.parse(aircraft.getDeliveryDate()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate", df.parse(aircraft.getRetireDate()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
         System.out.println("Which aircraft is edited? : " + aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftInfo.xhtml");
     }
-    
-      public void confirmDeleteAircraft() throws Exception {
+
+    public void confirmDeleteAircraft() throws Exception {
         try {
             if (selectedList.isEmpty()) {
                 System.out.println("empty selected list. ");
@@ -105,9 +121,7 @@ public class AircraftManagedBean implements Serializable{
     public void deleteBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteAircraft.xhtml");
     }
-    
-    
-    
+
     public void check(SelectEvent event) {
         System.out.println("in check");
     }
@@ -119,7 +133,7 @@ public class AircraftManagedBean implements Serializable{
     public void setType(String type) {
         this.type = type;
     }
-    
+
     public String getRegistrationNo() {
         return registrationNo;
     }
@@ -144,27 +158,27 @@ public class AircraftManagedBean implements Serializable{
         this.status = status;
     }
 
-    public String getFirstFlyDate() {
+    public Date getFirstFlyDate() {
         return firstFlyDate;
     }
 
-    public void setFirstFlyDate(String firstFlyDate) {
+    public void setFirstFlyDate(Date firstFlyDate) {
         this.firstFlyDate = firstFlyDate;
     }
 
-    public String getDeliveryDate() {
+    public Date getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
+    public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public String getRetireDate() {
+    public Date getRetireDate() {
         return retireDate;
     }
 
-    public void setRetireDate(String retireDate) {
+    public void setRetireDate(Date retireDate) {
         this.retireDate = retireDate;
     }
 
@@ -193,8 +207,8 @@ public class AircraftManagedBean implements Serializable{
     }
 
     public List<Aircraft> getAircraftList() {
-        aircraftList = fpb.getAllAircraft();
-        System.out.println("Aircraft List size is " + aircraftList.size());
+//        aircraftList = fpb.getAllAircraft();
+//        System.out.println("Aircraft List size is " + aircraftList.size());
         return aircraftList;
     }
 
@@ -210,5 +224,13 @@ public class AircraftManagedBean implements Serializable{
         this.selectedList = selectedList;
     }
     
-    
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
+    }
+
+
 }

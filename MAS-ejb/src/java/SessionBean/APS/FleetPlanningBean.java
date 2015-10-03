@@ -3,9 +3,13 @@ package SessionBean.APS;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +26,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     EntityManager em;
     AircraftType aircraftType;
     Aircraft aircraft;
+
+    private Map<String, Integer> allSize = new HashMap<String, Integer>();
+    private Map<String, String> allManufacturer = new HashMap<String, String>();
+    private Map<String, List<String>> allNum = new HashMap<String, List<String>>();
+  
+    private Map<String, String> allStatus = new HashMap<String, String>();
 
     public FleetPlanningBean() {
     }
@@ -86,6 +96,45 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
+    public Map<String, List<String>> getAllNum(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        List<String> registrationNo = new ArrayList<String>();
+        for (int i = 0; i < aircraftType.getAircraft().size(); i++) {
+            
+            registrationNo.add(aircraftType.getAircraft().get(i).getRegistrationNo());
+            System.out.println("getRegistrationNum:" + registrationNo);
+            
+        }
+        allNum.put(type, registrationNo);
+         System.out.println("this allNum"+allNum.entrySet().toString());
+         for (Map.Entry<String, List<String>> entry : allNum.entrySet()) {
+                String key = entry.getKey();
+                List<String> values = entry.getValue();
+                System.out.println("Registration Map Key = " + key);
+                System.out.println("Registration Map Values = " + values);
+            }
+        return allNum;
+    }
+
+    @Override
+    public Map<String, Integer> getAllSize(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        Integer size = aircraftType.getAircraft().size();
+        System.out.println("getTypeSize:" + size);
+        allSize.put(type, size);
+        return allSize;
+    }
+
+    @Override
+    public Map<String, String> getAllManufacturer(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        String manufacturer = aircraftType.getManufacturer();
+        System.out.println("getManufacturerMap:" + manufacturer);
+        allManufacturer.put(type, manufacturer);
+        return allManufacturer;
+    }
+
+    @Override
     public boolean checkDuplicate(String type) {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
@@ -135,19 +184,6 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         System.out.println("Aircrat Type is edited!");
 
     }
-//    
-//    @Override
-//    public void deleteAircraftType(String type)throws Exception{
-//        aircraftType = em.find(AircraftType.class, type);
-//        if (aircraftType == null) {
-//            throw new Exception("AircraftType does not exist.");
-//        }
-//        if(aircraftType.getAircraft().isEmpty())
-//            em.remove(aircraftType);
-//        else
-//            throw new Exception("Cannot delete.This aircraft type is linked with an aircraft.");
-//        em.flush();
-//    }
 
     @Override
     public void tryDeleteAircraftType(AircraftType aircraftType) throws Exception {
@@ -236,16 +272,15 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     @Override
     public AircraftType getAircraftType(String type) {
         aircraftType = em.find(AircraftType.class, type);
-        System.out.println("getAircraftType: "+aircraftType.getType());
+        System.out.println("getAircraftType: " + aircraftType.getType());
         return aircraftType;
     }
-
+    
     @Override
-    public Integer getTypeSize(String type) {
-        aircraftType = em.find(AircraftType.class, type);
-        Integer size=aircraftType.getAircraft().size();
-        System.out.println("getTypeSize:"+ size);
-        return size;
+    public List<Aircraft> getThisTypeAircraft(String type){
+        aircraftType=em.find(AircraftType.class, type);
+        List<Aircraft> aircraftList = aircraftType.getAircraft();
+        return aircraftList;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

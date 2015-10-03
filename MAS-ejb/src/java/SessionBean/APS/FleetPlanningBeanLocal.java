@@ -7,8 +7,11 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -19,10 +22,6 @@ import javax.ejb.Local;
 public interface FleetPlanningBeanLocal {
 
        public List<AircraftType> getAllAircraftType();
-
-    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) throws Exception;
-
-    public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) throws Exception;
 
     public List<Aircraft> getAllAircraft();
 
@@ -50,7 +49,17 @@ public interface FleetPlanningBeanLocal {
 
     public void deleteAircraft(ArrayList<Aircraft> selectedList) throws Exception;
 
-    public Integer getTypeSize(String type);
+    public Map<String, Integer> getAllSize(String type);
+
+    public Map<String, String> getAllManufacturer(String type);
+
+    public Map<String, List<String>> getAllNum(String type);
+
+    public List<Aircraft> getThisTypeAircraft(String type);
+
+    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) throws Exception;
+
+    public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Long flightLogId, Long maintenanceLogId) throws Exception;
 
     
 }
