@@ -34,8 +34,8 @@ public interface manageAccountLocal {
     public boolean checkEmailExists(String email);
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editStaff(String username, String stfType, String password,String pswEdited, String emailEdited);
-    public void editCpCrew(String username, String stfType, String password,String pswEdited, String emailEdited, String licence);
+    public void editStaff(String username, String stfType, String password,String pswEdited, String emailEdited, Integer attempt, Integer locked);
+    public void editCpCrew(String username, String stfType, String password,String pswEdited, String emailEdited, String licence, Integer attempt, Integer locked);
     public void editProfile(String username, String stfType, String pswEdited, String email);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
@@ -51,5 +51,5 @@ public interface manageAccountLocal {
     public CabinCrew getCabinCrew(String username);
     public CockpitCrew getCockpitCrew(String username);
 
-    
+    public int getLockedOutStatus(String username, String stfType);
 }

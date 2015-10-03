@@ -36,7 +36,9 @@ public class manageAccount implements manageAccountLocal {
     AirAlliances alliance;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
-    String hPwd;
+    private String hPwd;
+    private Integer temp;
+    private Integer locked;
 
     public manageAccount() {
 
@@ -290,14 +292,15 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited, String emailEdited, String licence) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String emailEdited, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
         cpCrew.setStfType(stfType);
         cpCrew.setEmail(emailEdited);
         cpCrew.setLicence(licence);
-
+        cpCrew.setAttempt(attempt);
+        cpCrew.setLocked(locked);
         if (password.equals(pswEdited)) {
             System.out.println("***Password does not changed***");
             cpCrew.setCpPassword(password);
@@ -308,6 +311,44 @@ public class manageAccount implements manageAccountLocal {
 
         em.merge(cpCrew);
         em.flush();
+    }
+
+    @Override
+    public int getLockedOutStatus(String username, String stfType) {
+        if (stfType.equals("officeStaff")) {
+            OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
+            if (officeStaff != null) {
+                if (officeStaff.getLocked() == 1) {
+                    return 1;
+                }
+            }
+
+        } else if (stfType.equals("groundStaff")) {
+            GroundStaff grdStaff = em.find(GroundStaff.class, username);
+            if (grdStaff != null) {
+                if (grdStaff.getLocked() == 1) {
+                    return 1;
+                }
+            }
+
+        } else if (stfType.equals("cabin")) {
+            CabinCrew cbCrew = em.find(CabinCrew.class, username);
+            if (cbCrew != null) {
+                if (cbCrew.getLocked() == 1) {
+                    return 1;
+                }
+            }
+
+        } else if (stfType.equals("cockpit")) {
+            CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
+            if (cpCrew!= null) {
+                if (cpCrew.getLocked() == 1) {
+                    return 1;
+                }
+            }
+        }
+
+        return 0;
     }
 
     @Override
@@ -364,13 +405,15 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited, String emailEdited) {
+    public void editStaff(String username, String stfType, String password, String pswEdited, String emailEdited, Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
 
             officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
+            officeStaff.setAttempt(attempt);
+            officeStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
                 System.out.println("***Password does not changed***");
                 officeStaff.setOffPassword(password);
@@ -388,6 +431,8 @@ public class manageAccount implements manageAccountLocal {
             grdStaff.setGrdName(username);
             grdStaff.setEmail(emailEdited);
             grdStaff.setStfType(stfType);
+            grdStaff.setAttempt(attempt);
+            grdStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
                 System.out.println("***Password does not changed***");
                 grdStaff.setGrdPassword(password);
@@ -405,7 +450,8 @@ public class manageAccount implements manageAccountLocal {
             cbCrew.setCbName(username);
             cbCrew.setStfType(stfType);
             cbCrew.setEmail(emailEdited);
-
+            cbCrew.setAttempt(attempt);
+            cbCrew.setLocked(locked);
             if (password.equals(pswEdited)) {
                 System.out.println("***Password does not changed***");
                 cbCrew.setCbPassword(password);
@@ -422,41 +468,156 @@ public class manageAccount implements manageAccountLocal {
     @Override
     public boolean validateLogin(String username, String password, String stfType) {
         Query query = null;
+
         hPwd = this.encrypt(username, password);
         if (stfType.equals("administrator")) {
             query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", password);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
+            List resultList = new ArrayList<AdminStaff>();
+            resultList = (List) query.getResultList();
+            if (resultList.isEmpty()) {
+                return false;
+
+            } else {
+                return true;
+            }
+
         } else if (stfType.equals("officeStaff")) {
             query = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.offName = :inUserName and u.offPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
+            List resultList = new ArrayList<OfficeStaff>();
+            resultList = (List) query.getResultList();
+            if (resultList.isEmpty()) {
+                offStaff = this.getOfficeStaff(username);
+                if (offStaff != null) {
+                    temp = offStaff.getAttempt();
+                    temp++;
+                    if (temp > 3) {
+                        offStaff.setLocked(1);
+                    }
+
+                    offStaff.setAttempt(temp);
+                    em.merge(offStaff);
+                    em.flush();
+                }
+                return false;
+
+            } else {
+                offStaff = this.getOfficeStaff(username);
+                locked = offStaff.getLocked();
+                if (locked == 1) {
+                    return false;
+                }
+                offStaff.setAttempt(0);
+                em.merge(offStaff);
+                em.flush();
+                return true;
+            }
         } else if (stfType.equals("groundStaff")) {
             query = em.createQuery("SELECT u FROM GroundStaff u WHERE u.grdName = :inUserName and u.grdPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
+            List resultList = new ArrayList<GroundStaff>();
+            resultList = (List) query.getResultList();
+            if (resultList.isEmpty()) {
+                grdStaff = this.getGroundStaff(username);
+                if (grdStaff != null) {
+                    temp = grdStaff.getAttempt();
+                    temp++;
+                    if (temp > 3) {
+                        grdStaff.setLocked(1);
+                    }
+
+                    grdStaff.setAttempt(temp);
+                    em.merge(grdStaff);
+                    em.flush();
+                }
+                return false;
+
+            } else {
+                grdStaff = this.getGroundStaff(username);
+                locked = grdStaff.getLocked();
+                if (locked == 1) {
+                    return false;
+                }
+                grdStaff.setAttempt(0);
+                em.merge(grdStaff);
+                em.flush();
+                return true;
+            }
         } else if (stfType.equals("cabin")) {
             query = em.createQuery("SELECT u FROM CabinCrew u WHERE u.cbName = :inUserName and u.cbPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
+            List resultList = new ArrayList<CabinCrew>();
+            resultList = (List) query.getResultList();
+            if (resultList.isEmpty()) {
+                cbCrew = this.getCabinCrew(username);
+                if (cbCrew != null) {
+                    temp = cbCrew.getAttempt();
+                    temp++;
+                    if (temp > 3) {
+                        cbCrew.setLocked(1);
+                    }
+
+                    cbCrew.setAttempt(temp);
+                    em.merge(cbCrew);
+                    em.flush();
+                }
+                return false;
+
+            } else {
+                cbCrew = this.getCabinCrew(username);
+                locked = cbCrew.getLocked();
+                if (locked == 1) {
+                    return false;
+                }
+                cbCrew.setAttempt(0);
+                em.merge(cbCrew);
+                em.flush();
+                return true;
+            }
         } else if (stfType.equals("cockpit")) {
             query = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.cpName = :inUserName and u.cpPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", hPwd);
             query.setParameter("inUserName", username);
             query.setParameter("inStfType", stfType);
-        }
+            List resultList = new ArrayList<CockpitCrew>();
+            resultList = (List) query.getResultList();
+            if (resultList.isEmpty()) {
+                cpCrew = this.getCockpitCrew(username);
+                if (cpCrew != null) {
+                    temp = cpCrew.getAttempt();
+                    temp++;
+                    if (temp > 3) {
+                        cpCrew.setLocked(1);
+                    }
 
-        List resultList = new ArrayList<AdminStaff>();
-        resultList = (List) query.getResultList();
-        if (resultList.isEmpty()) {
-            return false;
+                    cpCrew.setAttempt(temp);
+                    em.merge(cpCrew);
+                    em.flush();
+                }
+                return false;
 
+            } else {
+                cpCrew = this.getCockpitCrew(username);
+                locked = cpCrew.getLocked();
+                if (locked == 1) {
+                    return false;
+                }
+                cpCrew.setAttempt(0);
+                em.merge(cpCrew);
+                em.flush();
+                return true;
+            }
         } else {
-            return true;
+            return false;
         }
 
     }
