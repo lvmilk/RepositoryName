@@ -17,65 +17,72 @@
                 <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
 
                     <p:outputLabel for="route" value="Select Route: " />
-                    <p:selectOneMenu id="route" value="#{FlightManagedBean.route}" required="true" requiredMessage="Please select a route" style="width:250px">
-                        <f:selectItem itemLabel="-Select Route-" itemValue="#{null}" />
-                        <f:selectItems value="#{FlightManagedBean.routeList}" />
+                    <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
+                        <f:selectItem itemLabel="-Select Route-" itemValue="" />
+                        <f:selectItems value="#{flightManagedBean.routeInfo}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="flightNo" value="Flight Number: " />
-                    <p:inputText id="flightNo"  value="#{FlightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter flight number" size="30">
+                    <p:inputText id="flightNo"  value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter flight number" size="30">
+                        <f:validateRegex pattern="((?=.*\d).{1,20})" />
                     </p:inputText>
 
-                    <p:outputLabel for="scheduleDepTime" value="Departure Time: " />
-                    <p:inputText id="scheduleDepTime" value="#{FlightManagedBean.scheduleDepTime}" label="scheduleDepTime" required="true" requiredMessage="Please enter departure time" size="30">
-                    </p:inputText>
+                    <p:outputLabel for="scheduleDepTime" value="Departure Time(HH:mm): " />
+                    <!--<p:calendar  id="scheduleDepTime" value="#{flightManagedBean.scheduleDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter departure time" size="30"/>-->
+                    <p:inputMask mask="99:99" id="scheduleDepTime" value="#{flightManagedBean.scheduleDepTime}" label="scheduleDepTime" required="true" requiredMessage="Please enter departure time" size="30" >
+                        <f:validateRegex pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" />
+                    </p:inputMask>
 
-                    <p:outputLabel for="scheduleArrTime" value="Arrival Time: " />
-                    <p:inputText id="scheduleArrTime" value="#{FlightManagedBean.scheduleArrTime}" label="scheduleArrTime" required="true" requiredMessage="Please enter arrival time" size="30">
-                    </p:inputText>
+
+                    <p:outputLabel for="scheduleArrTime" value="Arrival Time(HH:mm): " />
+                    <p:inputMask mask="99:99" id="scheduleArrTime" value="#{flightManagedBean.scheduleArrTime}" label="scheduleArrTime" required="true" requiredMessage="Please enter arrival time" size="30" > 
+                        <f:validateRegex pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" />
+                    </p:inputMask>
+
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-                    <p:inputText id="dateAdjust" value="#{FlightManagedBean.dateAdjust}" label="dateAdjust" required="true" requiredMessage="Please enter date adjust" size="30">
+                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" requiredMessage="Please enter date adjust" size="30">
                     </p:inputText>
 
-                    <p:panel header="Operation Day of the Week">
+                    <p:outputLabel value="Operation Day of the Week: "/>
+                    <p:panel>
                         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onMon}" />      
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onMon}" />      
                             <h:outputText value="Monday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onTue}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onTue}" />
                             <h:outputText value="Tuesday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onWed}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onWed}" />
                             <h:outputText value="Wednesday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onThu}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onThu}" />
                             <h:outputText value="Thursday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onFri}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onFri}" />
                             <h:outputText value="Friday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onSat}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onSat}" />
                             <h:outputText value="Saturday" />
 
-                            <p:selectBooleanCheckbox value="#{FlightManagedBean.onSun}" />
+                            <p:selectBooleanCheckbox value="#{flightManagedBean.onSun}" />
                             <h:outputText value="Sunday" />
 
                         </h:panelGrid>
                     </p:panel>
-                    
-                    <p:outputLabel for="startDate" value="Flight Start Operation Date: " />
-                    <p:inputMask id="startDate" value="#{FlightManagedBean.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" mask="99/99/9999"/>
-<!--                            <p:inputText id="startDate" value="#{FlightManagedBean.startDate}" label="startDate" required="true" requiredMessage="Please enter timezone" size="30"/>-->
 
-                    <p:outputLabel for="endDate" value="Flight End Operation Date: " />
-                    <p:inputMask id="endDate" value="#{FlightManagedBean.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" mask="99/99/9999"/> 
-<!--                            <p:inputText id="endDate" value="#{FlightManagedBean.endDate}" label="endDate" required="true" requiredMessage="Please enter operational status" size="30"/> -->
+                    <p:outputLabel for="startDate" value="Flight Start Operation Date(dd-MM-yyyy): " />
+                    <!--<p:inputMask mask="99-99-9999" id="startDate"  value="#{flightManagedBean.startDate}" label="startDate" required="true"  requiredMessage="Please enter flight start operation date" size="30"/>-->                   
+                    <p:calendar id="startDate" value="#{flightManagedBean.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="dd-MM-yyyy" mask="true"/>
+
+                    <p:outputLabel for="endDate" value="Flight End Operation Date(dd-MM-yyyy): " />
+                    <!--<p:inputMask mask="99-99-9999" id="endDate"  value="#{flightManagedBean.endDate}" label="endDate" required="true"  requiredMessage="Please enter flight end operation date" size="30"/>-->                   
+                    <p:calendar id="endDate" value="#{flightManagedBean.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="dd-MM-yyyy" mask="true"/> 
 
                 </h:panelGrid>
 
-                <p:commandButton id="btn" value="Add Flight Frequency" update="panel" style="margin-right:0" actionListener="#{AirportManagedBean.addFlightFrequency()}"  icon="ui-icon-check" ajax="true" />
+                <p:commandButton id="btn" value="Add Flight Frequency" update="panel" style="margin-right:0" actionListener="#{flightManagedBean.addFlightFrequency()}"  icon="ui-icon-check" ajax="true" />
 
             </p:panel>
 

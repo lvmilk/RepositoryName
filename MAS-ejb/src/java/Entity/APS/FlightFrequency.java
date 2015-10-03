@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,21 +21,20 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class FlightFrequency implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     private Route route = new Route();
-   
+
     private String flightNo;
-    private Integer stopoverNo;
-    
+
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
-
-    private LocalTime scheduleDepTime;
-    private LocalTime scheduleArrTime;
+    private String scheduleDepTime;
+    private String scheduleArrTime;
     private Integer dateAdjust;
 
     // frequency of the flight
@@ -51,12 +51,13 @@ public class FlightFrequency implements Serializable {
     // for code share flights
     private String operator;
     private ArrayList<String> codeshare;
-    
+
 //    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
 //    private List<FlightInstance> flightList = new ArrayList<>();
-    
-    public void create(Route route, String flightNo, LocalTime depTime, LocalTime arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, LocalDate startDate, LocalDate endDate) {
+
+    public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
+
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -72,7 +73,7 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -97,13 +98,6 @@ public class FlightFrequency implements Serializable {
         this.flightNo = flightNo;
     }
 
-    public Integer getStopoverNo() {
-        return stopoverNo;
-    }
-
-    public void setStopoverNo(Integer stopoverNo) {
-        this.stopoverNo = stopoverNo;
-    }
 //
 //    public AircraftType getAircraftType() {
 //        return aircraftType;
@@ -112,23 +106,21 @@ public class FlightFrequency implements Serializable {
 //    public void setAircraftType(AircraftType aircraftType) {
 //        this.aircraftType = aircraftType;
 //    }
-
-    public LocalTime getScheduleDepTime() {
+    public String getScheduleDepTime() {
         return scheduleDepTime;
     }
 
-    public void setScheduleDepTime(LocalTime scheduleDepTime) {
+    public void setScheduleDepTime(String scheduleDepTime) {
         this.scheduleDepTime = scheduleDepTime;
     }
 
-    public LocalTime getScheduleArrTime() {
+    public String getScheduleArrTime() {
         return scheduleArrTime;
     }
 
-    public void setScheduleArrTime(LocalTime scheduleArrTime) {
+    public void setScheduleArrTime(String scheduleArrTime) {
         this.scheduleArrTime = scheduleArrTime;
     }
-
 
     public Integer getDateAdjust() {
         return dateAdjust;
@@ -256,7 +248,7 @@ public class FlightFrequency implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Flight[ id=" + id + " ]";       
+        return "Entity.APS.Flight[ id=" + id + " ]";
 //        String st = "";
 //        st += this.id + "\t";
 //        st += this.flightNo + "\t";
@@ -267,5 +259,5 @@ public class FlightFrequency implements Serializable {
 //        st += this.scheduledArrivalTime + "\t";
 //        return st;
     }
-    
+
 }

@@ -26,12 +26,16 @@ public class OfficeStaff implements Serializable {
     private String stfType;
     @Column(unique=true)
     private String email;
+    private Integer attempt;
+    private Integer locked;
 
     public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType) {
         this.setOffName(strOffName);
         this.setOffPassword(strOffPassword);
         this.setEmail(strOffEmail);
         this.setStfType(strStfType);
+        this.setAttempt(0);
+        this.setLocked(0);
     }
 
 
@@ -114,6 +118,34 @@ public class OfficeStaff implements Serializable {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the attempt
+     */
+    public Integer getAttempt() {
+        return attempt;
+    }
+
+    /**
+     * @param attempt the attempt to set
+     */
+    public void setAttempt(Integer attempt) {
+        this.attempt = attempt;
+    }
+
+    /**
+     * @return the locked
+     */
+    public Integer getLocked() {
+        return locked;
+    }
+
+    /**
+     * @param locked the locked to set
+     */
+    public void setLocked(Integer locked) {
+        this.locked = locked;
     }
 
 }

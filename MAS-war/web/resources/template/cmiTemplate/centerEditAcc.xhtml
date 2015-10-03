@@ -48,6 +48,15 @@
                     <p:column headerText="Email">
                         <h:outputText value="#{OfficeStaff.email}" />
                     </p:column>
+
+                    <p:column headerText="Attempt">
+                        <h:outputText value="#{OfficeStaff.attempt}" />
+                    </p:column>
+
+                    <p:column headerText="Locked">
+                        <h:outputText value="#{OfficeStaff.locked}" />
+                    </p:column>
+
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{etManagedBean.SelectEditOfficeStaff(OfficeStaff)}"  />
 
@@ -56,8 +65,8 @@
             </p:panel>
 
         </h:form>
-        
-        
+
+
         <h:form id="editGrd">
             <p:panel id="grdPanel" visible="#{ctl.visiDelGrd}" header="Edit Ground Staff Account"  style="width:100%">
                 <p:dataTable var="GroundStaff" value="#{etManagedBean.grdStfList}" paginator="true" rows="10" emptyMessage="No such Ground Staff Account">
@@ -77,6 +86,15 @@
                     <p:column headerText="Email">
                         <h:outputText value="#{GroundStaff.email}" />
                     </p:column>
+
+                    <p:column headerText="Attempt">
+                        <h:outputText value="#{GroundStaff.attempt}" />
+                    </p:column>
+
+                    <p:column headerText="Locked">
+                        <h:outputText value="#{GroundStaff.locked}" />
+                    </p:column>
+
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditGroundStaff(GroundStaff)}"  />
 
@@ -84,7 +102,7 @@
                 </p:dataTable>
             </p:panel>
         </h:form>
-        
+
         <h:form id="editCb">
             <p:panel id="cbPanel" visible="#{ctl.visiDelCb}" header="Edit Cabin Crew Account"  style="width:100%">
                 <p:dataTable var="CabinCrew" value="#{etManagedBean.cbCrewList}" paginator="true" rows="10" emptyMessage="No such Cabin Crew Account">
@@ -104,6 +122,15 @@
                     <p:column headerText="Email">
                         <h:outputText value="#{CabinCrew.email}" />
                     </p:column>
+
+                    <p:column headerText="Attempt">
+                        <h:outputText value="#{CabinCrew.attempt}" />
+                    </p:column>
+
+                    <p:column headerText="Locked">
+                        <h:outputText value="#{CabinCrew.locked}" />
+                    </p:column>
+
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditCabinCrew(CabinCrew)}"  />
 
@@ -111,7 +138,7 @@
                 </p:dataTable>
             </p:panel>
         </h:form>
-        
+
         <h:form id="editCp">
             <p:panel id="cpPanel" visible="#{ctl.visiDelCp}" header="Edit Cockpit Crew Account"  style="width:100%">
                 <p:dataTable var="CockpitCrew" value="#{etManagedBean.cpCrewList}" paginator="true" rows="10" emptyMessage="No such Cockpit Crew Account">
@@ -131,11 +158,19 @@
                     <p:column headerText="Email">
                         <h:outputText value="#{CockpitCrew.email}" />
                     </p:column>
-                    
+
                     <p:column headerText="Licence">
                         <h:outputText value="#{CockpitCrew.licence}" />
                     </p:column>
-                    
+
+                    <p:column headerText="Attempt">
+                        <h:outputText value="#{CockpitCrew.attempt}" />
+                    </p:column>
+
+                    <p:column headerText="Locked">
+                        <h:outputText value="#{CockpitCrew.locked}" />
+                    </p:column>
+
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{etManagedBean.SelectedEditCockpitCrew(CockpitCrew)}"  />
 
@@ -143,7 +178,7 @@
                 </p:dataTable>
             </p:panel>
         </h:form>
-        
+
 
     </h:body>
 </html>

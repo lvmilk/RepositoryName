@@ -42,6 +42,8 @@ public class EditManagedBean implements Serializable {
     private String emailEdited;
 
     private String licence;
+    private Integer attempt;
+    private Integer locked;
 
     private List<OfficeStaff> selectedOffStf;
     private List<OfficeStaff> offStfList;
@@ -64,6 +66,8 @@ public class EditManagedBean implements Serializable {
         setStfType(officeStaff.getStfType());
         setPassword(officeStaff.getOffPassword());
         setPswEdited(officeStaff.getOffPassword());
+        setAttempt(officeStaff.getAttempt());
+        setLocked(officeStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
 
     }
@@ -75,6 +79,8 @@ public class EditManagedBean implements Serializable {
         setStfType(grdStaff.getStfType());
         setPassword(grdStaff.getGrdPassword());
         setPswEdited(grdStaff.getGrdPassword());
+        setAttempt(grdStaff.getAttempt());
+        setLocked(grdStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
     }
 
@@ -85,6 +91,8 @@ public class EditManagedBean implements Serializable {
         setStfType(cbCrew.getStfType());
         setPassword(cbCrew.getCbPassword());
         setPswEdited(cbCrew.getCbPassword());
+        setAttempt(cbCrew.getAttempt());
+        setLocked(cbCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
     }
 
@@ -96,13 +104,15 @@ public class EditManagedBean implements Serializable {
         setPassword(cpCrew.getCpPassword());
         setPswEdited(cpCrew.getCpPassword());
         setLicence(cpCrew.getLicence());
+        setAttempt(cpCrew.getAttempt());
+        setLocked(cpCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCockpitPage.xhtml");
     }
 
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited, emailEdited);
+            mal.editStaff(username, stfType, password, pswEdited, emailEdited,attempt,locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -113,7 +123,7 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited, licence);
+            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited, licence,attempt,locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -297,6 +307,34 @@ public class EditManagedBean implements Serializable {
      */
     public void setPswEdited(String pswEdited) {
         this.pswEdited = pswEdited;
+    }
+
+    /**
+     * @return the attempt
+     */
+    public Integer getAttempt() {
+        return attempt;
+    }
+
+    /**
+     * @param attempt the attempt to set
+     */
+    public void setAttempt(Integer attempt) {
+        this.attempt = attempt;
+    }
+
+    /**
+     * @return the locked
+     */
+    public Integer getLocked() {
+        return locked;
+    }
+
+    /**
+     * @param locked the locked to set
+     */
+    public void setLocked(Integer locked) {
+        this.locked = locked;
     }
 
 }

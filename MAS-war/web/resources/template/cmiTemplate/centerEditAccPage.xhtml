@@ -30,6 +30,18 @@
                     </p:inputText>
                     <p:message for="otrEmail" display="icon" />
 
+                    <p:outputLabel for="otrAttempt" value="Attempt: " />
+                    <p:inputText id="otrAttempt" value="#{etManagedBean.attempt}" required="true" label="Attempt" size="10">
+                        <f:validateLength maximum="1" />
+                    </p:inputText>
+                    <p:message for="otrAttempt" display="icon" />
+                    
+                    <p:outputLabel for="otrLocked" value="Locked: " />
+                    <p:inputText id="otrLocked" value="#{etManagedBean.locked}" required="true" label="Locked" size="10">
+                        <f:validateLength maximum="1" />
+                    </p:inputText>
+                    <p:message for="otrLocked" display="icon" />
+                    
                     <p:outputLabel value="staff type: "/>
                     <p:outputLabel value="#{etManagedBean.stfType}"/>
 
