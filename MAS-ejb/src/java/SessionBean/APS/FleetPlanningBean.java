@@ -225,9 +225,9 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         Query query = em.createQuery("SELECT at FROM AircraftType at ");
         List<AircraftType> resultList = (List) query.getResultList();
         if (resultList.isEmpty()) {
-            System.out.println("List is empty");
+            System.out.println("getAllType List is empty");
         } else {
-            System.out.println("List data exists");
+            System.out.println("getAllType List data exists");
         }
 
         return resultList;
@@ -236,7 +236,16 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     @Override
     public AircraftType getAircraftType(String type) {
         aircraftType = em.find(AircraftType.class, type);
+        System.out.println("getAircraftType: "+aircraftType.getType());
         return aircraftType;
+    }
+
+    @Override
+    public Integer getTypeSize(String type) {
+        aircraftType = em.find(AircraftType.class, type);
+        Integer size=aircraftType.getAircraft().size();
+        System.out.println("getTypeSize:"+ size);
+        return size;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,7 +311,6 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         }
     }
 
-
     @Override
     public List<Aircraft> getAllAircraft() {
         Query query = em.createQuery("SELECT a FROM Aircraft a ");
@@ -316,8 +324,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public Aircraft
-            getAircraft(String registrationNo) {
+    public Aircraft getAircraft(String registrationNo) {
         aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
