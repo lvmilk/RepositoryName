@@ -17,29 +17,31 @@
 
             <p:panel id="panel" header="Delete Route"  style="width:100%">
                 <p:messages id="msgs" />
-                <p:dataTable var="route" rowKey ="#{Airport.IATA}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
+                <p:dataTable var="route" rowKey ="#{route.Id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
                         Route List (Only routes can be deleted are shown.)
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
-                    
-<!--                    <p:column>
-                        <p:selectBooleanCheckbox value=""  />
-                    </p:column>-->
 
-                    <p:column headerText="Origin Airport IATA" sortBy="#{Airport.IATA}">
+                    <p:column headerText="Origin Airport IATA" sortBy="#{route.origin.IATA}">
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
-                    <p:column headerText="Destination Airport IATA">
+                                     <p:column headerText="Origin City">
+                        <h:outputText value="#{route.origin.cityName}" />
+                    </p:column>
+                    <p:column headerText="Origin Country">
+                        <h:outputText value="#{route.origin.countryName}" />
+                    </p:column>
+                    <p:column headerText="Destination Airport IATA"  sortBy="#{route.dest.IATA}">
                         <h:outputText value="#{route.dest.IATA}" />
                     </p:column>
-                    <p:column headerText="City Name">
-                        <h:outputText value="#{Airport.cityName}" />
+                    <p:column headerText="Destination City">
+                        <h:outputText value="#{route.dest.cityName}" />
                     </p:column>
-                    <p:column headerText="Country Name">
-                        <h:outputText value="#{Airport.countryName}" />
+                    <p:column headerText="Destination Country">
+                        <h:outputText value="#{route.dest.countryName}" />
                     </p:column>
 
                 </p:dataTable>

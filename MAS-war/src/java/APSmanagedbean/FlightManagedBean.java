@@ -10,44 +10,53 @@ import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author Xu
  */
 @Named(value = "flightManagedBean")
-@Dependent
-public class FlightManagedBean {
+@ViewScoped
+public class FlightManagedBean implements Serializable {
 
     @EJB
     private FlightSchedulingBeanLocal fsb;
     @EJB
     private RoutePlanningBeanLocal rpb;
-    
+
     private FlightFrequency flightFreq;
     private FlightInstance flightInst;
     private Route route;
-    private ArrayList<Route> routeList;
-     private Map<String, Long> routeInfo = new HashMap<String, Long>();
+    private Long routeID;
+    private List<Route> routeList;
+    private Map<String, Long> routeInfo = new HashMap<String, Long>();
 
     private String flightNo;
     private Integer stopoverNo;
 
     private String scheduleDepTime;
     private String scheduleArrTime;
+    private String dateAdjustString;
     private Integer dateAdjust;
 
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
+    private String startDateString;
+    private String endDateString;
     private boolean onMon;
     private boolean onTue;
     private boolean onWed;
@@ -70,7 +79,17 @@ public class FlightManagedBean {
 
     public void addFlightFrequency() throws Exception {
         try {
-            fsb.addFlightFrequency(route, flightNo, scheduleDepTime, scheduleArrTime, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDate, endDate);
+            // value validation
+            route = rpb.findRoute(routeID);
+            fsb.validateFlightNo(flightNo);
+
+            // type convertion
+            dateAdjust = Integer.parseInt(dateAdjustString);
+            Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+            startDateString = formatter.format(startDate);
+            endDateString = formatter.format(endDate);
+
+            fsb.addFlightFrequency(route, flightNo, scheduleDepTime, scheduleArrTime, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
         } catch (Exception ex) {
@@ -78,23 +97,33 @@ public class FlightManagedBean {
         }
     }
 
-    public ArrayList<Route> getRouteList() {
-        return (ArrayList<Route>)rpb.viewAllRoute();
+    public List<Route> getRouteList() {
+        return rpb.viewAllRoute();
     }
 
-    public void setRouteList(ArrayList<Route> routeList) {
+    public void setRouteList(List<Route> routeList) {
         this.routeList = routeList;
     }
 
     public Map<String, Long> getRouteInfo() {
-        for(Route r: routeList) {
-             routeInfo.put(r.toString(), r.getId());
+        routeList = getRouteList();
+        for (Route r : routeList) {
+            routeInfo.put(r.toString(), r.getId());
         }
+        System.out.println(routeInfo.toString());
         return routeInfo;
     }
 
     public void setRouteInfo(Map<String, Long> routeInfo) {
         this.routeInfo = routeInfo;
+    }
+
+    public Long getRouteID() {
+        return routeID;
+    }
+
+    public void setRouteID(Long routeID) {
+        this.routeID = routeID;
     }
 
     public FlightFrequency getFlightFreq() {
@@ -145,6 +174,14 @@ public class FlightManagedBean {
         this.dateAdjust = dateAdjust;
     }
 
+    public String getDateAdjustString() {
+        return dateAdjustString;
+    }
+
+    public void setDateAdjustString(String dateAdjustString) {
+        this.dateAdjustString = dateAdjustString;
+    }
+
     public String getScheduleDepTime() {
         return scheduleDepTime;
     }
@@ -161,20 +198,36 @@ public class FlightManagedBean {
         this.scheduleArrTime = scheduleArrTime;
     }
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getStartDateString() {
+        return startDateString;
+    }
+
+    public void setStartDateString(String startDateString) {
+        this.startDateString = startDateString;
+    }
+
+    public String getEndDateString() {
+        return endDateString;
+    }
+
+    public void setEndDateString(String endDateString) {
+        this.endDateString = endDateString;
     }
 
     public boolean isOnMon() {

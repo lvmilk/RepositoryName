@@ -84,22 +84,6 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirportDetail.xhtml");
     }
 
-//    public void viewAirport() throws IOException {
-//        viewAp = (Airport) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("viewAp");
-//        setIATA(viewAp.getIATA());
-//        setAirportName(viewAp.getAirportName());
-//        setCityName(viewAp.getCityName());
-//        setCountryName(viewAp.getCountryName());
-//        setSpec(viewAp.getSpec());
-//        setTimeZone(viewAp.getTimeZone());
-//        setOpStatus(viewAp.getOpStatus());
-//        setStrategicLevel(viewAp.getStrategicLevel());
-//        setAirspace(viewAp.getAirspace());
-//        getApOriginRouteList();
-//        getApDestRouteList();
-//        System.out.println("amb.viewAiport(): Airport " + viewAp.getIATA() + " detail is displayed. ");
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirportDetail.xhtml");
-//    }
     public void viewAirportBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAirport.xhtml");
     }
