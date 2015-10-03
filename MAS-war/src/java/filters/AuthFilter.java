@@ -73,7 +73,8 @@ public class AuthFilter implements Filter {
 
 
             if ((ses != null && ses.getAttribute("username") != null)
-                    || reqURI.contains("javax.faces.resource") || reqURI.indexOf("/staffMain.xhtml") >= 0 || reqURI.indexOf("/login.xhtml") >= 0) {
+                    || reqURI.contains("javax.faces.resource") || reqURI.indexOf("/staffMain.xhtml") >= 0 || reqURI.indexOf("/login.xhtml") >= 0
+                    || reqURI.indexOf("/forgetPwd")>=0 || reqURI.contains("/CMIpages/")) {
                 chain.doFilter(request, response);
             } else // user didn't log in but asking for a page that is not allowed so take user to login page
             {
