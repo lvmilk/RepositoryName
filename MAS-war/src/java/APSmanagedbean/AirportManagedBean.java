@@ -136,10 +136,11 @@ public class AirportManagedBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (selectedAirport.isEmpty()) {
             System.out.println("a");
-            context.execute("alert('Please select the airport(s) to be deleted.');");
+//            context.execute("alert('Please select the airport(s) to be deleted.');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the airport(s) to be deleted. ", ""));
         } else {
             System.out.println("b");
-            context.execute("PF('dlg').show();");
+            context.execute("PF('dlg').show()");
 //            context.execute("alert('Please aaaaa.');");
         }
     }

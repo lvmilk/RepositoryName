@@ -1,19 +1,12 @@
 package Entity.APS;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -33,13 +26,15 @@ public class FlightFrequency implements Serializable {
 
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
+//    private LocalTime scheduleDepTime;
+//    private LocalTime scheduleArrTime;
+    private Integer dateAdjust;
     private String scheduleDepTime;
     private String scheduleArrTime;
-    private Integer dateAdjust;
-
-    // frequency of the flight
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
+//    private LocalDate startDate;
+//    private LocalDate endDate;
     private boolean onMon;
     private boolean onTue;
     private boolean onWed;
@@ -54,10 +49,8 @@ public class FlightFrequency implements Serializable {
 
 //    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
 //    private List<FlightInstance> flightList = new ArrayList<>();
-
     public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun) {
-
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -98,14 +91,6 @@ public class FlightFrequency implements Serializable {
         this.flightNo = flightNo;
     }
 
-//
-//    public AircraftType getAircraftType() {
-//        return aircraftType;
-//    }
-//
-//    public void setAircraftType(AircraftType aircraftType) {
-//        this.aircraftType = aircraftType;
-//    }
     public String getScheduleDepTime() {
         return scheduleDepTime;
     }
@@ -122,28 +107,68 @@ public class FlightFrequency implements Serializable {
         this.scheduleArrTime = scheduleArrTime;
     }
 
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+    
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+//
+//    public AircraftType getAircraftType() {
+//        return aircraftType;
+//    }
+//
+//    public void setAircraftType(AircraftType aircraftType) {
+//        this.aircraftType = aircraftType;
+//    }
+//    public LocalTime getScheduleDepTime() {
+//        return scheduleDepTime;
+//    }
+//
+//    public void setScheduleDepTime(LocalTime scheduleDepTime) {
+//        this.scheduleDepTime = scheduleDepTime;
+//    }
+//
+//    public LocalTime getScheduleArrTime() {
+//        return scheduleArrTime;
+//    }
+//
+//    public void setScheduleArrTime(LocalTime scheduleArrTime) {
+//        this.scheduleArrTime = scheduleArrTime;
+//    }
+//
+//    public LocalDate getStartDate() {
+//        return startDate;
+//    }
+//
+//    public void setStartDate(LocalDate startDate) {
+//        this.startDate = startDate;
+//    }
+//
+//    public LocalDate getEndDate() {
+//        return endDate;
+//    }
+//
+//    public void setEndDate(LocalDate endDate) {
+//        this.endDate = endDate;
+//    }
+
     public Integer getDateAdjust() {
         return dateAdjust;
     }
 
     public void setDateAdjust(Integer dateAdjust) {
         this.dateAdjust = dateAdjust;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public boolean isOnMon() {
