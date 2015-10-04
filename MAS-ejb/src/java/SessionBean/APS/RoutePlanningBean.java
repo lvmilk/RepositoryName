@@ -270,20 +270,6 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 //    public boolean checkAirportFeasible(Route route, List<AircraftType> actList) {
 //        
 //    }
-    @Override
-    public void deleteRoute(String originIATA, String destIATA) throws Exception {
-        Airport origin = em.find(Airport.class, originIATA);
-        Airport dest = em.find(Airport.class, destIATA);
-        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
-        q1.setParameter("origin", origin);
-        q1.setParameter("dest", dest);
-        if (q1.getResultList().isEmpty()) {
-            throw new Exception("Route does not exist.");
-        }
-        route = (Route) q1.getResultList().get(0);
-        em.remove(route);
-        em.flush();
-    }
 
     @Override
     public List<Route> viewAllRoute() {
@@ -309,6 +295,46 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
         route = (Route) q1.getResultList().get(0);
         return route;
+    }
+   
+    @Override
+    public void deleteRoute(String originIATA, String destIATA) throws Exception {
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
+        q1.setParameter("origin", origin);
+        q1.setParameter("dest", dest);
+        if (q1.getResultList().isEmpty()) {
+            throw new Exception("Route does not exist.");
+        }
+        route = (Route) q1.getResultList().get(0);
+        em.remove(route);
+        em.flush();
+    }
+
+    @Override
+    public void deleteRouteList(List<Route> routeList) throws Exception{
+        for(Route r: routeList) {
+            Query q1 = em.createQuery("SELECT r FROM Route r WHERE r.id=:id").setParameter("id", r.getId());
+            em.remove(q1.getSingleResult());
+            }
+        em.flush();
+    }
+    
+    @Override
+    public List<Route> canDeleteRouteList() {
+        Query q1 = em.createQuery("SELECT r FROM Route r");
+        List<Route> rList = q1.getResultList();
+        List<Route> rListCopy = q1.getResultList();
+        Route r = new Route();
+        for (int i = 0; i < rList.size(); i++) {
+            r = rList.get(i);
+            Query q2 = em.createQuery("SELECT f FROM FlightFrequency f where f.route=:route").setParameter("route", r);
+            if (!q2.getResultList().isEmpty()) {
+                rListCopy.remove(r);
+            }
+        }
+        return rListCopy;
     }
 
     @Override
