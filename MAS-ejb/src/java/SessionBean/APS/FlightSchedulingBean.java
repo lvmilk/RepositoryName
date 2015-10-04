@@ -11,6 +11,7 @@ import Entity.APS.Route;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,12 +42,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
         LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 
-        if(depTime.isAfter(arrTime)) {
-            if(dateAdjust == 0)
-            throw new Exception("Departure time should before arrival time.");
+        if (depTime.isAfter(arrTime)) {
+            if (dateAdjust == 0) {
+                throw new Exception("Departure time should before arrival time.");
+            }
         }
-        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
-        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
+        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
         if (startDate.isAfter(endDate)) {
             throw new Exception("Start operation date should before end operation date.");
         }
@@ -64,7 +66,43 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public void validateFlightNo(String flightNo) throws Exception {
         Query q1 = em.createQuery("select f from FlightFrequency f where f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Flight No already used.");
+            throw new Exception("Flight No. has already been used.");
         }
+    }
+
+    @Override
+    public List<FlightFrequency> getAllFlightFrequency() {
+        Query q1 = em.createQuery("SELECT f FROM FlightFrequency f");
+        List<FlightFrequency> flightFreqList = q1.getResultList();
+        if (flightFreqList.isEmpty()) {
+            System.out.println("fsb.viewAllRoute(): No flight frequency has been added.");
+        } else {
+            System.out.println("fsb.viewAllRoute(): Return flight frequency list.");
+        }
+        return flightFreqList;
+    }
+
+    @Override
+    public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue,
+            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
+        Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo").setParameter("flightNo", flightNo);
+        flightFreq = (FlightFrequency) q1.getSingleResult();
+        flightFreq.setScheduleDepTime(depTime);
+        flightFreq.setScheduleArrTime(arrTime);
+        flightFreq.setDateAdjust(dateAdjust);
+        flightFreq.setOnMon(onMon);
+        flightFreq.setOnTue(onTue);
+        flightFreq.setOnWed(onWed);
+        flightFreq.setOnThu(onThu);
+        flightFreq.setOnFri(onFri);
+        flightFreq.setOnSat(onSat);
+        flightFreq.setOnSat(onSat);
+        flightFreq.setOnSun(onSun);
+        flightFreq.setStartDate(startDate);
+        flightFreq.setEndDate(endDate);
+
+        em.merge(flightFreq);
+        em.flush();
+        System.out.println("fsb.editFlightFrequency(): Flight frequency updated!");
     }
 }

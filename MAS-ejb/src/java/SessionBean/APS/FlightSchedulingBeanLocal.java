@@ -5,7 +5,9 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +20,9 @@ public interface FlightSchedulingBeanLocal {
     public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString)  throws Exception;
 
     public void validateFlightNo(String flightNo) throws Exception;
+
+    public List<FlightFrequency> getAllFlightFrequency();
+
+    public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate);
     
 }

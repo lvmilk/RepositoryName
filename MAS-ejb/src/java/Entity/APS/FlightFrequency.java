@@ -46,6 +46,7 @@ public class FlightFrequency implements Serializable {
     // for code share flights
     private String operator;
     private ArrayList<String> codeshare;
+//    private String status;
 
 //    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
 //    private List<FlightInstance> flightList = new ArrayList<>();
@@ -65,6 +66,7 @@ public class FlightFrequency implements Serializable {
         this.onSun = onSun;
         this.startDate = startDate;
         this.endDate = endDate;
+//        this.status = "Pending";
     }
 
     public Long getId() {
@@ -74,6 +76,14 @@ public class FlightFrequency implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
 
     public Route getRoute() {
         return route;
@@ -118,7 +128,7 @@ public class FlightFrequency implements Serializable {
     public String getEndDate() {
         return endDate;
     }
-    
+
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
@@ -162,7 +172,6 @@ public class FlightFrequency implements Serializable {
 //    public void setEndDate(LocalDate endDate) {
 //        this.endDate = endDate;
 //    }
-
     public Integer getDateAdjust() {
         return dateAdjust;
     }

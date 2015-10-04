@@ -1,15 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:pm="http://primefaces.org/mobile">
-
-
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Edit Route</title>
+
     </h:head>
     <h:body>
 
@@ -21,9 +18,16 @@
                 <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/apsTemplate/editRouteCenter.xhtml"></ui:include>                     
+                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
+
+                <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
+                  
+                  Route information is updated!
+
+                </div>
+
             </ui:define>
         </ui:decorate>
-        
     </h:body>
 </html>
+
