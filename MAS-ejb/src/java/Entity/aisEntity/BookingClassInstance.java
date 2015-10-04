@@ -27,7 +27,19 @@ public class BookingClassInstance implements Serializable {
     private FlightCabin flightCabin;
     private Double price;
     private Integer seatNo;
+    
+     @ManyToOne
+    private BookingClass bookingClass;
 
+    public BookingClass getBookingClass() {
+        return bookingClass;
+    }
+
+    public void setBookingClass(BookingClass bookingClass) {
+        this.bookingClass = bookingClass;
+    }
+     
+     
     public Integer getSeatNo() {
         return seatNo;
     }

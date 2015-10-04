@@ -7,8 +7,7 @@ package SessionBean.AirlineInventory;
 
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import Entity.aisEntity.BookingClassInstance;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateful;
@@ -47,7 +46,14 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         }
         return flightList;
     }
-
+public List<BookingClassInstance> getBkiList (String flightNo, String date){
+    List<BookingClassInstance> bkiList= new ArrayList<BookingClassInstance>();
+    Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.date=:fdate AND b.flightCabin.flightInstance.flightFrequency.flightNo=:fflightNo");
+    query.setParameter("fdate", date);
+    query.setParameter("fflightNo", flightNo);
+    bkiList = query.getResultList();
+    return bkiList;
+}
     
 // "Insert Code > Add Business Method")
 }
