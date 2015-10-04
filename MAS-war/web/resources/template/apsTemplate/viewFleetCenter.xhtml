@@ -10,27 +10,60 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-                <h:form id="form"> 
-                    <p:growl id="msgs" showDetail="true" />
-                    <h3>Fleet Structure</h3>
-                     
-                    <p:accordionPanel value="#{FMB.typeList}" var="typeList">
-                        <p:tab title="Aircraft Type - #{typeList.type}">
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <f:facet name="header">
-                                    <p:graphicImage name="/images/fleet/#{typeList.manufacturer}-view.gif" />
-                                </f:facet>     
-                                <ui:repeat value="#{FMB.multiList}" var="i" varStatus="loop">
-                                <h:outputText value="Size:" style="font-weight: bold" />
-                                <h:outputText value="#{FMB.multiList[loop.index][2]}" />
-                                </ui:repeat>
-                                <br/>
-                                <h:outputText value="Manufacturer:" style="font-weight: bold" />
-                                <h:outputText value="#{typeList.manufacturer}" />
-                            </h:panelGrid>
-                        </p:tab>
-                    </p:accordionPanel>
-                </h:form>
+
+        <h:form id="display">
+            <p:panel id="panel" header="View Fleet Structure"  style="width:100%">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="num" value="Total Number of Aircrafts: " />
+                    <h:outputText id="num"  value="#{FMB.numAircraft}" />
+                </h:panelGrid>
+
+                <p:dataTable var="key" value="#{FMB.keyList}"  emptyMessage="No Type">
+                    <f:facet name="header">
+                        Expand Rows to See Aircraft for Each Aircraft Type
+                    </f:facet>
+                    <p:column style="width:16px">
+                        <p:rowToggler />
+                    </p:column>
+                    <p:column headerText="Aircraft Type" sortBy="#{key}">
+                        <h:outputText value="#{key}" />
+                    </p:column>
+                    <p:column headerText="Manufacturer" sortBy="#{FMB.sizeMap[key]}">
+                        <h:outputText value="#{FMB.manufacturerMap[key]}"  />
+                    </p:column>
+                    <p:column headerText="Size (No. of aircraft in this type)" sortBy="#{FMB.sizeMap[key]}">
+                        <h:outputText value="#{FMB.sizeMap[key]}" />
+                    </p:column>
+
+                    <p:rowExpansion>
+                        <p:panelGrid  columns="2" columnClasses="label,value" style="width:500px">
+                            <f:facet name="header">
+                                <h:graphicImage value="/images/#{key}.jpg"  width="350" height="200"/>
+                            </f:facet>
+
+                            <h:outputText value="Corresponding Aircraft(s):" />
+                            <h:outputText value="#{FMB.registrationMap[key]}" style="font-weight:bold"/>
+
+                            <h:outputText value="Detail Aircraft(s):" />
+                            <h:outputLink value="./viewAircraft.xhtml" >
+                                <h:outputText value="Click for more Aircraft Information" style="color: blue"/>
+                            </h:outputLink>
+
+
+                        </p:panelGrid>
+                    </p:rowExpansion>
+
+                </p:dataTable>
+
+            </p:panel>
+
+        </h:form>
+        <!--        <p:resizable for="display" />
+                <p:draggable for="display" />-->
+
+
 
     </h:body>
 </html>

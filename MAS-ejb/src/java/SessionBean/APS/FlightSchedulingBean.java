@@ -34,25 +34,29 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString) throws Exception{
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString) throws Exception {
 
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
         LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+
         if(depTime.isAfter(arrTime)) {
             if(dateAdjust == 0)
             throw new Exception("Departure time should before arrival time.");
         }
         LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
         LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("dd-MM-uuuu"));
-         if(startDate.isAfter(endDate)) {
+        if (startDate.isAfter(endDate)) {
             throw new Exception("Start operation date should before end operation date.");
         }
-        
+
         flightFreq = new FlightFrequency();
-        flightFreq.create(route, flightNo, depTime, arrTime, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDate, endDate);
+        flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
         em.persist(flightFreq);
+        Route r = em.find(Route.class, route.getId());
+        r.setStatus("Serving");
+        em.merge(r);
         em.flush();
     }
 

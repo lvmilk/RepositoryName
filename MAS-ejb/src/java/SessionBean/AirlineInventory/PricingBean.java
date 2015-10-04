@@ -26,8 +26,8 @@ public class PricingBean implements PricingBeanLocal {
     @PersistenceContext
     EntityManager em;
 
-    AircraftType aircraftType = new AircraftType();
-    Route route = new Route();
+    private AircraftType aircraftType = new AircraftType();
+    private Route route = new Route();
     private List<Route> routeList = new ArrayList<>();
     private Double crewCost;
     private Double calculatedFare;

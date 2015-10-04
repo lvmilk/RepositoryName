@@ -4,8 +4,9 @@ INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fue
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("SIN","Changi","Singapore","Singapore","spec1","UTC+08:00","opstatus1","strlevel1","airspace1")
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("XIA","Xianyang","Xi'an","China","spec2","UTC+08:00","opstatus2","strlevel2","airspace2")
 
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,flightLogId,maintenanceLogId) values("A380","9V-ABC","0000001","In Service","09/01/2015","09/01/2015","08/30/2025",0000001,0000001)
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,flightLogId,maintenanceLogId) values("777-300","9V-AAA","0000002","In Service","09/01/2015","09/01/2013","08/30/2025",0000002,0000002)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,flightLogId,maintenanceLogId) values("A380","9V-ABC","0000001","In Service","2015-01-09","2014-01-03","2025-01-03",0000001,0000001)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,flightLogId,maintenanceLogId) values("777-300","9V-AAA","0000002","In Service","2010-01-09","2009-01-03","2020-01-03",0000002,0000002)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,flightLogId,maintenanceLogId) values("777-300","9V-BBB","0000003","In Service","2012-01-09","2011-01-03","2022-01-03",0000003,0000003)
 
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status) values(2,10000,12,2000,2500,1500,1000,"A380","SIN","XIA","Pending")
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status) values(3,15000,15,2000,2500,1500,1000,"777-300","XIA","SIN","Pending")
@@ -31,4 +32,11 @@ INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER
 
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME) values("CP777777","829d214cbc0fd94b7e16a52e526d3a56","555@555.com","cockpit","L12345",0,0,"CP777777")
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME) values("CP888888","91da5b4c6cb97677b5b66f0f07ef993b","666@666.com","cockpit","L12345",0,0,"CP888888")
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP777777","829d214cbc0fd94b7e16a52e526d3a56","555@555.com","cockpit","L12345")
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP888888","91da5b4c6cb97677b5b66f0f07ef993b","666@666.com","cockpit","L12345")
 
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (2,2,'MR001',0,'True','False','True','False','True','False','True')
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (3,3,'MR002',0,'True','False','True','False','True','False','True')
+
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date) values(2,2,'2015-10-01');
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date) values(3,3,'2015-10-01');

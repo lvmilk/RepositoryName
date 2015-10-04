@@ -58,4 +58,8 @@ public interface RoutePlanningBeanLocal {
 
     public Route findRoute(Long routeID);
 
+    public List<Route> canDeleteRouteList();
+
+    public void deleteRouteList(List<Route> routeList) throws Exception;
+
 }

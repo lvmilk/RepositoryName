@@ -16,11 +16,11 @@
             <p:panel id="panel" header="View All Aircraft"  style="width:100%">
                 <p:dataTable var="aircraft" value="#{AMB.aircraftList}" paginator="true" rows="40" emptyMessage="No Aircraft">
 
-                    <p:column headerText="Aircraft Registration No" sortBy="#{aircraft.registrationNo}">
+                    <p:column headerText="Aircraft Registration No" sortBy="#{aircraft.registrationNo}" filterBy="#{aircraft.registrationNo}">
                         <h:outputText value="#{aircraft.registrationNo}" />
                     </p:column>
 
-                    <p:column headerText="Aircraft Type" >
+                    <p:column headerText="Aircraft Type" sortBy="#{aircraft.aircraftType.type}" filterBy="#{aircraft.aircraftType.type}">
                         <h:outputText value="#{aircraft.aircraftType.type}" />
                     </p:column>
 

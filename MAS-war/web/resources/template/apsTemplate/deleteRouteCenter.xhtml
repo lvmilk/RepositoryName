@@ -17,7 +17,7 @@
 
             <p:panel id="panel" header="Delete Route"  style="width:100%">
                 <p:messages id="msgs" />
-                <p:dataTable var="route" rowKey ="#{route.Id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
+                <p:dataTable var="route" rowKey ="#{route.id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
                         Route List (Only routes can be deleted are shown.)
@@ -28,7 +28,7 @@
                     <p:column headerText="Origin Airport IATA" sortBy="#{route.origin.IATA}">
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
-                                     <p:column headerText="Origin City">
+                    <p:column headerText="Origin City">
                         <h:outputText value="#{route.origin.cityName}" />
                     </p:column>
                     <p:column headerText="Origin Country">
@@ -46,14 +46,14 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" />
+                <p:commandButton value="Delete" action="#{RouteManagedBean.toDeleteRoute}" icon="ui-icon-check" />
             </p:panel> 
 
             <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Route" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
-                    <h:outputText value="Delete route"/> <ui:repeat var="ap" value="#{RouteManagedBean.selectedRoute}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>
+                    <h:outputText value="Delete selected route(s) ?"/>
                     <h:panelGrid columns="2" cellpadding="10">
-                        <p:commandButton value="Delete"  update="" action="#{RouteManagedBean.confirmDeleteAirport()}" />
+                        <p:commandButton value="Delete"  update="" action="#{RouteManagedBean.confirmDeleteRoute()}" />
                         <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
                     </h:panelGrid>
                 </p:dialog>

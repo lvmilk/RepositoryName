@@ -13,6 +13,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -37,6 +38,7 @@ public class RouteManagedBean implements Serializable {
     private List<Route> filteredRouteList = new ArrayList<>();
     private List<Route> selectedRoute = new ArrayList<>();
     private List<Route> canDeleteRoute = new ArrayList<>();
+    private List<Route> deletedRoute = new ArrayList<>();
 
     public RouteManagedBean() {
     }
@@ -44,7 +46,7 @@ public class RouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         routeList = rpb.viewAllRoute();
-//        canDeleteRoute = ;
+        canDeleteRoute = rpb.canDeleteRouteList();
     }
 
     public void addRoute() throws Exception {
@@ -88,12 +90,36 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteDetail.xhtml");
     }
 
+    public void toDeleteRoute() throws Exception {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (selectedRoute.isEmpty()) {
+            System.out.println("RouteManagedBean.toDeleteRoute(): a) error no route selected.");
+            context.execute("alert('Please select the route(s) to be deleted.');");
+        } else {
+            System.out.println("RouteManagedBean.toDeleteRoute(): b) routes will be deleted.");
+            context.execute("PF('dlg').show();");
+        }
+    }
+
+    public void confirmDeleteRoute() throws Exception {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedRoute", deletedRoute);
+            rpb.deleteRouteList(selectedRoute);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRouteSuccess.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
+    public void deleteRouteBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRoute.xhtml");
+    }
 //    public boolean checkRouteFeasibility(Route route) {
 //       
 //       
 //       
 //    }
-    
+
     public List<Route> getRouteList() {
         routeList = rpb.viewAllRoute();
         System.out.println("rmb.getAirportList(): Route list size is " + routeList.size());
@@ -166,6 +192,30 @@ public class RouteManagedBean implements Serializable {
 
     public void setuIComponent(UIComponent uIComponent) {
         this.uIComponent = uIComponent;
+    }
+
+    public List<Route> getSelectedRoute() {
+        return selectedRoute;
+    }
+
+    public void setSelectedRoute(List<Route> selectedRoute) {
+        this.selectedRoute = selectedRoute;
+    }
+
+    public List<Route> getDeletedRoute() {
+        return deletedRoute;
+    }
+
+    public void setDeletedRoute(List<Route> deletedRoute) {
+        this.deletedRoute = deletedRoute;
+    }
+
+    public List<Route> getCanDeleteRoute() {
+        return canDeleteRoute;
+    }
+
+    public void setCanDeleteRoute(List<Route> canDeleteRoute) {
+        this.canDeleteRoute = canDeleteRoute;
     }
 
 }

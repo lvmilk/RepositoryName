@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Modify Fare for Booking Class</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Modify Price"  style="width:100%">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
+                    <p:inputMask id="date" value="#{modifyPriceManagedBean.date}" mask="9999-99-99"/>
+                    <!--<p:ajax event='keyup' listener="#{modifyPriceManagedBean.onDateChange()}" update="flight" />-->
+
+                    <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
+
+                    <p:outputLabel for="flight" value="Flight :" />
+                    <p:selectOneMenu id="flight" value="#{modifyPriceManagedBean.flightNo}" required="true" requiredMessage="Please select a route" style="width:250px">
+                        <f:selectItem itemLabel="Select One Flight" itemValue="#{null}" />
+                        <f:selectItems value="#{modifyPriceManagedBean.flightList}" var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                    </p:selectOneMenu>
+
+                   
+                </h:panelGrid>
+                 <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{modifyPriceManagedBean.checkFlight()}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>

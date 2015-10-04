@@ -8,6 +8,10 @@ package APSmanagedbean;
 import Entity.APS.Aircraft;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -30,11 +34,14 @@ public class EditAircraftManagedBean implements Serializable {
     private String registrationNo;
     private String serialNo;
     private String status;
-    private String firstFlyDate;
-    private String deliveryDate;
-    private String retireDate;
+    private Date firstFlyDate;
+    private Date deliveryDate;
+    private Date retireDate;  //Lease Expiration Date
     private Long flightLogId;
     private Long maintenanceLogId;
+
+    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    
 
     public EditAircraftManagedBean() {
     }
@@ -45,19 +52,26 @@ public class EditAircraftManagedBean implements Serializable {
         registrationNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("registrationNo");
         serialNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("serialNo");
         status = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("status");
-        firstFlyDate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstFlyDate");
-        deliveryDate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("deliveryDate");
-        retireDate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("retireDate");
+        firstFlyDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstFlyDate");
+        deliveryDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("deliveryDate");
+        retireDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("retireDate");
         flightLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightLogId");
         maintenanceLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maintenanceLogId");
     }
 
     public void editAircraft() throws Exception {
         try {
-            fpb.editAircraft(type, registrationNo, serialNo, status, firstFlyDate, deliveryDate, retireDate, flightLogId, maintenanceLogId);
+            if(firstFlyDate.after(deliveryDate) && retireDate.after(firstFlyDate)){
+            String ffd=df.format(firstFlyDate);
+            String dd=df.format(deliveryDate);
+            String rd=df.format(retireDate);
+            fpb.editAircraft(type, registrationNo, serialNo, status, ffd,dd,rd, flightLogId , maintenanceLogId);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftDone.xhtml");
+             }
+            else
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (delivery date < first fly date < lease expiration date)"));
         } catch (Exception ex) {
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
@@ -105,27 +119,29 @@ public class EditAircraftManagedBean implements Serializable {
         this.status = status;
     }
 
-    public String getFirstFlyDate() {
+
+    
+    public Date getFirstFlyDate() {
         return firstFlyDate;
     }
 
-    public void setFirstFlyDate(String firstFlyDate) {
+    public void setFirstFlyDate(Date firstFlyDate) {
         this.firstFlyDate = firstFlyDate;
     }
 
-    public String getDeliveryDate() {
+    public Date getDeliveryDate() {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
+    public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
-    public String getRetireDate() {
+    public Date getRetireDate() {
         return retireDate;
     }
 
-    public void setRetireDate(String retireDate) {
+    public void setRetireDate(Date retireDate) {
         this.retireDate = retireDate;
     }
 

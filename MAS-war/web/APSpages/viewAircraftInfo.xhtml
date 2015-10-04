@@ -11,6 +11,7 @@
     <h:head>
         <title>View Aircraft Info_Center panel</title>
     </h:head>
+
     <h:body>
         <ui:decorate template="./../resources/template/apsTemplate/aps_skeleton.xhtml">
             <ui:define name="top">
@@ -26,10 +27,10 @@
                 <h:form id="formMain">
                     <p:panel id="panel" header="View This Aircraft" style="width: 100%">
                         <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="10">
-                            
+
                             <p:outputLabel value="Registration No.: " />
                             <p:outputLabel value="#{registrationNo}" />
-                            
+
                             <p:outputLabel value="Aircraft Type: " />
                             <p:outputLabel value="#{type}" />
 
@@ -38,19 +39,19 @@
 
                             <p:outputLabel value="Status: " />
                             <p:outputLabel value="#{status}" />
-                            
+
                             <p:outputLabel value="First Fly Date: " />
                             <p:outputLabel value="#{firstFlyDate}" />
 
                             <p:outputLabel value="Delivery Date:" />
                             <p:outputLabel value="#{deliveryDate}" />
-                                                        
+
                             <p:outputLabel value="Retire Date: " />
                             <p:outputLabel value="#{retireDate}" />
-                            
+
                             <p:outputLabel value="Flight Log ID: " />
                             <p:outputLabel value="#{flightLogId}" />
-                            
+
                             <p:outputLabel value="Maintenance Log ID: " />
                             <p:outputLabel value="#{maintenanceLogId}" />
 

@@ -1,19 +1,12 @@
 package Entity.APS;
 
 import java.io.Serializable;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 /**
  *
@@ -21,25 +14,27 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class FlightFrequency implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     private Route route = new Route();
-   
+
     private String flightNo;
-    
+
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
-
-    private LocalTime scheduleDepTime;
-    private LocalTime scheduleArrTime;
+//    private LocalTime scheduleDepTime;
+//    private LocalTime scheduleArrTime;
     private Integer dateAdjust;
-
-    // frequency of the flight
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String scheduleDepTime;
+    private String scheduleArrTime;
+    private String startDate;
+    private String endDate;
+//    private LocalDate startDate;
+//    private LocalDate endDate;
     private boolean onMon;
     private boolean onTue;
     private boolean onWed;
@@ -51,12 +46,11 @@ public class FlightFrequency implements Serializable {
     // for code share flights
     private String operator;
     private ArrayList<String> codeshare;
-    
+
 //    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
 //    private List<FlightInstance> flightList = new ArrayList<>();
-    
-    public void create(Route route, String flightNo, LocalTime depTime, LocalTime arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, LocalDate startDate, LocalDate endDate) {
+    public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -72,7 +66,7 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -97,6 +91,38 @@ public class FlightFrequency implements Serializable {
         this.flightNo = flightNo;
     }
 
+    public String getScheduleDepTime() {
+        return scheduleDepTime;
+    }
+
+    public void setScheduleDepTime(String scheduleDepTime) {
+        this.scheduleDepTime = scheduleDepTime;
+    }
+
+    public String getScheduleArrTime() {
+        return scheduleArrTime;
+    }
+
+    public void setScheduleArrTime(String scheduleArrTime) {
+        this.scheduleArrTime = scheduleArrTime;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+    
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
 //
 //    public AircraftType getAircraftType() {
 //        return aircraftType;
@@ -105,23 +131,37 @@ public class FlightFrequency implements Serializable {
 //    public void setAircraftType(AircraftType aircraftType) {
 //        this.aircraftType = aircraftType;
 //    }
-
-    public LocalTime getScheduleDepTime() {
-        return scheduleDepTime;
-    }
-
-    public void setScheduleDepTime(LocalTime scheduleDepTime) {
-        this.scheduleDepTime = scheduleDepTime;
-    }
-
-    public LocalTime getScheduleArrTime() {
-        return scheduleArrTime;
-    }
-
-    public void setScheduleArrTime(LocalTime scheduleArrTime) {
-        this.scheduleArrTime = scheduleArrTime;
-    }
-
+//    public LocalTime getScheduleDepTime() {
+//        return scheduleDepTime;
+//    }
+//
+//    public void setScheduleDepTime(LocalTime scheduleDepTime) {
+//        this.scheduleDepTime = scheduleDepTime;
+//    }
+//
+//    public LocalTime getScheduleArrTime() {
+//        return scheduleArrTime;
+//    }
+//
+//    public void setScheduleArrTime(LocalTime scheduleArrTime) {
+//        this.scheduleArrTime = scheduleArrTime;
+//    }
+//
+//    public LocalDate getStartDate() {
+//        return startDate;
+//    }
+//
+//    public void setStartDate(LocalDate startDate) {
+//        this.startDate = startDate;
+//    }
+//
+//    public LocalDate getEndDate() {
+//        return endDate;
+//    }
+//
+//    public void setEndDate(LocalDate endDate) {
+//        this.endDate = endDate;
+//    }
 
     public Integer getDateAdjust() {
         return dateAdjust;
@@ -129,22 +169,6 @@ public class FlightFrequency implements Serializable {
 
     public void setDateAdjust(Integer dateAdjust) {
         this.dateAdjust = dateAdjust;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 
     public boolean isOnMon() {
@@ -249,7 +273,7 @@ public class FlightFrequency implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Flight[ id=" + id + " ]";       
+        return "Entity.APS.Flight[ id=" + id + " ]";
 //        String st = "";
 //        st += this.id + "\t";
 //        st += this.flightNo + "\t";
@@ -260,5 +284,5 @@ public class FlightFrequency implements Serializable {
 //        st += this.scheduledArrivalTime + "\t";
 //        return st;
     }
-    
+
 }

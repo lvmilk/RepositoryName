@@ -5,14 +5,19 @@
  */
 package Entity.APS;
 
+import Entity.aisEntity.FlightCabin;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,13 +33,13 @@ public class FlightInstance implements Serializable{
     @ManyToOne
     private FlightFrequency flightFrequency;
     
-    private LocalDate date;
+    private String date;
     private String opStatus;
     private String flightStatus;
-    private LocalTime estimatedDepTime;
-    private LocalTime estimatedArrTime;
-    private LocalTime actualDepTime;
-    private LocalTime actualArrTime;
+    private String estimatedDepTime;
+    private String estimatedArrTime;
+    private String actualDepTime;
+    private String actualArrTime;
     
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
@@ -42,7 +47,20 @@ public class FlightInstance implements Serializable{
     @ManyToOne
     private FlightPackage flightPackage;
 
-    public void create (FlightFrequency flightFrequency, LocalDate date){
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="flightInstance")
+    private Collection<FlightCabin> flightCabins=new ArrayList<FlightCabin>();
+
+    public Collection<FlightCabin> getFlightCabins() {
+        return flightCabins;
+    }
+
+    public void setFlightCabins(Collection<FlightCabin> flightCabins) {
+        this.flightCabins = flightCabins;
+    }
+    
+    
+    
+    public void create (FlightFrequency flightFrequency, String date){
         this.flightFrequency = flightFrequency;
         this.date = date;
 }
@@ -95,43 +113,43 @@ public class FlightInstance implements Serializable{
         this.flightPackage = flightPackage;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getEstimatedDepTime() {
+    public String getEstimatedDepTime() {
         return estimatedDepTime;
     }
 
-    public void setEstimatedDepTime(LocalTime estimatedDepTime) {
+    public void setEstimatedDepTime(String estimatedDepTime) {
         this.estimatedDepTime = estimatedDepTime;
     }
 
-    public LocalTime getEstimatedArrTime() {
+    public String getEstimatedArrTime() {
         return estimatedArrTime;
     }
 
-    public void setEstimatedArrTime(LocalTime estimatedArrTime) {
+    public void setEstimatedArrTime(String estimatedArrTime) {
         this.estimatedArrTime = estimatedArrTime;
     }
 
-    public LocalTime getActualDepTime() {
+    public String getActualDepTime() {
         return actualDepTime;
     }
 
-    public void setActualDepTime(LocalTime actualDepTime) {
+    public void setActualDepTime(String actualDepTime) {
         this.actualDepTime = actualDepTime;
     }
 
-    public LocalTime getActualArrTime() {
+    public String getActualArrTime() {
         return actualArrTime;
     }
 
-    public void setActualArrTime(LocalTime actualArrTime) {
+    public void setActualArrTime(String actualArrTime) {
         this.actualArrTime = actualArrTime;
     }
     
