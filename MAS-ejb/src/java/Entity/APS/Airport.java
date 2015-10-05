@@ -142,7 +142,7 @@ public class Airport implements Serializable {
 
     @Override
         public String toString() {
-        return "Entity.APS.Airport[ id=" + IATA + " ]";
+        return IATA + " - " + cityName + ", " + countryName;
     }
 
 }
