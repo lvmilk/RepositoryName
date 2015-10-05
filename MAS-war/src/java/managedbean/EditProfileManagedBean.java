@@ -89,7 +89,7 @@ public class EditProfileManagedBean implements Serializable {
     public void editOtrStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editProfile(username, stfType, pswEdited, emailEdited);
+            mal.editProfile(username, stfType, pswEdited,email, emailEdited);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {

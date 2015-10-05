@@ -29,7 +29,7 @@ public class EditRouteManagedBean implements Serializable {
 
     @EJB
     private RoutePlanningBeanLocal rpb;
-    
+
     @EJB
     private FleetPlanningBeanLocal fpb;
 
@@ -49,7 +49,7 @@ public class EditRouteManagedBean implements Serializable {
     private AircraftType acType;
     private Airport origin;
     private Airport dest;
-    
+
     private List<AircraftType> acTypeList;
 
     public EditRouteManagedBean() {
@@ -58,29 +58,28 @@ public class EditRouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route");
-        originIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.origin.IATA");
-        destIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.dest.IATA");
-        distance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.distance");
-        acType = (AircraftType) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.aircraftType");
-        blockhour = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.blockhour");
-        basicScFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicScFare");
-        basicFcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicFcFare");
-        basicBcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicBcFare");
-        basicPecFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicPecFare");
-        basicEcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicEcFare");
+        originIATA = route.getOrigin().getIATA();
+        destIATA = route.getOrigin().getIATA();
+        distance = route.getDistance();
+        acType = route.getAcType();
+        blockhour = route.getBlockhour();
+        basicScFare = route.getBasicScFare();
+        basicFcFare = route.getBasicFcFare();
+        basicBcFare = route.getBasicBcFare();
+        basicPecFare = route.getBasicPecFare();
+        basicEcFare = route.getBasicEcFare();
     }
 
-    
-    public void editRouteBasic() throws Exception{ 
-         try {
+    public void editRouteBasic() throws Exception {
+        try {
             rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
-        }        
+        }
     }
-    
-    public void editRouteFare() throws Exception{
+
+    public void editRouteFare() throws Exception {
         try {
             rpb.editRouteFare(originIATA, destIATA, basicScFare, basicFcFare, basicBcFare, basicPecFare, basicEcFare);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");

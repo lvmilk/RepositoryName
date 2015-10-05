@@ -112,7 +112,7 @@ public class EditManagedBean implements Serializable {
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited, emailEdited,attempt,locked);
+            mal.editStaff(username, stfType, password, pswEdited,email, emailEdited,attempt,locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -123,7 +123,7 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, emailEdited, licence,attempt,locked);
+            mal.editCpCrew(username, stfType, password, pswEdited,email, emailEdited, licence,attempt,locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {

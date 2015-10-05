@@ -26,20 +26,15 @@
                     <p:inputText id="status" value="#{editAMB.status}" label="Status" required="true" validatorMessage="Status: please enter a valid status"  requiredMessage="Please enter status of the aircraft" size="50">
                     </p:inputText>
 
-                    <p:outputLabel for="firstFlyDate" value="First Fly Date (MM/dd/yyyy):" />
-                    <p:inputText id="firstFlyDate" value="#{editAMB.firstFlyDate}" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format MM/dd/yyyy"  requiredMessage="Please enter the first fly date of the aircraft" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
-                    </p:inputText>
+                     <p:outputLabel for="firstFlyDate" value="First Fly Date :" />
+                    <p:calendar id="firstFlyDate" value="#{editAMB.firstFlyDate}" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the first fly date of the aircraft" size="50"/>
 
-                    <p:outputLabel for="deliveryDate" value="Delivery Date (MM/dd/yyyy):" />
-                    <p:inputText id="deliveryDate" value="#{editAMB.deliveryDate}" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format MM/dd/yyy"  requiredMessage="Please enter the delivery date of the aircraft" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
-                    </p:inputText>
-                    
-                    <p:outputLabel for="retireDate" value="Retire Date (MM/dd/yyyy):" />
-                    <p:inputText id="retireDate" value="#{editAMB.retireDate}" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format MM/dd/yyy"  requiredMessage="Please enter the retire date of the aircraft" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[/]).{1,20})"/>
-                    </p:inputText>
+                    <p:outputLabel for="deliveryDate" value="Delivery Date :" />
+                    <p:calendar id="deliveryDate" value="#{editAMB.deliveryDate}" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
+
+                    <p:outputLabel for="retireDate" value="Lease Expiration Date :" />
+                    <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
+
                     
                     <p:outputLabel for="flightLogId" value="Flight Log ID:" />
                     <p:inputText id="flightLogId" value="#{editAMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">

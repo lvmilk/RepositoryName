@@ -6,11 +6,13 @@
 package Entity.CommonInfaEntity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,6 +30,9 @@ public class GroundStaff implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
+    
+    @OneToOne(cascade={CascadeType.ALL})
+    private UserEntity user;
 
     public void create(String strGrdName, String strGrdPassword, String email, String strType) {
         this.setGrdName(strGrdName);
@@ -146,6 +151,20 @@ public class GroundStaff implements Serializable {
      */
     public void setLocked(Integer locked) {
         this.locked = locked;
+    }
+
+    /**
+     * @return the user
+     */
+    public UserEntity getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(UserEntity user) {
+        this.user = user;
     }
 
 }

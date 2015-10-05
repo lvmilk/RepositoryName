@@ -9,19 +9,11 @@
         <title>MAS</title>
     </h:head>
     <h:body>
-        <!--        <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;"> -->
+ 
         <h:form>
             <p:panel id="panel" header="Airport Information" style="width: 100%">
-<!--                <p:ajaxStatus style="width:16px;height:16px;">
-                    <f:facet name="start">
-                        <h:graphicImage value="/images/spinner.gif" />
-                    </f:facet>
-                    <f:facet name="complete">
-                        <h:outputText value="" />
-                    </f:facet>
-                </p:ajaxStatus>-->
 
-                <p:messages id="msgs" showDetail="true" autoUpdate="true" />
+                <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
 
                     <p:outputLabel for="IATA" value="Airport IATA: " />
@@ -72,7 +64,6 @@
 
         </h:form>
 
-        <!--        </div>-->
     </h:body>
 
 </html>
