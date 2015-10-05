@@ -18,14 +18,16 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.RowEditEvent;
+
 
 /**
  *
  * @author wang
  */
 @Named(value = "modifyPriceManagedBean")
-//@SessionScoped
 @ViewScoped
 public class ModifyPriceManagedBean implements Serializable {
 
@@ -35,8 +37,9 @@ public class ModifyPriceManagedBean implements Serializable {
     private String date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
-    private List<BookingClassInstance> bkiList =new ArrayList<BookingClassInstance>();
-    
+    //private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
+    private List<BookingClassInstance> bkiList=new ArrayList<BookingClassInstance>();
+    private Double price;
     /**
      * Creates a new instance of ModifyPriceManagedBean
      */
@@ -47,13 +50,22 @@ public class ModifyPriceManagedBean implements Serializable {
     public void init() {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
-            date = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
         }
         System.out.println("MPMB: flight passed in viewscoped: " + flightNo);
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+        System.out.println("MPMB: price entered: " + price);
+    }
+
     public List<BookingClassInstance> getBkiList() {
-        bkiList= mpb.getBkiList(flightNo, date);
+        bkiList = mpb.getBkiList(flightNo, date);
         return bkiList;
     }
 
@@ -107,6 +119,26 @@ public class ModifyPriceManagedBean implements Serializable {
         }
 
     }
+    public void onRowEdit(RowEditEvent event){
+     BookingClassInstance bki= (BookingClassInstance)event.getObject();  
+     mpb.editPrice(bki);
+     FacesMessage msg = new FacesMessage("Fare Edited",((BookingClassInstance)event.getObject()).getBookingClass().getAnnotation()+" Booking Class  Edited");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    
+    public void onRowCancel(RowEditEvent event){
+       FacesMessage msg = new FacesMessage("Edit Cancelled",((BookingClassInstance)event.getObject()).getBookingClass().getAnnotation()+" Booking Class Edit Cancelled");
+        FacesContext.getCurrentInstance().addMessage(null, msg);  
+    }
+    
+//    public void editPrice(BookingClassInstance bki) {
+//        System.out.println("MPMB:bki.getAnnotation: "+bki.getBookingClass().getAnnotation());
+//        System.out.println("MPMB:Now the price is: " + bki.getPrice());
+//        mpb.editPrice(bki);
+//        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Status", "Deleted");
+//        ////FacesContext.getCurrentInstance().addMessage(null, message);
+//       // RequestContext.getCurrentInstance().showMessageInDialog(message);
+//    }
 
     public String getDate() {
         System.out.println("MPMB:get Date");

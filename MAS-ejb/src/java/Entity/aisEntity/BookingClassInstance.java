@@ -54,6 +54,7 @@ public class BookingClassInstance implements Serializable {
     }
 
     public void setPrice(Double price) {
+        System.out.println("BKI Entity class :setPrice"+price);
         this.price = price;
     }
     

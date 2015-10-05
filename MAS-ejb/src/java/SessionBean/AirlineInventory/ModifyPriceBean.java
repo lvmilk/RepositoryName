@@ -54,6 +54,19 @@ public List<BookingClassInstance> getBkiList (String flightNo, String date){
     bkiList = query.getResultList();
     return bkiList;
 }
-    
+
+//public void editPrice(BookingClassInstance bki,Double price){
+//    bki.setPrice(price);
+//    System.out.println("MPB: get price is "+ bki.getPrice());
+//    em.merge(bki);
+//    System.out.println("MPB: Price edited!");
+//    em.flush();
+//}
+public void editPrice(BookingClassInstance bki){
+    System.out.println("MPB: get price is "+ bki.getPrice());
+    em.merge(bki);
+    System.out.println("MPB: Price edited!");
+    em.flush();
+}
 // "Insert Code > Add Business Method")
 }
