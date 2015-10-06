@@ -5,6 +5,7 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -131,4 +132,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         em.flush();
     }
+
+    @Override
+    public List<FlightFrequency> getFlightOfRoute(Route route) {
+        Query q2 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.route=:route").setParameter("route", route);
+        return (List<FlightFrequency>) q2.getResultList();
+    }
+
 }

@@ -5,6 +5,7 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
 import java.util.List;
@@ -28,5 +29,7 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightFrequency> canDeleteFlightFreqList();
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
+
+    public List<FlightFrequency> getFlightOfRoute(Route route);
     
 }

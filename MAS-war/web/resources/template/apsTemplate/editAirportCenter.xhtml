@@ -14,7 +14,7 @@
     <h:body>
         <h:form>
 
-            <p:panel id="panel" header="Airport List"  style="width:100%">
+            <p:panel id="panel" header="All Airport"  style="width:100%">
                 <p:dataTable var="Airport" value="#{AirportManagedBean.airportList}" paginator="true" rows="20" emptyMessage="No Serving Airports">
 
                     <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}" filterBy="#{Airport.IATA}">
