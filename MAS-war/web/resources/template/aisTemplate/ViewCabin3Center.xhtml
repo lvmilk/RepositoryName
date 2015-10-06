@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Create Account_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+
+            <p:panel id="panel" header=" Cabin Class Configuration" style="width: 100%">
+
+<!--                <p:messages id="msgs" />-->
+
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width:500px" cellpadding="20">
+
+
+                    <p:outputLabel  value="Cabin Class: " />
+                    <p:outputLabel style="margin-left: 0" value="#{viewCabin3Bean.cabinSelected.cabinName}" />
+
+                    <p:outputLabel  value="Total numnber of seats:  " />
+                    <p:outputLabel  value="#{viewCabin3Bean.cabinSelected.seatCount}"/>
+
+                    <p:outputLabel  value="Total number of rows:    #{viewCabin3Bean.rowCount}" />
+                    <p:outputLabel  value="#{viewCabin3Bean.rowCount}"/>
+
+                    <p:outputLabel  value="Number of seats in a row:  " />
+                    <p:outputLabel  value="#{viewCabin3Bean.rowSeatCount}"/>
+
+                    <p:outputLabel  value="Row Configuration:  " />
+                    <p:outputLabel  value="#{viewCabin3Bean.rowConfig}"/>
+
+                    <p:outputLabel  value="Seat Width:   " />
+                    <p:outputLabel  value="#{viewCabin3Bean.seatWidth}"/>
+
+
+                </h:panelGrid>
+                
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+
+
+
+    </h:body>
+</html>

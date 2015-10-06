@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>Create Account_Center panel</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form>
+
+            <p:panel id="panel" header="Set Cabin Class Information" style=" width:100%">
+
+                <p:dataTable var="cabinClass" value="#{viewCabin2Bean.cabinList}" paginator="true" rows="10" emptyMessage="No Cabin Classes">
+
+
+                    <p:column headerText="Cabin Class" sortBy="#{cabinClass.cabinName}">
+                        <h:outputText value="#{cabinClass.cabinName}" />
+                    </p:column>
+
+                    <p:column headerText="Total No. of Seats" sortBy="#{cabinClass.seatCount}">
+                        <h:outputText value="#{cabinClass.seatCount}" />
+                    </p:column>
+
+                    <p:column headerText="Set details">
+                        <p:commandButton value="Select" action="#{viewCabin2Bean.viewDetail(cabinClass)}"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+
+
+
+
+        <p:panel id="panel" header="Cabin Class Information" style="text-align: center;width:100%">
+            <c:forEach var="cabin" items="#{viewCabin2Bean.cabinList}">
+                <p:panelGrid columns="#{cabin.rowSeatCount+1+viewCabin2Bean.aisleMap[cabin]}" styleClass="ui-panelgrid" >
+                    <f:facet name="header">
+                        <p:row >
+                            <p:column >
+                                <h:outputText value="#{cabin.cabinName}" style="height:100px"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+
+                    <h:outputText value=" " style="height:60px;width:30px"/>
+                    <c:forEach var="rowSeat" items="#{viewCabin2Bean.chartMap[cabin][0]}">
+                        <c:if test="#{empty rowSeat}">
+                            <h:outputText value=" " />
+                        </c:if>
+                        <c:if test="#{not empty rowSeat}">
+                            <h:outputText value=" #{rowSeat.charAt(rowSeat.length()-1)} " style="height:60px;width:30px"/>
+                        </c:if>
+                    </c:forEach>
+
+                    <c:forEach var="row" items="#{viewCabin2Bean.chartMap[cabin]}">
+
+                        <h:outputText value=" #{row[0].substring(0,row[0].length()-1)} " style="height:60px;width:30px"/>
+                        
+                        <c:forEach var="value" items="#{row}">
+                            <c:if test="${not empty value}">
+                                <c:choose>
+                                    <c:when test="${cabin.cabinName=='Suite'}">
+                                        <div id="seat1"><img src="./../images/suite.jpg" id="mySuite"/></div>
+                                    </c:when>
+                                    <c:when test="${cabin.cabinName=='First Class'}">
+                                        <div id="seat2"><img src="./../images/first.png" id="myFirst"/></div>
+                                    </c:when>
+                                    <c:when test="${cabin.cabinName=='Business Class'}">
+                                        <div id="seat3"><img src="./../images/biz.png" id="myBiz"/></div>
+                                    </c:when>
+                                    <c:when test="${cabin.cabinName=='Premium Economic Class'}">
+                                        <div id="seat4"><img src="./../images/Pecons.png" id="myPecons"/></div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div id="seat5"><img src="./../images/econs.png" id="myEcons"/></div>
+                                    </c:otherwise>
+
+                                </c:choose>
+                            </c:if>
+
+                            <c:if test="${empty value}">
+                                <h:outputText value=" "/>
+                            </c:if>
+
+                        </c:forEach>
+                    </c:forEach>
+                </p:panelGrid>
+            </c:forEach >
+
+        </p:panel>
+        <!--  style="width: 70px; height: 20px;"-->
+
+
+
+        <style>
+            #mySuite{
+                background: url("./../images/suite.jpg");
+                cursor: pointer;
+                display: block;
+                max-width:50px;
+                max-height:70px;
+                width:auto;
+                height: auto;;
+                border: none;background-size:cover ;
+            }
+
+            #myBiz{
+                background: url("./../images/biz.png");
+                cursor: pointer;
+                display: block;
+                max-width:40px;
+                max-height:40px;
+                width:auto;
+                height: auto;;
+                border: none;background-size:cover ;
+            }
+
+
+
+            #myFirst{
+                background: url("./../images/first.png");
+                cursor: pointer;
+                display: block;
+                max-width:40px;
+                max-height:70px;
+                width:auto;
+                height: auto;;
+                border: none;background-size:cover ;
+            }
+
+            #myEcons{
+                background: url("./../images/econs.png");
+                cursor: pointer;
+                display: block;
+                max-width:30px;
+                max-height:50px;
+                width:auto;
+                height: auto;;
+                border: none;background-size:cover ;
+            }
+
+            #myPecons{
+                background: url("./../images/Pecons.png");
+                cursor: pointer;
+                display: block;
+                max-width:30px;
+                max-height:50px;
+                width:auto;
+                height: auto;;
+                border: none;background-size:cover ;
+            }
+
+
+
+
+            .ui-panelgrid{
+                margin: 0 auto;
+
+            }
+            .ui-panelgrid tbody tr, .ui-panelgrid tbody td{  
+                border: none!important;
+            }
+
+
+        </style>
+    </h:body>
+</html>
+
