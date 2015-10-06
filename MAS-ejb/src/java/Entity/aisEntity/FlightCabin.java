@@ -40,7 +40,8 @@ public class FlightCabin implements Serializable {
     @OneToMany(mappedBy="flightCabin")
     private List<BookingClassInstance> bookingClassInstances=new ArrayList<BookingClassInstance>();
 
-    public List<BookingClassInstance> getBookingClassInstances() {
+    
+    public List <BookingClassInstance> getBookingClassInstances() {
         return bookingClassInstances;
     }
 
