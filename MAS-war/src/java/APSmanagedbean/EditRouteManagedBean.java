@@ -11,7 +11,9 @@ import Entity.APS.Route;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -34,8 +36,8 @@ public class EditRouteManagedBean implements Serializable {
     @EJB
     private FleetPlanningBeanLocal fpb;
 
-     private UIComponent uIComponent;
-    
+    private UIComponent uIComponent;
+
     private Route route;
     private Double distance;
     private Double blockhour;
@@ -50,10 +52,12 @@ public class EditRouteManagedBean implements Serializable {
     private String destIATA;
 
     private AircraftType acType;
+    private String acTypeString;
     private Airport origin;
     private Airport dest;
 
     private List<AircraftType> acTypeList;
+//    private Map<String, String> acTypeInfo = new HashMap<String, String>();
 
     public EditRouteManagedBean() {
     }
@@ -90,6 +94,46 @@ public class EditRouteManagedBean implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
+    }
+
+    public void editRoute() throws Exception {
+        try {
+            if (acTypeString != null) {
+                acType = fpb.getAircraftType(acTypeString);
+            }
+            rpb.editRoute(originIATA, destIATA, distance, acType, blockhour, basicScFare, basicFcFare, basicBcFare, basicPecFare, basicEcFare);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
+//    public Map<String, String> getAcTypeInfo() {
+//        acTypeList = getAcTypeList();
+//        for (AircraftType a : acTypeList) {
+//            acTypeList.put(a.toString(), a.getIATA());
+//        }
+//        System.out.println(acTypeInfo.toString());
+//        return acTypeInfo;
+//    }
+//
+//    public void setAcTypeInfo(Map<String, String> acTypeInfo) {
+//        this.acTypeInfo = acTypeInfo;
+//    }
+    public List<AircraftType> getAcTypeList() {
+        return fpb.getAllAircraftType();
+    }
+
+    public void setAcTypeList(List<AircraftType> acTypeList) {
+        this.acTypeList = acTypeList;
+    }
+
+    public String getAcTypeString() {
+        return acTypeString;
+    }
+
+    public void setAcTypeString(String acTypeString) {
+        this.acTypeString = acTypeString;
     }
 
     public Route getRoute() {
@@ -202,14 +246,6 @@ public class EditRouteManagedBean implements Serializable {
 
     public void setDest(Airport dest) {
         this.dest = dest;
-    }
-
-    public List<AircraftType> getAcTypeList() {
-        return fpb.getAllAircraftType();
-    }
-
-    public void setAcTypeList(List<AircraftType> acTypeList) {
-        this.acTypeList = acTypeList;
     }
 
     public UIComponent getuIComponent() {
