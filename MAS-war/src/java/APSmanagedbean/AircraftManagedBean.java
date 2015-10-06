@@ -41,7 +41,9 @@ public class AircraftManagedBean implements Serializable {
     private Aircraft newAircraft;
     private List<Aircraft> aircraftList;
     private ArrayList<Aircraft> selectedList;
-    
+    private List<AircraftType> typeList = new ArrayList<>();
+    private List<String> keyList = new ArrayList<>();
+
     private UIComponent component;
 
     public AircraftManagedBean() {
@@ -51,19 +53,25 @@ public class AircraftManagedBean implements Serializable {
     public void init() {
         aircraftList = fpb.getAllAircraft();
         selectedList = new ArrayList<Aircraft>();
+        typeList = fpb.getAllAircraftType();
+        for (int i = 0; i < typeList.size(); i++) {
+            type = typeList.get(i).getType();
+            keyList.add(type);
+        }
+
     }
 
     public void addAircraft() throws Exception {
         try {
-            if(firstFlyDate.after(deliveryDate) && retireDate.after(firstFlyDate)){
-            String ffd = df.format(firstFlyDate);
-            String dd = df.format(deliveryDate);
-            String rd = df.format(retireDate);
-            fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
+            if (firstFlyDate.after(deliveryDate) && retireDate.after(firstFlyDate)) {
+                String ffd = df.format(firstFlyDate);
+                String dd = df.format(deliveryDate);
+                String rd = df.format(retireDate);
+                fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (delivery date < first fly date < lease expiration date)"));
             }
-            else
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (delivery date < first fly date < lease expiration date)"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -223,7 +231,7 @@ public class AircraftManagedBean implements Serializable {
     public void setSelectedList(ArrayList<Aircraft> selectedList) {
         this.selectedList = selectedList;
     }
-    
+
     public UIComponent getComponent() {
         return component;
     }
@@ -232,5 +240,21 @@ public class AircraftManagedBean implements Serializable {
         this.component = component;
     }
 
+    public List<AircraftType> getTypeList() {
+        return typeList;
+    }
+
+    public void setTypeList(List<AircraftType> typeList) {
+        this.typeList = typeList;
+    }
+
+    public List<String> getKeyList() {
+        return keyList;
+    }
+
+    public void setKeyList(List<String> keyList) {
+        this.keyList = keyList;
+    }
+    
 
 }
