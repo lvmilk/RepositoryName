@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Estimate Fleet Structure</title>
+    </h:head>
+    <h:body>
+        <h:form id="display">
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel id="title" header="Fleet Structure Estimation" footer="Note: This estimation lasts the longest 20 years until there is no aircraft available." style="margin-bottom:20px">
+<!--                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="date" value="Choose a date: " />
+                    <p:calendar id="date" value="#{FEMB.selectedDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the date" size="20"/>
+                    <p:outputLabel for="type" value="Choose an aircraft type:" />
+                    <p:selectOneMenu id="type" value="#{FEMB.type}">
+                        <f:selectItems value="#{FEMB.typeKeyList}" />
+                    </p:selectOneMenu>
+                    <p:commandButton value="Submit" ajax="false" update="msgs" actionListener="#{FEMB.chooseFleet()}" icon="ui-icon-check" onclick="detail.show();">
+                    </p:commandButton>
+                </h:panelGrid>-->
+                <h:panelGrid columns="1" columnClasses="center" style="width:300%; height:500%">
+                    <p:chart type="line" model="#{FEMB.animatedModel}" style="height: 500px; width:1100px;" />
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+
+
+
+    </h:body>
+</html>
+

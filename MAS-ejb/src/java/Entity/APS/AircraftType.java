@@ -41,7 +41,7 @@ public class AircraftType implements Serializable {
     private List<Route> routeMatchList = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
-    private Collection<CabinClass> cabinList = new ArrayList<CabinClass>();
+    private List<CabinClass> cabinList = new ArrayList<CabinClass>();
 
     public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
@@ -207,11 +207,11 @@ public class AircraftType implements Serializable {
 //    public void setFlightMatchList(List<FlightFrequency> flightMatchList) {
 //        this.flightMatchList = flightMatchList;
 //    }
-    public Collection<CabinClass> getCabinList() {
+    public List<CabinClass> getCabinList() {
         return cabinList;
     }
 
-    public void setCabinList(Collection<CabinClass> cabinList) {
+    public void setCabinList(List<CabinClass> cabinList) {
         this.cabinList = cabinList;
     }
 
@@ -252,7 +252,7 @@ public class AircraftType implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.AircraftType[ id=" + type + " ]";
+        return type;
     }
 
 }

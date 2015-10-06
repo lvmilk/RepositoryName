@@ -31,7 +31,7 @@ public class EditFlightFrequencyManagedBean implements Serializable {
     @EJB
     private FlightSchedulingBeanLocal fsb;
 
-    FlightFrequency flightFreq;
+    private FlightFrequency flightFreq;
     private Route route;
     private String flightNo;
     private Integer stopoverNo;

@@ -14,53 +14,60 @@
 
         <h:form>
             <p:panel id="panel" header="View All Route"  style="width:100%">
-                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="40" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" 
+                             rowKey="#{route.id}"
+                             paginator="true" rows="40" emptyMessage="No routes found with given criteria." 
+                             filteredValue="#{RouteManagedBean.filteredRouteList}">
 
-<!--                    <p:subTable> 
-                        <p:row>
-                            <p:column colspan="1"/>
-                            <p:column colspan="4" headerText="Origin Airport"/>
-                            <p:column colspan="4" headerText="Destination Airport"/>
-                            <p:column colspan="3"/>
-                        </p:row>
-                    </p:subTable>-->
+                    <!--                    <p:subTable> 
+                                            <p:row>
+                                                <p:column colspan="1"/>
+                                                <p:column colspan="4" headerText="Origin Airport"/>
+                                                <p:column colspan="4" headerText="Destination Airport"/>
+                                                <p:column colspan="3"/>
+                                            </p:row>
+                                        </p:subTable>-->
 
                     <p:column headerText="Route Id">
                         <h:outputText value="#{route.id}" />
                     </p:column>
 
-                    <p:column headerText="IATA" filterBy="#{route.origin.IATA}" filterMatchMode="contains">
+                    <p:column headerText="Origin Airport IATA" filterBy="#{route.origin.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{route.origin.IATA}" />
-                    </p:column>
-                    <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains">
-                        <h:outputText value="#{route.origin.countryName}" />
-                    </p:column>
-                    <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains">
-                        <h:outputText value="#{route.origin.cityName}" />
                     </p:column>
                     <p:column headerText="Specification" filterMatchMode="contains">
                         <h:outputText value="#{route.origin.spec}" />
                     </p:column>
+                    <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.cityName}" />
+                    </p:column>
+                    <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.origin.countryName}" />
+                    </p:column>
 
-                    <p:column headerText="IATA" filterBy="#{route.dest.IATA}" filterMatchMode="contains">
+
+                    <p:column headerText="Destination Airport IATA" filterBy="#{route.dest.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{route.dest.IATA}" />
-                    </p:column>
-                    <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains">
-                        <h:outputText value="#{route.dest.countryName}" />
-                    </p:column>
-                    <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains">
-                        <h:outputText value="#{route.dest.cityName}" />
                     </p:column>
                     <p:column headerText="Specification" filterMatchMode="contains">
                         <h:outputText value="#{route.dest.spec}" />
                     </p:column>
+                    <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.cityName}" />
+                    </p:column>
+                    <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains">
+                        <h:outputText value="#{route.dest.countryName}" />
+                    </p:column>
+
 
                     <p:column headerText="Status" >
                         <h:outputText value="#{route.status}" />
                     </p:column>
 
-                    <p:column headerText="View Detail">
-                        <p:commandButton value="View Detail" actionListener="#{RouteManagedBean.viewRoute(route)}"/>
+                    <p:column headerText="Action">
+                        <p:commandButton ajax="true" value="View Detail" actionListener="#{RouteManagedBean.viewRoute}">
+                            <f:attribute name="route" value="#{route}" />
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>

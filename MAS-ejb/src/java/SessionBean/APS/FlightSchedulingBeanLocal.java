@@ -24,5 +24,9 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightFrequency> getAllFlightFrequency();
 
     public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate);
+
+    public List<FlightFrequency> canDeleteFlightFreqList();
+
+    public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
     
 }

@@ -175,40 +175,25 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public boolean addRoute(String originIATA, String destIATA, Double distance) throws Exception {
-        // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
-        System.out.println("Origin IATA is: " + originIATA);
+    public void checkRouteExist(String originIATA, String destIATA) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
-        if (origin == null) {
-            throw new Exception("Origin airport does not exist.");
-        }
-        if (dest == null) {
-            throw new Exception("Destination airport does not exist.");
-        }
-        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
-        q1.setParameter("origin", origin);
-        q1.setParameter("dest", dest);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest").setParameter("origin", origin).setParameter("dest", dest);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Route has already been added.");
+            throw new Exception("Route " + origin.getIATA() + " - " + dest.getIATA() + " already exist.");
         }
+    }
+
+    @Override
+    public void addRoute(String originIATA, String destIATA, Double distance) throws Exception {
+        // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
+        System.out.println("rpb.addRoute(): Add route " + originIATA + "-" + destIATA);
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
         route = new Route();
         route.create(origin, dest, distance);
         em.persist(route);
         em.flush();
-        return true;
-//        Query q0 = em.createQuery("SELECT a FROM Airport a where a.IATA =:originIATA");
-//        q0.setParameter("originIATA", originIATA);
-//        Query q2 = em.createQuery("SELECT a FROM Airport a where a.IATA =:destIATA");
-//        q2.setParameter("destIATA", destIATA);
-//        if (q0.getResultList().isEmpty()) {
-//            throw new Exception("Origin airport does not exist.");
-//        }
-//        Airport origin = (Airport)q0.getResultList().get(0);
-//        if (q2.getResultList().isEmpty()) {
-//            throw new Exception("Destination airport does not exist.");
-//        }
-//        Airport dest = (Airport)q2.getResultList().get(0);
     }
 
     @Override
@@ -231,6 +216,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     @Override
     public void editRouteFare(String originIATA, String destIATA, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception {
+        System.out.println("rpb.editRouteFare(): passed parameter in.");
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
@@ -240,6 +226,30 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Route does not exist.");
         }
         route = (Route) q1.getResultList().get(0);
+        route.setBasicScFare(basicScFare);
+        route.setBasicBcFare(basicBcFare);
+        route.setBasicEcFare(basicEcFare);
+        route.setBasicFcFare(basicFcFare);
+        route.setBasicPecFare(basicPecFare);
+        em.merge(route);
+        em.flush();
+    }
+
+    @Override
+    public void editRoute(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception {
+        System.out.println("rpb.editRoute(): passed parameter in.");
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
+        q1.setParameter("origin", origin);
+        q1.setParameter("dest", dest);
+        if (q1.getResultList().isEmpty()) {
+            throw new Exception("Route does not exist.");
+        }
+        route = (Route) q1.getResultList().get(0);
+        route.setDistance(distance);
+        route.setAcType(acType);
+        route.setBlockhour(blockhour);
         route.setBasicScFare(basicScFare);
         route.setBasicBcFare(basicBcFare);
         route.setBasicEcFare(basicEcFare);
@@ -270,7 +280,6 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 //    public boolean checkAirportFeasible(Route route, List<AircraftType> actList) {
 //        
 //    }
-
     @Override
     public List<Route> viewAllRoute() {
         Query q1 = em.createQuery("SELECT r FROM Route r");
@@ -296,7 +305,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         route = (Route) q1.getResultList().get(0);
         return route;
     }
-   
+
     @Override
     public void deleteRoute(String originIATA, String destIATA) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
@@ -313,14 +322,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void deleteRouteList(List<Route> routeList) throws Exception{
-        for(Route r: routeList) {
+    public void deleteRouteList(List<Route> routeList) throws Exception {
+        for (Route r : routeList) {
             Query q1 = em.createQuery("SELECT r FROM Route r WHERE r.id=:id").setParameter("id", r.getId());
             em.remove(q1.getSingleResult());
-            }
+        }
         em.flush();
     }
-    
+
     @Override
     public List<Route> canDeleteRouteList() {
         Query q1 = em.createQuery("SELECT r FROM Route r");
