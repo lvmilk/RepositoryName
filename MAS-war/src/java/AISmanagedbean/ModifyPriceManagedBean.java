@@ -22,7 +22,6 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.RowEditEvent;
 
-
 /**
  *
  * @author wang
@@ -38,8 +37,9 @@ public class ModifyPriceManagedBean implements Serializable {
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
     //private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
-    private List<BookingClassInstance> bkiList=new ArrayList<BookingClassInstance>();
+    private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
     private Double price;
+
     /**
      * Creates a new instance of ModifyPriceManagedBean
      */
@@ -119,26 +119,18 @@ public class ModifyPriceManagedBean implements Serializable {
         }
 
     }
-    public void onRowEdit(RowEditEvent event){
-     BookingClassInstance bki= (BookingClassInstance)event.getObject();  
-     mpb.editPrice(bki);
-     FacesMessage msg = new FacesMessage("Fare Edited",((BookingClassInstance)event.getObject()).getBookingClass().getAnnotation()+" Booking Class  Edited");
+
+    public void onRowEdit(RowEditEvent event) {
+        BookingClassInstance bki = (BookingClassInstance) event.getObject();
+        mpb.editPrice(bki, price);
+        FacesMessage msg = new FacesMessage("Fare Edited", ((BookingClassInstance) event.getObject()).getBookingClass().getAnnotation() + " Booking Class  Edited");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-    public void onRowCancel(RowEditEvent event){
-       FacesMessage msg = new FacesMessage("Edit Cancelled",((BookingClassInstance)event.getObject()).getBookingClass().getAnnotation()+" Booking Class Edit Cancelled");
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Edit Cancelled", ((BookingClassInstance) event.getObject()).getBookingClass().getAnnotation() + " Booking Class Edit Cancelled");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-//    public void editPrice(BookingClassInstance bki) {
-//        System.out.println("MPMB:bki.getAnnotation: "+bki.getBookingClass().getAnnotation());
-//        System.out.println("MPMB:Now the price is: " + bki.getPrice());
-//        mpb.editPrice(bki);
-//        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Status", "Deleted");
-//        ////FacesContext.getCurrentInstance().addMessage(null, message);
-//       // RequestContext.getCurrentInstance().showMessageInDialog(message);
-//    }
 
     public String getDate() {
         System.out.println("MPMB:get Date");

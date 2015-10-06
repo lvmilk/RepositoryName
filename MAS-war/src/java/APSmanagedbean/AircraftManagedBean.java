@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -110,6 +111,16 @@ public class AircraftManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftInfo.xhtml");
     }
 
+    public void checkSelect() throws IOException {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (selectedList.isEmpty()) {
+            context.execute("alert('Please select an aircraft to delete. ');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an aircraft to delete. ", ""));
+        } else {
+            context.execute("PF('dlg').show()");
+        }
+    }
+    
     public void confirmDeleteAircraft() throws Exception {
         try {
             if (selectedList.isEmpty()) {
