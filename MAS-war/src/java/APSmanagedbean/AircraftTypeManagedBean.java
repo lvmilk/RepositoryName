@@ -14,6 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.SelectableDataModel;
 
@@ -86,26 +87,22 @@ public class AircraftTypeManagedBean implements Serializable {
 //        }
 //    }
     public void checkSelect() throws IOException {
-        System.out.println("checking anything be selected?!");
+        RequestContext context = RequestContext.getCurrentInstance();
         if (selectedList.isEmpty()) {
-            System.out.println("empty selected list. ");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an Aircraft Type to delete! ", ""));
+            context.execute("alert('Please select an aircraft type to delete. ');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select an aircraft type to delete. ", ""));
         } else {
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeCenter.xhtml");
+            context.execute("PF('dlg').show()");
         }
     }
 
     public void confirmDeleteAircraftType() throws Exception {
         try {
-            if (selectedList.isEmpty()) {
-                System.out.println("empty selected list. ");
-                FacesContext.getCurrentInstance().addMessage("dlg", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please SELECT an aircraft type to delete! ", ""));
-            } else {
                 System.out.println("get the selected list!");
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAircraftType", selectedList);
                 fpb.deleteAircraftTypeList(selectedList);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
-            }
+            
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }

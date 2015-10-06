@@ -43,8 +43,8 @@ public class FleetEstimateManagedBean implements Serializable {
     private Date selectedDate;
     private Date date = new Date();
     private String type;
-    private Integer size;
     private Integer year;
+    private Integer size;
     private Integer aYear;
     boolean visible;
 
@@ -95,34 +95,35 @@ public class FleetEstimateManagedBean implements Serializable {
     private LineChartModel initLinearModel() {
         LineChartModel model = new LineChartModel();
         aircraftList = new ArrayList<>();
-        System.out.println("type list" + typeList);
+        System.out.println("In initLinearModel() type list" + typeList);
         for (int i = 0; i < typeList.size(); i++) {
             year = (Calendar.getInstance().get(Calendar.YEAR)); //got
-            System.out.println("Current year: " + year);
+            System.out.println("initLinearModel() Current year: " + year);
             type = typeList.get(i).getType();
-            System.out.println("In Linear Model: " + type); //got
+            System.out.println("initLinearModel() type: " + type); //got
             aircraftList = fpb.getThisTypeAircraft(type);
-            size = aircraftList.size();
+            size=aircraftList.size();  // in case of IndirectList: not instantiated
             LineChartSeries thisSeries = new LineChartSeries();
-            System.out.println("In Linear Model: " + aircraftList); // got
+            System.out.println("initLinearModel() aircraft list: " + aircraftList); // got
             thisSeries.setLabel(type);
 
             for (int j = 0; j < 20; j++) {
-                for (int q = 0; q < size; q++) { //stop when there is no aircraft for this type
+                for (int q = 0; q < aircraftList.size(); q++) {     //stop when there is no aircraft for this type
+                    System.out.println(q);
                     aYear = Integer.parseInt(aircraftList.get(q).getRetireDate().substring(0, 4)); //retire year
+                    System.out.println(aircraftList.get(q).getRegistrationNo() + " lease ends in " + aYear);
                     if (aYear < year) {
-                        if (size > 0) {
-                            size = size - 1;
-                        } else {
-                            size = 0;
-                        }
-                        System.out.println(type);
-                        System.out.println(year);
-                        System.out.println(size);
+                        if (aircraftList.size() > 0) {
+                            System.out.println(aircraftList.get(q) + " is expirated lease!"); // this one is retired
+                            aircraftList.remove(q); //remove the retired one
+                            q = -1;    // next loop +1 --> back to the first one of the list
+                        } 
+                        System.out.println(type + " " + year + " " + aircraftList.size());
                     }
-                    thisSeries.set(year, size);
+                    thisSeries.set(year, aircraftList.size());
                 }
                 year = year + 1;
+                System.out.println("year passing to " + year);
             }
             model.addSeries(thisSeries);
         }

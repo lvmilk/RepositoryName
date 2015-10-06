@@ -252,7 +252,7 @@ public class AircraftType implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.AircraftType[ id=" + type + " ]";
+        return type;
     }
 
 }
