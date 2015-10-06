@@ -15,6 +15,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -33,6 +34,8 @@ public class EditRouteManagedBean implements Serializable {
     @EJB
     private FleetPlanningBeanLocal fpb;
 
+     private UIComponent uIComponent;
+    
     private Route route;
     private Double distance;
     private Double blockhour;
@@ -58,28 +61,17 @@ public class EditRouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route");
-        System.out.println("editRouteManagedBean: test1");
-        originIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.origin.IATA");
-        System.out.println("editRouteManagedBean: test2");
-        destIATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.dest.IATA");
-        distance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.distance");
-        acType = (AircraftType) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.aircraftType");
-        blockhour = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.blockhour");
-        basicScFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicScFare");
-        basicFcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicFcFare");
-        basicBcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicBcFare");
-        basicPecFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicPecFare");
-        basicEcFare = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route.basicEcFare");
-        System.out.println(route);
-        System.out.println(originIATA);
-        System.out.println(destIATA);
-        System.out.println(distance);
-        System.out.println(acType);
-        System.out.println(blockhour);
-        System.out.println(basicScFare);
-        System.out.println(basicFcFare);
-        System.out.println(basicBcFare);
-        System.out.println(basicPecFare);
+        originIATA = route.getOrigin().getIATA();
+        destIATA = route.getOrigin().getIATA();
+        distance = route.getDistance();
+        acType = route.getAcType();
+        distance = route.getDistance();
+        blockhour = route.getBlockhour();
+        basicScFare = route.getBasicScFare();
+        basicFcFare = route.getBasicFcFare();
+        basicBcFare = route.getBasicBcFare();
+        basicPecFare = route.getBasicPecFare();
+        basicEcFare = route.getBasicEcFare();
     }
 
     public void editRouteBasic() throws Exception {
@@ -218,6 +210,14 @@ public class EditRouteManagedBean implements Serializable {
 
     public void setAcTypeList(List<AircraftType> acTypeList) {
         this.acTypeList = acTypeList;
+    }
+
+    public UIComponent getuIComponent() {
+        return uIComponent;
+    }
+
+    public void setuIComponent(UIComponent uIComponent) {
+        this.uIComponent = uIComponent;
     }
 
 }

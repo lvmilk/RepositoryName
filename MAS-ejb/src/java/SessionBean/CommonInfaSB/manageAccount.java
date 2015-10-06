@@ -34,6 +34,7 @@ public class manageAccount implements manageAccountLocal {
     CockpitCrew cpCrew;
     Agency agency;
     AirAlliances alliance;
+    private UserEntity userEntity;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
     private String hPwd;
@@ -233,7 +234,11 @@ public class manageAccount implements manageAccountLocal {
             em.persist(admStaff);
         } else if (stfType.equals("officeStaff")) {
             offStaff = new OfficeStaff();
+            userEntity = new UserEntity();
             offStaff.create(username, hPwd, email, stfType);
+            userEntity.create(username,email);
+            offStaff.setUser(userEntity);      
+            userEntity.setOffStaff(offStaff);
             em.persist(offStaff);
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
@@ -292,7 +297,7 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited, String emailEdited, String licence, Integer attempt, Integer locked) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited,String email, String emailEdited, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
@@ -308,6 +313,7 @@ public class manageAccount implements manageAccountLocal {
             hPwd = this.encrypt(username, password);
             cpCrew.setCpPassword(hPwd);
         }
+        cpCrew.getUser().setComEmail(emailEdited);
 
         em.merge(cpCrew);
         em.flush();
@@ -352,7 +358,7 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editProfile(String username, String stfType, String pswEdited, String email) {
+    public void editProfile(String username, String stfType, String pswEdited,String email, String emailEdited) {
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
             if (pswEdited.isEmpty()) {
@@ -361,7 +367,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, pswEdited);
                 officeStaff.setOffPassword(hPwd);
             }
-            officeStaff.setEmail(email);
+            officeStaff.setEmail(emailEdited);
+            officeStaff.getUser().setComEmail(emailEdited);
 
             em.merge(officeStaff);
             em.flush();
@@ -373,7 +380,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, pswEdited);
                 grdStaff.setGrdPassword(hPwd);
             }
-            grdStaff.setEmail(email);
+            grdStaff.setEmail(emailEdited);
+            grdStaff.getUser().setComEmail(emailEdited);
 
             em.merge(grdStaff);
             em.flush();
@@ -385,7 +393,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, pswEdited);
                 cbCrew.setCbPassword(hPwd);
             }
-            cbCrew.setEmail(email);
+            cbCrew.setEmail(emailEdited);
+            cbCrew.getUser().setComEmail(emailEdited);
 
             em.merge(cbCrew);
             em.flush();
@@ -397,7 +406,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, pswEdited);
                 cpCrew.setCpPassword(hPwd);
             }
-            cpCrew.setEmail(email);
+            cpCrew.setEmail(emailEdited);
+            cpCrew.getUser().setComEmail(emailEdited);
 
             em.merge(cpCrew);
             em.flush();
@@ -405,11 +415,11 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited, String emailEdited, Integer attempt, Integer locked) {
+    public void editStaff(String username, String stfType, String password, String pswEdited,String email, String emailEdited, Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
-
+            UserEntity userEntity=em.find(UserEntity.class, email);
             officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
             officeStaff.setAttempt(attempt);
@@ -422,7 +432,8 @@ public class manageAccount implements manageAccountLocal {
                 officeStaff.setOffPassword(hPwd);
             }
             officeStaff.setEmail(emailEdited);
-
+            officeStaff.getUser().setComEmail(emailEdited);
+            
             em.merge(officeStaff);
             em.flush();
         } else if (stfType.equals("groundStaff")) {
@@ -440,7 +451,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, password);
                 grdStaff.setGrdPassword(hPwd);
             }
-
+            grdStaff.getUser().setComEmail(emailEdited);
+            
             em.merge(grdStaff);
             em.flush();
 
@@ -459,6 +471,8 @@ public class manageAccount implements manageAccountLocal {
                 hPwd = this.encrypt(username, password);
                 cbCrew.setCbPassword(hPwd);
             }
+            cbCrew.getUser().setComEmail(emailEdited);
+            
             em.merge(cbCrew);
             em.flush();
 

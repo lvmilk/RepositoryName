@@ -2,11 +2,14 @@ package Entity.APS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -46,9 +49,11 @@ public class FlightFrequency implements Serializable {
     // for code share flights
     private String operator;
     private ArrayList<String> codeshare;
+//    private String status;
 
-//    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
-//    private List<FlightInstance> flightList = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
+    private List<FlightInstance> flightList = new ArrayList<>();
+
     public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
         this.flightNo = flightNo;
@@ -65,6 +70,7 @@ public class FlightFrequency implements Serializable {
         this.onSun = onSun;
         this.startDate = startDate;
         this.endDate = endDate;
+//        this.status = "Pending";
     }
 
     public Long getId() {
@@ -75,6 +81,13 @@ public class FlightFrequency implements Serializable {
         this.id = id;
     }
 
+//    public String getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(String status) {
+//        this.status = status;
+//    }
     public Route getRoute() {
         return route;
     }
@@ -118,7 +131,7 @@ public class FlightFrequency implements Serializable {
     public String getEndDate() {
         return endDate;
     }
-    
+
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
@@ -162,7 +175,6 @@ public class FlightFrequency implements Serializable {
 //    public void setEndDate(LocalDate endDate) {
 //        this.endDate = endDate;
 //    }
-
     public Integer getDateAdjust() {
         return dateAdjust;
     }
@@ -242,14 +254,14 @@ public class FlightFrequency implements Serializable {
     public void setCodeshare(ArrayList<String> codeshare) {
         this.codeshare = codeshare;
     }
-//
-//    public List<FlightInstance> getFlightList() {
-//        return flightList;
-//    }
-//
-//    public void setFlightList(List<FlightInstance> flightList) {
-//        this.flightList = flightList;
-//    }
+
+    public List<FlightInstance> getFlightList() {
+        return flightList;
+    }
+
+    public void setFlightList(List<FlightInstance> flightList) {
+        this.flightList = flightList;
+    }
 
     @Override
     public int hashCode() {
@@ -273,7 +285,7 @@ public class FlightFrequency implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.APS.Flight[ id=" + id + " ]";
+        return "" + flightNo + route.toString();
 //        String st = "";
 //        st += this.id + "\t";
 //        st += this.flightNo + "\t";

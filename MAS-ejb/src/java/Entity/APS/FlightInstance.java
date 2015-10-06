@@ -7,10 +7,8 @@ package Entity.APS;
 
 import Entity.aisEntity.FlightCabin;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,53 +22,55 @@ import javax.persistence.OneToMany;
  * @author Xu
  */
 @Entity
-public class FlightInstance implements Serializable{
-     private static final long serialVersionUID = 1L;
+public class FlightInstance implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private FlightFrequency flightFrequency;
-    
     private String date;
     private String opStatus;
-    private String flightStatus;
+    private String flightStatus;  // scheduled/ active/ landed/ cancelled/ diverted/ redirected
     private String estimatedDepTime;
     private String estimatedArrTime;
     private String actualDepTime;
     private String actualArrTime;
-    
+
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
     
     @ManyToOne
+    private FlightFrequency flightFrequency;
+
+    @ManyToOne
     private FlightPackage flightPackage;
 
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="flightInstance")
-    private Collection<FlightCabin> flightCabins=new ArrayList<FlightCabin>();
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
+    private List<FlightCabin> flightCabins = new ArrayList<>();
 
-    public Collection<FlightCabin> getFlightCabins() {
-        return flightCabins;
-    }
-
-    public void setFlightCabins(Collection<FlightCabin> flightCabins) {
-        this.flightCabins = flightCabins;
-    }
-    
-    
-    
-    public void create (FlightFrequency flightFrequency, String date){
+    public void create(FlightFrequency flightFrequency, String date) {
         this.flightFrequency = flightFrequency;
         this.date = date;
-}
-    
+        this.flightStatus = "Scheduled";
+        this.estimatedDepTime = flightFrequency.getScheduleDepTime();
+        this.estimatedArrTime = flightFrequency.getScheduleArrTime();
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public List<FlightCabin> getFlightCabins() {
+        return flightCabins;
+    }
+
+    public void setFlightCabins(List<FlightCabin> flightCabins) {
+        this.flightCabins = flightCabins;
     }
 
     public FlightFrequency getFlightFrequency() {
@@ -152,6 +152,5 @@ public class FlightInstance implements Serializable{
     public void setActualArrTime(String actualArrTime) {
         this.actualArrTime = actualArrTime;
     }
-    
 
 }

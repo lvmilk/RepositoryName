@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Flight Frequency Detail</title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="View Flight Frequency Detail"  style="width:100%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
+
+                    <p:outputLabel value="Flight No: " />
+                    <p:outputLabel value="#{viewFlightFreq.flightNo}" />
+
+                    <p:outputLabel value="Origin Airport " />
+                    <p:outputLabel value="#{viewFlightFreq.route.origin.IATA}, #{viewFlightFreq.route.origin.cityName}, #{viewFlightFreq.route.origin.countryName}" />
+
+                    <p:outputLabel value="Destination Airport " />
+                    <p:outputLabel value="#{viewFlightFreq.route.dest.IATA}, #{viewFlightFreq.route.dest.cityName}, #{viewFlightFreq.route.dest.countryName}" />
+
+                    <p:outputLabel value="Departure Time: " />
+                    <p:outputLabel value="#{viewFlightFreq.scheduleDepTime}" />
+
+                    <p:outputLabel value="Arrival Time: " />
+                    <p:outputLabel value="#{viewFlightFreq.scheduleArrTime}" />
+
+                    <p:outputLabel value="Frequency of the week: " />
+                    <p:panel >
+                        <h:panelGrid columns="2" style="margin-bottom:0px" width="65%" cellpadding="5">
+
+                            <h:outputText value="Monday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onMon}" />
+
+                            <h:outputText value="Tuesday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onTue}" />
+
+                            <h:outputText value="Wednesday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onWed}" />
+
+                            <h:outputText value="Thursday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onThu}" />
+
+                            <h:outputText value="Friday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onFri}" />
+
+                            <h:outputText value="Saturday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onSat}" />
+
+                            <h:outputText value="Sunday" />
+                            <p:selectBooleanCheckbox value="#{viewFlightFreq.onSun}" />
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <p:outputLabel value="Start Operation Date: " />
+                    <p:outputLabel value="#{viewFlightFreq.startDate}" />
+
+                    <p:outputLabel value="Start Operation Date: " />
+                    <p:outputLabel value="#{viewFlightFreq.endDate}" />
+
+                </h:panelGrid>
+
+            </p:panel>
+
+            <p:commandButton value="Back"  action="#{VFFMB.viewFlightFrequencyBack}" icon="ui-icon-carat-1-w" />
+        </h:form>
+    </h:body>
+</html>

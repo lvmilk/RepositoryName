@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Modify Price</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="bkiList" var="bki" value="#{modifyPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
+                <f:facet name="header">
+                    Modify Price
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{modifyPriceManagedBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{modifyPriceManagedBean.onRowCancel}" update=":form:msgs" />
+
+                <p:column headerText="Booking Class Annotation">
+<!--                    <p:cellEditor>-->
+<!--                        <f:facet name="output">-->
+                            <h:outputText value="#{bki.bookingClass.annotation}" />
+                        <!--</f:facet>-->
+<!--                        <f:facet name="input">
+                            <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
+                        </f:facet>-->
+                    <!--</p:cellEditor>-->
+                </p:column>
+
+                <p:column headerText="Seat Count">
+<!--                    <p:cellEditor>-->
+<!--                        <f:facet name="output">-->
+                            <h:outputText value="#{bki.seatNo}" />
+                        <!--</f:facet>-->
+<!--                        <f:facet name="input">
+                            <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
+                        </f:facet>
+                    </p:cellEditor>-->
+                </p:column>
+
+                <p:column headerText="Fare">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{bki.price}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{bki.price}" style="width:100%" label="Fare"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+<!--                <p:column headerText="Booking Class Annotation" sortBy="#{bki.bookingClass.annotation}">
+                    <h:outputText value="#{bki.bookingClass.annotation}" />
+                </p:column>
+                <p:column headerText="Seat Count" sortBy="#{bki.seatNo}">
+                    <h:outputText value="#{bki.seatNo}" />
+                </p:column>
+
+                <p:column headerText="Fare(Enter new fare and click on Edit)" sortBy="#{bki.price}">
+                    <h:outputText value="#{bki.price}" >
+                        <f:convertNumber pattern="#0.00" />
+                    </h:outputText>
+                </p:column>-->
+
+
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</html>

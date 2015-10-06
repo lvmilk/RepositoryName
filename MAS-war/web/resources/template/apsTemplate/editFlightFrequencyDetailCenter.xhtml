@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:body>
+
+        <h:form id="formMain">
+            <p:panel id="panel" header="Flight Frequency Information" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />  
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+
+                    <p:outputLabel value="Route: " />
+                    <p:outputLabel value="#{EFFMB.flightFreq.route}" />
+
+                    <p:outputLabel value="Flight Number: " />
+                    <p:outputLabel value="#{EFFMB.flightFreq.flightNo}"/>
+
+                    <p:outputLabel for="scheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:calendar  id="scheduleDepTime" value="#{EFFMB.depTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight departure time" size="30"/>
+
+                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:calendar  id="scheduleArrTime" value="#{EFFMB.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight arrival time" size="30"/>
+
+                    <p:outputLabel for="dateAdjust" value="Date Adjust: " />
+                    <p:inputText id="dateAdjust" value="#{EFFMB.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter date adjust"  size="30">
+                        <f:validateRegex pattern="[0-9]" />
+                    </p:inputText>
+
+                    <p:outputLabel value="Operation Day of the Week: "/>
+                    <p:panel>
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onMon}" />      
+                            <h:outputText value="Monday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onTue}" />
+                            <h:outputText value="Tuesday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onWed}" />
+                            <h:outputText value="Wednesday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onThu}" />
+                            <h:outputText value="Thursday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onFri}" />
+                            <h:outputText value="Friday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onSat}" />
+                            <h:outputText value="Saturday" />
+
+                            <p:selectBooleanCheckbox value="#{EFFMB.onSun}" />
+                            <h:outputText value="Sunday" />
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <p:outputLabel for="startDate" value="Flight Start Operation Date (yyyy-MM-dd): " />
+                    <p:calendar id="startDate" value="#{EFFMB.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>
+
+                    <p:outputLabel for="endDate" value="Flight End Operation Date (yyyy-MM-dd): " />
+                    <p:calendar id="endDate" value="#{EFFMB.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 
+
+                </h:panelGrid>
+
+                <p:commandButton value="Update" update="@form" actionListener="#{EFFMB.editFlightFrequencyDetail}"  icon="ui-icon-check" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{EFFMB.editFlightFrequencyCancel}"  icon="ui-icon-close" />
+            </p:panel>
+        </h:form>
+
+    </h:body>
+</html>
+
