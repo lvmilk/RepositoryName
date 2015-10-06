@@ -20,9 +20,8 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateful
-public class ModifyPriceBean implements ModifyPriceBeanLocal {
-
-    @PersistenceContext
+public class SeatAllocationBean implements SeatAllocationBeanLocal {
+ @PersistenceContext
     EntityManager em;
 
     private List<FlightFrequency> flightList;
@@ -31,13 +30,12 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
     //private LocalDate date;
 
 // Add business logic below. (Right-click in editor and choose
-    public List<FlightFrequency> getFlightList(String dateString) {
+    public List<FlightFrequency> getFlightList(String date) {
         flightList = new ArrayList<FlightFrequency>();
-        System.out.println("MPB: getFlightList(): date is " + dateString);
-
+        System.out.println("SAB: getFlightList(): date is " + date);
         Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
-        query.setParameter("fdate", dateString);
-        System.out.println("MPB: getFlightList(): flights are " + query.getResultList().toString());
+        query.setParameter("fdate", date);
+        System.out.println("SAB: getFlightList(): flights are " + query.getResultList().toString());
         List<FlightInstance> resultList = query.getResultList();
         for (FlightInstance temp : resultList) {
             if (!flightList.contains(temp.getFlightFrequency())) {
@@ -56,18 +54,13 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         return bkiList;
     }
 
-    public void editPrice(BookingClassInstance bki, Double price) {
-        bki.setPrice(price);
-        System.out.println("MPB: get price is " + bki.getPrice());
+    public void editSeatNo(BookingClassInstance bki,Integer seatNo) {
+        bki.setSeatNo(seatNo);
+        System.out.println("SAB: get price is " + bki.getPrice());
         em.merge(bki);
-        System.out.println("MPB: Price edited!");
+        System.out.println("SAB: Price edited!");
         em.flush();
     }
-//public void editPrice(BookingClassInstance bki){
-//    System.out.println("MPB: get price is "+ bki.getPrice());
-//    em.merge(bki);
-//    System.out.println("MPB: Price edited!");
-//    em.flush();
-//}
-// "Insert Code > Add Business Method")
+    // Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Business Method")
 }
