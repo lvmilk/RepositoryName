@@ -235,6 +235,30 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         em.flush();
     }
 
+    @Override
+    public void editRoute(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception {
+        System.out.println("rpb.editRoute(): passed parameter in.");
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
+        q1.setParameter("origin", origin);
+        q1.setParameter("dest", dest);
+        if (q1.getResultList().isEmpty()) {
+            throw new Exception("Route does not exist.");
+        }
+        route = (Route) q1.getResultList().get(0);
+        route.setDistance(distance);
+        route.setAcType(acType);
+        route.setBlockhour(blockhour);
+        route.setBasicScFare(basicScFare);
+        route.setBasicBcFare(basicBcFare);
+        route.setBasicEcFare(basicEcFare);
+        route.setBasicFcFare(basicFcFare);
+        route.setBasicPecFare(basicPecFare);
+        em.merge(route);
+        em.flush();
+    }
+
     public List<AircraftType> checkFeasibleAc(Route route) {
         Double distance = route.getDistance();
         Query q1 = em.createQuery("SELECT ac FROM AircraftType ac WHERE ac.maxDistance >=:distance").setParameter("distance", distance);
