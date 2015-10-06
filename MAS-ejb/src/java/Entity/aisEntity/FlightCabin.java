@@ -10,6 +10,7 @@ import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class FlightCabin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    Integer bookedSeat;
 
     
     @ManyToOne
@@ -36,13 +38,13 @@ public class FlightCabin implements Serializable {
     private CabinClass cabinClass;
     
     @OneToMany(mappedBy="flightCabin")
-    private Collection<BookingClassInstance> bookingClassInstances=new ArrayList<BookingClassInstance>();
+    private List<BookingClassInstance> bookingClassInstances=new ArrayList<BookingClassInstance>();
 
-    public Collection <BookingClassInstance> getBookingClassInstances() {
+    public List<BookingClassInstance> getBookingClassInstances() {
         return bookingClassInstances;
     }
 
-    public void setBookingClassInstances(Collection<BookingClassInstance> bookingClassInstances) {
+    public void setBookingClassInstances(List<BookingClassInstance> bookingClassInstances) {
         this.bookingClassInstances = bookingClassInstances;
     }
 
@@ -62,7 +64,14 @@ public class FlightCabin implements Serializable {
     public void setFlightInstance(FlightInstance flightInstance) {
         this.flightInstance = flightInstance;
     }
-    
+
+    public Integer getBookedSeat() {
+        return bookedSeat;
+    }
+
+    public void setBookedSeat(Integer bookedSeat) {
+        this.bookedSeat = bookedSeat;
+    }
     
    
     public Long getId() {
