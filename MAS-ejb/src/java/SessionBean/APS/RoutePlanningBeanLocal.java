@@ -64,4 +64,6 @@ public interface RoutePlanningBeanLocal {
 
     public void checkRouteExist(String originIATA, String destIATA) throws Exception;
 
+    public void editRoute(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
+
 }

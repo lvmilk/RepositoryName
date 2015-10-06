@@ -15,6 +15,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
@@ -38,7 +39,7 @@ public class RouteManagedBean implements Serializable {
     private boolean addReturnRoute;
     private Route route;
     private List<Route> routeList = new ArrayList<>();
-    private List<Route> filteredRouteList = new ArrayList<>();
+    private List<Route> filteredRouteList;
     private List<Route> selectedRoute = new ArrayList<>();
     private List<Route> canDeleteRoute = new ArrayList<>();
     private List<Route> deletedRoute = new ArrayList<>();
@@ -80,8 +81,11 @@ public class RouteManagedBean implements Serializable {
         }
     }
 
-    public void viewRoute(Route route) throws IOException {
+    public void viewRoute(ActionEvent event) throws IOException {
         System.out.println("1");
+        
+        route = (Route)event.getComponent().getAttributes().get("route");
+        
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
@@ -136,8 +140,8 @@ public class RouteManagedBean implements Serializable {
 
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
-        for (Airport r : airportList) {
-            airportInfo.put(r.toString(), r.getIATA());
+        for (Airport a : airportList) {
+            airportInfo.put(a.toString(), a.getIATA());
         }
         System.out.println(airportInfo.toString());
         return airportInfo;

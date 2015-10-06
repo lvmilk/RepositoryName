@@ -14,7 +14,10 @@
 
         <h:form>
             <p:panel id="panel" header="View All Route"  style="width:100%">
-                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="40" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" 
+                             rowKey="#{route.id}"
+                             paginator="true" rows="40" emptyMessage="No routes found with given criteria." 
+                             filteredValue="#{RouteManagedBean.filteredRouteList}">
 
                     <!--                    <p:subTable> 
                                             <p:row>
@@ -62,7 +65,9 @@
                     </p:column>
 
                     <p:column headerText="Action">
-                        <p:commandButton value="View Detail" action="#{RouteManagedBean.viewRoute(route)}"/>
+                        <p:commandButton ajax="true" value="View Detail" actionListener="#{RouteManagedBean.viewRoute}">
+                            <f:attribute name="route" value="#{route}" />
+                        </p:commandButton>
                     </p:column>
 
                 </p:dataTable>
