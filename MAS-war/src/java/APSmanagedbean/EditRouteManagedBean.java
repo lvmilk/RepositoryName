@@ -15,6 +15,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -33,6 +34,8 @@ public class EditRouteManagedBean implements Serializable {
     @EJB
     private FleetPlanningBeanLocal fpb;
 
+     private UIComponent uIComponent;
+    
     private Route route;
     private Double distance;
     private Double blockhour;
@@ -62,6 +65,7 @@ public class EditRouteManagedBean implements Serializable {
         destIATA = route.getOrigin().getIATA();
         distance = route.getDistance();
         acType = route.getAcType();
+        distance = route.getDistance();
         blockhour = route.getBlockhour();
         basicScFare = route.getBasicScFare();
         basicFcFare = route.getBasicFcFare();
@@ -206,6 +210,14 @@ public class EditRouteManagedBean implements Serializable {
 
     public void setAcTypeList(List<AircraftType> acTypeList) {
         this.acTypeList = acTypeList;
+    }
+
+    public UIComponent getuIComponent() {
+        return uIComponent;
+    }
+
+    public void setuIComponent(UIComponent uIComponent) {
+        this.uIComponent = uIComponent;
     }
 
 }

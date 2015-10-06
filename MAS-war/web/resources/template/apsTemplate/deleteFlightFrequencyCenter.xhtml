@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Delete Flight Frequency</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+
+            <p:panel id="panel" header="Delete Flight Frequency"  style="width:100%">
+                <p:messages id="msgs" />
+                <p:dataTable var="flightF" rowKey ="#{flightF.id}" selection="#{DFFMB.selectedFlightFreq}" value="#{DFFMB.canDeleteFlightFreq}" paginator="true" rows="10" emptyMessage="No flight frequencies can be deleted.">
+
+                    <p:ajax event="rowSelectCheckbox" />  
+
+                    <f:facet name="header">  
+                        Flight Frequency List (Only flight frequencies that can be deleted are shown.)
+                    </f:facet>  
+
+                    <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
+
+                    <p:column headerText="Flight No." sortBy="#{flightF.flightNo}">
+                        <h:outputText value="#{flightF.flightNo}" />
+                    </p:column>
+                    <p:column headerText="Origin Airport">
+                        <h:outputText value="#{flightF.route.origin}" />
+                    </p:column>
+                    <p:column headerText="Destination Airport">
+                        <h:outputText value="#{flightF.route.dest}" />
+                    </p:column>
+                    <p:column headerText="Departure Time">
+                        <h:outputText value="#{flightF.scheduleDepTime}" />
+                    </p:column>
+                    <p:column headerText="Arrival Time">
+                        <h:outputText value="#{flightF.scheduleArrTime}" />
+                    </p:column>
+                    <p:column headerText="Date Adjust">
+                        <h:outputText value="#{flightF.dateAdjust}" />
+                    </p:column>
+                    <p:column headerText="Monday">
+                        <h:outputText value="Yes" rendered="#{flightF.onMon}" />
+                    </p:column>
+                    <p:column headerText="Tuesday">
+                        <h:outputText value="Yes" rendered="#{flightF.onTue}" />
+                    </p:column>
+                    <p:column headerText="Wednesday">
+                        <h:outputText value="Yes" rendered="#{flightF.onWed}" />
+                    </p:column>
+                    <p:column headerText="Thursday">
+                        <h:outputText value="Yes" rendered="#{flightF.onThu}" />
+                    </p:column>
+                    <p:column headerText="Friday">
+                        <h:outputText value="Yes" rendered="#{flightF.onFri}" />
+                    </p:column>
+                    <p:column headerText="Saturday">
+                        <h:outputText value="Yes" rendered="#{flightF.onSat}" />
+                    </p:column>
+                    <p:column headerText="Sunday">
+                        <h:outputText value="Yes" rendered="#{flightF.onSun}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:commandButton value="Delete" action="#{DFFMB.toDeleteFlightFreq}" icon="ui-icon-check"/>
+            </p:panel> 
+
+            <h:form id="dialogForm">
+                <p:dialog id="dlg" header="Delete Flight Frequency" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:outputText value="Delete flight frequency "/> <ui:repeat var="f" value="#{DFFMB.selectedFlightFreq}"> <h:outputText value="#{f.flightNo} "/> </ui:repeat> <h:outputText value="?"/>
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  update="" action="#{DFFMB.confirmDeleteFlightFreq}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
+        </h:form>
+
+    </h:body>
+</html>
+

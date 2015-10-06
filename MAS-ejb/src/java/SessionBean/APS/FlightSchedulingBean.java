@@ -105,4 +105,30 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.flush();
         System.out.println("fsb.editFlightFrequency(): Flight frequency updated!");
     }
+
+    @Override
+    public List<FlightFrequency> canDeleteFlightFreqList() {
+        Query q1 = em.createQuery("SELECT f FROM FlightFrequency f");
+        List<FlightFrequency> fList = q1.getResultList();
+        List<FlightFrequency> fListCopy = q1.getResultList();
+        FlightFrequency f = new FlightFrequency();
+        for (int i = 0; i < fList.size(); i++) {
+            f = fList.get(i);
+            Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.flightFrequency=:flightFrequency").setParameter("flightFrequency", f);
+            if (!q2.getResultList().isEmpty()) {
+//                System.out.println(ap.toString());
+                fListCopy.remove(f);
+            }
+        }
+        return fListCopy;
+    }
+
+    @Override
+    public void deleteFlightFreqList(List<FlightFrequency> flightFreqList) {
+        for (FlightFrequency f : flightFreqList) {
+            Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.id=:id").setParameter("id", f.getId());
+            em.remove(q1.getSingleResult());
+        }
+        em.flush();
+    }
 }

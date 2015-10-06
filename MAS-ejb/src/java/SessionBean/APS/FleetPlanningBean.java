@@ -283,6 +283,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         return aircraftList;
     }
 
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate,

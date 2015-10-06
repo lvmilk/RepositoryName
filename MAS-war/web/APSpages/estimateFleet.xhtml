@@ -17,12 +17,11 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
+            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
-
-                Successfully deleted airport <ui:repeat var="airport" value="#{deletedAirport}"> <h:outputText value="#{airport.IATA} "/> </ui:repeat> !
-                <p:commandButton value="Back"  action="#{AirportManagedBean.deleteAirportBack()}" />
-
+                <ui:include src="./../resources/template/apsTemplate/estimateFleetCenter.xhtml"></ui:include>
             </ui:define>
         </ui:decorate>
     </h:body>

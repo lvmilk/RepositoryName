@@ -20,8 +20,8 @@
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
-                Successfully deleted airport <ui:repeat var="airport" value="#{deletedAirport}"> <h:outputText value="#{airport.IATA} "/> </ui:repeat> !
-                <p:commandButton value="Back"  action="#{AirportManagedBean.deleteAirportBack()}" />
+                Successfully deleted route <ui:repeat var="route" value="#{deletedRoute}"> <h:outputText value="#{route.toString} "/> </ui:repeat> !
+                <p:commandButton value="Back"  action="#{RouteManagedBean.deleteRouteBack()}" />
 
             </ui:define>
         </ui:decorate>
