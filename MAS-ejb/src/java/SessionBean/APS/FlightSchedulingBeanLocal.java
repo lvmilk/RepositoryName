@@ -5,8 +5,9 @@
  */
 package SessionBean.APS;
 
-import Entity.APS.Airport;
+import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
+import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,6 +31,12 @@ public interface FlightSchedulingBeanLocal {
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
 
-    public List<FlightFrequency> getFlightOfRoute(Route route);
+    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
+
+    public Aircraft getAircraft(Long id);
+
+    public List<FlightInstance> getAllFlightInstance();
+
+    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
     
 }
