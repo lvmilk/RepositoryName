@@ -28,7 +28,7 @@ public class FlightCabin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    Integer bookedSeat;
+    Integer bookedSeat =0;
 
     
     @ManyToOne

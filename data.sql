@@ -1,5 +1,5 @@
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo) values("A380","Airbus",100,100,100,100,100,"4E",6,10,20,50,300)
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo) values("777-300","Boeing",200,200,200,200,200,"4F",3,20,50,100,200)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo) values("A380","Airbus",100,100000,100,100,100,"4E",6,10,20,50,300)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo) values("777-300","Boeing",200,200000,200,200,200,"4F",3,20,50,100,200)
 
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("SIN","Changi","Singapore","Singapore","spec1","UTC+08:00","opstatus1","strlevel1","4E")
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("XIA","Xianyang","Xi'an","China","spec2","UTC+08:00","opstatus2","strlevel2","4F")
@@ -51,11 +51,11 @@ INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (50000,10000,50000)
 
 
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (60000,20000,60000)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (70000,20000,70000)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (80000,20000,80000)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (90000,20000,90000)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (100000,20000,100000)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (60000,20000,60000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (70000,20000,70000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (80000,20000,80000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (90000,20000,90000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (100000,20000,100000,0)
 
 
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(10000,'S','Suite',1)
