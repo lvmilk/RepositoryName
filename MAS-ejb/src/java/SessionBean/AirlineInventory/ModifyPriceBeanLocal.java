@@ -22,5 +22,5 @@ public interface ModifyPriceBeanLocal {
 
     public List<BookingClassInstance> getBkiList(String flightNo, String date);
 
-    public void editPrice(BookingClassInstance bki);
+    public void editPrice(BookingClassInstance bki,Double price);
 }

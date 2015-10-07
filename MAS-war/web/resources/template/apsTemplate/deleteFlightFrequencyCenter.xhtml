@@ -15,14 +15,14 @@
 
         <h:form>
 
-            <p:panel id="panel" header="Delete Flight Frequency"  style="width:100%">
+            <p:panel id="panel" header="Delete Flight Frequency (Only flight frequency/ies that can be deleted are shown.)"  style="width:100%">
                 <p:messages id="msgs" />
                 <p:dataTable var="flightF" rowKey ="#{flightF.id}" selection="#{DFFMB.selectedFlightFreq}" value="#{DFFMB.canDeleteFlightFreq}" paginator="true" rows="10" emptyMessage="No flight frequencies can be deleted.">
 
                     <p:ajax event="rowSelectCheckbox" />  
 
                     <f:facet name="header">  
-                        Flight Frequency List (Only flight frequencies that can be deleted are shown.)
+                        Flight Frequency List
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
