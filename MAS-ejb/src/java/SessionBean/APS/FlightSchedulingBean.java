@@ -37,8 +37,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString) throws Exception {
-
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString,
+            String sDate, String fDate) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
@@ -56,7 +56,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
 
         flightFreq = new FlightFrequency();
-        flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
+        flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sDate, fDate);
         em.persist(flightFreq);
         Route r = em.find(Route.class, route.getId());
         r.setStatus("Serving");
@@ -141,6 +141,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (aircraft == null) {
             throw new Exception("Aircraft is not existed!");
         }
+
         flightInst = new FlightInstance();
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
         flightInst.setFlightFrequency(flightFrequency);
@@ -171,7 +172,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         aircraft = flightInst.getAircraft();
         return aircraft;
     }
-    
 
     @Override
     public List<FlightInstance> getAllFlightInstance() {
