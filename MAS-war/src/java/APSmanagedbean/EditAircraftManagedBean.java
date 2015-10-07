@@ -69,14 +69,14 @@ public class EditAircraftManagedBean implements Serializable {
 
     public void editAircraft() throws Exception {
         try {
-            if (firstFlyDate.after(deliveryDate) && retireDate.after(firstFlyDate)) {
+            if (firstFlyDate.before(deliveryDate) && retireDate.after(deliveryDate)) {
                 String ffd = df.format(firstFlyDate);
                 String dd = df.format(deliveryDate);
                 String rd = df.format(retireDate);
                 fpb.editAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftDone.xhtml");
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (delivery date < first fly date < lease expiration date)"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
