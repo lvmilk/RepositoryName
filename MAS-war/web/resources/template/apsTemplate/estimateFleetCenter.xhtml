@@ -12,8 +12,8 @@
     <h:body>
         <h:form id="display">
             <p:growl id="msgs" showDetail="true" />
-            <p:panel id="title" header="Fleet Structure Estimation" footer="Note: This estimation lasts the longest 20 years until there is no aircraft available." style="margin-bottom:20px">
-<!--                <h:panelGrid columns="2" cellpadding="5">
+            <p:panel id="title" header="Fleet Structure Estimation"  style="margin-bottom:20px">
+                <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel for="date" value="Choose a date: " />
                     <p:calendar id="date" value="#{FEMB.selectedDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the date" size="20"/>
                     <p:outputLabel for="type" value="Choose an aircraft type:" />
@@ -22,11 +22,21 @@
                     </p:selectOneMenu>
                     <p:commandButton value="Submit" ajax="false" update="msgs" actionListener="#{FEMB.chooseFleet()}" icon="ui-icon-check" onclick="detail.show();">
                     </p:commandButton>
-                </h:panelGrid>-->
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="Fleet Available on the chosen date: " style="font-size: 30px;font-weight: bold;"/>
+                    <p:outputLabel value="#{FEMB.registrationList}"/>
+                    
+                    <p:outputLabel value="Fleet Size on the chosen date: " style="font-size: 30px;font-weight: bold;"/>
+                    <p:outputLabel value="#{FEMB.registrationList.size()}"/>
+                </h:panelGrid>
+            </p:panel>
+            <p:panel id="chart" footer="Note: This estimation lasts the longest 20 years until there is no aircraft available.">
                 <h:panelGrid columns="1" columnClasses="center" style="width:300%; height:500%">
                     <p:chart type="line" model="#{FEMB.animatedModel}" style="height: 500px; width:1100px;" />
                 </h:panelGrid>
             </p:panel>
+
         </h:form>
 
 
