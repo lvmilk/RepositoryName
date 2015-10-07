@@ -5,6 +5,7 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -29,6 +30,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     FlightFrequency flightFreq;
     FlightInstance flightInst;
+    Aircraft aircraft;
 
     public FlightSchedulingBean() {
     }
@@ -131,4 +133,56 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         em.flush();
     }
+
+//////////////////////////////////////////////////////////////////////////
+    @Override
+    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+        aircraft = em.find(Aircraft.class, registrationNo);
+        if (aircraft == null) {
+            throw new Exception("Aircraft is not existed!");
+        }
+        flightInst = new FlightInstance();
+        flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
+        flightInst.setFlightFrequency(flightFrequency);
+        flightInst.setAircraft(aircraft);
+        em.persist(flightInst);
+        em.flush();
+        flightFrequency.getFlightList().add(flightInst);
+        aircraft.getFlightInstance().add(flightInst);
+        em.merge(flightInst);
+        em.flush();
+    }
+
+    @Override
+    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+        flightInst.setFlightStatus(flightStatus);
+        flightInst.setEstimatedDepTime(estimatedDepTime);
+        flightInst.setEstimatedArrTime(estimatedArrTime);
+        flightInst.setActualDepTime(actualDepTime);
+        flightInst.setActualArrTime(actualArrTime);
+        flightInst.setFlightFrequency(flightFrequency);
+        em.merge(flightInst);
+        em.flush();
+    }
+
+    @Override
+    public Aircraft getAircraft(Long id) {
+        flightInst = em.find(FlightInstance.class, id);
+        aircraft = flightInst.getAircraft();
+        return aircraft;
+    }
+    
+
+    @Override
+    public List<FlightInstance> getAllFlightInstance() {
+        Query q1 = em.createQuery("SELECT fi FROM FlightInstance fi");
+        List<FlightInstance> flightInstList = q1.getResultList();
+        if (flightInstList.isEmpty()) {
+            System.out.println("flightInstList: No flight instance.");
+        } else {
+            System.out.println("flightInstList got");
+        }
+        return flightInstList;
+    }
+
 }

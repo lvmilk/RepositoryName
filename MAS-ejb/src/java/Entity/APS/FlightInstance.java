@@ -19,7 +19,7 @@ import javax.persistence.OneToMany;
 
 /**
  *
- * @author Xu
+ * @author Xu/Lu Xi
  */
 @Entity
 public class FlightInstance implements Serializable {
@@ -30,8 +30,9 @@ public class FlightInstance implements Serializable {
     private Long id;
 
     private String date;
-    private String opStatus;
     private String flightStatus;  // scheduled/ active/ landed/ cancelled/ diverted/ redirected
+
+    //will be modified later
     private String estimatedDepTime;
     private String estimatedArrTime;
     private String actualDepTime;
@@ -39,7 +40,7 @@ public class FlightInstance implements Serializable {
 
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
-    
+
     @ManyToOne
     private FlightFrequency flightFrequency;
 
@@ -49,12 +50,14 @@ public class FlightInstance implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
 
-    public void create(FlightFrequency flightFrequency, String date) {
+    public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) {
         this.flightFrequency = flightFrequency;
         this.date = date;
         this.flightStatus = "Scheduled";
-        this.estimatedDepTime = flightFrequency.getScheduleDepTime();
-        this.estimatedArrTime = flightFrequency.getScheduleArrTime();
+        this.estimatedDepTime = estimatedDepTime;
+        this.estimatedArrTime = estimatedArrTime;
+        this.actualDepTime = actualDepTime;
+        this.actualArrTime = actualArrTime;
     }
 
     public Long getId() {
@@ -81,13 +84,6 @@ public class FlightInstance implements Serializable {
         this.flightFrequency = flightFrequency;
     }
 
-    public String getOpStatus() {
-        return opStatus;
-    }
-
-    public void setOpStatus(String opStatus) {
-        this.opStatus = opStatus;
-    }
 
     public String getFlightStatus() {
         return flightStatus;
