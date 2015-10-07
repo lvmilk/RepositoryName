@@ -33,6 +33,15 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
     
+    //number of cabin crew
+    private Integer stewardess; //cabin female
+    private Integer steward; //cabin male
+    private Integer purser; //cabin master
+   //number of cockpit crew
+    private Integer captain; 
+    private Integer pilot; //1st officer
+    
+    
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private List<Aircraft> aircraft = new ArrayList<>();
 //    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
@@ -44,7 +53,7 @@ public class AircraftType implements Serializable {
     private List<CabinClass> cabinList = new ArrayList<CabinClass>();
 
     public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser,Integer captain,Integer pilot) {
 
         this.setType(type);
         this.setManufacturer(manufacturer);
@@ -59,6 +68,11 @@ public class AircraftType implements Serializable {
         this.setBcSeatNo(bcSeatNo);
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
+        this.setStewardess(stewardess);
+        this.setSteward(steward);
+        this.setPurser(purser);
+        this.setCaptain(captain);
+        this.setPilot(pilot);
 
     }
 
@@ -176,6 +190,47 @@ public class AircraftType implements Serializable {
         this.ecSeatNo = ecSeatNo;
     }
 
+    public Integer getStewardess() {
+        return stewardess;
+    }
+
+    public void setStewardess(Integer stewardess) {
+        this.stewardess = stewardess;
+    }
+
+    public Integer getSteward() {
+        return steward;
+    }
+
+    public void setSteward(Integer steward) {
+        this.steward = steward;
+    }
+
+    public Integer getPurser() {
+        return purser;
+    }
+
+    public void setPurser(Integer purser) {
+        this.purser = purser;
+    }
+
+    public Integer getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Integer captain) {
+        this.captain = captain;
+    }
+
+    public Integer getPilot() {
+        return pilot;
+    }
+
+    public void setPilot(Integer pilot) {
+        this.pilot = pilot;
+    }
+
+    
     public List<Route> getRouteMatchList() {
         return routeMatchList;
     }

@@ -67,8 +67,7 @@ public class FlightManagedBean implements Serializable {
     private boolean onFri;
     private boolean onSat;
     private boolean onSun;
-    private Date sDate;
-    private Date fDate;
+
 
     // for code share flights
     private String operator;
@@ -97,8 +96,9 @@ public class FlightManagedBean implements Serializable {
                 Format formatter = new SimpleDateFormat("yyyy-MM-dd");
                 startDateString = formatter.format(startDate);
                 endDateString = formatter.format(endDate);
-                String sd=formatter.format(sDate);
-                String fd=formatter.format(fDate);
+                //default value for checking
+                String sd="1900-01-01";
+                String fd="1900-01-01";
                 Format formatter2 = new SimpleDateFormat("HH:mm");
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);
@@ -364,24 +364,4 @@ public class FlightManagedBean implements Serializable {
     public void setCodeshare(List<String> codeshare) {
         this.codeshare = codeshare;
     }
-
-    public Date getsDate() {
-        return sDate;
-    }
-
-    public void setsDate(Date sDate) {
-        this.sDate = sDate;
-    }
-
-    public Date getfDate() {
-        return fDate;
-    }
-
-    public void setfDate(Date fDate) {
-        this.fDate = fDate;
-    }
-
-
-    
-
 }
