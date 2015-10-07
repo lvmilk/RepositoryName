@@ -7,6 +7,7 @@ package AISmanagedbean;
 
 import Entity.APS.FlightFrequency;
 import Entity.aisEntity.BookingClassInstance;
+import Entity.aisEntity.FlightCabin;
 import SessionBean.AirlineInventory.SeatAllocationBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -51,7 +52,7 @@ public class SeatAllocationMangagedBean implements Serializable {
         }
         System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
     }
-    
+
 //    public Integer getRequiredCount(){
 //        int temp=0;
 //       for (int i = 0; i < bkiList.size(); i++) {
@@ -59,12 +60,10 @@ public class SeatAllocationMangagedBean implements Serializable {
 //        }
 //    }
 //    
-    
-    
     public Integer getAllocateSeatNo() {
         return allocateSeatNo;
     }
-     
+
     public void setAllocateSeatNo(Integer allocateSeatNo) {
         this.allocateSeatNo = allocateSeatNo;
     }
@@ -96,24 +95,39 @@ public class SeatAllocationMangagedBean implements Serializable {
     }
 
     public List<BookingClassInstance> getBkiList() {
-        
+
         bkiList = sab.getBkiList(flightNo, date);
         System.out.println("SAMB: getBkiList().size: " + bkiList.size());
         System.out.println("Flag: initial: " + this.flag);
-
-        for (int i = 0; i < bkiList.size(); i++) {
-            System.out.println("Flag " + i + " = " + this.flag);
-            if (flag) {
-                System.out.println("SAMB: getBkiList():bkiList.get(i).getSeatNo() :" + bkiList.get(i).getSeatNo());
-                System.out.println("SAMB: getBkiList():bkiList.get(i).getBookedSeatNo() :" + bkiList.get(i).getBookedSeatNo());
-                totalAvailableSeat = totalAvailableSeat + (bkiList.get(i).getSeatNo() - bkiList.get(i).getBookedSeatNo());
+        if (flag) {
+            for (FlightCabin cc : bkiList.get(0).getFlightCabin().getFlightInstance().getFlightCabins()) {
+                totalAvailableSeat = totalAvailableSeat + cc.getCabinClass().getSeatCount() - cc.getBookedSeat();
             }
+            this.flag = false;
         }
-        
-        this.flag = false;
         return bkiList;
     }
 
+//       public List<BookingClassInstance> getBkiList() {
+//
+//        bkiList = sab.getBkiList(flightNo, date);
+//        System.out.println("SAMB: getBkiList().size: " + bkiList.size());
+//        System.out.println("Flag: initial: " + this.flag);
+//        //totalAvailableSeat=bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount()-bkiList.get(0).getFlightCabin().getBookedSeat();
+//        for (int i = 0; i < bkiList.size(); i++) {
+//            System.out.println("Flag " + i + " = " + this.flag);
+//            if (flag) {
+//                System.out.println("SAMB: getBkiList():bkiList.get(i).getSeatNo() :" + bkiList.get(i).getFlightCabin().getCabinClass().getSeatCount());
+//                System.out.println("SAMB: getBkiList():bkiList.get(i).getBookedSeatNo() :" + bkiList.get(i).getFlightCabin().getBookedSeat());
+//                totalAvailableSeat = totalAvailableSeat + (bkiList.get(i).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(i).getFlightCabin().getBookedSeat());
+//            }
+//        }
+//
+//      
+//        this.flag = false;
+//
+//        return bkiList;
+//    }
     public void setBkiList(List<BookingClassInstance> bkiList) {
         this.bkiList = bkiList;
     }
@@ -167,6 +181,8 @@ public class SeatAllocationMangagedBean implements Serializable {
     }
 
     public void onRowEdit(RowEditEvent event) {
+        System.out.println("SAMB:onRowEdit():ENTER!!! ");
+
         BookingClassInstance bki = (BookingClassInstance) event.getObject();
         Integer currentAvailable = this.getCurrentTotalAvailableSeat() - bki.getSeatNo() + bki.getBookedSeatNo() + allocateSeatNo;
         System.out.println("SAMB:onRowEdit(): currentAvailable: " + currentAvailable);
