@@ -64,6 +64,10 @@ public interface RoutePlanningBeanLocal {
 
     public void checkRouteExist(String originIATA, String destIATA) throws Exception;
 
-    public List<AircraftType> checkFeasibleAc(Route route);
+    public List<AircraftType> checkFeasibleAcByDis(Route route);
+
+    public List<AircraftType> checkFeasibleAcByAsp(Route route);
+
+    public List<AircraftType> feasibleAc(Route route);
 
 }

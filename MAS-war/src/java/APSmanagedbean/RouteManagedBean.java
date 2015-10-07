@@ -139,11 +139,11 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
     }
 
-//    public boolean checkRouteFeasibility(Route route) {
-//
-//
-//       
-//    }
+    public void checkRouteProfitability(Route route) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+    }
+
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
         for (Airport a : airportList) {
