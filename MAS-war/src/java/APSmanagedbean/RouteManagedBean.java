@@ -1,17 +1,23 @@
 package APSmanagedbean;
 
+import Entity.APS.Airport;
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
+import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
@@ -26,6 +32,9 @@ public class RouteManagedBean implements Serializable {
     @EJB
     private RoutePlanningBeanLocal rpb;
 
+    @EJB
+    private FlightSchedulingBeanLocal fsb;
+
     private UIComponent uIComponent;
 
     private Double distance;
@@ -35,10 +44,13 @@ public class RouteManagedBean implements Serializable {
     private boolean addReturnRoute;
     private Route route;
     private List<Route> routeList = new ArrayList<>();
-    private List<Route> filteredRouteList = new ArrayList<>();
+    private List<Route> filteredRouteList;
+    private List<FlightFrequency> flightOfRoute;
     private List<Route> selectedRoute = new ArrayList<>();
     private List<Route> canDeleteRoute = new ArrayList<>();
     private List<Route> deletedRoute = new ArrayList<>();
+    private List<Airport> airportList = new ArrayList<>();
+    private Map<String, String> airportInfo = new HashMap<String, String>();
 
     public RouteManagedBean() {
     }
@@ -51,31 +63,38 @@ public class RouteManagedBean implements Serializable {
 
     public void addRoute() throws Exception {
         try {
-            rpb.addRoute(originIATA, destIATA, distance);
-            String rt = originIATA + " - " + destIATA;
-            String rtNum = "Route ";
-            if (addReturnRoute) {
-                rpb.addRoute(destIATA, originIATA, distance);
-                rt += " ," + destIATA + " - " + originIATA;
-                rtNum = "Routes ";
+            if (originIATA.equals(destIATA)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : origin airport cannot be same as destination airport.", ""));
+            } else {
+                rpb.checkRouteExist(originIATA, destIATA);
+                if (addReturnRoute) {
+                    rpb.checkRouteExist(destIATA, originIATA);
+                }
+                rpb.addRoute(originIATA, destIATA, distance);
+                String rt = originIATA + " - " + destIATA;
+                String rtNum = "Route ";
+                if (addReturnRoute) {
+                    rpb.addRoute(destIATA, originIATA, distance);
+                    rt += " ," + destIATA + " - " + originIATA;
+                    rtNum = "Routes ";
+                }
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("addRouteSuccessString", rtNum + rt);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./addRouteSuccess.xhtml");
             }
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("addRouteSuccessString", rtNum + rt);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRouteSuccess.xhtml");
         } catch (Exception ex) {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route has already been added.", ""));
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
-    public void viewRoute(Route route) throws IOException {
+    public void viewRoute(ActionEvent event) throws IOException {
         System.out.println("1");
+        route = (Route) event.getComponent().getAttributes().get("route");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
-        // have not set serving aircraft yet
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("acType", route.getAcType().getType());
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("blockhour", route.getBlockhour());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", route.getStatus());
         System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
     }
@@ -84,9 +103,9 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRoute.xhtml");
     }
 
-    public void editRoute(Route route) throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("route", route);
-        System.out.println("rmb.editRoute(): Route " + route.getId() + " information will be updated. ");
+    public void editRoute(Route r) throws Exception {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("route", r);
+        System.out.println("rmb.editRoute(): Route " + r.getId() + " information will be updated. ");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteDetail.xhtml");
     }
 
@@ -103,7 +122,7 @@ public class RouteManagedBean implements Serializable {
 
     public void confirmDeleteRoute() throws Exception {
         try {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedRoute", deletedRoute);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedRoute", selectedRoute);
             rpb.deleteRouteList(selectedRoute);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRouteSuccess.xhtml");
         } catch (Exception ex) {
@@ -114,11 +133,37 @@ public class RouteManagedBean implements Serializable {
     public void deleteRouteBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRoute.xhtml");
     }
+
+    public void checkRouteFeasibility(Route route) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
+    }
+
 //    public boolean checkRouteFeasibility(Route route) {
-//       
-//       
+//
+//
 //       
 //    }
+    public Map<String, String> getAirportInfo() {
+        airportList = getAirportList();
+        for (Airport a : airportList) {
+            airportInfo.put(a.toString(), a.getIATA());
+        }
+        System.out.println(airportInfo.toString());
+        return airportInfo;
+    }
+
+    public void setAirportInfo(Map<String, String> airportInfo) {
+        this.airportInfo = airportInfo;
+    }
+
+    public List<Airport> getAirportList() {
+        return rpb.viewAllAirport();
+    }
+
+    public void setAirportList(List<Airport> airportList) {
+        this.airportList = airportList;
+    }
 
     public List<Route> getRouteList() {
         routeList = rpb.viewAllRoute();
@@ -216,6 +261,14 @@ public class RouteManagedBean implements Serializable {
 
     public void setCanDeleteRoute(List<Route> canDeleteRoute) {
         this.canDeleteRoute = canDeleteRoute;
+    }
+//
+//    public List<FlightFrequency> getFlightOfRoute(Route route) {
+//        return fsb.getFlightOfRoute(route);
+//    }
+
+    public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
+        this.flightOfRoute = flightOfRoute;
     }
 
 }

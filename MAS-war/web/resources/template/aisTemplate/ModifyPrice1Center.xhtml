@@ -24,9 +24,9 @@
                     <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
                     <p:outputLabel for="flight" value="Flight :" />
-                    <p:selectOneMenu id="flight" value="#{modifyPriceManagedBean.flightNo}" required="true" requiredMessage="Please select a route" style="width:250px">
-                        <f:selectItem itemLabel="Select One Flight" itemValue="#{null}" />
-                        <f:selectItems value="#{modifyPriceManagedBean.flightList}" var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                    <p:selectOneMenu id="flight" value="#{modifyPriceManagedBean.flightNo}" style="width:250px">
+                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{modifyPriceManagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
                     </p:selectOneMenu>
 
                    
@@ -36,7 +36,7 @@
 
         </h:form>
 
-
+        
 
 
 

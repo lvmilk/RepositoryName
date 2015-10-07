@@ -6,6 +6,7 @@
 package SessionBean.AirlineInventory;
 
 import Entity.APS.FlightFrequency;
+import Entity.aisEntity.BookingClassInstance;
 import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.Local;
@@ -16,5 +17,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface ModifyPriceBeanLocal {
+
     public List<FlightFrequency> getFlightList(String dateString);
+
+    public List<BookingClassInstance> getBkiList(String flightNo, String date);
+
+    public void editPrice(BookingClassInstance bki,Double price);
 }

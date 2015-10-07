@@ -7,33 +7,69 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
 
-
-    <h:head>
-        <title>Edit Route</title>
-    </h:head>
     <h:body>
         <h:form>
 
             <p:panel id="panel" header="All Route"  style="width:100%">
-                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="20" emptyMessage="No routes found.">
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="20" rowKey="#{route.id}" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
 
-                    <p:column headerText="Route Id">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Route Id" />
+                            <p:column colspan="4" headerText="Origin Airport" />
+                            <p:column colspan="4" headerText="Destination Airport" />
+                            <p:column rowspan="2" headerText="Distance" sortBy="#{route.distance}"/>
+                            <p:column rowspan="2" headerText="Status" />
+                            <p:column rowspan="2" headerText="Action" />
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
+                            <p:column headerText="Specification" filterBy="#{route.origin.airportName}" filterMatchMode="contains"/>
+                            <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains"/>
+                            <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains"/>
+                            <p:column headerText="IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}" filterMatchMode="contains"/>
+                            <p:column headerText="Specification" filterBy="#{route.dest.spec}" filterMatchMode="contains"/>
+                            <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains"/>
+                            <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
                         <h:outputText value="#{route.id}" />
                     </p:column>
-                    <p:column headerText="Origin IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}">
+                    <p:column>
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
-                    <p:column headerText="Destination IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}">
-                        <h:outputText value="#{route.dest.IATA}" />
+                    <p:column>
+                        <h:outputText value="#{route.origin.airportName}" />
                     </p:column>
-                    <p:column headerText="Distance" sortBy="#{route.distance}">
-                        <h:outputText value="#{route.distance}" />
+                    <p:column>
+                        <h:outputText value="#{route.origin.cityName}" />
                     </p:column>
-                    <p:column headerText="Status" >
-                        <h:outputText value="#{route.status}" />
+                    <p:column>
+                        <h:outputText value="#{route.origin.countryName}" />
                     </p:column>
 
-                    <p:column headerText="Edit">
+                    <p:column>
+                        <h:outputText value="#{route.dest.IATA}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{route.dest.spec}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{route.dest.cityName}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{route.dest.countryName}" />
+                    </p:column>
+
+                    <p:column>
+                        <h:outputText value="#{route.distance}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{route.status}" />
+                    </p:column>
+                    <p:column>
                         <p:commandButton value="Edit" action="#{RouteManagedBean.editRoute(route)}"  />
                     </p:column>
 

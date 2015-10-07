@@ -27,7 +27,30 @@ public class BookingClassInstance implements Serializable {
     private FlightCabin flightCabin;
     private Double price;
     private Integer seatNo;
+    private Integer bookedSeatNo=0; //set default value =0
+    
+     @ManyToOne
+    private BookingClass bookingClass;
 
+    public Integer getBookedSeatNo() {
+        return bookedSeatNo;
+    }
+
+    public void setBookedSeatNo(Integer bookedSeatNo) {
+        this.bookedSeatNo = bookedSeatNo;
+    }
+
+   
+     
+    public BookingClass getBookingClass() {
+        return bookingClass;
+    }
+
+    public void setBookingClass(BookingClass bookingClass) {
+        this.bookingClass = bookingClass;
+    }
+     
+     
     public Integer getSeatNo() {
         return seatNo;
     }
@@ -42,6 +65,7 @@ public class BookingClassInstance implements Serializable {
     }
 
     public void setPrice(Double price) {
+        System.out.println("BKI Entity class :setPrice"+price);
         this.price = price;
     }
     

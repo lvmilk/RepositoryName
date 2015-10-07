@@ -10,10 +10,11 @@ import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +49,10 @@ public class FlightManagedBean implements Serializable {
     private String flightNo;
     private Integer stopoverNo;
 
-    private String scheduleDepTime;
-    private String scheduleArrTime;
+    private Date depTime;
+    private Date arrTime;
+    private String depTimeString;
+    private String arrTimeString;
     private String dateAdjustString;
     private Integer dateAdjust;
 
@@ -67,14 +70,17 @@ public class FlightManagedBean implements Serializable {
 
     // for code share flights
     private String operator;
-    private ArrayList<String> codeshare;
+    private List<String> codeshare;
+
+    private List<FlightFrequency> flightFreqList;
+    private List<FlightFrequency> filteredFlightFreqList;
 
     public FlightManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-
+        flightFreqList = fsb.getAllFlightFrequency();
     }
 
     public void addFlightFrequency() throws Exception {
@@ -82,19 +88,56 @@ public class FlightManagedBean implements Serializable {
             // value validation
             route = rpb.findRoute(routeID);
             fsb.validateFlightNo(flightNo);
+            if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week.", ""));
+            } else {
+                dateAdjust = Integer.parseInt(dateAdjustString);
+                Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+                startDateString = formatter.format(startDate);
+                endDateString = formatter.format(endDate);
+                Format formatter2 = new SimpleDateFormat("HH:mm");
+                depTimeString = formatter2.format(depTime);
+                arrTimeString = formatter2.format(arrTime);
 
-            // type convertion
-            dateAdjust = Integer.parseInt(dateAdjustString);
-            Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-            startDateString = formatter.format(startDate);
-            endDateString = formatter.format(endDate);
-
-            fsb.addFlightFrequency(route, flightNo, scheduleDepTime, scheduleArrTime, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
+                fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
+            }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
+    }
+
+    public void editFlightFrequency(FlightFrequency flightFreq) throws Exception {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightFreq", flightFreq);
+        DateFormat formatter = new SimpleDateFormat("HH:mm");
+        depTime = formatter.parse(flightFreq.getScheduleDepTime());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightDepTime", depTime);
+        arrTime = formatter.parse(flightFreq.getScheduleArrTime());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightArrTime", arrTime);
+        DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
+        startDate = formatter2.parse(flightFreq.getStartDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightStartDate", startDate);
+        endDate = formatter2.parse(flightFreq.getEndDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightEndDate", endDate);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateAdjust", flightFreq.getDateAdjust().toString());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightFrequencyDetail.xhtml");
+    }
+
+    public List<FlightFrequency> getFlightFreqList() {
+        return flightFreqList;
+    }
+
+    public void setFlightFreqList(List<FlightFrequency> flightFreqList) {
+        this.flightFreqList = flightFreqList;
+    }
+
+    public List<FlightFrequency> getFilteredFlightFreqList() {
+        return filteredFlightFreqList;
+    }
+
+    public void setFilteredFlightFreqList(List<FlightFrequency> filteredFlightFreqList) {
+        this.filteredFlightFreqList = filteredFlightFreqList;
     }
 
     public List<Route> getRouteList() {
@@ -182,20 +225,36 @@ public class FlightManagedBean implements Serializable {
         this.dateAdjustString = dateAdjustString;
     }
 
-    public String getScheduleDepTime() {
-        return scheduleDepTime;
+    public Date getDepTime() {
+        return depTime;
     }
 
-    public void setScheduleDepTime(String scheduleDepTime) {
-        this.scheduleDepTime = scheduleDepTime;
+    public void setDepTime(Date depTime) {
+        this.depTime = depTime;
     }
 
-    public String getScheduleArrTime() {
-        return scheduleArrTime;
+    public Date getArrTime() {
+        return arrTime;
     }
 
-    public void setScheduleArrTime(String scheduleArrTime) {
-        this.scheduleArrTime = scheduleArrTime;
+    public void setArrTime(Date arrTime) {
+        this.arrTime = arrTime;
+    }
+
+    public String getDepTimeString() {
+        return depTimeString;
+    }
+
+    public void setDepTimeString(String depTimeString) {
+        this.depTimeString = depTimeString;
+    }
+
+    public String getArrTimeString() {
+        return arrTimeString;
+    }
+
+    public void setArrTimeString(String arrTimeString) {
+        this.arrTimeString = arrTimeString;
     }
 
     public Date getStartDate() {
@@ -294,11 +353,11 @@ public class FlightManagedBean implements Serializable {
         this.operator = operator;
     }
 
-    public ArrayList<String> getCodeshare() {
+    public List<String> getCodeshare() {
         return codeshare;
     }
 
-    public void setCodeshare(ArrayList<String> codeshare) {
+    public void setCodeshare(List<String> codeshare) {
         this.codeshare = codeshare;
     }
 

@@ -7,8 +7,7 @@ package SessionBean.AirlineInventory;
 
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import Entity.aisEntity.BookingClassInstance;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateful;
@@ -26,7 +25,7 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
     @PersistenceContext
     EntityManager em;
 
-    List<FlightFrequency> flightList;
+    private List<FlightFrequency> flightList;
 
     private FlightFrequency flightFrequency = new FlightFrequency();
     //private LocalDate date;
@@ -34,11 +33,11 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
 // Add business logic below. (Right-click in editor and choose
     public List<FlightFrequency> getFlightList(String dateString) {
         flightList = new ArrayList<FlightFrequency>();
-        System.out.println("MPB: getFlightList(): date is "+dateString);
-    
+        System.out.println("MPB: getFlightList(): date is " + dateString);
+
         Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
-         query.setParameter("fdate", dateString);
-        System.out.println("MPB: getFlightList(): flights are "+query.getResultList().toString());
+        query.setParameter("fdate", dateString);
+        System.out.println("MPB: getFlightList(): flights are " + query.getResultList().toString());
         List<FlightInstance> resultList = query.getResultList();
         for (FlightInstance temp : resultList) {
             if (!flightList.contains(temp.getFlightFrequency())) {
@@ -48,6 +47,27 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         return flightList;
     }
 
-    
+    public List<BookingClassInstance> getBkiList(String flightNo, String date) {
+        List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
+        Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.date=:fdate AND b.flightCabin.flightInstance.flightFrequency.flightNo=:fflightNo");
+        query.setParameter("fdate", date);
+        query.setParameter("fflightNo", flightNo);
+        bkiList = query.getResultList();
+        return bkiList;
+    }
+
+    public void editPrice(BookingClassInstance bki, Double price) {
+        bki.setPrice(price);
+        System.out.println("MPB: get price is " + bki.getPrice());
+        em.merge(bki);
+        System.out.println("MPB: Price edited!");
+        em.flush();
+    }
+//public void editPrice(BookingClassInstance bki){
+//    System.out.println("MPB: get price is "+ bki.getPrice());
+//    em.merge(bki);
+//    System.out.println("MPB: Price edited!");
+//    em.flush();
+//}
 // "Insert Code > Add Business Method")
 }

@@ -7,7 +7,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
     <h:head>
-        <title>Facelet Title</title>
+    <title>Add Aircraft</title>
     </h:head>
     <h:body>
 
@@ -32,13 +32,13 @@
                     </p:inputText>
 
                     <p:outputLabel for="firstFlyDate" value="First Fly Date :" />
-                    <p:calendar id="firstFlyDate" value="#{AMB.firstFlyDate}" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the first fly date of the aircraft" size="50"/>
+                    <p:calendar id="firstFlyDate" value="#{AMB.firstFlyDate}" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the first fly date of the aircraft" size="50"/>
 
                     <p:outputLabel for="deliveryDate" value="Delivery Date :" />
-                    <p:calendar id="deliveryDate" value="#{AMB.deliveryDate}" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
+                    <p:calendar id="deliveryDate" value="#{AMB.deliveryDate}" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
 
                     <p:outputLabel for="retireDate" value="Lease Expiration Date:" />
-                    <p:calendar id="retireDate" value="#{AMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format dd-MM-yyyy"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
+                    <p:calendar id="retireDate" value="#{AMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Lease Expiration Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the lease expiration date of the aircraft" size="50"/>
 
                     <p:outputLabel for="flightLogId" value="Flight Log ID:" />
                     <p:inputText id="flightLogId" value="#{AMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">
@@ -49,9 +49,9 @@
                     </p:inputText>
 
                     <p:outputLabel for="type" value="Aircraft Type:" />
-                    <p:inputText id="type" value="#{AMB.type}" required="true" validatorMessage="Aircraft Type: please enter UPPERCASE Alphabet and valid number" requiredMessage="Please enter a valid aircraft type" label="Aircraft Type" size="50">
-                        <f:validateRegex pattern="((?=.*\d).{1,20})" />
-                    </p:inputText>
+                    <p:selectOneMenu id="type" value="#{AMB.type}">
+                        <f:selectItems value="#{AMB.keyList}" />
+                    </p:selectOneMenu>
 
                 </h:panelGrid>
                 <p:commandButton value="Submit" update="@form" style="margin-right:50" actionListener="#{AMB.addAircraft()}"  icon="ui-icon-check" />

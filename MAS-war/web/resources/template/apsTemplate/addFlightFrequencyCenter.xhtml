@@ -13,8 +13,8 @@
 
             <p:panel id="panel" header="Add Flight Frequency" style="width: 100%">
 
-                <p:messages id="msgs" showDetail="true" autoUpdate="true" />
-                <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 45%" cellpadding="20">
 
                     <p:outputLabel for="route" value="Select Route: " />
                     <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
@@ -23,25 +23,26 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="flightNo" value="Flight Number: " />
-                    <p:inputText id="flightNo"  value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter flight number" size="30">
-                        <f:validateRegex pattern="((?=.*\d).{1,20})" />
+                    <p:inputText id="flightNo" value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter flight number" size="30">
+<!--                        <f:validateRegex pattern="[0-9]+" />-->
                     </p:inputText>
 
-                    <p:outputLabel for="scheduleDepTime" value="Departure Time(HH:mm): " />
-                    <!--<p:calendar  id="scheduleDepTime" value="#{flightManagedBean.scheduleDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter departure time" size="30"/>-->
-                    <p:inputMask mask="99:99" id="scheduleDepTime" value="#{flightManagedBean.scheduleDepTime}" label="scheduleDepTime" required="true" requiredMessage="Please enter departure time" size="30" >
+                    <p:outputLabel for="scheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:calendar  id="scheduleDepTime" value="#{flightManagedBean.depTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight departure time" size="30"/>
+<!--                    <p:inputMask mask="99:99" id="scheduleDepTime" value="#{flightManagedBean.depTimeString}" label="scheduleDepTime" required="true" requiredMessage="Please enter departure time" size="30" >
                         <f:validateRegex pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" />
-                    </p:inputMask>
+                    </p:inputMask>-->
 
-
-                    <p:outputLabel for="scheduleArrTime" value="Arrival Time(HH:mm): " />
-                    <p:inputMask mask="99:99" id="scheduleArrTime" value="#{flightManagedBean.scheduleArrTime}" label="scheduleArrTime" required="true" requiredMessage="Please enter arrival time" size="30" > 
-                        <f:validateRegex pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" />
-                    </p:inputMask>
+                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:calendar  id="scheduleArrTime" value="#{flightManagedBean.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight arrival time" size="30"/>
+<!--                    <p:inputMask mask="99:99" id="scheduleArrTime" value="#{flightManagedBean.arrTimeString}" label="scheduleArrTime" required="true" requiredMessage="Please enter arrival time" size="30" > 
+<f:validateRegex pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]" />
+</p:inputMask>-->
 
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" requiredMessage="Please enter date adjust" size="30">
+                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter date adjust"  size="30">
+                     <f:validateRegex pattern="[-1-9]" />
                     </p:inputText>
 
                     <p:outputLabel value="Operation Day of the Week: "/>
@@ -72,13 +73,13 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:outputLabel for="startDate" value="Flight Start Operation Date(dd-MM-yyyy): " />
+                    <p:outputLabel for="startDate" value="Flight Start Operation Date (yyyy-MM-dd): " />
                     <!--<p:inputMask mask="99-99-9999" id="startDate"  value="#{flightManagedBean.startDate}" label="startDate" required="true"  requiredMessage="Please enter flight start operation date" size="30"/>-->                   
-                    <p:calendar id="startDate" value="#{flightManagedBean.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="dd-MM-yyyy" mask="true"/>
+                    <p:calendar id="startDate" value="#{flightManagedBean.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>
 
-                    <p:outputLabel for="endDate" value="Flight End Operation Date(dd-MM-yyyy): " />
+                    <p:outputLabel for="endDate" value="Flight End Operation Date (yyyy-MM-dd): " />
                     <!--<p:inputMask mask="99-99-9999" id="endDate"  value="#{flightManagedBean.endDate}" label="endDate" required="true"  requiredMessage="Please enter flight end operation date" size="30"/>-->                   
-                    <p:calendar id="endDate" value="#{flightManagedBean.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="dd-MM-yyyy" mask="true"/> 
+                    <p:calendar id="endDate" value="#{flightManagedBean.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 
 
                 </h:panelGrid>
 

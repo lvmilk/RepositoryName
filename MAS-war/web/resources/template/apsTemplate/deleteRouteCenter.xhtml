@@ -15,12 +15,12 @@
 
         <h:form>
 
-            <p:panel id="panel" header="Delete Route"  style="width:100%">
+            <p:panel id="panel" header="Delete Route (Only route(s) that can be deleted are shown.)"  style="width:100%">
                 <p:messages id="msgs" />
                 <p:dataTable var="route" rowKey ="#{route.id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
-                        Route List (Only routes can be deleted are shown.)
+                        Route List
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      

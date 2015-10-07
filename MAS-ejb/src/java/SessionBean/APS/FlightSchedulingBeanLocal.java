@@ -5,7 +5,11 @@
  */
 package SessionBean.APS;
 
+import Entity.APS.Aircraft;
+import Entity.APS.FlightFrequency;
+import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -18,5 +22,21 @@ public interface FlightSchedulingBeanLocal {
     public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString)  throws Exception;
 
     public void validateFlightNo(String flightNo) throws Exception;
+
+    public List<FlightFrequency> getAllFlightFrequency();
+
+    public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate);
+
+    public List<FlightFrequency> canDeleteFlightFreqList();
+
+    public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
+
+    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
+
+    public Aircraft getAircraft(Long id);
+
+    public List<FlightInstance> getAllFlightInstance();
+
+    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
     
 }

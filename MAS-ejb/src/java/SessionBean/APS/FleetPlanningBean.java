@@ -39,7 +39,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
         AircraftType AirType = em.find(AircraftType.class, aircraftType.getType());
         System.out.println("Aircraft Type found is " + aircraftType.getType());
-        Collection<CabinClass> cabinSet = new ArrayList<CabinClass>();
+        List<CabinClass> cabinSet = new ArrayList<CabinClass>();
         AirType.setCabinList(cabinSet);
 
         if (suiteNo > 0) {
@@ -282,6 +282,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         List<Aircraft> aircraftList = aircraftType.getAircraft();
         return aircraftList;
     }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
