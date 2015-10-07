@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <title>Check Route Feasibility</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="formMain">
+            <p:panel id="panel" header="Check Route Feasibility Result"  style="width:100%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
+
+                    <p:outputLabel value="Check Route: " />
+                    <p:outputLabel value="#{CRFMB.route}" />
+
+                    <p:outputLabel value="Route Distance: " />
+                    <p:outputLabel value="#{CRFMB.route.distance}" />
+
+                    <p:outputLabel value="Available Aircraft (by max-distance): " />
+<!--                    <p:panel>
+                        <h:panelGrid columns="1" style="margin-bottom:0px" width="90%" cellpadding="5" transient="">-->
+                            <p:dataTable  var="acType" value="#{CRFMB.feasibleAcType}" style="width:70%">
+                                <f:facet name="header">
+                                    <h:outputText value="Available Aircraft for #{CRFMB.route}"/>
+                                </f:facet>
+                                <p:column headerText="Aircraft Type" >
+                                    <h:outputText value="#{acType.type}" />
+                                </p:column>
+                                <p:column  headerText="Maximum Distance">
+                                    <h:outputText value="#{acType.maxDistance}" />
+                                </p:column>
+                            </p:dataTable>
+<!--                        </h:panelGrid>
+                    </p:panel>-->
+
+                    <p:outputLabel value="Feasibility Check Result: " />
+                    <h:outputText value="#{CRFMB.feasibilityResult}" />
+
+                </h:panelGrid>
+
+                <p:commandButton value="Back" actionListener="#{CRFMB.checkFeasibilityBack}"  icon="ui-icon-check" />
+                <p:commandButton value="Check Route Profitability" actionListener="#{CRPMB.editRoute}"  icon="ui-icon-check" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+
