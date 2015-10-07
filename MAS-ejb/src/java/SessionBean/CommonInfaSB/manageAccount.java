@@ -236,18 +236,26 @@ public class manageAccount implements manageAccountLocal {
             offStaff = new OfficeStaff();
             userEntity = new UserEntity();
             offStaff.create(username, hPwd, email, stfType);
-            userEntity.create(username,email);
-            offStaff.setUser(userEntity);      
+            userEntity.create(username, email);
+            offStaff.setUser(userEntity);
             userEntity.setOffStaff(offStaff);
             em.persist(offStaff);
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
+            userEntity = new UserEntity();
             grdStaff.create(username, hPwd, email, stfType);
+            userEntity.create(username, email);
+            grdStaff.setUser(userEntity);
+            userEntity.setGrdStaff(grdStaff);
             em.persist(grdStaff);
         } else if (stfType.equals("cabin")) {
             System.out.println(stfType);
             cbCrew = new CabinCrew();
+            userEntity = new UserEntity();
             cbCrew.create(username, hPwd, email, stfType);
+            userEntity.create(username, email);
+            cbCrew.setUser(userEntity);
+            userEntity.setCbCrew(cbCrew);
             em.persist(cbCrew);
         }
 
@@ -256,8 +264,12 @@ public class manageAccount implements manageAccountLocal {
     @Override
     public void addCocpitAcc(String username, String password, String email, String stfType, String licence) {
         cpCrew = new CockpitCrew();
+        userEntity = new UserEntity();
         hPwd = this.encrypt(username, password);
         cpCrew.create(username, hPwd, email, stfType, licence);
+        userEntity.create(username, email);
+        cpCrew.setUser(userEntity);
+        userEntity.setCpCrew(cpCrew);
         em.persist(cpCrew);
     }
 
@@ -297,7 +309,7 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited,String email, String emailEdited, String licence, Integer attempt, Integer locked) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
@@ -347,7 +359,7 @@ public class manageAccount implements manageAccountLocal {
 
         } else if (stfType.equals("cockpit")) {
             CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
-            if (cpCrew!= null) {
+            if (cpCrew != null) {
                 if (cpCrew.getLocked() == 1) {
                     return 1;
                 }
@@ -358,7 +370,7 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editProfile(String username, String stfType, String pswEdited,String email, String emailEdited) {
+    public void editProfile(String username, String stfType, String pswEdited, String email, String emailEdited) {
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
             if (pswEdited.isEmpty()) {
@@ -415,11 +427,11 @@ public class manageAccount implements manageAccountLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited,String email, String emailEdited, Integer attempt, Integer locked) {
+    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
-            UserEntity userEntity=em.find(UserEntity.class, email);
+            UserEntity userEntity = em.find(UserEntity.class, email);
             officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
             officeStaff.setAttempt(attempt);
@@ -433,7 +445,7 @@ public class manageAccount implements manageAccountLocal {
             }
             officeStaff.setEmail(emailEdited);
             officeStaff.getUser().setComEmail(emailEdited);
-            
+
             em.merge(officeStaff);
             em.flush();
         } else if (stfType.equals("groundStaff")) {
@@ -452,7 +464,7 @@ public class manageAccount implements manageAccountLocal {
                 grdStaff.setGrdPassword(hPwd);
             }
             grdStaff.getUser().setComEmail(emailEdited);
-            
+
             em.merge(grdStaff);
             em.flush();
 
@@ -472,7 +484,7 @@ public class manageAccount implements manageAccountLocal {
                 cbCrew.setCbPassword(hPwd);
             }
             cbCrew.getUser().setComEmail(emailEdited);
-            
+
             em.merge(cbCrew);
             em.flush();
 
