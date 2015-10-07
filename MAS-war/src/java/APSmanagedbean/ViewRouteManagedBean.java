@@ -51,7 +51,7 @@ private Route route;
     public void viewRoute(ActionEvent event) throws IOException {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
         route = (Route) event.getComponent().getAttributes().get("route");
-FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
+//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
         
         System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
@@ -95,9 +95,9 @@ FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flig
         this.uIComponent = uIComponent;
     }
 
-    public List<FlightFrequency> getFlightOfRoute(Route route) {
-        return fsb.getFlightOfRoute(route);
-    }
+//    public List<FlightFrequency> getFlightOfRoute(Route route) {
+//        return fsb.getFlightOfRoute(route);
+//    }
 
     public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
         this.flightOfRoute = flightOfRoute;

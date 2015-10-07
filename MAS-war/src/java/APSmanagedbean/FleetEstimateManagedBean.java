@@ -53,6 +53,7 @@ public class FleetEstimateManagedBean implements Serializable {
     private List<AircraftType> typeList = new ArrayList<>();
     private List<String> typeKeyList = new ArrayList<>();
     private List<Aircraft> aircraftKeyList;
+    private List<String> registrationList = new ArrayList<>();
 
     private LineChartModel animatedModel;
 
@@ -102,7 +103,7 @@ public class FleetEstimateManagedBean implements Serializable {
             type = typeList.get(i).getType();
             System.out.println("initLinearModel() type: " + type); //got
             aircraftList = fpb.getThisTypeAircraft(type);
-            size=aircraftList.size();  // in case of IndirectList: not instantiated
+            size = aircraftList.size();  // in case of IndirectList: not instantiated
             LineChartSeries thisSeries = new LineChartSeries();
             System.out.println("initLinearModel() aircraft list: " + aircraftList); // got
             thisSeries.setLabel(type);
@@ -117,7 +118,7 @@ public class FleetEstimateManagedBean implements Serializable {
                             System.out.println(aircraftList.get(q) + " is expirated lease!"); // this one is retired
                             aircraftList.remove(q); //remove the retired one
                             q = -1;    // next loop +1 --> back to the first one of the list
-                        } 
+                        }
                         System.out.println(type + " " + year + " " + aircraftList.size());
                     }
                     thisSeries.set(year, aircraftList.size());
@@ -132,6 +133,7 @@ public class FleetEstimateManagedBean implements Serializable {
 
     public void chooseFleet() throws Exception, ParseException {
         aircraftKeyList = new ArrayList<>();
+        registrationList = new ArrayList<>();
         aircraftList = fpb.getThisTypeAircraft(type);
         System.out.println(selectedDate);
         System.out.println(date);
@@ -145,8 +147,11 @@ public class FleetEstimateManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please choose a future date!"));
         }
-        System.out.println(aircraftKeyList);
+        System.out.println("estimate fleet for a date: " + aircraftKeyList);
         System.out.println(visible);
+        for (int j = 0; j < aircraftKeyList.size(); j++) {
+                        registrationList.add(aircraftKeyList.get(j).getRegistrationNo());
+                    }
     }
 
     public Date getSelectedDate() {
@@ -219,6 +224,14 @@ public class FleetEstimateManagedBean implements Serializable {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<String> getRegistrationList() {
+        return registrationList;
+    }
+
+    public void setRegistrationList(List<String> registrationList) {
+        this.registrationList = registrationList;
     }
 
 }

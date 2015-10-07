@@ -91,7 +91,7 @@ public class RouteManagedBean implements Serializable {
         System.out.println("1");
         route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
@@ -262,10 +262,10 @@ public class RouteManagedBean implements Serializable {
     public void setCanDeleteRoute(List<Route> canDeleteRoute) {
         this.canDeleteRoute = canDeleteRoute;
     }
-
-    public List<FlightFrequency> getFlightOfRoute(Route route) {
-        return fsb.getFlightOfRoute(route);
-    }
+//
+//    public List<FlightFrequency> getFlightOfRoute(Route route) {
+//        return fsb.getFlightOfRoute(route);
+//    }
 
     public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
         this.flightOfRoute = flightOfRoute;
