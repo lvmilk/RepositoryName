@@ -26,6 +26,7 @@
                             <p:column rowspan="2" headerText="Distance" sortBy="#{route.distance}"/>
                             <p:column rowspan="2" headerText="Status" />
                             <p:column rowspan="2" headerText="Action" />
+                            <p:column rowspan="2" headerText="Action" />
                         </p:row>
                         <p:row>
                             <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
@@ -70,11 +71,14 @@
                     <p:column>
                         <h:outputText value="#{route.distance}" />
                     </p:column>
-                     <p:column>
+                    <p:column>
                         <h:outputText value="#{route.status}" />
                     </p:column>
                     <p:column>
                         <p:commandButton value="Check Feasibility" action="#{RouteManagedBean.checkRouteFeasibility(route)}"  />
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Check Profitability" action="#{RouteManagedBean.checkRouteProfitability(route)}"  />
                     </p:column>
 
                 </p:dataTable>

@@ -22,9 +22,12 @@
                           <f:selectItems value="#{FIMB.registrationList}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="flightDate" value="Flight Date: " />
-                    <p:calendar id="flightDate" value="#{FIMB.flightDate}" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="Flight Date: Please enter a valid date"  requiredMessage="Please enter the flight date" size="50"/>
-
+                    <p:outputLabel for="startDate" value="Start Date: " />
+                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50"/>
+                    
+                    <p:outputLabel for="finishDate" value="Finish Date: " />
+                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" validatorMessage="Finish Date: Please enter a valid date"  requiredMessage="Please enter the flight finish date" size="50"/>
+                    
                     <p:outputLabel for="flightStatus" value="Flight Status:" />
                     <p:inputText id="flightStatus" value="#{FIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
                     </p:inputText>

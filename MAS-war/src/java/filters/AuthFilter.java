@@ -23,15 +23,15 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter(filterName = "AuthFilter", urlPatterns = {"*.xhtml"})
 public class AuthFilter implements Filter {
-
+    
     public AuthFilter() {
     }
-
+    
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        
     }
-
+    
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
@@ -39,37 +39,35 @@ public class AuthFilter implements Filter {
             // check whether session variable is set
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
-
+            
             HttpSession ses = req.getSession(false);
-
+            
             String stfType = (String) req.getSession().getAttribute("stfType");
             System.out.println("***Authentication level: " + stfType + " ***");
             //  allow user to proccede if url is login.xhtml or user logged in or user is accessing any page in //public folder
             String reqURI = req.getRequestURI();
-
-
-//            if(reqURI.contains("javax.faces.resource") || reqURI.contains("staffMain.xhtml") || reqURI.contains("login.xhtml"))
-//            {
+            
+            System.err.println("*********************reqURI: " + reqURI);
+            
+//            if (reqURI.contains("javax.faces.resource") || reqURI.contains("staffMain.xhtml") || reqURI.contains("login.xhtml")
+//                    || reqURI.indexOf("/forgetPwd") >= 0 || reqURI.contains("/CMIpages/")|| reqURI.equals("/MAS-war/")|| reqURI.contains("Permission.xhtml")) {
+//                
+//                System.err.println("********************** inside bypass");
 //                chain.doFilter(request, response);
 //            }
-            
-            
-//            if ((ses != null && ses.getAttribute("username") != null)
-//                    || reqURI.contains("javax.faces.resource") || reqURI.contains("staffMain.xhtml") || reqURI.contains("login.xhtml")) {
-//                System.out.println("hehehe");
+//            
+//            
+//            if (stfType.equals("administrator")) {
+//                System.out.println("inside admin");
 //                chain.doFilter(request, response);
-//                if(stfType.equals("administrator"))
-//                {
-//                    System.out.println("inside admin");
-//                }else
-//                {
-//                    System.out.println("inside admin-else");
-//                    res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");
-//                }
-//            }else // user didn't log in but asking for a page that is not allowed so take user to login page
-//            {
-//                res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");  // Anonymous user. Redirect to login page
-//            }        
+//            } else if (stfType.equals("officeStaff") && reqURI.contains("staffWorkspace.xhtml")) {
+//                System.out.println("inside admin-else");
+//                chain.doFilter(request, response);
+//                
+//            } else {
+//                request.getRequestDispatcher("/Permission.xhtml").forward(request, response);
+////                res.sendRedirect(req.getContextPath() + "/Permission.xhtml");
+//            }
 
 
             if ((ses != null && ses.getAttribute("username") != null)
@@ -80,7 +78,6 @@ public class AuthFilter implements Filter {
             {
                 res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");  // Anonymous user. Redirect to login page
             }
-           
         } catch (Throwable t) {
             System.out.println(t.getMessage());
         }
@@ -88,6 +85,6 @@ public class AuthFilter implements Filter {
 
     @Override
     public void destroy() {
-
+        
     }
 }
