@@ -20,7 +20,7 @@ import javax.faces.view.ViewScoped;
  *
  * @author Xu
  */
-@Named(value = "VFFMB")
+ @Named(value = "VFFMB")
 @ViewScoped
 public class ViewFlightFrequencyManagedBean implements Serializable {
 

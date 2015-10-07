@@ -10,54 +10,37 @@
     <h:body>
 
         <h:form id="formMain">
-            <p:messages id="msgs"/>
             <p:panel id="panel" header="Route Information" style="width: 100%" toggleable="true">
+                <p:messages id="msgs" autoUpdate="true"/>
+
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
                     <p:outputLabel value="Origin Airport: " />
-                    <p:outputLabel value="#{editRouteManagedBean.route.origin}" />
+                    <p:outputLabel value="#{editRouteManagedBean.route.origin.IATA}" />
 
                     <p:outputLabel value="Destination Airport: " />
-                    <p:outputLabel value="#{editRouteManagedBean.route.dest}" />
+                    <p:outputLabel value="#{editRouteManagedBean.route.dest.IATA}" />
 
                     <p:outputLabel for="distance" value="Route Distance: " />
                     <p:inputText id="distance" value="#{editRouteManagedBean.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="aircraftType" value="Serving Aircraft Type: " />
-                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acType}" required="false" requiredMessage="Please select aircraft type " style="width:250px">
+                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="false" requiredMessage="Please select aircraft type " style="width:250px">
                         <f:selectItem itemLabel="-Select One-" itemValue="#{null}" />
-                        <f:selectItems value="#{editRouteManagedBean.acTypeList}" var="aircraftType" itemValue="#{aircraftType.type}" itemLabel="#{aircraftType.type}" />
-                        <!--<f:selectItems value="#{editRouteManagedBean.acTypeInfo}"/>-->
+                        <!--<f:selectItems value="#{editRouteManagedBean.acTypeList}" var="aircraftType" itemValue="#{aircraftType.type}" itemLabel="#{aircraftType.type}" />-->
+                        <f:selectItems value="#{editRouteManagedBean.acTypeInfo}"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
                     <p:inputText id="blockhour" value="#{editRouteManagedBean.blockhour}" label="blockhour" required="false" requiredMessage="Please enter aircraft blockhour" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="suite" value="Suite Basic Fare: " />
-                    <p:inputText id="suite" value="#{editRouteManagedBean.basicScFare}" label="suite" required="false"  requiredMessage="Please enter suite basic fare" size="30">
-                    </p:inputText>
-
-                    <p:outputLabel for="first" value="First Class Basic Fare: " />
-                    <p:inputText id="first" value="#{editRouteManagedBean.basicFcFare}" label="first" required="false"  requiredMessage="Please enter first class basic fare" size="30">
-                    </p:inputText>
-
-                    <p:outputLabel for="biz" value="Business Class Basic Fare: " />
-                    <p:inputText id="biz" value="#{editRouteManagedBean.basicBcFare}" label="biz" required="false"  requiredMessage="Please enter business class basic fare" size="30">
-                    </p:inputText>
-
-                    <p:outputLabel for="pec" value="Premium Economic Class Basic Fare: " />
-                    <p:inputText id="pec" value="#{editRouteManagedBean.basicPecFare}" label="pec" required="false"  requiredMessage="Please enter premium economic class basic fare" size="30">
-                    </p:inputText>
-
-                    <p:outputLabel for="ec" value="Economic Class Basic Fare: " />
-                    <p:inputText id="ec" value="#{editRouteManagedBean.basicEcFare}" label="ec" required="false"  requiredMessage="Please enter economic class basic fare" size="30">
-                    </p:inputText>
-               
-                    <p:commandButton value="Update Route Information" update="panel" actionListener="#{editRouteManagedBean.editRoute}"  icon="ui-icon-check" />
-
                 </h:panelGrid>
+
+                <p:commandButton value="Update" update="@form" actionListener="#{editRouteManagedBean.editRoute}"  icon="ui-icon-check" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{editRouteManagedBean.editRouteCancel}"  icon="ui-icon-cancel" />
+
             </p:panel>
         </h:form>
     </h:body>

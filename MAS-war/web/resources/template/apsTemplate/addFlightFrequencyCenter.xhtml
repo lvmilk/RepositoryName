@@ -42,7 +42,7 @@
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
                     <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter date adjust"  size="30">
-                     <f:validateRegex pattern="[0-9]" />
+                     <f:validateRegex pattern="[-1-9]" />
                     </p:inputText>
 
                     <p:outputLabel value="Operation Day of the Week: "/>

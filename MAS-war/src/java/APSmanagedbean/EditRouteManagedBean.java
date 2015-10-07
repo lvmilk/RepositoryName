@@ -10,10 +10,10 @@ import Entity.APS.Airport;
 import Entity.APS.Route;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -57,6 +57,7 @@ public class EditRouteManagedBean implements Serializable {
     private Airport dest;
 
     private List<AircraftType> acTypeList;
+    private List<String> acTypeInfo;
 //    private Map<String, String> acTypeInfo = new HashMap<String, String>();
 
     public EditRouteManagedBean() {
@@ -65,35 +66,18 @@ public class EditRouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route");
+        acTypeInfo = getAcTypeInfo();
+        acTypeString = route.getAcType().getType();
         originIATA = route.getOrigin().getIATA();
-        destIATA = route.getOrigin().getIATA();
+        destIATA = route.getDest().getIATA();
         distance = route.getDistance();
-        acType = route.getAcType();
         distance = route.getDistance();
         blockhour = route.getBlockhour();
-        basicScFare = route.getBasicScFare();
-        basicFcFare = route.getBasicFcFare();
-        basicBcFare = route.getBasicBcFare();
-        basicPecFare = route.getBasicPecFare();
-        basicEcFare = route.getBasicEcFare();
-    }
-
-    public void editRouteBasic() throws Exception {
-        try {
-            rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
-        }
-    }
-
-    public void editRouteFare() throws Exception {
-        try {
-            rpb.editRouteFare(originIATA, destIATA, basicScFare, basicFcFare, basicBcFare, basicPecFare, basicEcFare);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
-        } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
-        }
+//        basicScFare = route.getBasicScFare();
+//        basicFcFare = route.getBasicFcFare();
+//        basicBcFare = route.getBasicBcFare();
+//        basicPecFare = route.getBasicPecFare();
+//        basicEcFare = route.getBasicEcFare();
     }
 
     public void editRoute() throws Exception {
@@ -101,11 +85,15 @@ public class EditRouteManagedBean implements Serializable {
             if (acTypeString != null) {
                 acType = fpb.getAircraftType(acTypeString);
             }
-            rpb.editRoute(originIATA, destIATA, distance, acType, blockhour, basicScFare, basicFcFare, basicBcFare, basicPecFare, basicEcFare);
+            rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
+    }
+
+    public void editRouteCancel() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editRoute.xhtml");
     }
 
 //    public Map<String, String> getAcTypeInfo() {
@@ -120,6 +108,20 @@ public class EditRouteManagedBean implements Serializable {
 //    public void setAcTypeInfo(Map<String, String> acTypeInfo) {
 //        this.acTypeInfo = acTypeInfo;
 //    }
+//
+    public List<String> getAcTypeInfo() {
+        List<AircraftType> typeList = fpb.getAllAircraftType();
+        List<String> typeInfo = new ArrayList<>();
+        for (AircraftType a : typeList) {
+            typeInfo.add(a.getType());
+        }
+        return typeInfo;
+    }
+
+    public void setAcTypeInfo(List<String> acTypeInfo) {
+        this.acTypeInfo = acTypeInfo;
+    }
+
     public List<AircraftType> getAcTypeList() {
         return fpb.getAllAircraftType();
     }

@@ -1,7 +1,9 @@
 package APSmanagedbean;
 
 import Entity.APS.Airport;
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
+import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,6 +32,9 @@ public class RouteManagedBean implements Serializable {
     @EJB
     private RoutePlanningBeanLocal rpb;
 
+    @EJB
+    private FlightSchedulingBeanLocal fsb;
+
     private UIComponent uIComponent;
 
     private Double distance;
@@ -40,6 +45,7 @@ public class RouteManagedBean implements Serializable {
     private Route route;
     private List<Route> routeList = new ArrayList<>();
     private List<Route> filteredRouteList;
+    private List<FlightFrequency> flightOfRoute;
     private List<Route> selectedRoute = new ArrayList<>();
     private List<Route> canDeleteRoute = new ArrayList<>();
     private List<Route> deletedRoute = new ArrayList<>();
@@ -83,16 +89,12 @@ public class RouteManagedBean implements Serializable {
 
     public void viewRoute(ActionEvent event) throws IOException {
         System.out.println("1");
-        
-        route = (Route)event.getComponent().getAttributes().get("route");
-        
+        route = (Route) event.getComponent().getAttributes().get("route");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
-        // have not set serving aircraft yet
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("acType", route.getAcType().getType());
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("blockhour", route.getBlockhour());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", route.getStatus());
         System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
     }
@@ -132,12 +134,16 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRoute.xhtml");
     }
 
+    public void checkRouteFeasibility(Route route) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
+    }
+
 //    public boolean checkRouteFeasibility(Route route) {
 //
 //
 //       
 //    }
-
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
         for (Airport a : airportList) {
@@ -146,11 +152,11 @@ public class RouteManagedBean implements Serializable {
         System.out.println(airportInfo.toString());
         return airportInfo;
     }
-    
+
     public void setAirportInfo(Map<String, String> airportInfo) {
         this.airportInfo = airportInfo;
     }
-    
+
     public List<Airport> getAirportList() {
         return rpb.viewAllAirport();
     }
@@ -255,6 +261,14 @@ public class RouteManagedBean implements Serializable {
 
     public void setCanDeleteRoute(List<Route> canDeleteRoute) {
         this.canDeleteRoute = canDeleteRoute;
+    }
+//
+//    public List<FlightFrequency> getFlightOfRoute(Route route) {
+//        return fsb.getFlightOfRoute(route);
+//    }
+
+    public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
+        this.flightOfRoute = flightOfRoute;
     }
 
 }
