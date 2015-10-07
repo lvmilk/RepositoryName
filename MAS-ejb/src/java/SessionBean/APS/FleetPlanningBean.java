@@ -72,7 +72,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
         if (pecSeatNo > 0) {
             CabinClass Pecon = new CabinClass();
-            Pecon.setCabinName("Premium Economic Class");
+            Pecon.setCabinName("Premium Economy Class");
             Pecon.setSeatCount(pecSeatNo);
             Pecon.setAircraftType(AirType);
 //            em.persist(Pecon);
@@ -81,7 +81,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
         if (ecSeatNo > 0) {
             CabinClass econ = new CabinClass();
-            econ.setCabinName("Economic Class");
+            econ.setCabinName("Economy Class");
             econ.setSeatCount(ecSeatNo);
             econ.setAircraftType(AirType);
 //            em.persist(econ);

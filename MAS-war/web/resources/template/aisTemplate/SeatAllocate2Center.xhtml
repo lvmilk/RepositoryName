@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Seat Assignment for Booking Class: Step2</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+
+            <p:dataTable id="bkiList" var="bki" value="#{seatAllocate1Bean.bookClassInstanceList}" editable="true" emptyMessage="No Booking Classes" style="margin-bottom:20px">
+                <f:facet name="header">
+                   Seat Assignment
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{seatAllocationMangagedBean.onRowCancel}" update=":form:msgs" />
+
+                <p:column headerText="Cabin Class">
+                    <h:outputText value="#{bki.bookingClass.cabinName}" />
+                </p:column>
+
+                <p:column headerText="Booking Class Annotation">
+                    <h:outputText value="#{bki.bookingClass.annotation}" />
+                </p:column>
+                
+                
+                <p:column headerText="Average Demand">
+                    <p:cellEditor>
+                    <h:inputText value="#{bki.averageDemand}" />
+                    </p:cellEditor>
+                </p:column>
+
+                 <p:column headerText="Srandard Deviation(std)">
+                    <p:cellEditor>
+                    <h:inputText value="#{bki.demandStd}" />
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column headerText="Fare">
+                    <h:outputText value="#{bki.price}" />
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+           
+            </p:dataTable>
+            
+            <p:commandButton value="Compute optimal seat allocation" action="#{seatAllocate1Bean.computeOptimalSeat}"/>
+        </h:form>
+
+    </h:body>
+</html>
+

@@ -62,6 +62,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.merge(r);
         em.flush();
     }
+    
 
     @Override
     public void validateFlightNo(String flightNo) throws Exception {
