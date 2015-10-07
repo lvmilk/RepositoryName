@@ -1,12 +1,59 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
+
     <h:head>
-        <title>Facelet Title</title>
+        <title>Check Route Profitability</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+
+        <h:form id="formMain">
+            <p:panel id="panel" header="Check Route Profitability Result"  style="width:100%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:40%" cellpadding="10">
+
+                    <p:outputLabel value="Check Profitability of Route: "/>
+                    <p:outputLabel value="#{CRPMB.route}" />
+
+                    <p:outputLabel value="Average Market Price (in SGD): " />
+                    <p:outputLabel value="#{CRPMB.mPrice}" />
+
+                    <p:outputLabel value="Expected Annual Passengers (in million): " />
+                    <p:outputLabel value="#{CRPMB.pVolumn}" />
+
+                </h:panelGrid>
+
+                <p:dataTable var="key" value="#{CRPMB.acKeyList}"  emptyMessage="No aircraft types are feasible for this route." style="width:70%">
+                    <p:column headerText="Aircraft Type" sortBy="#{key}">
+                        <h:outputText value="#{key}" />
+                    </p:column>
+                    <p:column headerText="Annual Fuel Cost (in SGD)">
+                        <h:outputText value="#{CRPMB.fuelCostMap[key]}" />
+                    </p:column>
+                    <p:column headerText="Annual Lease Cost (in SGD)" >
+                        <h:outputText value="#{CRPMB.leaseCostMap[key]}" />
+                    </p:column>
+                    <p:column headerText="Expected Annual Revenue (in SGD)" >
+                        <h:outputText value="#{CRPMB.revenueMap[key]}" />
+                    </p:column>
+                    <p:column headerText="Expected Annual Profit (in SGD)" >
+                        <h:outputText value="#{CRPMB.profitMap[key]}" />
+                    </p:column>
+                    <p:column headerText="Profitability Check Result" >
+                        <h:outputText value="#{CRPMB.resultMap[key]}" />
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-check" />
+                <p:commandButton value="Assign Aircraft to Route" actionListener="#{CRPMB.assignAcToRoute}"  icon="ui-icon-check" />
+
+            </p:panel>
+
+        </h:form>
     </h:body>
 </html>
 

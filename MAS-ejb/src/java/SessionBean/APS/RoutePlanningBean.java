@@ -185,7 +185,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addRoute(String originIATA, String destIATA, Double distance) throws Exception {
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         System.out.println("rpb.addRoute(): Add route " + originIATA + "-" + destIATA);
         Airport origin = em.find(Airport.class, originIATA);
@@ -195,7 +195,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Route already exists.");
         }
         route = new Route();
-        route.create(origin, dest, distance);
+        route.create(origin, dest, distance, blockhour);
         em.persist(route);
         em.flush();
     }

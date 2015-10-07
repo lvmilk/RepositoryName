@@ -6,12 +6,15 @@
 package Entity.APS;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -42,14 +45,16 @@ public class Route implements Serializable {
     private Airport origin;
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Airport dest;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="route")
+    private List<FlightFrequency> flightFreqList = new ArrayList<>();
 
-    public void create(Airport origin, Airport dest, Double distance) {
+    public void create(Airport origin, Airport dest, Double distance, Double blockhour) {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         this.status = "Pending";
         this.origin = origin;
         this.dest = dest;
         this.distance = distance;
-//        this.blockhour = blockhour;
+        this.blockhour = blockhour;
     }
 
     public Long getId() {
@@ -75,7 +80,6 @@ public class Route implements Serializable {
 //    public void setDestIATA(String destIATA) {
 //        this.destIATA = destIATA;
 //    }
-    
     public Double getDistance() {
         return distance;
     }
