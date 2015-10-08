@@ -5,6 +5,7 @@
  */
 package SessionBean.AirlineInventory;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.aisEntity.BookingClassInstance;
 import java.util.List;
@@ -19,8 +20,10 @@ public interface SeatAllocationBeanLocal {
 
     public List<FlightFrequency> getFlightList(String date);
 
-    public List<BookingClassInstance> getBkiList(String flightNo, String date);
-
     public void editSeatNo(BookingClassInstance bki, Integer seatNo);
+
+    public List<CabinClass> getCabinList(String flightNo);
+
+    public List<BookingClassInstance> getBkiList(String flightNo, String date, String cabinName);
     
 }

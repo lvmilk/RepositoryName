@@ -44,7 +44,6 @@
                     <p:inputText id="annual_departures"  value="#{pricingManagedBean.annualDepartures}" label="Number of Annual Departures" required="true" requiredMessage="Please enter number of annual departures" validatorMessage="Pleaseccheck annual departures is a integer between 10 to 10000"  size="10">
                        <f:validateLongRange minimum="10" maximum="10000" />
                     </p:inputText>
-                    <h:outputText id="annual_departures" value="#{pricingManagedBean.route.}" />
                     </h:panelGrid>
 
                     <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />

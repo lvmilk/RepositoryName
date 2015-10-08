@@ -1,8 +1,6 @@
 package APSmanagedbean;
 
 import Entity.APS.Aircraft;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FlightSchedulingBeanLocal;
@@ -16,13 +14,14 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
+import javax.faces.validator.ValidatorException;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 /**
  *
  * @author Xi
@@ -108,8 +107,8 @@ public class FlightInstanceManagedBean implements Serializable {
         String ea = df2.format(estimatedArrTime);
         String ad = df2.format(actualDepTime);
         String aa = df2.format(actualArrTime);
-        System.out.println("This flight frequency " + flightFreq + " is with aircraft" + registrationNo);
-        System.out.println(" flight time(*4):" + ed + " " + ea + " " + ad + " " + aa);
+        System.out.println("This flight frequency " + flightFreq + " is with aircraft " + registrationNo);
+        System.out.println("flight time(*4):" + ed + " " + ea + " " + ad + " " + aa);
         Boolean Mon = flightFreq.isOnMon();
         Boolean Tue = flightFreq.isOnTue();
         Boolean Wed = flightFreq.isOnWed();
@@ -117,9 +116,15 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Fri = flightFreq.isOnFri();
         Boolean Sat = flightFreq.isOnSat();
         Boolean Sun = flightFreq.isOnSun();
+        //bug unknown aircraft
+        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
+        System.out.println("Flight Instance: this aircraft delivery date is "+deliveryDate);
+       
         try {
             if (!startDate.before(new Date())) {
-                if (startDate.after(df2.parse(aircraft.getDeliveryDate()))) {
+                System.out.println("Flight Instance start date is later than current date");
+                if (startDate.after(deliveryDate)) {
+                    System.out.println("Flight Instance start date is later than aircraft delivery date");
                     while (startDate.compareTo(finishDate) <= 0) {
                         if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                             String d = df1.format(startDate);
@@ -155,6 +160,8 @@ public class FlightInstanceManagedBean implements Serializable {
                 || (dayOfWeek == 6 && Fri)
                 || (dayOfWeek == 7 && Sat);
     }
+
+
 
     public List<FlightFrequency> getFlightFreqList() {
         return flightFreqList;

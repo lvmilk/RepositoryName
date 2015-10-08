@@ -16,18 +16,23 @@
 
                     <p:outputLabel value="Flight No: " />
                     <p:outputLabel value="#{FIMB.flightNo}" />
-                    
-                      <p:outputLabel for="registration" value="Aircraft Registration No.:" />
-                      <p:selectOneMenu id="registration" value="#{FIMB.registrationNo}">
-                          <f:selectItems value="#{FIMB.registrationList}" />
+
+                    <p:outputLabel for="registration" value="Aircraft Registration No.:" />
+                    <p:selectOneMenu id="registration" value="#{FIMB.registrationNo}">
+                        <f:selectItems value="#{FIMB.registrationList}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="startDate" value="Start Date: " />
-                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50"/>
-                    
+                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
+                        <p:ajax event="dateSelect" update="finishDate" />
+                    </p:calendar>
+
                     <p:outputLabel for="finishDate" value="Finish Date: " />
-                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" validatorMessage="Finish Date: Please enter a valid date"  requiredMessage="Please enter the flight finish date" size="50"/>
-                    
+                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{FIMB.startDate}" validatorMessage="Finish Date: Please enter a valid date"  requiredMessage="Please enter the flight finish date" size="50">
+                        <f:attribute name="startDate" value="#{FIMB.startDate}" />
+                        <f:validator validatorId="DateRangeValidator" />
+                    </p:calendar>
+
                     <p:outputLabel for="flightStatus" value="Flight Status:" />
                     <p:inputText id="flightStatus" value="#{FIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
                     </p:inputText>
@@ -38,8 +43,8 @@
                     <p:outputLabel for="estimatedArrTime" value="Estimated Arrival Time :" />
                     <p:calendar id="estimatedArrTime" value="#{FIMB.estimatedArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter estimated flight arrival time" size="50"/>
 
-                      <p:outputLabel for="actualDepTime" value="Actual Depature Time :" />
-                      <p:calendar id="actualDepTime" value="#{FIMB.actualDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter actual flight departure time" size="50"/>
+                    <p:outputLabel for="actualDepTime" value="Actual Depature Time :" />
+                    <p:calendar id="actualDepTime" value="#{FIMB.actualDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter actual flight departure time" size="50"/>
 
                     <p:outputLabel for="actualArrTime" value="Actual Arrival Time :" />
                     <p:calendar id="actualArrTime" value="#{FIMB.actualArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter actual flight arrival time" size="50"/>
