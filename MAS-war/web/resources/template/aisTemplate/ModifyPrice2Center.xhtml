@@ -23,27 +23,29 @@
 
                 <p:ajax event="rowEdit" listener="#{modifyPriceManagedBean.onRowEdit}" update=":form:msgs" />
                 <p:ajax event="rowEditCancel" listener="#{modifyPriceManagedBean.onRowCancel}" update=":form:msgs" />
-
+                <p:column headerText="Cabin Class">
+                    <h:outputText value="#{bki.bookingClass.cabinName}" style="center" />
+                </p:column>
                 <p:column headerText="Booking Class Annotation">
-<!--                    <p:cellEditor>-->
-<!--                        <f:facet name="output">-->
-                            <h:outputText value="#{bki.bookingClass.annotation}" />
-                        <!--</f:facet>-->
-<!--                        <f:facet name="input">
-                            <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
-                        </f:facet>-->
+                    <!--                    <p:cellEditor>-->
+                    <!--                        <f:facet name="output">-->
+                    <h:outputText value="#{bki.bookingClass.annotation}" />
+                    <!--</f:facet>-->
+                    <!--                        <f:facet name="input">
+                                                <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
+                                            </f:facet>-->
                     <!--</p:cellEditor>-->
                 </p:column>
 
                 <p:column headerText="Seat Count">
-<!--                    <p:cellEditor>-->
-<!--                        <f:facet name="output">-->
-                            <h:outputText value="#{bki.seatNo}" />
-                        <!--</f:facet>-->
-<!--                        <f:facet name="input">
-                            <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
-                        </f:facet>
-                    </p:cellEditor>-->
+                    <!--                    <p:cellEditor>-->
+                    <!--                        <f:facet name="output">-->
+                    <h:outputText value="#{bki.seatNo}" />
+                    <!--</f:facet>-->
+                    <!--                        <f:facet name="input">
+                                                <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
+                                            </f:facet>
+                                        </p:cellEditor>-->
                 </p:column>
 
                 <p:column headerText="Fare">

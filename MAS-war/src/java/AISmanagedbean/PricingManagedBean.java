@@ -242,6 +242,7 @@ public class PricingManagedBean implements Serializable {
         distance = route.getDistance();
         blockHour = route.getBlockhour();
         aircraftType = route.getAcType();
+ //       annualDepartures=route.getFlightFreqList()
         System.out.println("routeInfo Retrieved!");
         System.out.println("routeInfo Retrieved! distance: " + distance);
         System.out.println("routeInfo Retrieved! Type: " + aircraftType.getManufacturer());
