@@ -36,7 +36,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust,
+    public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString,
             String sDate, String fDate) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -62,6 +62,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         r.setStatus("Serving");
         em.merge(r);
         em.flush();
+        return flightFreq;
     }
 
     @Override
@@ -140,6 +141,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return (List<FlightFrequency>) q2.getResultList();
     }
 
+//    @override
+//    public void addFlightFreqToPackage(FlightFrequency flightFreq) {
+//        
+//    }
+//    
+//    @override
+//    public void generateFlightPackage() {
+//        
+//    }
+    
 //////////////////////////////////////////////////////////////////////////
     @Override
     public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {

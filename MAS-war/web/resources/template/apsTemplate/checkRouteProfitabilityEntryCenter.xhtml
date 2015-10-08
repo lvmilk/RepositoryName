@@ -22,8 +22,9 @@
                     <p:outputLabel for="passengerVolumn" value="Enter passenger volumn for the route (per year): "/>
                     <p:inputText id="passengerVolumn"  value="#{RouteManagedBean.pVolumnString}" label="passengerVolumn" required="true" validatorMessage="Please enter number of passengers per year"  requiredMessage="Please enter passenger volumn per year" size="50">
                     </p:inputText>
-                   
+
                 </h:panelGrid>
+                <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-check" />
                 <p:commandButton value="Check Route Profitability" actionListener="#{RouteManagedBean.checkRouteProfit}"  icon="ui-icon-check" />
 
             </p:panel>
