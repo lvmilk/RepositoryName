@@ -15,40 +15,62 @@
             <p:panel id="panel" header="Check Route Feasibility Result"  style="width:100%">
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
 
-                    <p:outputLabel value="Check Route: " />
+                    <p:outputLabel value="Check Feasibility of Route: "/>
                     <p:outputLabel value="#{CRFMB.route}" />
 
                     <p:outputLabel value="Route Distance: " />
                     <p:outputLabel value="#{CRFMB.route.distance}" />
 
                     <p:outputLabel value="Available Aircraft (by max-distance): " />
-<!--                    <p:panel>
-                        <h:panelGrid columns="1" style="margin-bottom:0px" width="90%" cellpadding="5" transient="">-->
-                            <p:dataTable  var="acType" value="#{CRFMB.feasibleAcType}" style="width:70%">
-                                <f:facet name="header">
-                                    <h:outputText value="Available Aircraft for #{CRFMB.route}"/>
-                                </f:facet>
-                                <p:column headerText="Aircraft Type" >
-                                    <h:outputText value="#{acType.type}" />
-                                </p:column>
-                                <p:column  headerText="Maximum Distance">
-                                    <h:outputText value="#{acType.maxDistance}" />
-                                </p:column>
-                            </p:dataTable>
-<!--                        </h:panelGrid>
-                    </p:panel>-->
+                    <!--                    <p:panel>
+                                            <h:panelGrid columns="1" style="margin-bottom:0px" width="90%" cellpadding="5" transient="">-->
+                    <p:dataTable  var="acType" value="#{CRFMB.feasibleAcDis}" style="width:70%">
+                        <f:facet name="header">
+                            <h:outputText value="Available Aircraft for #{CRFMB.route} by Max-distance" />
+                        </f:facet>
+                        <p:column headerText="Aircraft Type" >
+                            <h:outputText value="#{acType.type}" />
+                        </p:column>
+                        <p:column  headerText="Maximum Distance">
+                            <h:outputText value="#{acType.maxDistance}" />
+                        </p:column>
+                    </p:dataTable>
+                    <!--                        </h:panelGrid>
+                                        </p:panel>-->
 
-                    <p:outputLabel value="Feasibility Check Result: " />
+                    <p:outputLabel value="Origin Airport Airspace Level:" />
+                    <p:outputLabel value="#{CRFMB.route.origin.airspace}" />
+
+                    <p:outputLabel value="Destination Airport Airspace Level:" />
+                    <p:outputLabel value="#{CRFMB.route.dest.airspace}" />
+
+                    <p:outputLabel value="Available Aircraft (by min-airspace):" />
+                    <p:dataTable  var="acType" value="#{CRFMB.feasibleAcAsp}" style="width:70%">
+                        <f:facet name="header">
+                            <h:outputText value="Available Aircraft for #{CRFMB.route} by Min-airspace"/>
+                        </f:facet>
+                        <p:column headerText="Aircraft Type" >
+                            <h:outputText value="#{acType.type}" />
+                        </p:column>
+                        <p:column  headerText="Minimum Airspace">
+                            <h:outputText value="#{acType.minAirspace}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:outputLabel value="Check Feasibility Result: " />
                     <h:outputText value="#{CRFMB.feasibilityResult}" />
+
+                    <p:outputLabel value="Feasibille Aircraft Type: " rendered="#{CRFMB.feasibility}"/>
+                    <h:outputText value="#{CRFMB.feasibleAcString}" rendered="#{CRFMB.feasibility}"/>
+                    <!--<h:outputText value="Nil" rendered="#{!CRFMB.feasibility}"/>-->
 
                 </h:panelGrid>
 
                 <p:commandButton value="Back" actionListener="#{CRFMB.checkFeasibilityBack}"  icon="ui-icon-check" />
-                <p:commandButton value="Check Route Profitability" actionListener="#{CRPMB.editRoute}"  icon="ui-icon-check" />
+                <p:commandButton value="Check Route Profitability" actionListener="#{RouteManagedBean.checkRouteProfitability}"  icon="ui-icon-check" />
 
             </p:panel>
 
         </h:form>
     </h:body>
 </html>
-

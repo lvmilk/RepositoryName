@@ -8,6 +8,7 @@ package SessionBean.AirlineInventory;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.aisEntity.BookingClassInstance;
+import Entity.aisEntity.FlightCabin;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateful;
@@ -53,12 +54,12 @@ public class SeatAllocationBean implements SeatAllocationBeanLocal {
         bkiList = query.getResultList();
         return bkiList;
     }
-
+  
     public void editSeatNo(BookingClassInstance bki,Integer seatNo) {
         bki.setSeatNo(seatNo);
-        System.out.println("SAB: get price is " + bki.getPrice());
+        System.out.println("SAB: get seat count is " + bki.getSeatNo());
         em.merge(bki);
-        System.out.println("SAB: Price edited!");
+        System.out.println("SAB: Seat count edited!");
         em.flush();
     }
     // Add business logic below. (Right-click in editor and choose

@@ -6,11 +6,14 @@
 package Entity.CommonInfaEntity;
 
 import java.io.Serializable;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -19,29 +22,50 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class UserEntity implements Serializable {
+
     @Id
     private String username;
+
     @Column(unique=true)
     private String comEmail;
-    
-    @OneToOne(mappedBy="user")
+
+    @OneToOne(mappedBy = "user")
     private OfficeStaff offStaff;
-    
-    @OneToOne(mappedBy="user")
+
+    @OneToOne(mappedBy = "user")
     private GroundStaff grdStaff;
-    
-    @OneToOne(mappedBy="user")
+
+    @OneToOne(mappedBy = "user")
     private CabinCrew cbCrew;
-    
-    @OneToOne(mappedBy="user")
+
+    @OneToOne(mappedBy = "user")
     private CockpitCrew cpCrew;
-    
-    public void create(String username,String email)
-    {
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "sender")
+    private Collection<MsgSender> sendMessage;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "receiver")
+    private Collection<MsgReceiver> receiveMessage;
+
+    public UserEntity() {
+    }
+
+    public void create(String username, String email) {
         this.setUsername(username);
         this.setComEmail(email);
     }
-    
+
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getComEmail() {
         return comEmail;
     }
@@ -53,7 +77,7 @@ public class UserEntity implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (comEmail != null ? comEmail.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -64,7 +88,7 @@ public class UserEntity implements Serializable {
             return false;
         }
         UserEntity other = (UserEntity) object;
-        if ((this.comEmail == null && other.comEmail != null) || (this.comEmail != null && !this.comEmail.equals(other.comEmail))) {
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
         return true;
@@ -72,7 +96,7 @@ public class UserEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.UserEntity[ id=" + comEmail + " ]";
+        return "Entity.CommonInfaEntity.UserEntity[ id=" + username + " ]";
     }
 
     /**
@@ -92,17 +116,6 @@ public class UserEntity implements Serializable {
     /**
      * @return the username
      */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     /**
      * @return the grdStaff
      */
@@ -144,5 +157,33 @@ public class UserEntity implements Serializable {
     public void setCpCrew(CockpitCrew cpCrew) {
         this.cpCrew = cpCrew;
     }
-    
+
+    /**
+     * @return the sendMessage
+     */
+    public Collection<MsgSender> getSendMessage() {
+        return sendMessage;
+    }
+
+    /**
+     * @param sendMessage the sendMessage to set
+     */
+    public void setSendMessage(Collection<MsgSender> sendMessage) {
+        this.sendMessage = sendMessage;
+    }
+
+    /**
+     * @return the receiveMessage
+     */
+    public Collection<MsgReceiver> getReceiveMessage() {
+        return receiveMessage;
+    }
+
+    /**
+     * @param receiveMessage the receiveMessage to set
+     */
+    public void setReceiveMessage(Collection<MsgReceiver> receiveMessage) {
+        this.receiveMessage = receiveMessage;
+    }
+
 }

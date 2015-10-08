@@ -19,7 +19,7 @@ import javax.ejb.Local;
 @Local
 public interface FlightSchedulingBeanLocal {
 
-    public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString)  throws Exception;
+    public void addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString,String sDate, String fDate)  throws Exception;
 
     public void validateFlightNo(String flightNo) throws Exception;
 
@@ -38,5 +38,7 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightInstance> getAllFlightInstance();
 
     public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
+
+    public List<FlightFrequency> getFlightOfRoute(Route route);
     
 }

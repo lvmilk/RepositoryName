@@ -9,7 +9,7 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-     <h:form id="staff">
+        <h:form id="staff">
             <p:panel id="addOtrStaff"  style="margin-bottom:20px">
                 <p:messages id="msgs" />
                 <h:panelGrid columns="3" cellpadding="10">
@@ -26,7 +26,7 @@
 
                     <p:outputLabel for="otrEmail" value="Email: " />
                     <p:inputText id="otrEmail" value="#{etManagedBean.emailEdited}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
-                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="otrEmail" display="icon" />
 
@@ -35,13 +35,13 @@
                         <f:validateLength maximum="1" />
                     </p:inputText>
                     <p:message for="otrAttempt" display="icon" />
-                    
+
                     <p:outputLabel for="otrLocked" value="Locked: " />
                     <p:inputText id="otrLocked" value="#{etManagedBean.locked}" required="true" label="Locked" size="10">
                         <f:validateLength maximum="1" />
                     </p:inputText>
                     <p:message for="otrLocked" display="icon" />
-                    
+
                     <p:outputLabel value="staff type: "/>
                     <p:outputLabel value="#{etManagedBean.stfType}"/>
 

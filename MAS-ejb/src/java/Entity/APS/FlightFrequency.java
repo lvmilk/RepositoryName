@@ -51,11 +51,15 @@ public class FlightFrequency implements Serializable {
     private ArrayList<String> codeshare;
 //    private String status;
 
+    //new added by lucy --> when generate flight instance, check the available date interval of this fligh schedule
+    private String sDate="1900-01-01";
+    private String fDate="1900-01-01";
+
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
 
     public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String sDate, String fDate) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -71,6 +75,8 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
 //        this.status = "Pending";
+        this.sDate = sDate;
+        this.fDate = fDate;
     }
 
     public Long getId() {
@@ -262,6 +268,23 @@ public class FlightFrequency implements Serializable {
     public void setFlightList(List<FlightInstance> flightList) {
         this.flightList = flightList;
     }
+
+    public String getsDate() {
+        return sDate;
+    }
+
+    public void setsDate(String sDate) {
+        this.sDate = sDate;
+    }
+
+    public String getfDate() {
+        return fDate;
+    }
+
+    public void setfDate(String fDate) {
+        this.fDate = fDate;
+    }
+    
 
     @Override
     public int hashCode() {

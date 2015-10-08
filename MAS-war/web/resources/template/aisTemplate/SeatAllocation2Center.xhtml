@@ -16,49 +16,52 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>
 
-            <p:dataTable id="bkiList" var="bki" value="#{seatAllocationMangagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
-                <f:facet name="header">
-                   Seat Allocation
-                </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update=":form:msgs" />
+            <p:dataTable id="bkiList" var="bki" value="#{seatAllocationMangagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="float:left">
+                <f:facet name="header">
+                    Seat Allocation
+                </f:facet>
+                <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update=":form:msgs :form:test" />
+<!--                    <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update="panel" />-->
+
                 <p:ajax event="rowEditCancel" listener="#{seatAllocationMangagedBean.onRowCancel}" update=":form:msgs" />
 
                 <p:column headerText="Cabin Class">
-                    <h:outputText value="#{bki.bookingClass.cabinName}" />
+                    <h:outputText value="#{bki.bookingClass.cabinName}" style="center" />
                 </p:column>
 
                 <p:column headerText="Booking Class Annotation">
 
-                    <h:outputText value="#{bki.bookingClass.annotation}" />
+                    <h:outputText value="#{bki.bookingClass.annotation}" style="center" />
 
                 </p:column>
 
                 <p:column headerText="Available Seat Count">
                     <p:cellEditor>
                         <f:facet name="output">
-                            <h:outputText value="#{bki.seatNo-bki.bookedSeatNo}" />
+                            <h:outputText value="#{bki.seatNo-bki.bookedSeatNo}" style="center" />
                         </f:facet>
                         <f:facet name="input">
                             <p:inputText value="#{seatAllocationMangagedBean.allocateSeatNo}" style="width:100%" label="Seat Number"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
+                <f:facet  id="total" name="footer">
+                    Total: #{seatAllocationMangagedBean.bkiList.stream().map(bki->(bki.seatNo-bki.bookedSeatNo)).sum()}
+                </f:facet>
 
-                <p:column headerText="Fare">
-
-                    <h:outputText value="#{bki.price}" />
-
-                </p:column>
-
-
-
-
-
-                <p:column style="width:32px">
+                <p:column headerText = "Edit" style="width:32px">
                     <p:rowEditor />
                 </p:column>
             </p:dataTable>
+
+            <h:panelGrid id="test" columns="2" cellpadding="5">
+                <p:outputLabel for="totalAvailable" value="Seat Count Required to be Allocated" />
+                <h:outputText id="totalAvailable"  value="#{seatAllocationMangagedBean.totalAvailableSeat}" />
+                <p:outputLabel for="allocated" value="Allocated Seat Count" />
+                <h:outputText id="allocated" value="#{seatAllocationMangagedBean.getCurrentTotalAvailableSeat()}" />
+            </h:panelGrid>
+
         </h:form>
 
     </h:body>

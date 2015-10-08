@@ -82,6 +82,16 @@
                     <p:inputText id="ecSeatNo" value="#{ATMB.ecSeatNo}" label="Number of Seat in Economy Class" required="true" validatorMessage="Economy Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Economy Class of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="400" />
                     </p:inputText>
+                    
+                    <p:outputLabel for="stewardess" value="Number of Stewardess (cabin crew):" />
+                    <p:inputText id="stewardess" value="#{ATMB.stewardess}" label="stewardess number" required="true" validatorMessage="stewardess: Please enter a valid number"  requiredMessage="Please enter number of stewardess of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="steward" value="Number of Steward (cabin crew):" />
+                    <p:inputText id="steward" value="#{ATMB.steward}" label="steward number" required="true" validatorMessage="steward: Please enter a valid number"  requiredMessage="Please enter number of steward of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
 
                 </h:panelGrid>
 
