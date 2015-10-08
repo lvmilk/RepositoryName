@@ -10,7 +10,9 @@ import Entity.aisEntity.BookingClassInstance;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.AirlineInventory.SeatAssignBeanLocal;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,44 +35,54 @@ public class SeatAllocate1Bean implements Serializable {
     @EJB
     private SeatAssignBeanLocal sa;
 
+    List<FlightFrequency> allFrequency=new ArrayList<>();
     List<FlightFrequency> frequencyList = new ArrayList<>();
     private Map<String, Map<String, String>> showDate = new HashMap<String, Map<String, String>>();
     private Map<String, String> odPair;
-    private Map<String, FlightFrequency> flightMap=new HashMap<String, FlightFrequency>();
+    private Map<String, FlightFrequency> flightMap;
+    ;
     private String flightString;
     private FlightFrequency frequency;
     private String dateString;
-    private List<BookingClassInstance> BookClassInstanceList=new ArrayList<>();
+    private List<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+    private Date selectedDate = new Date();
+    private Map<Date, Date> dateMap = new HashMap<Date, Date>();
 
     public SeatAllocate1Bean() {
     }
 
     @PostConstruct
     public void init() {
-      
-
+        flightMap = new HashMap<String, FlightFrequency>();;
     }
 
     public void onDateChange() {
+        flightMap=new HashMap<String,FlightFrequency>();
+        System.out.println("Getting in to onDateChange()");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(selectedDate);
+        System.out.println(dateString);
+
         if (dateString != null && !dateString.equals("")) {
             frequencyList = sa.getFlightList(dateString);
-            for(int i=0; i<frequencyList.size(); i++){
-            flightString=frequencyList.get(i).getFlightNo()+" "+frequencyList.get(i).getRoute().getOrigin().getIATA()+"-"+frequencyList.get(i).getRoute().getDest().getIATA();
-            flightMap.put(flightString, frequency);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date",dateString);
-              
-            }      
+            for (int i = 0; i < frequencyList.size(); i++) {
+//            flightString = frequencyList.get(i).getFlightNo() + " " + frequencyList.get(i).getRoute().getOrigin().getIATA() + "-" + frequencyList.get(i).getRoute().getDest().getIATA();
+//                flightMap.put(flightString, frequency
+                System.out.println(frequencyList.get(i).getFlightNo()+" "+frequencyList.get(i).getRoute().toString());
+            }
+//                flightString = frequencyList.get(i).getFlightNo() + " " + frequencyList.get(i).getRoute().getOrigin().getIATA() + "-" + frequencyList.get(i).getRoute().getDest().getIATA();
+//                flightMap.put(flightString, frequency);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", dateString);
+
+            
         }
     }
-    
-    
-    public void findBookClassInstance(){
-       BookClassInstanceList= sa.getBkiList(frequency.getFlightNo(), dateString);
-          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstances",BookClassInstanceList);
-   
+
+    public void findBookClassInstance() {
+        BookClassInstanceList = sa.getBkiList(frequency.getFlightNo(), dateString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstances", BookClassInstanceList);
+
     }
-    
-    
 
     public List<FlightFrequency> getFrequencyList() {
         return frequencyList;
@@ -120,5 +132,30 @@ public class SeatAllocate1Bean implements Serializable {
         this.BookClassInstanceList = BookClassInstanceList;
     }
 
+    public Date getSelectedDate() {
+        return selectedDate;
+    }
+
+    public void setSelectedDate(Date selectedDate) {
+        this.selectedDate = selectedDate;
+    }
+
+    public Map<Date, Date> getDateMap() {
+        return dateMap;
+    }
+
+    public void setDateMap(Map<Date, Date> dateMap) {
+        this.dateMap = dateMap;
+    }
+
+    public List<FlightFrequency> getAllFrequency() {
+        return allFrequency;
+    }
+
+    public void setAllFrequency(List<FlightFrequency> allFrequency) {
+        this.allFrequency = allFrequency;
+    }
+
+   
     
 }

@@ -10,28 +10,27 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="allocate">
             <p:growl id="msgs" showDetail="true" />
 
             <p:panel header="Select a Flight" style="margin-bottom:10px;">
                 <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel for="time" value="Departure Date:(YYYY-MM-DD) " />
-                    <p:inputMask id="time"  value="#{seatAllocate1Bean.dateString}"  mask="9999-99-99" required="true" requiredMessage="Please enter a valid date" size="10">
-                       <p:ajax listener="#{seatAllocate1Bean.onDateChange}" update="frequency" />
-                    </p:inputMask>
-
+                    <p:outputLabel for="date" value="Departure Date:(YYYY-MM-DD) " />
+<!--                    <p:inputMask id="time"  value="#{seatAllocate1Bean.dateString}"  mask="9999-99-99" required="true" requiredMessage="Please enter a valid date" size="10">-->
+                    <p:calendar id="date" value="#{seatAllocate1Bean.selectedDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the date" size="20">   
+                    <p:ajax event="dateSelect"  immediate="true" listener="#{seatAllocate1Bean.onDateChange}"  update="frequency" />
+                      </p:calendar>
                     
-                    
-                    <p:outputLabel for="frequency" value="Departure time: " />
-                    <p:selectOneMenu id="frequency" value="#{seatAllocate1Bean.frequency}" style="width:150px">
-                        <f:selectItem itemLabel="Select a Departure Date" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{seatAllocate1Bean.flightMap}" />
+                    <p:outputLabel for="frequency" value="Select a flight: " />
+                    <p:selectOneMenu id="frequency" var="oneFlight" value="#{seatAllocate1Bean.frequency}" required="true" requiredMessage="Please select a date" style="width:150px">    
+                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{seatAllocate1Bean.frequencyList}"  var="flight" itemValue="#{flight}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
                     </p:selectOneMenu>
                 </h:panelGrid>
 
                 <p:separator />
 
-                <p:commandButton value="Submit" update="msgs" actionListener="#{seatAllocate1Bean.findBookClassInstance}" icon="ui-icon-check" />
+                <p:commandButton value="Submit" update="allocate" actionListener="#{seatAllocate1Bean.findBookClassInstance}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>
