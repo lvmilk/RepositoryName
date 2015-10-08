@@ -45,6 +45,7 @@ public class FlightFrequency implements Serializable {
     private boolean onFri;
     private boolean onSat;
     private boolean onSun;
+    private Integer weekFreq;
 
     // for code share flights
     private String operator;
@@ -52,13 +53,16 @@ public class FlightFrequency implements Serializable {
 //    private String status;
 
     //new added by lucy --> when generate flight instance, check the available date interval of this fligh schedule
-    private String sDate="1900-01-01";
-    private String fDate="1900-01-01";
+    private String sDate = "1900-01-01";
+    private String fDate = "1900-01-01";
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
 
-    public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
+    @ManyToOne
+    private FlightPackage flightPackage = new FlightPackage();
+
+    public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String sDate, String fDate) {
         this.flightNo = flightNo;
         this.route = route;
@@ -77,6 +81,7 @@ public class FlightFrequency implements Serializable {
 //        this.status = "Pending";
         this.sDate = sDate;
         this.fDate = fDate;
+        return this;
     }
 
     public Long getId() {
@@ -85,6 +90,36 @@ public class FlightFrequency implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getWeekFreq() {
+        Integer f = 0;
+        if (onMon) {
+            f += 1;
+        }
+        if (onTue) {
+            f += 1;
+        }
+        if (onWed) {
+            f += 1;
+        }
+        if (onThu) {
+            f += 1;
+        }
+        if (onFri) {
+            f += 1;
+        }
+        if (onSat) {
+            f += 1;
+        }
+        if (onSun) {
+            f += 1;
+        }
+        return f;
+    }
+
+    public void setWeekFreq(Integer weekFreq) {
+        this.weekFreq = weekFreq;
     }
 
 //    public String getStatus() {
@@ -284,7 +319,14 @@ public class FlightFrequency implements Serializable {
     public void setfDate(String fDate) {
         this.fDate = fDate;
     }
-    
+
+    public FlightPackage getFlightPackage() {
+        return flightPackage;
+    }
+
+    public void setFlightPackage(FlightPackage flightPackage) {
+        this.flightPackage = flightPackage;
+    }
 
     @Override
     public int hashCode() {

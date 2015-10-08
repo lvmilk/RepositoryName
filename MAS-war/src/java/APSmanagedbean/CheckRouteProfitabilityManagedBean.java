@@ -36,6 +36,7 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     private String pVolumnString;
     private Double mPrice;
     private Integer pVolumn;
+    private boolean acToAssign = false;
     private List<AircraftType> acList = new ArrayList<>();
     private List<String> acKeyList = new ArrayList<>();
     private Map<String, String> fuelCostMap = new HashMap<String, String>();
@@ -87,6 +88,7 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
                 resultMap.put(a.getType(), "Not profitable: negative profit margin.");
             } else {
                 resultMap.put(a.getType(), "Profitable: positive profit margin.");
+                acToAssign = true;
             }
         }
     }
@@ -202,6 +204,14 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
 
     public void setProfitMap(Map<String, String> profitMap) {
         this.profitMap = profitMap;
+    }
+
+    public boolean isAcToAssign() {
+        return acToAssign;
+    }
+
+    public void setAcToAssign(boolean acToAssign) {
+        this.acToAssign = acToAssign;
     }
 
 }

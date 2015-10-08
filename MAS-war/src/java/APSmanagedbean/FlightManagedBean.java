@@ -40,6 +40,8 @@ public class FlightManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private FlightFrequency flightFreq;
+    private FlightFrequency inBound;
+    private FlightFrequency outBound;
     private FlightInstance flightInst;
     private Route route;
     private Long routeID;
@@ -103,7 +105,7 @@ public class FlightManagedBean implements Serializable {
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);
             
-                fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString,sd,fd);
+                FlightFrequency ff = fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString,sd,fd);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
             }
