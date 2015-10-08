@@ -51,6 +51,14 @@ public class AircraftTypeManagedBean implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
+    //number of cabin crew
+    private Integer stewardess; //cabin female
+    private Integer steward; //cabin male
+    private Integer purser; //cabin master
+    //number of cockpit crew
+    private Integer captain;
+    private Integer pilot; //1st officer
+
     public AircraftTypeManagedBean() {
     }
 
@@ -63,7 +71,7 @@ public class AircraftTypeManagedBean implements Serializable {
     public void addAircraftType() throws Exception {
         if (!fpb.checkDuplicate(type)) {
             System.out.println("No duplicates");
-            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+            fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
@@ -98,11 +106,11 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void confirmDeleteAircraftType() throws Exception {
         try {
-                System.out.println("get the selected list!");
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAircraftType", selectedList);
-                fpb.deleteAircraftTypeList(selectedList);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
-            
+            System.out.println("get the selected list!");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAircraftType", selectedList);
+            fpb.deleteAircraftTypeList(selectedList);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -127,10 +135,14 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("stewardess", aircraftType.getStewardess());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("steward", aircraftType.getSteward());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getPurser());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("captain", aircraftType.getCaptain());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pilot", aircraftType.getPilot());
         System.out.println("Which type is changed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeInfo.xhtml");
     }
-
 
     public void viewAircraftType(AircraftType aircraftType) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraftType.getType());
@@ -147,6 +159,11 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getLeaseCost());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("stewardess", aircraftType.getStewardess());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("steward", aircraftType.getSteward());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getPurser());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("captain", aircraftType.getCaptain());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pilot", aircraftType.getPilot());
         System.out.println("Which type is displayed? : " + aircraftType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewAircraftTypeConfirm.xhtml");
     }
@@ -289,6 +306,46 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void setEcSeatNo(Integer ecSeatNo) {
         this.ecSeatNo = ecSeatNo;
+    }
+
+    public Integer getStewardess() {
+        return stewardess;
+    }
+
+    public void setStewardess(Integer stewardess) {
+        this.stewardess = stewardess;
+    }
+
+    public Integer getSteward() {
+        return steward;
+    }
+
+    public void setSteward(Integer steward) {
+        this.steward = steward;
+    }
+
+    public Integer getPurser() {
+        return purser;
+    }
+
+    public void setPurser(Integer purser) {
+        this.purser = purser;
+    }
+
+    public Integer getCaptain() {
+        return captain;
+    }
+
+    public void setCaptain(Integer captain) {
+        this.captain = captain;
+    }
+
+    public Integer getPilot() {
+        return pilot;
+    }
+
+    public void setPilot(Integer pilot) {
+        this.pilot = pilot;
     }
 
     public UIComponent getuIComponent() {

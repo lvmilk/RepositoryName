@@ -134,6 +134,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.flush();
     }
 
+    @Override
+    public List<FlightFrequency> getFlightOfRoute(Route route) {
+        Query q2 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.route=:route").setParameter("route", route);
+        return (List<FlightFrequency>) q2.getResultList();
+    }
+
 //////////////////////////////////////////////////////////////////////////
     @Override
     public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {

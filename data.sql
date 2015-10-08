@@ -1,5 +1,5 @@
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A380","Airbus",15200,100000,100,100,100,"4E",6,10,20,50,300,16,4,2,2,2)
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("777-300","Boeing",11400,200000,200,200,200,"4F",3,20,50,100,200,10,2,2,2,2)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A380","Airbus",100,100000,100,100,100,"4E",6,10,20,50,300,16,4,2,2,2)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("777-300","Boeing",200,200000,200,200,200,"4F",3,20,50,100,200,10,2,2,2,2)
 
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("SIN","Changi","Singapore","Singapore","spec1","UTC+08:00","opstatus1","strlevel1","4E")
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace) values("XIA","Xianyang","Xi'an","China","spec2","UTC+08:00","opstatus2","strlevel2","4F")
@@ -38,17 +38,17 @@ INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED) val
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP777777","829d214cbc0fd94b7e16a52e526d3a56","555@555.com","cockpit","L12345")
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE) values("CP888888","91da5b4c6cb97677b5b66f0f07ef993b","666@666.com","cockpit","L12345")
 
-INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, startDate,endDate,scheduleDepTime,scheduleArrTime, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (10000,10000,'MR001',"2015-01-01","2025-01-01","10:00","15:00",0,True,False,True,False,True,False,True)
-INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo,  startDate,endDate,scheduleDepTime,scheduleArrTime, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (20000,20000,'MR002',"2012-10-08","2022-10-08","16:00","21:00",0,True,False,True,False,True,False,True)
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (10000,10000,'MR001',0,True,False,True,False,True,False,True)
+INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (20000,20000,'MR002',0,True,False,True,False,True,False,True)
 
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date,aircraft_registrationNo) values(10000,10000,"2015-10-01","9V-ABC")
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id, date,aircraft_registrationNo) values(20000,20000,"2015-10-01","9V-AAA")
 
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (10000,10000,10000,0)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (20000,10000,20000,0)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (30000,10000,30000,0)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (40000,10000,40000,0)
-INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (50000,10000,50000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (10000,10000,10000)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (20000,10000,20000)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (30000,10000,30000)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (40000,10000,40000)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID) values (50000,10000,50000)
 
 
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (60000,20000,60000,0)

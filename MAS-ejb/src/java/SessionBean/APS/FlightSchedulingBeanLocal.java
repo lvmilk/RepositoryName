@@ -38,5 +38,7 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightInstance> getAllFlightInstance();
 
     public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
+
+    public List<FlightFrequency> getFlightOfRoute(Route route);
     
 }

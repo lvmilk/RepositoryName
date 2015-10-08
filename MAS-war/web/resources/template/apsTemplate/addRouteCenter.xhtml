@@ -39,9 +39,13 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel for="distance" value="Route Distance: " />
-                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="15">
+                    <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="30">
                     </p:inputText>
 
+                     <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
+                    <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
+                    </p:inputText>
+                    
                 </h:panelGrid>
                 <p:selectBooleanCheckbox value="#{RouteManagedBean.addReturnRoute}" />
                 <h:outputText value="Add return route" />

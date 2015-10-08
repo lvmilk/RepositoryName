@@ -146,14 +146,14 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
     @Override
     public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser,Integer captain,Integer pilot) throws Exception {
         System.out.println("get in addAircraftType");
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
             throw new Exception("AircraftType exists.");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
         em.persist(aircraftType);
         em.flush();
         System.out.println("Aircrat Type is added!");
@@ -162,7 +162,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
     @Override
     public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) throws Exception {
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser,Integer captain,Integer pilot) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist..");
@@ -179,6 +179,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setBcSeatNo(bcSeatNo);
         aircraftType.setPecSeatNo(pecSeatNo);
         aircraftType.setEcSeatNo(ecSeatNo);
+        aircraftType.setStewardess(stewardess);
+        aircraftType.setSteward(steward);
+        aircraftType.setPurser(purser);
+        aircraftType.setCaptain(captain);
+        aircraftType.setPilot(pilot);
         em.merge(aircraftType);
         em.flush();
         System.out.println("Aircrat Type is edited!");
