@@ -6,6 +6,7 @@
 package AISmanagedbean;
 
 import Entity.APS.AircraftType;
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
 import SessionBean.AirlineInventory.PricingBeanLocal;
 import java.io.IOException;
@@ -84,7 +85,7 @@ public class PricingManagedBean implements Serializable {
 //    private Integer pecSFare;
     private Double expectedRev;
     private Double profitMargin;// profit margin=(revenue-cost)/cost
-    private Map<String, Double> fareMap= new HashMap<String, Double>();
+    private Map<String, Double> fareMap = new HashMap<String, Double>();
     private List<String> keyList = new ArrayList<String>();
 
     public PricingManagedBean() {
@@ -126,21 +127,21 @@ public class PricingManagedBean implements Serializable {
 //        loadfactorMap.put()
 //        
 //    }
-    public void checkFinal()throws IOException {   // set fare
+    public void checkFinal() throws IOException {   // set fare
 
         totalCost = pb.getCrewCost(crewNo, crewUnitCost, blockHour, annualDepartures) + getMaintenance() + getOwnershipCost() + getFuelCost() + getAdminCost() * blockHour * annualDepartures + getOtherCost() * blockHour * annualDepartures;
         setExpectedRev(totalCost * (profitMargin + 1));
         System.out.println("MB:calculated total cost: " + totalCost);
-        int count=0;
+        int count = 0;
         //set every fare in Route database
         for (int i = 0; i < loadfactorMap.size(); i++) {
             String cabin = new String(keyList.get(i));
             //System.out.println("MB:Load factor for " + cabin + " read: " + loadfactorMap.get(cabin));
             //System.out.println(loadfactorMap.get(cabin) instanceof Double);
-          //  System.out.println("MB:Data is of " + (loadfactorMap.get(cabin).getClass().getName()));
+            //  System.out.println("MB:Data is of " + (loadfactorMap.get(cabin).getClass().getName()));
 
             pb.calculateFare(expectedRev, totalSeatNo, loadfactorMap.get(cabin), annualDepartures, cabin);
-            fareMap.put(cabin,pb.getFare());
+            fareMap.put(cabin, pb.getFare());
             System.out.println("MB:Add in fare map!");
             count++;
         }
@@ -150,7 +151,7 @@ public class PricingManagedBean implements Serializable {
         //FuelCost:getFuelCost(); (annual cost already) 
         //admin Cost getAdminCost()*blockHour*annualDepartures
         //other cost: getOtherCost()*blockHour*annualDepartures
-      if ( count== loadfactorMap.size()) {
+        if (count == loadfactorMap.size()) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingSuccess.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please provide all information:  ", ""));
@@ -174,7 +175,7 @@ public class PricingManagedBean implements Serializable {
         } else {
             System.out.println("No route is chosen");
         }
-        
+
     }
 
     public void checkFactor() throws IOException {
@@ -184,10 +185,9 @@ public class PricingManagedBean implements Serializable {
 
         for (int i = 0; i < loadfactorMap.size(); i++) {
             System.out.println("MB:keyList.get(i): " + keyList.get(i) + "=" + loadfactorMap.get(keyList.get(i)));
-           // System.out.println(String.valueOf(loadfactorMap.get(keyList.get(i))));
-           // System.out.println(Double.valueOf(String.valueOf(loadfactorMap.get(i)))instanceof Double);
+            // System.out.println(String.valueOf(loadfactorMap.get(keyList.get(i))));
+            // System.out.println(Double.valueOf(String.valueOf(loadfactorMap.get(i)))instanceof Double);
             System.out.println(Double.valueOf(String.valueOf(loadfactorMap.get(keyList.get(i)))));
-         
 
             if (loadfactorMap.get(keyList.get(i)) != Double.valueOf(0.0)) {
                 Double factor = Double.valueOf(String.valueOf(loadfactorMap.get(keyList.get(i))));
@@ -233,16 +233,22 @@ public class PricingManagedBean implements Serializable {
     }
 
     public void retrieveRouteInfo(Long ID) {
+        annualDepartures=0;
         route = pb.getRouteInfo(ID);
         //Set route Name
-        
-        routeName=route.getOrigin().getCityName()+"-"+route.getDest().getCityName();
-        
-        System.out.println("MB: route name: "+routeName);
+
+        routeName = route.getOrigin().getCityName() + "-" + route.getDest().getCityName();
+
+        System.out.println("MB: route name: " + routeName);
         distance = route.getDistance();
         blockHour = route.getBlockhour();
         aircraftType = route.getAcType();
- //       annualDepartures=route.getFlightFreqList()
+        System.out.println("AnnualDeaprture First: "+this.annualDepartures);
+         System.out.println("size of FlightFrequency of this route: "+route.getFlightFreqList().size());
+        for (FlightFrequency f : route.getFlightFreqList()) {
+            annualDepartures = annualDepartures+f.getWeekFreq()*52;
+        }
+        System.out.println("AnnualDeaprture Calculated: "+this.annualDepartures);
         System.out.println("routeInfo Retrieved!");
         System.out.println("routeInfo Retrieved! distance: " + distance);
         System.out.println("routeInfo Retrieved! Type: " + aircraftType.getManufacturer());
@@ -295,7 +301,8 @@ public class PricingManagedBean implements Serializable {
         }
         totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
         System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
-        crewNo = pb.calculateCrewNo(totalSeatNo);
+      //  crewNo = pb.calculateCrewNo(totalSeatNo);
+        crewNo=aircraftType.getPilot()+aircraftType.getPurser()+aircraftType.getSteward()+aircraftType.getStewardess();
         System.out.println("MB: AircraftType Crew No: " + crewNo);
         keyList = new ArrayList<String>(cabinInfo.keySet());
         System.out.println("MB: AircraftType key List Size: " + keyList.size());

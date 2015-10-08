@@ -22,7 +22,7 @@ public interface PricingBeanLocal {
 
     public AircraftType getAircraftType(String type);
 
-    public Integer calculateCrewNo(Integer seatNo);
+    //public Integer calculateCrewNo(Integer seatNo);
 
     // public void calculateCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures);
     public Double getCrewCost(Integer crewNo, Double crewUnitCost, Double blockHour, Integer annualDepartures);
