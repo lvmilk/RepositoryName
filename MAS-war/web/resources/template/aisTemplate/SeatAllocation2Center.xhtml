@@ -46,9 +46,7 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-                <f:facet  id="total" name="footer">
-                    Total: #{seatAllocationMangagedBean.bkiList.stream().map(bki->(bki.seatNo-bki.bookedSeatNo)).sum()}
-                </f:facet>
+     
 
                 <p:column headerText = "Edit" style="width:32px">
                     <p:rowEditor />
@@ -60,9 +58,13 @@
                 <h:outputText id="totalAvailable"  value="#{seatAllocationMangagedBean.totalAvailableSeat}" />
                 <p:outputLabel for="allocated" value="Allocated Seat Count" />
                 <h:outputText id="allocated" value="#{seatAllocationMangagedBean.getCurrentTotalAvailableSeat()}" />
+               <br/><br/><br/><br/>
+
+
+                <p:commandButton value="Back" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.goBack()}"  icon="ui-icon-check" />
+
             </h:panelGrid>
 
-             <p:commandButton value="Back" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.goBack()}"  icon="ui-icon-check" />
         </h:form>
 
     </h:body>

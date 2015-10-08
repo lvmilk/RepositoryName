@@ -514,4 +514,9 @@ public class PricingManagedBean implements Serializable {
         this.expectedRev = expectedRev;
     }
 
+    public void goBack() throws IOException {
+        routeID = null;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingAttribute1.xhtml");
+    }
+    
 }
