@@ -52,8 +52,9 @@ public class SeatAllocationMangagedBean implements Serializable {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
             date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
             cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
+                System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
+
         }
-        System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
     }
 
 //    public Integer getRequiredCount(){
@@ -291,12 +292,5 @@ public class SeatAllocationMangagedBean implements Serializable {
     public SeatAllocationMangagedBean() {
     }
 
-    @PreDestroy
-    public void dest() {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
-
-    }
 
 }
