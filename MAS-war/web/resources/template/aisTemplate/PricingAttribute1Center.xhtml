@@ -12,36 +12,29 @@
     </h:head>
     <h:body>
 
-          
-             
+        <h:form>
+
+            <!--<div><h1>Choose an aircraft model </h1></div>-->
+            <h:form id="selectOne">
+                <p:messages autoUpdate="true" />
+                <p:panel id="panel" header="Choose a route" >
+                    <h:panelGrid columns="2" style="margin-bottom:200px" cellpadding="20">
+                        <p:outputLabel for="console" value="Route :" />
+                        <p:selectOneMenu id="console" value="#{pricingManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
+                            <f:selectItem itemLabel="Select One Route" itemValue="#{null}" />
+                            <f:selectItems value="#{pricingManagedBean.routeInfo}" />
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+
+                    <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{pricingManagedBean.checkRoute()}"  icon="ui-icon-check" />
+
+                </p:panel>
+
+            </h:form>
 
 
-                    <h:form>
-                        
-                                                    <!--<div><h1>Choose an aircraft model </h1></div>-->
-                        <h:form id="selectOne">
-                            <p:messages autoUpdate="true" />
-                            <p:panel id="panel" header="Choose a route" >
-                                <h:panelGrid columns="2" style="margin-bottom:200px" cellpadding="20">
-                                    <p:outputLabel for="console" value="Route :" />
-                                    <p:selectOneMenu id="console" value="#{pricingManagedBean.routeID}" required="true" requiredMessage="Please select a route" style="width:250px">
-                                        <f:selectItem itemLabel="Select One Route" itemValue="#{null}" />
-                                        <f:selectItems value="#{pricingManagedBean.routeInfo}" />
-                                    </p:selectOneMenu>
 
-                                    <p:draggable for="panel" /><p:resizable for="panel" />
-
-                                </h:panelGrid>
-
-                                <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{pricingManagedBean.checkRoute()}"  icon="ui-icon-check" />
-
-                            </p:panel>
-
-                        </h:form>
-                        <p:resizable for="selectOne" /><p:draggable for="selectOne" />
-
-
-                    </h:form>
+        </h:form>
 
     </h:body>
 </html>

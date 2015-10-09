@@ -8,49 +8,50 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Pricing: step 2 Center</title>
+        <title>Pricing:Success Center</title>
     </h:head>
     <h:body>
 
 
-     
 
 
-            <h:form id="display">
-                <p:panel id="panel" header="Fill in load factors"  style="width:100%">
-                    <p:messages id="msgs" />
 
-                    <h:panelGrid columns="2" cellpadding="5">
-                        <p:outputLabel for="route_ID" value="Route ID" />
-                        <h:outputText id="route_ID"  value="#{pricingManagedBean.routeID}" />
-                        <p:outputLabel for="route_Name" value="Route Name" />
-                        <h:outputText id="route_Name" value="#{pricingManagedBean.routeName}" />
-                      </h:panelGrid>
-                        <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
-                            <p:column headerText="Cabin Class Name" sortBy="#{key}">
-                                <h:outputText value="#{key}" />
-                            </p:column>
-                            <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
-                                <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
-                            </p:column>
-                            <p:column headerText="Fare" sortBy="#{pricingManagedBean.fareMap[key]}">
-                                <h:outputText value="#{pricingManagedBean.fareMap[key]}" >
-                                <f:convertNumber pattern="#0.00" />
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
+        <h:form id="display">
+            <p:panel id="panel" header="Display Price"  style="width:100%">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="route_ID" value="Route ID" />
+                    <h:outputText id="route_ID"  value="#{pricingManagedBean.routeID}" />
+                    <p:outputLabel for="route_Name" value="Route Name" />
+                    <h:outputText id="route_Name" value="#{pricingManagedBean.routeName}" />
+                </h:panelGrid>
+                <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
+                    <p:column headerText="Cabin Class Name" sortBy="#{key}">
+                        <h:outputText value="#{key}" />
+                    </p:column>
+                    <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
+                        <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
+                    </p:column>
+                    <p:column headerText="Fare" sortBy="#{pricingManagedBean.fareMap[key]}">
+                        <h:outputText value="#{pricingManagedBean.fareMap[key]}" >
+                            <f:convertNumber pattern="#0.00" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <br/><br/>
+                <p:commandButton value="Back" style="margin-right:0" actionListener="#{pricingManagedBean.goBack()}"  icon="ui-icon-check" />
 
 <!--                        <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />-->
-                    
-                </p:panel>
 
-            </h:form>
-            <p:resizable for="display" />
-            <p:draggable for="display" />
+            </p:panel>
+
+        </h:form>
 
 
 
 
-      
+
+
     </h:body>
 </html>

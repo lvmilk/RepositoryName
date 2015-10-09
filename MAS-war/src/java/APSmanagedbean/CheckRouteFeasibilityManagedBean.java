@@ -29,7 +29,10 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private Route route;
-    private List<AircraftType> feasibleAcType;
+    private List<AircraftType> feasibleAcDis;
+    private List<AircraftType> feasibleAcAsp;
+    private List<AircraftType> feasibleAc;
+    private String feasibleAcString;
     private boolean feasibility;
     private String feasibilityResult;
 
@@ -39,11 +42,25 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("routeCheck");
-
+        feasibleAcDis = rpb.checkFeasibleAcByDis(route);
+        feasibleAcAsp = rpb.checkFeasibleAcByAsp(route);
+        feasibleAc = rpb.feasibleAc(route);
     }
 
     public void checkFeasibilityBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibility.xhtml");
+    }
+
+    public String getFeasibleAcString() {
+        String s = "";
+        for(AircraftType a: getFeasibleAc()) {
+           s += a.getType() + " ";
+        }
+        return s;
+    }
+
+    public void setFeasibleAcString(String feasibleAcString) {
+        this.feasibleAcString = feasibleAcString;
     }
 
     public String getFeasibilityResult() {
@@ -58,19 +75,36 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
     }
 
     public boolean isFeasibility() {
-        return !getFeasibleAcType().isEmpty();
+        return !getFeasibleAc().isEmpty();
     }
 
     public void setFeasibility(boolean feasibility) {
         this.feasibility = feasibility;
     }
 
-    public List<AircraftType> getFeasibleAcType() {
-        return rpb.checkFeasibleAc(route);
+    
+    public List<AircraftType> getFeasibleAc() {
+        return rpb.feasibleAc(route);
     }
 
-    public void setFeasibleAcType(List<AircraftType> feasibleAcType) {
-        this.feasibleAcType = feasibleAcType;
+    public void setFeasibleAc(List<AircraftType> feasibleAc) {
+        this.feasibleAc = feasibleAc;
+    }
+
+    public List<AircraftType> getFeasibleAcAsp() {
+        return rpb.checkFeasibleAcByAsp(route);
+    }
+
+    public void setFeasibleAcAsp(List<AircraftType> feasibleAcAsp) {
+        this.feasibleAcAsp = feasibleAcAsp;
+    }
+
+    public List<AircraftType> getFeasibleAcDis() {
+        return rpb.checkFeasibleAcByDis(route);
+    }
+
+    public void setFeasibleAcDis(List<AircraftType> feasibleAcDis) {
+        this.feasibleAcDis = feasibleAcDis;
     }
 
     public Route getRoute() {

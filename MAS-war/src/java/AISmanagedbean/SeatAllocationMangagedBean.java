@@ -5,6 +5,7 @@
  */
 package AISmanagedbean;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.aisEntity.BookingClassInstance;
 import SessionBean.AirlineInventory.SeatAllocationBeanLocal;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -35,9 +37,10 @@ public class SeatAllocationMangagedBean implements Serializable {
     private String date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
-    //private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
-    private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
-    //private Double price;
+    private List<BookingClassInstance> bkiList;
+    //added 
+    private List<CabinClass> cabinList = new ArrayList<CabinClass>();
+    private String cabinName;
     private Integer allocateSeatNo;
     private Integer totalAllocatedSeat = 0;
     private Integer totalAvailableSeat = 0;
@@ -48,10 +51,11 @@ public class SeatAllocationMangagedBean implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
             date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
         }
         System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
     }
-    
+
 //    public Integer getRequiredCount(){
 //        int temp=0;
 //       for (int i = 0; i < bkiList.size(); i++) {
@@ -59,12 +63,10 @@ public class SeatAllocationMangagedBean implements Serializable {
 //        }
 //    }
 //    
-    
-    
     public Integer getAllocateSeatNo() {
         return allocateSeatNo;
     }
-     
+
     public void setAllocateSeatNo(Integer allocateSeatNo) {
         this.allocateSeatNo = allocateSeatNo;
     }
@@ -96,24 +98,44 @@ public class SeatAllocationMangagedBean implements Serializable {
     }
 
     public List<BookingClassInstance> getBkiList() {
-        
-        bkiList = sab.getBkiList(flightNo, date);
+        bkiList = new ArrayList<BookingClassInstance>();
+        bkiList = sab.getBkiList(flightNo, date, cabinName);
         System.out.println("SAMB: getBkiList().size: " + bkiList.size());
         System.out.println("Flag: initial: " + this.flag);
+        if (flag) {
+            // System.out.println("SAMB: getBkiList(): bki" + bkiList.get(0).toString());
+            // System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin " + bkiList.get(0).getFlightCabin().toString());
+            //  System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin.CabinClass.Name " + bkiList.get(0).getFlightCabin().getCabinClass().getCabinName());
 
-        for (int i = 0; i < bkiList.size(); i++) {
-            System.out.println("Flag " + i + " = " + this.flag);
-            if (flag) {
-                System.out.println("SAMB: getBkiList():bkiList.get(i).getSeatNo() :" + bkiList.get(i).getSeatNo());
-                System.out.println("SAMB: getBkiList():bkiList.get(i).getBookedSeatNo() :" + bkiList.get(i).getBookedSeatNo());
-                totalAvailableSeat = totalAvailableSeat + (bkiList.get(i).getSeatNo() - bkiList.get(i).getBookedSeatNo());
-            }
+            totalAvailableSeat = bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(0).getFlightCabin().getBookedSeat();
+//            for (FlightCabin cc : bkiList.get(0).getFlightCabin().getFlightInstance().getFlightCabins()) {
+//                totalAvailableSeat = totalAvailableSeat + cc.getCabinClass().getSeatCount() - cc.getBookedSeat();
+//            }
+            this.flag = false;
         }
-        
-        this.flag = false;
         return bkiList;
     }
 
+//       public List<BookingClassInstance> getBkiList() {
+//
+//        bkiList = sab.getBkiList(flightNo, date);
+//        System.out.println("SAMB: getBkiList().size: " + bkiList.size());
+//        System.out.println("Flag: initial: " + this.flag);
+//        //totalAvailableSeat=bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount()-bkiList.get(0).getFlightCabin().getBookedSeat();
+//        for (int i = 0; i < bkiList.size(); i++) {
+//            System.out.println("Flag " + i + " = " + this.flag);
+//            if (flag) {
+//                System.out.println("SAMB: getBkiList():bkiList.get(i).getSeatNo() :" + bkiList.get(i).getFlightCabin().getCabinClass().getSeatCount());
+//                System.out.println("SAMB: getBkiList():bkiList.get(i).getBookedSeatNo() :" + bkiList.get(i).getFlightCabin().getBookedSeat());
+//                totalAvailableSeat = totalAvailableSeat + (bkiList.get(i).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(i).getFlightCabin().getBookedSeat());
+//            }
+//        }
+//
+//      
+//        this.flag = false;
+//
+//        return bkiList;
+//    }
     public void setBkiList(List<BookingClassInstance> bkiList) {
         this.bkiList = bkiList;
     }
@@ -129,6 +151,17 @@ public class SeatAllocationMangagedBean implements Serializable {
         this.flightList = flightList;
     }
 
+    public List<CabinClass> getCabinList() {
+        if (!cabinList.isEmpty()) {
+            System.out.println("SAMB: getCabinList(): " + cabinList.toString());
+        }
+        return cabinList;
+    }
+
+    public void setCabinList(List<CabinClass> cabinList) {
+        this.cabinList = cabinList;
+    }
+
     public String getFlightNo() {
         return flightNo;
     }
@@ -138,14 +171,32 @@ public class SeatAllocationMangagedBean implements Serializable {
         this.flightNo = flightNo;
     }
 
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        System.out.println("SAMB: cabinName SET");
+        this.cabinName = cabinName;
+    }
+
     public void onDateChange() {
         System.out.println("SAMB:OnDateChange run");
         if (date != null && !date.equals("")) {
             flightList = sab.getFlightList(date);
+            System.out.println("SAMB: Got flight list: size is " + flightList.size());
+
             System.out.println("SAMB:OnDateChange run result: " + flightList.toString());
         } else {
             flightList = new ArrayList<FlightFrequency>();
         }
+
+    }
+
+    public void onFlightChange() {
+        System.out.println("SAMB: Got cabin list");
+
+        cabinList = sab.getCabinList(flightNo);
 
     }
 
@@ -154,6 +205,7 @@ public class SeatAllocationMangagedBean implements Serializable {
         if (flightNo != null && !flightNo.equals("")) {
             System.out.println("SAMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocation2.xhtml");
@@ -166,7 +218,27 @@ public class SeatAllocationMangagedBean implements Serializable {
 
     }
 
+    public void checkFlight2() throws IOException {
+        System.out.println("SAMB: any flight selected?  ");
+        if (flightNo != null && !flightNo.equals("")) {
+            System.out.println("SAMB: Flight is selected:  " + flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewSeatAvailability2.xhtml");
+        } else {
+            System.out.println("SAMB: No Flight is chosen");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "No flight is chosen.");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+            //FacesContext.getCurrentInstance().addMessage(null, message);  
+        }
+
+    }
+
     public void onRowEdit(RowEditEvent event) {
+        System.out.println("SAMB:onRowEdit():ENTER!!! ");
+
         BookingClassInstance bki = (BookingClassInstance) event.getObject();
         Integer currentAvailable = this.getCurrentTotalAvailableSeat() - bki.getSeatNo() + bki.getBookedSeatNo() + allocateSeatNo;
         System.out.println("SAMB:onRowEdit(): currentAvailable: " + currentAvailable);
@@ -197,10 +269,34 @@ public class SeatAllocationMangagedBean implements Serializable {
         System.out.println("MPMB:set Date: " + date);
     }
 
+    public void goBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocation1.xhtml");
+    }
+
+    public void goBack2() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewSeatAvailability1.xhtml");
+    }
+
     /**
      * Creates a new instance of SeatAllocationMangagedBean
      */
     public SeatAllocationMangagedBean() {
+    }
+
+    @PreDestroy
+    public void dest() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
     }
 
 }

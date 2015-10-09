@@ -5,6 +5,7 @@
  */
 package SessionBean.AirlineInventory;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.aisEntity.BookingClassInstance;
@@ -45,15 +46,24 @@ public class SeatAllocationBean implements SeatAllocationBeanLocal {
         return flightList;
     }
 
-    public List<BookingClassInstance> getBkiList(String flightNo, String date) {
+    public List<BookingClassInstance> getBkiList(String flightNo, String date,String cabinName) {
         List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
-        Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.date=:fdate AND b.flightCabin.flightInstance.flightFrequency.flightNo=:fflightNo");
+        Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.date=:fdate AND b.flightCabin.flightInstance.flightFrequency.flightNo=:fflightNo AND b.flightCabin.cabinClass.cabinName=:fcabinName");
         query.setParameter("fdate", date);
         query.setParameter("fflightNo", flightNo);
+        query.setParameter("fcabinName",cabinName);
         bkiList = query.getResultList();
         return bkiList;
     }
-
+    public List<CabinClass> getCabinList(String flightNo){
+         List<CabinClass> cabinList = new ArrayList<CabinClass>();
+        for (FlightFrequency f: flightList){
+            if(f.getFlightNo().equals(flightNo))
+                cabinList=f.getRoute().getAcType().getCabinList();
+        }
+       System.out.println("SAB: getCabinList(): size is "+cabinList.size());
+        return cabinList;
+    }
     public void editSeatNo(BookingClassInstance bki,Integer seatNo) {
         bki.setSeatNo(seatNo);
         System.out.println("SAB: get seat count is " + bki.getSeatNo());

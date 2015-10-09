@@ -40,6 +40,8 @@ public class FlightManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private FlightFrequency flightFreq;
+    private FlightFrequency inBound;
+    private FlightFrequency outBound;
     private FlightInstance flightInst;
     private Route route;
     private Long routeID;
@@ -68,6 +70,7 @@ public class FlightManagedBean implements Serializable {
     private boolean onSat;
     private boolean onSun;
 
+
     // for code share flights
     private String operator;
     private List<String> codeshare;
@@ -95,11 +98,14 @@ public class FlightManagedBean implements Serializable {
                 Format formatter = new SimpleDateFormat("yyyy-MM-dd");
                 startDateString = formatter.format(startDate);
                 endDateString = formatter.format(endDate);
+                //default value for checking
+                String sd="1900-01-01";
+                String fd="1900-01-01";
                 Format formatter2 = new SimpleDateFormat("HH:mm");
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);
-
-                fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString);
+            
+                FlightFrequency ff = fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString,sd,fd);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
             }
@@ -360,5 +366,4 @@ public class FlightManagedBean implements Serializable {
     public void setCodeshare(List<String> codeshare) {
         this.codeshare = codeshare;
     }
-
 }

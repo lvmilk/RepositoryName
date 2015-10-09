@@ -51,6 +51,9 @@ public class RouteManagedBean implements Serializable {
     private List<Route> deletedRoute = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
     private Map<String, String> airportInfo = new HashMap<String, String>();
+    
+       private String mPriceString;
+    private String pVolumnString;
 
     public RouteManagedBean() {
     }
@@ -70,11 +73,11 @@ public class RouteManagedBean implements Serializable {
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
                 }
-                rpb.addRoute(originIATA, destIATA, distance);
+                rpb.addRoute(originIATA, destIATA, distance, blockhour);
                 String rt = originIATA + " - " + destIATA;
                 String rtNum = "Route ";
                 if (addReturnRoute) {
-                    rpb.addRoute(destIATA, originIATA, distance);
+                    rpb.addRoute(destIATA, originIATA, distance, blockhour);
                     rt += " ," + destIATA + " - " + originIATA;
                     rtNum = "Routes ";
                 }
@@ -139,11 +142,17 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
     }
 
-//    public boolean checkRouteFeasibility(Route route) {
-//
-//
-//       
-//    }
+    public void checkRouteProfitability(Route route) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
+    }
+
+    public void checkRouteProfit() throws IOException {
+     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", mPriceString);
+     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+    }
+    
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
         for (Airport a : airportList) {
@@ -269,6 +278,22 @@ public class RouteManagedBean implements Serializable {
 
     public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
         this.flightOfRoute = flightOfRoute;
+    }
+
+    public String getmPriceString() {
+        return mPriceString;
+    }
+
+    public void setmPriceString(String mPriceString) {
+        this.mPriceString = mPriceString;
+    }
+
+    public String getpVolumnString() {
+        return pVolumnString;
+    }
+
+    public void setpVolumnString(String pVolumnString) {
+        this.pVolumnString = pVolumnString;
     }
 
 }

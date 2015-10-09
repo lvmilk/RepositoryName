@@ -30,7 +30,7 @@ public interface RoutePlanningBeanLocal {
 
     public List<Airport> viewAllAirport();
 
-    public void addRoute(String originIATA, String destIATA, Double distance) throws Exception;
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception;
 
     public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception;
 
@@ -64,6 +64,10 @@ public interface RoutePlanningBeanLocal {
 
     public void checkRouteExist(String originIATA, String destIATA) throws Exception;
 
-    public List<AircraftType> checkFeasibleAc(Route route);
+    public List<AircraftType> checkFeasibleAcByDis(Route route);
+
+    public List<AircraftType> checkFeasibleAcByAsp(Route route);
+
+    public List<AircraftType> feasibleAc(Route route);
 
 }

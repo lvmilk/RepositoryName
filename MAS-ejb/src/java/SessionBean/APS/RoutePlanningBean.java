@@ -185,7 +185,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addRoute(String originIATA, String destIATA, Double distance) throws Exception {
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         System.out.println("rpb.addRoute(): Add route " + originIATA + "-" + destIATA);
         Airport origin = em.find(Airport.class, originIATA);
@@ -195,7 +195,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Route already exists.");
         }
         route = new Route();
-        route.create(origin, dest, distance);
+        route.create(origin, dest, distance, blockhour);
         em.persist(route);
         em.flush();
     }
@@ -241,28 +241,54 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public List<AircraftType> checkFeasibleAc(Route route) {
+    public List<AircraftType> checkFeasibleAcByDis(Route route) {
         Double distance = route.getDistance();
         Query q1 = em.createQuery("SELECT ac FROM AircraftType ac WHERE ac.maxDistance >=:distance").setParameter("distance", distance);
         List<AircraftType> actList = q1.getResultList();
-        if (actList.isEmpty()) {
-            return actList;
-        } else {
-            List<AircraftType> actListCopy = q1.getResultList();
-            for (AircraftType a : actList) {
-                if (a.getAircraft().isEmpty()) {
-                    actListCopy.remove(a);
-                }
-            }
-            return actListCopy;
-        }
-
+//        if (actList.isEmpty()) {
+//            return actList;
+//        } else {
+//            List<AircraftType> actListCopy = q1.getResultList();
+//            for (AircraftType a : actList) {
+//                if (a.getAircraft().isEmpty()) {
+//                    actListCopy.remove(a);
+//                }
+//            }
+//            return actListCopy;
+//        }
+        return actList;
     }
 
-//    public boolean checkAirportFeasible(Route route) {
-//        checkFeasibleAc(Route route);
-//    }
-//    
+     @Override
+    public List<AircraftType> checkFeasibleAcByAsp(Route route) {
+        Query q1 = em.createQuery("SELECT ac FROM AircraftType ac");
+        List<AircraftType> acList = q1.getResultList();
+        List<AircraftType> acListCopy = q1.getResultList();
+        String aspOrg = route.getOrigin().getAirspace();
+        String aspDest = route.getDest().getAirspace();
+
+        for (AircraftType ac : acList) {
+            String aspAc = ac.getMinAirspace();
+            if (aspAc.charAt(1) > aspOrg.charAt(1) || aspAc.charAt(1) > aspDest.charAt(1) || aspAc.charAt(0) > aspOrg.charAt(0) || aspAc.charAt(0) > aspDest.charAt(0)) {
+                acListCopy.remove(ac);
+            }
+        }
+        return acListCopy;
+    }
+
+    @Override
+    public List<AircraftType> feasibleAc(Route route) {
+        List<AircraftType> list1 = checkFeasibleAcByAsp(route);
+        List<AircraftType> list2 = checkFeasibleAcByDis(route);
+        List<AircraftType> list = new ArrayList<>();
+        for(AircraftType ac: list1) {
+            if(list2.contains(ac)) {
+                list.add(ac);
+            }
+        }
+        return list;
+    }
+    
     @Override
     public List<Route> viewAllRoute() {
         Query q1 = em.createQuery("SELECT r FROM Route r");
