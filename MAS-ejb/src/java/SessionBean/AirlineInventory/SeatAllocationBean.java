@@ -16,13 +16,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 /**
  *
  * @author wang
  */
 @Stateful
 public class SeatAllocationBean implements SeatAllocationBeanLocal {
- @PersistenceContext
+
+    @PersistenceContext
     EntityManager em;
 
     private List<FlightFrequency> flightList;
@@ -31,6 +33,8 @@ public class SeatAllocationBean implements SeatAllocationBeanLocal {
     //private LocalDate date;
 
 // Add business logic below. (Right-click in editor and choose
+
+
     public List<FlightFrequency> getFlightList(String date) {
         flightList = new ArrayList<FlightFrequency>();
         System.out.println("SAB: getFlightList(): date is " + date);
@@ -54,8 +58,8 @@ public class SeatAllocationBean implements SeatAllocationBeanLocal {
         bkiList = query.getResultList();
         return bkiList;
     }
-  
-    public void editSeatNo(BookingClassInstance bki,Integer seatNo) {
+
+    public void editSeatNo(BookingClassInstance bki, Integer seatNo) {
         bki.setSeatNo(seatNo);
         System.out.println("SAB: get seat count is " + bki.getSeatNo());
         em.merge(bki);
