@@ -27,7 +27,7 @@
                             <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
                         </p:column>
                         <p:column headerText="Load Factor(0.0-1.0)">  
-                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor" validatorMessage="Please check load factor is between 0 to 1" size="10">
+                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor of  #{key}" validatorMessage="Please check load factor  of  #{key} should be (0,1]" size="10">
                                 <f:validateDoubleRange minimum="0.01" maximum="1.0" />
                             </p:inputText>
                         </p:column>

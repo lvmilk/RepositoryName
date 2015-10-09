@@ -11,7 +11,7 @@ import Entity.APS.FlightInstance;
 import Entity.aisEntity.BookingClassInstance;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -20,7 +20,7 @@ import javax.persistence.Query;
  *
  * @author wang
  */
-@Stateful
+@Stateless
 public class SeatAllocationBean implements SeatAllocationBeanLocal {
  @PersistenceContext
     EntityManager em;
