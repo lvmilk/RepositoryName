@@ -131,11 +131,30 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
         em.flush();
     }
 
-    public void deleteSendMessage(Long sendMessageId) throws Exception {
-
+    @Override
+    public void deleteSendMessage(Long sendMsgId) throws Exception {
+        MsgSender sendMessage = em.find(MsgSender.class, sendMsgId);
+        if (sendMessage == null) {
+            throw new Exception("Sent Message is not found!");
+        } else {
+            System.out.println("session bean deleteSentMessage: update state!");
+            sendMessage.setDelStatus(true);
+            System.out.println("session bean deleteSentMessage: update update!");
+        }
+        em.flush();
     }
 
-    public void deleteReceiveMessage(Long receiveMessageId) throws Exception {
+    @Override
+    public void deleteReceiveMessage(Long rcvMsgId) throws Exception {
+        MsgReceiver receiveMessage = em.find(MsgReceiver.class, rcvMsgId);
+        if (receiveMessage == null) {
+            throw new Exception("Received Message is not found!");
+        } else {
+
+            receiveMessage.setDelStatus(true);
+        }
+
+        em.flush();
     }
 
     @Override

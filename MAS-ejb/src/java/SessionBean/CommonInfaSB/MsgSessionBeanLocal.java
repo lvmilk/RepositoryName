@@ -25,7 +25,7 @@ public interface MsgSessionBeanLocal {
     public void readReceiveMessage(Long receiveMessageId) throws Exception;
     public void replyMessage(Long receiveMessageId) throws Exception;
     public void deleteSendMessage(Long sendMessageId) throws Exception;  
-    public void deleteReceiveMessage(Long receiveMessageId) throws Exception;
+    public void deleteReceiveMessage(Long rcvMsgId) throws Exception;
     public Collection<MsgSender> viewSendMessage(String senderId) throws Exception;
     public Collection<MsgReceiver> viewReceiveMessage(String receiverId);
 }
