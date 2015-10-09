@@ -18,9 +18,7 @@
 
 
             <p:dataTable id="bkiList" var="bki" value="#{seatAllocationMangagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="float:left">
-                <f:facet name="header">
-                    Seat Allocation
-                </f:facet>
+           
                 <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update=":form:msgs :form:test" />
 <!--                    <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update="panel" />-->
 

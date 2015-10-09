@@ -43,12 +43,12 @@ public class ViewBookingPriceManagedBean implements Serializable {
     /**
      * Creates a new instance of ModifyPriceManagedBean
      */
-
     @PostConstruct
     public void init() {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
             date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+          
         }
         System.out.println("MPMB: flight passed in viewscoped: " + flightNo);
     }
@@ -147,10 +147,11 @@ public class ViewBookingPriceManagedBean implements Serializable {
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewBookingClassPrice1.xhtml");
     }
+
     /**
      * Creates a new instance of ViewBookingPriceManagedBean
      */
     public ViewBookingPriceManagedBean() {
     }
-    
+
 }

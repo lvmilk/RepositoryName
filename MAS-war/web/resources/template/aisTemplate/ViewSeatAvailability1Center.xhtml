@@ -8,7 +8,7 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Seat Reallocation for Booking Class: Step1</title>
+        <title>View Seat Allocation and Availability: Step1</title>
     </h:head>
     <h:body>
 
@@ -19,7 +19,6 @@
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
                     <p:inputMask id="date" value="#{seatAllocationMangagedBean.date}" mask="9999-99-99"/>
-                    <!--<p:ajax event='keyup' listener="#{seatAllocationMangagedBean.onDateChange()}" update="flight" />-->
 
                     <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
@@ -37,10 +36,15 @@
                     </p:selectOneMenu>
 
                 </h:panelGrid>
-                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.checkFlight()}"  icon="ui-icon-check" />
+                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.checkFlight2()}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
+
+
+
+
+
 
 
     </h:body>

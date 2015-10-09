@@ -14,16 +14,13 @@
     <h:body>
 
         <h:form id="form">
-            <p:panel id="panel" header="Modify Price"  style="width:100%">
+            <p:panel id="panel" header=" View Fare of Booking Class "  style="width:100%">
                 <p:growl id="msgs" showDetail="true"/>
 
                 <p:dataTable id="bkiList" var="bki" value="#{viewBookingPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
-                    <f:facet name="header">
-                        View Fare of Booking Class 
-                    </f:facet>
-
-                    <p:column headerText="Cabin Class">
-                        <h:outputText value="#{bki.bookingClass.cabinName}" style="center" />
+                
+                    <p:column headerText="Cabin Class" >
+                        <h:outputText value="#{bki.bookingClass.cabinName}"  style="center" />
                     </p:column>
                     <p:column headerText="Booking Class Annotation">
 

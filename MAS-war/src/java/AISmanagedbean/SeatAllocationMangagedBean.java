@@ -8,13 +8,13 @@ package AISmanagedbean;
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.aisEntity.BookingClassInstance;
-import Entity.aisEntity.FlightCabin;
 import SessionBean.AirlineInventory.SeatAllocationBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -103,10 +103,9 @@ public class SeatAllocationMangagedBean implements Serializable {
         System.out.println("SAMB: getBkiList().size: " + bkiList.size());
         System.out.println("Flag: initial: " + this.flag);
         if (flag) {
-           // System.out.println("SAMB: getBkiList(): bki" + bkiList.get(0).toString());
-           // System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin " + bkiList.get(0).getFlightCabin().toString());
-          //  System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin.CabinClass.Name " + bkiList.get(0).getFlightCabin().getCabinClass().getCabinName());
-           
+            // System.out.println("SAMB: getBkiList(): bki" + bkiList.get(0).toString());
+            // System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin " + bkiList.get(0).getFlightCabin().toString());
+            //  System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin.CabinClass.Name " + bkiList.get(0).getFlightCabin().getCabinClass().getCabinName());
 
             totalAvailableSeat = bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(0).getFlightCabin().getBookedSeat();
 //            for (FlightCabin cc : bkiList.get(0).getFlightCabin().getFlightInstance().getFlightCabins()) {
@@ -219,6 +218,24 @@ public class SeatAllocationMangagedBean implements Serializable {
 
     }
 
+    public void checkFlight2() throws IOException {
+        System.out.println("SAMB: any flight selected?  ");
+        if (flightNo != null && !flightNo.equals("")) {
+            System.out.println("SAMB: Flight is selected:  " + flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewSeatAvailability2.xhtml");
+        } else {
+            System.out.println("SAMB: No Flight is chosen");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "No flight is chosen.");
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+            //FacesContext.getCurrentInstance().addMessage(null, message);  
+        }
+
+    }
+
     public void onRowEdit(RowEditEvent event) {
         System.out.println("SAMB:onRowEdit():ENTER!!! ");
 
@@ -251,19 +268,35 @@ public class SeatAllocationMangagedBean implements Serializable {
         onDateChange();
         System.out.println("MPMB:set Date: " + date);
     }
-    
-    public void goBack() throws IOException{
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
 
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocation1.xhtml");
+    public void goBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocation1.xhtml");
     }
+
+    public void goBack2() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewSeatAvailability1.xhtml");
+    }
+
     /**
      * Creates a new instance of SeatAllocationMangagedBean
      */
     public SeatAllocationMangagedBean() {
-        
+    }
+
+    @PreDestroy
+    public void dest() {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
+
     }
 
 }
