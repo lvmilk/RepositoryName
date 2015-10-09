@@ -45,7 +45,7 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
         if (sender == null) {
             throw new Exception("Sender is not found!");
         } else {
-            System.out.println("message sessionBean sendMessage(): getUserName: " + sender.getUsername());
+            System.out.println("message sessionBean sendMessage(): " + sender.getUsername());
 
             //initialise the new message
             //get the list of receive
@@ -61,7 +61,7 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
 //            String time = sdf.format(sendTime.getTime()).toString();
             System.out.println("sessionbean internal message module sendMessage(): time : " + sendTime.getTime());
             System.out.println("sessionbean internal message module sendMessage(): title : " + msgTitle);
-            System.out.println("sessionbean internal message module sendMessage(): content : " +  msgContent);
+            System.out.println("sessionbean internal message module sendMessage(): content : " + msgContent);
 
             //instanlise a sendmessage entity
             MsgSender sendNewMessage = new MsgSender();
@@ -84,7 +84,7 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
                     throw new Exception("Receiver is not found!");
                 } else {
 
-                    String displayReceiverIdAndName = "(" + receiver.getUsername()+ ")";
+                    String displayReceiverIdAndName = "(" + receiver.getUsername() + ")";
                     rcvNameArray.add(displayReceiverIdAndName);
                     MsgReceiver receiveMessage = new MsgReceiver();
                     receiveMessage.create(sendNewMessage);
@@ -113,39 +113,64 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
 
         }
     }
-    
+
     @Override
-    public void readReceiveMessage(Long receiveMessageId) throws Exception
-    {
-        
+    public void readReceiveMessage(Long receiveMessageId) throws Exception {
+
     }
-    
+
     @Override
-    public void replyMessage(Long receiveMessageId) throws Exception
-    {
-        
+    public void replyMessage(Long rcvMsgId) throws Exception {
+        MsgReceiver rcvMsg = em.find(MsgReceiver.class, rcvMsgId);
+        if (rcvMsg == null) {
+            throw new Exception("Received Message is not found!");
+        } else {
+            System.out.println("session bean readReceiveMessage: update state!");
+            rcvMsg.setReplied(true);
+        }
+        em.flush();
     }
-    
-    
-    public void deleteSendMessage(Long sendMessageId) throws Exception
-    {
-        
+
+    public void deleteSendMessage(Long sendMessageId) throws Exception {
+
     }
-    
-    
-    public void deleteReceiveMessage(Long receiveMessageId) throws Exception
-    {
+
+    public void deleteReceiveMessage(Long receiveMessageId) throws Exception {
     }
-    
-    
-    
-//    public Collection<MsgSender> viewSendMessage(String senderId) throws Exception
-//    {
-//        
-//    }
-//    public Collection<MsgReceiver> viewReceiveMessage(String receiverId)
-//    {
-//    }
-    
-    
+
+    @Override
+    public Collection<MsgSender> viewSendMessage(String senderName) throws Exception {
+        Collection<MsgSender> sendMessageList = new ArrayList<MsgSender>();
+        UserEntity sender = em.find(UserEntity.class, senderName);
+        if (sender == null) {
+            throw new Exception("User Id is not found!");
+        }
+
+        for (MsgSender notDeletedMessage : sender.getSendMessage()) {
+            if (!notDeletedMessage.getDelStatus()) {
+                sendMessageList.add(notDeletedMessage);
+            }
+        }
+
+        return sendMessageList;
+    }
+
+    @Override
+    public Collection<MsgReceiver> viewReceiveMessage(String rcvUsername) {
+        Collection<MsgReceiver> rcvMsgList = new ArrayList<MsgReceiver>();
+        UserEntity rcv = em.find(UserEntity.class, rcvUsername);
+        if (rcv == null) {
+            return null;
+        }
+        System.out.println("InternalMessageModule: ---> rcvUsername: " + rcv.getUsername());
+
+        for (MsgReceiver notDeletedMessage : rcv.getReceiveMessage()) {
+            if (!notDeletedMessage.getDelStatus()) {
+                rcvMsgList.add(notDeletedMessage);
+            }
+        }
+        System.out.println("InternalMessageModule: ---> messageSize: " + rcvMsgList.size());
+        return rcvMsgList;
+    }
+
 }
