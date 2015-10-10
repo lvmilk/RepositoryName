@@ -6,9 +6,9 @@
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
       
-<!--      kindly replace your address and comment the others-->
-<!--      <property name="javax.persistence.sql-load-script-source"
-          value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />-->
+            <!--      kindly replace your address and comment the others-->
+            <!--      <property name="javax.persistence.sql-load-script-source"
+            value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />-->
 
 <!--      <property name="javax.persistence.sql-load-script-source"
           value="file:///G:/Neatbeans_project/MAS/data.sql" />-->

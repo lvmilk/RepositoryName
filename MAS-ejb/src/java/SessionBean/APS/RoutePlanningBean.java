@@ -160,6 +160,13 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         return airportList;
     }
 
+    //must ensure the airport exist, for flight managed bean to get singapore airport
+    @Override
+    public Airport findAirport(String IATA) {
+        Airport ap = em.find(Airport.class, IATA);
+        return ap;
+    }
+    
     @Override
     public List<Route> viewApAsOriginRoute(Airport airport) {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport");

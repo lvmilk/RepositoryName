@@ -70,4 +70,6 @@ public interface RoutePlanningBeanLocal {
 
     public List<AircraftType> feasibleAc(Route route);
 
+    public Airport findAirport(String IATA);
+
 }
