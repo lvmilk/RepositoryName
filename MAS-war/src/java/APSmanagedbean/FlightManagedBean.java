@@ -97,8 +97,8 @@ public class FlightManagedBean implements Serializable {
                 startDateString = formatter.format(startDate);
                 endDateString = formatter.format(endDate);
                 //default value for checking
-                String sd="1900-01-01";
-                String fd="1900-01-01";
+                String sd="";
+                String fd="";
                 Format formatter2 = new SimpleDateFormat("HH:mm");
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);

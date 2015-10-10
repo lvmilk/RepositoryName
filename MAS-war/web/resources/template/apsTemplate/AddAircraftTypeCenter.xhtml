@@ -92,6 +92,21 @@
                     <p:inputText id="steward" value="#{ATMB.steward}" label="steward number" required="true" validatorMessage="steward: Please enter a valid number"  requiredMessage="Please enter number of steward of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="99" />
                     </p:inputText>
+                    
+                    <p:outputLabel for="purser" value="Number of Purser (cockpit crew):" />
+                    <p:inputText id="purser" value="#{ATMB.purser}" label="purser number" required="true" validatorMessage="purser: Please enter a valid number"  requiredMessage="Please enter number of purser of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="captain" value="Number of Captain (cockpit crew):" />
+                    <p:inputText id="captain" value="#{ATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+                    
+                    <p:outputLabel for="pilot" value="Number of Pilot (cockpit crew):" />
+                    <p:inputText id="pilot" value="#{ATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
 
                 </h:panelGrid>
 

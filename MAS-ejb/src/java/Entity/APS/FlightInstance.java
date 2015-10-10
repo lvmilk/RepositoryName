@@ -30,6 +30,8 @@ public class FlightInstance implements Serializable {
     private Long id;
 
     private String date;
+    private String startDate;
+    private String finishDate;
     private String flightStatus;  // scheduled/ active/ landed/ cancelled/ diverted/ redirected
 
     //will be modified later
@@ -42,7 +44,7 @@ public class FlightInstance implements Serializable {
     private Aircraft aircraft = new Aircraft();
 
     @ManyToOne
-    private FlightFrequency flightFrequency;
+    private FlightFrequency flightFrequency = new FlightFrequency();
 
     @ManyToOne
     private FlightPackage flightPackage;
@@ -52,6 +54,9 @@ public class FlightInstance implements Serializable {
 
     public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) {
         this.flightFrequency = flightFrequency;
+        
+//        this.startDate=startDate;
+//        this.finishDate=finishDate;
         this.date = date;
         this.flightStatus = "Scheduled";
         this.estimatedDepTime = estimatedDepTime;
@@ -84,7 +89,6 @@ public class FlightInstance implements Serializable {
         this.flightFrequency = flightFrequency;
     }
 
-
     public String getFlightStatus() {
         return flightStatus;
     }
@@ -107,14 +111,6 @@ public class FlightInstance implements Serializable {
 
     public void setFlightPackage(FlightPackage flightPackage) {
         this.flightPackage = flightPackage;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
     public String getEstimatedDepTime() {
@@ -147,6 +143,30 @@ public class FlightInstance implements Serializable {
 
     public void setActualArrTime(String actualArrTime) {
         this.actualArrTime = actualArrTime;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getFinishDate() {
+        return finishDate;
+    }
+
+    public void setFinishDate(String finishDate) {
+        this.finishDate = finishDate;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
 }
