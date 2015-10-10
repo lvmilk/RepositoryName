@@ -9,7 +9,7 @@
 
 
     <h:head>
-        <title>Facelet Title</title>
+        <title>Left Menu</title>
     </h:head>
     <h:body>
 
@@ -28,17 +28,18 @@
                             <p:menuitem value="Delete Booking Class" url="./DeleteBookingClass.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
                         <p:submenu label="Pricing Management">
-                            <p:menuitem value="Determine Full Fare" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                            <p:menuitem value="Assign Price to Booking Class" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
-                            <p:menuitem value="View Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Modify Price of Booking Class" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Determine Basic Fare" url="./PricingAttribute1.xhtml" icon="ui-icon-home"/>
+                            <!--<p:menuitem value="Assign Price to Booking Class" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>-->
+                            <p:menuitem value="View Fare of Cabin Class" url="./ViewPricing.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="View Fare of Booking Class" url="./ViewBookingClassPrice1.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Modify Price of Booking Class" url="./ModifyPrice1.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
 
                         <p:submenu label="Seat Inventory Management">
                             <p:menuitem value="Seat allocation(pre-sale)" url="http://www.primefaces.org" icon="ui-icon-home"/>
-                            <p:menuitem value="View Seat Allocation" url="./seat_aircraft.xhtml" icon="ui-icon-star"/>
+                            <p:menuitem value="View Seat Allocation and Availability" url="./ViewSeatAvailability1.xhtml" icon="ui-icon-star"/>
                             <p:menuitem value="Seat-reallocation(pre-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Seat-reallocation(during-sale)" url="./seat_aircraft.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Seat-reallocation(during-sale)" url="./SeatAllocation1.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
                     </p:menu>
                     <p:draggable for="AIS"/>

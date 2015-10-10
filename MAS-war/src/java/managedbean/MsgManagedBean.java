@@ -31,7 +31,7 @@ public class MsgManagedBean implements Serializable {
     private MsgSessionBeanLocal msbl;
 
     private List<UserEntity> users;
-    private List<UserEntity> selectedUsers;
+    private List<UserEntity> selectedUsers=new ArrayList<>();
     private String currentUserName;
     private String msgContent;
     private String rcvUsernames;
@@ -78,8 +78,6 @@ public class MsgManagedBean implements Serializable {
     public void sendMessage(ActionEvent event) throws Exception {
         rcvUsernamesList = new ArrayList<String>();
 
-        System.out.println("****haha");
-
         for (UserEntity ue : selectedUsers) {
             System.err.println("userEntityString: send to --> " + ue.getUsername());
             rcvUsernamesList.add(ue.getUsername());
@@ -115,7 +113,6 @@ public class MsgManagedBean implements Serializable {
      * @return the selectedUsers
      */
     public List<UserEntity> getSelectedUsers() {
-        System.out.println("*******selected user is: "+ selectedUsers);
         return selectedUsers;
     }
 

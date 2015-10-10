@@ -21,11 +21,11 @@ import javax.ejb.Local;
 public interface MsgSessionBeanLocal {
     
     public List<UserEntity> getAllUsers();
-    public void sendMessage(String senderId, String title, String content,  ArrayList<String> receiverIds) throws Exception;
+    public void sendMessage(String username, String msgTitle, String msgContent,  ArrayList<String> rcvUserNames) throws Exception;
     public void readReceiveMessage(Long receiveMessageId) throws Exception;
     public void replyMessage(Long receiveMessageId) throws Exception;
     public void deleteSendMessage(Long sendMessageId) throws Exception;  
-    public void deleteReceiveMessage(Long receiveMessageId) throws Exception;
-//    public Collection<MsgSender> viewSendMessage(String senderId) throws Exception;
-//    public Collection<MsgReceiver> viewReceiveMessage(String receiverId);
+    public void deleteReceiveMessage(Long rcvMsgId) throws Exception;
+    public Collection<MsgSender> viewSendMessage(String senderId) throws Exception;
+    public Collection<MsgReceiver> viewReceiveMessage(String receiverId);
 }

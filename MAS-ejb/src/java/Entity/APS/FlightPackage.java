@@ -6,7 +6,10 @@
 package Entity.APS;
 
 import java.io.Serializable;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -28,8 +31,13 @@ public class FlightPackage implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String startTime;
+    private String endTime;
+    private String startDay;
+    private String endDay;
+
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightPackage")
-    private List<FlightInstance> flightList = new ArrayList<>();
+    private List<FlightFrequency> flightList = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -39,6 +47,81 @@ public class FlightPackage implements Serializable {
         this.id = id;
     }
 
+    public List<FlightFrequency> getFlightList() {
+        return flightList;
+    }
+
+    public void setFlightList(List<FlightFrequency> flightList) {
+        this.flightList = flightList;
+    }
+
+    public void addFlight(FlightFrequency fl) {
+        fl.setFlightPackage(this);
+        this.flightList.add(fl);
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getStartTime() {
+        LocalTime start = null;
+        Format formatter = new SimpleDateFormat("HH:mm");
+        String depTimeString;
+        LocalTime depTime;
+        for (FlightFrequency f1 : flightList) {
+            depTimeString = f1.getScheduleDepTime();
+            depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+            if (start == null) {
+                start = depTime;
+            } else {
+                if (depTime.isBefore(start)) {
+                    start = depTime;
+                }
+            }
+        }
+        return formatter.format(startTime);
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getEndTime() {
+        LocalTime end = null;
+        Format formatter = new SimpleDateFormat("HH:mm");
+        String arrTimeString;
+        LocalTime arrTime;
+        for (FlightFrequency f1 : flightList) {
+            arrTimeString = f1.getScheduleArrTime();
+            arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+            if (end == null) {
+                end = arrTime;
+            } else {
+                if (arrTime.isAfter(end)) {
+                    end = arrTime;
+                }
+            }
+        }
+        return formatter.format(end);
+    }
+// not finished!!!
+    public String getStartDay() {
+        return startDay;
+    }
+
+    public void setStartDay(String startDay) {
+        this.startDay = startDay;
+    }
+
+    public String getEndDay() {
+        return endDay;
+    }
+
+    public void setEndDay(String endDay) {
+        this.endDay = endDay;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -62,65 +145,12 @@ public class FlightPackage implements Serializable {
     @Override
     public String toString() {
         String result = "";
-        for (FlightInstance fl : flightList) {
-            result += fl.getDate() + "\t" + fl.getFlightFrequency().getFlightNo()
-                    + "\t" + fl.getFlightFrequency().getRoute().getOrigin().getIATA()
-                    + "\t" + fl.getFlightFrequency().getRoute().getDest().getIATA() + "\n";
+        for (FlightFrequency fl : flightList) {
+            result += fl.getFlightNo()
+                    + "\t" + fl.getRoute().getOrigin().getIATA()
+                    + "\t" + fl.getRoute().getDest().getIATA() + "\n";
         }
         return result;
     }
 
-//    @OneToMany(cascade={CascadeType.PERSIST}, mappedBy ="flightPackage")
-//    public Collection<Flight> getFlList() {
-//        return flList;
-//    }
-//    public void setFlList(Collection<Flight> flList) {
-//        this.flList = flList;
-//    }
-//    public void addFlight(Flight flight){
-//        this.flList.add(flight);
-//    }
-    
-    public List<FlightInstance> getFlightList() {
-        return flightList;
-    }
-
-    public void setFlightList(List<FlightInstance> flightList) {
-        this.flightList = flightList;
-    }
-
-    public void addFlight(FlightInstance fl) {
-        fl.setFlightPackage(this);
-        this.flightList.add(fl);
-    }
-
-//    public LocalTime getStartTime() {
-//        LocalTime dt = null;
-//        for (FlightInstance fl : flightList) {
-//            if (dt == null) {
-//                dt = new LocalTime(fl.getEstimatedDepTime());
-//            } else {
-//                LocalTime current = new LocalTime(fl.getEstimatedDepTime());
-//                if (current.compareTo(dt) <= 0) {
-//                    dt = current;
-//                }
-//            }
-//        }
-//        return dt;
-//    }
-//
-//    public LocalTime getEndTime() {
-//        LocalTime dt = null;
-//        for (FlightInstance fl : flightList) {
-//            if (dt == null) {
-//                dt = new LocalTime(fl.getEstimatedArrTime());
-//            } else {
-//                LocalTime current = new LocalTime(fl.getEstimatedArrTime());
-//                if (current.compareTo(dt) >= 0) {
-//                    dt = current;
-//                }
-//            }
-//        }
-//        return dt;
-//    }
 }

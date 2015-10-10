@@ -8,6 +8,7 @@
         <title>Message Center</title>
     </h:head>
     <h:body>
+      <h:form id="email">
         <p:panel id="centerMsg"  style="margin-bottom:20px">
             <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
             <p:row>
@@ -27,10 +28,10 @@
                 <p:column>
                     <p:outputLabel value="Receivers:" for="autoCompleteReceiverList" />
                     <p:autoComplete required = "true" requiredMessage="You must at least have a receiver." id="autoCompleteReceiverList" multiple="true" value="#{msgManagedBean.selectedUsers}" completeMethod="#{msgManagedBean.usersList}"
-                                    var="user" itemLabel="#{user.username} " itemValue="#{user}" forceSelection="true" converter="userConverter" />  
+                                    var="user" itemLabel="#{user.username}: #{user.comEmail} " itemValue="#{user}" forceSelection="true" converter="userConverter" />  
                 </p:column>  
 
-                <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+                
                 <p:column>
 
                     <p:editor id="editor" widgetVar="editorWidget" value="#{msgManagedBean.msgContent}" width="600" />
@@ -46,10 +47,11 @@
                 </p:column>
                 
                 <p:growl id="growl" showDetail="true" sticky="true"   /> 
-                <p:commandButton value="Submit" update =":centerMsg"  oncomplete="PF('editorWidget').clear();" actionListener="#{msgManagedBean.sendMessage}" icon="ui-icon-disk"   />
+                <p:commandButton value="Submit" update ="email"  oncomplete="PF('editorWidget').clear();" actionListener="#{msgManagedBean.sendMessage}" icon="ui-icon-disk"   />
             </p:row>
-
+        
         </p:panel>
+      </h:form>
     </h:body>
 </html>
 
