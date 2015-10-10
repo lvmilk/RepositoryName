@@ -79,20 +79,20 @@ public class PricingBean implements PricingBeanLocal {
         return route;
     }
 
-    @Override
-    public Integer calculateCrewNo(Integer seatNo) {
-        Integer crewNo;
-        if (seatNo >= 19 && seatNo <= 50) {
-            crewNo = 3;     //one cabin crew and two cockpit crew
-        } else if (seatNo > 50 && seatNo <= 100) {
-            crewNo = 4;
-        } else if (seatNo > 100) {
-            crewNo = Double.valueOf(Math.ceil(seatNo / 50)).intValue() + 4;
-        } else {
-            crewNo = 2;  //if seatNo<19:No need cabin crew
-        }
-        return crewNo;
-    }
+//    @Override
+//    public Integer calculateCrewNo(Integer seatNo) {
+//        Integer crewNo;
+//        if (seatNo >= 19 && seatNo <= 50) {
+//            crewNo = 3;     //one cabin crew and two cockpit crew
+//        } else if (seatNo > 50 && seatNo <= 100) {
+//            crewNo = 4;
+//        } else if (seatNo > 100) {
+//            crewNo = Double.valueOf(Math.ceil(seatNo / 50)).intValue() + 4;
+//        } else {
+//            crewNo = 2;  //if seatNo<19:No need cabin crew
+//        }
+//        return crewNo;
+//    }
 
     public void calculateCrewCost(Integer crewNo, Double crewUnitCost, Double blockHour, Integer annualDepartures) {
         if (crewNo * crewUnitCost * blockHour * annualDepartures > 0) {

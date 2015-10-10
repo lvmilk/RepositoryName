@@ -143,4 +143,10 @@ public class ModifyPriceManagedBean implements Serializable {
         System.out.println("MPMB:set Date: " + date);
     }
 
+    public void goBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ModifyPrice1.xhtml");
+    }
 }

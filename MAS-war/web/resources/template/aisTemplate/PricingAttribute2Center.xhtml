@@ -27,7 +27,7 @@
                             <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
                         </p:column>
                         <p:column headerText="Load Factor(0.0-1.0)">  
-                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor" validatorMessage="Please check load factor is between 0 to 1" size="10">
+                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor of  #{key}" validatorMessage="Please check load factor  of  #{key} should be (0,1]" size="10">
                                 <f:validateDoubleRange minimum="0.01" maximum="1.0" />
                             </p:inputText>
                         </p:column>
@@ -41,9 +41,8 @@
                     </p:inputText>
 
                     <p:outputLabel for="annual_departures" value="Number of Annual Departures" />
-                    <p:inputText id="annual_departures"  value="#{pricingManagedBean.annualDepartures}" label="Number of Annual Departures" required="true" requiredMessage="Please enter number of annual departures" validatorMessage="Pleaseccheck annual departures is a integer between 10 to 10000"  size="10">
-                       <f:validateLongRange minimum="10" maximum="10000" />
-                    </p:inputText>
+                     <h:outputText id="annual_departures" value="#{pricingManagedBean.annualDepartures}" />
+                    
                     </h:panelGrid>
 
                     <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />

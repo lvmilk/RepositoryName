@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Sent Message in detail</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <f:facet name="header">
+                Sent Message
+            </f:facet>
+
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <h:outputLabel for="ToReceiver" value="From: " >
+                <h:outputText id = "ToReceiver" value="#{viewSendMsgInDetailMB.msgDetail.rcvNames}" />
+            </h:outputLabel>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <h:outputLabel for="sendTime" value="Send Time: " >
+                <h:outputText id = "sendTime" value="#{viewSendMsgInDetailMB.displayTime(viewSendMsgInDetailMB.msgDetail.cldTime)}" />
+            </h:outputLabel>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <h:outputLabel for="title" value="Title: " >
+                <h:outputText id = "title" value="#{viewSendMsgInDetailMB.msgDetail.msgTitle}" />
+            </h:outputLabel>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <h:outputLabel for="content" value="Content: " >
+                <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+                <p:editor id = "content" value="#{viewSendMsgInDetailMB.msgDetail.msgContent}" disabled ="true" />
+            </h:outputLabel>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

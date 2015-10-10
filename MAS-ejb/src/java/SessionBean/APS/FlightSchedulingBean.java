@@ -12,6 +12,7 @@ import Entity.APS.Route;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -153,20 +154,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     
 //////////////////////////////////////////////////////////////////////////
     @Override
-    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
-        aircraft = em.find(Aircraft.class, registrationNo);
-        if (aircraft == null) {
-            throw new Exception("Aircraft is not existed!");
-        }
-
+    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
         flightInst = new FlightInstance();
-        flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
-        flightInst.setFlightFrequency(flightFrequency);
-        flightInst.setAircraft(aircraft);
+        Aircraft ac=em.find(Aircraft.class,"9V-XXX");    //default testing 
+        flightInst.setAircraft(ac);
+        flightInst.create(flightFrequency,date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
         em.persist(flightInst);
         em.flush();
         flightFrequency.getFlightList().add(flightInst);
-        aircraft.getFlightInstance().add(flightInst);
         em.merge(flightInst);
         em.flush();
     }
@@ -184,9 +179,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public Aircraft getAircraft(Long id) {
-        flightInst = em.find(FlightInstance.class, id);
-        aircraft = flightInst.getAircraft();
+    public Aircraft getAircraft(String registrationNo) {
+        aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
 
@@ -200,6 +194,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("flightInstList got");
         }
         return flightInstList;
+    }
+
+    @Override
+    public void setCheckDate(Long id, String sDate, String fDate) {
+        flightFreq = em.find(FlightFrequency.class, id);
+        flightFreq.setsDate(sDate);
+        flightFreq.setfDate(fDate);
     }
 
 }

@@ -28,10 +28,10 @@
                     <p:column headerText="Max Distance">
                         <h:outputText value="#{AircraftType.maxDistance}" />
                     </p:column>
-                    <p:column headerText="Lease Cost/month (SGD)">
+                    <p:column headerText="Lease Cost">
                         <h:outputText value="#{AircraftType.leaseCost}" />
                     </p:column>
-                    <p:column headerText="Fuel Cost/hour (SGD)">
+                    <p:column headerText="Fuel Cost">
                         <h:outputText value="#{AircraftType.fuelCost}" />
                     </p:column>
                     <p:column headerText="Length">
@@ -58,6 +58,24 @@
                     <p:column headerText="# of Seat in Economy Class">
                         <h:outputText value="#{AircraftType.ecSeatNo}" />
                     </p:column>
+                    <p:column headerText="# of Stewardess">
+                        <h:outputText value="#{AircraftType.stewardess}" />
+                    </p:column>
+                    <p:column headerText="# of Steward">
+                        <h:outputText value="#{AircraftType.steward}" />
+                    </p:column>
+                    <p:column headerText="# of Purser">
+                        <h:outputText value="#{AircraftType.purser}" />
+                    </p:column>
+                    <p:column headerText="# of Captain">
+                        <h:outputText value="#{AircraftType.captain}" />
+                    </p:column>
+                    <p:column headerText="# of Pilot">
+                        <h:outputText value="#{AircraftType.pilot}" />
+                    </p:column>
+                    
+                    
+                    
 
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />

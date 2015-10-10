@@ -65,6 +65,14 @@ public class Route implements Serializable {
         this.id = id;
     }
 
+    public List<FlightFrequency> getFlightFreqList() {
+        return flightFreqList;
+    }
+
+    public void setFlightFreqList(List<FlightFrequency> flightFreqList) {
+        this.flightFreqList = flightFreqList;
+    }
+
 //    public String getOriginIATA() {
 //        return originIATA;
 //    }

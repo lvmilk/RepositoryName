@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -37,7 +38,6 @@ public class ViewPricingManagedBean implements Serializable {
     //Construct a hashmap<String, Integer> to record <Cabinclass,SeatNo> 
     private Map<String, Integer> cabinInfo = new HashMap<String, Integer>();
 
-
     //per block hour
     //Indirect cost
     private Double adminCost; //per block hour
@@ -54,14 +54,6 @@ public class ViewPricingManagedBean implements Serializable {
     private Double distance;
     private Integer annualDepartures;
     private AircraftType aircraftType;
-
-    //private Double econFactor;
-    //private Double bizFactor;
-    //private Double suiteFactor;
-    //private Double firstFactor;
-    //private Double pEconFactor; 
-    
-    private Map<String, Double> loadfactorMap = new HashMap<String, Double>();
 
     private Integer ecSeatNo;
     private Integer bcSeatNo;
@@ -82,22 +74,12 @@ public class ViewPricingManagedBean implements Serializable {
 
     }
 
- 
-
     public Double getProfitMargin() {
         return profitMargin;
     }
 
     public void setProfitMargin(Double profitMargin) {
         this.profitMargin = profitMargin;
-    }
-
-    public Map<String, Double> getLoadfactorMap() {
-        return loadfactorMap;
-    }
-
-    public void setLoadfactorMap(Double loadFactor) {
-        this.loadfactorMap = loadfactorMap;
     }
 
     public Map<String, Double> getFareMap() {
@@ -114,6 +96,8 @@ public class ViewPricingManagedBean implements Serializable {
             retrieveRouteInfo(routeID);
             fareMap = pb.getAllFare(route);
             retrieveAircraftTypeInfo(aircraftType);
+            // sessionmap~~~~         
+            //         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("keyList", keyList);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewPricing2.xhtml");
         } else {
             System.out.println("No route is chosen");
@@ -150,7 +134,6 @@ public class ViewPricingManagedBean implements Serializable {
 
     public void retrieveRouteInfo(Long ID) {
         route = pb.getRouteInfo(ID);
-        //Set route Name
 
         routeName = route.getOrigin().getCityName() + "-" + route.getDest().getCityName();
 
@@ -251,7 +234,6 @@ public class ViewPricingManagedBean implements Serializable {
     }
 
     //Override setCrewCost
-
     public Double getAdminCost() {
         return adminCost;
     }
@@ -346,5 +328,10 @@ public class ViewPricingManagedBean implements Serializable {
 
     public void setExpectedRev(Double expectedRev) {
         this.expectedRev = expectedRev;
+    }
+
+    public void goBack() throws IOException {
+        routeID = null;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewPricing.xhtml");
     }
 }

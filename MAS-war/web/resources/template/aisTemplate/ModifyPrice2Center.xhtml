@@ -9,73 +9,58 @@
 
 
     <h:head>
-        <title>Modify Price</title>
+        <title>Modify Fare</title>
     </h:head>
     <h:body>
 
         <h:form id="form">
-            <p:growl id="msgs" showDetail="true"/>
+            <p:panel id="panel" header="Modify Fare"  style="width:100%">
+                <p:growl id="msgs" showDetail="true"/>
 
-            <p:dataTable id="bkiList" var="bki" value="#{modifyPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
-                <f:facet name="header">
-                    Modify Price
-                </f:facet>
-
-                <p:ajax event="rowEdit" listener="#{modifyPriceManagedBean.onRowEdit}" update=":form:msgs" />
-                <p:ajax event="rowEditCancel" listener="#{modifyPriceManagedBean.onRowCancel}" update=":form:msgs" />
-
-                <p:column headerText="Booking Class Annotation">
-<!--                    <p:cellEditor>-->
-<!--                        <f:facet name="output">-->
-                            <h:outputText value="#{bki.bookingClass.annotation}" />
+                <p:dataTable id="bkiList" var="bki" value="#{modifyPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
+                    <p:ajax event="rowEdit" listener="#{modifyPriceManagedBean.onRowEdit}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{modifyPriceManagedBean.onRowCancel}" update=":form:msgs" />
+                    <p:column headerText="Cabin Class">
+                        <h:outputText value="#{bki.bookingClass.cabinName}" style="center" />
+                    </p:column>
+                    <p:column headerText="Booking Class Annotation">
+                        <!--                    <p:cellEditor>-->
+                        <!--                        <f:facet name="output">-->
+                        <h:outputText value="#{bki.bookingClass.annotation}" />
                         <!--</f:facet>-->
-<!--                        <f:facet name="input">
-                            <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
-                        </f:facet>-->
-                    <!--</p:cellEditor>-->
-                </p:column>
+                        <!--                        <f:facet name="input">
+                                                    <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
+                                                </f:facet>-->
+                        <!--</p:cellEditor>-->
+                    </p:column>
 
-                <p:column headerText="Seat Count">
-<!--                    <p:cellEditor>-->
-<!--                        <f:facet name="output">-->
-                            <h:outputText value="#{bki.seatNo}" />
+                    <p:column headerText="Seat Count">
+                        <!--                    <p:cellEditor>-->
+                        <!--                        <f:facet name="output">-->
+                        <h:outputText value="#{bki.seatNo}" />
                         <!--</f:facet>-->
-<!--                        <f:facet name="input">
-                            <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
-                        </f:facet>
-                    </p:cellEditor>-->
-                </p:column>
+                        <!--                        <f:facet name="input">
+                                                    <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
+                                                </f:facet>
+                                            </p:cellEditor>-->
+                    </p:column>
 
-                <p:column headerText="Fare">
-                    <p:cellEditor>
-                        <f:facet name="output">
-                            <h:outputText value="#{bki.price}" />
-                        </f:facet>
-                        <f:facet name="input">
-                            <p:inputText value="#{modifyPriceManagedBean.price}" style="width:100%" label="Fare"/>
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column>
-
-<!--                <p:column headerText="Booking Class Annotation" sortBy="#{bki.bookingClass.annotation}">
-                    <h:outputText value="#{bki.bookingClass.annotation}" />
-                </p:column>
-                <p:column headerText="Seat Count" sortBy="#{bki.seatNo}">
-                    <h:outputText value="#{bki.seatNo}" />
-                </p:column>
-
-                <p:column headerText="Fare(Enter new fare and click on Edit)" sortBy="#{bki.price}">
-                    <h:outputText value="#{bki.price}" >
-                        <f:convertNumber pattern="#0.00" />
-                    </h:outputText>
-                </p:column>-->
-
-
-
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                </p:column>
-            </p:dataTable>
+                    <p:column headerText="Fare">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{bki.price}" />
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{modifyPriceManagedBean.price}" style="width:100%" label="Fare"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Back" style="margin-right:0" actionListener="#{modifyPriceManagedBean.goBack()}"  icon="ui-icon-check" />
+            </p:panel>
         </h:form>
 
     </h:body>

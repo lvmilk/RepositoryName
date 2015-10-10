@@ -38,8 +38,8 @@ public class EditAircraftManagedBean implements Serializable {
     private Date firstFlyDate;
     private Date deliveryDate;
     private Date retireDate;  //Lease Expiration Date
-    private Long flightLogId;
-    private Long maintenanceLogId;
+//    private Long flightLogId;
+//    private Long maintenanceLogId;
 
     private List<AircraftType> typeList = new ArrayList<>();
     private List<String> keyList = new ArrayList<>();
@@ -63,8 +63,8 @@ public class EditAircraftManagedBean implements Serializable {
         firstFlyDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstFlyDate");
         deliveryDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("deliveryDate");
         retireDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("retireDate");
-        flightLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightLogId");
-        maintenanceLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maintenanceLogId");
+//        flightLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightLogId");
+//        maintenanceLogId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maintenanceLogId");
     }
 
     public void editAircraft() throws Exception {
@@ -73,7 +73,7 @@ public class EditAircraftManagedBean implements Serializable {
                 String ffd = df.format(firstFlyDate);
                 String dd = df.format(deliveryDate);
                 String rd = df.format(retireDate);
-                fpb.editAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
+                fpb.editAircraft(type, registrationNo, serialNo, status, ffd, dd, rd);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftDone.xhtml");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
@@ -150,22 +150,22 @@ public class EditAircraftManagedBean implements Serializable {
     public void setRetireDate(Date retireDate) {
         this.retireDate = retireDate;
     }
-
-    public Long getFlightLogId() {
-        return flightLogId;
-    }
-
-    public void setFlightLogId(Long flightLogId) {
-        this.flightLogId = flightLogId;
-    }
-
-    public Long getMaintenanceLogId() {
-        return maintenanceLogId;
-    }
-
-    public void setMaintenanceLogId(Long maintenanceLogId) {
-        this.maintenanceLogId = maintenanceLogId;
-    }
+//
+//    public Long getFlightLogId() {
+//        return flightLogId;
+//    }
+//
+//    public void setFlightLogId(Long flightLogId) {
+//        this.flightLogId = flightLogId;
+//    }
+//
+//    public Long getMaintenanceLogId() {
+//        return maintenanceLogId;
+//    }
+//
+//    public void setMaintenanceLogId(Long maintenanceLogId) {
+//        this.maintenanceLogId = maintenanceLogId;
+//    }
 
     public List<AircraftType> getTypeList() {
         return typeList;
