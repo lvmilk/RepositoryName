@@ -794,28 +794,22 @@ exists or setup the property manually. For example like this:
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.commons-math3-3.5.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Common_Math.classpath}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.commons-math3-3.1.1-sources.jar}" todir="${build.classes.dir}"/>
-        <copyfiles files="${file.reference.commons-math3-3.1.1.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${libs.PrimeFaces_5.2.classpath}" property="manifest.libs.PrimeFaces_5.2.classpath"/>
+        <basename file="${libs.commons-math3-3.5.classpath}" property="manifest.libs.commons-math3-3.5.classpath"/>
         <basename file="${libs.Common_Math.classpath}" property="manifest.libs.Common_Math.classpath"/>
-        <basename file="${file.reference.commons-math3-3.1.1-sources.jar}" property="manifest.file.reference.commons-math3-3.1.1-sources.jar"/>
-        <basename file="${file.reference.commons-math3-3.1.1.jar}" property="manifest.file.reference.commons-math3-3.1.1.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.libs.PrimeFaces_5.2.classpath}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.libs.Common_Math.classpath}"/>
-            <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.commons-math3-3.1.1-sources.jar}"/>
-            <attribute name="jar-4-Extension-Name" value="${manifest.file.reference.commons-math3-3.1.1.jar}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.libs.commons-math3-3.5.classpath}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.libs.Common_Math.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${libs.Common_Math.classpath}" todir="${dist.ear.dir}/lib"/>
-<!--        <copyfiles files="${file.reference.commons-math3-3.1.1-sources.jar}" todir="${dist.ear.dir}/lib"/>-->
-
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
@@ -1213,3 +1207,5 @@ exists or setup the property manually. For example like this:
     <target depends="init,undeploy-clean,deps-clean,-do-clean,-post-clean" description="Clean build products." name="clean"/>
     <target depends="clean" name="clean-ear"/>
 </project>
+ 
+        <copyfiles files="${libs.Common_Math.classpath}" todir="${dist.ear.dir}/lib"/>

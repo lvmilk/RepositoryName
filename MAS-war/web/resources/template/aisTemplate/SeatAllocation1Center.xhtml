@@ -19,7 +19,6 @@
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
                     <p:inputMask id="date" value="#{seatAllocationMangagedBean.date}" mask="9999-99-99"/>
-                    <!--<p:ajax event='keyup' listener="#{seatAllocationMangagedBean.onDateChange()}" update="flight" />-->
 
                     <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
@@ -41,11 +40,6 @@
             </p:panel>
 
         </h:form>
-
-
-
-
-
 
 
     </h:body>

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="replyMsg">
+            <f:facet name="header">
+                Reply Message to #{msgReplyMB.msgTitle} 
+            </f:facet>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <p:row>
+                <p:column>
+                    <p:outputLabel for ="Subject" style ="front-weight:bold" value ="Subject :" />
+                </p:column>
+                <p:column>
+                    <p:inputText required ="true" label ="Subject" requiredMessage ="The Subject cannot be blank." id ="Subject" value ="#{msgReplyMB.msgTitle}" >
+                        <f:validateLength minimum="1" maximum ="100" />
+                    </p:inputText>
+                </p:column>
+            </p:row>
+            <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+            <p:row>
+                <p:column>
+                    <p:outputLabel value="Receivers:" for="receiverId" />
+                    <h:outputText id = "receiverId" value ="#{msgReplyMB.rcvUsername}"/>
+                </p:column>  
+
+                <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
+                <p:column>
+
+                    <p:editor id="editor" widgetVar="editorWidget" value="#{msgReplyMB.msgContent}" width="600" />
+
+                    <h:panelGrid columns="2" style="margin-top: 10px">
+
+                        <p:commandButton value="Clear" type="button" onclick="PF('editorWidget').clear();" icon="ui-icon-close" />
+                    </h:panelGrid>
+
+                    <p:dialog header="Content" widgetVar="dlg" showEffect="fade" hideEffect="fade">
+                        <h:outputText id="display" value="" escape="false" />
+                    </p:dialog>
+                </p:column>
+                <p:growl id="growl" showDetail="true" sticky="true"   /> 
+                <p:commandButton value="Send" oncomplete="PF('editorWidget').clear();" actionListener="#{msgReplyMB.sendMessage}" icon="ui-icon-disk" update = "replyMsg"/>
+            </p:row>
+        </h:form>
+    </h:body>
+</html>
+

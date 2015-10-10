@@ -6,9 +6,8 @@
             <name>MAS-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <included-library dirs="200">libs.PrimeFaces_5.2.classpath</included-library>
+            <included-library dirs="200">libs.commons-math3-3.5.classpath</included-library>
             <included-library dirs="200">libs.Common_Math.classpath</included-library>
-            <included-library dirs="200">file.reference.commons-math3-3.1.1-sources.jar</included-library>
-            <included-library dirs="200">file.reference.commons-math3-3.1.1.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

@@ -1,12 +1,55 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Center sent message
+        <h:form id="viewSend">
+            <p:dataTable  id = "messagesMenu" value="#{viewSendMsgMB.sendMsgList}" var ="message" selection="#{viewSendMsgMB.checkedMessageList}" rowKey = "#{message.sentMsgId}" paginator="true" rows="10" styleClass="margin-bottom:20px border: 0px" >
+                <f:facet name="header">
+                    View Sent Message 
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center" />
+                <p:column>
+                    <f:facet name ="header">
+                        <h:outputText value = "View" />
+                    </f:facet>
+                    <p:commandButton  actionListener="#{viewSendMsgMB.readMessage(message)}" icon="ui-icon-search" title="View">
+                    </p:commandButton>
+
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Receiver Id" />
+                    </f:facet>
+                    <h:outputText value="#{message.rcvNames}" />
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Send Time" />
+                    </f:facet>
+                    <h:outputText value="#{viewSendMsgMB.displayTime(message.cldTime)}" />
+                </p:column>
+
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Title" />
+                    </f:facet>
+                    <h:outputText value="#{message.msgTitle}" />
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton process="messagesMenu" update = "messagesMenu" icon="ui-icon-trash" value="Delete" actionListener ="#{viewSendMsgMB.deleteMessage(viewSendMsgMB.checkedMessageList)}" />
+                </f:facet>
+            </p:dataTable>     
+        </h:form>
     </h:body>
 </html>
 

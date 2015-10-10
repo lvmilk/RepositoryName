@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Seat Allocation and Availability: Step1</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header=" Seat Allocation"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
+                    <p:inputMask id="date" value="#{seatAllocationMangagedBean.date}" mask="9999-99-99"/>
+
+                    <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
+
+                    <p:outputLabel for="flight" value="Flight :" />
+                    <p:selectOneMenu id="flight" value="#{seatAllocationMangagedBean.flightNo}" style="width:250px">
+                        <p:ajax listener="#{seatAllocationMangagedBean.onFlightChange()}" update="cabin"/>
+                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{seatAllocationMangagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                    </p:selectOneMenu>
+                    <br></br>
+                    <p:outputLabel for="cabin" value="Cabin Class :" />
+                    <p:selectOneMenu id="cabin" value="#{seatAllocationMangagedBean.cabinName}" style="width:250px">
+                        <f:selectItem itemLabel="Select One Cabin" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{seatAllocationMangagedBean.cabinList}"  var="cabin" itemValue="#{cabin.cabinName}" itemLabel="#{cabin.cabinName}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.checkFlight2()}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>
