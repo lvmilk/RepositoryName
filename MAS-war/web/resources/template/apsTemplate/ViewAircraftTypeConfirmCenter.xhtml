@@ -9,7 +9,7 @@
 
 
     <h:head>
-     <title>View Aircraft Type</title>
+        <title>View Aircraft Type</title>
     </h:head>
     <h:body>
         <h:form id="formMain">
@@ -30,8 +30,8 @@
 
                     <p:outputLabel value="Fuel Cost/hour (SGD):" />
                     <p:outputLabel value="#{fuelCost}" />
-                    
-                      <p:outputLabel value="Length (m): " />
+
+                    <p:outputLabel value="Length (m): " />
                     <p:outputLabel value="#{aircraftLength}" />
 
                     <p:outputLabel value="Wingspan (m): " />
@@ -54,6 +54,21 @@
 
                     <p:outputLabel value="# of Seat in Economy Class"/>
                     <p:outputLabel value="#{ecSeatNo}" />
+
+                    <p:outputLabel value="# of Stewardess"/>
+                    <p:outputLabel value="#{stewardess}" />
+
+                    <p:outputLabel value="# of Steward"/>
+                    <p:outputLabel value="#{steward}" />
+
+                    <p:outputLabel value="# of Purser"/>
+                    <p:outputLabel value="#{purser}" />
+
+                    <p:outputLabel value="# of Captain"/>
+                    <p:outputLabel value="#{captain}" />
+
+                    <p:outputLabel value="# of Pilot"/>
+                    <p:outputLabel value="#{pilot}" />
 
                 </h:panelGrid>
                 <p:commandButton value="Back"  action="#{ATMB.viewAircraftTypeConfirm()}" icon="ui-icon-check" />

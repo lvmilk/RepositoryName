@@ -77,6 +77,31 @@
                         <f:validateLongRange minimum="0" maximum="400" />
                     </p:inputText>
 
+                    <p:outputLabel for="stewardess" value="Number of Stewardess (cabin crew):" />
+                    <p:inputText id="stewardess" value="#{editATMB.stewardess}" label="stewardess number" required="true" validatorMessage="stewardess: Please enter a valid number"  requiredMessage="Please enter number of stewardess of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+
+                    <p:outputLabel for="steward" value="Number of Steward (cabin crew):" />
+                    <p:inputText id="steward" value="#{editATMB.steward}" label="steward number" required="true" validatorMessage="steward: Please enter a valid number"  requiredMessage="Please enter number of steward of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+
+                    <p:outputLabel for="purser" value="Number of Purser (cockpit crew):" />
+                    <p:inputText id="purser" value="#{editATMB.purser}" label="purser number" required="true" validatorMessage="purser: Please enter a valid number"  requiredMessage="Please enter number of purser of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+
+                    <p:outputLabel for="captain" value="Number of Captain (cockpit crew):" />
+                    <p:inputText id="captain" value="#{editATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+
+                    <p:outputLabel for="pilot" value="Number of Pilot (cockpit crew):" />
+                    <p:inputText id="pilot" value="#{editATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
+                        <f:validateLongRange minimum="0" maximum="99" />
+                    </p:inputText>
+
                 </h:panelGrid>
                 <p:commandButton value="Update" update="@form" actionListener="#{editATMB.editAircraftType()}"  icon="ui-icon-check" />
                 <p:commandButton value="Cancel" update="@form" actionListener="#{editATMB.editAircraftTypeCancel()}"  icon="ui-icon-check" />

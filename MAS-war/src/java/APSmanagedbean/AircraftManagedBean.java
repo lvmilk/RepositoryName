@@ -35,8 +35,8 @@ public class AircraftManagedBean implements Serializable {
     private Date firstFlyDate;
     private Date deliveryDate;
     private Date retireDate;  //Lease Expiration Date
-    private Long flightLogId;
-    private Long maintenanceLogId;
+//    private Long flightLogId;
+//    private Long maintenanceLogId;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     private Aircraft newAircraft;
@@ -68,7 +68,7 @@ public class AircraftManagedBean implements Serializable {
                 String ffd = df.format(firstFlyDate);
                 String dd = df.format(deliveryDate);
                 String rd = df.format(retireDate);
-                fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd, flightLogId, maintenanceLogId);
+                fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
@@ -86,8 +86,8 @@ public class AircraftManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate", aircraft.getFirstFlyDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate", aircraft.getDeliveryDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate", aircraft.getRetireDate());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
         System.out.println("Type got? : " + aircraft.getAircraftType().getType());
         System.out.println("Which aircraft is displayed? : " + aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAircraftInfo.xhtml");
@@ -105,8 +105,8 @@ public class AircraftManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate", df.parse(aircraft.getFirstFlyDate()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate", df.parse(aircraft.getDeliveryDate()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate", df.parse(aircraft.getRetireDate()));
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
         System.out.println("Which aircraft is edited? : " + aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftInfo.xhtml");
     }
@@ -201,21 +201,21 @@ public class AircraftManagedBean implements Serializable {
         this.retireDate = retireDate;
     }
 
-    public Long getFlightLogId() {
-        return flightLogId;
-    }
-
-    public void setFlightLogId(Long flightLogId) {
-        this.flightLogId = flightLogId;
-    }
-
-    public Long getMaintenanceLogId() {
-        return maintenanceLogId;
-    }
-
-    public void setMaintenanceLogId(Long maintenanceLogId) {
-        this.maintenanceLogId = maintenanceLogId;
-    }
+//    public Long getFlightLogId() {
+//        return flightLogId;
+//    }
+//
+//    public void setFlightLogId(Long flightLogId) {
+//        this.flightLogId = flightLogId;
+//    }
+//
+//    public Long getMaintenanceLogId() {
+//        return maintenanceLogId;
+//    }
+//
+//    public void setMaintenanceLogId(Long maintenanceLogId) {
+//        this.maintenanceLogId = maintenanceLogId;
+//    }
 
     public Aircraft getNewAircraft() {
         return newAircraft;
@@ -226,8 +226,6 @@ public class AircraftManagedBean implements Serializable {
     }
 
     public List<Aircraft> getAircraftList() {
-//        aircraftList = fpb.getAllAircraft();
-//        System.out.println("Aircraft List size is " + aircraftList.size());
         return aircraftList;
     }
 

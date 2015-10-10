@@ -53,8 +53,8 @@ public class FlightFrequency implements Serializable {
 //    private String status;
 
     //new added by lucy --> when generate flight instance, check the available date interval of this fligh schedule
-    private String sDate = "1900-01-01";
-    private String fDate = "1900-01-01";
+    private String sDate;
+    private String fDate;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
@@ -62,8 +62,10 @@ public class FlightFrequency implements Serializable {
     @ManyToOne
     private FlightPackage flightPackage = new FlightPackage();
 
-    public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
-            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String sDate, String fDate) {
+
+    public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
+            boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun,
+            String startDate, String endDate, String sDate, String fDate) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -79,10 +81,10 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
 //        this.status = "Pending";
-        this.sDate = sDate;
-        this.fDate = fDate;
-        return this;
+        this.sDate = "";
+        this.fDate = "";
     }
+
 
     public Long getId() {
         return id;

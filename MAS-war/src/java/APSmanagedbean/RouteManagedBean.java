@@ -51,8 +51,8 @@ public class RouteManagedBean implements Serializable {
     private List<Route> deletedRoute = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
     private Map<String, String> airportInfo = new HashMap<String, String>();
-    
-       private String mPriceString;
+
+    private String mPriceString;
     private String pVolumnString;
 
     public RouteManagedBean() {
@@ -61,7 +61,7 @@ public class RouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         routeList = rpb.viewAllRoute();
-        canDeleteRoute = rpb.canDeleteRouteList();
+        canDeleteRoute = rpb.canDeleteRouteList();               
     }
 
     public void addRoute() throws Exception {
@@ -148,11 +148,11 @@ public class RouteManagedBean implements Serializable {
     }
 
     public void checkRouteProfit() throws IOException {
-     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", mPriceString);
-     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", mPriceString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
     }
-    
+
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
         for (Airport a : airportList) {
@@ -175,8 +175,6 @@ public class RouteManagedBean implements Serializable {
     }
 
     public List<Route> getRouteList() {
-        routeList = rpb.viewAllRoute();
-        System.out.println("rmb.getAirportList(): Route list size is " + routeList.size());
         return routeList;
     }
 

@@ -810,8 +810,6 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${dist.ear.dir}/lib"/>
- 
-        <copyfiles files="${libs.Common_Math.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
@@ -1209,3 +1207,5 @@ exists or setup the property manually. For example like this:
     <target depends="init,undeploy-clean,deps-clean,-do-clean,-post-clean" description="Clean build products." name="clean"/>
     <target depends="clean" name="clean-ear"/>
 </project>
+ 
+        <copyfiles files="${libs.Common_Math.classpath}" todir="${dist.ear.dir}/lib"/>
