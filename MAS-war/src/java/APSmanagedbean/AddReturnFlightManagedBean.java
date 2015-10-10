@@ -6,7 +6,6 @@
 package APSmanagedbean;
 
 import Entity.APS.FlightFrequency;
-import static Entity.APS.FlightFrequency_.startDate;
 import Entity.APS.Route;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
