@@ -6,6 +6,7 @@
 package Entity.CommonInfaEntity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -46,6 +47,9 @@ public class UserEntity implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "receiver")
     private Collection<MsgReceiver> receiveMessage;
+    
+    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "userEntity")
+    private Collection<UserLog> userLog;
 
     public UserEntity() {
     }
@@ -184,6 +188,20 @@ public class UserEntity implements Serializable {
      */
     public void setReceiveMessage(Collection<MsgReceiver> receiveMessage) {
         this.receiveMessage = receiveMessage;
+    }
+
+    /**
+     * @return the userLog
+     */
+    public Collection<UserLog> getUserLog() {
+        return userLog;
+    }
+
+    /**
+     * @param userLog the userLog to set
+     */
+    public void setUserLog(Collection<UserLog> userLog) {
+        this.userLog = userLog;
     }
 
 }

@@ -47,23 +47,19 @@ public class MsgSessionBean implements MsgSessionBeanLocal {
         } else {
             System.out.println("message sessionBean sendMessage(): " + sender.getUsername());
 
-            //initialise the new message
-            //get the list of receive
             //set the senderName
             String senderName = sender.getUsername();
             ArrayList<String> rcvNameArray = new ArrayList<String>();
 
             //set the time
             Calendar sendTime = Calendar.getInstance();
-//            sendTime.getTime();
-//
+
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-//            String time = sdf.format(sendTime.getTime()).toString();
             System.out.println("sessionbean internal message module sendMessage(): time : " + sendTime.getTime());
             System.out.println("sessionbean internal message module sendMessage(): title : " + msgTitle);
             System.out.println("sessionbean internal message module sendMessage(): content : " + msgContent);
 
-            //instanlise a sendmessage entity
+            //initialize a sendmessage entity
             MsgSender sendNewMessage = new MsgSender();
             sendNewMessage.create(senderName, msgTitle, msgContent, sendTime);
             em.persist(sendNewMessage);
