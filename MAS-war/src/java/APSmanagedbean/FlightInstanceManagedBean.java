@@ -132,7 +132,6 @@ public class FlightInstanceManagedBean implements Serializable {
 //        aircraft = new Aircraft();
 //        aircraft = fsb.getAircraft(registrationNo);
 //        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
-//        System.out.println("Flight Instance: this aircraft delivery date is " + deliveryDate);
         Date freqStartDate = df1.parse(flightFreq.getStartDate());
         Date freqEndDate = df1.parse(flightFreq.getEndDate());
         System.out.println(startDate);
