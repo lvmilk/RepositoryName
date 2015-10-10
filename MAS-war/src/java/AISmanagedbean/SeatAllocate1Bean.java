@@ -5,8 +5,11 @@
  */
 package AISmanagedbean;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
+import Entity.APS.FlightInstance;
 import Entity.aisEntity.BookingClassInstance;
+import Entity.aisEntity.FlightCabin;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.AirlineInventory.SeatAssignBeanLocal;
 import java.io.IOException;
@@ -40,35 +43,59 @@ public class SeatAllocate1Bean implements Serializable {
     @EJB
     private SeatAssignBeanLocal sa;
 
+    private double optimalRev = 0;
+
     List<FlightFrequency> allFrequency = new ArrayList<>();
     List<FlightFrequency> frequencyList = new ArrayList<>();
 
     private Map<String, FlightFrequency> flightMap;
     private String flightNo;
+    private CabinClass selectedCabin;
+    private String cabinName;
     ;
     private String flightString;
     private FlightFrequency frequency;
     private String dateString;
     private List<BookingClassInstance> bookClassInstanceList = new ArrayList<>();
-    private ArrayList<Integer> avgDemand = new ArrayList<>();
-    private ArrayList<Integer> stdDemand = new ArrayList<>();
-    private Date selectedDate = new Date();
-    
-   private List<List<BookingClassInstance>> listByCabin=new ArrayList<>();
 
-    private List<BookingClassInstance> suiteInstance = new ArrayList<>();
-    private List<BookingClassInstance> firstInstance = new ArrayList<>();
-    private List<BookingClassInstance> bizInstance = new ArrayList<>();
-    private List<BookingClassInstance> premiumInstance = new ArrayList<>();
-    private List<BookingClassInstance> econInstance = new ArrayList<>();
+    private FlightInstance selectedFlightInstance;
+
+    private Date selectedDate = new Date();
+
+    private ArrayList<ArrayList<BookingClassInstance>> listByCabin = new ArrayList<ArrayList<BookingClassInstance>>();
+
+    private List<FlightCabin> cabinList = new ArrayList<>();
+
+    private ArrayList<BookingClassInstance> subList = new ArrayList<>();
 
     public SeatAllocate1Bean() {
+        this.listByCabin = new ArrayList<>();
     }
 
     @PostConstruct
     public void init() {
 //        flightMap = new HashMap<String, FlightFrequency>();
+//        optimalRev = (double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("optimalRev");
+        dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
         bookClassInstanceList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstances");
+        listByCabin = (ArrayList<ArrayList<BookingClassInstance>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listByCabin");
+        subList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("listInstance");
+        selectedFlightInstance = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlightInstance");
+//        cabinList = (List<FlightCabin>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
+        selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
+
+    }
+
+    public void onFlightChange() {
+        if (!flightNo.equals("1")) {
+            cabinList = sa.getCabinList(flightNo);
+        } else {
+            cabinList = new ArrayList<>();
+//            System.out.println("flight not selected");
+        }
+
+//        System.out.println("cabinlist size is: " + cabinList.size());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
 
     }
 
@@ -95,38 +122,29 @@ public class SeatAllocate1Bean implements Serializable {
 
     public void findBookClassInstance() throws IOException {
 
-        
-        bookClassInstanceList = sa.getBkiList(flightNo, dateString);
-         System.out.println("size of bookClassInstanceList is "+bookClassInstanceList.size());
+        selectedFlightInstance = sa.findFlightInstance(flightNo, dateString);
+        bookClassInstanceList = sa.getBkiList(cabinName, selectedFlightInstance);
+//        System.out.println("size of bookClassInstanceList is " + bookClassInstanceList.size());
+        for (int i = 0; i < cabinList.size(); i++) {
+            if (cabinList.get(i).getCabinClass().getCabinName().equals(cabinName)) {
+                selectedCabin = cabinList.get(i).getCabinClass();
+                break;
+            }
+        }
+        System.out.println("selectedCabin is " + selectedCabin.getCabinName());
 
-        suiteInstance = sa.listAssign(bookClassInstanceList, "Suite");
-        System.out.println("size of suite is "+suiteInstance.size());
-        firstInstance = sa.listAssign(bookClassInstanceList, "First Class");
-        System.out.println("size of First Class is "+firstInstance.size());
-        bizInstance = sa.listAssign(bookClassInstanceList, "Business Class");
-        System.out.println("size of Business Class is "+bizInstance.size());
-        premiumInstance = sa.listAssign(bookClassInstanceList, "Premium Economy Class");
-        System.out.println("size of Premium Economy Class is "+premiumInstance.size());
-        econInstance = sa.listAssign(bookClassInstanceList, "Economy Class");
-        System.out.println("size of Economy Class is "+econInstance.size());
-        
-       listByCabin.add(suiteInstance);
-       listByCabin.add(firstInstance);
-       listByCabin.add(bizInstance);
-       listByCabin.add(premiumInstance);
-       listByCabin.add(econInstance);
-       
         frequency = bookClassInstanceList.get(0).getFlightCabin().getFlightInstance().getFlightFrequency();
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("suiteInstance", suiteInstance);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstInstance", firstInstance);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bizInstance", bizInstance);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("premiumInstance", premiumInstance);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("econInstance", econInstance);
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listByCabin", listByCabin);
-        
+
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listByCabin", listByCabin);
+        optimalRev = 0;
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("optimalRev", optimalRev);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstances", bookClassInstanceList);
+        
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlightInstance", selectedFlightInstance);
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("frequency", frequency);
 
@@ -146,16 +164,24 @@ public class SeatAllocate1Bean implements Serializable {
     }
 
     public void computeOptimalSeat() throws IOException {
+        selectedCabin=(CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
         frequency = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("frequency");
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
         dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
-        System.out.println("flight no is " + flightNo + " and date is " + dateString);
-        bookClassInstanceList = sa.getBkiList(flightNo, dateString);
+         System.out.println("In seatAllcate1Bean():computeOptimalSeat(): selectedFlightInstance is " + selectedFlightInstance.toString());
+        System.out.println("In seatAllcate1Bean():computeOptimalSeat(): flight no is " + flightNo + " and date is " + dateString);
+        System.out.println("n seatAllcate1Bean():computeOptimalSeat(): cabin name is "+selectedCabin.getCabinName());
+        bookClassInstanceList = sa.getBkiList(selectedCabin.getCabinName(), selectedFlightInstance);
         System.out.println("size of booking class instance list is " + bookClassInstanceList.size());
 
-        bookClassInstanceList = sa.computeOptimalSeat(bookClassInstanceList);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocate3.xhtml");
+        bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat(bookClassInstanceList);
 
+        optimalRev = sa.computeOptimalRev(bookClassInstanceList);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listInstance", listInstance);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookClassInstanceList", bookClassInstanceList);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("optimalRev", optimalRev);
+
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocate3.xhtml");
     }
 
     public List<FlightFrequency> getFrequencyList() {
@@ -230,54 +256,61 @@ public class SeatAllocate1Bean implements Serializable {
         this.flightNo = flightNo;
     }
 
-    public List<BookingClassInstance> getSuiteInstance() {
-        return suiteInstance;
-    }
-
-    public void setSuiteInstance(List<BookingClassInstance> suiteInstance) {
-        this.suiteInstance = suiteInstance;
-    }
-
-    public List<BookingClassInstance> getFirstInstance() {
-        return firstInstance;
-    }
-
-    public void setFirstInstance(List<BookingClassInstance> firstInstance) {
-        this.firstInstance = firstInstance;
-    }
-
-    public List<BookingClassInstance> getBizInstance() {
-        return bizInstance;
-    }
-
-    public void setBizInstance(List<BookingClassInstance> bizInstance) {
-        this.bizInstance = bizInstance;
-    }
-
-    public List<BookingClassInstance> getPremiumInstance() {
-        return premiumInstance;
-    }
-
-    public void setPremiumInstance(List<BookingClassInstance> premiumInstance) {
-        this.premiumInstance = premiumInstance;
-    }
-
-    public List<BookingClassInstance> getEconInstance() {
-        return econInstance;
-    }
-
-    public void setEconInstance(List<BookingClassInstance> econInstance) {
-        this.econInstance = econInstance;
-    }
-
-    public List<List<BookingClassInstance>> getListByCabin() {
+    public ArrayList<ArrayList<BookingClassInstance>> getListByCabin() {
         return listByCabin;
     }
 
-    public void setListByCabin(List<List<BookingClassInstance>> listByCabin) {
+    public void setListByCabin(ArrayList<ArrayList<BookingClassInstance>> listByCabin) {
         this.listByCabin = listByCabin;
     }
 
-    
-    
+    public ArrayList<BookingClassInstance> getSubList() {
+        return subList;
+    }
+
+    public void setSubList(ArrayList<BookingClassInstance> subList) {
+        this.subList = subList;
+    }
+
+    public double getOptimalRev() {
+
+        return optimalRev;
+    }
+
+    public void setOptimalRev(double optimalRev) {
+        this.optimalRev = optimalRev;
+    }
+
+    public List<FlightCabin> getCabinList() {
+        return cabinList;
+    }
+
+    public void setCabinList(List<FlightCabin> cabinList) {
+        this.cabinList = cabinList;
+    }
+
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
+    }
+
+    public FlightInstance getSelectedFlightInstance() {
+        return selectedFlightInstance;
+    }
+
+    public void setSelectedFlightInstance(FlightInstance selectedFlightInstance) {
+        this.selectedFlightInstance = selectedFlightInstance;
+    }
+
+    public CabinClass getSelectedCabin() {
+        return selectedCabin;
+    }
+
+    public void setSelectedCabin(CabinClass selectedCabin) {
+        this.selectedCabin = selectedCabin;
+    }
+
 }

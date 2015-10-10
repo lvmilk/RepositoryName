@@ -21,7 +21,7 @@
                     Seat Assignment
                 </f:facet>
 
-                <p:ajax event="rowEdit" listener="#{seatAllocate1Bean.onRowEdit}" update=":form:msgs" />
+                <p:ajax event="rowEdit" listener="#{seatAllocate1Bean.onRowEdit}" update=":form:msgs :form:rev " />
                 <p:ajax event="rowEditCancel" listener="#{seatAllocate1Bean.onRowCancel}" update=":form:msgs" />
 
                 <p:column headerText="Cabin Class">
@@ -33,24 +33,30 @@
                 </p:column>
 
                 <p:column headerText="Number of seats in booking class">
-                    <h:outputText value="#{bki.seatNo}" />
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{bki.seatNo}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="seatNo" value="#{bki.seatNo}" required="true" requiredMessage="please input a valid Seat No" style="width:100%"/></f:facet>
+                    </p:cellEditor>
                 </p:column>
 
 
                 <p:column headerText="Average Demand">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{bki.avgDemand}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="avgInput" value="#{bki.avgDemand}" style="width:100%"/></f:facet>
+                        <f:facet name="input"><p:inputText id="avgInput" value="#{bki.avgDemand}" required="true" requiredMessage="please input a valid Avg Demand" style="width:100%"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
                 <p:column headerText="Srandard Deviation(std)">              
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{bki.std}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="stdInput" value="#{bki.std}" style="width:100%"/></f:facet>
+                        <f:facet name="input"><p:inputText id="stdInput" value="#{bki.std}" required="true" requiredMessage="please input a valid std" style="width:100%"/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
+                <p:column id="optimal" headerText="Optimal Seat No:">
+                    <h:outputText value="#{bki.optimalSeatNo}" />
+                </p:column>
 
                 <p:column headerText="Fare">
                     <h:outputText value="#{bki.price}" />
@@ -62,7 +68,14 @@
 
             </p:dataTable>
 
-            <p:commandButton value="Compute optimal seat allocation" action="#{seatAllocate1Bean.computeOptimalSeat}"/>
+            <p:commandButton value="Compute optimal seat allocation" update="form" action="#{seatAllocate1Bean.computeOptimalSeat()}"/>
+<!--            <p:commandButton value="Compute expected total revenue from current seat allocation" update="form" action="#{seatAllocate1Bean.computeExpRev()}"/>-->
+
+            <p:separator/>
+            <h:outputText id="rev" value="Expected Revenue from optimal seat allocation: $ #{seatAllocate1Bean.optimalRev}"/>
+            <br/>
+            <h:outputText value="Total Seat No. in this cabin: #{seatAllocate1Bean.selectedCabin.seatCount}" />
+
         </h:form>
 
     </h:body>
