@@ -12,10 +12,6 @@
     </h:head>
     <h:body>
 
-
-
-
-
         <h:form>
 
             <!--<div><h1>Choose an aircraft model </h1></div>-->
@@ -28,7 +24,6 @@
                             <f:selectItem itemLabel="Select One Route" itemValue="#{null}" />
                             <f:selectItems value="#{pricingManagedBean.routeInfo}" />
                         </p:selectOneMenu>
-
                     </h:panelGrid>
 
                     <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{pricingManagedBean.checkRoute()}"  icon="ui-icon-check" />

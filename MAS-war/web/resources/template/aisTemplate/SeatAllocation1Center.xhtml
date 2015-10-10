@@ -25,18 +25,24 @@
 
                     <p:outputLabel for="flight" value="Flight :" />
                     <p:selectOneMenu id="flight" value="#{seatAllocationMangagedBean.flightNo}" style="width:250px">
+                        <p:ajax listener="#{seatAllocationMangagedBean.onFlightChange()}" update="cabin"/>
                         <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{seatAllocationMangagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
                     </p:selectOneMenu>
+                    <br></br>
+                    <p:outputLabel for="cabin" value="Cabin Class :" />
+                    <p:selectOneMenu id="cabin" value="#{seatAllocationMangagedBean.cabinName}" style="width:250px">
+                        <f:selectItem itemLabel="Select One Cabin" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{seatAllocationMangagedBean.cabinList}"  var="cabin" itemValue="#{cabin.cabinName}" itemLabel="#{cabin.cabinName}"/>
+                    </p:selectOneMenu>
 
-                   
                 </h:panelGrid>
-                 <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.checkFlight()}"  icon="ui-icon-check" />
+                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.checkFlight()}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
 
-        
+
 
 
 

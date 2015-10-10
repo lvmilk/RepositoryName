@@ -7,7 +7,7 @@ package AISmanagedbean;
 
 import Entity.APS.FlightFrequency;
 import Entity.aisEntity.BookingClassInstance;
-import SessionBean.AirlineInventory.ModifyPriceBeanLocal;
+import SessionBean.AirlineInventory.ViewBookingClassPriceBeanLocal;
 import java.io.IOException;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -26,12 +26,12 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author wang
  */
-@Named(value = "modifyPriceManagedBean")
+@Named(value = "viewBookingPriceManagedBean")
 @ViewScoped
-public class ModifyPriceManagedBean implements Serializable {
+public class ViewBookingPriceManagedBean implements Serializable {
 
     @EJB
-    private ModifyPriceBeanLocal mpb;
+    private ViewBookingClassPriceBeanLocal mpb;
 
     private String date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
@@ -43,8 +43,6 @@ public class ModifyPriceManagedBean implements Serializable {
     /**
      * Creates a new instance of ModifyPriceManagedBean
      */
-    public ModifyPriceManagedBean() {
-    }
 
     @PostConstruct
     public void init() {
@@ -110,7 +108,7 @@ public class ModifyPriceManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
 
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ModifyPrice2.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewBookingClassPrice2.xhtml");
         } else {
             System.out.println("MBMP: No Flight is chosen");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "No flight is chosen.");
@@ -147,6 +145,12 @@ public class ModifyPriceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./ModifyPrice1.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewBookingClassPrice1.xhtml");
     }
+    /**
+     * Creates a new instance of ViewBookingPriceManagedBean
+     */
+    public ViewBookingPriceManagedBean() {
+    }
+    
 }
