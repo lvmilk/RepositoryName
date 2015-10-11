@@ -56,7 +56,7 @@ INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, startDate,endDate,sche
 INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo,  startDate,endDate,scheduleDepTime,scheduleArrTime, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (20000,20000,'MR002',"2012-10-08","2022-10-08","16:00","21:00",0,True,False,True,False,True,False,True)
 
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime) values(10000,10000,"2016-10-01","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-01 10:00","2016-10-01 15:00")
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime) values(20000,20000,"2016-10-03","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-01 10:00","2016-10-01 15:00")
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime) values(20000,20000,"2016-10-03","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-03 10:00","2016-10-03 15:00")
 
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (10000,10000,10000,1)
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (20000,10000,20000,2)
