@@ -1,7 +1,6 @@
 package APSmanagedbean;
 
 import Entity.APS.Aircraft;
-import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FlightSchedulingBeanLocal;
@@ -19,9 +18,10 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.GregorianCalendar;
+import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**

@@ -9,8 +9,6 @@ import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
-import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 

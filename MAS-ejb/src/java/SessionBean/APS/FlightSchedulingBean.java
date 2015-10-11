@@ -6,13 +6,9 @@
 package SessionBean.APS;
 
 import Entity.APS.Aircraft;
-import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -156,6 +152,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //    public void generateFlightPackage() {
 //        
 //    }
+    
 //////////////////////////////////////////////////////////////////////////
     @Override
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {

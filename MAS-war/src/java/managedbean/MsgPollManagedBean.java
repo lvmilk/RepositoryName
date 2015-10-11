@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import helper.msgHelper;
 
 /**
  *
@@ -24,24 +25,37 @@ import javax.inject.Named;
 @ViewScoped
 public class MsgPollManagedBean implements Serializable {
 
+    private int msgCount;
+    private int helperCount;
     private String currentUserName;
     @EJB
     private MsgSessionBeanLocal msbl;
 
     private List<MsgReceiver> rcvMsgList;
+    private msgHelper mh=new msgHelper();
 
     @PostConstruct
     public void init() {
 
         setCurrentUserName((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
         setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
-        System.out.println("msgPollMB: MessageSize:" + getRcvMsgList().size());
+        System.out.println("msgPollMB: MessageSize in init :" + getRcvMsgList().size());
+        msgCount = getRcvMsgList().size();
+        mh.setMsgCount(msgCount);
 
     }
 
-    public void msgIncrement() {
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("You have a new message"));
+    public void msgIncrement(){
+        currentUserName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+        rcvMsgList = (List<MsgReceiver>) msbl.viewReceiveMessage(currentUserName);
+        msgCount = rcvMsgList.size();
+        helperCount = mh.getMsgCount();
+        System.out.println("msgPollMB: MessageSize in msgIncrement :" + getRcvMsgList().size());
+        if (msgCount > helperCount) {
+            System.out.println("*************It is already inside the loop************");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("You have a new message"));
+        }
     }
 
     /**
