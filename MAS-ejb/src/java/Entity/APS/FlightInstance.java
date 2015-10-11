@@ -7,6 +7,8 @@ package Entity.APS;
 
 import Entity.aisEntity.FlightCabin;
 import java.io.Serializable;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -65,10 +67,10 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.flightStatus = "Scheduled";
         this.estimatedDepTime = estimatedDepTime;
         this.estimatedArrTime = estimatedArrTime;
-        this.estimatedDateAdjust=estimatedDateAdjust;
+        this.estimatedDateAdjust = estimatedDateAdjust;
         this.actualDepTime = actualDepTime;
         this.actualArrTime = actualArrTime;
-        this.actualDateAdjust=actualDateAdjust;
+        this.actualDateAdjust = actualDateAdjust;
     }
 
     public Long getId() {
@@ -206,12 +208,12 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.standardArrTime = standardArrTime;
     }
 
-    
-    public int compareTo(FlightInstance fl) {
-        
-        DateTime thisTime = new DateTime(this.EstimatedDepartureTime);
-        DateTime flTime = new DateTime(fl.EstimatedDepartureTime);
-        return thisTime.compareTo(flTime);
+    @Override
+    public int compareTo(FlightInstance fi) {
+        LocalTime thisTime = LocalTime.parse(this.standardDepTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalTime fiTime = LocalTime.parse(fi.getStandardDepTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        // thisTime<fiTime return -1
+        return thisTime.compareTo(fiTime);
     }
 
 }
