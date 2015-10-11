@@ -10,15 +10,15 @@ import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
-import java.text.Format;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -238,4 +238,58 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
+        //Hanyu Added
+    @Override
+    public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
+        List<FlightInstance> flightInstList = getAllFlightInstance();
+        for (FlightInstance temp : flightInstList) {
+            if ((temp.getAircraft() != null) || (!temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
+                flightInstList.remove(temp);
+            }
+        }
+        return flightInstList;
+    }
+
+  
+    @Override
+    public List<Aircraft> getAllAircraft() {
+        Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
+        List<Aircraft> aircraftList = q1.getResultList();
+        if (aircraftList.isEmpty()) {
+            System.out.println("aircraftList: No aircraf.");
+        } else {
+            System.out.println("aircraftList got");
+        }
+        return aircraftList;
+    }
+
+   @Override
+   public void scheduleAcToFi(Date startDate, Date endDate)throws ParseException{
+       DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+       for (Aircraft acTemp : this.getAllAircraft()) {
+           Date currentDate = startDate;    //the current available time of the aircraft
+           Airport currentAirport = acTemp.getCurrentAirport();//need to add the new attribute:  currentAirport
+
+           // need to make flight instance comparable and add compareTo() method!!!!
+          List<FlightInstance> unplannedFi = Collections.sort(this.getUnplannedFlightInstance(acTemp));
+           for (FlightInstance fiTemp : unplannedFi) {
+               if (currentDate.after(endDate)) {
+                   break;
+               } else {
+                   //getDate(): should be replaced by getDepartureTime() and getArrivalTime()
+                   if (currentDate.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
+                       fiTemp.setAircraft(acTemp);
+                       currentDate = df1.parse(fiTemp.getStandardArrTime());
+                       currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
+                       acTemp.setCurrentAirport(currentAirport);
+                       acTemp.getFlightInstance().add(fiTemp);                     
+                       em.merge(fiTemp);
+                       em.merge(acTemp);
+                       em.flush();
+                   }
+               }
+
+           }
+       }
+    
 }

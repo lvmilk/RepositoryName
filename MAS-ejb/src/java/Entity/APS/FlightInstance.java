@@ -22,7 +22,7 @@ import javax.persistence.OneToMany;
  * @author Xu/Lu Xi
  */
 @Entity
-public class FlightInstance implements Serializable {
+public class FlightInstance implements Serializable, Comparable<FlightInstance> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,13 +48,12 @@ public class FlightInstance implements Serializable {
 
 //    @ManyToOne
 //    private FlightPackage flightPackage;
-
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
 
     public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) {
         this.flightFrequency = flightFrequency;
-        
+
 //        this.startDate=startDate;
 //        this.finishDate=finishDate;
         this.date = date;
@@ -112,7 +111,6 @@ public class FlightInstance implements Serializable {
 //    public void setFlightPackage(FlightPackage flightPackage) {
 //        this.flightPackage = flightPackage;
 //    }
-
     public String getEstimatedDepTime() {
         return estimatedDepTime;
     }
@@ -167,6 +165,13 @@ public class FlightInstance implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int compareTo(FlightInstance fl) {
+        
+        DateTime thisTime = new DateTime(this.EstimatedDepartureTime);
+        DateTime flTime = new DateTime(fl.EstimatedDepartureTime);
+        return thisTime.compareTo(flTime);
     }
 
 }

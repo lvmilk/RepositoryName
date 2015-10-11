@@ -25,10 +25,10 @@
                     <p:inputText id="inFlightNo" value="#{ARFMB.inFlightNo}" label="flightNo" required="true"  requiredMessage="Please enter inbound flight number" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="inScheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:outputLabel for="inScheduleDepTime" value="Departure Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="inScheduleDepTime" value="#{ARFMB.inDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight departure time" size="30"/>
 
-                    <p:outputLabel for="inScheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:outputLabel for="inScheduleArrTime" value="Arrival Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="inScheduleArrTime" value="#{ARFMB.inArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="inDateAdjust" value="Date Adjust: " />
