@@ -32,14 +32,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
+    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) throws Exception {
         airport = em.find(Airport.class, IATA);
         if (airport != null) {
             System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " exists.");
             throw new Exception("Airport " + airport.getIATA() + " exists.");
         }
         airport = new Airport();
-        airport.create(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+        airport.create(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
         em.persist(airport);
         em.flush();
         System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " added!");
@@ -160,13 +160,42 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         return airportList;
     }
 
+    @Override
+    public List<Airport> viewHubAirport() {
+        Query q1 = em.createQuery("SELECT a FROM Airport a");
+        List<Airport> airportList = (List) q1.getResultList();
+        List<Airport> hubList = new ArrayList<>();
+        for (Airport ap : airportList) {
+            if (ap.getStrategicLevel().equalsIgnoreCase("Hub")) {
+                hubList.add(ap);
+            }
+        }
+        String hub = "";
+        for (Airport a : hubList) {
+            hub += a.getIATA() + " ";
+        }
+        System.out.println("rpb.viewHubAirport(): hub airport(s) " + hub);
+        return hubList;
+    }
+
+    @Override
+    public boolean isHubAirport(String IATA) {
+        Airport ap = em.find(Airport.class, IATA);
+        if (viewHubAirport().contains(ap)) {
+            System.out.println("rpb.isHubAirport(): " + IATA + " is hub airport");
+            return true;
+        }
+        System.out.println("rpb.isHubAirport(): " + IATA + " is not hub airport");
+        return false;
+    }
+
     //must ensure the airport exist, for flight managed bean to get singapore airport
     @Override
     public Airport findAirport(String IATA) {
         Airport ap = em.find(Airport.class, IATA);
         return ap;
     }
-    
+
     @Override
     public List<Route> viewApAsOriginRoute(Airport airport) {
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:airport");
@@ -205,6 +234,37 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         route.create(origin, dest, distance, blockhour);
         em.persist(route);
         em.flush();
+    }
+
+    @Override
+    public Double calRouteDistance(String originIATA, String destIATA) {
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
+        Double distance = pointDistance(origin.getLat(), origin.getLon(), dest.getLat(), dest.getLon(), 'K');
+        System.out.println("rpb.calRouteDistance(): distance between Airport " + origin.getIATA() + " and Airport " + dest.getIATA() + " is " + distance);
+        return distance;
+    }
+
+    public double pointDistance(Double lat1, Double lon1, Double lat2, Double lon2, char unit) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        if (unit == 'K') {
+            dist = dist * 1.609344;
+        } else if (unit == 'N') {
+            dist = dist * 0.8684;
+        }
+        return dist;
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
     @Override
@@ -266,7 +326,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         return actList;
     }
 
-     @Override
+    @Override
     public List<AircraftType> checkFeasibleAcByAsp(Route route) {
         Query q1 = em.createQuery("SELECT ac FROM AircraftType ac");
         List<AircraftType> acList = q1.getResultList();
@@ -288,14 +348,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         List<AircraftType> list1 = checkFeasibleAcByAsp(route);
         List<AircraftType> list2 = checkFeasibleAcByDis(route);
         List<AircraftType> list = new ArrayList<>();
-        for(AircraftType ac: list1) {
-            if(list2.contains(ac)) {
+        for (AircraftType ac : list1) {
+            if (list2.contains(ac)) {
                 list.add(ac);
             }
         }
         return list;
     }
-    
+
     @Override
     public List<Route> viewAllRoute() {
         Query q1 = em.createQuery("SELECT r FROM Route r");
@@ -326,9 +386,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     public void deleteRoute(String originIATA, String destIATA) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
-        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
-        q1.setParameter("origin", origin);
-        q1.setParameter("dest", dest);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest").setParameter("origin", origin).setParameter("dest", dest);
         if (q1.getResultList().isEmpty()) {
             throw new Exception("Route does not exist.");
         }

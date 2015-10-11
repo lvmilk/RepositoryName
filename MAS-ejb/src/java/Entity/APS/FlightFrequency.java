@@ -29,13 +29,15 @@ public class FlightFrequency implements Serializable {
 
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
+    
 //    private LocalTime scheduleDepTime;
 //    private LocalTime scheduleArrTime;
     private Integer dateAdjust;
-    private String scheduleDepTime;
-    private String scheduleArrTime;
+    private String scheduleDepTime;   //utc time
+    private String scheduleArrTime;   //utc time
     private String startDate;
     private String endDate;
+//    private String timeInterval;
 //    private LocalDate startDate;
 //    private LocalDate endDate;
     private boolean onMon;
@@ -59,8 +61,8 @@ public class FlightFrequency implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
 
-    @ManyToOne
-    private FlightPackage flightPackage = new FlightPackage();
+//    @ManyToOne
+//    private FlightPackage flightPackage = new FlightPackage();
 
     public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String sDate, String fDate) {
@@ -79,8 +81,7 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
 //        this.status = "Pending";
-        this.sDate = "";
-        this.fDate = "";
+        return this;
     }
 
     public Long getId() {
@@ -128,6 +129,7 @@ public class FlightFrequency implements Serializable {
 //    public void setStatus(String status) {
 //        this.status = status;
 //    }
+    
     public Route getRoute() {
         return route;
     }
@@ -319,13 +321,13 @@ public class FlightFrequency implements Serializable {
         this.fDate = fDate;
     }
 
-    public FlightPackage getFlightPackage() {
-        return flightPackage;
-    }
-
-    public void setFlightPackage(FlightPackage flightPackage) {
-        this.flightPackage = flightPackage;
-    }
+//    public FlightPackage getFlightPackage() {
+//        return flightPackage;
+//    }
+//
+//    public void setFlightPackage(FlightPackage flightPackage) {
+//        this.flightPackage = flightPackage;
+//    }
 
     @Override
     public int hashCode() {

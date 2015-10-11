@@ -46,8 +46,8 @@ public class FlightInstance implements Serializable {
     @ManyToOne
     private FlightFrequency flightFrequency = new FlightFrequency();
 
-    @ManyToOne
-    private FlightPackage flightPackage;
+//    @ManyToOne
+//    private FlightPackage flightPackage;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
@@ -105,13 +105,13 @@ public class FlightInstance implements Serializable {
         this.aircraft = aircraft;
     }
 
-    public FlightPackage getFlightPackage() {
-        return flightPackage;
-    }
-
-    public void setFlightPackage(FlightPackage flightPackage) {
-        this.flightPackage = flightPackage;
-    }
+//    public FlightPackage getFlightPackage() {
+//        return flightPackage;
+//    }
+//
+//    public void setFlightPackage(FlightPackage flightPackage) {
+//        this.flightPackage = flightPackage;
+//    }
 
     public String getEstimatedDepTime() {
         return estimatedDepTime;

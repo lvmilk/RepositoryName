@@ -43,6 +43,9 @@ public class AirportManagedBean implements Serializable {
     private List<Route> apOriginRouteList;
     private List<Route> apDestRouteList;
 
+    private Double latitude;
+    private Double longitude;
+
     private List<Airport> selectedAirport = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
     private List<Airport> deletedAirport = new ArrayList<>();
@@ -60,7 +63,7 @@ public class AirportManagedBean implements Serializable {
 
     public void addAirport() throws Exception {
         try {
-            rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", IATA);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -98,9 +101,10 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airspace", airport.getAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lat", airport.getLat());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lon", airport.getLon());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apOriginRouteList", getApOriginRouteList(airport));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apDestRouteList", getApDestRouteList(airport));
-
         System.out.println("amb.editAiport(): Airport " + airport.getIATA() + " information will be updated. ");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportDetail.xhtml");
     }
@@ -304,6 +308,22 @@ public class AirportManagedBean implements Serializable {
 
     public void setuIComponent(UIComponent uIComponent) {
         this.uIComponent = uIComponent;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
 }
