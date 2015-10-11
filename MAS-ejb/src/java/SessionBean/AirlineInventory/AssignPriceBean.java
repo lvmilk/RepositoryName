@@ -54,21 +54,27 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
 
     // get the list of flight instance that have no asoociated flightCabin and bookingClassInstance
     public List<FlightInstance> getFlightInstanceList(String flightNo) {
+        System.out.println("APB: flightNo "+flightNo);
         List<FlightInstance> fiListAll = new ArrayList<FlightInstance>();
-         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
+        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
+        System.out.println("APB: fiList.size "+ fiList.size());
 //        FlightFrequency ff = new FlightFrequency();
-        
-         Query query = em.createQuery("SELECT f FROM FlightInstance f WHERE f.flightFrequency.flightNo=:fflightNo"); 
-         query.setParameter("fflightNo",flightNo);
+
+        Query query = em.createQuery("SELECT f FROM FlightInstance f WHERE f.flightFrequency.flightNo=:fflightNo");
+        query.setParameter("fflightNo", flightNo);
 //         ff = em.find(FlightFrequency.class, flightNo);
         fiListAll = query.getResultList();
-        
+
         for (FlightInstance temp : fiListAll) {
-            if (temp.getFlightCabins().isEmpty()) {
+            System.out.println("APB:temp is ? "+temp.getFlightFrequency().getFlightNo());
+            em.flush();
+            if (temp.getFlightCabins().size() == 0) {
+                System.out.println("APB:temp instance flightCabins list size: " + temp.getFlightCabins().size());
                 fiList.add(temp);
+                System.out.println("APB: fiList.size after add "+ fiList.size());
             }
         }
-        
+        System.out.println("APB:getFlightInstanceList: final list size: " + fiList.size());
         return fiList;
     }
 
@@ -88,6 +94,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
                 bki.setBookingClass(temp2);
                 bki.setFlightCabin(flightCabin);
                 bki.setSeatNo(0);
+                System.out.println("APB: Cabin Name :" + temp.getCabinName());
                 if (temp.getCabinName().equals("Suite")) {
                     bki.setPrice(fi.getFlightFrequency().getRoute().getBasicScFare() * temp2.getPrice_percentage());
                 } else if (temp.getCabinName().equals("First Class")) {
@@ -112,7 +119,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
 
     public List<BookingClassInstance> getBkiList(FlightInstance fi) {
         List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
-        System.out.println("APB: getBkiLIst(): "+bkiList.size());
+        System.out.println("APB: getBkiLIst(): " + bkiList.size());
         Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.id=:fid");
         query.setParameter("fid", fi.getId());
         bkiList = query.getResultList();

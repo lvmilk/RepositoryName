@@ -90,7 +90,7 @@ public class AssignPriceManagedBean implements Serializable {
     }
 
     public List<FlightInstance> getFiList() {
-        return fiList;
+        return apb.getFlightInstanceList(flightNo);
     }
 
     public void setFiList(List<FlightInstance> fiList) {
@@ -98,16 +98,17 @@ public class AssignPriceManagedBean implements Serializable {
     }
 
     public void checkFlightInstance() throws IOException {
+        System.out.println("APMB: checkFightInstance "+flightNo);
         this.setFiList(apb.getFlightInstanceList(flightNo));
         System.out.println("APMB: any flight instance  selected?  " + getFiList().size());
         if (flightNo != null && !flightNo.equals("")) {
-            System.out.println("MPMB: Flight is selected:  " + flightNo);
+            System.out.println("APMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeID", routeID);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPrice2.xhtml");
         } else {
-            System.out.println("APB: No Flight instance is chosen");
+            System.out.println("APMB: No Flight instance is chosen");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", "No flight chosen is chosen.");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
             //FacesContext.getCurrentInstance().addMessage(null, message);  
