@@ -7,7 +7,10 @@
         <title>Message Poll</title>
     </h:head>
     <h:body>
-        <p:poll interval="3" listener="#{counterView.increment}" update="" />
+        <h:form id="msgPoll">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:poll interval="10" update="msgPoll" listener="#{msgPollMB.msgIncrement}" />
+        </h:form>
     </h:body>
 </html>
 

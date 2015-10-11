@@ -11,6 +11,11 @@ package helper;
  */
 public class msgHelper {
     private int msgCount;
+    
+    public msgHelper()
+    {
+        
+    }
 
     /**
      * @return the msgCount
