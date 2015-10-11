@@ -56,6 +56,8 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
         int totalAllocated = 0;
         NormalDistribution distribution;
         BookingClassInstance bInstance;
+        double avgDemand;
+        double std;
         
         System.out.println("in seatAssignBean: computeOptimalSeat():size of bookingClassInstanceList is"+bookClassInstanceList.size());
         int totalSeat = bookClassInstanceList.get(0).getFlightCabin().getCabinClass().getSeatCount();
@@ -64,8 +66,13 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
             if (i != (bookClassInstanceList.size() - 1)) {
 
                 if (totalAllocated < totalSeat) {
+                 
+                  avgDemand=(double)bookClassInstanceList.get(i).getAvgDemand();
+                  std=(double)bookClassInstanceList.get(i).getStd();
                   
-                    distribution = new NormalDistribution(bookClassInstanceList.get(i).getAvgDemand(), bookClassInstanceList.get(i).getStd());
+                   System.out.println("in seatAssignBean: computeOptimalSeat(): avg demand is "+avgDemand+" and std is "+std);
+                  
+                  distribution = new NormalDistribution(avgDemand,std);
                     optimalValue = distribution.inverseCumulativeProbability((Double) bookClassInstanceList.get(i + 1).getPrice() / bookClassInstanceList.get(i).getPrice());
 
                     optimalSeatNo = (int) optimalValue;
