@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Generate Booking Class Instance and Assign Price: Success</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:panel id="panel" header=" Assign Fare of Booking Class "  style="width:100%">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="bkiList" var="bki" value="#{assignPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
+
+                    <p:column headerText="Cabin Class" >
+                        <h:outputText value="#{bki.bookingClass.cabinName}"  style="center" />
+                    </p:column>
+                    <p:column headerText="Booking Class Annotation">
+
+                        <h:outputText value="#{bki.bookingClass.annotation}" />
+
+                    </p:column>
+                    <p:column headerText="Seat Count">
+
+                        <h:outputText value="#{bki.seatNo}" />
+
+                    </p:column>
+
+                    <p:column headerText="Fare">
+
+                        <h:outputText value="#{bki.price}" >
+                        <f:convertNumber pattern="#0.00" />
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+                <br/><br/>
+                <p:commandButton value="Go Back " style="margin-right:0" actionListener="#{assignPriceManagedBean.goBacktoEdit()}"  icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

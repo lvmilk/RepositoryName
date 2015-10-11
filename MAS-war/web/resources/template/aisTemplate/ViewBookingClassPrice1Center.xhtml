@@ -17,25 +17,26 @@
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
-                    <p:inputMask id="date" value="#{viewBookingPriceManagedBean.date}" mask="9999-99-99"/>
-                   
-                    <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{viewBookingPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
+                    <p:outputLabel for="date" value="Date: " />
+                    <!--<p:inputMask id="date" value="#{viewBookingPriceManagedBean.date}" mask="9999-99-99"/>-->
+                    <p:calendar id="date" value="#{viewBookingPriceManagedBean.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" style="width:250px"/>
 
-                    <p:outputLabel for="flight" value="Flight :" />
-                    <p:selectOneMenu id="flight" value="#{viewBookingPriceManagedBean.flightNo}" style="width:250px">
-                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
-                        <f:selectItems value="#{viewBookingPriceManagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
-                    </p:selectOneMenu>
+                        <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{viewBookingPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
-                   
+                        <p:outputLabel for="flight" value="Flight :" />
+                        <p:selectOneMenu id="flight" value="#{viewBookingPriceManagedBean.flightNo}" style="width:250px">
+                            <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                            <f:selectItems value="#{viewBookingPriceManagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                        </p:selectOneMenu>
+
+
                 </h:panelGrid>
-                 <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{viewBookingPriceManagedBean.checkFlight()}"  icon="ui-icon-check" />
+                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{viewBookingPriceManagedBean.checkFlight()}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
 
-        
+
 
 
 

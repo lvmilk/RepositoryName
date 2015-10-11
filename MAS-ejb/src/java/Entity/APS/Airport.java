@@ -27,8 +27,12 @@ public class Airport implements Serializable {
     private String strategicLevel;
     private String airspace;
 
+    private Double lat;
+    private Double lon;
+
 //    private Collection<Route> routeList = new ArrayList<Route>();
-    public void create(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) {
+    public void create(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone,
+            String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) {
         this.IATA = IATA;
         this.airportName = airportName;
         this.cityName = cityName;
@@ -38,6 +42,8 @@ public class Airport implements Serializable {
         this.opStatus = opStatus;
         this.strategicLevel = strategicLevel;
         this.airspace = airspace;
+        this.lat = latitude;
+        this.lon = longitude;
     }
 
     public String getIATA() {
@@ -112,6 +118,23 @@ public class Airport implements Serializable {
         this.airspace = airspace;
     }
 
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
+    }
+
+    
 //    public Collection<Route> getRouteList() {
 //        return routeList;
 //    }
@@ -119,16 +142,15 @@ public class Airport implements Serializable {
 //    public void setRouteList(Collection<Route> routeList) {
 //        this.routeList = routeList;
 //}
-
-@Override
-        public int hashCode() {
+    @Override
+    public int hashCode() {
         int hash = 0;
         hash += (IATA != null ? IATA.hashCode() : 0);
         return hash;
     }
 
     @Override
-        public boolean equals(Object object) {
+    public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Airport)) {
             return false;
@@ -141,7 +163,7 @@ public class Airport implements Serializable {
     }
 
     @Override
-        public String toString() {
+    public String toString() {
         return IATA + " - " + cityName + ", " + countryName;
     }
 

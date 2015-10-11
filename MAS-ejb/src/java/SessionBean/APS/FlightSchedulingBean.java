@@ -6,9 +6,11 @@
 package SessionBean.APS;
 
 import Entity.APS.Aircraft;
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +18,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import javax.ejb.Stateless;
@@ -48,28 +48,58 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             String sDate, String fDate) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-
-        if (depTime.isAfter(arrTime)) {
-            if (dateAdjust == 0) {
-                throw new Exception("Departure time should before arrival time.");
-            }
-        }
-        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
-        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
-        if (startDate.isAfter(endDate)) {
-            throw new Exception("Start operation date should before end operation date.");
-        }
+        checkScheduleTime(route, depTimeString, arrTimeString, dateAdjust);
+        checkOperationDate(startDateString, endDateString);
 
         flightFreq = new FlightFrequency();
         flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sDate, fDate);
         em.persist(flightFreq);
+        em.flush();
         Route r = em.find(Route.class, route.getId());
         r.setStatus("Serving");
+        List<FlightFrequency> freqList = r.getFlightFreqList();
+        freqList.add(flightFreq);
+        r.setFlightFreqList(freqList);
         em.merge(r);
         em.flush();
         return flightFreq;
+    }
+
+    public void checkScheduleTime(Route route, String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
+        LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate depDate = LocalDate.of(2000, 1, 10);
+        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(dateAdjust);
+        LocalDateTime depDateTime = LocalDateTime.of(depDate, depTime);
+        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arrTime);
+//        ZoneId depZone = ZoneId.of(route.getOrigin().getTimeZone());
+//        System.out.println("fsb.checkScheduleTime(): origin airport time zone id is " + depZone);
+//        ZoneId arrZone = ZoneId.of(route.getDest().getTimeZone());
+//        ZonedDateTime zonedDep = ZonedDateTime.of(depDateTime, depZone);
+//        System.out.println("fsb.checkScheduleTime(): departure time is " + zonedDep);
+//        ZonedDateTime zonedArr = ZonedDateTime.of(arrDateTime, arrZone);
+//        System.out.println("fsb.checkScheduleTime(): arrival time is " + zonedDep);
+        
+        if (depDateTime.isAfter(arrDateTime)) {
+            System.out.println("Departure time should before arrival time.");
+            throw new Exception("Departure time should before arrival time.");
+        }
+    }
+
+    public void checkOperationDate(String startDateString, String endDateString) throws Exception {
+        LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
+        LocalDate today = LocalDate.now();
+        System.out.println(today);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String todayString = today.format(dtf);
+        if (startDate.isBefore(today)) {
+            throw new Exception("Start operation date should be after today " + todayString);
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new Exception("Start operation date should be before end operation date.");
+        }
+
     }
 
     @Override

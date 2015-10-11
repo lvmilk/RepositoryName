@@ -795,23 +795,19 @@ exists or setup the property manually. For example like this:
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.commons-math3-3.5.classpath}" todir="${build.classes.dir}"/>
-        <copyfiles files="${libs.Common_Math.classpath}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${libs.PrimeFaces_5.2.classpath}" property="manifest.libs.PrimeFaces_5.2.classpath"/>
         <basename file="${libs.commons-math3-3.5.classpath}" property="manifest.libs.commons-math3-3.5.classpath"/>
-        <basename file="${libs.Common_Math.classpath}" property="manifest.libs.Common_Math.classpath"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.libs.PrimeFaces_5.2.classpath}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.libs.commons-math3-3.5.classpath}"/>
-            <attribute name="jar-3-Extension-Name" value="${manifest.libs.Common_Math.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${dist.ear.dir}/lib"/>
- 
-        <copyfiles files="${libs.Common_Math.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.commons-math3-3.5.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

@@ -27,7 +27,10 @@ public class BookingClassInstance implements Serializable {
     private FlightCabin flightCabin;
     private Double price;
     private Integer seatNo;
+    private Integer optimalSeatNo;
     private Integer bookedSeatNo=0; //set default value =0
+    private Integer avgDemand;
+    private Integer std;
     
      @ManyToOne
     private BookingClass bookingClass;
@@ -77,7 +80,32 @@ public class BookingClassInstance implements Serializable {
     public void setFlightCabin(FlightCabin flightCabin) {
         this.flightCabin = flightCabin;
     }
+
+    public Integer getAvgDemand() {
+        return avgDemand;
+    }
+
+    public void setAvgDemand(Integer avgDemand) {
+        this.avgDemand = avgDemand;
+    }
+
+    public Integer getStd() {
+        return std;
+    }
+
+    public void setStd(Integer std) {
+        this.std = std;
+    }
+
+    public Integer getOptimalSeatNo() {
+        return optimalSeatNo;
+    }
+
+    public void setOptimalSeatNo(Integer optimalSeatNo) {
+        this.optimalSeatNo = optimalSeatNo;
+    }
    
+    
     
     public Long getId() {
         return id;

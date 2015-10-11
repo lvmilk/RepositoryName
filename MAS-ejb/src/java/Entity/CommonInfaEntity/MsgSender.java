@@ -35,7 +35,7 @@ public class MsgSender implements Serializable {
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Calendar cldTime;
     
-    private String sendTime;
+
     private String senderName;
     private Boolean delStatus;  
     private ArrayList<String> rcvNames;
@@ -133,19 +133,6 @@ public class MsgSender implements Serializable {
         this.cldTime = cldTime;
     }
 
-    /**
-     * @return the sendTime
-     */
-    public String getSendTime() {
-        return sendTime;
-    }
-
-    /**
-     * @param sendTime the sendTime to set
-     */
-    public void setSendTime(String sendTime) {
-        this.sendTime = sendTime;
-    }
 
     /**
      * @return the senderName

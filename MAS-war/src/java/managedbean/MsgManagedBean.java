@@ -31,7 +31,7 @@ public class MsgManagedBean implements Serializable {
     private MsgSessionBeanLocal msbl;
 
     private List<UserEntity> users;
-    private List<UserEntity> selectedUsers=new ArrayList<>();
+    private List<UserEntity> selectedUsers = new ArrayList<>();
     private String currentUserName;
     private String msgContent;
     private String rcvUsernames;
@@ -67,25 +67,25 @@ public class MsgManagedBean implements Serializable {
 
             if (searchString.toLowerCase().contains(query.toLowerCase())) {
                 filteredUsers.add(u);
-                System.out.println("add user successfully:"+u );
-                System.out.println("filtered users:"+filteredUsers);
+                System.out.println("add user successfully:" + u);
+                System.out.println("filtered users:" + filteredUsers);
             }
         }
-        
+
         return filteredUsers;
     }
 
     public void sendMessage(ActionEvent event) throws Exception {
         rcvUsernamesList = new ArrayList<String>();
-
+        
         for (UserEntity ue : selectedUsers) {
-            System.err.println("userEntityString: send to --> " + ue.getUsername());
+            System.out.println("userEntityString: sendMessage " + ue.getUsername());
             rcvUsernamesList.add(ue.getUsername());
-            System.out.println("****hehe");
+
         }
 
         msbl.sendMessage(currentUserName, msgTitle, msgContent, rcvUsernamesList);
-        System.err.println("sendMessage(): Message Sent ");
+        System.out.println("sendMessage(): Message Sent ");
         FacesContext context = FacesContext.getCurrentInstance();
 
         context.addMessage(null, new FacesMessage("Message", "Message is sent successfully."));
@@ -93,6 +93,25 @@ public class MsgManagedBean implements Serializable {
         msgTitle = null;
         selectedUsers.clear();
 
+    }
+
+    public void sendAnnouncement(ActionEvent event) throws Exception {
+        rcvUsernamesList = new ArrayList<String>();
+
+        System.out.println("ahahahahahaha**********"+users);
+        for (UserEntity ue : users) {
+            System.err.println("userEntityString: sendAnnouncement " + ue.getUsername());
+            rcvUsernamesList.add(ue.getUsername());
+        }
+
+        msbl.sendMessage(currentUserName, msgTitle, msgContent, rcvUsernamesList);
+        System.out.println("sendMessage(): Message Sent ");
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        context.addMessage(null, new FacesMessage("Message", "Message is sent successfully."));
+
+        msgTitle = null;
+        selectedUsers.clear();
     }
 
     /**
