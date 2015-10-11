@@ -1,6 +1,7 @@
 package APSmanagedbean;
 
 import Entity.APS.Aircraft;
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FlightSchedulingBeanLocal;
@@ -8,6 +9,7 @@ import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,11 +19,11 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
-import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+
 /**
  *
  * @author Xi
@@ -118,8 +120,8 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Sun = flightFreq.isOnSun();
         //bug unknown aircraft
         Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
-        System.out.println("Flight Instance: this aircraft delivery date is "+deliveryDate);
-       
+        System.out.println("Flight Instance: this aircraft delivery date is " + deliveryDate);
+
         try {
             if (!startDate.before(new Date())) {
                 System.out.println("Flight Instance start date is later than current date");
@@ -160,8 +162,6 @@ public class FlightInstanceManagedBean implements Serializable {
                 || (dayOfWeek == 6 && Fri)
                 || (dayOfWeek == 7 && Sat);
     }
-
-
 
     public List<FlightFrequency> getFlightFreqList() {
         return flightFreqList;
@@ -353,6 +353,13 @@ public class FlightInstanceManagedBean implements Serializable {
 
     public void setOnSun(boolean onSun) {
         this.onSun = onSun;
+    }
+
+    //Hanyu added
+    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
+      
+       // fsb.scheduleAcToFi(startDate, endDate);
+        
     }
 
 }

@@ -11,10 +11,12 @@ import Entity.aisEntity.BookingClassInstance;
 import SessionBean.AirlineInventory.SeatAllocationBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -34,7 +36,8 @@ public class SeatAllocationMangagedBean implements Serializable {
     @EJB
     private SeatAllocationBeanLocal sab;
 
-    private String date;
+    private String dateString;
+    private Date date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
     private List<BookingClassInstance> bkiList;
@@ -50,7 +53,7 @@ public class SeatAllocationMangagedBean implements Serializable {
     public void init() {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
-            date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
             cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
                 System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
 
@@ -100,7 +103,7 @@ public class SeatAllocationMangagedBean implements Serializable {
 
     public List<BookingClassInstance> getBkiList() {
         bkiList = new ArrayList<BookingClassInstance>();
-        bkiList = sab.getBkiList(flightNo, date, cabinName);
+        bkiList = sab.getBkiList(flightNo, dateString, cabinName);
         System.out.println("SAMB: getBkiList().size: " + bkiList.size());
         System.out.println("Flag: initial: " + this.flag);
         if (flag) {
@@ -182,9 +185,11 @@ public class SeatAllocationMangagedBean implements Serializable {
     }
 
     public void onDateChange() {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("SAMB:OnDateChange run");
-        if (date != null && !date.equals("")) {
-            flightList = sab.getFlightList(date);
+        dateString = df1.format(date);
+        if (dateString != null && !date.equals("")) {
+            flightList = sab.getFlightList(dateString);
             System.out.println("SAMB: Got flight list: size is " + flightList.size());
 
             System.out.println("SAMB:OnDateChange run result: " + flightList.toString());
@@ -207,7 +212,7 @@ public class SeatAllocationMangagedBean implements Serializable {
             System.out.println("SAMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocation2.xhtml");
         } else {
@@ -225,7 +230,7 @@ public class SeatAllocationMangagedBean implements Serializable {
             System.out.println("SAMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewSeatAvailability2.xhtml");
         } else {
@@ -259,19 +264,19 @@ public class SeatAllocationMangagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public String getDate() {
+    public Date getDate() {
         System.out.println("SAMB:get Date");
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
         onDateChange();
         System.out.println("MPMB:set Date: " + date);
     }
 
     public void goBack() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
 
@@ -279,7 +284,7 @@ public class SeatAllocationMangagedBean implements Serializable {
     }
 
     public void goBack2() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", "");
 

@@ -9,6 +9,8 @@ import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -40,5 +42,12 @@ public interface FlightSchedulingBeanLocal {
     public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
 
     public List<FlightFrequency> getFlightOfRoute(Route route);
+
+    public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac);
+
+    public List<Aircraft> getAllAircraft();
+
+//    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException;
+
     
 }
