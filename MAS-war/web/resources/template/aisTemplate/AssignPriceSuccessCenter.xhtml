@@ -17,7 +17,7 @@
                 <p:growl id="msgs" showDetail="true"/>
 
                 <p:dataTable id="bkiList" var="bki" value="#{assignPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
-                
+
                     <p:column headerText="Cabin Class" >
                         <h:outputText value="#{bki.bookingClass.cabinName}"  style="center" />
                     </p:column>
@@ -34,10 +34,11 @@
 
                     <p:column headerText="Fare">
 
-                        <h:outputText value="#{bki.price}" />
-
+                        <h:outputText value="#{bki.price}" >
+                        <f:convertNumber pattern="#0.00" />
+                        </h:outputText>
                     </p:column>
-                
+
                 </p:dataTable>
                 <br/><br/>
                 <p:commandButton value="Go Back " style="margin-right:0" actionListener="#{assignPriceManagedBean.goBacktoEdit()}"  icon="ui-icon-check" />
