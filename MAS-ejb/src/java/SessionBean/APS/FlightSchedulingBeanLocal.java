@@ -41,6 +41,8 @@ public interface FlightSchedulingBeanLocal {
 
     public void setCheckDate(Long id, String sDate, String fDate);
 
-    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
+    public List<FlightInstance> getThisFlightInstance(String flightNo);
+
+    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
     
 }

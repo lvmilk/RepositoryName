@@ -28,6 +28,7 @@ public class Aircraft implements Serializable {
     private String retireDate;   //Lease Expiration Date
     private Long flightLogId;
     private Long maintenanceLogId;
+    private String currentAiport;
    
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
@@ -126,6 +127,16 @@ public class Aircraft implements Serializable {
     public void setFlightInstance(List<FlightInstance> flightInstance) {
         this.flightInstance = flightInstance;
     }
+
+    public String getCurrentAiport() {
+        return currentAiport;
+    }
+
+    public void setCurrentAiport(String currentAiport) {
+        this.currentAiport = currentAiport;
+    }
+    
+    
 
     @Override
     public int hashCode() {

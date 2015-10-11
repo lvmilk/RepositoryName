@@ -81,8 +81,8 @@ public class FlightFrequency implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
 //        this.status = "Pending";
-        this.sDate = "";
-        this.fDate = "";
+//        this.sDate = "";
+//        this.fDate = "";
     }
 
 

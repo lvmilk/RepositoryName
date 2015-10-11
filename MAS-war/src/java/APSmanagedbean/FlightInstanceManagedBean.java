@@ -19,9 +19,7 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 
 /**
@@ -129,6 +127,9 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Fri = flightFreq.isOnFri();
         Boolean Sat = flightFreq.isOnSat();
         Boolean Sun = flightFreq.isOnSun();
+        ///////////sui bian jia liang ge testing////////////////////
+        Integer depDateAdjust=flightFreq.getDateAdjust();
+        Integer arrDateAdjust=flightFreq.getDateAdjust();
 //        aircraft = new Aircraft();
 //        aircraft = fsb.getAircraft(registrationNo);
 //        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
@@ -144,7 +145,7 @@ public class FlightInstanceManagedBean implements Serializable {
 //                if (startDate.after(deliveryDate)) {
                 if ((!startDate.before(freqStartDate)) && finishDate.before(freqEndDate)) {
 
-                    if (flightFreq.getsDate() == null || flightFreq.getfDate() == null) {
+                    if ((flightFreq.getsDate() == null || flightFreq.getsDate().equals("")) || (flightFreq.getfDate() == null || flightFreq.getfDate().equals(""))) {
                         System.out.println("there is one checking date is null.......");
                         Long id = flightFreq.getId();
                         System.out.println("this flight frequency ID:" + id);
@@ -153,7 +154,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea,depDateAdjust, ad, aa,arrDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -180,7 +181,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea,depDateAdjust, ad, aa,arrDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -219,7 +220,7 @@ public class FlightInstanceManagedBean implements Serializable {
                 || (dayOfWeek == 6 && Fri)
                 || (dayOfWeek == 7 && Sat);
     }
-
+    
     public List<FlightFrequency> getFlightFreqList() {
         return flightFreqList;
     }

@@ -9,11 +9,17 @@ import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -151,14 +157,36 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //    public void generateFlightPackage() {
 //        
 //    }
-    
-//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////added by luxixi///////////////////////////////////////////////////////////////////////////
     @Override
-    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
+            String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception {
         flightInst = new FlightInstance();
-        Aircraft ac=em.find(Aircraft.class,"9V-XXX");    //default testing 
+        Aircraft ac = em.find(Aircraft.class, "9V-XXX");    //default testing 
         flightInst.setAircraft(ac);
-        flightInst.create(flightFrequency,date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
+        flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
+
+        String standardDepTime = flightFrequency.getScheduleArrTime();
+        String standardArrTime = flightFrequency.getScheduleDepTime();
+        
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate stdDate = LocalDate.parse(date, dateFormat);
+        
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime depTime = LocalTime.parse(standardDepTime, timeFormat);
+        LocalTime arrTime = LocalTime.parse(standardArrTime, timeFormat);
+
+        LocalDateTime depDateTime = LocalDateTime.of(stdDate, depTime);
+        LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
+        
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println("Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
+        flightInst.setStandardDepTime(depDateTime.format(sdf));
+        flightInst.setStandardArrTime(arrDateTime.format(sdf));
+//        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
+//        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
+//        ZonedDateTime stdArr = arrDateTime.atZone(ZoneId.of("UTC"));
+//        System.out.println("flight scheduling bean: Zoned departure date time: Europe/Berlin " + stdDep+" and Zoned arrival date time: "+stdArr);
         em.persist(flightInst);
         em.flush();
         flightFrequency.getFlightList().add(flightInst);
@@ -167,13 +195,20 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+        Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date =:flightDate");
+        q.setParameter("flightDate", flightDate);
+        if (q.getResultList().isEmpty()) {
+            System.out.println("edit flight instance: Fight Instance does not exist.");
+            throw new Exception("edit flight instance: Fight Instance does not exist.");
+        }
+        List<FlightInstance> flightInstList = q.getResultList();
+        flightInst = flightInstList.get(0);
         flightInst.setFlightStatus(flightStatus);
         flightInst.setEstimatedDepTime(estimatedDepTime);
         flightInst.setEstimatedArrTime(estimatedArrTime);
         flightInst.setActualDepTime(actualDepTime);
         flightInst.setActualArrTime(actualArrTime);
-        flightInst.setFlightFrequency(flightFrequency);
         em.merge(flightInst);
         em.flush();
     }
@@ -194,6 +229,21 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("flightInstList got");
         }
         return flightInstList;
+    }
+
+    @Override
+    public List<FlightInstance> getThisFlightInstance(String flightNo) {
+        Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
+        q1.setParameter("flightNo", flightNo);
+        if (q1.getResultList().isEmpty()) {
+            System.out.println("This flight frequency does not exist.");
+        }
+        flightFreq = (FlightFrequency) q1.getResultList().get(0);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.flightFrequency=:flightFrequency").setParameter("flightFrequency", flightFreq);
+        if (q2.getResultList().isEmpty()) {
+            System.out.println("This flight instance deos not exist.");
+        }
+        return q2.getResultList();
     }
 
     @Override

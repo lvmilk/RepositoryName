@@ -37,8 +37,12 @@ public class FlightInstance implements Serializable {
     //will be modified later
     private String estimatedDepTime;
     private String estimatedArrTime;
+    private Integer estimatedDateAdjust;
     private String actualDepTime;
     private String actualArrTime;
+    private Integer actualDateAdjust;
+    private String standardDepTime;
+    private String standardArrTime;
 
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
@@ -52,17 +56,17 @@ public class FlightInstance implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
 
-    public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) {
+    public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
+            String actualDepTime, String actualArrTime, Integer actualDateAdjust) {
         this.flightFrequency = flightFrequency;
-        
-//        this.startDate=startDate;
-//        this.finishDate=finishDate;
         this.date = date;
         this.flightStatus = "Scheduled";
         this.estimatedDepTime = estimatedDepTime;
         this.estimatedArrTime = estimatedArrTime;
+        this.estimatedDateAdjust=estimatedDateAdjust;
         this.actualDepTime = actualDepTime;
         this.actualArrTime = actualArrTime;
+        this.actualDateAdjust=actualDateAdjust;
     }
 
     public Long getId() {
@@ -169,4 +173,37 @@ public class FlightInstance implements Serializable {
         this.date = date;
     }
 
+    public Integer getEstimatedDateAdjust() {
+        return estimatedDateAdjust;
+    }
+
+    public void setEstimatedDateAdjust(Integer estimatedDateAdjust) {
+        this.estimatedDateAdjust = estimatedDateAdjust;
+    }
+
+    public Integer getActualDateAdjust() {
+        return actualDateAdjust;
+    }
+
+    public void setActualDateAdjust(Integer actualDateAdjust) {
+        this.actualDateAdjust = actualDateAdjust;
+    }
+
+    public String getStandardDepTime() {
+        return standardDepTime;
+    }
+
+    public void setStandardDepTime(String standardDepTime) {
+        this.standardDepTime = standardDepTime;
+    }
+
+    public String getStandardArrTime() {
+        return standardArrTime;
+    }
+
+    public void setStandardArrTime(String standardArrTime) {
+        this.standardArrTime = standardArrTime;
+    }
+
+    
 }

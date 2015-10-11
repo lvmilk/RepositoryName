@@ -75,11 +75,6 @@ public class FlightManagedBean implements Serializable {
     private String destAirportString;
     private String oriAirportString;
 //    private List<String> airportWoSgString;
-
-    //default value for checking
-    String sd = "1900-01-01";
-    String fd = "1900-01-01";
-
     // for code share flights
 //    private String operator;
 //    private List<String> codeshare;
@@ -111,7 +106,6 @@ public class FlightManagedBean implements Serializable {
                 //default value for checking
                 String sd="";
                 String fd="";
-                Format formatter2 = new SimpleDateFormat("HH:mm");
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);
                 fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
