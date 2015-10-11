@@ -9,16 +9,15 @@
 
 
     <h:head>
-        <title>View Fare of Booking Class</title>
+        <title>Generate Booking Class Instance and Assign Price: Success</title>
     </h:head>
     <h:body>
-
         <h:form id="form">
-            <p:panel id="panel" header=" View Fare of Booking Class "  style="width:100%">
+            <p:panel id="panel" header=" Assign Fare of Booking Class "  style="width:100%">
                 <p:growl id="msgs" showDetail="true"/>
 
-                <p:dataTable id="bkiList" var="bki" value="#{viewBookingPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
-                
+                <p:dataTable id="bkiList" var="bki" value="#{assignPriceManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="margin-bottom:20px">
+
                     <p:column headerText="Cabin Class" >
                         <h:outputText value="#{bki.bookingClass.cabinName}"  style="center" />
                     </p:column>
@@ -35,17 +34,16 @@
 
                     <p:column headerText="Fare">
 
-                        <h:outputText value="#{bki.price}" > 
-                            <f:convertNumber pattern="#0.00"/>
+                        <h:outputText value="#{bki.price}" >
+                        <f:convertNumber pattern="#0.00" />
                         </h:outputText>
-
                     </p:column>
-                
+
                 </p:dataTable>
                 <br/><br/>
-                <p:commandButton value="Back" style="margin-right:0" actionListener="#{viewBookingPriceManagedBean.goBack()}"  icon="ui-icon-check" />
+                <p:commandButton value="Go Back " style="margin-right:0" actionListener="#{assignPriceManagedBean.goBacktoEdit()}"  icon="ui-icon-check" />
             </p:panel>
         </h:form>
-
     </h:body>
 </html>
+

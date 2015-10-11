@@ -48,7 +48,9 @@
                     <p:column headerText="Fare">
                         <p:cellEditor>
                             <f:facet name="output">
-                                <h:outputText value="#{bki.price}" />
+                                <h:outputText value="#{bki.price}" >
+                                 <f:convertNumber pattern="#0.00" />
+                                </h:outputText>
                             </f:facet>
                             <f:facet name="input">
                                 <p:inputText value="#{modifyPriceManagedBean.price}" style="width:100%" label="Fare"/>

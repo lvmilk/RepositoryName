@@ -11,7 +11,10 @@ import SessionBean.AirlineInventory.ModifyPriceBeanLocal;
 import java.io.IOException;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,7 +36,8 @@ public class ModifyPriceManagedBean implements Serializable {
     @EJB
     private ModifyPriceBeanLocal mpb;
 
-    private String date;
+    private String dateString;
+    private Date date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
     //private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
@@ -50,7 +54,7 @@ public class ModifyPriceManagedBean implements Serializable {
     public void init() {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
-            date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
         }
         System.out.println("MPMB: flight passed in viewscoped: " + flightNo);
     }
@@ -65,7 +69,7 @@ public class ModifyPriceManagedBean implements Serializable {
     }
 
     public List<BookingClassInstance> getBkiList() {
-        bkiList = mpb.getBkiList(flightNo, date);
+        bkiList = mpb.getBkiList(flightNo, dateString);
         return bkiList;
     }
 
@@ -95,8 +99,11 @@ public class ModifyPriceManagedBean implements Serializable {
 
     public void onDateChange() {
         System.out.println("MBPB:OnDateChange run");
-        if (date != null && !date.equals("")) {
-            flightList = mpb.getFlightList(date);
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        dateString = df1.format(date);
+
+        if (dateString != null && !dateString.equals("")) {
+            flightList = mpb.getFlightList(dateString);
             System.out.println("MB:OnDateChange run result: " + flightList.toString());
         } else {
             flightList = new ArrayList<FlightFrequency>();
@@ -104,11 +111,12 @@ public class ModifyPriceManagedBean implements Serializable {
     }
 
     public void checkFlight() throws IOException {
+
         System.out.println("MPMB: any flight selected?  ");
         if (flightNo != null && !flightNo.equals("")) {
             System.out.println("MPMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ModifyPrice2.xhtml");
         } else {
@@ -132,12 +140,12 @@ public class ModifyPriceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public String getDate() {
+    public Date getDate() {
         System.out.println("MPMB:get Date");
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
         onDateChange();
         System.out.println("MPMB:set Date: " + date);
@@ -145,7 +153,7 @@ public class ModifyPriceManagedBean implements Serializable {
 
     public void goBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./ModifyPrice1.xhtml");
     }

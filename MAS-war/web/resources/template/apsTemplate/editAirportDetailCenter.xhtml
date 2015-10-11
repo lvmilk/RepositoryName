@@ -15,8 +15,8 @@
 
         <h:form id="formMain">
             <p:panel id="panel" header="Airport Information" style="width: 100%">
-                 <p:messages id="msgs" autoUpdate="true" />
-                 
+                <p:messages id="msgs" autoUpdate="true" />
+
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
                     <p:outputLabel value="Airport IATA: " />
@@ -55,6 +55,8 @@
                         <!--                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> -->
                     </p:inputText>
 
+                    <p:outputLabel value="Location (Lat, Long): " />
+                    <p:outputLabel value="(#{editAirportManagedBean.latitude}, #{editAirportManagedBean.longitude})" />
 
                 </h:panelGrid>
                 <p:commandButton value="Update" update="@form" actionListener="#{editAirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />

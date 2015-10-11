@@ -9,7 +9,7 @@
         <title></title>
     </h:head>
     <h:body>
- 
+
         <h:form>
             <p:panel id="panel" header="Airport Information" style="width: 100%">
 
@@ -41,19 +41,40 @@
                     <p:inputText id="timeZone" value="#{AirportManagedBean.timeZone}" label="timeZone" required="true" requiredMessage="Please enter timezone" size="30"> 
                     </p:inputText>
 
-                    <p:outputLabel for="operationalStatus" value="Operational Status: " />
-                    <p:inputText id="operationalStatus" value="#{AirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
-                    </p:inputText>
+                    <!--                    <p:outputLabel for="operationalStatus" value="Operational Status: " />
+                                        <p:inputText id="operationalStatus" value="#{AirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
+                                        </p:inputText>-->
+
+                    <p:outputLabel for="operationalStatus" value="Operational Status: " />                    
+                    <p:selectOneRadio id="operationalStatus" value="#{AirportManagedBean.opStatus}">
+                        <f:selectItem itemLabel="Normal" itemValue="Normal" />
+                        <f:selectItem itemLabel="Closed" itemValue="Closed" />
+                        <f:selectItem itemLabel="Restricted" itemValue="Restricted" />
+                    </p:selectOneRadio>
+
+                    <!--                    <p:outputLabel for="strategicLevel" value="Strategic Level: " />
+                                        <p:inputText id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
+                                        </p:inputText>-->
 
                     <p:outputLabel for="strategicLevel" value="Strategic Level: " />
-                    <p:inputText id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
-                    </p:inputText>
+                    <p:selectOneRadio id="strategicLevel" value="#{AirportManagedBean.strategicLevel}">
+                        <f:selectItem itemLabel="Hub" itemValue="Hub" />
+                        <f:selectItem itemLabel="Normal" itemValue="Normal" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel for="airspace" value="Airspace: " />
                     <p:inputText id="airspace" value="#{AirportManagedBean.airspace}" label="airspace" required="true" validatorMessage="Please enter a number and an uppercase alphabet"  requiredMessage="Please enter airspace" size="30">
                         <!--                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> -->
                     </p:inputText>
 
+                    <p:outputLabel for="latitude" value="Latitude " />
+                    <p:inputText id="latitude" value="#{AirportManagedBean.latitude}" label="latitude" required="true" validatorMessage="Please enter latitude in degrees"  requiredMessage="Please enter airport location latitude" size="30">
+                    </p:inputText>
+                    
+                    <p:outputLabel for="longitude" value="Longitude " />
+                    <p:inputText id="longitude" value="#{AirportManagedBean.longitude}" label="longitude" required="true" validatorMessage="Please enter longitude in degrees"  requiredMessage="Please enter airport location longitude" size="30">
+                    </p:inputText>
+                    
                 </h:panelGrid>
 
                 <p:commandButton id="addAirportBtn" value="Add Airport" update="panel" style="margin-right:0" actionListener="#{AirportManagedBean.addAirport()}"  icon="ui-icon-check" ajax="true" />

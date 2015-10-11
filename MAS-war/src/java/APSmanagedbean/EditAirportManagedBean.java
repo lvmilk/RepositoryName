@@ -21,11 +21,11 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "editAirportManagedBean")
 @ViewScoped
-public class EditAirportManagedBean implements Serializable{
+public class EditAirportManagedBean implements Serializable {
 
     @EJB
     private RoutePlanningBeanLocal rpb;
-    
+
     private Airport airport = new Airport();
     private String IATA;
     private String airportName;
@@ -36,24 +36,29 @@ public class EditAirportManagedBean implements Serializable{
     private String opStatus;
     private String strategicLevel;
     private String airspace;
-    
+
+    private Double latitude;
+    private Double longitude;
+
     public EditAirportManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
-        IATA = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("IATA");
-        airportName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airportName");
-        cityName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cityName");
-        countryName = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryName");
-        spec = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("spec");
-        timeZone = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("timeZone");
-        opStatus = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opStatus");
-        strategicLevel = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("strategicLevel");
-        airspace = (String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airspace");
+        IATA = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("IATA");
+        airportName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airportName");
+        cityName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cityName");
+        countryName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryName");
+        spec = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("spec");
+        timeZone = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("timeZone");
+        opStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opStatus");
+        strategicLevel = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("strategicLevel");
+        airspace = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airspace");
+        latitude = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lat");
+        longitude = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lon");
     }
-    
-    public void editAirportDetail() throws Exception{
+
+    public void editAirportDetail() throws Exception {
         try {
             rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
@@ -61,8 +66,8 @@ public class EditAirportManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    
-    public void editAirportCancel() throws Exception{
+
+    public void editAirportCancel() throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirport.xhtml");
     }
 
@@ -145,6 +150,21 @@ public class EditAirportManagedBean implements Serializable{
     public void setAirspace(String airspace) {
         this.airspace = airspace;
     }
-    
-    
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
 }

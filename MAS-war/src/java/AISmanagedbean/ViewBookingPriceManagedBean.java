@@ -11,7 +11,10 @@ import SessionBean.AirlineInventory.ViewBookingClassPriceBeanLocal;
 import java.io.IOException;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -33,7 +36,8 @@ public class ViewBookingPriceManagedBean implements Serializable {
     @EJB
     private ViewBookingClassPriceBeanLocal mpb;
 
-    private String date;
+    private String dateString;
+    private Date date;
     private List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
     private String flightNo;
     //private List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
@@ -47,7 +51,7 @@ public class ViewBookingPriceManagedBean implements Serializable {
     public void init() {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().containsKey("flightNo")) {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
-            date = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
           
         }
         System.out.println("MPMB: flight passed in viewscoped: " + flightNo);
@@ -63,7 +67,7 @@ public class ViewBookingPriceManagedBean implements Serializable {
     }
 
     public List<BookingClassInstance> getBkiList() {
-        bkiList = mpb.getBkiList(flightNo, date);
+        bkiList = mpb.getBkiList(flightNo, dateString);
         return bkiList;
     }
 
@@ -92,9 +96,11 @@ public class ViewBookingPriceManagedBean implements Serializable {
     }
 
     public void onDateChange() {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("MBPB:OnDateChange run");
-        if (date != null && !date.equals("")) {
-            flightList = mpb.getFlightList(date);
+         dateString = df1.format(date);
+        if (dateString != null && !dateString.equals("")) {
+            flightList = mpb.getFlightList(dateString);
             System.out.println("MB:OnDateChange run result: " + flightList.toString());
         } else {
             flightList = new ArrayList<FlightFrequency>();
@@ -106,7 +112,7 @@ public class ViewBookingPriceManagedBean implements Serializable {
         if (flightNo != null && !flightNo.equals("")) {
             System.out.println("MPMB: Flight is selected:  " + flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewBookingClassPrice2.xhtml");
         } else {
@@ -130,12 +136,12 @@ public class ViewBookingPriceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public String getDate() {
+    public Date getDate() {
         System.out.println("MPMB:get Date");
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
         onDateChange();
         System.out.println("MPMB:set Date: " + date);
