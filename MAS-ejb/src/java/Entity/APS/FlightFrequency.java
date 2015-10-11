@@ -65,7 +65,7 @@ public class FlightFrequency implements Serializable {
 //    private FlightPackage flightPackage = new FlightPackage();
 
 
-    public void create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
+    public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun,
             String startDate, String endDate, String sDate, String fDate) {
         this.flightNo = flightNo;
