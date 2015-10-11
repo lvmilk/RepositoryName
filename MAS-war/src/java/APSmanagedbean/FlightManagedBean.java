@@ -5,16 +5,17 @@
  */
 package APSmanagedbean;
 
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
-import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,16 +41,16 @@ public class FlightManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private FlightFrequency flightFreq;
-    private FlightFrequency inBound;
-    private FlightFrequency outBound;
+    private FlightFrequency inBound; // flight XXX-SIN
+    private FlightFrequency outBound; // flight SIN-XXX
     private FlightInstance flightInst;
     private Route route;
     private Long routeID;
     private List<Route> routeList;
     private Map<String, Long> routeInfo = new HashMap<String, Long>();
 
-    private String flightNo;
     private Integer stopoverNo;
+    private String flightNo;
 
     private Date depTime;
     private Date arrTime;
@@ -70,11 +71,18 @@ public class FlightManagedBean implements Serializable {
     private boolean onSat;
     private boolean onSun;
 
+//    private List<Airport> airportWoSg;
+    private String destAirportString;
+    private String oriAirportString;
+//    private List<String> airportWoSgString;
+
+    //default value for checking
+    String sd = "1900-01-01";
+    String fd = "1900-01-01";
 
     // for code share flights
-    private String operator;
-    private List<String> codeshare;
-
+//    private String operator;
+//    private List<String> codeshare;
     private List<FlightFrequency> flightFreqList;
     private List<FlightFrequency> filteredFlightFreqList;
 
@@ -88,27 +96,32 @@ public class FlightManagedBean implements Serializable {
 
     public void addFlightFrequency() throws Exception {
         try {
-            // value validation
             route = rpb.findRoute(routeID);
+            oriAirportString = route.getOrigin().getIATA();
+            destAirportString = route.getDest().getIATA();
+            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Format formatter2 = new SimpleDateFormat("HH:mm");
             fsb.validateFlightNo(flightNo);
             if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week for flight.", ""));
             } else {
                 dateAdjust = Integer.parseInt(dateAdjustString);
-                Format formatter = new SimpleDateFormat("yyyy-MM-dd");
                 startDateString = formatter.format(startDate);
                 endDateString = formatter.format(endDate);
                 //default value for checking
-                String sd="1900-01-01";
-                String fd="1900-01-01";
-                Format formatter2 = new SimpleDateFormat("HH:mm");
+                String sd="";
+                String fd="";
                 depTimeString = formatter2.format(depTime);
                 arrTimeString = formatter2.format(arrTime);
-            
-                FlightFrequency ff = fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString,sd,fd);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNumber", flightNo);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
+                fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
+
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oriAirportString", oriAirportString);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("destAirportString", destAirportString);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
+
             }
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -351,19 +364,73 @@ public class FlightManagedBean implements Serializable {
         this.onSun = onSun;
     }
 
-    public String getOperator() {
-        return operator;
+//    public String getOperator() {
+//        return operator;
+//    }
+//
+//    public void setOperator(String operator) {
+//        this.operator = operator;
+//    }
+//
+//    public List<String> getCodeshare() {
+//        return codeshare;
+//    }
+//
+//    public void setCodeshare(List<String> codeshare) {
+//        this.codeshare = codeshare;
+//    }
+    public FlightFrequency getInBound() {
+        return inBound;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setInBound(FlightFrequency inBound) {
+        this.inBound = inBound;
     }
 
-    public List<String> getCodeshare() {
-        return codeshare;
+    public FlightFrequency getOutBound() {
+        return outBound;
     }
 
-    public void setCodeshare(List<String> codeshare) {
-        this.codeshare = codeshare;
+    public void setOutBound(FlightFrequency outBound) {
+        this.outBound = outBound;
     }
+
+//    public List<Airport> getAirportWoSg() {
+//        List<Airport> apList = rpb.viewAllAirport();
+//        Airport sinAp = rpb.findAirport("SIN");
+//        apList.remove(sinAp);
+//        return apList;
+//    }
+//
+//    public void setAirportWoSg(List<Airport> airportWoSg) {
+//        this.airportWoSg = airportWoSg;
+//    }
+//    public List<String> getAirportWoSgString() {
+//        List<Airport> apList = getAirportWoSg();
+//        List<String> apString = new ArrayList<>();
+//        for (Airport ap : apList) {
+//            apString.add(ap.toString());
+//        }
+//        return apString;
+//    }
+//
+//    public void setAirportWoSgString(List<String> airportWoSgString) {
+//        this.airportWoSgString = airportWoSgString;
+//    }
+    public String getDestAirportString() {
+        return destAirportString;
+    }
+
+    public void setDestAirportString(String destAirportString) {
+        this.destAirportString = destAirportString;
+    }
+
+    public String getOriAirportString() {
+        return oriAirportString;
+    }
+
+    public void setOriAirportString(String oriAirportString) {
+        this.oriAirportString = oriAirportString;
+    }
+
 }

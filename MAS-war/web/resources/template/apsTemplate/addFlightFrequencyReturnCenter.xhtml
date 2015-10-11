@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Add Return Flight Frequency" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 45%" cellpadding="20">
+
+                    <p:outputLabel value="Origin Airport: " />
+                    <h:outputText value="#{ARFMB.oriAirportString}" />
+
+                    <p:outputLabel value="Destination Airport: " />
+                    <h:outputText value="#{ARFMB.destAirportString}" />
+
+                    <p:outputLabel for="inFlightNo" value="Flight Number: " />
+                    <p:inputText id="inFlightNo" value="#{ARFMB.inFlightNo}" label="flightNo" required="true"  requiredMessage="Please enter inbound flight number" size="30">
+                    </p:inputText>
+
+                    <p:outputLabel for="inScheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:calendar  id="inScheduleDepTime" value="#{ARFMB.inDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight departure time" size="30"/>
+
+                    <p:outputLabel for="inScheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:calendar  id="inScheduleArrTime" value="#{ARFMB.inArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight arrival time" size="30"/>
+
+                    <p:outputLabel for="inDateAdjust" value="Date Adjust: " />
+                    <p:inputText id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter inbound flight date adjust"  size="30">
+                        <f:validateRegex pattern="[-1-9]" />
+                    </p:inputText>
+
+                    <p:outputLabel  for="inFreq" value="Operation Day of the Week: "/>
+                    <p:panel id="inFreq">
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnMon}" />      
+                            <h:outputText value="Monday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnTue}" />
+                            <h:outputText value="Tuesday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnWed}" />
+                            <h:outputText value="Wednesday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnThu}" />
+                            <h:outputText value="Thursday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnFri}" />
+                            <h:outputText value="Friday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnSat}" />
+                            <h:outputText value="Saturday" />
+
+                            <p:selectBooleanCheckbox value="#{ARFMB.inOnSun}" />
+                            <h:outputText value="Sunday" />
+
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <p:outputLabel for="inStartDate" value="Flight Start Operation Date (yyyy-MM-dd): " />
+                    <p:calendar id="inStartDate" value="#{ARFMB.inStartDate}" label="startDate" required="true" requiredMessage="Please enter inbound flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>
+
+                    <p:outputLabel for="inEndDate" value="Flight End Operation Date (yyyy-MM-dd): " />
+                    <p:calendar id="inEndDate" value="#{ARFMB.inEndDate}" label="endDate" required="true" requiredMessage="Please enter inbound flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Add Return Flight" update="panel" style="margin-right:0" actionListener="#{ARFMB.addReturnFlightFrequency()}"  icon="ui-icon-check" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+
+</html>
+

@@ -6,6 +6,7 @@
 package managedbean;
 
 import Entity.CommonInfaEntity.*;
+import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
 import SessionBean.CommonInfaSB.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -28,6 +29,9 @@ public class EditProfileManagedBean implements Serializable {
     @EJB
     private manageAccountLocal mal;
 
+    @EJB
+    private UserLogSessionBeanLocal ulsbl;
+
     private String username;
     private String stfType;
     private String password;
@@ -42,6 +46,8 @@ public class EditProfileManagedBean implements Serializable {
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
 
+    private String description;
+
     @PostConstruct
     public void setProfile() {
         username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
@@ -49,6 +55,8 @@ public class EditProfileManagedBean implements Serializable {
 
         System.out.println(username);
         System.out.println(stfType);
+        
+        
 
         if (stfType.equals("officeStaff")) {
             offStaff = mal.getOfficeStaff(username);
@@ -56,26 +64,30 @@ public class EditProfileManagedBean implements Serializable {
             this.setPassword(offStaff.getOffPassword());
             this.setEmail(offStaff.getEmail());
             this.setStfType(offStaff.getStfType());
+            
 
         } else if (stfType.equals("groundStaff")) {
-            grdStaff=mal.getGroundStaff(username);
+            grdStaff = mal.getGroundStaff(username);
             this.setUsername(grdStaff.getGrdName());
             this.setPassword(grdStaff.getGrdPassword());
             this.setEmail(grdStaff.getEmail());
             this.setStfType(grdStaff.getStfType());
-            
+
+
         } else if (stfType.equals("cabin")) {
-            cbCrew=mal.getCabinCrew(username);
+            cbCrew = mal.getCabinCrew(username);
             this.setUsername(cbCrew.getCbName());
             this.setPassword(cbCrew.getCbPassword());
             this.setEmail(cbCrew.getEmail());
             this.setStfType(cbCrew.getStfType());
+
         } else if (stfType.equals("cockpit")) {
-            cpCrew=mal.getCockpitCrew(username);
+            cpCrew = mal.getCockpitCrew(username);
             this.setUsername(cpCrew.getCpName());
             this.setPassword(cpCrew.getCpPassword());
             this.setEmail(cpCrew.getEmail());
             this.setStfType(cpCrew.getStfType());
+
         }
 
         this.setEmailEdited(email);
@@ -89,9 +101,12 @@ public class EditProfileManagedBean implements Serializable {
     public void editOtrStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editProfile(username, stfType, pswEdited,email, emailEdited);
+            mal.editProfile(username, stfType, pswEdited, email, emailEdited);
+            description=username+" Change his/her profile";
+            ulsbl.createLog(username, description);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
+            
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }

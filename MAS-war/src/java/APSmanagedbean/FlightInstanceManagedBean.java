@@ -46,6 +46,7 @@ public class FlightInstanceManagedBean implements Serializable {
     private String registrationNo;
     private Long id; //flight instance ID
 
+    private Date currentDate = new Date();
     private Date flightDate;
     private String flightStatus;  // scheduled/ active/ landed/ cancelled/ diverted/ redirected
 
@@ -55,9 +56,11 @@ public class FlightInstanceManagedBean implements Serializable {
     private Date actualDepTime;
     private Date actualArrTime;
 
+///////////
     private String flightNo;
 
     private Calendar cal = new GregorianCalendar();
+    private Calendar currentCal = new GregorianCalendar();
 
     private Date startDate;
     private Date finishDate;
@@ -77,14 +80,20 @@ public class FlightInstanceManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        currentCal = Calendar.getInstance();
+        currentCal.setTime(currentDate);
+        currentCal.add(Calendar.DATE, 1);
+        currentDate = currentCal.getTime();
+
         flightFreqList = fsb.getAllFlightFrequency();
         flightInstList = fsb.getAllFlightInstance();
         aircraftList = fpb.getAllAircraft();
+
         for (int i = 0; i < aircraftList.size(); i++) {
             registrationList.add(aircraftList.get(i).getRegistrationNo());
         }
+        //aircraft = (Aircraft) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraft");
         flightFreq = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightFreq");
-        aircraft = (Aircraft) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraft");
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
         flightDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightDate");
         flightStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightStatus");
@@ -96,21 +105,23 @@ public class FlightInstanceManagedBean implements Serializable {
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
     }
 
-    public void addFlightInstance(FlightFrequency flightFreq) throws IOException {
+    public void addFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightFreq", flightFreq);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightFreq.getFlightNo());
-        System.out.println(flightFreq.getFlightNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedDepTime", df2.parse(flightFreq.getScheduleDepTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedArrTime", df2.parse(flightFreq.getScheduleArrTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDepTime", df2.parse(flightFreq.getScheduleDepTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualArrTime", df2.parse(flightFreq.getScheduleArrTime()));
+        System.out.println("flight instance flight No: " + flightFreq.getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./generateFlightInstance.xhtml");
     }
 
     public void generateFlightInstance() throws Exception {
-        //String d = df1.format(flightDate);
         String ed = df2.format(estimatedDepTime);
         String ea = df2.format(estimatedArrTime);
         String ad = df2.format(actualDepTime);
         String aa = df2.format(actualArrTime);
-        System.out.println("This flight frequency " + flightFreq + " is with aircraft " + registrationNo);
-        System.out.println("flight time(*4):" + ed + " " + ea + " " + ad + " " + aa);
+        System.out.println("This flight frequency " + flightFreq + " with flight No. " + flightNo);
         Boolean Mon = flightFreq.isOnMon();
         Boolean Tue = flightFreq.isOnTue();
         Boolean Wed = flightFreq.isOnWed();
@@ -118,30 +129,76 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Fri = flightFreq.isOnFri();
         Boolean Sat = flightFreq.isOnSat();
         Boolean Sun = flightFreq.isOnSun();
-        //bug unknown aircraft
-        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
-        System.out.println("Flight Instance: this aircraft delivery date is " + deliveryDate);
-
+//        aircraft = new Aircraft();
+//        aircraft = fsb.getAircraft(registrationNo);
+//        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
+        Date freqStartDate = df1.parse(flightFreq.getStartDate());
+        Date freqEndDate = df1.parse(flightFreq.getEndDate());
+        System.out.println(startDate);
+        //check data in flight frequency
+        //  Date sDate = df1.parse(flightFreq.getsDate()); 
+        // Date fDate = df1.parse(flightFreq.getfDate());
         try {
-            if (!startDate.before(new Date())) {
-                System.out.println("Flight Instance start date is later than current date");
-                if (startDate.after(deliveryDate)) {
-                    System.out.println("Flight Instance start date is later than aircraft delivery date");
-                    while (startDate.compareTo(finishDate) <= 0) {
-                        if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
-                            String d = df1.format(startDate);
-                            fsb.addFlightInstance(flightFreq, registrationNo, d, flightStatus, ed, ea, ad, aa);
-                            System.out.println("Flight Instance current start date: " + startDate);
+            if (startDate.after(new Date())) {
+                System.out.println("Flight Instance start date " + startDate + " is later than current date");
+//                if (startDate.after(deliveryDate)) {
+                if ((!startDate.before(freqStartDate)) && finishDate.before(freqEndDate)) {
+
+                    if (flightFreq.getsDate() == null || flightFreq.getfDate() == null) {
+                        System.out.println("there is one checking date is null.......");
+                        Long id = flightFreq.getId();
+                        System.out.println("this flight frequency ID:" + id);
+                        fsb.setCheckDate(id, df1.format(startDate), df1.format(finishDate));
+
+                        while (startDate.compareTo(finishDate) <= 0) {
+                            if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
+                                String sd = df1.format(startDate);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                System.out.println("This flight Instance date: " + startDate);
+                            }
+                            cal = cal = Calendar.getInstance();
+                            cal.setTime(startDate);
+                            cal.add(Calendar.DATE, 1);
+                            startDate = cal.getTime();
                         }
-                        cal = cal = Calendar.getInstance();
-                        cal.setTime(startDate);
-                        cal.add(Calendar.DATE, 1);
-                        startDate = cal.getTime();
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightInstanceConfirm.xhtml");
+                    } else if (startDate.after(df1.parse(flightFreq.getfDate())) || finishDate.before(df1.parse(flightFreq.getsDate()))) {
+                        System.out.println("setting up new checking date.......");
+                        if (startDate.after(df1.parse(flightFreq.getfDate()))) {
+                            System.out.println("start date is after the default finish date.......");
+                            Long id = flightFreq.getId();
+                            fsb.setCheckDate(id, flightFreq.getsDate(), df1.format(finishDate)); //keep start date, change finish date
+                            System.out.println("new finish date has set......." + finishDate);
+                        }
+                        if (finishDate.before(df1.parse(flightFreq.getsDate()))) {
+                            System.out.println("finish date is before the default finish date.......");
+                            Long id = flightFreq.getId();
+                            fsb.setCheckDate(id, df1.format(startDate), flightFreq.getfDate()); //keep finish date, change start date
+                            System.out.println("new start date has set......." + startDate);
+                        }
+
+                        while (startDate.compareTo(finishDate) <= 0) {
+                            if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
+                                String sd = df1.format(startDate);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                System.out.println("This flight Instance date: " + startDate);
+                            }
+                            cal = cal = Calendar.getInstance();
+                            cal.setTime(startDate);
+                            cal.add(Calendar.DATE, 1);
+                            startDate = cal.getTime();
+                        }
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightInstanceConfirm.xhtml");
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This period from " + flightFreq.getsDate() + " to " + flightFreq.getfDate() + " has been already assigned with flight instances to this flight " + flightNo + "!", ""));
                     }
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightInstanceConfirm.xhtml");
+
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This aircraft has not been delivered!", ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The Flight Frequency period is from " + flightFreq.getStartDate() + " to " + flightFreq.getEndDate() + ". Please select Flight Instance within the period!", ""));
                 }
+//                } else {
+//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This aircraft has not been delivered at this start time! Delivery Date is " + aircraft.getDeliveryDate(), ""));
+//                }
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please start with a future date! ", ""));
             }
@@ -355,11 +412,12 @@ public class FlightInstanceManagedBean implements Serializable {
         this.onSun = onSun;
     }
 
-    //Hanyu added
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
-      
-       // fsb.scheduleAcToFi(startDate, endDate);
-        
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 
 }

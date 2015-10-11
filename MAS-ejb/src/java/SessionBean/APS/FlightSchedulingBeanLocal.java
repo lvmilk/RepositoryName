@@ -35,19 +35,14 @@ public interface FlightSchedulingBeanLocal {
 
     public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
 
-    public Aircraft getAircraft(Long id);
-
     public List<FlightInstance> getAllFlightInstance();
-
-    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
 
     public List<FlightFrequency> getFlightOfRoute(Route route);
 
-    public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac);
+    public Aircraft getAircraft(String registrationNo);
 
-    public List<Aircraft> getAllAircraft();
+    public void setCheckDate(Long id, String sDate, String fDate);
 
-//    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException;
-
+    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
     
 }

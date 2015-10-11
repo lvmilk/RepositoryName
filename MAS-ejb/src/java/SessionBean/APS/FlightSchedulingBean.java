@@ -16,8 +16,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -70,6 +69,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.flush();
         return flightFreq;
     }
+    
 
     @Override
     public void validateFlightNo(String flightNo) throws Exception {
@@ -158,20 +158,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //    }
 //////////////////////////////////////////////////////////////////////////
     @Override
-    public void addFlightInstance(FlightFrequency flightFrequency, String registrationNo, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
-        aircraft = em.find(Aircraft.class, registrationNo);
-        if (aircraft == null) {
-            throw new Exception("Aircraft is not existed!");
-        }
-
+    public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
         flightInst = new FlightInstance();
-        flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
-        flightInst.setFlightFrequency(flightFrequency);
-        flightInst.setAircraft(aircraft);
+        Aircraft ac=em.find(Aircraft.class,"9V-XXX");    //default testing 
+        flightInst.setAircraft(ac);
+        flightInst.create(flightFrequency,date, flightStatus, estimatedDepTime, estimatedArrTime, actualDepTime, actualArrTime);
         em.persist(flightInst);
         em.flush();
         flightFrequency.getFlightList().add(flightInst);
-        aircraft.getFlightInstance().add(flightInst);
         em.merge(flightInst);
         em.flush();
     }
@@ -189,9 +183,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public Aircraft getAircraft(Long id) {
-        flightInst = em.find(FlightInstance.class, id);
-        aircraft = flightInst.getAircraft();
+    public Aircraft getAircraft(String registrationNo) {
+        aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
 
@@ -207,60 +200,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flightInstList;
     }
 
-    //Hanyu Added
     @Override
-    public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
-        List<FlightInstance> flightInstList = getAllFlightInstance();
-        for (FlightInstance temp : flightInstList) {
-            if ((temp.getAircraft() != null) || (!temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
-                flightInstList.remove(temp);
-            }
-        }
-        return flightInstList;
+    public void setCheckDate(Long id, String sDate, String fDate) {
+        flightFreq = em.find(FlightFrequency.class, id);
+        flightFreq.setsDate(sDate);
+        flightFreq.setfDate(fDate);
     }
-
-  
-    @Override
-    public List<Aircraft> getAllAircraft() {
-        Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
-        List<Aircraft> aircraftList = q1.getResultList();
-        if (aircraftList.isEmpty()) {
-            System.out.println("aircraftList: No aircraf.");
-        } else {
-            System.out.println("aircraftList got");
-        }
-        return aircraftList;
-    }
-
-//    @Override
-//    public void scheduleAcToFi(Date startDate, Date endDate)throws ParseException{
-//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-//        for (Aircraft acTemp : this.getAllAircraft()) {
-//            Date currentDate = startDate;
-//            Airport currentAirport = acTemp.getCurrentAirport();//need to add the new attribute:  currentAirport
-//
-//            // need to make flight instance comparable and add compareTo() method!!!!
-//           List<FlightInstance> unplannedFi = Collections.sort(this.getUnplannedFlightInstance(acTemp));
-//            for (FlightInstance fiTemp : unplannedFi) {
-//                if (currentDate.after(endDate)) {
-//                    break;
-//                } else {
-//                    //getDate(): should be replaced by getDepartureTime() and getArrivalTime()
-//                    if (currentDate.before(df1.parse(fiTemp.getDate())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
-//                        fiTemp.setAircraft(acTemp);
-//                        currentDate = df1.parse(fiTemp.getDate());
-//                        currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
-//                        acTemp.setCurrentAirport(currentAirport);
-//                        acTemp.getFlightInstance().add(fiTemp);
-//                        em.merge(fiTemp);
-//                        em.merge(acTemp);
-//                        em.flush();
-//                    }
-//                }
-//
-//            }
-//        }
-//
-//    }
 
 }
