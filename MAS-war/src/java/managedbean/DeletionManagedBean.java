@@ -18,20 +18,23 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import managedbean.Control;
 import Entity.CommonInfaEntity.*;
+import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author LI HAO
  */
 @Named(value = "dlManagedBean")
-@SessionScoped
+@ViewScoped
 public class DeletionManagedBean implements Serializable {
 
     @EJB
     private manageAccountLocal mal;
+
 
     private String username;
     private String stfType;
@@ -49,6 +52,9 @@ public class DeletionManagedBean implements Serializable {
     private List<GroundStaff> selectedGrdList = new ArrayList();
     private List<CabinCrew> selectedCbCrewList = new ArrayList();
     private List<CockpitCrew> selectedCpCrewList = new ArrayList();
+    
+    
+
 
     public DeletionManagedBean() {
 
@@ -71,6 +77,7 @@ public class DeletionManagedBean implements Serializable {
         boolean check = false;
         if (!selectedOffStf.isEmpty()) {
             System.out.println("hahahaha");
+            System.out.println(selectedOffStf);
             check = mal.delAcc(selectedOffStf);
             System.out.println(check);
         } else if (!selectedGrdList.isEmpty()) {
@@ -83,11 +90,33 @@ public class DeletionManagedBean implements Serializable {
 
         if (check) {
             System.out.println("Delete Successful!");
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteBookClassSuccess.xhtml");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Deleted Successfully"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No Booking Class selected: ", ""));
         }
 
+    }
+
+    public void toDeleteAcc() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (selectedOffStf.isEmpty() && selectedGrdList.isEmpty() && selectedCbCrewList.isEmpty() && selectedCpCrewList.isEmpty()) {
+            
+            context.execute("alert('Please select staff(s) first.');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select staff(s) first. ", ""));
+        } else {
+            if (!selectedOffStf.isEmpty())
+            {
+                context.execute("PF('dlgOffstaff').show()");
+            }else if (!selectedGrdList.isEmpty()) {
+                context.execute("PF('dlgGrd').show()");
+            }else if (!selectedCbCrewList.isEmpty()) {
+                context.execute("PF('dlgCb').show()");
+            }else if (!selectedCpCrewList.isEmpty()) {
+                context.execute("PF('dlgCp').show()");
+            }
+            
+        }
     }
 
     public String getUsername() {

@@ -40,7 +40,7 @@ public class RcvMsgManagedBean implements Serializable {
 
         setCurrentUserName((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
         setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
-        System.out.println("manageBean:receivemessage(): MessageSize:" + getRcvMsgList().size());
+        System.out.println("RcvMsgManagedBean: MessageSize:" + getRcvMsgList().size());
 
     }
 
