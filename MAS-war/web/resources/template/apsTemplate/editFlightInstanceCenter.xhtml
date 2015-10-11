@@ -8,13 +8,13 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Generate Flight Instance</title>
+        <title>Edit Flight Instance</title>
     </h:head>
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="Generate Flight Instance"  style="width:100%">
-                <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" emptyMessage="No flight frequencies found.">
+            <p:panel id="panel" header="Choose a Flight to Edit"  style="width:100%" >
+                <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" tableStyle="width:auto" emptyMessage="No flight frequencies found.">
 
                     <p:column headerText="Flight No" sortBy="#{flightFreq.flightNo}" filterBy="#{flightFreq.flightNo}" filterMatchMode="contains">
                         <h:outputText value="#{flightFreq.flightNo}" />
@@ -35,30 +35,30 @@
                         <h:outputText value="#{flightFreq.dateAdjust}" />
                     </p:column>
                     
-                    <p:column headerText="Monday" >
+                    <p:column headerText="Mon">
                         <h:outputText value="Yes" rendered="#{flightFreq.onMon}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Tuesday"  >
+                    <p:column headerText="Tue"  >
                         <h:outputText value="Yes" rendered="#{flightFreq.onTue}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Wednesday" >
+                    <p:column headerText="Wed" >
                         <h:outputText value="Yes" rendered="#{flightFreq.onWed}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Thursday">
+                    <p:column headerText="Thu">
                         <h:outputText value="Yes" rendered="#{flightFreq.onThu}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Friday" >
+                    <p:column headerText="Fri" >
                         <h:outputText value="Yes" rendered="#{flightFreq.onFri}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Saturday" >
+                    <p:column headerText="Sat" >
                         <h:outputText value="Yes" rendered="#{flightFreq.onSat}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Sunday" >
+                    <p:column headerText="Sun" >
                         <h:outputText value="Yes" rendered="#{flightFreq.onSun}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
 
-                    <p:column headerText="Generate Flight Instance">
-                        <p:commandButton value="Generate" actionListener="#{FIMB.addFlightInstance(flightFreq)}"/>
+                    <p:column headerText="Edit Flight Instance">
+                        <p:commandButton value="Edit" actionListener="#{editFIMB.editFlightInstance(flightFreq)}"/>
                     </p:column>
 
                 </p:dataTable>
