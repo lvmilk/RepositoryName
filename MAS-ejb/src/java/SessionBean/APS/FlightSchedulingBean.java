@@ -16,13 +16,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -290,15 +288,19 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
         List<FlightInstance> flightInstList = getAllFlightInstance();
-        List<FlightInstance> flightInstListCopy = getAllFlightInstance();
+        List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
-            System.out.println("FSB： getUnplannedFlightInstance(): tempInfo: " + temp.getAircraft().toString());
-            if (!temp.getAircraft().getRegistrationNo().equals("9V-000") || (temp.getAircraft() != null) || (!temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
-                flightInstListCopy.remove(temp);
-                System.out.println("FSB： getUnplannedFlightInstance(): REMOVED");
+            System.out.println("FSB： getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :"+temp.getAircraft().getRegistrationNo().equals("9V-000"));
+//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :"+(temp.getAircraft() != null));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 3 :"+(temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+            if ((temp.getAircraft().getRegistrationNo().equals("9V-000")) && (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
+                System.out.println("FSB： getUnplannedFlightInstance(): ADDED " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+                flightInstListCopy.add(temp);
+
             }
         }
-        System.out.println("FSB： getUnplannedFlightInstance(): " + flightInstListCopy);
+        System.out.println("FSB： getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
         return flightInstListCopy;
     }
 
@@ -318,18 +320,22 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
         for (Aircraft acTemp : getAllAircraft()) {
+            System.out.println("FSB: acTemp is "+acTemp.getAircraftType().toString());
             Date currentTime = startDate;    //the current available time of the aircraft
             Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
+            System.out.println("FSB: currentAirport: "+ currentAirport.getIATA());
             List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
             Collections.sort(unplannedFi);
+            System.out.println("FSB:Sorted unplannedFi : "+  unplannedFi.toString());
             for (FlightInstance fiTemp : unplannedFi) {
                 System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
                 System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
-                if (currentTime.after(endDate)) {
+                if (currentTime.after(endDate)||df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
                     break;
                 } else {
                     //getDate(): should be replaced by getDepartureTime() and getArrivalTime()
                     if (currentTime.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
+                        System.out.println("FSB: Enter assignment process "+ fiTemp.getFlightFrequency().getFlightNo()+ " " + fiTemp.getDate());
                         fiTemp.setAircraft(acTemp);
                         currentTime = df1.parse(fiTemp.getStandardArrTime());
                         currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
