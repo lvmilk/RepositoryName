@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Seat Assignment for Booking Class: Step2</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="form">
+
+            <p:messages id="msgs" />
+            <p:dataTable id="bkiList" var="bki" value="#{seatAllocate1Bean.bookClassInstanceList}" editable="true" emptyMessage="No Booking Classes" style="text-align: center;margin-bottom:20px">
+
+                <f:facet name="header">
+                    Seat Assignment
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{seatAllocate1Bean.onRowEdit}" update=":form:msgs: form:unallocated " />
+                <p:ajax event="rowEditCancel" listener="#{seatAllocate1Bean.onRowCancel}" update=":form:msgs" />
+
+                <p:column headerText="Cabin Class">
+                    <h:outputText value="#{bki.bookingClass.cabinName}" />
+                </p:column>
+
+                <p:column headerText="Booking Class Annotation">
+                    <h:outputText value="#{bki.bookingClass.annotation}" />
+                </p:column>
+
+
+                <p:column headerText="Average Demand">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{bki.avgDemand}" /></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="avgInput" value="#{bki.avgDemand}" required="true" requiredMessage="please input a valid Avg Demand" validatorMessage="Please enter a proper average demand(>0)" style="width:100%">
+                                <f:validateLongRange minimum="1"  />
+                            </p:inputText>
+                        </f:facet>
+
+
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Srandard Deviation(std)">              
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{bki.std}" /></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="stdInput" value="#{bki.std}" required="true" requiredMessage="please input a valid std" validatorMessage="please enter a proper decimal number>=0" style="width:100%">
+                                <f:validateLongRange minimum="0"  />
+                            </p:inputText>
+                        </f:facet>
+
+                    </p:cellEditor>
+                </p:column>
+
+
+                <p:column headerText="Number of seats in booking class">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{bki.seatNo}" /></f:facet>
+                        <f:facet name="input">
+                            <p:inputText id="seatNo" value="#{bki.seatNo}" required="true" requiredMessage="please input a valid Seat No" validatorMessage="Please input an integer between 0 and total unallocated seat number" style="width:100%">
+                                <f:validateLongRange minimum="0" maximum="#{seatAllocate1Bean.newUnallocated(bki)}" />
+                            </p:inputText>
+                        </f:facet>
+
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column id="optimal" headerText="Optimal Seat No:">
+                    <h:outputText value="#{bki.optimalSeatNo}" />
+                </p:column>
+
+                <p:column headerText="Fare">
+                    <h:outputText value="#{bki.price}" />
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+
+            </p:dataTable>
+
+            <p:commandButton value="Compute optimal seat allocation" update="bkiList" action="#{seatAllocate1Bean.computeOptimalSeat()}"/>
+<!--            <p:commandButton value="Compute expected total revenue from current seat allocation" update="form" action="#{seatAllocate1Bean.computeExpRev()}"/>-->
+
+            <p:separator/>
+
+
+            <p:panel id="panel" header="Cabin Class Figures"  style="margin-top:10px; font-size: 20px; width:40%"> 
+                <h:panelGrid columns="2"  cellpadding="10">
+
+                    <h:outputText style="font-weight: bold" value="Total Seat No. in this cabin: " />
+                    <h:outputText style="font-weight: bold" value="#{seatAllocate1Bean.selectedCabin.seatCount}" />
+
+                    <h:outputText  style="font-weight: bold" value="Total no. of seats unallocated:"/>
+                    <h:outputText  id="unallocated"  style="font-weight: bold" value=" #{seatAllocate1Bean.seatUnallocated}"/>
+                    <!--                    <p:separator/>
+                                        <p:separator/>
+                                        
+                                        <h:outputText style="font-weight: bold" value="Expected Revenue from OPTIMAL seat allocation:"/>
+                                        <h:outputText id="rev" style="font-weight: bold" value="$ #{seatAllocate1Bean.optimalRev}"/>
+                    
+                    
+                                        <h:outputText style="font-weight: bold" value="Expected Revenue from CURRENT seat allocation:"/>
+                                        <h:outputText  style="font-weight: bold" value="$100.0"/>-->
+
+
+
+                </h:panelGrid>
+            </p:panel>
+
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

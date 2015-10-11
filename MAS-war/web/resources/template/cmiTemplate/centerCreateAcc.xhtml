@@ -23,44 +23,112 @@
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
                     <!--                                        <f:ajax event="change" execute="@form" render="output"/>-->
-                    <p:ajax event="change" update="staff,cockpit"/>
+                    <p:ajax event="change" update="offStaff,cockpit,cabin,grdStaff"/>
                 </h:selectOneMenu>
 
             </p:panelGrid>
         </h:form>
 
-        <h:form id="staff">
-            <p:panel id="addOtrStaff"  visible="#{ctl.visibility}" style="margin-bottom:20px">
+        <h:form id="offStaff">
+            <p:panel id="addOffStaff"  visible="#{ctl.visibility}" style="margin-bottom:20px">
                 <p:messages id="msgs" />
                 <h:panelGrid columns="3" cellpadding="10">
 
-                    <p:outputLabel for="otrUsername" value="User Name: " />
-                    <p:inputText id="otrUsername" value="#{login.username}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
+                    <p:outputLabel for="offUsername" value="User Name: " />
+                    <p:inputText id="offUsername" value="#{login.username}" validatorMessage="Please start with letter 'O' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                        <f:validateRegex pattern="O((?=.*\d).{6,8})" />
                     </p:inputText>
-                    <p:message for="otrUsername" display="icon" />
+                    <p:message for="offUsername" display="icon" />
 
-                    <p:outputLabel for="otrPassword" value="Password: " />
-                    <p:inputText id="otrPassword" value="#{login.password}" required="true" label="Password" size="10">
+                    <p:outputLabel for="offPassword" value="Password: " />
+                    <p:inputText id="offPassword" value="#{login.password}" required="true" label="Password" size="10">
                         <f:validateLength minimum="6" />
                     </p:inputText>
-                    <p:message for="otrPassword" display="icon" />
+                    <p:message for="offPassword" display="icon" />
 
-                    <p:outputLabel for="otrEmail" value="Email: " />
-                    <p:inputText id="otrEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
-                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    <p:outputLabel for="offEmail" value="Email: " />
+                    <p:inputText id="offEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
-                    <p:message for="otrEmail" display="icon" />
+                    <p:message for="offEmail" display="icon" />
 
                     <p:outputLabel value="staff type: "/>
                     <p:outputLabel value="#{login.stfType}"/>
 
 
                 </h:panelGrid>
-                <p:commandButton value="Confirm" update="addOtrStaff" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
+                <p:commandButton value="Confirm" update="addOffStaff" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
+
+        <h:form id="grdStaff">
+            <p:panel id="addGrdStaff"  visible="#{ctl.visiGround}" style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="grdUsername" value="User Name: " />
+                    <p:inputText id="grdUsername" value="#{login.username}" validatorMessage="Please start with letter 'G' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                        <f:validateRegex pattern="G((?=.*\d).{6,8})" />
+                    </p:inputText>
+                    <p:message for="grdUsername" display="icon" />
+
+                    <p:outputLabel for="grdPassword" value="Password: " />
+                    <p:inputText id="grdPassword" value="#{login.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="grdPassword" display="icon" />
+
+                    <p:outputLabel for="grdEmail" value="Email: " />
+                    <p:inputText id="grdEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="grdEmail" display="icon" />
+
+                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="#{login.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Confirm" update="addGrdStaff" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+        <h:form id="cabin">
+            <p:panel id="addCbCrew"  visible="#{ctl.visiCabin}" style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="cbUsername" value="User Name: " />
+                    <p:inputText id="cbUsername" value="#{login.username}" validatorMessage="Please start with letter 'CB' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                        <f:validateRegex pattern="CB((?=.*\d).{5,7})" />
+                    </p:inputText>
+                    <p:message for="cbUsername" display="icon" />
+
+                    <p:outputLabel for="cbPassword" value="Password: " />
+                    <p:inputText id="cbPassword" value="#{login.password}" required="true" label="Password" size="10">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="cbPassword" display="icon" />
+
+                    <p:outputLabel for="cbEmail" value="Email: " />
+                    <p:inputText id="cbEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="cbEmail" display="icon" />
+
+                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="#{login.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Confirm" update="addCbCrew" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
 
         <h:form id="cockpit">
             <p:panel id="addCockpit"  visible="#{ctl.visiCockpit}" style="margin-bottom:20px">
@@ -68,8 +136,8 @@
                 <h:panelGrid columns="3" cellpadding="10">
 
                     <p:outputLabel for="cpUsername" value="User Name: " />
-                    <p:inputText id="cpUsername" value="#{login.username}" validatorMessage="Please use at least one uppercase character and the Length of username should be 6-8" required="true" label="Username" size="10">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{6,8})" />
+                    <p:inputText id="cpUsername" value="#{login.username}" validatorMessage="Please start with letter 'CP' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                        <f:validateRegex pattern="CP((?=.*\d).{5,7})" />
                     </p:inputText>
                     <p:message for="cpUsername" display="icon" />
 

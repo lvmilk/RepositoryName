@@ -20,7 +20,7 @@
                     <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
                     <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
                     <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-                    
+
                     <p:ajax event="change" update="delOff,delGrd,delCb,delCp"/>
                 </h:selectOneMenu>
 
@@ -30,7 +30,7 @@
         <h:form id="delOff">
 
             <p:panel id="offStfPanel"  visible="#{ctl.visiDelOff}" header="Delete Office Staff Account"  style="width:100%">
-
+                <p:messages id="msgs" />
                 <p:dataTable var="OfficeStaff" rowKey ="#{OfficeStaff.offName}" selection="#{dlManagedBean.selectedOffStf}" value="#{dlManagedBean.offStfList}"  paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
                     <f:facet name="header">  
@@ -57,14 +57,26 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.toDeleteAcc()}" icon="ui-icon-check" />
             </p:panel>
+
+            <h:form id="dlgOff">
+                <p:dialog id="dlgOff" header="Delete Office Staff ?" widgetVar="dlgOffstaff" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  oncomplete="PF('dlgOffstaff').hide()" action="#{dlManagedBean.deleteAccount()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgOffstaff').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
         </h:form>
-        
+
+
+
         <h:form id="delGrd">
 
             <p:panel id="grdStfPanel" visible="#{ctl.visiDelGrd}" header="Delete Ground Staff Account"  style="width:100%">
-
+                <p:messages id="msgs" />
                 <p:dataTable var="GroundStaff" rowKey ="#{GroundStaff.grdName}" selection="#{dlManagedBean.selectedGrdList}" value="#{dlManagedBean.grdStfList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
                     <f:facet name="header">  
@@ -91,14 +103,24 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.toDeleteAcc()}" icon="ui-icon-check" />
             </p:panel>
+
+            <h:form id="dlgGrd">
+                <p:dialog id="dlgGrd" header="Delete Ground Staff ?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  oncomplete="PF('dlgGrd').hide()" action="#{dlManagedBean.deleteAccount()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
         </h:form>
-        
+
         <h:form id="delCb">
 
             <p:panel id="cbCrewPanel" visible="#{ctl.visiDelCb}" header="Delete Cabin Crew Account"  style="width:100%">
-
+                <p:messages id="msgs" />
                 <p:dataTable var="CabinCrew" rowKey ="#{CabinCrew.cbName}" selection="#{dlManagedBean.selectedCbCrewList}" value="#{dlManagedBean.cbCrewList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
                     <f:facet name="header">  
@@ -125,14 +147,24 @@
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.toDeleteAcc()}" icon="ui-icon-check" />
             </p:panel>
+
+            <h:form id="dlgCb">
+                <p:dialog id="dlgCb" header="Delete Cabin Crew ?" widgetVar="dlgCb" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  oncomplete="PF('dlgCb').hide()" action="#{dlManagedBean.deleteAccount()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgCb').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
         </h:form>
-        
-         <h:form id="delCp">
 
-             <p:panel id="cpCrewPanel" visible="#{ctl.visiDelCp}" header="Delete Cabin Crew Account"  style="width:100%">
+        <h:form id="delCp">
 
+            <p:panel id="cpCrewPanel" visible="#{ctl.visiDelCp}" header="Delete Cabin Crew Account"  style="width:100%">
+                <p:messages id="msgs" />
                 <p:dataTable var="CockpitCrew" rowKey ="#{CockpitCrew.cpName}" selection="#{dlManagedBean.selectedCpCrewList}" value="#{dlManagedBean.cpCrewList}" paginator="true" rows="10" emptyMessage="No Office Staff Account">
 
                     <f:facet name="header">  
@@ -156,17 +188,26 @@
                     <p:column headerText="Email" sortBy="#{CockpitCrew.email}">
                         <h:outputText value="#{CockpitCrew.email}" />
                     </p:column>
-                    
+
                     <p:column headerText="Licence" sortBy="#{CockpitCrew.licence}">
                         <h:outputText value="#{CockpitCrew.licence}" />
                     </p:column>
 
                 </p:dataTable>
 
-                <p:commandButton value="Delete"  action="#{dlManagedBean.deleteAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Delete"  action="#{dlManagedBean.toDeleteAcc()}" icon="ui-icon-check" />
             </p:panel>
+
+            <h:form id="dlgCp">
+                <p:dialog id="dlgCp" header="Delete Cockpit Crew ?" widgetVar="dlgCp" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  oncomplete="PF('dlgCp').hide()" action="#{dlManagedBean.deleteAccount()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgCp').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
         </h:form>
-        
+
     </h:body>
 </html>
 

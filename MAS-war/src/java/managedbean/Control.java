@@ -21,6 +21,8 @@ public class Control implements Serializable{
 
     private Boolean visibility = true;
     private Boolean visiCockpit;
+    private Boolean visiCabin;
+    private Boolean visiGround;
     private String stfType;
     
     private Boolean visiDelOff=true;
@@ -34,9 +36,23 @@ public class Control implements Serializable{
         if (newValue.equals("cockpit")) {
             this.setVisiCockpit(true);
             this.setVisibility(false);
-        } else {
+            this.setVisiCabin(false);
+            this.setVisiGround(false);
+        }else if (newValue.equals("cabin")){
+            this.setVisiCockpit(false);
+            this.setVisibility(false);
+            this.setVisiCabin(true);
+            this.setVisiGround(false);
+        } else if (newValue.equals("groundStaff")){
+            this.setVisiCockpit(false);
+            this.setVisibility(false);
+            this.setVisiCabin(false);
+            this.setVisiGround(true);
+        }else if(newValue.equals("officeStaff")) {
             this.setVisibility(true);
             this.setVisiCockpit(false);
+            this.setVisiCabin(false);
+            this.setVisiGround(false);
         }
         
     }
@@ -169,6 +185,34 @@ public class Control implements Serializable{
      */
     public void setVisiDelCp(Boolean visiDelCp) {
         this.visiDelCp = visiDelCp;
+    }
+
+    /**
+     * @return the visiCabin
+     */
+    public Boolean getVisiCabin() {
+        return visiCabin;
+    }
+
+    /**
+     * @param visiCabin the visiCabin to set
+     */
+    public void setVisiCabin(Boolean visiCabin) {
+        this.visiCabin = visiCabin;
+    }
+
+    /**
+     * @return the visiGround
+     */
+    public Boolean getVisiGround() {
+        return visiGround;
+    }
+
+    /**
+     * @param visiGround the visiGround to set
+     */
+    public void setVisiGround(Boolean visiGround) {
+        this.visiGround = visiGround;
     }
 
 }

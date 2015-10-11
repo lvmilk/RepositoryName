@@ -28,7 +28,7 @@
                     </p:calendar>
 
                     <p:outputLabel for="finishDate" value="Finish Date: " />
-                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{FIMB.startDate}" validatorMessage="Finish Date: Please enter a valid date"  requiredMessage="Please enter the flight finish date" size="50">
+                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{FIMB.startDate}" validatorMessage="Finish Date: Please enter a date in valid range"  requiredMessage="Please enter the flight finish date" size="50">
                         <f:attribute name="startDate" value="#{FIMB.startDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
