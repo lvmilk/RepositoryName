@@ -83,20 +83,61 @@ public class BookingClassBean implements Serializable {
     }
 
     public void checkFirst() throws IOException {
-//    System.out.println("annotation is："+annotation);
-//      System.out.println("price percentage is："+price_percentage);
-//      System.out.println("refund_percentage is："+refund_percentage);
-//    System.out.println("change_route_percentage is："+change_route_percentage);
-//    System.out.println("change_date_percentage is："+change_date_percentage);
-//    System.out.println("change_passenger_percentage is："+change_passenger_percentage);
-//    System.out.println("open_jaw_percentage is" +price_percentage);
-//     System.out.println("earn_mile_percentage is" +earn_mile_percentage);
 
         if (!bcb.checkDuplicate(annotation)) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./bookingClassAttribute2.xhtml");
+            if (min_stay <= max_stay) {
+                System.out.println("max greater than min");
+
+                if (reserve_advance >= ticket_advance) {
+
+                    System.out.println("reserve earlier than ticketing");
+
+                    bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
+                            earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
+
+                    FacesMessage msg = new FacesMessage("BookingClass added successfully");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
+                }
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: ", ""));
+            }
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Annotation already been used: ", ""));
         }
+    }
+
+    
+    
+    public void checkSecond(ActionEvent event) throws IOException {
+        System.err.println("clidntID: " + uIComponent.getClientId());
+        System.out.println("min stay is " + min_stay);
+        System.out.println("max stay is " + max_stay);
+        System.out.println("reserve day is " + reserve_advance);
+        System.out.println("ticket advance is " + ticket_advance);
+
+        if (min_stay <= max_stay) {
+            System.out.println("max greater than min");
+
+            if (reserve_advance >= ticket_advance) {
+
+                System.out.println("reserve earlier than ticketing");
+
+                bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
+                        earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
+
+                FacesMessage msg = new FacesMessage("BookingClass added successfully");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: ", ""));
+        }
+
     }
 
     public void editFirst() throws IOException {
@@ -301,33 +342,6 @@ public class BookingClassBean implements Serializable {
 
     public void setSelectedClass(ArrayList<BookingClass> selectedClass) {
         this.selectedClass = selectedClass;
-    }
-
-    public void checkSecond(ActionEvent event) throws IOException {
-        System.err.println("clidntID: " + uIComponent.getClientId());
-        System.out.println("min stay is " + min_stay);
-        System.out.println("max stay is " + max_stay);
-        System.out.println("reserve day is " + reserve_advance);
-        System.out.println("ticket advance is " + ticket_advance);
-
-        if (min_stay <= max_stay) {
-            System.out.println("max greater than min");
-
-            if (reserve_advance >= ticket_advance) {
-
-                System.out.println("reserve earlier than ticketing");
-
-                bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
-                        earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
-
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./addBookClassSuccess.xhtml");
-            } else {
-                FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
-            }
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: ", ""));
-        }
-
     }
 
     public void EditBookClassInfo(BookingClass BookClass) throws IOException {

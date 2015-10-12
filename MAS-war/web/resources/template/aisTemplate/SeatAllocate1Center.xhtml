@@ -22,14 +22,14 @@
                     </p:calendar>
                     
                     <p:outputLabel for="frequency" value="Select a flight: " />
-                    <p:selectOneMenu id="frequency" value="#{seatAllocate1Bean.flightNo}" required="true" requiredMessage="Please select a date" style="width:150px">    
+                    <p:selectOneMenu id="frequency" value="#{seatAllocate1Bean.flightNo}" required="true" requiredMessage="Please select a flight" style="width:100%">    
                        <p:ajax  listener="#{seatAllocate1Bean.onFlightChange}"  update="flightCabin" /> 
                        <f:selectItem itemLabel="Select One Flight" itemValue="1" />
                         <f:selectItems value="#{seatAllocate1Bean.frequencyList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.getRoute().toString()}"/>
                     </p:selectOneMenu>
                   
                     <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
-                    <p:selectOneMenu id="flightCabin" value="#{seatAllocate1Bean.cabinName}" required="true" requiredMessage="Please select a cabin class" style="width:150px">    
+                    <p:selectOneMenu id="flightCabin" value="#{seatAllocate1Bean.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
                        <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
                        <f:selectItems value="#{seatAllocate1Bean.cabinList}"  var="cabin" itemValue="#{cabin.cabinClass.cabinName}" itemLabel="#{cabin.cabinClass.cabinName}"/>
                     </p:selectOneMenu>
