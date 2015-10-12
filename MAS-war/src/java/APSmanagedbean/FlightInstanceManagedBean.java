@@ -447,10 +447,11 @@ public class FlightInstanceManagedBean implements Serializable {
     }
 
     //------------------------------------------Hanyu added-------------------------------------------------
-    public void scheduleAcToFi() throws ParseException {
+    public void scheduleAcToFi() throws ParseException, IOException {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
         fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./autoFleetAssignmentResult.xhtml");
     }
 
 }
