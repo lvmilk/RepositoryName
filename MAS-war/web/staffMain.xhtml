@@ -8,12 +8,17 @@
         <title>Staff Main Page</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:commandLink value="Login" actionListener="#{SslManagedBean.startSsl(event)}" />
+
+        <h:form >
+            <h:outputStylesheet name="css/Styles.css"/>
+
+            <h:commandButton value="Login" actionListener="#{SslManagedBean.startSsl(event)}" styleClass="btn-dark" style="height: 50px; width: 100px; position: absolute; top:60% !important; left:47.5% !important"  />
+
         </h:form>
-<!--        <h:form>
-            <h:commandLink value="Setup Admin Account" actionListener="#{login.createAdmin()}" />
-        </h:form>-->
+
+        <!--        <h:form>
+                    <h:commandLink value="Setup Admin Account" actionListener="#{login.createAdmin()}" />
+                </h:form>-->
 
     </h:body>
 </html>
