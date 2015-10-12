@@ -18,10 +18,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -30,7 +31,7 @@ import javax.persistence.Query;
  *
  * @author Xu
  */
-@Stateless
+@Stateful
 public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @PersistenceContext
@@ -39,6 +40,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     FlightFrequency flightFreq;
     FlightInstance flightInst;
     Aircraft aircraft;
+
+    String firstInstDate;
+    Boolean flag = true;
 
     public FlightSchedulingBean() {
     }
@@ -318,7 +322,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        if (flag) {
+            setFirstInstDate();
+        } else {
+            Calendar c = Calendar.getInstance();
+            c.setTime(endDate);
+            c.add(Calendar.DATE, 1);  // number of days to add
+            firstInstDate =df1.format(c.getTime());
+        }
+
         for (Aircraft acTemp : getAllAircraft()) {
             System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
             Date currentTime = startDate;    //the current available time of the aircraft
@@ -357,7 +370,21 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     }
                 }
             }
+            flag = false;
         }
 
+    }
+
+    public void setFirstInstDate() {
+
+        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
+        fiList = getAllFlightInstance();
+        Collections.sort(fiList);
+        firstInstDate = fiList.get(0).getStandardDepTime();
+    }
+    
+    @Override
+    public String getFirstInstdate(){
+        return firstInstDate;  
     }
 }

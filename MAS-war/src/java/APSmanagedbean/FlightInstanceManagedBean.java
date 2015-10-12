@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -447,10 +448,22 @@ public class FlightInstanceManagedBean implements Serializable {
     }
 
     //------------------------------------------Hanyu added-------------------------------------------------
-    public void scheduleAcToFi() throws ParseException {
+    public void scheduleAcToFi() throws ParseException, IOException {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
+        try{
         fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightViewCenter.xhtml");
+        }catch (IOException|ParseException e) {
+            System.out.println("Oops: Error! "+ e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", e.getMessage());
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
     }
 
+    public String getFirstInstDate(){
+        return fsb.getFirstInstdate();
+    }
+    
+    
 }
