@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-
+        Delete Booking Class
     </h:head>
     <h:body>
 
@@ -17,10 +17,10 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-<!--            <ui:define name="right">
-                <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>
--->
+            <!--            <ui:define name="right">
+                            <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
+                        </ui:define>
+            -->
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
@@ -30,16 +30,16 @@
 
                         <p:panel id="panel" header="Delete Booking Classes"  style="width:100%">
                             <p:dataTable var="BookClass" rowKey="#{BookClass.id}" value="#{bookingClassBean.selectedClass}" paginator="true" rows="10" emptyMessage="No Booking Classes">
-                                
-                                
+
+
                                 <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                                     <h:outputText value="#{BookClass.annotation}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Cabin Class" sortBy="#{BookClass.cabinName}">
                                     <h:outputText value="#{BookClass.cabinName}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Price as percentage of full fare">
                                     <h:outputText value="#{BookClass.price_percentage}" />
                                 </p:column>
@@ -58,7 +58,7 @@
                                 <p:column headerText="Mile Earning Rate">
                                     <h:outputText value="#{BookClass.earn_mile_percentage}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Min Days Stay">
                                     <h:outputText value="#{BookClass.min_stay}" />
                                 </p:column>
@@ -80,8 +80,8 @@
                                 <p:column headerText="Available In GDS">
                                     <h:outputText value="#{BookClass.gds_available}" />
                                 </p:column>
-                                
-                                
+
+
 
                             </p:dataTable>
                             <p:commandButton value="Back"  action="./DeleteBookingClass.xhtml" icon="ui-icon-check" />

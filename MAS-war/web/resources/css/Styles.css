@@ -1,0 +1,32 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 12, 2015, 8:31:50 PM
+    Author     : LI HAO
+*/
+body,
+html{
+    min-height: 100%;
+}
+
+body { 
+    background-image:url("#{resource['images:csyx.jpg']}"); 
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.text-vertical-center {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn-dark {
+    border-radius: 0;
+    color: #fff;
+    background-color: rgba(0,0,0,0.4);
+    margin: 0 auto;
+}
