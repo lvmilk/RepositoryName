@@ -19,10 +19,9 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import javax.faces.validator.ValidatorException;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -72,6 +71,9 @@ public class FlightInstanceManagedBean implements Serializable {
     private boolean onSat;
     private boolean onSun;
 
+    private Date startPlanDate;
+    private Date endPlanDate;
+
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
@@ -103,6 +105,7 @@ public class FlightInstanceManagedBean implements Serializable {
         actualArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualArrTime");
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
+        
     }
 
     public void addFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
@@ -129,6 +132,9 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Fri = flightFreq.isOnFri();
         Boolean Sat = flightFreq.isOnSat();
         Boolean Sun = flightFreq.isOnSun();
+        ///////////sui bian jia liang ge testing////////////////////
+        Integer depDateAdjust = flightFreq.getDateAdjust();
+        Integer arrDateAdjust = flightFreq.getDateAdjust();
 //        aircraft = new Aircraft();
 //        aircraft = fsb.getAircraft(registrationNo);
 //        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
@@ -144,7 +150,7 @@ public class FlightInstanceManagedBean implements Serializable {
 //                if (startDate.after(deliveryDate)) {
                 if ((!startDate.before(freqStartDate)) && finishDate.before(freqEndDate)) {
 
-                    if (flightFreq.getsDate() == null || flightFreq.getfDate() == null) {
+                    if ((flightFreq.getsDate() == null || flightFreq.getsDate().equals("")) || (flightFreq.getfDate() == null || flightFreq.getfDate().equals(""))) {
                         System.out.println("there is one checking date is null.......");
                         Long id = flightFreq.getId();
                         System.out.println("this flight frequency ID:" + id);
@@ -153,7 +159,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, depDateAdjust, ad, aa, arrDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -180,7 +186,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, ad, aa);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, depDateAdjust, ad, aa, arrDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -420,4 +426,44 @@ public class FlightInstanceManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
+    public Date getStartPlanDate() {
+        return startPlanDate;
+    }
+
+    public void setStartPlanDate(Date startPlanDate) {
+        System.out.println("FSMB:getStartPlanDate is " + startPlanDate.toString());
+
+        this.startPlanDate = startPlanDate;
+
+    }
+
+    public Date getEndPlanDate() {
+        return endPlanDate;
+    }
+
+    public void setEndPlanDate(Date endPlanDate) {
+        System.out.println("FSMB: getEndPlanDate is " + endPlanDate.toString());
+
+        this.endPlanDate = endPlanDate;
+    }
+
+    //------------------------------------------Hanyu added-------------------------------------------------
+    public void scheduleAcToFi() throws ParseException, IOException {
+        System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
+        System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
+        try{
+        fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightViewCenter.xhtml");
+        }catch (IOException|ParseException e) {
+            System.out.println("Oops: Error! "+ e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", e.getMessage());
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+    }
+
+    public String getFirstInstDate(){
+        return fsb.getFirstInstdate();
+    }
+    
+    
 }

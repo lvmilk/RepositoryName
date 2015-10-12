@@ -35,7 +35,9 @@
 
                     <p:column headerText="Fare">
 
-                        <h:outputText value="#{bki.price}" />
+                        <h:outputText value="#{bki.price}" > 
+                            <f:convertNumber pattern="#0.00"/>
+                        </h:outputText>
 
                     </p:column>
                 

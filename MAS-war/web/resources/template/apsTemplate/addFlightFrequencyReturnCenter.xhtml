@@ -25,15 +25,15 @@
                     <p:inputText id="inFlightNo" value="#{ARFMB.inFlightNo}" label="flightNo" required="true"  requiredMessage="Please enter inbound flight number" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="inScheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:outputLabel for="inScheduleDepTime" value="Departure Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="inScheduleDepTime" value="#{ARFMB.inDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight departure time" size="30"/>
 
-                    <p:outputLabel for="inScheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:outputLabel for="inScheduleArrTime" value="Arrival Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="inScheduleArrTime" value="#{ARFMB.inArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="inDateAdjust" value="Date Adjust: " />
                     <p:inputText id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter inbound flight date adjust"  size="30">
-                        <f:validateRegex pattern="[-1-9]" />
+                        <f:validateRegex pattern="[-1/0-9]" />
                     </p:inputText>
 
                     <p:outputLabel  for="inFreq" value="Operation Day of the Week: "/>
@@ -64,11 +64,11 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:outputLabel for="inStartDate" value="Flight Start Operation Date (yyyy-MM-dd): " />
-                    <p:calendar id="inStartDate" value="#{ARFMB.inStartDate}" label="startDate" required="true" requiredMessage="Please enter inbound flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>
+                    <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): " />
+                    <h:outputText value="#{ARFMB.inStartDateString}" />
 
-                    <p:outputLabel for="inEndDate" value="Flight End Operation Date (yyyy-MM-dd): " />
-                    <p:calendar id="inEndDate" value="#{ARFMB.inEndDate}" label="endDate" required="true" requiredMessage="Please enter inbound flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 
+                    <p:outputLabel value="Flight End Operation Date (yyyy-MM-dd): " />
+                    <h:outputText value="#{ARFMB.inEndDateString}" />
 
                 </h:panelGrid>
 

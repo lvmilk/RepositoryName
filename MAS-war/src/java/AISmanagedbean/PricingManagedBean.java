@@ -233,7 +233,7 @@ public class PricingManagedBean implements Serializable {
     }
 
     public void retrieveRouteInfo(Long ID) {
-        annualDepartures=0;
+        annualDepartures = 0;
         route = pb.getRouteInfo(ID);
         //Set route Name
 
@@ -243,12 +243,12 @@ public class PricingManagedBean implements Serializable {
         distance = route.getDistance();
         blockHour = route.getBlockhour();
         aircraftType = route.getAcType();
-        System.out.println("AnnualDeaprture First: "+this.annualDepartures);
-         System.out.println("size of FlightFrequency of this route: "+route.getFlightFreqList().size());
+        System.out.println("AnnualDeaprture First: " + this.annualDepartures);
+        System.out.println("size of FlightFrequency of this route: " + route.getFlightFreqList().size());
         for (FlightFrequency f : route.getFlightFreqList()) {
-            annualDepartures = annualDepartures+f.getWeekFreq()*52;
+            annualDepartures = annualDepartures + f.getWeekFreq() * 52;
         }
-        System.out.println("AnnualDeaprture Calculated: "+this.annualDepartures);
+        System.out.println("AnnualDeaprture Calculated: " + this.annualDepartures);
         System.out.println("routeInfo Retrieved!");
         System.out.println("routeInfo Retrieved! distance: " + distance);
         System.out.println("routeInfo Retrieved! Type: " + aircraftType.getManufacturer());
@@ -284,25 +284,27 @@ public class PricingManagedBean implements Serializable {
             loadfactorMap.put("First Class", 0.0);
             fcSeatNo = aircraftType.getFcSeatNo();
         }
-        if (aircraftType.getEcSeatNo() > 0) {
-            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
-            loadfactorMap.put("Economy Class", 0.0);
-            ecSeatNo = aircraftType.getEcSeatNo();
+        if (aircraftType.getBcSeatNo() > 0) {
+            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
+            loadfactorMap.put("Business Class", 0.0);
+            bcSeatNo = aircraftType.getBcSeatNo();
         }
         if (aircraftType.getPecSeatNo() > 0) {
             cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
             loadfactorMap.put("Premier Economy Class", 0.0);
             pecSeatNo = aircraftType.getPecSeatNo();
         }
-        if (aircraftType.getBcSeatNo() > 0) {
-            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
-            loadfactorMap.put("Business Class", 0.0);
-            bcSeatNo = aircraftType.getBcSeatNo();
+
+        if (aircraftType.getEcSeatNo() > 0) {
+            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
+            loadfactorMap.put("Economy Class", 0.0);
+            ecSeatNo = aircraftType.getEcSeatNo();
         }
+
         totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
         System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
-      //  crewNo = pb.calculateCrewNo(totalSeatNo);
-        crewNo=aircraftType.getPilot()+aircraftType.getPurser()+aircraftType.getSteward()+aircraftType.getStewardess();
+        //  crewNo = pb.calculateCrewNo(totalSeatNo);
+        crewNo = aircraftType.getPilot() + aircraftType.getPurser() + aircraftType.getSteward() + aircraftType.getStewardess();
         System.out.println("MB: AircraftType Crew No: " + crewNo);
         keyList = new ArrayList<String>(cabinInfo.keySet());
         System.out.println("MB: AircraftType key List Size: " + keyList.size());
@@ -518,5 +520,5 @@ public class PricingManagedBean implements Serializable {
         routeID = null;
         FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingAttribute1.xhtml");
     }
-    
+
 }
