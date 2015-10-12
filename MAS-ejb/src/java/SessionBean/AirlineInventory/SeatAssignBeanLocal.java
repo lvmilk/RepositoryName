@@ -34,4 +34,10 @@ public interface SeatAssignBeanLocal {
     public ArrayList<BookingClassInstance> listAssign (List<BookingClassInstance> bookClassInstanceList, String cabinName);
     
     public List<FlightCabin> getCabinList(String flightNo);
+    
+    public void changeBookdSeatCount(BookingClassInstance bInstance);
+
+    public void changeSeatNo(BookingClassInstance bInstance);
+    
+    public double computeCurrentRev(List<BookingClassInstance> bookClassInstanceList);
 }

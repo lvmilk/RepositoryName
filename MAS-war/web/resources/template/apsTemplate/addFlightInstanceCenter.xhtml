@@ -16,7 +16,7 @@
             <p:panel id="panel" header="Generate Flight Instance"  style="width:100%">
                 <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" emptyMessage="No flight frequencies found.">
 
-                    <p:column headerText="Flight No">
+                    <p:column headerText="Flight No" sortBy="#{flightFreq.flightNo}" filterBy="#{flightFreq.flightNo}" filterMatchMode="contains">
                         <h:outputText value="#{flightFreq.flightNo}" />
                     </p:column>
                     <p:column headerText="Origin" filterBy="#{flightFreq.route.origin.IATA}" filterMatchMode="contains">
@@ -33,6 +33,28 @@
                     </p:column>
                     <p:column headerText="Date Adjust">
                         <h:outputText value="#{flightFreq.dateAdjust}" />
+                    </p:column>
+                    
+                    <p:column headerText="Monday" >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onMon}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Tuesday"  >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onTue}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Wednesday" >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onWed}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Thursday">
+                        <h:outputText value="Yes" rendered="#{flightFreq.onThu}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Friday" >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onFri}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Saturday" >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onSat}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+                    <p:column headerText="Sunday" >
+                        <h:outputText value="Yes" rendered="#{flightFreq.onSun}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
 
                     <p:column headerText="Generate Flight Instance">
