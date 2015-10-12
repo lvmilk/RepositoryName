@@ -22,8 +22,11 @@
                     <p:ajax event="rowSelectCheckbox" listener="#{AirportManagedBean.check}"   />  
 
                     <f:facet name="header">  
-                        Airport List (Only airports can be deleted are shown.)
-                    </f:facet>  
+                        <h:outputLink id="fade" value="#">
+                            <h:outputText value="Airport List (Only airports can be deleted are shown.)" />
+                        </h:outputLink>
+                        <p:tooltip id="toolTipTrack" for="fade" value="If an airport is the origin/detination of a route, it cannot be deleted." trackMouse="true" />
+                    </f:facet>
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
 
@@ -57,9 +60,9 @@
 
                 </p:dataTable>
 
-<!--                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" modal="true"/>-->
-<p:commandButton value="Delete" action="#{AirportManagedBean.toDeleteAirport}" icon="ui-icon-check" />
-<!--< type="submit"   onclick="(if(!confirm('Are you going to delete selected airport?')) return false;">-->
+                <!--                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" modal="true"/>-->
+                <p:commandButton value="Delete" action="#{AirportManagedBean.toDeleteAirport}" icon="ui-icon-check" />
+                <!--< type="submit"   onclick="(if(!confirm('Are you going to delete selected airport?')) return false;">-->
             </p:panel> 
 
             <h:form id="dialogForm">

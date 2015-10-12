@@ -75,11 +75,6 @@ public class FlightManagedBean implements Serializable {
     private String destAirportString;
     private String oriAirportString;
 //    private List<String> airportWoSgString;
-
-    //default value for checking
-    String sd = "1900-01-01";
-    String fd = "1900-01-01";
-
     // for code share flights
 //    private String operator;
 //    private List<String> codeshare;
@@ -118,6 +113,9 @@ public class FlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oriAirportString", oriAirportString);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("destAirportString", destAirportString);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
 
             }

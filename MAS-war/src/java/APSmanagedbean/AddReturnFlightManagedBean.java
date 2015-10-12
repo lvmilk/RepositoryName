@@ -57,9 +57,6 @@ public class AddReturnFlightManagedBean implements Serializable {
     private Route inRoute;
     private FlightFrequency inBound;
 
-    String sd = "1900-01-01";
-    String fd = "1900-01-01";
-
     public AddReturnFlightManagedBean() {
     }
 
@@ -67,14 +64,15 @@ public class AddReturnFlightManagedBean implements Serializable {
     public void init() {
         oriAirportString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("destAirportString");
         destAirportString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("oriAirportString");
-
+        inStartDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
+        inEndDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
     }
 
     public void addReturnFlightFrequency() throws Exception {
         try {
             inRoute = rpb.viewRoute(oriAirportString, destAirportString);
             Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Format formatter2 = new SimpleDateFormat("HH:mm");
+//            Format formatter2 = new SimpleDateFormat("HH:mm");
             fsb.validateFlightNo(inFlightNo);
             if (!(inOnMon || inOnTue || inOnWed || inOnThu || inOnFri || inOnSat || inOnSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week for the return flight.", ""));
@@ -82,10 +80,10 @@ public class AddReturnFlightManagedBean implements Serializable {
                 inDateAdjust = Integer.parseInt(inDateAdjustString);
                 inStartDateString = formatter.format(inStartDate);
                 inEndDateString = formatter.format(inEndDate);
-                inDepTimeString = formatter2.format(inDepTime);
-                inArrTimeString = formatter2.format(inArrTime);
+//                inDepTimeString = formatter2.format(inDepTime);
+//                inArrTimeString = formatter2.format(inArrTime);
 
-                inBound = fsb.addFlightFrequency(inRoute, inFlightNo, inDepTimeString, inArrTimeString, inDateAdjust, inOnMon, inOnTue, inOnWed, inOnThu, inOnFri, inOnSat, inOnSun, inStartDateString, inEndDateString, sd, fd);
+                inBound = fsb.addFlightFrequency(inRoute, inFlightNo, inDepTimeString, inArrTimeString, inDateAdjust, inOnMon, inOnTue, inOnWed, inOnThu, inOnFri, inOnSat, inOnSun, inStartDateString, inEndDateString, "", "");
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successReturnFlightNo", inFlightNo);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");

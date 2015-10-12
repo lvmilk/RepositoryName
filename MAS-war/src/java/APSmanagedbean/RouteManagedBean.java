@@ -55,19 +55,27 @@ public class RouteManagedBean implements Serializable {
     private String mPriceString;
     private String pVolumnString;
 
+    private List<Airport> hubList;
+
     public RouteManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         routeList = rpb.viewAllRoute();
-        canDeleteRoute = rpb.canDeleteRouteList();               
+        canDeleteRoute = rpb.canDeleteRouteList();
     }
 
     public void addRoute() throws Exception {
         try {
             if (originIATA.equals(destIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : origin airport cannot be same as destination airport.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Origin airport cannot be same as destination airport.", ""));
+            } else if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "At least one of origin airport and  destination airport must be hub.", ""));
+            } else if (distance < rpb.calRouteDistance(originIATA, destIATA)) {
+                Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " +drDistance + "km");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route distance should be longer than the direct distance " + drDistance + "km", ""));
             } else {
                 rpb.checkRouteExist(originIATA, destIATA);
                 if (addReturnRoute) {
@@ -158,7 +166,7 @@ public class RouteManagedBean implements Serializable {
         for (Airport a : airportList) {
             airportInfo.put(a.toString(), a.getIATA());
         }
-        System.out.println(airportInfo.toString());
+        System.out.println("rmb.getAirportInfo()" + airportInfo.toString());
         return airportInfo;
     }
 
@@ -292,6 +300,14 @@ public class RouteManagedBean implements Serializable {
 
     public void setpVolumnString(String pVolumnString) {
         this.pVolumnString = pVolumnString;
+    }
+
+    public List<Airport> getHubList() {
+        return rpb.viewHubAirport();
+    }
+
+    public void setHubList(List<Airport> hubList) {
+        this.hubList = hubList;
     }
 
 }
