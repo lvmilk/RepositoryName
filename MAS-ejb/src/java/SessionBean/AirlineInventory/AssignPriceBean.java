@@ -54,10 +54,10 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
 
     // get the list of flight instance that have no asoociated flightCabin and bookingClassInstance
     public List<FlightInstance> getFlightInstanceList(String flightNo) {
-        System.out.println("APB: flightNo "+flightNo);
+        System.out.println("APB: flightNo " + flightNo);
         List<FlightInstance> fiListAll = new ArrayList<FlightInstance>();
         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
-        System.out.println("APB: fiList.size "+ fiList.size());
+        System.out.println("APB: fiList.size " + fiList.size());
 //        FlightFrequency ff = new FlightFrequency();
 
         Query query = em.createQuery("SELECT f FROM FlightInstance f WHERE f.flightFrequency.flightNo=:fflightNo");
@@ -66,12 +66,12 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
         fiListAll = query.getResultList();
 
         for (FlightInstance temp : fiListAll) {
-            System.out.println("APB:temp is ? "+temp.getFlightFrequency().getFlightNo());
+            System.out.println("APB:temp is ? " + temp.getFlightFrequency().getFlightNo());
             em.flush();
             if (temp.getFlightCabins().size() == 0) {
                 System.out.println("APB:temp instance flightCabins list size: " + temp.getFlightCabins().size());
                 fiList.add(temp);
-                System.out.println("APB: fiList.size after add "+ fiList.size());
+                System.out.println("APB: fiList.size after add " + fiList.size());
             }
         }
         System.out.println("APB:getFlightInstanceList: final list size: " + fiList.size());
@@ -85,7 +85,15 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
             flightCabin.setFlightInstance(fi);
             em.persist(flightCabin);
             em.flush();
+           // update Flightintance
+            List<FlightCabin> flightCabins = fi.getFlightCabins();
+            flightCabins.add(flightCabin);
+            fi.setFlightCabins(flightCabins);
+            em.merge(fi);
+            em.flush();
+            
             List<BookingClass> bookingClassList = new ArrayList<BookingClass>();
+            List<BookingClassInstance> biList=new ArrayList<BookingClassInstance>();
             Query queryBclass = em.createQuery("SELECT b FROM BookingClass b WHERE b.cabinName=:fcabinName");
             queryBclass.setParameter("fcabinName", temp.getCabinName());
             bookingClassList = queryBclass.getResultList();
@@ -108,12 +116,15 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
                 } else {
                     System.out.print("It not gonna happen!!!!!!!");
                 }
+                biList.add(bki);
                 em.persist(bki);
                 em.flush();
 
             }
-
+            flightCabin.setBookingClassInstances(biList);
+            em.merge(flightCabin);
         }
+        em.flush();
 
     }
 
