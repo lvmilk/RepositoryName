@@ -27,14 +27,14 @@
                         <f:selectItems value="#{flightManagedBean.routeInfo}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="flightNo" value="Flight Number: " />
+                    <p:outputLabel for="flightNo" value="Flight Number(e.g. MR123): " />
                     <p:inputText id="flightNo" value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter outbound flight number" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="scheduleDepTime" value="Departure Time (HH:mm): " />
+                    <p:outputLabel for="scheduleDepTime" value="Departure Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="scheduleDepTime" value="#{flightManagedBean.depTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter outbound flight flight departure time" size="30"/>
 
-                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (HH:mm): " />
+                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (UTC+00:00 in HH:mm): " />
                     <p:calendar  id="scheduleArrTime" value="#{flightManagedBean.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter outbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />

@@ -7,6 +7,8 @@ package Entity.APS;
 
 import Entity.aisEntity.FlightCabin;
 import java.io.Serializable;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -22,7 +24,7 @@ import javax.persistence.OneToMany;
  * @author Xu/Lu Xi
  */
 @Entity
-public class FlightInstance implements Serializable {
+public class FlightInstance implements Serializable, Comparable<FlightInstance> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,21 +54,23 @@ public class FlightInstance implements Serializable {
 
 //    @ManyToOne
 //    private FlightPackage flightPackage;
-
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
 
     public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
             String actualDepTime, String actualArrTime, Integer actualDateAdjust) {
         this.flightFrequency = flightFrequency;
+
+//        this.startDate=startDate;
+//        this.finishDate=finishDate;
         this.date = date;
         this.flightStatus = "Scheduled";
         this.estimatedDepTime = estimatedDepTime;
         this.estimatedArrTime = estimatedArrTime;
-        this.estimatedDateAdjust=estimatedDateAdjust;
+        this.estimatedDateAdjust = estimatedDateAdjust;
         this.actualDepTime = actualDepTime;
         this.actualArrTime = actualArrTime;
-        this.actualDateAdjust=actualDateAdjust;
+        this.actualDateAdjust = actualDateAdjust;
     }
 
     public Long getId() {
@@ -116,7 +120,6 @@ public class FlightInstance implements Serializable {
 //    public void setFlightPackage(FlightPackage flightPackage) {
 //        this.flightPackage = flightPackage;
 //    }
-
     public String getEstimatedDepTime() {
         return estimatedDepTime;
     }
@@ -205,5 +208,12 @@ public class FlightInstance implements Serializable {
         this.standardArrTime = standardArrTime;
     }
 
-    
+    @Override
+    public int compareTo(FlightInstance fi) {
+        LocalTime thisTime = LocalTime.parse(this.standardDepTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        LocalTime fiTime = LocalTime.parse(fi.getStandardDepTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        // thisTime<fiTime return -1
+        return thisTime.compareTo(fiTime);
+    }
+
 }
