@@ -22,6 +22,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,8 +43,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     FlightInstance flightInst;
     Aircraft aircraft;
 
-    String firstInstDate;
-    Boolean flag = true;
+    static String firstInstDate;
+    static Boolean flag = true;
 
     public FlightSchedulingBean() {
     }
@@ -323,13 +325,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        if (flag) {
-            setFirstInstDate();
-        } else {
+        if (!flag) {
+            System.out.println("EDIT firstInstDate!!");
             Calendar c = Calendar.getInstance();
             c.setTime(endDate);
             c.add(Calendar.DATE, 1);  // number of days to add
-            firstInstDate =df1.format(c.getTime());
+            firstInstDate = df1.format(c.getTime());
+            System.out.println("EDIT firstInstDate to " + firstInstDate);
         }
 
         for (Aircraft acTemp : getAllAircraft()) {
@@ -348,14 +350,18 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 System.out.println("FSB: scheduleAcToFi(): Check Boolean2 " + df1.parse(fiTemp.getStandardDepTime()).after(endDate));
                 if (currentTime.after(endDate) || df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
                     System.out.println("FSB: scheduleAcToFi(): Break! ");
-
                     break;
                 } else {
                     System.out.println("FSB: scheduleAcToFi(): Check Boolean3 " + currentTime.before(df1.parse(fiTemp.getStandardDepTime())));
                     System.out.println("FSB: scheduleAcToFi(): Check Boolean4 " + currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin()));
-
-                    //getDate(): should be replaced by getDepartureTime() and getArrivalTime()
-                    if (currentTime.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
+                   //check whether currenTime is at least two hours earlier that the next departure
+                    Date temp = currentTime;
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(temp);
+                    c.add(Calendar.HOUR, 2);  // number of days to add
+                    temp = c.getTime();
+                    System.out.println("FSB: scheduleAcToFi(): 2 hours later? "+ temp.toString());
+                    if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
                         System.out.println("FSB: Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
                         fiTemp.setAircraft(acTemp);
                         currentTime = df1.parse(fiTemp.getStandardArrTime());
@@ -370,21 +376,36 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     }
                 }
             }
-            flag = false;
         }
 
     }
 
-    public void setFirstInstDate() {
-
+    public void setFirstInstDate() throws ParseException {
+        System.out.println("FSB: setFirstInstDate for the first time!!!");
         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
         fiList = getAllFlightInstance();
         Collections.sort(fiList);
         firstInstDate = fiList.get(0).getStandardDepTime();
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date temp = df1.parse(firstInstDate);
+        Calendar c = Calendar.getInstance();
+        c.setTime(temp);
+        c.add(Calendar.DATE, -1);  // number of days to add
+        firstInstDate = df1.format(c.getTime());
+        System.out.println("FSB: firstInstDate: " + firstInstDate);
     }
-    
+
     @Override
-    public String getFirstInstdate(){
-        return firstInstDate;  
+    public String getFirstInstDate() {
+        System.out.println("FSB: Flag: " + flag);
+        if (flag) {
+            try {
+                setFirstInstDate();
+            } catch (ParseException ex) {
+                Logger.getLogger(FlightSchedulingBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            flag = false;
+        }
+        return firstInstDate;
     }
 }

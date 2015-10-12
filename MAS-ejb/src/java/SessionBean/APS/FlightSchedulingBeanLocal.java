@@ -53,5 +53,5 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
     
-    public String getFirstInstdate();
+    public String getFirstInstDate();
 }
