@@ -60,4 +60,6 @@ public interface FlightSchedulingBeanLocal {
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
     public String getFirstInstDate();
+
+    public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate);
 }
