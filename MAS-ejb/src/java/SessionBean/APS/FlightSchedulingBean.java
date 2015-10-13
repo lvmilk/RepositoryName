@@ -332,7 +332,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightInstList = getAllFlightInstance();
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
-            System.out.println("FSB： getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
 //            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :"+(temp.getAircraft() != null));
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
@@ -342,7 +342,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
             }
         }
-        System.out.println("FSB： getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
+        System.out.println("FSB: getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
         return flightInstListCopy;
     }
 

@@ -3,6 +3,7 @@ package SessionBean.APS;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -200,10 +201,14 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         } else {
             System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
         }
+
         Query q2 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", aircraftType);
-        //for(Route r : q2.getResultList()){
-            
-     //   }
+        if (!q2.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. This aircraft type " + aircraftType.getType() + " is linked with a route.");
+        } else {
+            System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
+        }
+
     }
 
     @Override
@@ -218,8 +223,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     public void deleteAircraftType(AircraftType aircraftType) throws Exception {
         Query q = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
         q.setParameter("aircraftType", aircraftType);
+        Query q2 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", aircraftType);
         if (!q.getResultList().isEmpty()) {
             throw new Exception("Cannot delete. The aircraft type " + aircraftType.getType() + " is linked with a aircraft.");
+        } else if (!q2.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. This aircraft type " + aircraftType.getType() + " is linked with a route.");
         } else {
             aircraftType = em.merge(aircraftType);
             em.remove(aircraftType);
@@ -245,7 +253,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             at = typeList.get(i);
             Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType").setParameter("aircraftType", at);
             if (!q2.getResultList().isEmpty()) {
-                typeList2.remove(at);
+                Query q3 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", at);
+                if (!q3.getResultList().isEmpty()) {
+                    typeList2.remove(at);
+                }
             }
         }
         return typeList2;
@@ -260,7 +271,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
             q2.setParameter("aircraftType", at);
             if (!q2.getResultList().isEmpty()) {
-                typeList2.add(at);
+                Query q3 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", at);
+                if (!q3.getResultList().isEmpty()) {
+                    typeList2.add(at);
+                }
             }
         }
         return typeList2;
