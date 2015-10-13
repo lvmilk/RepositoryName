@@ -33,8 +33,6 @@ public interface FlightSchedulingBeanLocal {
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
 
-    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
-
     public List<FlightInstance> getAllFlightInstance();
 
     public List<FlightFrequency> getFlightOfRoute(Route route);
@@ -66,4 +64,7 @@ public interface FlightSchedulingBeanLocal {
     public Aircraft findAircraft(String serialNo);
 
     public List<FlightInstance> getUnassignedFlight();
+
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
+
 }

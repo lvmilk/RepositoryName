@@ -209,12 +209,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         LocalDateTime depDateTime = LocalDateTime.of(stdDate, depTime);
         LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
 
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("flightSchedulingBean: add flight instance: String type: Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
         
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         flightInst.setStandardDepTimeDateType(formatter.parse(depDateTime.format(sdf)));
         flightInst.setStandardArrTimeDateType(formatter.parse(arrDateTime.format(sdf)));
          System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
@@ -492,4 +492,5 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return firstInstDate;
     }
+
 }

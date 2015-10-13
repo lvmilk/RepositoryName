@@ -31,6 +31,7 @@ import javax.faces.view.ViewScoped;
  *
  * @author Xi
  */
+//////////this managed bean contains both edit and view flight instance!!!/////////////////////////////////////////
 @Named(value = "editFIMB")
 @ViewScoped
 public class EditFlightInstanceManagedBean implements Serializable {
@@ -106,7 +107,7 @@ public class EditFlightInstanceManagedBean implements Serializable {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedArrTime", df2.parse(flightFreq.getScheduleArrTime()));
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDepTime", df2.parse(flightFreq.getScheduleDepTime()));
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualArrTime", df2.parse(flightFreq.getScheduleArrTime()));
-        System.out.println("flight instance flight No: " + flightFreq.getFlightNo());
+        System.out.println("edit flight instance flight No: " + flightFreq.getFlightNo());
         flightNo = flightFreq.getFlightNo();
         flightInstList = fsb.getThisFlightInstance(flightNo);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInstList", flightInstList);
@@ -131,23 +132,33 @@ public class EditFlightInstanceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstance.xhtml");
     }
 
-//    public void editFlightInstanceInfo() {
-//        try {
-//            //String fd =df2.format(flightDate);
-//            String ed = df2.format(estimatedDepTime);
-//            String ea = df2.format(estimatedArrTime);
-//            String ad = df2.format(actualDepTime);
-//            String aa = df2.format(actualArrTime);
-//            System.out.println("editFlightInstanceInfo: flight date is "+flightDateString);
-//            fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed,ea,ad,aa);
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceDone.xhtml");
-//        } catch (Exception ex) {
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
-//        }
-//    }
-//    public void editFlightInstBack() throws IOException {
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceDetail.xhtml");
-//    }
+    public void viewFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightFreq", flightFreq);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightFreq.getFlightNo());
+        System.out.println("view flight instance flight No: " + flightFreq.getFlightNo());
+        flightNo = flightFreq.getFlightNo();
+        flightInstList = fsb.getThisFlightInstance(flightNo);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInstList", flightInstList);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightInstanceDetail.xhtml");
+    }
+
+    public void viewThisFlightInstance(FlightInstance flightInst) throws Exception {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightInst.getFlightFrequency().getFlightNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightDateString", flightInst.getDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightStatus", flightInst.getFlightStatus());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedDepTime", df2.parse(flightInst.getEstimatedDepTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedArrTime", df2.parse(flightInst.getEstimatedArrTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedDateAdjust", flightInst.getEstimatedDateAdjust());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDepTime", df2.parse(flightInst.getActualDepTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualArrTime", df2.parse(flightInst.getActualArrTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDateAdjust", flightInst.getActualDateAdjust());
+        System.out.println("view flight instance with Flight No.: " + flightInst.getFlightFrequency().getFlightNo() + " on " + flightInst.getDate());
+    }
+
+    public void viewFlightInstCancel() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightInstance.xhtml");
+    }
+
     public List<FlightFrequency> getFlightFreqList() {
         return flightFreqList;
     }
@@ -331,7 +342,5 @@ public class EditFlightInstanceManagedBean implements Serializable {
     public void setActualDateAdjust(Integer actualDateAdjust) {
         this.actualDateAdjust = actualDateAdjust;
     }
-    
-    
 
 }
