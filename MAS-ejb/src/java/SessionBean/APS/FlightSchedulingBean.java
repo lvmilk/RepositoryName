@@ -299,20 +299,24 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
+ 
     @Override
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception {
+    public FlightInstance findFlight(String flightNo,  String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not exist");
+            throw new Exception("flightSchedulingBean: findFlight: Flight " + flightNo + " does not exist");
         }
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
-        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:date").setParameter("date", flightDate);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:flightDate and  fi.flightFrequency=:flightFrequency");
+        q2.setParameter("flightDate", flightDate);
+        q2.setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not operate on " + flightDate);
+            throw new Exception("flightSchedulingBean: findFlight: " + flightNo + " does not operate on " + flightDate);
         }
         return (FlightInstance) q2.getResultList().get(0);
     }
+
 
     @Override
     public FlightInstance findFlight(Long flightId) {
