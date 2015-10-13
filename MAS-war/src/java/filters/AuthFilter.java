@@ -43,7 +43,8 @@ public class AuthFilter implements Filter {
             String path = req.getServletPath();
 
             if (path.startsWith("/javax.faces.resource")
-                    || path.equals("/login.xhtml") || path.equals("/staffMain.xhtml") || path.equals("/Permission.xhtml")) {
+                    || path.equals("/login.xhtml") || path.equals("/staffMain.xhtml") || path.equals("/Permission.xhtml") || path.equals("/CMIpages/forgetPwd.xhtml")
+                    || path.equals("/CMIpages/resetPwd.xhtml")) {
                 chain.doFilter(request, response);
             } else {
                 if (ses.getAttribute("stfType") == null) {
