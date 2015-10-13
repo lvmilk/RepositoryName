@@ -14,8 +14,8 @@
     <h:body>
         <h:form>
 
-            <p:panel id="panel" header="View Airport Detail"  style="width:90%">
-                <h:panelGrid columns="2" style="margin-bottom:10px; width:300px" cellpadding="10">
+            <p:panel id="panel" header="View Airport Detail"  style="width:100%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="15">
 
                     <p:outputLabel value="Airport IATA: " />
                     <p:outputLabel value="#{IATA}" />
@@ -23,7 +23,7 @@
                     <p:outputLabel value="Airport Name: " />
                     <p:outputLabel value="#{airportName}" />
 
-                    <p:outputLabel value="City: " />
+                    <p:outputLabel value="City Name: " />
                     <p:outputLabel value="#{cityName}" />
 
                     <p:outputLabel value="Country Name: " />
@@ -44,15 +44,15 @@
                     <p:outputLabel value="Airspace: " />
                     <p:outputLabel value="#{airspace}" />
 
-                    <p:outputLabel value="Number of route(s) from the Airport: " />
+<!--                    <p:outputLabel value="Number of route(s) from the Airport: " />
                     <p:outputLabel value="#{apOriginRouteList.size()}" />
 
                     <p:outputLabel value="Number of route(s) to the Airport: " />
-                    <p:outputLabel value="#{apDestRouteList.size()}" />
+                    <p:outputLabel value="#{apDestRouteList.size()}" />-->
 
                 </h:panelGrid>
 
-                <p:dataTable var="asOrgRoutes" value="#{apOriginRouteList}" style="width:100%">
+<!--                <p:dataTable var="asOrgRoutes" value="#{apOriginRouteList}" style="width:100%">
                     <f:facet name="header">
                         <h:outputText value="Route(s) from the airport" />
                     </f:facet>
@@ -73,7 +73,7 @@
                     <p:column headerText="Frequency">
                         <h:outputText value="0" />
                     </p:column>
-                </p:dataTable>
+                </p:dataTable>-->
 
             </p:panel>
 
