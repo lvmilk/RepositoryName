@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -73,6 +74,9 @@ public class FlightInstanceManagedBean implements Serializable {
     private Date startPlanDate;
     private Date endPlanDate;
 
+    private String firstInstDate;
+    private String minDate;
+    
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
@@ -104,7 +108,7 @@ public class FlightInstanceManagedBean implements Serializable {
         actualArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualArrTime");
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
-        
+
     }
 
     public void addFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
@@ -425,7 +429,9 @@ public class FlightInstanceManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
-    public Date getStartPlanDate() {
+    public Date getStartPlanDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        startPlanDate = df1.parse(getFirstInstDate());
         return startPlanDate;
     }
 
@@ -450,8 +456,33 @@ public class FlightInstanceManagedBean implements Serializable {
     public void scheduleAcToFi() throws ParseException, IOException {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
-        fsb.scheduleAcToFi(startPlanDate, endPlanDate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./autoFleetAssignmentResult.xhtml");
+        try {
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        startPlanDate=df1.parse(getFirstInstDate());
+            fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./autoFleetAssignment.xhtml");
+        } catch (IOException | ParseException e) {
+            System.out.println("Oops: Error! " + e.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", e.getMessage());
+            RequestContext.getCurrentInstance().showMessageInDialog(message);
+        }
+    }
+
+    public String getFirstInstDate() throws ParseException {
+        System.out.println("FIMB: getFirstInstDate!");
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        startPlanDate = df1.parse(fsb.getFirstInstDate());
+        return fsb.getFirstInstDate();
+    }
+    
+    public String getMinDate() throws ParseException{
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+         Date date = df1.parse(fsb.getFirstInstDate());
+         Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, 1);  // number of days to add
+            minDate = df1.format(c.getTime());
+        return minDate;
     }
 
 }

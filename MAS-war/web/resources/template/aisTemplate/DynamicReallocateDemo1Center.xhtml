@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="allocate">
+            <p:growl id="msgs" showDetail="true" />
+
+            <p:panel header="Select a Flight" style="margin-bottom:10px;">
+                <h:panelGrid columns="2" cellpadding="25">
+                    <p:outputLabel for="date" value="Departure Date:(YYYY-MM-DD) " />
+<!--                    <p:inputMask id="time"  value="#{dynamicReallocateBean.dateString}"  mask="9999-99-99" required="true" requiredMessage="Please enter a valid date" size="10">-->
+                    <p:calendar  id="date" value="#{dynamicReallocateBean.selectedDate}"  pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
+                        <p:ajax  event="dateSelect"  immediate="true" listener="#{dynamicReallocateBean.onDateChange}"  update="frequency" />
+                    </p:calendar>
+                    
+                    <p:outputLabel for="frequency" value="Select a flight: " />
+                    <p:selectOneMenu id="frequency" value="#{dynamicReallocateBean.flightNo}" required="true" requiredMessage="Please select a flight" style="width:100%">    
+                       <p:ajax  listener="#{dynamicReallocateBean.onFlightChange}"  update="flightCabin" /> 
+                       <f:selectItem itemLabel="Select One Flight" itemValue="1" />
+                        <f:selectItems value="#{dynamicReallocateBean.frequencyList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.getRoute().toString()}"/>
+                    </p:selectOneMenu>
+                  
+                    <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
+                    <p:selectOneMenu id="flightCabin" value="#{dynamicReallocateBean.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
+                       <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
+                       <f:selectItems value="#{dynamicReallocateBean.cabinList}"  var="cabin" itemValue="#{cabin.cabinClass.cabinName}" itemLabel="#{cabin.cabinClass.cabinName}"/>
+                    </p:selectOneMenu>
+                
+                </h:panelGrid>
+
+                <p:separator />
+
+                <p:commandButton value="Submit" update="allocate" actionListener="#{dynamicReallocateBean.findBookClassInstance}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

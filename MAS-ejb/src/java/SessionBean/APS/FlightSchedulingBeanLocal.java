@@ -59,4 +59,5 @@ public interface FlightSchedulingBeanLocal {
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
+    public String getFirstInstDate();
 }
