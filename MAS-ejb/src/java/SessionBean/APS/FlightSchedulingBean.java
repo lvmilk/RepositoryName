@@ -221,12 +221,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        flightInst.setStandardDepTimeDateType(formatter.parse((standardDepTime)));
 //        flightInst.setStandardArrTimeDateType(formatter.parse((standardArrTime)));
-
-        
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         flightInst.setStandardDepTimeDateType(formatter.parse(depDateTime.format(sdf)));
         flightInst.setStandardArrTimeDateType(formatter.parse(arrDateTime.format(sdf)));
-         System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
+        System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
 
 //        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
 //        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
@@ -326,16 +324,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return em.find(Aircraft.class, serialNo);
     }
 
-    @Override
-    public FlightInstance findFlight(Long flightId) {
-        return em.find(FlightInstance.class, flightId);
-    }
-
-    @Override
-    public Aircraft findAircraft(String serialNo) {
-        return em.find(Aircraft.class, serialNo);
-    }
-
     //---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
     @Override
     public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
@@ -355,7 +343,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("FSB： getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
         return flightInstListCopy;
     }
-  // get all unplanned fight instances for all aircraft 
+
+    // get all unplanned fight instances for all aircraft 
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate) {
         List<Aircraft> acList = new ArrayList<Aircraft>();
         acList = getAllAircraft();
@@ -384,7 +373,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
+       public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");
@@ -500,14 +489,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     public void setFirstInstDate() throws ParseException {
-        em.flush();
         System.out.println("FSB: setFirstInstDate for the first time!!!");
         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
         fiList = getAllFlightInstance();
         Collections.sort(fiList);
-        for (FlightInstance temp : fiList) {
-            System.out.println("FSB: setFirst : sorted List" + temp.getStandardDepTime());
-        }
         firstInstDate = fiList.get(0).getStandardDepTime();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date temp = df1.parse(firstInstDate);
@@ -531,6 +516,5 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return firstInstDate;
     }
-
 
 }

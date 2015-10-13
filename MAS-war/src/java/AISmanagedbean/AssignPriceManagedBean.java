@@ -13,6 +13,7 @@ import SessionBean.AirlineInventory.AssignPriceBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -139,9 +140,15 @@ public class AssignPriceManagedBean implements Serializable {
         System.out.println("fiList size before Remove: " + fiList.size());
         //fiList.remove(flightInst);
         int size = fiList.size();
+        List<FlightInstance> fiListCopy = new ArrayList<FlightInstance>();
+        for (Iterator<FlightInstance> it = fiList.iterator(); it.hasNext();) {
+            FlightInstance temp = it.next();
+            fiListCopy.add(temp);
+        }
+        
         for (int i = 0; i < size; i++) {
-            System.out.print("Two compare element: "+fiList.get(i).getId()+" " + flightInst.getId());
-            if (fiList.get(i).getId()==flightInst.getId()) {
+            System.out.print("Two compare element: "+fiListCopy.get(i).getId()+" " + flightInst.getId());
+            if (fiListCopy.get(i).getId()==flightInst.getId()) {
                 System.out.println("REMOVED");
                 fiList.remove(i);
             }

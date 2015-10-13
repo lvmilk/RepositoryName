@@ -518,6 +518,11 @@ public class PricingManagedBean implements Serializable {
 
     public void goBack() throws IOException {
         routeID = null;
+        this.setProfitMargin(0.0);
+        this.setAdminCost(0.0);
+        this.setCrewUnitCost(0.0);
+        this.setOtherCost(0.0);
+        this.setMaintenance(0.0);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingAttribute1.xhtml");
     }
 

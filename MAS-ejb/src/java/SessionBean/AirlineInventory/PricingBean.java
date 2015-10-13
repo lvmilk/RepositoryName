@@ -156,6 +156,11 @@ public class PricingBean implements PricingBeanLocal {
         return allFare;
     }
 
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+
+    public void setCrewCost(Double crewCost) {
+        this.crewCost = crewCost;
+    }
 }
