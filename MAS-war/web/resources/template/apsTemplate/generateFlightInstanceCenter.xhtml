@@ -17,10 +17,10 @@
                     <p:outputLabel value="Flight No: " />
                     <p:outputLabel value="#{FIMB.flightNo}" />
 
-<!--                    <p:outputLabel for="registration" value="Aircraft Registration No.:" />
-                    <p:selectOneMenu id="registration" value="#{FIMB.registrationNo}">
-                        <f:selectItems value="#{FIMB.registrationList}" />
-                    </p:selectOneMenu>-->
+                    <!--                    <p:outputLabel for="registration" value="Aircraft Registration No.:" />
+                                        <p:selectOneMenu id="registration" value="#{FIMB.registrationNo}">
+                                            <f:selectItems value="#{FIMB.registrationList}" />
+                                        </p:selectOneMenu>-->
 
                     <p:outputLabel for="startDate" value="Start Date: " />
                     <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" mindate="#{FIMB.currentDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
@@ -33,9 +33,9 @@
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
 
-                    <p:outputLabel for="flightStatus" value="Flight Status:" />
+<!--                    <p:outputLabel for="flightStatus" value="Flight Status:" />
                     <p:inputText id="flightStatus" value="#{FIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
-                    </p:inputText>
+                    </p:inputText>-->
 
                     <p:outputLabel value="Estimated Depature Time (default):"/>
                     <p:outputLabel value="#{FIMB.estimatedDepTime}" >
@@ -47,6 +47,9 @@
                         <f:convertDateTime locale="en_US" type="both" dateStyle="short" timeZone="Asia/Singapore" pattern="h:mm a" />
                     </p:outputLabel>
 
+                    <p:outputLabel value="Estimated Date Adjust (default):"/>
+                    <p:outputLabel value="#{FIMB.estimatedDateAdjust}"/>
+
                     <p:outputLabel value="Actual Departure Time (default):"/>
                     <p:outputLabel value="#{FIMB.actualDepTime}">
                         <f:convertDateTime locale="en_US" type="both" dateStyle="short" timeZone="Asia/Singapore" pattern="h:mm a" />
@@ -56,6 +59,11 @@
                     <p:outputLabel value="#{FIMB.actualArrTime}" >
                         <f:convertDateTime locale="en_US" type="both" dateStyle="short" timeZone="Asia/Singapore" pattern="h:mm a" />
                     </p:outputLabel>
+
+                    <p:outputLabel value="Actual Date Adjust (default):"/>
+                    <p:outputLabel value="#{FIMB.actualDateAdjust}"/>             
+
+
 
                     <!--                    <p:outputLabel for="estimatedDepTime" value="Estimated Departure Time :" />
                                         <p:calendar id="estimatedDepTime" value="#{FIMB.estimatedDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter estimated flight departure time" size="50"/>

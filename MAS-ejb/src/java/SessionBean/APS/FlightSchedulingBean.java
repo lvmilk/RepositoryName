@@ -226,7 +226,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception {
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
+            String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception {
         Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date =:flightDate");
         q.setParameter("flightDate", flightDate);
         if (q.getResultList().isEmpty()) {
@@ -238,8 +239,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightInst.setFlightStatus(flightStatus);
         flightInst.setEstimatedDepTime(estimatedDepTime);
         flightInst.setEstimatedArrTime(estimatedArrTime);
+        flightInst.setEstimatedDateAdjust(estimatedDateAdjust);
         flightInst.setActualDepTime(actualDepTime);
         flightInst.setActualArrTime(actualArrTime);
+        flightInst.setActualDateAdjust(actualDateAdjust);
         em.merge(flightInst);
         em.flush();
     }
@@ -284,13 +287,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
-    //---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
+    ////////////////////////---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
     @Override
     public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
         List<FlightInstance> flightInstList = getAllFlightInstance();
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
-            System.out.println("FSB： getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :"+temp.getAircraft().getRegistrationNo().equals("9V-000"));
 //            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :"+(temp.getAircraft() != null));
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 3 :"+(temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));

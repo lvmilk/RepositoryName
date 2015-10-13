@@ -57,6 +57,10 @@ INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo,  startDate,endDate,sch
 
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo) values(10000,10000,"2016-10-01","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-01 10:00","2016-10-01 15:00","9V-000")
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo) values(20000,20000,"2016-10-03","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-03 10:00","2016-10-03 15:00","9V-000")
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo) values(10000,10000,"2016-10-05","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-05 10:00","2016-10-05 15:00","9V-000")
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo) values(20000,20000,"2016-10-07","10:00","15:00","10:00","15:00","Testing",0,0,"2016-10-07 10:00","2016-10-07 15:00","9V-000")
+
+
 
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (10000,10000,10000,1)
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (20000,10000,20000,2)
@@ -116,4 +120,3 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 -- INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(240000,110000,100000,0,40,0)
 -- INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(250000,120000,100000,0,45,0)
 -- INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(260000,130000,100000,0,55,0)
-
