@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
@@ -48,7 +49,7 @@ public class AssignPriceManagedBean implements Serializable {
         routeID = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("routeID");
         fiList = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fiList");
         flightInst = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInst");
-        bkiList =(List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkiList");
+        bkiList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkiList");
     }
 
     // Add business logic below. (Right-click in editor and choose
@@ -98,7 +99,7 @@ public class AssignPriceManagedBean implements Serializable {
     }
 
     public void checkFlightInstance() throws IOException {
-        System.out.println("APMB: checkFightInstance "+flightNo);
+        System.out.println("APMB: checkFightInstance " + flightNo);
         this.setFiList(apb.getFlightInstanceList(flightNo));
         System.out.println("APMB: any flight instance  selected?  " + getFiList().size());
         if (flightNo != null && !flightNo.equals("")) {
@@ -120,22 +121,42 @@ public class AssignPriceManagedBean implements Serializable {
         this.setFfList(apb.getFlightFrequencyList(routeID));
     }
 
-    public void generateBookingClass(FlightInstance fi) throws IOException  {
-        apb.generateBookingClass(fi);
-        flightInst = fi;
-        fiList.remove(fi);
-        this.setBkiList(apb.getBkiList(fi));
+//    public void generateBookingClass(FlightInstance fi) throws IOException  {
+//        apb.generateBookingClass(fi);
+//        flightInst = fi;
+//        fiList.remove(fi);
+//        this.setBkiList(apb.getBkiList(fi));
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInst", flightInst);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkiList", bkiList);
+//
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPriceSuccess.xhtml");
+//    }
+    public void generateBookingClass(ActionEvent event) throws IOException {
+        flightInst = (FlightInstance) event.getComponent().getAttributes().get("fi");
+        System.out.println("flightInsantance: " + flightInst.getDate());
+        apb.generateBookingClass(flightInst);
+        System.out.println("fiList size before Remove: " + fiList.size());
+        //fiList.remove(flightInst);
+        int size = fiList.size();
+        for (int i = 0; i < size; i++) {
+            System.out.print("Two compare element: "+fiList.get(i).getId()+" " + flightInst.getId());
+            if (fiList.get(i).getId()==flightInst.getId()) {
+                System.out.println("REMOVED");
+                fiList.remove(i);
+            }
+        }
+
+        System.out.println("fiList size after Remove: " + fiList.size());
+        this.setFiList(fiList);
+        this.setBkiList(apb.getBkiList(flightInst));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
+        System.out.println("PUT SESSION MAP? "+ fiList.size() );
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInst", flightInst);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkiList", bkiList);
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPriceSuccess.xhtml");
     }
-
-//    public List<BookingClassInstance> getBkiList(FlightInstance fi) {
-//        bkiList = apb.getBkiList(fi);
-//        return bkiList;
-//    }
 
     public FlightInstance getFlightInst() {
         return flightInst;

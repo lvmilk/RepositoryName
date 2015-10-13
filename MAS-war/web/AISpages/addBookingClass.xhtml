@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-
+        Add Booking Class
     </h:head>
     <h:body>
 
@@ -17,53 +17,41 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-            <ui:define name="right">
-                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>
+     
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
-                <div style="width:50%; p {font-size: 30vmax !important;} margin-right:auto;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
 
 
+                <h:form>
 
-                    <h:form>
+                    <!--<div><h1>Choose an aircraft model </h1></div>-->
+                    <h:form id="selectOne">
+                        <p:messages autoUpdate="true" />
+                        <p:panel id="panel" header="Choose a cabin class" >
+                            <h:panelGrid columns="2"  cellpadding="20">
+                                <p:outputLabel for="console" value="Cabin Class :" />
+                                <p:selectOneMenu id="console" value="#{bookingClassBean.cabin}" required="true" requiredMessage="Please select a cabin class" style="width:250px">
+                                    <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="First Class" itemValue="First Class" />
+                                    <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
+                                    <f:selectItem itemLabel="Premium Economic Class" itemValue="Premium Economic Class" />
+                                    <f:selectItem itemLabel="Economic Class" itemValue=" Economic Class" />
+                                </p:selectOneMenu>
 
+                                <p:draggable for="panel" /><p:resizable for="panel" />
 
+                            </h:panelGrid>
 
-                                                    <!--<div><h1>Choose an aircraft model </h1></div>-->
-                        <h:form id="selectOne">
-                            <p:messages autoUpdate="true" />
-                            <p:panel id="panel" header="Choose a cabin class" >
-                                <h:panelGrid columns="2" style="margin-bottom:200px" cellpadding="20">
-                                    <p:outputLabel for="console" value="Cabin Class :" />
-                                    <p:selectOneMenu id="console" value="#{bookingClassBean.cabin}" required="true" requiredMessage="Please select a cabin class" style="width:250px">
-                                        <f:selectItem itemLabel="Select One" itemValue="#{null}" />
-                                        <f:selectItem itemLabel="First Class" itemValue="First Class" />
-                                        <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
-                                        <f:selectItem itemLabel="Premium Economic Class" itemValue="Premium Economic Class" />
-                                        <f:selectItem itemLabel="Economic Class" itemValue=" Economic Class" />
-                                    </p:selectOneMenu>
+                            <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{bookingClassBean.checkCabin()}"  icon="ui-icon-check" />
 
-                                    <p:draggable for="panel" /><p:resizable for="panel" />
-
-                                </h:panelGrid>
-
-                                <p:commandButton value="Next" style="margin-right: 0px !important" actionListener="#{bookingClassBean.checkCabin()}"  icon="ui-icon-check" />
-
-                            </p:panel>
-
-                        </h:form>
-                        <p:resizable for="selectOne" /><p:draggable for="selectOne" />
-
+                        </p:panel>
 
                     </h:form>
+                    <p:resizable for="selectOne" /><p:draggable for="selectOne" />
 
 
-
-                </div>
-
-
+                </h:form>
 
 
             </ui:define>

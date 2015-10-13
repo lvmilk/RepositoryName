@@ -11,20 +11,25 @@
         <h:form>
 
             <p:panel id="panel" header="All Route"  style="width:100%">
-                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" paginator="true" rows="20" rowKey="#{route.id}" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
-
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" widgetVar="routeTable" paginator="true" rows="20" rowKey="#{route.id}" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
+<!--                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet> -->
                     <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" headerText="Route Id" />
                             <p:column colspan="4" headerText="Origin Airport" />
                             <p:column colspan="4" headerText="Destination Airport" />
                             <p:column rowspan="2" headerText="Distance" sortBy="#{route.distance}"/>
-                            <p:column rowspan="2" headerText="Status" />
+                            <!--                            <p:column rowspan="2" headerText="Status" />-->
                             <p:column rowspan="2" headerText="Action" />
                         </p:row>
                         <p:row>
                             <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
-                            <p:column headerText="Specification" filterBy="#{route.origin.airportName}" filterMatchMode="contains"/>
+                            <p:column headerText="Specification" filterBy="#{route.origin.spec}" filterMatchMode="contains"/>
                             <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains"/>
                             <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains"/>
                             <p:column headerText="IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}" filterMatchMode="contains"/>
@@ -41,7 +46,7 @@
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{route.origin.airportName}" />
+                        <h:outputText value="#{route.origin.spec}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{route.origin.cityName}" />
@@ -66,9 +71,9 @@
                     <p:column>
                         <h:outputText value="#{route.distance}" />
                     </p:column>
-                    <p:column>
-                        <h:outputText value="#{route.status}" />
-                    </p:column>
+                    <!--                    <p:column>
+                                            <h:outputText value="#{route.status}" />
+                                        </p:column>-->
                     <p:column>
                         <p:commandButton value="Edit" action="#{RouteManagedBean.editRoute(route)}"  />
                     </p:column>

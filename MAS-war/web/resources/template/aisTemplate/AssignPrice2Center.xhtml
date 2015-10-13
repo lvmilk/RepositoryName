@@ -27,7 +27,10 @@
                     </p:column>
 
                     <p:column headerText="Generate booking class">
-                        <p:commandButton value="Generate" actionListener="#{assignPriceManagedBean.generateBookingClass(fi)}"/>
+                        <p:commandButton value="Generate" actionListener="#{assignPriceManagedBean.generateBookingClass}">
+                        <f:attribute name="fi" value="#{fi}"/>
+                        </p:commandButton>   
+                          
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="Back" style="margin-right:0" actionListener="#{assignPriceManagedBean.goBack()}"  icon="ui-icon-check" />

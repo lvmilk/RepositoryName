@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-
+        Edit Booking Class
     </h:head>
     <h:body>
 
@@ -17,32 +17,32 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-<!--            <ui:define name="right">
-                <ui:include src="./cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>-->
+            <!--            <ui:define name="right">
+                            <ui:include src="./cmiTemplate/rightFragment.xhtml"></ui:include>
+                        </ui:define>-->
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
                 <div style="width:60%; p {font-size: 100vmax !important;} margin-right:10%;margin-top:5%; margin-bottom:auto;margin-left:20%; border:0px ;">
-                  
+
 
                     <h:form id="formMain">
                         <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
                             <!--<p:messages id="msgs" />-->
                             <h:panelGrid columns="2" style="margin-bottom:50px; width:300px" cellpadding="15">
-                                
+
                                 <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
                                 <p:selectOneRadio id="can_standby" value="#{bookingClassBean.can_standby}" >
                                     <f:selectItem itemLabel="Yes" itemValue="true" />
                                     <f:selectItem itemLabel="No" itemValue="false" />
                                 </p:selectOneRadio>
-                               
+
                                 <p:outputLabel for="dds_available" value="Allow to be sold in DDS?: :" />
                                 <p:selectOneRadio id="dds_available" value="#{bookingClassBean.dds_available}" >
                                     <f:selectItem itemLabel="Yes" itemValue="true" />
                                     <f:selectItem itemLabel="No" itemValue="false" />
                                 </p:selectOneRadio>
-                                  
+
                                 <p:outputLabel for="gds_available " value="Allow to be sold in GDS? :" />
                                 <p:selectOneRadio id="gds_available" value="#{bookingClassBean.dds_available}" >
                                     <f:selectItem itemLabel="Yes" itemValue="true" />
@@ -53,9 +53,9 @@
                                 <p:inputText binding="#{bookingClassBean.uIComponent}" id="min_stay" value="#{bookingClassBean.min_stay}" label="min_stay" required="true" requiredMessage="Please enter an integer" size="10">
                                     <f:validateLongRange minimum="0" maximum="730" />
                                 </p:inputText>
-                                
-<!--                                <p:message for="min_stay" />-->
-                                
+
+                                <!--                                <p:message for="min_stay" />-->
+
                                 <p:outputLabel for="max_stay" value="Maximum days of stay:" />
                                 <p:inputText id="max_stay" value="#{bookingClassBean.max_stay}" label="max_stay" required="true"  requiredMessage="Please enter an integer" size="10">
                                     <f:validateLongRange minimum="0" maximum="730" />
@@ -70,7 +70,7 @@
                                 <p:inputText id="ticket_advance" value="#{bookingClassBean.ticket_advance}" label="ticket_advance" required="true"  requiredMessage="Please enter an integer" size="10">
                                     <f:validateLongRange minimum="0" maximum="730" />
                                 </p:inputText>
-          
+
                             </h:panelGrid>
                             <p:commandButton value="Next" update="@form" actionListener="#{bookingClassBean.editSecond}"  icon="ui-icon-check" />
                         </p:panel>
