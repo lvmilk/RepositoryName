@@ -7,9 +7,12 @@ package Entity.APS;
 
 import Entity.aisEntity.FlightCabin;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -18,6 +21,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -45,6 +49,10 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     private Integer actualDateAdjust;
     private String standardDepTime;
     private String standardArrTime;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date standardDepTimeDateType;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date standardArrTimeDateType;
 
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
@@ -214,6 +222,22 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         LocalTime fiTime = LocalTime.parse(fi.getStandardDepTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         // thisTime<fiTime return -1
         return thisTime.compareTo(fiTime);
+    }
+
+    public Date getStandardDepTimeDateType() {
+        return standardDepTimeDateType;
+    }
+
+    public void setStandardDepTimeDateType(Date standardDepTimeDateType) {
+        this.standardDepTimeDateType = standardDepTimeDateType;
+    }
+
+    public Date getStandardArrTimeDateType() {
+        return standardArrTimeDateType;
+    }
+
+    public void setStandardArrTimeDateType(Date standardArrTimeDateType) {
+        this.standardArrTimeDateType = standardArrTimeDateType;
     }
 
 }

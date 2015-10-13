@@ -52,5 +52,11 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightInstance> getThisFlightInstance(String flightNo);
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
+
+    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception;
+
+    public void addAcToFi(Aircraft ac, FlightInstance fi);
+
+    public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
 }

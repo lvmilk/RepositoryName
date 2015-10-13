@@ -11,10 +11,10 @@
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="Airport Information" style="width: 100%">
+            <p:panel id="panel" header="Enter Airport Information" style="width: 100%">
 
                 <p:messages id="msgs" autoUpdate="true" />
-                <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width:60%" cellpadding="20">
 
                     <p:outputLabel for="IATA" value="Airport IATA: " />
                     <p:inputText id="IATA" value="#{AirportManagedBean.IATA}" label="IATA" required="true" validatorMessage="Please enter three-digit uppercase alphabets" requiredMessage="Please enter airport IATA" size="30">
