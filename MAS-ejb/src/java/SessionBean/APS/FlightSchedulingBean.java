@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     static String firstInstDate;
     static Boolean flag = true;
+    private Calendar cal = new GregorianCalendar();
 
     public FlightSchedulingBean() {
     }
@@ -399,15 +401,44 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void addAcToFi(Aircraft ac, FlightInstance fi) {
+    public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
         //------------------need check time conflict------------------
         List<FlightInstance> flightTemp = ac.getFlightInstance();
-        flightTemp.add(fi);
-        ac.setFlightInstance(flightTemp);
-        fi.setAircraft(ac);
-        em.merge(fi);
-        em.merge(ac);
-        em.flush();
+        boolean canAssign = false;
+        Collections.sort(flightTemp);
+        Date depCheck = new Date();
+        Date arrCheck = new Date();
+        for (int i = 0; i < flightTemp.size(); i++) {
+            depCheck = flightTemp.get(i).getStandardDepTimeDateType();
+            arrCheck = flightTemp.get(i + 1).getStandardArrTimeDateType();
+            cal = Calendar.getInstance();
+            // last arrival shoulbe be ahead of the fi's departure at least 2 hours
+            cal.setTime(depCheck);
+            cal.add(Calendar.HOUR, 2);
+            depCheck = cal.getTime();
+            if ((depCheck.before(fi.getStandardDepTimeDateType())) && flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
+                // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
+                if (i + 1 < flightTemp.size()) {
+                    cal.setTime(arrCheck);
+                    cal.add(Calendar.HOUR, -2);
+                    arrCheck = cal.getTime();
+                    if ((fi.getStandardArrTimeDateType().before(arrCheck)) && flightTemp.get(i + 1).getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getDest())) {
+                        canAssign = true;
+                    }
+                } else {  //it is the last in flighttemp, can anyway assign
+                    canAssign = true;
+                }
+            }
+        }
+        if (canAssign == true) {
+            flightTemp.add(fi);
+            ac.setFlightInstance(flightTemp);
+            fi.setAircraft(ac);
+            em.merge(fi);
+            em.merge(ac);
+            em.flush();
+        }
+        return canAssign;
     }
 
     @Override

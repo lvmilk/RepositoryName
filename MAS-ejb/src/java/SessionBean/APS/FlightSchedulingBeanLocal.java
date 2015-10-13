@@ -55,7 +55,7 @@ public interface FlightSchedulingBeanLocal {
 
     public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception;
 
-    public void addAcToFi(Aircraft ac, FlightInstance fi);
+    public boolean addAcToFi(Aircraft ac, FlightInstance fi);
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     

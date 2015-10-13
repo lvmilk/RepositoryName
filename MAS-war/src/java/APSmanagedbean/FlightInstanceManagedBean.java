@@ -165,7 +165,7 @@ public class FlightInstanceManagedBean implements Serializable {
                                 fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, depDateAdjust, ad, aa, arrDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
-                            cal = cal = Calendar.getInstance();
+                            cal = Calendar.getInstance();
                             cal.setTime(startDate);
                             cal.add(Calendar.DATE, 1);
                             startDate = cal.getTime();
