@@ -196,8 +196,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightInst.setAircraft(ac);
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
 
-        String standardDepTime = flightFrequency.getScheduleArrTime();
-        String standardArrTime = flightFrequency.getScheduleDepTime();
+        String standardDepTime = flightFrequency.getScheduleDepTime();
+        String standardArrTime = flightFrequency.getScheduleArrTime();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate stdDate = LocalDate.parse(date, dateFormat);
@@ -209,15 +209,15 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         LocalDateTime depDateTime = LocalDateTime.of(stdDate, depTime);
         LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
 
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("flightSchedulingBean: add flight instance: String type: Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
-        
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         flightInst.setStandardDepTimeDateType(formatter.parse(depDateTime.format(sdf)));
         flightInst.setStandardArrTimeDateType(formatter.parse(arrDateTime.format(sdf)));
-         System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
+        System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
 //        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
 //        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
 //        ZonedDateTime stdArr = arrDateTime.atZone(ZoneId.of("UTC"));
@@ -465,8 +465,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public List<FlightInstance> getUnassignedFlight() {
-        Query q1 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default OR fi.aircraft=:blank").setParameter("default", "9V-000");
-        return (List<FlightInstance>) q1.getResultList();
+        Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", "9V-000");
+        Aircraft a = (Aircraft) q1.getResultList().get(0);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default").setParameter("default", a);
+        return (List<FlightInstance>) q2.getResultList();
     }
 
     public void setFirstInstDate() throws ParseException {
@@ -497,4 +499,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return firstInstDate;
     }
+
+    @Override
+    public FlightInstance getDummyFi() {
+        Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
+//        FlightInstance fi = em.find(FlightInstance.class, 1000000);
+        return (FlightInstance)q1.getSingleResult();
+    }
+
 }

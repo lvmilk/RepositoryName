@@ -10,7 +10,6 @@ import Entity.APS.FlightInstance;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +24,7 @@ import org.primefaces.extensions.component.timeline.TimelineUpdater;
 import org.primefaces.extensions.event.timeline.TimelineAddEvent;
 import org.primefaces.extensions.event.timeline.TimelineModificationEvent;
 import org.primefaces.extensions.model.timeline.TimelineEvent;
+import org.primefaces.extensions.model.timeline.TimelineGroup;
 import org.primefaces.extensions.model.timeline.TimelineModel;
 
 /**
@@ -52,7 +52,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     private long zoomMax;
     private Date start;
     private Date end;
-    private TimeZone timeZone = TimeZone.getTimeZone("UTC");
+    private TimeZone timeZone = TimeZone.getTimeZone("Asia/Singapore");
     private String deleteMessage;
 
     private String flightNo;
@@ -65,35 +65,56 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     @PostConstruct
-    protected void initialize() {
+    public void initialize() {
         aircraftList = fpb.getAllAircraft();
 
 // initial zooming is ca. one month to avoid hiding of event details (due to wide time range of events)  
         zoomMax = 1000L * 60 * 60 * 24 * 30;
 
         // set initial start / end dates for the axis of the timeline (just for testing)  
-        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-        cal.set(2015, Calendar.OCTOBER, 9, 0, 0, 0);
-        start = cal.getTime();
-        cal.set(2016, Calendar.DECEMBER, 10, 0, 0, 0);
-        end = cal.getTime();
+//        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+//        cal.set(2015, Calendar.OCTOBER, 9, 0, 0, 0);
+        start = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startPlanDate");
+        end = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startPlanDate");
 
         model = new TimelineModel();
-        for (Aircraft ac : fpb.getAllAircraft()) {
-            List<FlightInstance> fiList = ac.getFlightInstance();
-            for (FlightInstance fi : fiList) {
-                start = fi.getStandardDepTimeDateType();
-                end = fi.getStandardArrTimeDateType();
-                // create an event with content, start / end dates, editable flag, group name and custom style class  
-//                TimelineEvent flightTaskEvent = new TimelineEvent(fi, start, end, true);
-                TimelineEvent flightTaskEvent = new TimelineEvent(fi, start, end, true, ac.getSerialNo());
+        Date startDate;
+        Date endDate;
+        List<Aircraft> acList = fpb.getAllAircraft();
+        System.out.println(acList);
+        for (Aircraft ac : acList) {
+            if (!ac.getRegistrationNo().equals("9V-000")) {
+                System.out.println(ac.getRegistrationNo());
+                List<FlightInstance> fiList = ac.getFlightInstance();
+                TimelineGroup group = new TimelineGroup(ac.getRegistrationNo(), ac);
+                model.addGroup(group);
+                //---------------Add dummy event for aircraft group to show---------------
+                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                cal.set(2014, Calendar.FEBRUARY, 9, 0, 0, 0);
+                Date dummyStart = cal.getTime();
+                cal.set(2014, Calendar.FEBRUARY, 10, 0, 0, 0);
+                Date dummyEnd = cal.getTime();
+                TimelineEvent flightTaskEvent = new TimelineEvent(fsb.getDummyFi(), dummyStart, dummyEnd, true, ac.getRegistrationNo());
+                System.out.println("FAMB: init(): event " + flightTaskEvent);
                 model.add(flightTaskEvent);
+                System.out.println("FAMB: init(): group " + group);
+                for (FlightInstance fi : fiList) {
+                    System.out.println("FAMB: init(): fi= " + fi.getDate() + fi.getFlightFrequency().getFlightNo());
+                    System.out.println("FAMB: init(): starttime " + start);
+                    startDate = fi.getStandardDepTimeDateType();
+                    System.out.println("FAMB: init(): endtime " + end);
+                    endDate = fi.getStandardArrTimeDateType();
+                    // create an event with content, start / end dates, editable flag, group name and custom style class  
+                    flightTaskEvent = new TimelineEvent(fi, startDate, endDate, true, ac.getRegistrationNo());
+                    System.out.println("FAMB: init(): event " + flightTaskEvent);
+                    model.add(flightTaskEvent);
+                }
             }
-//            modelList.add(model);
         }
     }
 
     public void onAdd(TimelineAddEvent e) {
+        System.out.println("-------------------------------aaaabbbbbbbbbbb");
 //        // get TimelineEvent to be added  
 //        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());  
 //        // add the new event to the model in case if user will close or cancel the "Add dialog"  
@@ -102,6 +123,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public void onDelete(TimelineModificationEvent e) {
+        System.out.println("-------------------------------aaaacccccccccccc");
         event = e.getTimelineEvent();
     }
 
@@ -121,7 +143,7 @@ public class FleetAssignmentManagedBean implements Serializable {
             fi = fsb.findFlight(taskId);
             start = fi.getStandardDepTimeDateType();
             end = fi.getStandardArrTimeDateType();
-            if(fsb.addAcToFi(aircraft, fi)){
+            if (fsb.addAcToFi(aircraft, fi)) {
                 event = new TimelineEvent(fi, start, end, true, taskAircraftSerial);
                 TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
                 model.update(event, timelineUpdater);
