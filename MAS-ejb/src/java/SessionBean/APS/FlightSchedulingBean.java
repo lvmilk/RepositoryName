@@ -299,9 +299,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
- 
     @Override
-    public FlightInstance findFlight(String flightNo,  String flightDate) throws Exception {
+    public FlightInstance findFlight(String flightNo, String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
@@ -316,7 +315,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return (FlightInstance) q2.getResultList().get(0);
     }
-
 
     @Override
     public FlightInstance findFlight(Long flightId) {
@@ -370,15 +368,36 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
         List<Aircraft> aircraftList = q1.getResultList();
         if (aircraftList.isEmpty()) {
-            System.out.println("aircraftList: No aircraf.");
+            System.out.println("aircraftList: No aircraft.");
         } else {
             System.out.println("aircraftList got");
         }
         return aircraftList;
     }
 
+    public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
+        Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
+        List<Aircraft> aircraftList = q1.getResultList();
+        if (aircraftList.isEmpty()) {
+            System.out.println("aircraftList: No aircraft.");
+        } else {
+            for (Aircraft ac : aircraftList) {
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Date deliveryDate = df.parse(ac.getDeliveryDate());
+                Date retireDate = df.parse(ac.getRetireDate());
+                if (deliveryDate.after(startDate)) {
+                    aircraftList.remove(ac);
+                } else if (retireDate.before(endDate)) {
+                    aircraftList.remove(ac);
+                }
+            }
+            System.out.println("aircraftList got");
+        }
+        return aircraftList;
+    }
+
     @Override
-       public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
+    public void scheduleAcToFi(Date startDate, Date endDate) throws Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");
@@ -389,7 +408,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("EDIT firstInstDate to " + firstInstDate);
         }
 
-        for (Aircraft acTemp : getAllAircraft()) {
+        for (Aircraft acTemp : getAllAircraft(startDate, endDate)) {
             System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
             Date currentTime = startDate;    //the current available time of the aircraft
             Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
@@ -533,7 +552,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public FlightInstance getDummyFi() {
         Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
 //        FlightInstance fi = em.find(FlightInstance.class, 1000000);
-        return (FlightInstance)q1.getSingleResult();
+        return (FlightInstance) q1.getSingleResult();
     }
 
 }

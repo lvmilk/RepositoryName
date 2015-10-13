@@ -20,7 +20,7 @@
                     </f:facet>
                     <p:columnGroup type="header">
                         <p:row>
-                            <p:column rowspan="2" headerText="Route Id" />
+<!--                            <p:column rowspan="2" headerText="Route Id" />-->
                             <p:column colspan="4" headerText="Origin Airport" />
                             <p:column colspan="4" headerText="Destination Airport" />
                             <p:column rowspan="2" headerText="Distance" sortBy="#{route.distance}"/>
@@ -39,9 +39,9 @@
                         </p:row>
                     </p:columnGroup>
 
-                    <p:column>
+<!--                    <p:column>
                         <h:outputText value="#{route.id}" />
-                    </p:column>
+                    </p:column>-->
                     <p:column>
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>

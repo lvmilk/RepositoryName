@@ -46,7 +46,7 @@ public interface FlightSchedulingBeanLocal {
 
     public List<Aircraft> getAllAircraft();
 
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException;
+    public void scheduleAcToFi(Date startDate, Date endDate) throws Exception;
 
     public List<FlightInstance> getThisFlightInstance(String flightNo);
 
