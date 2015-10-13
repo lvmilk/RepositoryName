@@ -69,6 +69,7 @@ public class LoginManagerBean implements Serializable {
         }
     }
 
+
     public void foget() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./CMIpages/forgetPwd.xhtml");
     }
