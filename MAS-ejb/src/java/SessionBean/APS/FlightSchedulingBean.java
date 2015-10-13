@@ -196,8 +196,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightInst.setAircraft(ac);
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
 
-        String standardDepTime = flightFrequency.getScheduleArrTime();
-        String standardArrTime = flightFrequency.getScheduleDepTime();
+        String standardDepTime = flightFrequency.getScheduleDepTime();
+        String standardArrTime = flightFrequency.getScheduleArrTime();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate stdDate = LocalDate.parse(date, dateFormat);
@@ -334,7 +334,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightInstList = getAllFlightInstance();
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
-            System.out.println("FSB： getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
 //            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :"+(temp.getAircraft() != null));
             System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
@@ -344,7 +344,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
             }
         }
-        System.out.println("FSB： getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
+        System.out.println("FSB: getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
         return flightInstListCopy;
     }
 

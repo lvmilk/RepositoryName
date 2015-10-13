@@ -57,7 +57,8 @@ public class EditRouteManagedBean implements Serializable {
     private Airport dest;
 
     private List<AircraftType> acTypeList;
-    private List<String> acTypeInfo;
+    private List<String> acTypeInfo = new ArrayList();
+ 
 //    private Map<String, String> acTypeInfo = new HashMap<String, String>();
 
     public EditRouteManagedBean() {
@@ -66,8 +67,14 @@ public class EditRouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route");
-        acTypeInfo = getAcTypeInfo();
-        acTypeString = route.getAcType().getType();
+        
+        acTypeList = fpb.getAllAircraftType();
+        for (int i = 0; i < acTypeList.size(); i++) {
+            acTypeString = acTypeList.get(i).getType();
+            acTypeInfo.add(acTypeString);
+        }
+       // acTypeInfo = getAcTypeInfo();
+       // acTypeString = route.getAcType().getType();
         originIATA = route.getOrigin().getIATA();
         destIATA = route.getDest().getIATA();
         distance = route.getDistance();
