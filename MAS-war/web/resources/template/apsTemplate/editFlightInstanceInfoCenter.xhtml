@@ -24,8 +24,13 @@
                     <p:outputLabel value="#{editFIIMB.flightDateString}" />
 
                     <p:outputLabel for="flightStatus" value="Flight Status:" />
-                    <p:inputText id="flightStatus" value="#{editFIIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
-                    </p:inputText>
+                    <p:selectOneRadio id="flightStatus" value="#{editFIIMB.flightStatus}" required="true"  requiredMessage="Please select status of the flight.">
+                        <f:selectItem itemLabel="Scheduled" itemValue="Scheduled" />
+                        <f:selectItem itemLabel="Active" itemValue="Active" />
+                        <f:selectItem itemLabel="Landed" itemValue="Landed" />
+                        <f:selectItem itemLabel="Cancelled" itemValue="Cancelled" />
+                    </p:selectOneRadio>
+                    
 
                     <p:outputLabel for="estimatedDepTime" value="Estimated Depature Time:"/>
                     <p:calendar  id="estimatedDepTime" value="#{editFIIMB.estimatedDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight estimated departure time" size="30"/>

@@ -46,9 +46,19 @@
                 </p:column>
 
                 <f:facet name="footer">
-                    <p:commandButton process="messagesMenu" update = "messagesMenu" icon="ui-icon-trash" value="Delete" actionListener ="#{viewSendMsgMB.deleteMessage(viewSendMsgMB.checkedMessageList)}" />
+                    <p:commandButton process="messagesMenu" update = "messagesMenu" icon="ui-icon-trash" value="Delete" actionListener ="#{viewSendMsgMB.toDeleteMsg((viewSendMsgMB.checkedMessageList))}" />
                 </f:facet>
             </p:dataTable>     
+
+            <h:form id="sendMsg">
+                <p:dialog id="sendMsg" header="Delete messages ?" widgetVar="dlgSendMsg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Delete"  oncomplete="PF('dlgSendMsg').hide()" action="#{viewSendMsgMB.deleteMessage(viewSendMsgMB.checkedMessageList)}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgSendMsg').hide()" />
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+
         </h:form>
     </h:body>
 </html>

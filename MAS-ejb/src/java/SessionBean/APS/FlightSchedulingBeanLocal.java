@@ -53,8 +53,6 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception;
-
     public boolean addAcToFi(Aircraft ac, FlightInstance fi);
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
@@ -71,4 +69,8 @@ public interface FlightSchedulingBeanLocal {
     public Aircraft findAircraft(String serialNo);
 
     public List<FlightInstance> getUnassignedFlight();
+
+    public FlightInstance findFlight(String flightNo, String flightDate) throws Exception;
+
+    public FlightInstance getDummyFi();
 }
