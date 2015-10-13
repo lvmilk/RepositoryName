@@ -30,11 +30,12 @@ public class AircraftManagedBean implements Serializable {
     private FleetPlanningBeanLocal fpb;
     private String type;
     private String registrationNo;
-    private String serialNo;
+//    private String serialNo;
     private String status;
     private Date firstFlyDate;
     private Date deliveryDate;
     private Date retireDate;  //Lease Expiration Date
+    private Date oldRetireDate;
 //    private Long flightLogId;
 //    private Long maintenanceLogId;
     DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -64,14 +65,19 @@ public class AircraftManagedBean implements Serializable {
 
     public void addAircraft() throws Exception {
         try {
-            if (firstFlyDate.before(deliveryDate) && retireDate.after(deliveryDate)) {
-                String ffd = df.format(firstFlyDate);
-                String dd = df.format(deliveryDate);
-                String rd = df.format(retireDate);
-                fpb.addAircraft(type, registrationNo, serialNo, status, ffd, dd, rd);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
+            if (firstFlyDate.before(new Date()) && retireDate.after(new Date())) {
+                if (firstFlyDate.before(deliveryDate) && retireDate.after(deliveryDate)) {
+                    String ffd = df.format(firstFlyDate);
+                    String dd = df.format(deliveryDate);
+                    String rd = df.format(retireDate);
+                    status = "In Service";
+                    fpb.addAircraft(type, registrationNo, status, ffd, dd, rd);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
+                }
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < today < lease expiration date)"));
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -100,11 +106,14 @@ public class AircraftManagedBean implements Serializable {
     public void editAircraft(Aircraft aircraft) throws IOException, ParseException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("registrationNo", aircraft.getRegistrationNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("type", aircraft.getAircraftType().getType());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo", aircraft.getSerialNo());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("serialNo", aircraft.getSerialNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("status", aircraft.getStatus());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstFlyDate", df.parse(aircraft.getFirstFlyDate()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deliveryDate", df.parse(aircraft.getDeliveryDate()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("retireDate", df.parse(aircraft.getRetireDate()));
+        oldRetireDate = df.parse(aircraft.getRetireDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oldRetireDate", df.parse(aircraft.getRetireDate()));
+        System.out.println("aircraftManagedBean: editAircraft: oldRetireDate is "+oldRetireDate);
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightLogId", aircraft.getFlightLogId());
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceLogId", aircraft.getMaintenanceLogId());
         System.out.println("Which aircraft is edited? : " + aircraft.getRegistrationNo());
@@ -120,7 +129,7 @@ public class AircraftManagedBean implements Serializable {
             context.execute("PF('dlg').show()");
         }
     }
-    
+
     public void confirmDeleteAircraft() throws Exception {
         try {
             if (selectedList.isEmpty()) {
@@ -161,13 +170,13 @@ public class AircraftManagedBean implements Serializable {
         this.registrationNo = registrationNo;
     }
 
-    public String getSerialNo() {
-        return serialNo;
-    }
-
-    public void setSerialNo(String serialNo) {
-        this.serialNo = serialNo;
-    }
+//    public String getSerialNo() {
+//        return serialNo;
+//    }
+//
+//    public void setSerialNo(String serialNo) {
+//        this.serialNo = serialNo;
+//    }
 
     public String getStatus() {
         return status;
@@ -216,7 +225,6 @@ public class AircraftManagedBean implements Serializable {
 //    public void setMaintenanceLogId(Long maintenanceLogId) {
 //        this.maintenanceLogId = maintenanceLogId;
 //    }
-
     public Aircraft getNewAircraft() {
         return newAircraft;
     }
@@ -264,6 +272,13 @@ public class AircraftManagedBean implements Serializable {
     public void setKeyList(List<String> keyList) {
         this.keyList = keyList;
     }
-    
+
+    public Date getOldRetireDate() {
+        return oldRetireDate;
+    }
+
+    public void setOldRetireDate(Date oldRetireDate) {
+        this.oldRetireDate = oldRetireDate;
+    }
 
 }

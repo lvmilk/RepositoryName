@@ -97,10 +97,10 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
             String ad = df2.format(actualDepTime);
             String aa = df2.format(actualArrTime);
             System.out.println("editFlightInstanceInfo: flight date is " + flightDateString);
-            System.out.println("edit flight info managed bean: edit flight instance starts...");
-            System.out.println("edit flight info managed bean: edit flight instance: " + flightFreq);
+            System.out.println("edit flight info managed bean: edit flight instance: flight frequency: " + flightFreq);
             flightInst = fsb.findFlight(flightFreq.getFlightNo(), flightDateString);
-            System.out.println("edit flight info managed bean: edit flight instance: " + flightInst);
+            System.out.println("edit flight info managed bean: edit flight instance: flight instance: " + flightInst);
+           
             Integer bookedSeat = 0;
             List<FlightCabin> flightCabinList = new ArrayList<>();
             flightCabinList = flightInst.getFlightCabins();
