@@ -299,6 +299,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return (FlightInstance) q2.getResultList().get(0);
     }
 
+    @Override
+    public FlightInstance findFlight(Long flightId) {
+        return em.find(FlightInstance.class, flightId);
+    }
+
+    @Override
+    public Aircraft findAircraft(String serialNo) {
+        return em.find(Aircraft.class, serialNo);
+    }
+
     //---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
     @Override
     public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac) {
@@ -363,13 +373,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 } else {
                     System.out.println("FSB: scheduleAcToFi(): Check Boolean3 " + currentTime.before(df1.parse(fiTemp.getStandardDepTime())));
                     System.out.println("FSB: scheduleAcToFi(): Check Boolean4 " + currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin()));
-                   //check whether currenTime is at least two hours earlier that the next departure
+                    //check whether currenTime is at least two hours earlier that the next departure
                     Date temp = currentTime;
                     Calendar c = Calendar.getInstance();
                     c.setTime(temp);
                     c.add(Calendar.HOUR, 2);  // number of days to add
                     temp = c.getTime();
-                    System.out.println("FSB: scheduleAcToFi(): 2 hours later? "+ temp.toString());
+                    System.out.println("FSB: scheduleAcToFi(): 2 hours later? " + temp.toString());
                     if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
                         System.out.println("FSB: Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
                         fiTemp.setAircraft(acTemp);
@@ -399,21 +409,23 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.merge(ac);
         em.flush();
     }
-    
+
     @Override
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         flightTemp.remove(fi);
         ac.setFlightInstance(flightTemp);
-        fi.setAircraft(ac);
+        Aircraft acTemp = em.find(Aircraft.class, "9V-000");
+        fi.setAircraft(acTemp);
         em.merge(fi);
         em.merge(ac);
         em.flush();
     }
-    
-    //---------------------------------unfinished----------------------------------------
-    public void getFlightTasks(Aircraft ac, Date start, Date end) {
-    
+
+    @Override
+    public List<FlightInstance> getUnassignedFlight() {
+        Query q1 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default OR fi.aircraft=:blank").setParameter("default", "9V-000");
+        return (List<FlightInstance>) q1.getResultList();
     }
 
     public void setFirstInstDate() throws ParseException {

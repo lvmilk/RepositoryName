@@ -60,4 +60,10 @@ public interface FlightSchedulingBeanLocal {
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
     public String getFirstInstDate();
+
+    public FlightInstance findFlight(Long flightId);
+
+    public Aircraft findAircraft(String serialNo);
+
+    public List<FlightInstance> getUnassignedFlight();
 }
