@@ -52,6 +52,8 @@ public class FleetAssignmentManagedBean implements Serializable {
     private long zoomMax;
     private Date start;
     private Date end;
+    private Date startDate;
+    private Date endDate;
     private TimeZone timeZone = TimeZone.getTimeZone("Asia/Singapore");
     private String deleteMessage;
 
@@ -78,8 +80,6 @@ public class FleetAssignmentManagedBean implements Serializable {
         end = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startPlanDate");
 
         model = new TimelineModel();
-        Date startDate;
-        Date endDate;
         List<Aircraft> acList = fpb.getAllAircraft();
         System.out.println(acList);
         for (Aircraft ac : acList) {
@@ -141,10 +141,10 @@ public class FleetAssignmentManagedBean implements Serializable {
         try {
             aircraft = fsb.findAircraft(taskAircraftSerial);
             fi = fsb.findFlight(taskId);
-            start = fi.getStandardDepTimeDateType();
-            end = fi.getStandardArrTimeDateType();
+            startDate = fi.getStandardDepTimeDateType();
+            endDate = fi.getStandardArrTimeDateType();
             if (fsb.addAcToFi(aircraft, fi)) {
-                event = new TimelineEvent(fi, start, end, true, taskAircraftSerial);
+                event = new TimelineEvent(fi, startDate, endDate, true, taskAircraftSerial);
                 TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
                 model.update(event, timelineUpdater);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
@@ -225,7 +225,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public List<FlightInstance> getUnassignedFlight() {
-        return fsb.getUnassignedFlight();
+        return fsb.getUnplannedFiWithinPeriod(start, end);
     }
 
     public void setUnassignedFlight(List<FlightInstance> unassignedFlight) {

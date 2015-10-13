@@ -349,6 +349,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     // get all unplanned fight instances for all aircraft 
+    @Override
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate) {
         List<Aircraft> acList = new ArrayList<Aircraft>();
         acList = getAllAircraft();
