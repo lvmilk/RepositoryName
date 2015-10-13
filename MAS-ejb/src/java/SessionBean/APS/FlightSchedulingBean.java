@@ -326,15 +326,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return em.find(Aircraft.class, serialNo);
     }
 
-    @Override
-    public FlightInstance findFlight(Long flightId) {
-        return em.find(FlightInstance.class, flightId);
-    }
 
-    @Override
-    public Aircraft findAircraft(String serialNo) {
-        return em.find(Aircraft.class, serialNo);
-    }
 
     //---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
     @Override
