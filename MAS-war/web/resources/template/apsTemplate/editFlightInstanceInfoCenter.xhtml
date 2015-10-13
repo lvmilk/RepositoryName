@@ -33,12 +33,21 @@
                     <p:outputLabel for="estimatedArrTime" value="Estimated Arrival Time:"/>
                     <p:calendar  id="estimatedArrTime" value="#{editFIIMB.estimatedArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight estimated arrival time" size="30"/>
 
+                    <p:outputLabel for="estimatedDateAdjust" value="Estimated Date Adjust: " />
+                    <p:inputText id="estimatedDateAdjust" value="#{editFIIMB.estimatedDateAdjust}" label="estimatedDateAdjust" required="true" validatorMessage="Date Adjust only can be -1, 0 or 1." requiredMessage="Please enter estimated date adjust"  size="30">
+                        <f:validateLongRange maximum="1" minimum="-1" />
+                    </p:inputText>
+                    
                     <p:outputLabel for="actualDepTime" value="Actual Depature Time:"/>
                     <p:calendar  id="actualDepTime" value="#{editFIIMB.actualDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight actual arrival time" size="30"/>
 
                     <p:outputLabel for="actualArrTime" value="Actual Arrival Time:"/>
                     <p:calendar  id="actualArrTime" value="#{editFIIMB.actualArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight actual arrival time" size="30"/>
 
+                    <p:outputLabel for="actualDateAdjust" value="Actual Date Adjust: " />
+                    <p:inputText id="actualDateAdjust" value="#{editFIIMB.actualDateAdjust}" label="actualDateAdjust" required="true" validatorMessage="Date Adjust only can be -1, 0 or 1." requiredMessage="Please enter actual date adjust"  size="30">
+                         <f:validateLongRange maximum="1" minimum="-1" />
+                    </p:inputText>
                 </h:panelGrid>
                 <p:commandButton value="Update" update="@form" actionListener="#{editFIIMB.editFlightInstanceInfo()}"  icon="ui-icon-check" />
                 <p:commandButton value="Back" update="@form" actionListener="#{editFIIMB.editFlightInstBack()}"  icon="ui-icon-check" />

@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -43,10 +44,13 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
     //private Date flightDate;
     private String flightDateString;
     private String flightStatus;  // scheduled/ active/ landed/ cancelled/ diverted/ redirected
+    private List<String> statusList;
     private Date estimatedDepTime;
     private Date estimatedArrTime;
+    private Integer estimatedDateAdjust;
     private Date actualDepTime;
     private Date actualArrTime;
+    private Integer actualDateAdjust;
 
     private String flightNo;
 
@@ -59,6 +63,11 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         flightFreqList = fsb.getAllFlightFrequency();
+        statusList=new ArrayList();
+        statusList.add("active");
+        statusList.add("landed");
+        statusList.add("cancelled");
+        System.out.println("editFlightInstanceInforManagedBean: statusList is "+statusList);
         flightFreq = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightFreq");
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
         //flightDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightDate");
@@ -66,8 +75,10 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
         flightStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightStatus");
         estimatedDepTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedDepTime");
         estimatedArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedArrTime");
+        estimatedDateAdjust=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedDateAdjust");
         actualDepTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDepTime");
         actualArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualArrTime");
+        actualDateAdjust = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDateAdjust");
         flightInst = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInst");
         flightInstList = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInstList");
     }
@@ -80,7 +91,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
             String ad = df2.format(actualDepTime);
             String aa = df2.format(actualArrTime);
             System.out.println("editFlightInstanceInfo: flight date is " + flightDateString);
-            fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed,ea,ad,aa);
+            fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed,ea,estimatedDateAdjust,ad,aa,actualDateAdjust);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -179,10 +190,6 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
         this.actualArrTime = actualArrTime;
     }
 
-
-
-   
-
     public String getFlightNo() {
         return flightNo;
     }
@@ -191,4 +198,29 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
         this.flightNo = flightNo;
     }
 
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
+    }
+
+    public Integer getEstimatedDateAdjust() {
+        return estimatedDateAdjust;
+    }
+
+    public void setEstimatedDateAdjust(Integer estimatedDateAdjust) {
+        this.estimatedDateAdjust = estimatedDateAdjust;
+    }
+
+    public Integer getActualDateAdjust() {
+        return actualDateAdjust;
+    }
+
+    public void setActualDateAdjust(Integer actualDateAdjust) {
+        this.actualDateAdjust = actualDateAdjust;
+    }
+
+    
 }

@@ -14,7 +14,7 @@
             <p:panel id="panel" header="Route Information" style="width: 100%">
 
                 <p:messages id="msgs" />
-                <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="30">
+                <h:panelGrid columns="2"  style="margin-bottom:20px; width:60%" cellpadding="20">
 
 <!--                    <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
                     <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="15">
@@ -32,9 +32,9 @@
                         <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
                     </p:inputText>-->
                     
-                    <p:outputLabel for="destIATA" value="Origin Airport: " />
+                    <p:outputLabel for="destIATA" value="Destination Airport: " />
                     <p:selectOneMenu id="destIATA" value="#{RouteManagedBean.destIATA}" required="destIATA" requiredMessage="Please select destination airport" style="width:250px">
-                        <f:selectItem itemLabel="-Select Origin-" itemValue="" />
+                        <f:selectItem itemLabel="-Select Destination-" itemValue="" />
                         <f:selectItems value="#{RouteManagedBean.airportInfo}" />
                     </p:selectOneMenu>
 

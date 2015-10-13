@@ -18,11 +18,16 @@
                 <p:messages id="msgs" autoUpdate="true" />  
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
                     <p:outputLabel for="startPlanDate" value="Flight Start Assignment Date (yyyy-MM-dd): " />
-                    <p:calendar id="startPlanDate" value="#{FIMB.startPlanDate}" label="startDate" required="true" requiredMessage="Please enter flight start assignment date" size="30" pattern="yyyy-MM-dd" mask="true"/>
+                    <!--<p:calendar id="startPlanDate" value="#{FIMB.startPlanDate}" label="startDate" required="true" requiredMessage="Please enter flight start assignment date" size="30" pattern="yyyy-MM-dd" mask="true"/>-->
+
+                    <h:outputText id="startPlanDate" value="#{FIMB.firstInstDate}" />
+
 
                     <p:outputLabel for="endPlanDate" value="Flight End Assignment Date (yyyy-MM-dd): " />
-                    <p:calendar id="endPlanDate" value="#{FIMB.endPlanDate}" label="endDate" required="true" requiredMessage="Please enter flight end assignment date" size="30" pattern="yyyy-MM-dd" mask="true"/> 
-
+                    <p:calendar id="endPlanDate" value="#{FIMB.endPlanDate}" pattern="yyyy-MM-dd" mask="true" label="endDate" mindate="#{FIMB.minDate}" required="true" requiredMessage="Please enter flight end assignment date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{FIMB.firstInstDate}" />
+                        <f:validator validatorId="DateRangeValidator" />
+                    </p:calendar>
                 </h:panelGrid>
                 <p:commandButton value="Automatic Fleet Assignment" actionListener="#{FIMB.scheduleAcToFi}" icon="ui-icon-check" />
 

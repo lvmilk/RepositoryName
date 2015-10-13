@@ -52,8 +52,10 @@ public class FlightInstanceManagedBean implements Serializable {
     //will be modified later
     private Date estimatedDepTime;
     private Date estimatedArrTime;
+    private Integer estimatedDateAdjust;
     private Date actualDepTime;
     private Date actualArrTime;
+    private Integer actualDateAdjust;
 
 ///////////
     private String flightNo;
@@ -74,6 +76,9 @@ public class FlightInstanceManagedBean implements Serializable {
     private Date startPlanDate;
     private Date endPlanDate;
 
+    private String firstInstDate;
+    private String minDate;
+    
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
@@ -86,7 +91,7 @@ public class FlightInstanceManagedBean implements Serializable {
         currentCal.setTime(currentDate);
         currentCal.add(Calendar.DATE, 1);
         currentDate = currentCal.getTime();
-
+      
         flightFreqList = fsb.getAllFlightFrequency();
         flightInstList = fsb.getAllFlightInstance();
         aircraftList = fpb.getAllAircraft();
@@ -94,6 +99,7 @@ public class FlightInstanceManagedBean implements Serializable {
         for (int i = 0; i < aircraftList.size(); i++) {
             registrationList.add(aircraftList.get(i).getRegistrationNo());
         }
+         
         //aircraft = (Aircraft) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraft");
         flightFreq = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightFreq");
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
@@ -101,11 +107,12 @@ public class FlightInstanceManagedBean implements Serializable {
         flightStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightStatus");
         estimatedDepTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedDepTime");
         estimatedArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedArrTime");
+        estimatedDateAdjust=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedDateAdjust");
         actualDepTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDepTime");
         actualArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualArrTime");
+        actualDateAdjust=(Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDateAdjust");
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
-        
     }
 
     public void addFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
@@ -113,8 +120,10 @@ public class FlightInstanceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightFreq.getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedDepTime", df2.parse(flightFreq.getScheduleDepTime()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedArrTime", df2.parse(flightFreq.getScheduleArrTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("estimatedDateAdjust",flightFreq.getDateAdjust());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDepTime", df2.parse(flightFreq.getScheduleDepTime()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualArrTime", df2.parse(flightFreq.getScheduleArrTime()));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDateAdjust",flightFreq.getDateAdjust());
         System.out.println("flight instance flight No: " + flightFreq.getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./generateFlightInstance.xhtml");
     }
@@ -132,9 +141,10 @@ public class FlightInstanceManagedBean implements Serializable {
         Boolean Fri = flightFreq.isOnFri();
         Boolean Sat = flightFreq.isOnSat();
         Boolean Sun = flightFreq.isOnSun();
-        ///////////sui bian jia liang ge testing////////////////////
-        Integer depDateAdjust = flightFreq.getDateAdjust();
-        Integer arrDateAdjust = flightFreq.getDateAdjust();
+        //set default values
+        estimatedDateAdjust = flightFreq.getDateAdjust();
+        actualDateAdjust = flightFreq.getDateAdjust();
+        flightStatus="scheduled";
 //        aircraft = new Aircraft();
 //        aircraft = fsb.getAircraft(registrationNo);
 //        Date deliveryDate = df1.parse(aircraft.getDeliveryDate());
@@ -159,7 +169,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, depDateAdjust, ad, aa, arrDateAdjust);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -186,7 +196,7 @@ public class FlightInstanceManagedBean implements Serializable {
                         while (startDate.compareTo(finishDate) <= 0) {
                             if (checkDayOfWeek(startDate, Mon, Tue, Wed, Thu, Fri, Sat, Sun)) {
                                 String sd = df1.format(startDate);
-                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, depDateAdjust, ad, aa, arrDateAdjust);
+                                fsb.addFlightInstance(flightFreq, sd, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust);
                                 System.out.println("This flight Instance date: " + startDate);
                             }
                             cal = cal = Calendar.getInstance();
@@ -418,6 +428,23 @@ public class FlightInstanceManagedBean implements Serializable {
         this.onSun = onSun;
     }
 
+    public Integer getEstimatedDateAdjust() {
+        return estimatedDateAdjust;
+    }
+
+    public void setEstimatedDateAdjust(Integer estimatedDateAdjust) {
+        this.estimatedDateAdjust = estimatedDateAdjust;
+    }
+
+    public Integer getActualDateAdjust() {
+        return actualDateAdjust;
+    }
+
+    public void setActualDateAdjust(Integer actualDateAdjust) {
+        this.actualDateAdjust = actualDateAdjust;
+    }
+    
+
     public Date getCurrentDate() {
         return currentDate;
     }
@@ -426,7 +453,9 @@ public class FlightInstanceManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
-    public Date getStartPlanDate() {
+    public Date getStartPlanDate() throws ParseException {
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        startPlanDate = df1.parse(getFirstInstDate());
         return startPlanDate;
     }
 
@@ -451,19 +480,33 @@ public class FlightInstanceManagedBean implements Serializable {
     public void scheduleAcToFi() throws ParseException, IOException {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
-        try{
-        fsb.scheduleAcToFi(startPlanDate, endPlanDate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightViewCenter.xhtml");
-        }catch (IOException|ParseException e) {
-            System.out.println("Oops: Error! "+ e.getMessage());
+        try {
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        startPlanDate=df1.parse(getFirstInstDate());
+            fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./autoFleetAssignment.xhtml");
+        } catch (IOException | ParseException e) {
+            System.out.println("Oops: Error! " + e.getMessage());
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", e.getMessage());
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
     }
 
-    public String getFirstInstDate(){
-        return fsb.getFirstInstdate();
+    public String getFirstInstDate() throws ParseException {
+        System.out.println("FIMB: getFirstInstDate!");
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        startPlanDate = df1.parse(fsb.getFirstInstDate());
+        return fsb.getFirstInstDate();
     }
     
-    
+    public String getMinDate() throws ParseException{
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+         Date date = df1.parse(fsb.getFirstInstDate());
+         Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, 1);  // number of days to add
+            minDate = df1.format(c.getTime());
+        return minDate;
+    }
+
 }

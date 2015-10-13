@@ -8,7 +8,9 @@ package APSmanagedbean;
 import Entity.APS.Aircraft;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FleetPlanningBeanLocal;
+import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +22,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.extensions.component.timeline.TimelineUpdater;
+import org.primefaces.extensions.event.timeline.TimelineAddEvent;
+import org.primefaces.extensions.event.timeline.TimelineModificationEvent;
 import org.primefaces.extensions.model.timeline.TimelineEvent;
 import org.primefaces.extensions.model.timeline.TimelineModel;
 
@@ -34,21 +38,28 @@ public class FleetAssignmentManagedBean implements Serializable {
     @EJB
     FleetPlanningBeanLocal fpb;
 
-    /**
-     * Creates a new instance of FleetAssignmentManagedBean
-     */
+    @EJB
+    FlightSchedulingBeanLocal fsb;
+
+//    private List<TimelineModel> modelList;
     private TimelineModel model;
     private TimelineEvent event; // current event to be changed, edited, deleted or added  
 
     private List<Aircraft> aircraftList;
     private Aircraft aircraft;
     private FlightInstance flightInstance;
+    private FlightInstance fi;
     private long zoomMax;
     private Date start;
     private Date end;
     private TimeZone timeZone = TimeZone.getTimeZone("UTC");
-    private boolean timeChangeable = true;
     private String deleteMessage;
+
+    private String flightNo;
+    private Date flightDate;
+    private List<FlightInstance> unassignedFlight;
+    private Long taskId;
+    private String taskAircraftSerial;
 
     public FleetAssignmentManagedBean() {
     }
@@ -67,75 +78,60 @@ public class FleetAssignmentManagedBean implements Serializable {
         cal.set(2016, Calendar.DECEMBER, 10, 0, 0, 0);
         end = cal.getTime();
 
-        // create timeline model  
         model = new TimelineModel();
-
-        // Server-side dates should be in UTC. They will be converted to a local dates in UI according to provided TimeZone.  
-        // Submitted local dates in UI are converted back to UTC, so that server receives all dates in UTC again.  
+        for (Aircraft ac : fpb.getAllAircraft()) {
+            List<FlightInstance> fiList = ac.getFlightInstance();
+            for (FlightInstance fi : fiList) {
+                start = fi.getStandardDepTimeDateType();
+                end = fi.getStandardArrTimeDateType();
+                // create an event with content, start / end dates, editable flag, group name and custom style class  
+//                TimelineEvent flightTaskEvent = new TimelineEvent(fi, start, end, true);
+                TimelineEvent flightTaskEvent = new TimelineEvent(fi, start, end, true, ac.getSerialNo());
+                model.add(flightTaskEvent);
+            }
+//            modelList.add(model);
+        }
     }
 
-    public void onChange(Aircraft a) {
-        // get clone of the TimelineEvent to be changed with new start / end dates  
-        flightInstance = a.getFlightInstance().get(0);
+     public void onAdd(TimelineAddEvent e) {  
+//        // get TimelineEvent to be added  
+//        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());  
+//        // add the new event to the model in case if user will close or cancel the "Add dialog"  
+//        // without to update details of the new event. Note: the event is already added in UI.  
+//        model.add(event);  
+    }  
 
-        // update booking in DB...  
-        // if everything was ok, no UI update is required. Only the model should be updated  
-        model.update(event);
-
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The booking dates " + " have been updated", null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-
-        // otherwise (if DB operation failed) a rollback can be done with the same response as follows:  
-        // TimelineEvent oldEvent = model.getEvent(model.getIndex(event));  
-        // TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");  
-        // model.update(oldEvent, timelineUpdater);  
-    }
-
-//    public void onEdit(Aircraft a) {
-//        // get clone of the TimelineEvent to be edited  
-//        flightInstance = a.getFlightInstance().get(0);
-//    }
-
-    public void onAdd(Aircraft a) {
-        // get TimelineEvent to be added  
-        flightInstance = new FlightInstance();
-
-        // add the new event to the model in case if user will close or cancel the "Add dialog"  
-        // without to update details of the new event. Note: the event is already added in UI.  
-        model.add(event);
-    }
-
-    public void onDelete(FlightInstance fi) {
-        // get clone of the TimelineEvent to be deleted  
-        aircraft = fi.getAircraft();
+    public void onDelete(TimelineModificationEvent e) {  
+        event = e.getTimelineEvent();  
     }
 
     public void delete() {
-        // delete booking in DB...  
-
-        
-        // if everything was ok, delete the TimelineEvent in the model and update UI with the same response.  
-        // otherwise no server-side delete is necessary (see timelineWdgt.cancelDelete() in the p:ajax onstart).  
-        // we assume, delete in DB was successful  
+        FlightInstance f = (FlightInstance) event.getData();
+        Aircraft a = f.getAircraft();
+        fsb.deleteAcFromFi(a, f);
         TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
         model.delete(event, timelineUpdater);
-
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "The booking " + " has been deleted", null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight task " + f.getFlightFrequency().getFlightNo() + " on "
+                + f.getDate() + " of " + a.getSerialNo() + " has been deleted", null);
     }
 
-    public void saveDetails() {
-        // save the updated booking in DB...  
+    public void addTask() {
+        try {
+            aircraft = fsb.findAircraft(taskAircraftSerial);
+            fi = fsb.findFlight(taskId);
+            start = fi.getStandardDepTimeDateType();
+            end = fi.getStandardArrTimeDateType();
 
-        // if everything was ok, update the TimelineEvent in the model and update UI with the same response.  
-        // otherwise no server-side update is necessary because UI is already up-to-date.  
-        // we assume, save in DB was successful  
-        TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
-        model.update(event, timelineUpdater);
+            fsb.addAcToFi(aircraft, fi);
 
-        FacesMessage msg
-                = new FacesMessage(FacesMessage.SEVERITY_INFO, "The booking details " + " have been saved", null);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+            event = new TimelineEvent(fi, start, end, true, taskAircraftSerial);
+            TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
+            model.update(event, timelineUpdater);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
     }
 
     public TimelineModel getModel() {
@@ -166,14 +162,6 @@ public class FleetAssignmentManagedBean implements Serializable {
         return timeZone;
     }
 
-    public boolean isTimeChangeable() {
-        return timeChangeable;
-    }
-
-    public void toggleTimeChangeable() {
-        timeChangeable = !timeChangeable;
-    }
-
     public Aircraft getAircraft() {
         return aircraft;
     }
@@ -191,15 +179,64 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public List<Aircraft> getAircraftList() {
-        return aircraftList;
+        return fpb.getAllAircraft();
     }
 
     public void setAircraftList(List<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
-//-------------------------------uncompleted----------------------------
+
+    public String getFlightNo() {
+        return flightNo;
+    }
+
+    public void setFlightNo(String flightNo) {
+        this.flightNo = flightNo;
+    }
+
+    public Date getFlightDate() {
+        return flightDate;
+    }
+
+    public void setFlightDate(Date flightDate) {
+        this.flightDate = flightDate;
+    }
+
+    public List<FlightInstance> getUnassignedFlight() {
+        return fsb.getUnassignedFlight();
+    }
+
+    public void setUnassignedFlight(List<FlightInstance> unassignedFlight) {
+        this.unassignedFlight = unassignedFlight;
+    }
+    
+    public FlightInstance getFi() {
+        return fi;
+    }
+
+    public void setFi(FlightInstance fi) {
+        this.fi = fi;
+    }
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskAircraftSerial() {
+        return taskAircraftSerial;
+    }
+
+    public void setTaskAircraftSerial(String taskAircraftSerial) {
+        this.taskAircraftSerial = taskAircraftSerial;
+    }
+
     public String getDeleteMessage() {
-        return "Do you want to delete the flight task ?";
+        FlightInstance fi = ((FlightInstance) event.getData());
+        return "Do you want to delete the flight task " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " ?";
     }
 
     public void setDeleteMessage(String deleteMessage) {
