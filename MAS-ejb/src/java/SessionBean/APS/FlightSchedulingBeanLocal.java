@@ -58,4 +58,6 @@ public interface FlightSchedulingBeanLocal {
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
     public String getFirstInstDate();
+
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 }

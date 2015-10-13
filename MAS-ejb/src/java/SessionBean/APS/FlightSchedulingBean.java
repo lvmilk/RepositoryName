@@ -208,12 +208,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
 
         DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println("Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
+        System.out.println("flightSchedulingBean: add flight instance: String type: Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
+        
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        flightInst.setStandardDepTimeDateType(formatter.parse((standardDepTime)));
-        flightInst.setStandardArrTimeDateType(formatter.parse((standardArrTime)));
+        flightInst.setStandardDepTimeDateType(formatter.parse(depDateTime.format(sdf)));
+        flightInst.setStandardArrTimeDateType(formatter.parse(arrDateTime.format(sdf)));
+         System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
 //        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
 //        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
 //        ZonedDateTime stdArr = arrDateTime.atZone(ZoneId.of("UTC"));
