@@ -147,6 +147,8 @@ public class SeatAllocate1Bean implements Serializable {
             }
         }
         System.out.println("selectedCabin is " + selectedCabin.getCabinName());
+        
+        System.out.println("in findBookClassInstance(): size of bookclassInstanceList is "+bookClassInstanceList.size());
 
         if (!this.ifStartSale(bookClassInstanceList)) {
 
