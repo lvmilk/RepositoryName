@@ -492,7 +492,7 @@ public class FlightInstanceManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
-    public Date getStartPlanDate() throws ParseException {
+ public Date getStartPlanDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         startPlanDate = df1.parse(getFirstInstDate());
         return startPlanDate;

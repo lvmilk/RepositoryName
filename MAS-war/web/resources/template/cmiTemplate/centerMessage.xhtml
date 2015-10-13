@@ -28,7 +28,7 @@
                 <p:column>
                     <p:outputLabel value="Receivers:" for="autoCompleteReceiverList" />
                     <p:autoComplete required = "true" requiredMessage="You must at least have a receiver." id="autoCompleteReceiverList" multiple="true" value="#{msgManagedBean.selectedUsers}" completeMethod="#{msgManagedBean.usersList}"
-                                    var="user" itemLabel="#{user.username}: #{user.comEmail} " itemValue="#{user}" forceSelection="true" converter="userConverter" />  
+                                    var="user" itemLabel="#{user.username}  " itemValue="#{user}" forceSelection="true" converter="userConverter" />  
                 </p:column>  
 
                 
