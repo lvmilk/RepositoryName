@@ -6,9 +6,9 @@
 package managedbean;
 
 import java.io.IOException;
-import javafx.event.ActionEvent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
@@ -31,7 +31,7 @@ public class SslManagerBean {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
 //        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).removeAttribute("UserId");
 //        ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).removeAttribute("StaffType");
-        FacesContext.getCurrentInstance().getExternalContext().redirect("http://" + serverName + ":" + serverPort + "/MAS-war/staffMain.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("http://"+serverName+":" + serverPort + "/MAS-war/staffMain.xhtml");
     }
 
 }

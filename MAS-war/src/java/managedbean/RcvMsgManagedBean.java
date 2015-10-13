@@ -14,9 +14,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -67,7 +69,19 @@ public class RcvMsgManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);
 
     }
-
+    
+    public void toDeleteMsg(List<MsgReceiver> messageList) throws Exception
+    {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (messageList.isEmpty())
+        {
+            context.execute("alert('Please select message(s) first.');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select messages first. ", ""));
+        }else{
+            context.execute("PF('dlgRcvMsg').show()");
+        }
+    }
+    
     public void deleteMessage(List<MsgReceiver> messageList) throws Exception {
 
         for (MsgReceiver msg : messageList) {
@@ -75,6 +89,10 @@ public class RcvMsgManagedBean implements Serializable {
         }
 
         setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
+        
+        String path = "/CMIpages/viewReceivedMessage.xhtml";
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);
 
     }
 
