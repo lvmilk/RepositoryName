@@ -30,6 +30,8 @@ public class ViewSendMsgManagedBean implements Serializable {
 
     @EJB
     private MsgSessionBeanLocal msbl;
+    
+    private String temp;
 
     private String currentUsername;
     private List<MsgSender> sendMsgList;
@@ -39,9 +41,12 @@ public class ViewSendMsgManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            setCurrentUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
-            setSendMsgList((List<MsgSender>) msbl.viewSendMessage(getCurrentUsername()));
-            System.out.println("ViewSendMsgManagedBean: MessageSize:" + getSendMsgList().size());
+            temp = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+            if (!temp.equals("admin")) {
+                setCurrentUsername((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
+                setSendMsgList((List<MsgSender>) msbl.viewSendMessage(getCurrentUsername()));
+                System.out.println("ViewSendMsgManagedBean: MessageSize:" + getSendMsgList().size());
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -83,7 +88,7 @@ public class ViewSendMsgManagedBean implements Serializable {
         }
 
         sendMsgList = (List<MsgSender>) msbl.viewSendMessage(currentUsername);
-        
+
         String path = "/CMIpages/viewSendMessage.xhtml";
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);

@@ -29,6 +29,7 @@ import org.primefaces.context.RequestContext;
 public class RcvMsgManagedBean implements Serializable {
 
     private String currentUserName;
+    private String temp;
 
     @EJB
     private MsgSessionBeanLocal msbl;
@@ -39,10 +40,16 @@ public class RcvMsgManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-
-        setCurrentUserName((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
-        setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
-        System.out.println("RcvMsgManagedBean: MessageSize:" + getRcvMsgList().size());
+        try {
+            temp = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+            if (!temp.equals("admin")) {
+                setCurrentUserName((String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId"));
+                setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
+                System.out.println("RcvMsgManagedBean: MessageSize:" + getRcvMsgList().size());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
     }
 
@@ -69,19 +76,17 @@ public class RcvMsgManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);
 
     }
-    
-    public void toDeleteMsg(List<MsgReceiver> messageList) throws Exception
-    {
+
+    public void toDeleteMsg(List<MsgReceiver> messageList) throws Exception {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (messageList.isEmpty())
-        {
+        if (messageList.isEmpty()) {
             context.execute("alert('Please select message(s) first.');");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select messages first. ", ""));
-        }else{
+        } else {
             context.execute("PF('dlgRcvMsg').show()");
         }
     }
-    
+
     public void deleteMessage(List<MsgReceiver> messageList) throws Exception {
 
         for (MsgReceiver msg : messageList) {
@@ -89,7 +94,7 @@ public class RcvMsgManagedBean implements Serializable {
         }
 
         setRcvMsgList((List<MsgReceiver>) msbl.viewReceiveMessage(getCurrentUserName()));
-        
+
         String path = "/CMIpages/viewReceivedMessage.xhtml";
         String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);
