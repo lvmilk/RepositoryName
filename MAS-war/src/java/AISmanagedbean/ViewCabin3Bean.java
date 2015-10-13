@@ -69,6 +69,13 @@ public class ViewCabin3Bean implements Serializable {
         }
 
     }
+    
+    public void goBack() throws IOException{
+    
+    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftType",acType);
+    FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewCabin2.xhtml");
+    
+    }
 
 //    public void saveUpdate() throws IOException {
 //        if (rowCount * rowSeatCount > cabinSelected.getSeatCount()) {

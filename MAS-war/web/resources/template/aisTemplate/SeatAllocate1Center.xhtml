@@ -13,27 +13,30 @@
         <h:form id="allocate">
             <p:growl id="msgs" showDetail="true" />
 
-            <p:panel header="Select a Flight" style="margin-bottom:10px;">
-                <h:panelGrid columns="2" cellpadding="25">
-                    <p:outputLabel for="date" value="Departure Date:(YYYY-MM-DD) " />
+            <p:panel id="thisPanel" header="Select a Flight" style="margin-bottom:10px;">
+                <h:panelGrid columns="3" cellpadding="25">
+                    <p:outputLabel for="dateChoose" value="Departure Date:(YYYY-MM-DD) " />
 <!--                    <p:inputMask id="time"  value="#{seatAllocate1Bean.dateString}"  mask="9999-99-99" required="true" requiredMessage="Please enter a valid date" size="10">-->
-                    <p:calendar  id="date" value="#{seatAllocate1Bean.selectedDate}"  pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
-                        <p:ajax  event="dateSelect"  immediate="true" listener="#{seatAllocate1Bean.onDateChange}"  update="frequency" />
-                    </p:calendar>
-                    
+                    <p:calendar  id="dateChoose" value="#{seatAllocate1Bean.selectedDate}"  pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20"/>   
+                 
+                    <p:commandButton value="Get flights on this date" update='frequency' partialSubmit="true" process="@this allocate:dateChoose" actionListener="#{seatAllocate1Bean.onDateChange()}" />
+                    <!--<p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />-->
+
                     <p:outputLabel for="frequency" value="Select a flight: " />
                     <p:selectOneMenu id="frequency" value="#{seatAllocate1Bean.flightNo}" required="true" requiredMessage="Please select a flight" style="width:100%">    
-                       <p:ajax  listener="#{seatAllocate1Bean.onFlightChange}"  update="flightCabin" /> 
-                       <f:selectItem itemLabel="Select One Flight" itemValue="1" />
+                        <p:ajax  listener="#{seatAllocate1Bean.onFlightChange}"  update="flightCabin" /> 
+                        <f:selectItem itemLabel="Select One Flight" itemValue="1" />
                         <f:selectItems value="#{seatAllocate1Bean.frequencyList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.getRoute().toString()}"/>
                     </p:selectOneMenu>
-                  
+
+                    <br/>
+
                     <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
                     <p:selectOneMenu id="flightCabin" value="#{seatAllocate1Bean.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
-                       <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
-                       <f:selectItems value="#{seatAllocate1Bean.cabinList}"  var="cabin" itemValue="#{cabin.cabinClass.cabinName}" itemLabel="#{cabin.cabinClass.cabinName}"/>
+                        <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
+                        <f:selectItems value="#{seatAllocate1Bean.cabinList}"  var="cabin" itemValue="#{cabin.cabinClass.cabinName}" itemLabel="#{cabin.cabinClass.cabinName}"/>
                     </p:selectOneMenu>
-                
+
                 </h:panelGrid>
 
                 <p:separator />

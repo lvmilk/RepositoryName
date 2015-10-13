@@ -255,7 +255,7 @@ public class BookingClassBean implements Serializable {
         if (!check) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmDeleteBookClass.xhtml");
         } else {
-            FacesMessage msg = new FacesMessage("Delete request denied: Selected bookingClass has existed booking class instances associated with flights!");
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Delete request denied: Selected bookingClass has existed booking class instances associated with flights!","");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
