@@ -404,6 +404,19 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
         //------------------need check time conflict------------------
         List<FlightInstance> flightTemp = ac.getFlightInstance();
+        if (canAssign(ac, fi)) {
+            flightTemp.add(fi);
+            ac.setFlightInstance(flightTemp);
+            fi.setAircraft(ac);
+            em.merge(fi);
+            em.merge(ac);
+            em.flush();
+        }
+        return canAssign(ac, fi);
+    }
+
+    public boolean canAssign(Aircraft ac, FlightInstance fi) {
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
         boolean canAssign = false;
         Collections.sort(flightTemp);
         Date depCheck = new Date();
@@ -429,14 +442,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     canAssign = true;
                 }
             }
-        }
-        if (canAssign == true) {
-            flightTemp.add(fi);
-            ac.setFlightInstance(flightTemp);
-            fi.setAircraft(ac);
-            em.merge(fi);
-            em.merge(ac);
-            em.flush();
         }
         return canAssign;
     }

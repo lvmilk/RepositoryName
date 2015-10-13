@@ -93,16 +93,16 @@ public class FleetAssignmentManagedBean implements Serializable {
         }
     }
 
-     public void onAdd(TimelineAddEvent e) {  
+    public void onAdd(TimelineAddEvent e) {
 //        // get TimelineEvent to be added  
 //        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());  
 //        // add the new event to the model in case if user will close or cancel the "Add dialog"  
 //        // without to update details of the new event. Note: the event is already added in UI.  
 //        model.add(event);  
-    }  
+    }
 
-    public void onDelete(TimelineModificationEvent e) {  
-        event = e.getTimelineEvent();  
+    public void onDelete(TimelineModificationEvent e) {
+        event = e.getTimelineEvent();
     }
 
     public void delete() {
@@ -121,14 +121,14 @@ public class FleetAssignmentManagedBean implements Serializable {
             fi = fsb.findFlight(taskId);
             start = fi.getStandardDepTimeDateType();
             end = fi.getStandardArrTimeDateType();
-
-            fsb.addAcToFi(aircraft, fi);
-
-            event = new TimelineEvent(fi, start, end, true, taskAircraftSerial);
-            TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
-            model.update(event, timelineUpdater);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
-
+            if(fsb.addAcToFi(aircraft, fi)){
+                event = new TimelineEvent(fi, start, end, true, taskAircraftSerial);
+                TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
+                model.update(event, timelineUpdater);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft " + taskAircraftSerial + "cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
+            }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -209,7 +209,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     public void setUnassignedFlight(List<FlightInstance> unassignedFlight) {
         this.unassignedFlight = unassignedFlight;
     }
-    
+
     public FlightInstance getFi() {
         return fi;
     }
