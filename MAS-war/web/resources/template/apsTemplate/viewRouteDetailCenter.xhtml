@@ -33,23 +33,23 @@
                     <p:outputLabel value="Aircraft Blockhour: " />
                     <p:outputLabel value="#{viewRoute.blockhour}" />
 
-                    <p:outputLabel value="Suite Basic Fare: "/>
-                    <p:outputLabel value="#{viewRoute.basicScFare}" />
-
-                    <p:outputLabel value="First Class Basic Fare: " />
-                    <p:outputLabel value="#{viewRoute.basicFcFare}" />
-
-                    <p:outputLabel value="Business Class Basic Fare: " />
-                    <p:outputLabel value="#{viewRoute.basicBcFare}" />
-
-                    <p:outputLabel value="Premium Economic Class Basic Fare: " />
-                    <p:outputLabel value="#{viewRoute.basicPecFare}" />
-
-                    <p:outputLabel value="Economic Class Basic Fare: " />
-                    <p:outputLabel value="#{viewRoute.basicEcFare}" />
-
-                    <p:outputLabel value="Route Status: " />
-                    <p:outputLabel value="#{viewRoute.status}" />
+                    <!--                    <p:outputLabel value="Suite Basic Fare: "/>
+                                        <p:outputLabel value="#{viewRoute.basicScFare}" />
+                    
+                                        <p:outputLabel value="First Class Basic Fare: " />
+                                        <p:outputLabel value="#{viewRoute.basicFcFare}" />
+                    
+                                        <p:outputLabel value="Business Class Basic Fare: " />
+                                        <p:outputLabel value="#{viewRoute.basicBcFare}" />
+                    
+                                        <p:outputLabel value="Premium Economic Class Basic Fare: " />
+                                        <p:outputLabel value="#{viewRoute.basicPecFare}" />
+                    
+                                        <p:outputLabel value="Economic Class Basic Fare: " />
+                                        <p:outputLabel value="#{viewRoute.basicEcFare}" />
+                    
+                                        <p:outputLabel value="Route Status: " />
+                                        <p:outputLabel value="#{viewRoute.status}" />-->
 
                 </h:panelGrid>
 
@@ -77,30 +77,25 @@
                         <h:outputText value="#{flight.flightNo}" />
                     </p:column>
                     <p:column>
-                        <!--<h:outputText value="Yes" rendered="#{flight.onMon}"/>-->
-                        <h:graphicImage rendered="#{flight.onMon}" value="./../images/icon-check.png" width="20" />
+                        <h:outputText value="Yes" rendered="#{flight.onMon}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-<!--                        <div><img rendered="#{flight.onTue}" src="./../images/icon-check.png" id="icon-check"/></div>-->
-                        <h:graphicImage rendered="#{flight.onTue}" value="./../images/icon-check.png" width="20" />
+                        <h:outputText value="Yes" rendered="#{flight.onTue}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-                        <h:graphicImage rendered="#{flight.onWed}" value="./../images/icon-check.png" width="20"/>
+                        <h:outputText value="Yes" rendered="#{flight.onWed}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-                        <h:graphicImage rendered="#{flight.onThu}" value="./../images/icon-check.png" width="20"/>
+                        <h:outputText value="Yes" rendered="#{flight.onThu}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-                        <h:graphicImage rendered="#{flight.onFri}" value="./../images/icon-check.png" width="20"/>
+                        <h:outputText value="Yes" rendered="#{flight.onFri}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-                        <h:graphicImage rendered="#{flight.onSat}" value="./../images/icon-check.png" width="20"/>
+                        <h:outputText value="Yes" rendered="#{flight.onSat}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
                     <p:column>
-                        <h:graphicImage rendered="#{flight.onSun}" value="./../images/icon-check.png" width="20"/>
-<!--                        <c:if test="${flight.onSun}">
-                            <div><img src="./../images/icon-check.png" id="icon-check"/></div>
-                        </c:if>-->
+                        <h:outputText value="Yes" rendered="#{flight.onSun}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
 
                 </p:dataTable>
@@ -108,20 +103,6 @@
             </p:panel>
 
             <p:commandButton value="Back"  action="#{RouteManagedBean.viewRouteBack}" icon="ui-icon-carat-1-w" />
-
-            <style>
-                #icon-check{
-                    background: url("./../images/icon-check.png");
-                    cursor: pointer;
-                    display: block;
-                    max-width: 5px;
-                    max-height: 5px;
-                    width: auto;
-                    height: auto;
-                    border: none;
-                    background-size:cover ;
-                }
-            </style>
 
         </h:form>
     </h:body>

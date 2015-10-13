@@ -10,6 +10,7 @@ import Entity.APS.FlightInstance;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,6 +47,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     private TimelineEvent event; // current event to be changed, edited, deleted or added  
 
     private List<Aircraft> aircraftList;
+    ;
     private Aircraft aircraft;
     private FlightInstance flightInstance;
     private FlightInstance fi;
@@ -68,7 +70,14 @@ public class FleetAssignmentManagedBean implements Serializable {
 
     @PostConstruct
     public void initialize() {
-        aircraftList = fpb.getAllAircraft();
+        List<Aircraft> acList = new ArrayList<Aircraft>();
+//        List<Aircraft> aircraftList = new ArrayList<Aircraft>();
+//        for (Aircraft temp : fpb.getAllAircraft()) {
+//            if (!temp.getRegistrationNo().equals("9V-000")) {
+//                aircraftList.add(temp);
+//            }
+//        }
+//        aircraftList = fpb.getAllAircraft();
 
 // initial zooming is ca. one month to avoid hiding of event details (due to wide time range of events)  
         zoomMax = 1000L * 60 * 60 * 24 * 30;
@@ -77,10 +86,13 @@ public class FleetAssignmentManagedBean implements Serializable {
 //        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 //        cal.set(2015, Calendar.OCTOBER, 9, 0, 0, 0);
         start = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startPlanDate");
-        end = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startPlanDate");
-
+        end = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endPlanDate");
+        System.out.println("FAMB: pass start and end date from FIMB to FAMB: " + start + "-----" + end);
         model = new TimelineModel();
-        List<Aircraft> acList = fpb.getAllAircraft();
+        Date startDate;
+        Date endDate;
+        acList = fpb.getAllAircraft();
+
         System.out.println(acList);
         for (Aircraft ac : acList) {
             if (!ac.getRegistrationNo().equals("9V-000")) {
@@ -115,11 +127,11 @@ public class FleetAssignmentManagedBean implements Serializable {
 
     public void onAdd(TimelineAddEvent e) {
         System.out.println("-------------------------------aaaabbbbbbbbbbb");
-//        // get TimelineEvent to be added  
-//        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());  
-//        // add the new event to the model in case if user will close or cancel the "Add dialog"  
-//        // without to update details of the new event. Note: the event is already added in UI.  
-//        model.add(event);  
+        // get TimelineEvent to be added  
+        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());
+        // add the new event to the model in case if user will close or cancel the "Add dialog"  
+        // without to update details of the new event. Note: the event is already added in UI.  
+        model.add(event);
     }
 
     public void onDelete(TimelineModificationEvent e) {
@@ -128,9 +140,13 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public void delete() {
+        System.out.println("event ???" + event.toString());
         FlightInstance f = (FlightInstance) event.getData();
         Aircraft a = f.getAircraft();
-        fsb.deleteAcFromFi(a, f);
+        if (a.getFlightInstance().contains(f)) {
+             System.out.println("remove ac from fi !!!!" );
+            fsb.deleteAcFromFi(a, f);
+        }
         TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
         model.delete(event, timelineUpdater);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight task " + f.getFlightFrequency().getFlightNo() + " on "
@@ -138,20 +154,31 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public void addTask() {
+        System.out.println("FAMB: ------------------------ahhahahha");
         try {
             aircraft = fsb.findAircraft(taskAircraftSerial);
             fi = fsb.findFlight(taskId);
-            startDate = fi.getStandardDepTimeDateType();
-            endDate = fi.getStandardArrTimeDateType();
+            System.out.println("TaskID: " + taskId);
+            System.out.println("AircraftID: " + taskAircraftSerial);
+//            start = fi.getStandardDepTimeDateType();
+//            end = fi.getStandardArrTimeDateType();
             if (fsb.addAcToFi(aircraft, fi)) {
-                event = new TimelineEvent(fi, startDate, endDate, true, taskAircraftSerial);
+                System.out.println("CHECK 1");
+                event = new TimelineEvent(fi, fi.getStandardDepTimeDateType(), fi.getStandardArrTimeDateType(), true, taskAircraftSerial);
+                System.out.println("event created!!");
+                model.add(event);
+                System.out.println("event added!!");
                 TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
                 model.update(event, timelineUpdater);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
             } else {
+                System.out.println("CHECK 2");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft " + taskAircraftSerial + "cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
+                System.out.println("Error meesage" + "addTaskError");
             }
         } catch (Exception ex) {
+            System.out.println("Error meesage: " + ex.getMessage());
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
@@ -201,7 +228,17 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public List<Aircraft> getAircraftList() {
-        return fpb.getAllAircraft();
+        aircraftList = new ArrayList<Aircraft>();
+        System.out.println("FAMB: SIZE: " + fpb.getAllAircraft().size());
+        for (Aircraft temp : fpb.getAllAircraft()) {
+            if (!temp.getRegistrationNo().equals("9V-000")) {
+                System.out.println("FAMB: " + temp.getRegistrationNo());
+                aircraftList.add(temp);
+            }
+        }
+        System.out.println("FAMB: SIZE2: " + aircraftList.get(0).getRegistrationNo());
+//        aircraftList = fpb.getAllAircraft();
+        return aircraftList;
     }
 
     public void setAircraftList(List<Aircraft> aircraftList) {
@@ -253,6 +290,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public void setTaskAircraftSerial(String taskAircraftSerial) {
+        System.out.println("aircradt serial read ? " + taskAircraftSerial);
         this.taskAircraftSerial = taskAircraftSerial;
     }
 

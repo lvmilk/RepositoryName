@@ -80,4 +80,8 @@ public interface RoutePlanningBeanLocal {
 
     public Double calRouteDistance(String originIATA, String destIATA);
 
+    public Double maxBlockHour(Double distance);
+
+    public Double minBlockHour(Double distance);
+
 }

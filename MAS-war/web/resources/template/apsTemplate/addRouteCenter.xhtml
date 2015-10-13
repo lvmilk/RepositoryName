@@ -26,11 +26,6 @@
                         <f:selectItem itemLabel="-Select Origin-" itemValue="" />
                         <f:selectItems value="#{RouteManagedBean.airportInfo}" />
                     </p:selectOneMenu>
-
-<!--                    <p:outputLabel for="destIATA" value="Destination Airport IATA: " />
-                    <p:inputText id="destIATA"  value="#{RouteManagedBean.destIATA}" label="destIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter destination airport IATA" size="15">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
-                    </p:inputText>-->
                     
                     <p:outputLabel for="destIATA" value="Destination Airport: " />
                     <p:selectOneMenu id="destIATA" value="#{RouteManagedBean.destIATA}" required="destIATA" requiredMessage="Please select destination airport" style="width:250px">
@@ -47,10 +42,11 @@
                     </p:inputText>
                     
                 </h:panelGrid>
-                <p:selectBooleanCheckbox value="#{RouteManagedBean.addReturnRoute}" />
-                <h:outputText value="Add return route" />
+                
+<!--                <p:selectBooleanCheckbox value="#{RouteManagedBean.addReturnRoute}" />
+                <h:outputText value="Add return route" />-->
 
-                <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
+                <p:commandButton id="addRouteBtn" value="Add Inbound and Outbound Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
 
             </p:panel>
 
