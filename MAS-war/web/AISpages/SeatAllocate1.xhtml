@@ -10,19 +10,23 @@
     </h:head>
     <h:body>
 
+
         <ui:decorate template="./../resources/template/aisTemplate/ais_skeleton.xhtml">
+            <ui:include src="./../resources/template/cmiTemplate/sessionOut.xhtml"></ui:include>
+            <ui:include src="./../resources/template/cmiTemplate/msgPoll.xhtml"></ui:include>
+
             <ui:define name="top">
                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-<!--            <ui:define name="right">
-                <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>-->
-            
-               <ui:define name="center">
-               <ui:include src="./../resources/template/aisTemplate/SeatAllocate1Center.xhtml"></ui:include>
+            <!--            <ui:define name="right">
+                            <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
+                        </ui:define>-->
+
+            <ui:define name="center">
+                <ui:include src="./../resources/template/aisTemplate/SeatAllocate1Center.xhtml"></ui:include>
             </ui:define>
 
 

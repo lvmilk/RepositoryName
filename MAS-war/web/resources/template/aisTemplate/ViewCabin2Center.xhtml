@@ -36,13 +36,13 @@
 
                 </p:dataTable>
             </p:panel>
-
+            <p:commandButton value="Back" immediate="true" action="./ViewCabin1.xhtml"  icon="ui-icon-arrowthick-1-w"/>
             <p:draggable for="panel" /><p:resizable for="panel" />
         </h:form>
 
 
 
-
+        <br />
         <p:panel id="panel" header="Cabin Class Information" style="text-align: center;width:100%">
             <c:forEach var="cabin" items="#{viewCabin2Bean.cabinList}">
                 <p:panelGrid columns="#{cabin.rowSeatCount+1+viewCabin2Bean.aisleMap[cabin]}" styleClass="ui-panelgrid" >
@@ -53,49 +53,58 @@
                             </p:column>
                         </p:row>
                     </f:facet>
+                    <c:choose>
+                        <c:when test="${not empty viewCabin2Bean.chartMap}">
+                            <h:outputText value=" " style="height:60px;width:30px"/>
+                            <c:forEach var="rowSeat" items="#{viewCabin2Bean.chartMap[cabin][0]}">
+                                <c:if test="#{empty rowSeat}">
+                                    <h:outputText value=" " />
+                                </c:if>
+                                <c:if test="#{not empty rowSeat}">
+                                    <h:outputText value=" #{rowSeat.charAt(rowSeat.length()-1)} " style="height:60px;width:30px"/>
+                                </c:if>
+                            </c:forEach>
 
-                    <h:outputText value=" " style="height:60px;width:30px"/>
-                    <c:forEach var="rowSeat" items="#{viewCabin2Bean.chartMap[cabin][0]}">
-                        <c:if test="#{empty rowSeat}">
-                            <h:outputText value=" " />
-                        </c:if>
-                        <c:if test="#{not empty rowSeat}">
-                            <h:outputText value=" #{rowSeat.charAt(rowSeat.length()-1)} " style="height:60px;width:30px"/>
-                        </c:if>
-                    </c:forEach>
+                            <c:forEach var="row" items="#{viewCabin2Bean.chartMap[cabin]}">
 
-                    <c:forEach var="row" items="#{viewCabin2Bean.chartMap[cabin]}">
+                                <h:outputText value=" #{row[0].substring(0,row[0].length()-1)} " style="height:60px;width:30px"/>
 
-                        <h:outputText value=" #{row[0].substring(0,row[0].length()-1)} " style="height:60px;width:30px"/>
-                        
-                        <c:forEach var="value" items="#{row}">
-                            <c:if test="${not empty value}">
-                                <c:choose>
-                                    <c:when test="${cabin.cabinName=='Suite'}">
-                                        <div id="seat1"><img src="./../images/suite.jpg" id="mySuite"/></div>
-                                    </c:when>
-                                    <c:when test="${cabin.cabinName=='First Class'}">
-                                        <div id="seat2"><img src="./../images/first.png" id="myFirst"/></div>
-                                    </c:when>
-                                    <c:when test="${cabin.cabinName=='Business Class'}">
-                                        <div id="seat3"><img src="./../images/biz.png" id="myBiz"/></div>
-                                    </c:when>
-                                    <c:when test="${cabin.cabinName=='Premium Economy Class'}">
-                                        <div id="seat4"><img src="./../images/Pecons.png" id="myPecons"/></div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div id="seat5"><img src="./../images/econs.png" id="myEcons"/></div>
-                                    </c:otherwise>
+                                <c:forEach var="value" items="#{row}">
+                                    <c:if test="${not empty value}">
+                                        <c:choose>
+                                            <c:when test="${cabin.cabinName=='Suite'}">
+                                                <div id="seat1"><img src="./../images/suite.jpg" id="mySuite"/></div>
+                                            </c:when>
+                                            <c:when test="${cabin.cabinName=='First Class'}">
+                                                <div id="seat2"><img src="./../images/first.png" id="myFirst"/></div>
+                                            </c:when>
+                                            <c:when test="${cabin.cabinName=='Business Class'}">
+                                                <div id="seat3"><img src="./../images/biz.png" id="myBiz"/></div>
+                                            </c:when>
+                                            <c:when test="${cabin.cabinName=='Premium Economy Class'}">
+                                                <div id="seat4"><img src="./../images/Pecons.png" id="myPecons"/></div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div id="seat5"><img src="./../images/econs.png" id="myEcons"/></div>
+                                            </c:otherwise>
 
-                                </c:choose>
-                            </c:if>
+                                        </c:choose>
+                                    </c:if>
 
-                            <c:if test="${empty value}">
-                                <h:outputText value=" "/>
-                            </c:if>
+                                    <c:if test="${empty value}">
+                                        <h:outputText value=" "/>
+                                    </c:if>
 
-                        </c:forEach>
-                    </c:forEach>
+                                </c:forEach>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+
+                            <h:outputText value="Please complete cabin configuration to view seating plan " style="font-weight: bold"/>
+                            <br/>
+                            
+                        </c:otherwise>
+                    </c:choose>
                 </p:panelGrid>
             </c:forEach >
 

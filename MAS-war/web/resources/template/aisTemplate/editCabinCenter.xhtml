@@ -54,11 +54,13 @@
                         <f:validateDoubleRange minimum="0" maximum="50" />
                     </p:inputText>
                     <!--                               <p:message for="seatwidth" /> -->
-
-
+                   
+                    <p:commandButton value="Back" immediate="true" update="panel" style="margin-left:0" actionListener="#{cabinDetailBean.goBack()}"  icon="ui-icon-arrowthick-1-w" />
+                    <br />
+                    <p:commandButton value="Save" update="panel" style="margin-right:0!important" actionListener="#{cabinDetailBean.saveUpdate()}"  icon="ui-icon-folder-collapsed" />
+                    <p:commandButton value="Cancel"  immediate="true" update="panel" style="margin-right:0!important" actionListener="#{cabinDetailBean.onCancel()}"  icon="ui-icon-closethick" />
                 </h:panelGrid>
 
-                <p:commandButton value="Save" update="panel" style="margin-right:0" actionListener="#{cabinDetailBean.saveUpdate()}"  icon="ui-icon-check" />
             </p:panel>
 
             <p:draggable for="panel" /><p:resizable for="panel" />
