@@ -516,7 +516,7 @@ public class FlightInstanceManagedBean implements Serializable {
     }
 
     //------------------------------------------Hanyu added-------------------------------------------------
-    public void scheduleAcToFi() throws ParseException, IOException {
+    public void scheduleAcToFi() throws ParseException, IOException, Exception {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
         try {

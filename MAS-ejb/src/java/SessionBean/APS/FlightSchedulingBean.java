@@ -246,17 +246,38 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("edit flight instance: Fight Instance does not exist.");
             throw new Exception("edit flight instance: Fight Instance does not exist.");
         }
-        List<FlightInstance> flightInstList = q.getResultList();
-        flightInst = flightInstList.get(0);
-        flightInst.setFlightStatus(flightStatus);
-        flightInst.setEstimatedDepTime(estimatedDepTime);
-        flightInst.setEstimatedArrTime(estimatedArrTime);
-        flightInst.setEstimatedDateAdjust(estimatedDateAdjust);
-        flightInst.setActualDepTime(actualDepTime);
-        flightInst.setActualArrTime(actualArrTime);
-        flightInst.setActualDateAdjust(actualDateAdjust);
-        em.merge(flightInst);
-        em.flush();
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        Date ed = df.parse(estimatedDepTime);
+        Date ea = df.parse(estimatedArrTime);
+        Date ad = df.parse(actualDepTime);
+        Date aa = df.parse(actualArrTime);
+        System.out.println("flightSchedulingBean: 4 time types: " + ed+" "+ea +" "+ad+ " "+aa);
+        Long estimatedDiff = (ea.getTime() - ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
+        Long actualDiff = (ad.getTime() - ad.getTime()) / (60 * 60 * 1000) % 24;
+        System.out.println("flightSchedulingBean: time hour difference: estimated diff: " + estimatedDiff + " and actual diff: " + actualDiff);
+        if ((ed.before(ea) && estimatedDateAdjust != 1) || (ed.compareTo(ea) == 0 && estimatedDateAdjust != 0) || (ed.after(ea) && estimatedDateAdjust == 1)) {
+            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && estimatedDateAdjust == 1)) {
+                if (Math.abs(estimatedDiff - actualDiff) <= 24) {
+                    List<FlightInstance> flightInstList = q.getResultList();
+                    flightInst = flightInstList.get(0);
+                    flightInst.setFlightStatus(flightStatus);
+                    flightInst.setEstimatedDepTime(estimatedDepTime);
+                    flightInst.setEstimatedArrTime(estimatedArrTime);
+                    flightInst.setEstimatedDateAdjust(estimatedDateAdjust);
+                    flightInst.setActualDepTime(actualDepTime);
+                    flightInst.setActualArrTime(actualArrTime);
+                    flightInst.setActualDateAdjust(actualDateAdjust);
+                    em.merge(flightInst);
+                    em.flush();
+                } else {
+                    throw new Exception("Estimated dates and actual dates cannot be different by more than 24h!");
+                }
+            } else {
+                throw new Exception("Actual Dates are not valid! Please adjust.");
+            }
+        } else {
+            throw new Exception("Estimated Dates are not valid! Please adjust.");
+        }
     }
 
     @Override
@@ -397,7 +418,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
+    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException, Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");
@@ -481,7 +502,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date depCheck = new Date();
         Date arrCheck = new Date();
         System.out.println("canAssign: CHECK 5");
-        for (int i = 0; i < flightTemp.size()-1; i++) {
+        for (int i = 0; i < flightTemp.size() - 1; i++) {
             depCheck = flightTemp.get(i).getStandardDepTimeDateType();
             arrCheck = flightTemp.get(i + 1).getStandardArrTimeDateType();
             System.out.println("canAssign: depDate" + depCheck);

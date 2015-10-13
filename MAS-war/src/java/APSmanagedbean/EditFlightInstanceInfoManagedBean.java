@@ -100,7 +100,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
             System.out.println("edit flight info managed bean: edit flight instance: flight frequency: " + flightFreq);
             flightInst = fsb.findFlight(flightFreq.getFlightNo(), flightDateString);
             System.out.println("edit flight info managed bean: edit flight instance: flight instance: " + flightInst);
-           
+            ///////////////////////////////////////////////////////////////////////
             Integer bookedSeat = 0;
             List<FlightCabin> flightCabinList = new ArrayList<>();
             flightCabinList = flightInst.getFlightCabins();
@@ -110,14 +110,14 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
                 bookedSeat = bookedSeat + flightCabinList.get(i).getBookedSeat();
             }
             System.out.println("edit flight info managed bean: edit flight instance: number of booked seats: " + bookedSeat);
-            ///////////////////////////////////////////////////////////////////////
+            
             if ((bookedSeat != 0) && flightStatus.equals("Cancelled")) {
                 System.out.println("edit flight info managed bean: edit flight instance: number of booked seats: WARNING!!! " + bookedSeat);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This flight " + flightFreq.getFlightNo() + " on " + flightInst.getDate() + " has reserved seates. Please handle affected customers! ", ""));
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightFrequency", flightFreq);
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightInstance", flightInst);
             }
-
+            ///////////////////////////////////////////////////////////////////////
             fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceDone.xhtml");
         } catch (Exception ex) {
