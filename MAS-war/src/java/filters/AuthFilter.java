@@ -34,69 +34,61 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try 
-        {
+        try {
 
             // check whether session variable is set
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
+            HttpSession ses = req.getSession(true);
+            String path = req.getServletPath();
 
-            HttpSession ses = req.getSession(false);
-
-            String stfType = (String) req.getSession().getAttribute("stfType");
-            System.out.println("***Authentication level: " + stfType + " ***");
-            //  allow user to proccede if url is login.xhtml or user logged in or user is accessing any page in //public folder
-            String reqURI = req.getRequestURI();
-
-            System.err.println("*********************reqURI: " + reqURI);
-
-//            if (reqURI.contains("javax.faces.resource") || reqURI.contains("staffMain.xhtml") || reqURI.contains("login.xhtml")
-//                    || reqURI.indexOf("/forgetPwd") >= 0 || reqURI.equals("/MAS-war/") || reqURI.contains("Permission.xhtml")) 
-//            {
-//
-//                System.err.println("********************** inside bypass");
-//                chain.doFilter(request, response);
-//                return;
-//            } 
-//            else 
-//            {
-//                if (stfType == null) 
-//                {
-//                    res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");  // Anonymous user. Redirect to login page
-//                } 
-//                else 
-//                {
-//                    chain.doFilter(request, response);
-//                }
-//            }
-//
-//            if (stfType.equals("administrator")) 
-//            {
-//                System.out.println("inside admin");
-//                chain.doFilter(request, response);
-//            } 
-//            else if (stfType.equals("officeStaff") && (reqURI.contains("staffWorkspace.xhtml") || reqURI.contains("/CMIpages/"))) 
-//            {
-//                System.out.println("inside admin-else");
-//                chain.doFilter(request, response);
-//            } 
-//            else 
-//            {
-//                System.err.println("********************** inside permission redirection");
-//                request.getRequestDispatcher("/Permission.xhtml").forward(request, response);
-//            }
-
-            if ((ses != null && ses.getAttribute("username") != null)
-                    || reqURI.contains("javax.faces.resource") || reqURI.indexOf("/staffMain.xhtml") >= 0 || reqURI.indexOf("/login.xhtml") >= 0
-                    || reqURI.indexOf("/forgetPwd") >= 0 || reqURI.contains("/CMIpages/")) {
+            if (path.startsWith("/javax.faces.resource")
+                    || path.equals("/login.xhtml") || path.equals("/staffMain.xhtml") || path.equals("/Permission.xhtml")) {
                 chain.doFilter(request, response);
-            } else // user didn't log in but asking for a page that is not allowed so take user to login page
-            {
-                res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");  // Anonymous user. Redirect to login page
+            } else {
+                if (ses.getAttribute("stfType") == null) {
+                    res.sendRedirect("/MAS-war/login.xhtml");
+                } else {
+                    String stfType = (String) ses.getAttribute("stfType");
+
+                    if (stfType.equals("officeStaff")) {
+                        if (path.contains("sAdm") || path.equals("/EditStaffPage.xhtml") || path.equals("/EditCockpitPage.xhtml")) {
+                            res.sendRedirect("/MAS-war/Permission.xhtml");
+                        }
+                    } else if (stfType.equals("groundStaff")) {
+                        if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages")) {
+                            res.sendRedirect("/MAS-war/Permission.xhtml");
+                        }
+                    } else if (stfType.equals("cabin")) {
+                        if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages")) {
+                            res.sendRedirect("/MAS-war/Permission.xhtml");
+                        }
+                    } else if (stfType.equals("cockpit")) {
+                        if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages")) {
+                            res.sendRedirect("/MAS-war/Permission.xhtml");
+                        }
+                    }
+
+                    // Other staff role
+                    chain.doFilter(request, response);
+                }
             }
-        } 
-        catch (Throwable t) 
-        {
+
+//            System.out.println("***Authentication level: " + stfType + " ***");
+//            //  allow user to proccede if url is login.xhtml or user logged in or user is accessing any page in //public folder
+//            String reqURI = req.getRequestURI();
+//
+//            System.err.println("*********************reqURI: " + reqURI);
+//
+//            if ((ses != null && ses.getAttribute("username") != null)
+//                    || reqURI.contains("javax.faces.resource") || reqURI.indexOf("/staffMain.xhtml") >= 0 || reqURI.indexOf("/login.xhtml") >= 0
+//                    || reqURI.indexOf("/forgetPwd") >= 0 || reqURI.contains("/CMIpages/")) {
+//                chain.doFilter(request, response);
+//            } else // user didn't log in but asking for a page that is not allowed so take user to login page
+//            {
+//                res.sendRedirect(req.getContextPath() + "/staffMain.xhtml");  // Anonymous user. Redirect to login page
+//            }
+        } catch (Throwable t) {
             System.out.println(t.getMessage());
         }
     } //doFilter

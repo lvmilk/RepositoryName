@@ -5,6 +5,7 @@
  */
 package managedbean;
 
+import Entity.CommonInfaEntity.MsgReceiver;
 import Entity.CommonInfaEntity.MsgSender;
 import SessionBean.CommonInfaSB.MsgSessionBeanLocal;
 import java.io.Serializable;
@@ -13,9 +14,11 @@ import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -63,6 +66,16 @@ public class ViewSendMsgManagedBean implements Serializable {
         return time;
     }
 
+    public void toDeleteMsg(List<MsgSender> messageList) throws Exception {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (messageList.isEmpty()) {
+            context.execute("alert('Please select message(s) first.');");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select messages first. ", ""));
+        } else {
+            context.execute("PF('dlgSendMsg').show()");
+        }
+    }
+
     public void deleteMessage(List<MsgSender> messageList) throws Exception {
 
         for (MsgSender msg : messageList) {
@@ -70,7 +83,10 @@ public class ViewSendMsgManagedBean implements Serializable {
         }
 
         sendMsgList = (List<MsgSender>) msbl.viewSendMessage(currentUsername);
-
+        
+        String path = "/CMIpages/viewSendMessage.xhtml";
+        String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        FacesContext.getCurrentInstance().getExternalContext().redirect(url + path);
 
     }
 
