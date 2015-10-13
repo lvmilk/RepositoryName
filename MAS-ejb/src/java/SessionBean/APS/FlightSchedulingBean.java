@@ -493,6 +493,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
         fiList = getAllFlightInstance();
         Collections.sort(fiList);
+        
         firstInstDate = fiList.get(0).getStandardDepTime();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date temp = df1.parse(firstInstDate);
