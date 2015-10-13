@@ -55,9 +55,7 @@
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Delete" process="deleteTaskDlg" update="@none"  
-                                         action="#{FAMB.delete}"  
-                                         oncomplete="PF('deleteTaskWdgt').hide()"/>  
+                        <p:commandButton value="Delete" process="deleteTaskDlg" update="@none" action="#{FAMB.delete}" oncomplete="PF('deleteTaskWdgt').hide()"/>  
                         <p:commandButton type="button" value="Cancel" onclick="PF('deleteTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
@@ -66,33 +64,29 @@
             <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt"  
                       showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup id="addTaskInner" layout="block" style="margin:10px;">  
-                    <p:panelGrid columns="2" columnClasses="">
-                        <!--                        <h:outputText value="Flight No."/>
-                                                <p:inputText value="#{FAMB.flightNo}" required="true" label="FlightNo"/> 
-                        
-                                                <h:outputText value="Flight Date"/>
-                                                <p:calendar value="#{FAMB.flightDate}" required="true" timeZone="#{FAMB.timeZone}"  pattern="yyyy-MM-dd" label="FlightDate"/>  
-                                            </p:panelGrid>-->
-                        <h:outputText value="Choose a flight to assign">
-                            <p:selectOneMenu value="#{FAMB.assignTask}" required="true" requiredMessage="Please select a flight to assign" 
-                                             rendered="#{not empty editServerTimelineController.event}">  
-                              <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">
-                        <f:selectItem itemLabel="-Select Route-" itemValue="" />
-                        <f:selectItems value="#{flightManagedBean.routeInfo}" />
-                    </p:selectOneMenu>
-                            </p:selectOneMenu>  
-                            </h:panelGroup>
+                    <p:panelGrid columns="2" columnClasses=""/>
+                      <h:outputText value="Choose an aircraft"/>
+                        <p:selectOneMenu value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px">
+                            <f:selectItem itemLabel="-Select Aircraft-" itemValue="" />
+                            <f:selectItems value="#{FAMB.aircraftList}" var="ac" itemValue="#{ac.serialNo}" itemLabel="#{ac.serialNo} / #{ac.aircraftType.type}"/>
+                        </p:selectOneMenu>
+                    <h:outputText value="Choose a flight to assign"/>
+                        <p:selectOneMenu value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">
+                            <f:selectItem itemLabel="-Select Flight-" itemValue="" />
+                            <f:selectItems value="#{FAMB.unassignedFlight}" var="flight" itemValue="#{flight.id}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.date} #{flight.flightFrequency.route.toString()}"/>
+                        </p:selectOneMenu>
 
-                            <f:facet name="footer">  
-                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                                    <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}"  
-                                                     oncomplete="PF('addTaskWdgt').hide()"/>  
-                                    <p:commandButton type="button" value="Cancel" onclick="PF('addTaskWdgt').hide()"/>  
-                                </h:panelGroup>  
-                            </f:facet>  
-                            </p:dialog>  
+                </h:panelGroup>
 
-                            </h:form>
-                            </h:body>
-                            </html>
+                <f:facet name="footer">  
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()"/>  
+                        <p:commandButton type="button" value="Cancel" onclick="PF('addTaskWdgt').hide()"/>  
+                    </h:panelGroup>  
+                </f:facet>  
+            </p:dialog>  
+
+        </h:form>
+    </h:body>
+</html>
 
