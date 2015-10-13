@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,6 +34,7 @@ public interface FlightSchedulingBeanLocal {
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
 
+
     public List<FlightInstance> getAllFlightInstance();
 
     public List<FlightFrequency> getFlightOfRoute(Route route);
@@ -51,13 +53,16 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception;
-
     public boolean addAcToFi(Aircraft ac, FlightInstance fi);
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
     
     public String getFirstInstDate();
+
+
+    public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate);
+
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
     public FlightInstance findFlight(Long flightId);
 
@@ -65,7 +70,5 @@ public interface FlightSchedulingBeanLocal {
 
     public List<FlightInstance> getUnassignedFlight();
 
-    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
-
-    public FlightInstance getDummyFi();
+    public FlightInstance findFlight(String flightNo, String flightDate) throws Exception;
 }

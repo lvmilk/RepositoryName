@@ -20,7 +20,7 @@
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
                 <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
-                    Aircraft is successfully deleted <ui:repeat var="at" value="#{deletedAircraftType}"> <h:outputText value="#{at.type} "/> </ui:repeat> !
+                    Aircraft is successfully deleted <ui:repeat var="a" value="#{deletedAircraft}"> <h:outputText value="#{a.registrationNo}"/> </ui:repeat> !
                     <br/>
                     <br/>
                     <br/>

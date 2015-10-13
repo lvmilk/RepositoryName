@@ -55,7 +55,7 @@ public class SeatAllocationMangagedBean implements Serializable {
             flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
             dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
             cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
-                System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
+            System.out.println("SAMB: flight passed in viewscoped: " + flightNo);
 
         }
     }
@@ -104,20 +104,23 @@ public class SeatAllocationMangagedBean implements Serializable {
     public List<BookingClassInstance> getBkiList() {
         bkiList = new ArrayList<BookingClassInstance>();
         bkiList = sab.getBkiList(flightNo, dateString, cabinName);
+
         System.out.println("SAMB: getBkiList().size: " + bkiList.size());
         System.out.println("Flag: initial: " + this.flag);
-        if (flag) {
-            // System.out.println("SAMB: getBkiList(): bki" + bkiList.get(0).toString());
-            // System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin " + bkiList.get(0).getFlightCabin().toString());
-            //  System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin.CabinClass.Name " + bkiList.get(0).getFlightCabin().getCabinClass().getCabinName());
 
-            totalAvailableSeat = bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(0).getFlightCabin().getBookedSeat();
+            if (flag) {
+            // System.out.println("SAMB: getBkiList(): bki" + bkiList.get(0).toString());
+                // System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin " + bkiList.get(0).getFlightCabin().toString());
+                //  System.out.println("SAMB: getBkiList(): bkiList(0).flightCabin.CabinClass.Name " + bkiList.get(0).getFlightCabin().getCabinClass().getCabinName());
+               if (!bkiList.isEmpty())
+                totalAvailableSeat = bkiList.get(0).getFlightCabin().getCabinClass().getSeatCount() - bkiList.get(0).getFlightCabin().getBookedSeat();
 //            for (FlightCabin cc : bkiList.get(0).getFlightCabin().getFlightInstance().getFlightCabins()) {
 //                totalAvailableSeat = totalAvailableSeat + cc.getCabinClass().getSeatCount() - cc.getBookedSeat();
 //            }
-            this.flag = false;
-        }
-        return bkiList;
+                this.flag = false;
+            }
+            return bkiList;
+         
     }
 
 //       public List<BookingClassInstance> getBkiList() {
@@ -296,6 +299,5 @@ public class SeatAllocationMangagedBean implements Serializable {
      */
     public SeatAllocationMangagedBean() {
     }
-
 
 }

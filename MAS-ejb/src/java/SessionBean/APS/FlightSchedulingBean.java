@@ -210,14 +210,22 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
 
         DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        System.out.println("Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
+
         System.out.println("flightSchedulingBean: add flight instance: String type: Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
+
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
 
+//        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        flightInst.setStandardDepTimeDateType(formatter.parse((standardDepTime)));
+//        flightInst.setStandardArrTimeDateType(formatter.parse((standardArrTime)));
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         flightInst.setStandardDepTimeDateType(formatter.parse(depDateTime.format(sdf)));
         flightInst.setStandardArrTimeDateType(formatter.parse(arrDateTime.format(sdf)));
         System.out.println("flightSchedulingBean: add flight instance: Date type: Combined departure time: " + formatter.parse(depDateTime.format(sdf)) + " and Combined arrival time: " + formatter.parse(arrDateTime.format(sdf)));
+
 //        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
 //        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
 //        ZonedDateTime stdArr = arrDateTime.atZone(ZoneId.of("UTC"));
@@ -291,20 +299,24 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
+ 
     @Override
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception {
+    public FlightInstance findFlight(String flightNo,  String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not exist");
+            throw new Exception("flightSchedulingBean: findFlight: Flight " + flightNo + " does not exist");
         }
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
-        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:date").setParameter("date", flightDate);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:flightDate and  fi.flightFrequency=:flightFrequency");
+        q2.setParameter("flightDate", flightDate);
+        q2.setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not operate on " + flightDate);
+            throw new Exception("flightSchedulingBean: findFlight: " + flightNo + " does not operate on " + flightDate);
         }
         return (FlightInstance) q2.getResultList().get(0);
     }
+
 
     @Override
     public FlightInstance findFlight(Long flightId) {
@@ -336,6 +348,22 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flightInstListCopy;
     }
 
+    // get all unplanned fight instances for all aircraft 
+    public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate) {
+        List<Aircraft> acList = new ArrayList<Aircraft>();
+        acList = getAllAircraft();
+        List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
+        for (Aircraft ac : acList) {
+            List<FlightInstance> flightInstList = getUnplannedFlightInstance(ac);
+            for (FlightInstance temp : flightInstList) {
+                if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
+                    newFlightInstList.add(temp);
+                }
+            }
+        }
+        return newFlightInstList;
+    }
+
     @Override
     public List<Aircraft> getAllAircraft() {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
@@ -349,7 +377,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
+       public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");

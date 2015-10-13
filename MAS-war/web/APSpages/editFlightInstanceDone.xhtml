@@ -20,14 +20,14 @@
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
-                <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
-                  
+                <div style="width:50%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:20%; border:0px ;">
 
-                  This Flight Instance is successfully edited!
+                    <f:view beforePhase="#{editFIIMB.beforePhaseListener}">
+                         This Flight Instance is successfully updated!
+                        <p:messages autoUpdate="true" />
+                    </f:view>
 
-
-
-                </div>
+               </div>
 
 
 
