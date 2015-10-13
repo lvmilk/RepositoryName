@@ -7,6 +7,7 @@ import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,15 +69,22 @@ public class RouteManagedBean implements Serializable {
 
     public void addRoute() throws Exception {
         try {
+            Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+            Double minHour = rpb.minBlockHour(distance);
+            Double maxHour = rpb.maxBlockHour(distance);
+            DecimalFormat formatter = new DecimalFormat("#0.00");
+            DecimalFormat formatter2 = new DecimalFormat("#0.0");
             if (originIATA.equals(destIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Origin airport cannot be same as destination airport.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Origin airport cannot be same as destination airport.", ""));
             } else if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "At least one of origin airport and  destination airport must be hub.", ""));
-            } else if (distance < rpb.calRouteDistance(originIATA, destIATA)) {
-                Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
-                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " +drDistance + "km");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route distance should be longer than the direct distance " + drDistance + "km", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : At least one of origin airport and  destination airport must be hub.", ""));
+            } else if (distance < drDistance) {
+                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " + drDistance + "km");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance should be longer than the direct distance " + formatter.format(drDistance) + "km.", ""));
+            } else if (blockhour < minHour || blockhour > maxHour) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
             } else {
+                addReturnRoute = true;
                 rpb.checkRouteExist(originIATA, destIATA);
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
@@ -86,7 +94,7 @@ public class RouteManagedBean implements Serializable {
                 String rtNum = "Route ";
                 if (addReturnRoute) {
                     rpb.addRoute(destIATA, originIATA, distance, blockhour);
-                    rt += " ," + destIATA + " - " + originIATA;
+                    rt += ", " + destIATA + " - " + originIATA;
                     rtNum = "Routes ";
                 }
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("addRouteSuccessString", rtNum + rt);
@@ -102,7 +110,7 @@ public class RouteManagedBean implements Serializable {
         System.out.println("1");
         route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", fsb.getFlightOfRoute(route));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());

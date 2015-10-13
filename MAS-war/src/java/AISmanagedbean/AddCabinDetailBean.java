@@ -38,9 +38,15 @@ public class AddCabinDetailBean implements Serializable {
 //        cabinList=(ArrayList<CabinClass>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
 //        System.out.println("size of cabinList received is "+cabinList.size());
         acType = (AircraftType) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraftType");
-        
-        cabinList=acType.getCabinList();
- System.out.println("size of cabinList received is "+cabinList.size());
+
+        cabinList = acType.getCabinList();
+        System.out.println("size of cabinList received is " + cabinList.size());
+
+    }
+
+    public void onCancel() throws IOException {
+        acType = null;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseAircraftType.xhtml");
 
     }
 

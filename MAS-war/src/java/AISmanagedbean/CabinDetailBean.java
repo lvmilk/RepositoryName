@@ -72,11 +72,25 @@ public class CabinDetailBean implements Serializable {
         }
 
     }
+    
+    public void goBack() throws IOException{
+//     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinClass", cabinSelected);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftType", acType);
+     FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseCabin.xhtml");
+    
+    }
+    
+    public void onCancel() throws IOException{
+        acType=null;
+    FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseAircraftType.xhtml");
+    
+    
+    }
 
     public void saveUpdate() throws IOException {
-        if (rowCount * rowSeatCount > cabinSelected.getSeatCount()) {
-            System.out.println("exceed total seat count in cabin");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "product of rows and seat per row must be less than capacity ", ""));
+        if (rowCount * rowSeatCount != cabinSelected.getSeatCount()) {
+            System.out.println("product of row count and seat No. per row must equal to total seat count in cabin");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "product of row count and seat No. per row must equal to total seat count in cabin ", ""));
         } else {
 
             String[] parts = rowConfig.split("-");
@@ -96,16 +110,18 @@ public class CabinDetailBean implements Serializable {
 
             } else {
                 
-                if ((left + middle + right) > rowSeatCount) {
+                if ((left + middle + right) != rowSeatCount) {
                     System.out.println("Exceed row seat count");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "seats in row config exceed no. of seats per row", ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "seats in row config not equal to No. seats per row", ""));
                 
                 } else {
 
                     mcl.updateCabin(cabinSelected, seatWidth, rowCount, rowSeatCount, rowConfig);
 
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCabinSuccess.xhtml");
-                }
+                     FacesMessage msg = new FacesMessage("Cabin configuration edited successfully!");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    }
+                               
             }
         }
     }

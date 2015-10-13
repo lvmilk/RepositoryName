@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -23,7 +22,7 @@
 
                     <f:facet name="header">  
                         <h:outputLink id="fade" value="#">
-                            <h:outputText value="Airport List (Only airports can be deleted are shown.)" />
+                            <h:outputText value="Airport List (Note: Only airports can be deleted are shown.)" />
                         </h:outputLink>
                         <p:tooltip id="toolTipTrack" for="fade" value="If an airport is the origin/detination of a route, it cannot be deleted." trackMouse="true" />
                     </f:facet>
@@ -33,17 +32,14 @@
                     <p:column headerText="Airport IATA" sortBy="#{Airport.IATA}">
                         <h:outputText value="#{Airport.IATA}" />
                     </p:column>
-                    <p:column headerText="Airport Name">
-                        <h:outputText value="#{Airport.airportName}" />
+                    <p:column headerText="Specification">
+                        <h:outputText value="#{Airport.spec}" />
                     </p:column>
                     <p:column headerText="City Name">
                         <h:outputText value="#{Airport.cityName}" />
                     </p:column>
                     <p:column headerText="Country Name">
                         <h:outputText value="#{Airport.countryName}" />
-                    </p:column>
-                    <p:column headerText="Specification">
-                        <h:outputText value="#{Airport.spec}" />
                     </p:column>
                     <p:column headerText="Timezone">
                         <h:outputText value="#{Airport.timeZone}" />
@@ -60,14 +56,13 @@
 
                 </p:dataTable>
 
-                <!--                <p:commandButton value="Delete" update="dialogForm:dlg" oncomplete="PF('dlg').show()"  icon="ui-icon-check" modal="true"/>-->
                 <p:commandButton value="Delete" action="#{AirportManagedBean.toDeleteAirport}" icon="ui-icon-check" />
-                <!--< type="submit"   onclick="(if(!confirm('Are you going to delete selected airport?')) return false;">-->
             </p:panel> 
 
             <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Airport" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
-                    <h:outputText value="Delete airport "/> <ui:repeat var="ap" value="#{AirportManagedBean.selectedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>
+                    <!--<h:outputText value="Delete airport "/> <ui:repeat var="ap" value="#{AirportManagedBean.selectedAirport}"> <h:outputText value="#{ap.IATA} "/> </ui:repeat> <h:outputText value="?"/>-->
+                    <h:outputText value="Delete selected airport(s) ?"/>
                     <h:panelGrid columns="2" cellpadding="10">
                         <p:commandButton value="Delete"  update="" action="#{AirportManagedBean.confirmDeleteAirport}" />
                         <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />

@@ -54,6 +54,8 @@ public class FleetAssignmentManagedBean implements Serializable {
     private long zoomMax;
     private Date start;
     private Date end;
+    private Date startDate;
+    private Date endDate;
     private TimeZone timeZone = TimeZone.getTimeZone("Asia/Singapore");
     private String deleteMessage;
 

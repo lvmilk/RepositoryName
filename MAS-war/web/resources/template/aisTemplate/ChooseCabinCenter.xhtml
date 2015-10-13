@@ -29,13 +29,15 @@
                     </p:column>
 
                     <p:column headerText="Set details">
+                        
                         <p:commandButton value="Select" action="#{addCabinDetailBean.editDetail(cabinClass)}"  />
                     </p:column>
 
 
                 </p:dataTable>
             </p:panel>
-
+           <p:commandButton value="Back" immediate="true" style="margin-left:0"  action="./ChooseAircraftType.xhtml"  icon="ui-icon-arrowthick-1-w"/>
+           <p:commandButton value="Cancel"  immediate="true" update="panel" style="margin-right:0!important" actionListener="#{addCabinDetailBean.onCancel()}"  icon="ui-icon-closethick" />
             <p:draggable for="panel" /><p:resizable for="panel" />
         </h:form>
 

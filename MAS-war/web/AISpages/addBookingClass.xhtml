@@ -33,10 +33,11 @@
                                 <p:outputLabel for="console" value="Cabin Class :" />
                                 <p:selectOneMenu id="console" value="#{bookingClassBean.cabin}" required="true" requiredMessage="Please select a cabin class" style="width:250px">
                                     <f:selectItem itemLabel="Select One" itemValue="#{null}" />
+                                    <f:selectItem itemLabel="Suite" itemValue="First Class" />
                                     <f:selectItem itemLabel="First Class" itemValue="First Class" />
                                     <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
-                                    <f:selectItem itemLabel="Premium Economic Class" itemValue="Premium Economic Class" />
-                                    <f:selectItem itemLabel="Economic Class" itemValue=" Economic Class" />
+                                    <f:selectItem itemLabel="Premium Economy Class" itemValue="Premium Economy Class" />
+                                    <f:selectItem itemLabel="Economy Class" itemValue=" Economy Class" />
                                 </p:selectOneMenu>
 
                                 <p:draggable for="panel" /><p:resizable for="panel" />
