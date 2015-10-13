@@ -8,12 +8,12 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Edit Flight Instance</title>
+        <title>View Flight Instance</title>
     </h:head>
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="Choose a Flight to Edit"  style="width:100%" >
+            <p:panel id="panel" header="Choose a Flight to View"  style="width:100%" >
                 <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" tableStyle="width:auto" emptyMessage="No flight frequencies found.">
 
                     <p:column headerText="Flight No" sortBy="#{flightFreq.flightNo}" filterBy="#{flightFreq.flightNo}" filterMatchMode="contains">
@@ -57,8 +57,8 @@
                         <h:outputText value="Yes" rendered="#{flightFreq.onSun}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
 
-                    <p:column headerText="Update Flight Instance">
-                        <p:commandButton value="Update" actionListener="#{editFIMB.editFlightInstance(flightFreq)}"/>
+                    <p:column headerText="View Flight Instance">
+                        <p:commandButton value="View" actionListener="#{editFIMB.viewFlightInstance(flightFreq)}"/>
                     </p:column>
 
                 </p:dataTable>

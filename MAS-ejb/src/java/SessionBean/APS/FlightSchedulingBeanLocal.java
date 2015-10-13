@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,7 +34,6 @@ public interface FlightSchedulingBeanLocal {
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
 
-    public void editFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, String actualDepTime, String actualArrTime) throws Exception;
 
     public List<FlightInstance> getAllFlightInstance();
 
@@ -61,5 +61,14 @@ public interface FlightSchedulingBeanLocal {
     
     public String getFirstInstDate();
 
+
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate);
+
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
+
+    public FlightInstance findFlight(Long flightId);
+
+    public Aircraft findAircraft(String serialNo);
+
+    public List<FlightInstance> getUnassignedFlight();
 }
