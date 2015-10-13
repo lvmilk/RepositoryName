@@ -11,44 +11,35 @@
 
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="formMain">
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
-                <ui:repeat var="aircraft" value="#{FAMB.aircraftList}"> 
-                    <h:panelGrid columns="2"  style="margin-bottom:50px; width:400px" cellpadding="20">
-                        <p:outputLabel value="#{FAMB.aircraft.serialNo} / #{FAMB.aircraft.aircraftType.type}"/>
-                        <h:panelGroup layout="block" styleClass="centerExample">
 
-                            <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
+                <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
 
-                            <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask"
-                                         timeZone="#{FAMB.timeZone}"
-                                         zoomMax="#{FAMB.zoomMax}"
-                                         start="#{FAMB.start}"
-                                         end="#{FAMB.end}"
-                                         editable="true" timeChangeable="false"
-                                         showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
+                <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
+                             start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="false" showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
 
-                                <p:ajax event="add" update=":dialogForm:addTaskInner"
-                                        listener="#{FAMB.onAdd}"
-                                        oncomplete="PF('addTaskWdgt').show()"/>
-                                <p:ajax event="delete" update=":dialogForm:deleteTaskInner"
-                                        listener="#{FAMB.onDelete}"
-                                        onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
+                    <p:ajax event="add" update=":formMain:addTaskInner"
+                            listener="#{FAMB.onAdd}"
+                            oncomplete="PF('addTaskWdgt').show()"/>
+                    <p:ajax event="delete" update=":formMain:deleteTaskInner"
+                            listener="#{FAMB.onDelete}"
+                            onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
 
-                                <h:panelGrid columns="1">
-                                    <h:outputText value="#{flighttask.flightFrequency.flightNo}  #{flighttask.flightFrequency.route}"/>
-                                    <h:outputText value="#{flighttask.flightFrequency.scheduleDepTime} - #{flighttask.flightFrequency.scheduleArrTime}"/>
-                                </h:panelGrid>      
+                    <f:facet name="group">  
+                        <h:outputText value="#{group.registrationNo}" style="font-weight:bold;"/>  
+                    </f:facet>  
 
-                            </pe:timeline>
+                    <h:panelGrid columns="1">
+                        <h:outputText value="#{flighttask.flightFrequency.flightNo}  #{flighttask.flightFrequency.route}"/>
+                        <h:outputText value="#{flighttask.flightFrequency.scheduleDepTime} - #{flighttask.flightFrequency.scheduleArrTime}"/>
+                    </h:panelGrid>      
 
-                        </h:panelGroup>
-                    </h:panelGrid>
-                </ui:repeat>
+                </pe:timeline>
+
             </p:panel>
 
-            <p:dialog id="deleteTaskDlg" header="Delete Flight Task" widgetVar="deleteTaskWdgt"  
-                      showEffect="clip" hideEffect="clip" dynamic="true">  
+            <p:dialog id="deleteTaskDlg" header="Delete Flight Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup id="deleteTaskInner" layout="block" style="margin:10px;">  
                     <h:outputText value="#{FAMB.deleteMessage}"/>  
                 </h:panelGroup>  
@@ -61,21 +52,21 @@
                 </f:facet>  
             </p:dialog>  
 
-            <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt"  
-                      showEffect="clip" hideEffect="clip" dynamic="true">  
-                <h:panelGroup id="addTaskInner" layout="block" style="margin:10px;">  
-                    <p:panelGrid columns="2" columnClasses=""/>
-                      <h:outputText value="Choose an aircraft"/>
-                        <p:selectOneMenu value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px">
+            <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
+                <h:panelGroup id="addTaskInner" layout="block" style="margin:15px;">
+                    <p:messages id="msgs" autoUpdate="true" />
+                    <p:panelGrid columns="2" columnClasses="">
+                        <h:outputLabel for="aircraft" value="Choose an aircraft"/>
+                        <p:selectOneMenu id="aircraft" value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px">
                             <f:selectItem itemLabel="-Select Aircraft-" itemValue="" />
-                            <f:selectItems value="#{FAMB.aircraftList}" var="ac" itemValue="#{ac.serialNo}" itemLabel="#{ac.serialNo} / #{ac.aircraftType.type}"/>
+                            <f:selectItems value="#{FAMB.aircraftList}" var="ac" itemValue="#{ac.registrationNo}" itemLabel="#{ac.registrationNo} / #{ac.aircraftType.type}"/>
                         </p:selectOneMenu>
-                    <h:outputText value="Choose a flight to assign"/>
-                        <p:selectOneMenu value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">
+                        <h:outputLabel for="flight" value="Choose a flight to assign"/>
+                        <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">
                             <f:selectItem itemLabel="-Select Flight-" itemValue="" />
                             <f:selectItems value="#{FAMB.unassignedFlight}" var="flight" itemValue="#{flight.id}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.date} #{flight.flightFrequency.route.toString()}"/>
                         </p:selectOneMenu>
-
+                    </p:panelGrid>
                 </h:panelGroup>
 
                 <f:facet name="footer">  
@@ -85,6 +76,26 @@
                     </h:panelGroup>  
                 </f:facet>  
             </p:dialog>  
+
+            <h:panelGrid columns="1" style="margin-bottom:50px; width:90%" cellpadding="20">
+                <p:outputLabel value="Unassigned Flight Instance List:"/>
+                <p:dataTable var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights remain unassigned." style="width:70%">
+                    <p:column headerText="Flight No">
+                        <h:outputText value="#{flight.flightFrequency.flightNo}" />
+                    </p:column>
+                    <p:column headerText="Origin-Destination">
+                        <h:outputText value="#{flight.flightFrequency.route}" />
+                    </p:column>
+                    <p:column headerText="Time">
+                        <h:outputText value="#{flight.standardDepTime} - #{flight.standardArrTime}" />
+                    </p:column>
+                    <p:column headerText="Required Aircraft Type">
+                        <h:outputText value="#{flight.flightFrequency.route.acType.type}" />
+                    </p:column>
+                </p:dataTable>
+            </h:panelGrid>
+
+
 
         </h:form>
     </h:body>

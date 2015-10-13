@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:pm="http://primefaces.org/mobile">
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 
     <h:head>
@@ -60,25 +61,26 @@
                         <p:column headerText="Min Days Ticketing In Advance">
                             <h:outputText value="#{BookClass.ticket_advance}" />
                         </p:column>
-                        <p:column headerText="Allow Standby Checkin">
-                            <h:outputText value="#{BookClass.can_standby}" />
+
+
+                        <p:column headerText="Allow Standby Checkin">                         
+                            <h:outputText value="#{BookClass.can_standby}" />                
                         </p:column>
-                        <p:column headerText="Available In DDS">
+
+                        <p:column headerText="Available In DDS"> 
                             <h:outputText value="#{BookClass.dds_available}" />
                         </p:column>
-                        <p:column headerText="Available In GDS">
-                            <h:outputText value="#{BookClass.gds_available}" />
+
+                        <p:column headerText="Available In GDS">                              
+                            <h:outputText value="#{BookClass.gds_available}" />            
                         </p:column>
 
-                         <p:column headerText="Edit">
-                             <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
-                           
-                        </p:column>
-                        
-<!--                        <p:column>
-                        <p:commandLink action="#{BookingClassBean.EditBookClassInfo(BookClass)}" ajax="false" value="Edit" />
+                        <p:column headerText="Edit">
+                            <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
 
-                        </p:column>-->
+                        </p:column>
+
+
 
                     </p:dataTable>
                 </p:panel>

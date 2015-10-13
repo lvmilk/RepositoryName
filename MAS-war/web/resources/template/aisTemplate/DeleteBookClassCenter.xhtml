@@ -9,14 +9,15 @@
 
 
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>Delete Booking Class</title>
     </h:head>
     <h:body>
 
         <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
 
-            <h:form>
-
+            <h:form id="deleteForm">
+                <p:messages id="msgs" showDetail="false" />
+                
                 <p:panel id="panel" header="Delete Booking Classes"  style="width:100%">
 
                     <p:dataTable var="BookClass" rowKey ="#{BookClass.id}" selection="#{bookingClassBean.selectedClass}" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
@@ -28,8 +29,7 @@
                         </f:facet>  
 
                         <p:column selectionMode="multiple" headerText="Select all" style="width:18px" />      
-
-                        
+                    
                         <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                             <h:outputText value="#{BookClass.annotation}" />
                         </p:column>
@@ -84,7 +84,7 @@
 
 
 
-                    <p:commandButton value="Delete"  action="#{bookingClassBean.confirmDelete()}" icon="ui-icon-check" />
+                    <p:commandButton value="Delete" update="deleteForm" action="#{bookingClassBean.confirmDelete()}" icon="ui-icon-check" />
                 </p:panel>
 
                 <p:draggable for="panel" /><p:resizable for="panel" />

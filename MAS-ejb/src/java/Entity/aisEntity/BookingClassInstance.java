@@ -17,7 +17,7 @@ import javax.persistence.ManyToOne;
  * @author wang
  */
 @Entity
-public class BookingClassInstance implements Serializable {
+public class BookingClassInstance implements Serializable, Comparable<BookingClassInstance>  {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -139,5 +139,14 @@ public class BookingClassInstance implements Serializable {
     public String toString() {
         return "Entity.aisEntity.BookingClassInstance[ id=" + id + " ]";
     }
+
+    @Override
+    public int compareTo(BookingClassInstance Bi) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         return this.price.compareTo(Bi.getPrice());
+        
+    }
+    
+    
     
 }

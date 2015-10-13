@@ -7,12 +7,12 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
     <h:head>
-        <title>Add Booking Class</title>
+        <title>Edit Booking Class</title>
     </h:head>
     <h:body>
         <h:form>
 
-            <p:panel id="panel" header="Booking Class Specification" style="width: 100%">
+            <p:panel id="panel" header="Edit Booking Class Specification" style="width: 100%">
 
                 <p:messages id="msgs" />
                 <h:panelGrid columns="4"   cellpadding="20">
@@ -86,7 +86,7 @@
                     </p:inputText>
 
 
-                    <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
+                   <p:outputLabel for="can_standby" value="Allow for standby checkin?: :" />
                     <p:selectOneRadio id="can_standby" value="#{bookingClassBean.can_standby}" required="true" requiredMessage="Please select standby checkin eligibility" >
                         <f:selectItem itemLabel="Yes" itemValue="true" />
                         <f:selectItem itemLabel="No" itemValue="false" />
@@ -103,12 +103,13 @@
                         <f:selectItem itemLabel="Yes" itemValue="true" />
                         <f:selectItem itemLabel="No" itemValue="false" />
                     </p:selectOneRadio>
+                    
                 </h:panelGrid>
                 <br />
 
                 <p:separator/>
-                <p:commandButton value="Back" immediate="true" style="margin-right:0" action="./addBookingClass.xhtml"  icon="ui-icon-check" />
-                <p:commandButton value="Save" update="panel" style="margin-right:0" actionListener="#{bookingClassBean.checkFirst()}"  icon="ui-icon-check" />
+                <p:commandButton value="Back" immediate="true" style="margin-right:0" action="#{bookingClassBean.goBack()}"  icon="ui-icon-check" />
+                <p:commandButton value="Edit" update="panel" style="margin-right:0" actionListener="#{bookingClassBean.editFirst()}"  icon="ui-icon-check" />
 
 
             </p:panel>

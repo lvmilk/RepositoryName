@@ -523,10 +523,12 @@ public class FlightInstanceManagedBean implements Serializable {
 //        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 //        startPlanDate=df1.parse(getFirstInstDate());
             fsb.scheduleAcToFi(startPlanDate, endPlanDate);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./autoFleetAssignment.xhtml");
-        } catch (IOException | ParseException e) {
-            System.out.println("Oops: Error! " + e.getMessage());
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error", e.getMessage());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startPlanDate", startPlanDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endPlanDate", endPlanDate);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightView.xhtml");
+        } catch (IOException | ParseException ex) {
+            System.out.println("Oops: Error! " + ex.getMessage());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "An error has occured" + ex.getMessage(), "");
             RequestContext.getCurrentInstance().showMessageInDialog(message);
         }
     }

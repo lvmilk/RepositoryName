@@ -28,13 +28,64 @@ public class BookingClassBean implements BookingClassBeanLocal {
     public BookingClassBean() {
 
     }
-    
-    
-    
+
+    public void updateBookClassInstance(BookingClass selectedBookClass) {
+        Query query = entityManager.createQuery("SELECT b FROM BookingClassInstance b where b.bookingClass.annotation=:annotation ");
+        query.setParameter("annotation", selectedBookClass.getAnnotation());
+
+        List<BookingClassInstance> resultList = (List) query.getResultList();
+        if (!resultList.isEmpty()) {
+
+            System.out.println("No. of booking class instance affected is " + resultList.size());
+            for (int i = 0; i < resultList.size(); i++) {
+                if (selectedBookClass.getCabinName().equals("Suite")) {
+                    System.out.println("New price for this booking class is "+selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicScFare());
+                    resultList.get(i).setPrice(selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicScFare());
+                } else if (selectedBookClass.getCabinName().equals("First Class")) {
+                    resultList.get(i).setPrice(selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicFcFare());
+                } else if (selectedBookClass.getCabinName().equals("Business Class")) {
+                    resultList.get(i).setPrice(selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicBcFare());
+                }
+                if (selectedBookClass.getCabinName().equals("Premium Economy Class")) {
+                    resultList.get(i).setPrice(selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicPecFare());
+                }
+                if (selectedBookClass.getCabinName().equals("Economy Class")) {
+                    resultList.get(i).setPrice(selectedBookClass.getPrice_percentage() * resultList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getBasicEcFare());
+                }
+
+                BookingClassInstance temp = entityManager.find(BookingClassInstance.class, resultList.get(i).getId());
+                
+                System.out.println("new price for resultlist.get(i) is "+resultList.get(i).getPrice());
+                temp.setPrice(resultList.get(i).getPrice());
+                entityManager.merge(temp);
+            }
+        } else {
+            System.out.println("No Booking Class instance affected");
+        }
+
+    }
+
+    public boolean checkGotInstance(ArrayList<BookingClass> selectedClass) {
+
+        boolean check = false;
+        for (int i = 0; i < selectedClass.size(); i++) {
+
+            Query query = entityManager.createQuery("SELECT b FROM BookingClassInstance b where b.bookingClass.annotation=:annotation ");
+            query.setParameter("annotation", selectedClass.get(i).getAnnotation());
+
+            List<BookingClass> resultList = (List) query.getResultList();
+            if (!resultList.isEmpty()) {
+                check = true;
+                break;
+            }
+        }
+        return check;
+
+    }
 
     public boolean addBookingClass(String annotation, String cabinName, Double price_percentage, Double refund_percentage, Double change_route_percentage,
             Double change_date_percentage, Double change_passenger_percentage, Double open_jaw_percentage, Double earn_mile_percentage, Integer min_stay, Integer max_stay,
-            Integer ticket_advance, Integer reserve_advance, boolean can_standby, boolean dds_available, boolean gds_available) {
+            Integer ticket_advance, Integer reserve_advance, Boolean can_standby, Boolean dds_available, Boolean gds_available) {
 
         bookingClass = new BookingClass();
 
@@ -59,11 +110,9 @@ public class BookingClassBean implements BookingClassBeanLocal {
         return true;
     }
 
-    
-    
-    public void editBookingClass(String annotation, String annotation2, String cabinName, Double price_percentage, Double refund_percentage, Double change_route_percentage,
+    public BookingClass editBookingClass(String annotation, String annotation2, String cabinName, Double price_percentage, Double refund_percentage, Double change_route_percentage,
             Double change_date_percentage, Double change_passenger_percentage, Double open_jaw_percentage, Double earn_mile_percentage, Integer min_stay, Integer max_stay,
-            Integer ticket_advance, Integer reserve_advance, boolean can_standby, boolean dds_available, boolean gds_available) {
+            Integer ticket_advance, Integer reserve_advance, Boolean can_standby, Boolean dds_available, Boolean gds_available) {
 
         Query query = entityManager.createQuery("SELECT b FROM BookingClass b where b.annotation=:annotation ");
         query.setParameter("annotation", annotation2);
@@ -90,13 +139,13 @@ public class BookingClassBean implements BookingClassBeanLocal {
             bookingClass.setDds_available(dds_available);
             bookingClass.setGds_available(gds_available);
 
-            entityManager.persist(bookingClass);
+            entityManager.merge(bookingClass);
+            entityManager.flush();
 
         }
+        return bookingClass;
     }
 
-    
-    
     public boolean checkDuplicate(String annotation) {
 
         Query query = entityManager.createQuery("SELECT b FROM BookingClass b WHERE b.annotation = :annotation ");
@@ -130,9 +179,6 @@ public class BookingClassBean implements BookingClassBeanLocal {
         return false;
 
     }
-    
-    
-    
 
     public List<BookingClass> getAllBookingClasses() {
         Query query = entityManager.createQuery("SELECT b FROM BookingClass b ");
