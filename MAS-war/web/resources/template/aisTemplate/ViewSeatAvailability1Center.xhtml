@@ -23,14 +23,14 @@
                     <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
                     <p:outputLabel for="flight" value="Flight :" />
-                    <p:selectOneMenu id="flight" value="#{seatAllocationMangagedBean.flightNo}" style="width:250px">
+                    <p:selectOneMenu id="flight" value="#{seatAllocationMangagedBean.flightNo}" required="true" requiredMessage="Please select a flight" style="width:250px">
                         <p:ajax listener="#{seatAllocationMangagedBean.onFlightChange()}" update="cabin"/>
                         <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{seatAllocationMangagedBean.flightList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
                     </p:selectOneMenu>
                     <br></br>
                     <p:outputLabel for="cabin" value="Cabin Class :" />
-                    <p:selectOneMenu id="cabin" value="#{seatAllocationMangagedBean.cabinName}" style="width:250px">
+                    <p:selectOneMenu id="cabin" value="#{seatAllocationMangagedBean.cabinName}" required="true" requiredMessage="Please select a cabin class" style="width:250px">
                         <f:selectItem itemLabel="Select One Cabin" itemValue="" noSelectionOption="true"/>
                         <f:selectItems value="#{seatAllocationMangagedBean.cabinList}"  var="cabin" itemValue="#{cabin.cabinName}" itemLabel="#{cabin.cabinName}"/>
                     </p:selectOneMenu>

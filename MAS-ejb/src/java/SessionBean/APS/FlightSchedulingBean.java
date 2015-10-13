@@ -196,8 +196,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightInst.setAircraft(ac);
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
 
-        String standardDepTime = flightFrequency.getScheduleArrTime();
-        String standardArrTime = flightFrequency.getScheduleDepTime();
+        String standardDepTime = flightFrequency.getScheduleDepTime();
+        String standardArrTime = flightFrequency.getScheduleArrTime();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate stdDate = LocalDate.parse(date, dateFormat);
@@ -299,20 +299,24 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setfDate(fDate);
     }
 
+ 
     @Override
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception {
+    public FlightInstance findFlight(String flightNo,  String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not exist");
+            throw new Exception("flightSchedulingBean: findFlight: Flight " + flightNo + " does not exist");
         }
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
-        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:date").setParameter("date", flightDate);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:flightDate and  fi.flightFrequency=:flightFrequency");
+        q2.setParameter("flightDate", flightDate);
+        q2.setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not operate on " + flightDate);
+            throw new Exception("flightSchedulingBean: findFlight: " + flightNo + " does not operate on " + flightDate);
         }
         return (FlightInstance) q2.getResultList().get(0);
     }
+
 
     @Override
     public FlightInstance findFlight(Long flightId) {
@@ -433,6 +437,19 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
         //------------------need check time conflict------------------
         List<FlightInstance> flightTemp = ac.getFlightInstance();
+        if (canAssign(ac, fi)) {
+            flightTemp.add(fi);
+            ac.setFlightInstance(flightTemp);
+            fi.setAircraft(ac);
+            em.merge(fi);
+            em.merge(ac);
+            em.flush();
+        }
+        return canAssign(ac, fi);
+    }
+
+    public boolean canAssign(Aircraft ac, FlightInstance fi) {
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
         boolean canAssign = false;
         Collections.sort(flightTemp);
         Date depCheck = new Date();
@@ -459,14 +476,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 }
             }
         }
-        if (canAssign == true) {
-            flightTemp.add(fi);
-            ac.setFlightInstance(flightTemp);
-            fi.setAircraft(ac);
-            em.merge(fi);
-            em.merge(ac);
-            em.flush();
-        }
         return canAssign;
     }
 
@@ -484,8 +493,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public List<FlightInstance> getUnassignedFlight() {
-        Query q1 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default OR fi.aircraft=:blank").setParameter("default", "9V-000");
-        return (List<FlightInstance>) q1.getResultList();
+        Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", "9V-000");
+        Aircraft a = (Aircraft) q1.getResultList().get(0);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default").setParameter("default", a);
+        return (List<FlightInstance>) q2.getResultList();
     }
 
     public void setFirstInstDate() throws ParseException {
@@ -515,6 +526,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             flag = false;
         }
         return firstInstDate;
+    }
+
+    @Override
+    public FlightInstance getDummyFi() {
+        Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
+//        FlightInstance fi = em.find(FlightInstance.class, 1000000);
+        return (FlightInstance)q1.getSingleResult();
     }
 
 }
