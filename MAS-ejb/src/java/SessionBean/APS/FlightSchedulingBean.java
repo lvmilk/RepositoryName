@@ -185,15 +185,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return (List<FlightFrequency>) q2.getResultList();
     }
 
-//    @override
-//    public void addFlightFreqToPackage(FlightFrequency flightFreq) {
-//        
-//    }
-//    
-//    @override
-//    public void generateFlightPackage() {
-//        
-//    }
 //////////////////////////////////////////////////////////////////////////////////////added by luxixi///////////////////////////////////////////////////////////////////////////
     @Override
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
@@ -220,6 +211,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        flightInst.setStandardDepTimeDateType(formatter.parse((standardDepTime)));
+        flightInst.setStandardArrTimeDateType(formatter.parse((standardArrTime)));
 //        System.out.println("flight scheduling bean: local departure date time: " + depDateTime+" and local arrival date time: "+arrDateTime);
 //        ZonedDateTime stdDep = depDateTime.atZone(ZoneId.of("Europe/Berlin"));
 //        ZonedDateTime stdArr = arrDateTime.atZone(ZoneId.of("UTC"));
@@ -288,6 +282,21 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq = em.find(FlightFrequency.class, id);
         flightFreq.setsDate(sDate);
         flightFreq.setfDate(fDate);
+    }
+
+    @Override
+    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception {
+        Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
+        q1.setParameter("flightNo", flightNo);
+        if (q1.getResultList().isEmpty()) {
+            throw new Exception("Flight " + flightNo + " does not exist");
+        }
+        flightFreq = (FlightFrequency) q1.getResultList().get(0);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:date").setParameter("date", flightDate);
+        if (q2.getResultList().isEmpty()) {
+            throw new Exception("Flight " + flightNo + " does not operate on " + flightDate);
+        }
+        return (FlightInstance) q2.getResultList().get(0);
     }
 
     //---------------------------------------------------------Hanyu Added-----------------------------------------------------------------
@@ -377,7 +386,34 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 }
             }
         }
+    }
 
+    @Override
+    public void addAcToFi(Aircraft ac, FlightInstance fi) {
+        //------------------need check time conflict------------------
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
+        flightTemp.add(fi);
+        ac.setFlightInstance(flightTemp);
+        fi.setAircraft(ac);
+        em.merge(fi);
+        em.merge(ac);
+        em.flush();
+    }
+    
+    @Override
+    public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
+        flightTemp.remove(fi);
+        ac.setFlightInstance(flightTemp);
+        fi.setAircraft(ac);
+        em.merge(fi);
+        em.merge(ac);
+        em.flush();
+    }
+    
+    //---------------------------------unfinished----------------------------------------
+    public void getFlightTasks(Aircraft ac, Date start, Date end) {
+    
     }
 
     public void setFirstInstDate() throws ParseException {
