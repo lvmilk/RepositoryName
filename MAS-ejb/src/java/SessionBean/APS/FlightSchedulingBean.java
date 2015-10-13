@@ -196,8 +196,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightInst.setAircraft(ac);
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
 
-        String standardDepTime = flightFrequency.getScheduleArrTime();
-        String standardArrTime = flightFrequency.getScheduleDepTime();
+        String standardDepTime = flightFrequency.getScheduleDepTime();
+        String standardArrTime = flightFrequency.getScheduleArrTime();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate stdDate = LocalDate.parse(date, dateFormat);
@@ -274,12 +274,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
-            System.out.println("This flight frequency does not exist.");
+            System.out.println("flightSchedulingBean: findThisFlightInstance: This flight frequency does not exist.");
         }
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
         Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.flightFrequency=:flightFrequency").setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            System.out.println("This flight instance deos not exist.");
+            System.out.println("flightSchedulingBean: findThisFlightInstance: This flight instance deos not exist.");
         }
         return q2.getResultList();
     }
@@ -292,16 +292,18 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public FlightInstance findFlight(String flightNo, Date flightDate) throws Exception {
+    public FlightInstance findFlight(String flightNo,  String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
         q1.setParameter("flightNo", flightNo);
         if (q1.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not exist");
+            throw new Exception("flightSchedulingBean: findFlight: Flight " + flightNo + " does not exist");
         }
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
-        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:date").setParameter("date", flightDate);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date=:flightDate and  fi.flightFrequency=:flightFrequency");
+        q2.setParameter("flightDate", flightDate);
+        q2.setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            throw new Exception("Flight " + flightNo + " does not operate on " + flightDate);
+            throw new Exception("flightSchedulingBean: findFlight: " + flightNo + " does not operate on " + flightDate);
         }
         return (FlightInstance) q2.getResultList().get(0);
     }

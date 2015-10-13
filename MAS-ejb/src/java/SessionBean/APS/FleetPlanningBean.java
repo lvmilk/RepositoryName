@@ -3,6 +3,7 @@ package SessionBean.APS;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
+import Entity.APS.Route;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -199,6 +200,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         } else {
             System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
         }
+        Query q2 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", aircraftType);
+        //for(Route r : q2.getResultList()){
+            
+     //   }
     }
 
     @Override

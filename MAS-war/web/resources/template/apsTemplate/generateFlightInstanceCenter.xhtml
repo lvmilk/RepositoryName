@@ -10,20 +10,18 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <p:panel id="panel" header="View All Flight" style="width: 100%">
+            <p:panel id="panel" header="Generate Flight Instances" style="width: 100%">
                 <p:messages id="msgs" />
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
-                    <p:outputLabel value="Flight No: " />
-                    <p:outputLabel value="#{FIMB.flightNo}" />
+                    <!--                    <p:outputLabel value="Flight No: " />
+                                        <p:outputLabel value="#{FIMB.flightNo}" />-->
 
-                    <!--                    <p:outputLabel for="registration" value="Aircraft Registration No.:" />
-                                        <p:selectOneMenu id="registration" value="#{FIMB.registrationNo}">
-                                            <f:selectItems value="#{FIMB.registrationList}" />
-                                        </p:selectOneMenu>-->
-
+                    <p:outputLabel value="Flight No: "/>
+                    <ui:repeat var="selectedFlight" value="#{selectedFlight}"> <h:outputText value="#{selectedFlight.flightNo}  "/> </ui:repeat>
+                    
                     <p:outputLabel for="startDate" value="Start Date: " />
-                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" mindate="#{FIMB.currentDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
+                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true"  mindate="#{FIMB.currentDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
                         <p:ajax event="dateSelect" update="finishDate" />
                     </p:calendar>
 
@@ -33,11 +31,11 @@
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
 
-<!--                    <p:outputLabel for="flightStatus" value="Flight Status:" />
-                    <p:inputText id="flightStatus" value="#{FIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
-                    </p:inputText>-->
+                    <!--                    <p:outputLabel for="flightStatus" value="Flight Status:" />
+                                        <p:inputText id="flightStatus" value="#{FIMB.flightStatus}" label="flightStatus" required="true" validatorMessage="flightStatus: please enter a valid status"  requiredMessage="Please enter status of the flight" size="50">
+                                        </p:inputText>-->
 
-                    <p:outputLabel value="Estimated Depature Time (default):"/>
+<!--                    <p:outputLabel value="Estimated Depature Time (default):"/>
                     <p:outputLabel value="#{FIMB.estimatedDepTime}" >
                         <f:convertDateTime locale="en_US" type="both" dateStyle="short" timeZone="Asia/Singapore" pattern="h:mm a" />
                     </p:outputLabel>
@@ -62,23 +60,11 @@
 
                     <p:outputLabel value="Actual Date Adjust (default):"/>
                     <p:outputLabel value="#{FIMB.actualDateAdjust}"/>             
-
-
-
-                    <!--                    <p:outputLabel for="estimatedDepTime" value="Estimated Departure Time :" />
-                                        <p:calendar id="estimatedDepTime" value="#{FIMB.estimatedDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter estimated flight departure time" size="50"/>
-                    
-                                        <p:outputLabel for="estimatedArrTime" value="Estimated Arrival Time :" />
-                                        <p:calendar id="estimatedArrTime" value="#{FIMB.estimatedArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter estimated flight arrival time" size="50"/>
-                    
-                                        <p:outputLabel for="actualDepTime" value="Actual Departure Time :" />
-                                        <p:calendar id="actualDepTime" value="#{FIMB.actualDepTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter actual flight departure time" size="50"/>
-                    
-                                        <p:outputLabel for="actualArrTime" value="Actual Arrival Time :" />
-                                        <p:calendar id="actualArrTime" value="#{FIMB.actualArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter actual flight arrival time" size="50"/>-->
+-->
 
                 </h:panelGrid>
-                <p:commandButton value="Submit" update="@form" actionListener="#{FIMB.generateFlightInstance()}"  icon="ui-icon-check" />
+                <p:commandButton value="Submit" update="@form" actionListener="#{FIMB.generateFlightInstance(selectedFlight)}"  icon="ui-icon-check" />
+                <p:commandButton value="Back" update="@form" immediate="true" actionListener="#{FIMB.addFlightInstBack()}"  icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>
