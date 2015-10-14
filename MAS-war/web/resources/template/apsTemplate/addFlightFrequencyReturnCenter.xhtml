@@ -33,7 +33,7 @@
 
                     <p:outputLabel for="inDateAdjust" value="Date Adjust: " />
                     <p:inputText id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter inbound flight date adjust"  size="30">
-                        <f:validateRegex pattern="[-1/0-9]" />
+                        <f:validateRegex pattern="[0-3]" />
                     </p:inputText>
 
                     <p:outputLabel  for="inFreq" value="Operation Day of the Week: "/>
