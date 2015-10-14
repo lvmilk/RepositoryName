@@ -57,9 +57,9 @@ public interface FleetPlanningBeanLocal {
 
     public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) throws Exception;
 
-    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
+    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
 
-    public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
+    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
 
     
 }

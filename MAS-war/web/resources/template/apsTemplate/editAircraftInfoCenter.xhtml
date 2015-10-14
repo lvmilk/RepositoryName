@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-<title>Edit Aircraft Type</title>
+        <title>Edit Aircraft Type</title>
     </h:head>
     <h:body>
         <h:form id="formMain">
@@ -17,35 +17,38 @@
                     <p:outputLabel value="Registration No.: " />
                     <p:outputLabel value="#{editAMB.registrationNo}" />
 
-                    <p:outputLabel for="serialNo" value="Serial No.: " />
+<!--                    <p:outputLabel for="serialNo" value="Serial No.: " />
                     <p:inputText id="serialNo"  value="#{editAMB.serialNo}" label="serialNo" required="true" validatorMessage="Serial No.: please enter a valid serial number"  requiredMessage="Please enter serial number" size="50">
                         <f:validateRegex pattern="((?=.*\d).{1,20})"/>
-                    </p:inputText>
+                    </p:inputText>-->
 
-                    <p:outputLabel for="status" value="Status:" />
-                    <p:inputText id="status" value="#{editAMB.status}" label="Status" required="true" validatorMessage="Status: please enter a valid status"  requiredMessage="Please enter status of the aircraft" size="50">
-                    </p:inputText>
+                    <p:outputLabel for="status" value="Status: " />                    
+                    <p:selectOneRadio id="status" value="#{editAMB.status}" required="true" validatorMessage="Status: please enter a valid status"  requiredMessage="Please enter status of the aircraft">
+                        <f:selectItem itemLabel="In Service" itemValue="In Service" />
+                        <f:selectItem itemLabel="Under-repair" itemValue="Under-repair" />
+                        <f:selectItem itemLabel="Retired" itemValue="Retired" />
+                    </p:selectOneRadio>
 
-                     <p:outputLabel for="firstFlyDate" value="First Fly Date :" />
-                    <p:calendar id="firstFlyDate" value="#{editAMB.firstFlyDate}" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the first fly date of the aircraft" size="50"/>
+                    <p:outputLabel  value="First Fly Date :" />
+                    <p:outputLabel value="#{editAMB.ffd}" />
 
-                    <p:outputLabel for="deliveryDate" value="Delivery Date :" />
-                    <p:calendar id="deliveryDate" value="#{editAMB.deliveryDate}" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
+                    <p:outputLabel value="Delivery Date :" />
+                    <p:outputLabel value="#{editAMB.dd}"/>
 
                     <p:outputLabel for="retireDate" value="Lease Expiration Date :" />
                     <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Lease Expiration Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the lease expiration date of the aircraft" size="50"/>
 
-                    
-<!--                    <p:outputLabel for="flightLogId" value="Flight Log ID:" />
-                    <p:inputText id="flightLogId" value="#{editAMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">
-                            </p:inputText>
-                    
-                    <p:outputLabel for="maintenanceLogId" value="Maintenance ID:" />
-                    <p:inputText id="maintenanceLogId" value="#{editAMB.maintenanceLogId}" label="maintenanceLogId" required="true" validatorMessage="Maintenance ID: Please enter a valid ID number"  requiredMessage="Please enter maintenance ID" size="50">
-                    </p:inputText>-->
 
-               <p:outputLabel for="type" value="Aircraft Type:" />
-               <p:selectOneMenu id="type" value="#{editAMB.type}">
+                    <!--                    <p:outputLabel for="flightLogId" value="Flight Log ID:" />
+                                        <p:inputText id="flightLogId" value="#{editAMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">
+                                                </p:inputText>
+                                        
+                                        <p:outputLabel for="maintenanceLogId" value="Maintenance ID:" />
+                                        <p:inputText id="maintenanceLogId" value="#{editAMB.maintenanceLogId}" label="maintenanceLogId" required="true" validatorMessage="Maintenance ID: Please enter a valid ID number"  requiredMessage="Please enter maintenance ID" size="50">
+                                        </p:inputText>-->
+
+                    <p:outputLabel for="type" value="Aircraft Type:" />
+                    <p:selectOneMenu id="type" value="#{editAMB.type}">
                         <f:selectItems value="#{editAMB.keyList}" />
                     </p:selectOneMenu>
 

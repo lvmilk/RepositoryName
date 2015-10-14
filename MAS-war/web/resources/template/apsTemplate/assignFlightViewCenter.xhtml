@@ -59,7 +59,7 @@
                         <h:outputLabel for="aircraft" value="Choose an aircraft"/>
                         <p:selectOneMenu id="aircraft" value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px">
                             <f:selectItem itemLabel="-Select Aircraft-" itemValue="" />
-                            <f:selectItems value="#{FAMB.aircraftList}" var="ac" itemValue="#{ac.registrationNo}" itemLabel="#{ac.registrationNo} / #{ac.aircraftType.type}"/>
+                            <f:selectItems value="#{FAMB.aircraftList}" var="aircraft" itemValue="#{aircraft.registrationNo}" itemLabel="#{aircraft.registrationNo} / #{aircraft.aircraftType.type}"/>
                         </p:selectOneMenu>
                         <h:outputLabel for="flight" value="Choose a flight to assign"/>
                         <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">

@@ -250,17 +250,38 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("edit flight instance: Fight Instance does not exist.");
             throw new Exception("edit flight instance: Fight Instance does not exist.");
         }
-        List<FlightInstance> flightInstList = q.getResultList();
-        flightInst = flightInstList.get(0);
-        flightInst.setFlightStatus(flightStatus);
-        flightInst.setEstimatedDepTime(estimatedDepTime);
-        flightInst.setEstimatedArrTime(estimatedArrTime);
-        flightInst.setEstimatedDateAdjust(estimatedDateAdjust);
-        flightInst.setActualDepTime(actualDepTime);
-        flightInst.setActualArrTime(actualArrTime);
-        flightInst.setActualDateAdjust(actualDateAdjust);
-        em.merge(flightInst);
-        em.flush();
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        Date ed = df.parse(estimatedDepTime);
+        Date ea = df.parse(estimatedArrTime);
+        Date ad = df.parse(actualDepTime);
+        Date aa = df.parse(actualArrTime);
+        System.out.println("flightSchedulingBean: 4 time types: " + ed+" "+ea +" "+ad+ " "+aa);
+        Long estimatedDiff = (ea.getTime() - ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
+        Long actualDiff = (ad.getTime() - ad.getTime()) / (60 * 60 * 1000) % 24;
+        System.out.println("flightSchedulingBean: time hour difference: estimated diff: " + estimatedDiff + " and actual diff: " + actualDiff);
+        if ((ed.before(ea) && estimatedDateAdjust != 1) || (ed.compareTo(ea) == 0 && estimatedDateAdjust != 0) || (ed.after(ea) && estimatedDateAdjust == 1)) {
+            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && estimatedDateAdjust == 1)) {
+                if (Math.abs(estimatedDiff - actualDiff) <= 24) {
+                    List<FlightInstance> flightInstList = q.getResultList();
+                    flightInst = flightInstList.get(0);
+                    flightInst.setFlightStatus(flightStatus);
+                    flightInst.setEstimatedDepTime(estimatedDepTime);
+                    flightInst.setEstimatedArrTime(estimatedArrTime);
+                    flightInst.setEstimatedDateAdjust(estimatedDateAdjust);
+                    flightInst.setActualDepTime(actualDepTime);
+                    flightInst.setActualArrTime(actualArrTime);
+                    flightInst.setActualDateAdjust(actualDateAdjust);
+                    em.merge(flightInst);
+                    em.flush();
+                } else {
+                    throw new Exception("Estimated dates and actual dates cannot be different by more than 24h!");
+                }
+            } else {
+                throw new Exception("Actual Dates are not valid! Please adjust.");
+            }
+        } else {
+            throw new Exception("Estimated Dates are not valid! Please adjust.");
+        }
     }
 
     @Override
@@ -401,7 +422,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public void scheduleAcToFi(Date startDate, Date endDate) throws Exception {
+    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException, Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");
@@ -461,6 +482,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
         //------------------need check time conflict------------------
         List<FlightInstance> flightTemp = ac.getFlightInstance();
+        System.out.println("FSB: addAcToFi ");
+        System.out.println("FSB: addAcToFi " + canAssign(ac, fi));
         if (canAssign(ac, fi)) {
             flightTemp.add(fi);
             ac.setFlightInstance(flightTemp);
@@ -473,20 +496,28 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     public boolean canAssign(Aircraft ac, FlightInstance fi) {
+        System.out.println("canAssign: CHECK 1");
         List<FlightInstance> flightTemp = ac.getFlightInstance();
+        System.out.println("canAssign: CHECK 2");
         boolean canAssign = false;
+        System.out.println("canAssign: CHECK 3");
         Collections.sort(flightTemp);
+        System.out.println("canAssign: CHECK 4");
         Date depCheck = new Date();
         Date arrCheck = new Date();
-        for (int i = 0; i < flightTemp.size(); i++) {
+        System.out.println("canAssign: CHECK 5");
+        for (int i = 0; i < flightTemp.size() - 1; i++) {
             depCheck = flightTemp.get(i).getStandardDepTimeDateType();
             arrCheck = flightTemp.get(i + 1).getStandardArrTimeDateType();
+            System.out.println("canAssign: depDate" + depCheck);
+            System.out.println("canAssign: arrCheck" + arrCheck);
             cal = Calendar.getInstance();
             // last arrival shoulbe be ahead of the fi's departure at least 2 hours
             cal.setTime(depCheck);
             cal.add(Calendar.HOUR, 2);
             depCheck = cal.getTime();
             if ((depCheck.before(fi.getStandardDepTimeDateType())) && flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
+                System.out.println("canAssign: CHECK 6");
                 // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
                 if (i + 1 < flightTemp.size()) {
                     cal.setTime(arrCheck);
@@ -496,6 +527,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         canAssign = true;
                     }
                 } else {  //it is the last in flighttemp, can anyway assign
+                    System.out.println("canAssign: CHECK 6");
                     canAssign = true;
                 }
             }
@@ -541,6 +573,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public String getFirstInstDate() {
         System.out.println("FSB: Flag: " + flag);
+        System.out.println("FSB:getFirstInstDate()" + firstInstDate);
         if (flag) {
             try {
                 setFirstInstDate();
