@@ -71,7 +71,7 @@
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()"/>  
+                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()" />  
                         <p:commandButton type="button" value="Cancel" onclick="PF('addTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  

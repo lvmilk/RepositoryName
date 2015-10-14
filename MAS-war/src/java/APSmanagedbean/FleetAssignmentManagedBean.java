@@ -147,7 +147,7 @@ public class FleetAssignmentManagedBean implements Serializable {
              System.out.println("remove ac from fi !!!!" );
             fsb.deleteAcFromFi(a, f);
         }
-        TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
+        TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
         model.delete(event, timelineUpdater);
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight task " + f.getFlightFrequency().getFlightNo() + " on "
                 + f.getDate() + " of " + a.getSerialNo() + " has been deleted", null);
@@ -168,7 +168,7 @@ public class FleetAssignmentManagedBean implements Serializable {
                 System.out.println("event created!!");
                 model.add(event);
                 System.out.println("event added!!");
-                TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":mainForm:timeline");
+                TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
                 model.update(event, timelineUpdater);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
             } else {
