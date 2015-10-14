@@ -28,7 +28,7 @@ public interface SeatAssignBeanLocal {
 
     public void editDemandInfo(BookingClassInstance bInstance);
 
-    public List<BookingClassInstance> computeOptimalSeat(List<BookingClassInstance> bookClassInstanceList);
+//    public ArrayList<Integer> computeOptimalSeat(List<BookingClassInstance> bookClassInstanceList);
     public double computeOptimalRev(List<BookingClassInstance> listInstance);
     
     public ArrayList<BookingClassInstance> listAssign (List<BookingClassInstance> bookClassInstanceList, String cabinName);
@@ -42,4 +42,10 @@ public interface SeatAssignBeanLocal {
     public double computeCurrentRev(List<BookingClassInstance> bookClassInstanceList);
 
     public List<BookingClassInstance> computeOptimalSeat3(List<BookingClassInstance> bookClassInstanceList);
+
+    public ArrayList<Integer> computeProtectLvl(List<BookingClassInstance> bookClassInstanceList);
+
+    public Integer getMaxPriceIndex(List<BookingClassInstance> classList, Integer protect);
+
+    public List<BookingClassInstance> computeOptimalSeat4(List<BookingClassInstance> classList);
 }

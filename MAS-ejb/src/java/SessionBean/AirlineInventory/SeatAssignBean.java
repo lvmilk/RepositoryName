@@ -38,6 +38,152 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
     private List<BookingClassInstance> premiumInstance = new ArrayList<>();
     private List<BookingClassInstance> econInstance = new ArrayList<>();
 
+    private Integer seatCount = 13;
+
+    public void maxCheck(List<BookingClassInstance> classList) {
+        System.out.println("seatAssignBean: maxCheck()");
+        int totalCount = classList.get(0).getFlightCabin().getCabinClass().getSeatCount();
+        for (int i = 0; i < classList.size(); i++) {
+            NormalDistribution dist = new NormalDistribution(classList.get(i).getAvgDemand(), classList.get(i).getStd());
+            for (int k = 1; k < totalCount+1; k++) {
+                Double EMSR = classList.get(i).getPrice() * (1 - dist.cumulativeProbability(k));
+                System.out.println("EMSR for seat "+k+" in class "+classList.get(i).getBookingClass().getAnnotation()+" is "+EMSR);
+            }
+
+        }
+
+    }
+
+    public List<BookingClassInstance> computeOptimalSeat4(List<BookingClassInstance> classList) {
+
+        this.maxCheck(classList);
+
+        ArrayList<Integer> protectLvl = this.computeProtectLvl(classList);
+        int needAllocate = 0;
+        int totalSeat = classList.get(0).getFlightCabin().getCabinClass().getSeatCount();
+        for (int i = 0; i < protectLvl.size(); i++) {
+            classList.get(classList.size() - 1 - i).setOptimalSeatNo(0);
+            if (protectLvl.get(i) == classList.get(0).getFlightCabin().getCabinClass().getSeatCount()) {
+
+            } else {
+                needAllocate++;
+            }
+        }
+        classList.get(0).setOptimalSeatNo(0);
+        if (classList.get(0).getOptimalSeatNo() == 0) {
+//            classList.get(0).setSeatNo(1);
+            needAllocate++;
+        }
+
+        System.out.println("No of booking class required seat allocation is " + needAllocate);
+        classList.get(0).setOptimalSeatNo(protectLvl.get(protectLvl.size() - 1));
+
+        classList.get(0).setOptimalSeatNo(protectLvl.get(protectLvl.size() - 1));
+        Integer maxInt = 0;
+
+        for (int i = protectLvl.size() - 1; i >= 0; i--) {
+            if ((classList.size() - 1 - i) < needAllocate) {
+                System.out.println("classList index now is " + (classList.size() - 1 - i));
+                if (i != 0) {
+                    for (int k = protectLvl.get(i); k < protectLvl.get(i - 1); k++) {
+                        maxInt = this.getMaxPriceIndex(classList, i);
+                        System.out.println("Optimal Seat count for booking class " + classList.get(maxInt).getBookingClass().getAnnotation() + " is " + classList.get(maxInt).getOptimalSeatNo());
+                        classList.get(maxInt).setOptimalSeatNo(classList.get(maxInt).getOptimalSeatNo() + 1);
+                    }
+                } else {
+                    for (int j = protectLvl.get(0); j < totalSeat; j++) {
+                        maxInt = this.getMaxPriceIndex(classList, i);
+                        System.out.println("Optimal Seat count for booking class " + classList.get(maxInt).getBookingClass().getAnnotation() + " is " + classList.get(maxInt).getOptimalSeatNo());
+                        classList.get(maxInt).setOptimalSeatNo(classList.get(maxInt).getOptimalSeatNo() + 1);
+                    }
+
+                }
+            }
+
+        }
+
+        for (int i = 0; i < classList.size(); i++) {
+            BookingClassInstance bInstance = em.find(BookingClassInstance.class, classList.get(i).getId());
+            bInstance.setOptimalSeatNo(classList.get(i).getOptimalSeatNo());
+            em.merge(bInstance);
+        }
+
+        return classList;
+    }
+
+    public Integer getMaxPriceIndex(List<BookingClassInstance> classList, Integer protect) {
+        double max = 0;
+        BookingClassInstance maxClass = new BookingClassInstance();
+        int nextSeat;
+        NormalDistribution dist;
+        Double price = 0.0;
+        int maxInt = 0;
+        System.out.println("getMaxPriceIndex(): protect level now is " + protect);
+
+        for (int j = 0; j < classList.size() - protect; j++) {
+
+//           System.out.println("");
+            dist = new NormalDistribution(classList.get(j).getAvgDemand(), classList.get(j).getStd());
+            price = classList.get(j).getPrice() * (1 - dist.cumulativeProbability(classList.get(j).getOptimalSeatNo() + 1));
+            System.out.println("Price for seat No " + (classList.get(j).getOptimalSeatNo() + 1) + " in class " + classList.get(j).getBookingClass().getAnnotation() + " is " + price);
+            if (price > max) {
+                max = price;
+                maxInt = j;
+            }
+
+        }
+
+        seatCount++;
+        System.out.println("seat allocated  now is " + seatCount);
+
+        return maxInt;
+    }
+
+    public ArrayList<Integer> computeProtectLvl(List<BookingClassInstance> bookClassInstanceList) {
+        Double optimalValue;
+        int optimalSeatNo;
+        int totalAllocated = 0;
+        NormalDistribution distribution;
+        BookingClassInstance bInstance;
+        double avgDemand;
+        double std;
+        ArrayList<Integer> protectLvl = new ArrayList<>();
+
+//        protectLvl.add(bookClassInstanceList.get(0).getFlightCabin().getCabinClass().getSeatCount());
+        Integer protectLvl1 = bookClassInstanceList.get(0).getFlightCabin().getCabinClass().getSeatCount();
+        Integer protectLvl2 = 0;
+
+        for (int i = bookClassInstanceList.size() - 1; i > 0; i--) {
+
+            System.out.println("i=" + i);
+            for (int k = 0; k < i; k++) {
+                distribution = new NormalDistribution(bookClassInstanceList.get(k).getAvgDemand(), bookClassInstanceList.get(k).getStd());
+                System.out.println("k=" + k + " and seat protected for " + bookClassInstanceList.get(k).getBookingClass().getAnnotation() + " is " + (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / bookClassInstanceList.get(k).getPrice()));
+                protectLvl2 += (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / bookClassInstanceList.get(k).getPrice());
+
+            }
+
+            if (protectLvl2 <= protectLvl1) {
+                protectLvl.add(protectLvl2);
+
+            } else {
+                protectLvl.add(protectLvl1);
+            }
+
+//            System.out.println("protection level above booking class "+bookClassInstanceList.get(i).getBookingClass().getAnnotation()+" is "+protectLvl2);
+            protectLvl1 = protectLvl2;
+            protectLvl2 = 0;
+
+        }
+
+        System.out.println("seatAssignBean: computeProtectLvl: size of protectLvl list: " + protectLvl.size());
+        for (int i = 0; i < protectLvl.size(); i++) {
+            System.out.println("seat protected for protect lvl" + i + " is: " + protectLvl.get(i));
+        }
+        return protectLvl;
+
+    }
+
     public void changeBookdSeatCount(BookingClassInstance bInstance) {
         BookingClassInstance selected = em.find(BookingClassInstance.class, bInstance.getId());
         selected.setBookedSeatNo(bInstance.getBookedSeatNo());
@@ -85,8 +231,14 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
             std = (double) listInstance.get(i).getStd();
             distribution = new NormalDistribution(avgDemand, std);
 
-            for (int k = 1; k < (listInstance.get(i).getOptimalSeatNo() + 1); k++) {
-                totalRev += listInstance.get(i).getPrice() * (1 - distribution.cumulativeProbability(k));
+            if (listInstance.get(i).getOptimalSeatNo() != null) {
+                for (int k = 1; k < (listInstance.get(i).getOptimalSeatNo() + 1); k++) {
+                    totalRev += listInstance.get(i).getPrice() * (1 - distribution.cumulativeProbability(k));
+                }
+            } else {
+                totalRev = 0;
+                break;
+
             }
         }
 //        System.out.println("Total optimal revenue is " + totalRev);
@@ -94,7 +246,7 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
 
     }
 
-   // emsr-b
+    // emsr-b
     public List<BookingClassInstance> computeOptimalSeat3(List<BookingClassInstance> bookClassInstanceList) {
         Double optimalValue;
         int optimalSeatNo;
@@ -109,7 +261,7 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
 
         double avgDemand = 0;
         double std;
-        int numItem=0;
+        int numItem = 0;
 
         Integer protectLvl1 = bookClassInstanceList.get(0).getFlightCabin().getCabinClass().getSeatCount();
         Integer protectLvl2 = 0;
@@ -119,23 +271,23 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
             for (int k = 0; k < i; k++) {
 
 //                System.out.println("k=" + k + " and seat protected for " + bookClassInstanceList.get(k).getBookingClass().getAnnotation() + " is " + (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / bookClassInstanceList.get(k).getPrice()));
-                aggFare += bookClassInstanceList.get(k).getPrice()*bookClassInstanceList.get(k).getAvgDemand();
+                aggFare += bookClassInstanceList.get(k).getPrice() * bookClassInstanceList.get(k).getAvgDemand();
                 aggDemand += bookClassInstanceList.get(k).getAvgDemand();
                 aggVr += Math.pow(bookClassInstanceList.get(k).getStd(), 2);
-               numItem++;
+                numItem++;
             }
-            
-            if(numItem>0){
-            aggFare=aggFare/aggDemand;
-            aggStd = Math.sqrt(aggVr);
-            System.out.println("aggDmd is "+aggDemand+" and aggStd is "+aggStd);
-            distribution = new NormalDistribution(aggDemand, aggStd);
-            protectLvl2 = (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / aggFare);
-           System.out.println("Optimal Value is "+ distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / aggFare));
-            
+
+            if (numItem > 0) {
+                aggFare = aggFare / aggDemand;
+                aggStd = Math.sqrt(aggVr);
+                System.out.println("aggDmd is " + aggDemand + " and aggStd is " + aggStd);
+                distribution = new NormalDistribution(aggDemand, aggStd);
+                protectLvl2 = (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / aggFare);
+                System.out.println("Optimal Value is " + distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / aggFare));
+
             }
-            
-            System.out.println("protection level2 in loop "+i+" is "+protectLvl2);
+
+            System.out.println("protection level2 in loop " + i + " is " + protectLvl2);
             if (protectLvl2 <= protectLvl1) {
                 optimalSeatNo = protectLvl1 - protectLvl2;
 
@@ -154,61 +306,14 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
             aggDemand = 0;
             aggStd = 0;
             aggVr = 0;
-            numItem=0;
+            numItem = 0;
 
         }
 
         return bookClassInstanceList;
     }
 
-    
-    
-    
-    
-    
     //emsr- a
-    public List<BookingClassInstance> computeOptimalSeat(List<BookingClassInstance> bookClassInstanceList) {
-        Double optimalValue;
-        int optimalSeatNo;
-        int totalAllocated = 0;
-        NormalDistribution distribution;
-        BookingClassInstance bInstance;
-        double avgDemand;
-        double std;
-
-        Integer protectLvl1 = bookClassInstanceList.get(0).getFlightCabin().getCabinClass().getSeatCount();
-        Integer protectLvl2 = 0;
-
-        for (int i = bookClassInstanceList.size() - 1; i >= 0; i--) {
-
-            System.out.println("i=" + i);
-            for (int k = 0; k < i; k++) {
-                distribution = new NormalDistribution(bookClassInstanceList.get(k).getAvgDemand(), bookClassInstanceList.get(k).getStd());
-                System.out.println("k=" + k + " and seat protected for " + bookClassInstanceList.get(k).getBookingClass().getAnnotation() + " is " + (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / bookClassInstanceList.get(k).getPrice()));
-                protectLvl2 += (int) distribution.inverseCumulativeProbability(1 - (double) bookClassInstanceList.get(i).getPrice() / bookClassInstanceList.get(k).getPrice());
-
-            }
-
-            if (protectLvl2 <= protectLvl1) {
-                optimalSeatNo = protectLvl1 - protectLvl2;
-
-            } else {
-                optimalSeatNo = 0;
-            }
-            bInstance = em.find(BookingClassInstance.class, bookClassInstanceList.get(i).getId());
-            bInstance.setOptimalSeatNo(optimalSeatNo);
-            em.merge(bInstance);
-            bookClassInstanceList.set(i, bInstance);
-
-//            System.out.println("protection level above booking class "+bookClassInstanceList.get(i).getBookingClass().getAnnotation()+" is "+protectLvl2);
-            protectLvl1 = protectLvl2;
-            protectLvl2 = 0;
-
-        }
-
-        return bookClassInstanceList;
-
-    }
     //first version of optimal seat allocation
 //    public List<BookingClassInstance> computeOptimalSeat(List<BookingClassInstance> bookClassInstanceList) {
 //        double optimalValue;
@@ -264,8 +369,6 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
 //
 //        return bookClassInstanceList;
 //    }
-    
-    
     public FlightInstance findFlightInstance(String flightNo, String dateString) {
         FlightInstance selected;
         Query query = em.createQuery("SELECT f FROM FlightInstance f where f.flightFrequency.flightNo=:flightNum AND f.date=:dateString ");
