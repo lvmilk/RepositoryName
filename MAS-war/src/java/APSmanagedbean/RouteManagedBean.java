@@ -55,6 +55,8 @@ public class RouteManagedBean implements Serializable {
 
     private String mPriceString;
     private String pVolumnString;
+   private Integer mPrice;
+   private Integer pVolumn;
 
     private List<Airport> hubList;
 
@@ -158,7 +160,13 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
     }
 
-    public void checkRouteProfitability(Route route) throws IOException {
+//    public void checkRouteProfitability(Route route) throws IOException {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
+//    }
+    
+    public void checkRouteProfitability(ActionEvent event) throws IOException {
+        route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
     }
@@ -168,6 +176,11 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
     }
+//    public void checkRouteProfit() throws IOException {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPrice", mPrice);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumn", pVolumn);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+//    }
 
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
@@ -316,6 +329,22 @@ public class RouteManagedBean implements Serializable {
 
     public void setHubList(List<Airport> hubList) {
         this.hubList = hubList;
+    }
+
+    public Integer getmPrice() {
+        return mPrice;
+    }
+
+    public void setmPrice(Integer mPrice) {
+        this.mPrice = mPrice;
+    }
+
+    public Integer getpVolumn() {
+        return pVolumn;
+    }
+
+    public void setpVolumn(Integer pVolumn) {
+        this.pVolumn = pVolumn;
     }
 
 }

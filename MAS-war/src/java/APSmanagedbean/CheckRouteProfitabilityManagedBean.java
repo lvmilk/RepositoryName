@@ -127,7 +127,8 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     }
 
     public Double getmPrice() {
-        return Double.valueOf(mPriceString);
+        //return Double.valueOf(mPriceString);
+   return Double.parseDouble(mPriceString);
     }
 
     public void setmPrice(Double mPrice) {
@@ -135,7 +136,8 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     }
 
     public Integer getpVolumn() {
-        return Integer.valueOf(pVolumnString);
+//        return Integer.valueOf(pVolumnString);
+        return Integer.parseInt(pVolumnString);
     }
 
     public void setpVolumn(Integer pVolumn) {

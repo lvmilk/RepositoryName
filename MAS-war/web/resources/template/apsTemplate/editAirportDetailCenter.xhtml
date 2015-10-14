@@ -70,12 +70,12 @@
                         <f:selectItem itemLabel="4E" itemValue="4E" />
                         <f:selectItem itemLabel="4F" itemValue="4F" />
                     </p:selectOneRadio>
-                    </p:inputText>
 
                     <p:outputLabel value="Location (Lat, Long): " />
                     <p:outputLabel value="(#{editAirportManagedBean.latitude}, #{editAirportManagedBean.longitude})" />
 
                 </h:panelGrid>
+                
                 <p:commandButton value="Update" update="@form" actionListener="#{editAirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />
                 <p:commandButton value="Cancel" update="@form" actionListener="#{editAirportManagedBean.editAirportCancel}"  icon="ui-icon-cancel" />
             </p:panel>
