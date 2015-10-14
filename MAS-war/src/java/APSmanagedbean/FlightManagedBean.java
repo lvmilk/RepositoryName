@@ -104,10 +104,12 @@ public class FlightManagedBean implements Serializable {
                 startDateString = formatter.format(startDate);
                 endDateString = formatter.format(endDate);
                 //default value for checking
-                String sd="";
-                String fd="";
+                String sd = "";
+                String fd = "";
                 depTimeString = formatter2.format(depTime);
+                System.out.println("fmb.addFlightFrequency(): depTimeString: " + depTimeString);
                 arrTimeString = formatter2.format(arrTime);
+                System.out.println("fmb.addFlightFrequency(): arrTimeString: " + arrTimeString);
                 fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);

@@ -64,14 +64,12 @@ public class SeatAllocate1Bean implements Serializable {
 
     private Date selectedDate = new Date();
 
-
-
     private List<FlightCabin> cabinList = new ArrayList<>();
 
     private ArrayList<BookingClassInstance> subList = new ArrayList<>();
 
     public SeatAllocate1Bean() {
-      
+
     }
 
     @PostConstruct
@@ -104,7 +102,9 @@ public class SeatAllocate1Bean implements Serializable {
 
     public void onFlightChange() {
         if (!flightNo.equals("1")) {
-            cabinList = sa.getCabinList(flightNo);
+            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+            System.out.println("onFlightChange: dateString is " + dateString + " and flightNo is " + flightNo);
+            cabinList = sa.getCabinList(flightNo, dateString);
         } else {
             cabinList = new ArrayList<>();
 
@@ -115,6 +115,8 @@ public class SeatAllocate1Bean implements Serializable {
     }
 
     public void onDateChange() {
+        System.out.println("geting into onDateChange()");
+        System.out.println("SELECTED DATE IS " + selectedDate);
         dateString = new String();
         frequencyList = new ArrayList<>();
         System.out.println("Getting in to onDateChange()");
@@ -148,6 +150,8 @@ public class SeatAllocate1Bean implements Serializable {
         }
         System.out.println("selectedCabin is " + selectedCabin.getCabinName());
 
+        System.out.println("in findBookClassInstance(): size of bookclassInstanceList is " + bookClassInstanceList.size());
+
         if (!this.ifStartSale(bookClassInstanceList)) {
 
             seatUnallocated = selectedCabin.getSeatCount();
@@ -168,11 +172,11 @@ public class SeatAllocate1Bean implements Serializable {
             if (inputFull) {
                 System.out.println("seatAllocate1Bean:findBookClassInstance(): required input is fulfilled");
                 optimalRev = sa.computeOptimalRev(bookClassInstanceList);
-                currentRev=sa.computeCurrentRev(bookClassInstanceList);
+                currentRev = sa.computeCurrentRev(bookClassInstanceList);
             } else {
                 System.out.println("seatAllocate1Bean:findBookClassInstance(): some require input is null");
                 optimalRev = 0.0;
-                currentRev=0.0;
+                currentRev = 0.0;
             }
 
             if (inputFull) {
@@ -180,16 +184,16 @@ public class SeatAllocate1Bean implements Serializable {
             }
 
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
-               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRev", currentRev);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentRev", currentRev);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("optimalRev", optimalRev);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seatUnallocated", seatUnallocated);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstances", bookClassInstanceList);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlightInstance", selectedFlightInstance);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("frequency", frequency);
-   
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("./SeatAllocate2.xhtml");
-      
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sale of the tickets for this flight has already started ", ""));
 
@@ -228,15 +232,15 @@ public class SeatAllocate1Bean implements Serializable {
         FacesMessage msg = new FacesMessage("Editing of BookingClass Instance" + ((BookingClassInstance) event.getObject()).getBookingClass().getAnnotation() + " cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
-   public void computeExpRev(){
+
+    public void computeExpRev() {
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
         bookClassInstanceList = sa.getBkiList(selectedCabin.getCabinName(), selectedFlightInstance);
         System.out.println("size of booking class instance list is " + bookClassInstanceList.size());
-     
+
         boolean noNull = true;
         for (int i = 0; i < bookClassInstanceList.size(); i++) {
-            if (bookClassInstanceList.get(i).getAvgDemand() != null && bookClassInstanceList.get(i).getStd() != null && bookClassInstanceList.get(i).getSeatNo()!=null) {
+            if (bookClassInstanceList.get(i).getAvgDemand() != null && bookClassInstanceList.get(i).getStd() != null && bookClassInstanceList.get(i).getSeatNo() != null) {
                 System.out.println("demand is " + bookClassInstanceList.get(i).getAvgDemand());
                 System.out.println("std is " + bookClassInstanceList.get(i).getStd());
             } else {
@@ -254,11 +258,8 @@ public class SeatAllocate1Bean implements Serializable {
             System.out.println("required field not fulfilled");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all required inputs(avg demand and std) for all bookingclass ", ""));
         }
-   
-   }
-   
-   
-   
+
+    }
 
     public void computeOptimalSeat() throws IOException {
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
@@ -281,14 +282,31 @@ public class SeatAllocate1Bean implements Serializable {
 
         }
 
+        Boolean priceExist = true;
+        for (int i = 0; i < bookClassInstanceList.size(); i++) {
+            if (bookClassInstanceList.get(i).getPrice() > 0) {
+
+            } else {
+                priceExist = false;
+                break;
+            }
+
+        }
+
         if (noNull) {
 
-            bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat(bookClassInstanceList);
+            if (priceExist) {
+                bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat3(bookClassInstanceList);
 
-            optimalRev = sa.computeOptimalRev(bookClassInstanceList);
+                optimalRev = sa.computeOptimalRev(bookClassInstanceList);
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listInstance", listInstance);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookClassInstanceList", bookClassInstanceList);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookClassInstanceList", bookClassInstanceList);
 //            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("optimalRev", optimalRev);
+            } else {
+                System.out.println("required field not fulfilled");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please set price for all booking classes (price>0)", ""));
+            }
+
         } else {
             System.out.println("required field not fulfilled");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all required inputs(avg demand and std) for all bookingclass ", ""));
@@ -367,8 +385,6 @@ public class SeatAllocate1Bean implements Serializable {
     public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
     }
-
-
 
     public Double getOptimalRev() {
 

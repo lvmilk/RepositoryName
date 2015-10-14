@@ -31,10 +31,14 @@
                     <p:column headerText="Specification" >
                         <h:outputText value="#{airport.spec}" />
                     </p:column>
-
-<!--                    <p:column headerText="Airport Name" filterBy="#{airport.airportName}" filterMatchMode="contains" >
+                    
+                    <p:column headerText="Airport Name" >
                         <h:outputText value="#{airport.airportName}" />
-                    </p:column>-->
+                    </p:column>
+                    
+                    <p:column headerText="Strategic Level" filterBy="#{airport.strategicLevel}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.strategicLevel}" />
+                    </p:column>>
 
                     <p:column headerText="View Detail">
                         <p:commandButton value="View Detail" actionListener="#{AirportManagedBean.viewAirport(airport)}" ajax="true"/>

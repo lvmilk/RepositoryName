@@ -40,6 +40,7 @@ public class AirportManagedBean implements Serializable {
     private String opStatus;
     private String strategicLevel;
     private String airspace;
+    private List<String> utcList;
     private List<Route> apOriginRouteList;
     private List<Route> apDestRouteList;
 
@@ -324,6 +325,56 @@ public class AirportManagedBean implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public List<String> getUtcList() {
+        List<String> utc = new ArrayList<String>();
+        utc.add("UTC-12:00");
+        utc.add("UTC-11:00");
+        utc.add("UTC-10:00");
+        utc.add("UTC-09:30");
+        utc.add("UTC-09:00");
+        utc.add("UTC-08:00");
+        utc.add("UTC-07:00");
+        utc.add("UTC-06:00");
+        utc.add("UTC-05:00");
+        utc.add("UTC-04:30");
+        utc.add("UTC-04:00");
+        utc.add("UTC-03:30");
+        utc.add("UTC-03:00");
+        utc.add("UTC-02:00");
+        utc.add("UTC-01:00");
+        utc.add("UTC+00:00");
+        utc.add("UTC+01:00");
+        utc.add("UTC+02:00");
+        utc.add("UTC+03:00");
+        utc.add("UTC+03:30");
+        utc.add("UTC+04:00");
+        utc.add("UTC+04:30");
+        utc.add("UTC+05:00");
+        utc.add("UTC+05:30");
+        utc.add("UTC+05:45");
+        utc.add("UTC+06:00");
+        utc.add("UTC+06:30");
+        utc.add("UTC+07:00");
+        utc.add("UTC+08:00");
+        utc.add("UTC+08:30");
+        utc.add("UTC+08:45");
+        utc.add("UTC+09:00");
+        utc.add("UTC+09:30");
+        utc.add("UTC+10:00");
+        utc.add("UTC+10:30");
+        utc.add("UTC+11:00");
+        utc.add("UTC+12:00");
+        utc.add("UTC+12:45");
+        utc.add("UTC+13:00");
+        utc.add("UTC+14:00");
+
+        return utc;
+    }
+
+    public void setUtcList(List<String> utcList) {
+        this.utcList = utcList;
     }
 
 }

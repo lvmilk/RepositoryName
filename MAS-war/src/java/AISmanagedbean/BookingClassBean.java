@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import Entity.aisEntity.*;
 import SessionBean.AirlineInventory.BookingClassBeanLocal;
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -38,25 +39,27 @@ public class BookingClassBean implements Serializable {
     private String annotation;  //annotation of booking class like K,N etc
     private String annotation2;
 
-    private double price_percentage;
-    private double refund_percentage;
-    private double change_route_percentage;
-    private double change_date_percentage;
-    private double change_passenger_percentage;
-    private double open_jaw_percentage;
-    private double earn_mile_percentage;
+    private Double price_percentage;
+    private Double refund_percentage;
+    private Double change_route_percentage;
+    private Double change_date_percentage;
+    private Double change_passenger_percentage;
+    private Double open_jaw_percentage;
+    private Double earn_mile_percentage;
 
     private Integer min_stay;
     private Integer max_stay;
     private Integer reserve_advance; // min no. of days reservation must be made in advance to flight
     private Integer ticket_advance; //min no. of dats ticketing must be done in advance to flight
 
-    private boolean can_standby;  // indicate whether customer can standby check-in
-    private boolean dds_available; // whether tickets from this class is available in DDS
-    private boolean gds_available; // whether tickets from this class is available in GDS
+    private Boolean can_standby;  // indicate whether customer can standby check-in
+    private Boolean dds_available; // whether tickets from this class is available in DDS
+    private Boolean gds_available; // whether tickets from this class is available in GDS
 
     private List<BookingClass> classList;
     private ArrayList<BookingClass> selectedClass;
+    
+    private BookingClass selectedBookClass;
 
     public List<BookingClass> getClassList() {
         classList = bcb.getAllBookingClasses();
@@ -69,8 +72,43 @@ public class BookingClassBean implements Serializable {
     }
 
     public BookingClassBean() {
-
+        selectedBookClass=null;
         selectedClass = new ArrayList<>();
+    }
+
+    @PostConstruct
+    public void init() {
+        classList = bcb.getAllBookingClasses();
+
+    }
+
+    public void intializeValues() {
+        annotation = null;
+        cabin = null;
+        price_percentage = null;
+        refund_percentage = null;
+        change_route_percentage = null;
+        change_date_percentage = null;
+        change_passenger_percentage = null;
+        open_jaw_percentage = null;
+        earn_mile_percentage = null;
+        min_stay = null;
+        max_stay = null;
+        ticket_advance = null;
+        reserve_advance = null;
+        can_standby = null;
+        dds_available = null;
+        gds_available = null;
+        classList = null;
+        selectedClass = null;
+        selectedBookClass=null;
+
+    }
+
+    public void goBack() throws IOException {
+//        classList = bcb.getAllBookingClasses();
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClass.xhtml");
+
     }
 
     public void checkCabin() throws IOException {
@@ -99,7 +137,7 @@ public class BookingClassBean implements Serializable {
                     FacesMessage msg = new FacesMessage("BookingClass added successfully");
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
                 }
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: ", ""));
@@ -110,8 +148,6 @@ public class BookingClassBean implements Serializable {
         }
     }
 
-    
-    
     public void checkSecond(ActionEvent event) throws IOException {
         System.err.println("clidntID: " + uIComponent.getClientId());
         System.out.println("min stay is " + min_stay);
@@ -128,8 +164,9 @@ public class BookingClassBean implements Serializable {
 
                 bcb.addBookingClass(annotation, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
                         earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
+                this.intializeValues();
 
-                FacesMessage msg = new FacesMessage("BookingClass added successfully");
+                FacesMessage msg = new FacesMessage("BookingClass added successfully!");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             } else {
                 FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
@@ -141,15 +178,39 @@ public class BookingClassBean implements Serializable {
     }
 
     public void editFirst() throws IOException {
-        if (!(annotation.equals(annotation2))) {
-            if (!bcb.checkDuplicate(annotation)) {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClassInfo2.xhtml");
+        
+         selectedBookClass=(BookingClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClass");
+        if (annotation.equals(annotation2) || !bcb.checkDuplicate(annotation)) {
+
+            if (min_stay <= max_stay) {
+                System.out.println("max greater than min");
+
+                if (reserve_advance >= ticket_advance) {
+
+                    System.out.println("reserve earlier than ticketing");
+
+                   selectedBookClass= bcb.editBookingClass(annotation, annotation2, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
+                            earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
+
+                    System.out.println("managebean: bookingclassbean: editFirst(): new price percentage is "+selectedBookClass.getPrice_percentage());
+                    bcb.updateBookClassInstance(selectedBookClass);
+                    
+                     classList = bcb.getAllBookingClasses();
+               
+//               
+                    FacesMessage msg = new FacesMessage("BookingClass edited successfully!");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    this.intializeValues();
+
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
+                }
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Annotation already been used: ", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maxmimum days of stays must be greater than minimum days of stay: ", ""));
             }
 
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClassInfo2.xhtml");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Annotation already been used: ", ""));
         }
 
     }
@@ -171,6 +232,14 @@ public class BookingClassBean implements Serializable {
                 bcb.editBookingClass(annotation, annotation2, cabin, price_percentage, refund_percentage, change_route_percentage, change_date_percentage, change_passenger_percentage, open_jaw_percentage,
                         earn_mile_percentage, min_stay, max_stay, ticket_advance, reserve_advance, can_standby, dds_available, gds_available);
 
+                BookingClass BookClass = (BookingClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClass");
+                for (int i = 0; i < classList.size(); i++) {
+                    if (BookClass.getId().equals(classList.get(i).getId())) {
+                        setBookingClassValue(classList.get(i));
+                    }
+                    break;
+                }
+
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookClassSuccess.xhtml");
             } else {
                 FacesContext.getCurrentInstance().addMessage(uIComponent.getClientId(), new FacesMessage(FacesMessage.SEVERITY_ERROR, "Resevation day cannot be later than ticketing day: ", ""));
@@ -182,8 +251,13 @@ public class BookingClassBean implements Serializable {
     }
 
     public void confirmDelete() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmDeleteBookClass.xhtml");
-
+        boolean check = bcb.checkGotInstance(selectedClass);
+        if (!check) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmDeleteBookClass.xhtml");
+        } else {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR,"Delete request denied: Selected bookingClass has existed booking class instances associated with flights!","");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 
     public void deleteBookClass() throws IOException {
@@ -224,83 +298,83 @@ public class BookingClassBean implements Serializable {
         this.annotation2 = annotation2;
     }
 
-    public double getPrice_percentage() {
+    public Double getPrice_percentage() {
         return price_percentage;
     }
 
-    public void setPrice_percentage(double price_percentage) {
+    public void setPrice_percentage(Double price_percentage) {
         this.price_percentage = price_percentage;
     }
 
-    public double getRefund_percentage() {
+    public Double getRefund_percentage() {
         return refund_percentage;
     }
 
-    public void setRefund_percentage(double refund_percentage) {
+    public void setRefund_percentage(Double refund_percentage) {
         this.refund_percentage = refund_percentage;
     }
 
-    public double getChange_route_percentage() {
+    public Double getChange_route_percentage() {
         return change_route_percentage;
     }
 
-    public void setChange_route_percentage(double change_route_percentage) {
+    public void setChange_route_percentage(Double change_route_percentage) {
         this.change_route_percentage = change_route_percentage;
     }
 
-    public double getChange_date_percentage() {
+    public Double getChange_date_percentage() {
         return change_date_percentage;
     }
 
-    public void setChange_date_percentage(double change_date_percentage) {
+    public void setChange_date_percentage(Double change_date_percentage) {
         this.change_date_percentage = change_date_percentage;
     }
 
-    public double getChange_passenger_percentage() {
+    public Double getChange_passenger_percentage() {
         return change_passenger_percentage;
     }
 
-    public void setChange_passenger_percentage(double change_passenger_percentage) {
+    public void setChange_passenger_percentage(Double change_passenger_percentage) {
         this.change_passenger_percentage = change_passenger_percentage;
     }
 
-    public double getOpen_jaw_percentage() {
+    public Double getOpen_jaw_percentage() {
         return open_jaw_percentage;
     }
 
-    public void setOpen_jaw_percentage(double open_jaw_percentage) {
+    public void setOpen_jaw_percentage(Double open_jaw_percentage) {
         this.open_jaw_percentage = open_jaw_percentage;
     }
 
-    public double getEarn_mile_percentage() {
+    public Double getEarn_mile_percentage() {
         return earn_mile_percentage;
     }
 
-    public void setEarn_mile_percentage(double earn_mile_percentage) {
+    public void setEarn_mile_percentage(Double earn_mile_percentage) {
         this.earn_mile_percentage = earn_mile_percentage;
     }
 
-    public boolean isCan_standby() {
+    public Boolean getCan_standby() {
         return can_standby;
     }
 
-    public void setCan_standby(boolean can_standby) {
+    public void setCan_standby(Boolean can_standby) {
         this.can_standby = can_standby;
     }
 
-    public boolean isDds_available() {
+    public Boolean getDds_available() {
         return dds_available;
     }
 
-    public void setDds_available(boolean dds_available) {
+    public void setDds_available(Boolean dds_available) {
         this.dds_available = dds_available;
     }
 
-    public boolean isGds_available() {
+    public Boolean getGds_available() {
         return gds_available;
     }
 
-    public void setGds_available(boolean gds_available) {
+    public void setGds_available(Boolean gds_available) {
         this.gds_available = gds_available;
     }
 
@@ -344,8 +418,7 @@ public class BookingClassBean implements Serializable {
         this.selectedClass = selectedClass;
     }
 
-    public void EditBookClassInfo(BookingClass BookClass) throws IOException {
-
+    public BookingClass setBookingClassValue(BookingClass BookClass) {
         setAnnotation(BookClass.getAnnotation());
         setAnnotation2(annotation);
         setCabin(BookClass.getCabinName());
@@ -366,9 +439,30 @@ public class BookingClassBean implements Serializable {
 
         System.out.println("New annotation is: " + annotation);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClassInfo1.xhtml");
+        return BookClass;
 
     }
+
+    public void EditBookClassInfo(BookingClass BookClass) throws IOException {
+
+        this.setBookingClassValue(BookClass);
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClass", BookClass);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditBookingClassInfo1.xhtml");
+
+        
+    }
+
+    public BookingClass getSelectedBookClass() {
+        return selectedBookClass;
+    }
+
+    public void setSelectedBookClass(BookingClass selectedBookClass) {
+        this.selectedBookClass = selectedBookClass;
+    }
+    
+    
+    
 
     /**
      * @return the uIComponent

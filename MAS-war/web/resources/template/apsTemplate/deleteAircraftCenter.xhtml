@@ -33,9 +33,9 @@
                     <p:column headerText="Aircraft Type" sortBy="#{Aircraft.aircraftType.type}">
                         <h:outputText value="#{Aircraft.aircraftType.type}" />
                     </p:column>
-                    <p:column headerText="Serial No.">
+<!--                    <p:column headerText="Serial No.">
                         <h:outputText value="#{Aircraft.serialNo}" />
-                    </p:column>
+                    </p:column>-->
                     <p:column headerText="Status">
                         <h:outputText value="#{Aircraft.status}" />
                     </p:column>
@@ -61,7 +61,8 @@
 
             <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Aircraft" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true" height="200" width="500">
-                    <h:outputText value="Delete aircraft "/> <ui:repeat var="a" value="#{AMB.selectedList}"> <h:outputText value="#{a.registrationNo} "/> </ui:repeat> <h:outputText value="?"/>
+                    <h:outputText value="Delete selected aircrafts ?"/> 
+                    <!--<ui:repeat var="a" value="#{AMB.selectedList}"> <h:outputText value="#{a.registrationNo} "/> </ui:repeat> <h:outputText value="?"/>-->
                     <h:panelGrid columns="2" cellpadding="10" >
                         <p:commandButton value="Delete"  id="Delete" update="" action="#{AMB.confirmDeleteAircraft()}" />
                         <br/>

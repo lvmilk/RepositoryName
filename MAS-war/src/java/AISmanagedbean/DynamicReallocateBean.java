@@ -98,8 +98,9 @@ public class DynamicReallocateBean implements Serializable {
 //
 //    }
     public void onFlightChange() {
+         dateString=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
         if (!flightNo.equals("1")) {
-            cabinList = sa.getCabinList(flightNo);
+            cabinList = sa.getCabinList(flightNo,dateString);
         } else {
             cabinList = new ArrayList<>();
 

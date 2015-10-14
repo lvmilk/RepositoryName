@@ -22,7 +22,7 @@ import javax.ejb.Local;
 @Local
 public interface FlightSchedulingBeanLocal {
 
-    public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString,String sDate, String fDate)  throws Exception;
+    public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString, String sDate, String fDate) throws Exception;
 
     public void validateFlightNo(String flightNo) throws Exception;
 
@@ -33,7 +33,6 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightFrequency> canDeleteFlightFreqList();
 
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList);
-
 
     public List<FlightInstance> getAllFlightInstance();
 
@@ -47,7 +46,7 @@ public interface FlightSchedulingBeanLocal {
 
     public List<Aircraft> getAllAircraft();
 
-    public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException;
+    public void scheduleAcToFi(Date startDate, Date endDate) throws Exception;
 
     public List<FlightInstance> getThisFlightInstance(String flightNo);
 
@@ -56,9 +55,8 @@ public interface FlightSchedulingBeanLocal {
     public boolean addAcToFi(Aircraft ac, FlightInstance fi);
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
-    
-    public String getFirstInstDate();
 
+    public String getFirstInstDate();
 
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate);
 

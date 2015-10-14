@@ -516,15 +516,17 @@ public class FlightInstanceManagedBean implements Serializable {
     }
 
     //------------------------------------------Hanyu added-------------------------------------------------
-    public void scheduleAcToFi() throws ParseException, IOException {
+    public void scheduleAcToFi() throws ParseException, IOException, Exception {
         System.out.println("FSMB: scheduleAcToFi(): startPlanDate is " + startPlanDate.toString());
         System.out.println("FSMB: scheduleAcToFi(): endPlanDate is " + endPlanDate.toString());
         try {
 //        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 //        startPlanDate=df1.parse(getFirstInstDate());
-            fsb.scheduleAcToFi(startPlanDate, endPlanDate);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startPlanDate", startPlanDate);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endPlanDate", endPlanDate);
+            fsb.scheduleAcToFi(startPlanDate, endPlanDate);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startPlanDate", startPlanDate);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endPlanDate", endPlanDate);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightView.xhtml");
         } catch (IOException | ParseException ex) {
             System.out.println("Oops: Error! " + ex.getMessage());

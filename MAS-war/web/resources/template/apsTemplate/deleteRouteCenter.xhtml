@@ -15,32 +15,59 @@
 
         <h:form>
 
-            <p:panel id="panel" header="Delete Route (Only route(s) that can be deleted are shown.)"  style="width:100%">
+            <p:panel id="panel" header="Delete Route"  style="width:100%">
                 <p:messages id="msgs" />
                 <p:dataTable var="route" rowKey ="#{route.id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
-                        Route List
-                    </f:facet>  
+                        <h:outputLink id="fade" value="#">
+                            <h:outputText value="Route List (Note: Only routes can be deleted are shown.)" />
+                        </h:outputLink>
+                        <p:tooltip id="toolTipTrack" for="fade" value="If a route has a flight, it cannot be deleted." trackMouse="true" />
+                    </f:facet>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" selectionMode="multiple" headerText="Select all" style="width:50px"  />
+                            <p:column colspan="4" headerText="Origin Airport" />
+                            <p:column colspan="4" headerText="Destination Airport" />
+                        </p:row>
+                        <p:row>   
+                            <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
+                            <p:column headerText="Specification" />
+                            <p:column headerText="City" />
+                            <p:column headerText="Country" />
+                            <p:column headerText="IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}" filterMatchMode="contains"/>
+                            <p:column headerText="Specification" />
+                            <p:column headerText="City" />
+                            <p:column headerText="Country" />
+                        </p:row>
+                    </p:columnGroup>
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:50px" />      
 
-                    <p:column headerText="Origin Airport IATA" sortBy="#{route.origin.IATA}">
+                    <p:column>
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
-                    <p:column headerText="Origin City">
+                    <p:column>
+                        <h:outputText value="#{route.origin.spec}" />
+                    </p:column>
+                    <p:column>
                         <h:outputText value="#{route.origin.cityName}" />
                     </p:column>
-                    <p:column headerText="Origin Country">
+                    <p:column>
                         <h:outputText value="#{route.origin.countryName}" />
                     </p:column>
-                    <p:column headerText="Destination Airport IATA"  sortBy="#{route.dest.IATA}">
+                    <p:column>
                         <h:outputText value="#{route.dest.IATA}" />
                     </p:column>
-                    <p:column headerText="Destination City">
+                    <p:column>
+                        <h:outputText value="#{route.dest.spec}" />
+                    </p:column>
+                    <p:column>
                         <h:outputText value="#{route.dest.cityName}" />
                     </p:column>
-                    <p:column headerText="Destination Country">
+                    <p:column>
                         <h:outputText value="#{route.dest.countryName}" />
                     </p:column>
 

@@ -11,8 +11,8 @@
     <h:head>
         <title>View Aircraft Details</title>
     </h:head>
-
     <h:body>
+
         <ui:decorate template="./../resources/template/apsTemplate/aps_skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
@@ -20,48 +20,12 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/apsTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-
+            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+            </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
-
-                <h:form id="formMain">
-                    <p:panel id="panel" header="View This Aircraft" style="width: 100%">
-                        <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="10">
-
-                            <p:outputLabel value="Registration No.: " />
-                            <p:outputLabel value="#{registrationNo}" />
-
-                            <p:outputLabel value="Aircraft Type: " />
-                            <p:outputLabel value="#{type}" />
-
-                            <p:outputLabel value="Serial No: " />
-                            <p:outputLabel value="#{serialNo}" />
-
-                            <p:outputLabel value="Status: " />
-                            <p:outputLabel value="#{status}" />
-
-                            <p:outputLabel value="First Fly Date: " />
-                            <p:outputLabel value="#{firstFlyDate}" />
-
-                            <p:outputLabel value="Delivery Date:" />
-                            <p:outputLabel value="#{deliveryDate}" />
-
-                            <p:outputLabel value="Retire Date: " />
-                            <p:outputLabel value="#{retireDate}" />
-
-<!--                            <p:outputLabel value="Flight Log ID: " />
-                            <p:outputLabel value="#{flightLogId}" />
-
-                            <p:outputLabel value="Maintenance Log ID: " />
-                            <p:outputLabel value="#{maintenanceLogId}" />-->
-
-
-                        </h:panelGrid>
-                        <p:commandButton value="Back"  action="#{AMB.viewAircraftTypeConfirm()}" icon="ui-icon-check" />
-                    </p:panel>
-                </h:form>
+                <ui:include src="./../resources/template/apsTemplate/viewAircraftInfoCenter.xhtml"></ui:include>
             </ui:define>
         </ui:decorate>
-
     </h:body>
 </html>

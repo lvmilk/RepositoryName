@@ -3,6 +3,7 @@ package SessionBean.APS;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
+import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -153,6 +154,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (aircraftType != null) {
             throw new Exception("Aircraft Type has existed.");
         }
+        if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
+            throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
+        }
+        if ((stewardess + steward + purser + captain + pilot) > 30) {
+            throw new Exception("Total number of crews exceeds the max capacity (30)!");
+        }
         aircraftType = new AircraftType();
         aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
         em.persist(aircraftType);
@@ -167,6 +174,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
+        }
+        if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
+            throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
+        }
+        if ((stewardess + steward + purser + captain + pilot) > 30) {
+            throw new Exception("Total number of crews exceeds the max capacity (30)!");
         }
         aircraftType.setManufacturer(manufacturer);
         aircraftType.setMaxDistance(maxDistance);
@@ -200,10 +213,13 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         } else {
             System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
         }
+
         Query q2 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", aircraftType);
-        //for(Route r : q2.getResultList()){
-            
-     //   }
+        if (!q2.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. This aircraft type " + aircraftType.getType() + " is linked with a route.");
+        } else {
+            System.out.println("This aircraft type " + aircraftType.getType() + " can be deleted.");
+        }
     }
 
     @Override
@@ -218,8 +234,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     public void deleteAircraftType(AircraftType aircraftType) throws Exception {
         Query q = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
         q.setParameter("aircraftType", aircraftType);
+        Query q2 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", aircraftType);
         if (!q.getResultList().isEmpty()) {
             throw new Exception("Cannot delete. The aircraft type " + aircraftType.getType() + " is linked with a aircraft.");
+        } else if (!q2.getResultList().isEmpty()) {
+            throw new Exception("Cannot delete. This aircraft type " + aircraftType.getType() + " is linked with a route.");
         } else {
             aircraftType = em.merge(aircraftType);
             em.remove(aircraftType);
@@ -245,7 +264,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             at = typeList.get(i);
             Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType").setParameter("aircraftType", at);
             if (!q2.getResultList().isEmpty()) {
-                typeList2.remove(at);
+                Query q3 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", at);
+                if (!q3.getResultList().isEmpty()) {
+                    typeList2.remove(at);
+                }
             }
         }
         return typeList2;
@@ -260,7 +282,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             Query q2 = em.createQuery("SELECT a FROM Aircraft a where a.aircraftType =:aircraftType");
             q2.setParameter("aircraftType", at);
             if (!q2.getResultList().isEmpty()) {
-                typeList2.add(at);
+                Query q3 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", at);
+                if (!q3.getResultList().isEmpty()) {
+                    typeList2.add(at);
+                }
             }
         }
         return typeList2;
@@ -295,7 +320,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void addAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
+    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft != null) {
             throw new Exception("Aircraft has already existed.");
@@ -305,7 +330,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             throw new Exception("AircraftType does not exist.");
         }
         aircraft = new Aircraft();
-        aircraft.create(registrationNo, serialNo, status, firstFlyDate, deliveryDate, retireDate);
+        aircraft.create(registrationNo, status, firstFlyDate, deliveryDate, retireDate);
         aircraft.setAircraftType(aircraftType);
         em.persist(aircraft);
         em.flush();
@@ -315,7 +340,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void editAircraft(String type, String registrationNo, String serialNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
+    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft == null) {
             throw new Exception("Aircraft does not exist.");
@@ -324,11 +349,16 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
         }
+        if ((status.equals("Retired")) && (!aircraft.getFlightInstance().isEmpty())) {
+       //     System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! "+aircraft.getStatus() + status + aircraft.getFlightInstance());
+            throw new Exception("Aircraft Status cannot be retired. This aircraft " + aircraft.getRegistrationNo() + " has already linked with a flight instance.");
+        }
+        System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! "+aircraft.getStatus() + aircraft.getFlightInstance());
         System.out.println("Fleet Planning Bean is editing Aircraft...");
-        aircraft.setSerialNo(serialNo);
+//        aircraft.setSerialNo(serialNo);
         aircraft.setStatus(status);
-        aircraft.setFirstFlyDate(firstFlyDate);
-        aircraft.setDeliveryDate(deliveryDate);
+ //       aircraft.setFirstFlyDate(firstFlyDate);
+//        aircraft.setDeliveryDate(deliveryDate);
         aircraft.setRetireDate(retireDate);
 //        aircraft.setFlightLogId(flightLogId);
 //        aircraft.setMaintenanceLogId(maintenanceLogId);
