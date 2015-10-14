@@ -28,40 +28,45 @@
                     <p:calendar  id="scheduleArrTime" value="#{EFFMB.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight arrival time" size="30"/>
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-                    <p:inputText id="dateAdjust" value="#{EFFMB.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter date adjust"  size="30">
-                        <f:validateRegex pattern="[0-9]" />
-                    </p:inputText>
+<!--                    <p:inputText id="dateAdjust" value="#{EFFMB.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter 0 or 1 for date adjust" requiredMessage="Please enter date adjust"  size="30">
+                        <f:validateRegex pattern="[0-1]" />
+                    </p:inputText>-->
+                    <p:selectOneRadio id="dateAdjust" value="#{EFFMB.dateAdjustString}" required="true" requiredMessage="Please select flight date adjust">
+                        <f:selectItem itemLabel="0" itemValue="0" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                    </p:selectOneRadio>
 
-                    <p:outputLabel value="Operation Day of the Week: "/>
+                    <p:outputLabel value="Frequency of the week: " />
                     <p:panel>
-                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                        <h:panelGrid columns="2" style="margin-bottom:0px" width="65%" cellpadding="5">
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onMon}" />      
                             <h:outputText value="Monday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onMon}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onTue}" />
                             <h:outputText value="Tuesday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onTue}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onWed}" />
                             <h:outputText value="Wednesday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onWed}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onThu}" />
                             <h:outputText value="Thursday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onThu}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onFri}" />
                             <h:outputText value="Friday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onFri}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onSat}" />
                             <h:outputText value="Saturday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onSat}" />
 
-                            <p:selectBooleanCheckbox value="#{EFFMB.onSun}" />
                             <h:outputText value="Sunday" />
+                            <p:selectBooleanCheckbox value="#{EFFMB.onSun}" />
 
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:outputLabel for="startDate" value="Flight Start Operation Date (yyyy-MM-dd): " />
-                    <p:calendar id="startDate" value="#{EFFMB.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>
+                    <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): " />
+                    <h:outputText value="#{EFFMB.startDateString}" />
+                    <!--<p:calendar id="startDate" value="#{EFFMB.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>-->
 
                     <p:outputLabel for="endDate" value="Flight End Operation Date (yyyy-MM-dd): " />
                     <p:calendar id="endDate" value="#{EFFMB.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 

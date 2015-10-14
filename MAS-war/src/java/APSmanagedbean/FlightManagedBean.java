@@ -97,8 +97,10 @@ public class FlightManagedBean implements Serializable {
             Format formatter = new SimpleDateFormat("yyyy-MM-dd");
             Format formatter2 = new SimpleDateFormat("HH:mm");
             fsb.validateFlightNo(flightNo);
-            if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week for flight.", ""));
+            if (flightNo.length() != 5 || flightNo.charAt(0) != 'M' || flightNo.charAt(1) != 'R' || !Character.isDigit(flightNo.charAt(2)) || !Character.isDigit(flightNo.charAt(3)) || !Character.isDigit(flightNo.charAt(4))) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Flight Number: Please enter a flight No. in format of MRxxx, x is a digit, e.g. MR123", ""));
+            } else if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Operation Day of the Week: Please select as least one day of the week for flight.", ""));
             } else {
                 dateAdjust = Integer.parseInt(dateAdjustString);
                 startDateString = formatter.format(startDate);

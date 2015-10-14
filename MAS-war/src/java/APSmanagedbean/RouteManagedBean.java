@@ -53,10 +53,10 @@ public class RouteManagedBean implements Serializable {
     private List<Airport> airportList = new ArrayList<>();
     private Map<String, String> airportInfo = new HashMap<String, String>();
 
-    private String mPriceString;
-    private String pVolumnString;
-   private Integer mPrice;
-   private Integer pVolumn;
+    private String marketPriceString;
+    private String passVolumnString;
+    private Integer mPrice;
+    private Integer pVolumn;
 
     private List<Airport> hubList;
 
@@ -164,16 +164,21 @@ public class RouteManagedBean implements Serializable {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
 //        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
 //    }
-    
     public void checkRouteProfitability(ActionEvent event) throws IOException {
         route = (Route) event.getComponent().getAttributes().get("route");
+        System.out.println("rmb.checkRouteProfitability(): route passed is " + route);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
     }
 
     public void checkRouteProfit() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", mPriceString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
+        System.out.println("rmb.checkRouteProfit(): marketPriceString passed is " + marketPriceString);
+        System.out.println("rmb.checkRouteProfit(): passVolumnString passed is " + passVolumnString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", marketPriceString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", passVolumnString);
+        System.out.println("rmb.checkRouteProfita()---2: marketPriceString passed is " + marketPriceString);
+        System.out.println("rmb.checkRouteProfit()---2: passVolumnString passed is " + passVolumnString);
+
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
     }
 //    public void checkRouteProfit() throws IOException {
@@ -307,20 +312,20 @@ public class RouteManagedBean implements Serializable {
         this.flightOfRoute = flightOfRoute;
     }
 
-    public String getmPriceString() {
-        return mPriceString;
+    public String getMarketPriceString() {
+        return marketPriceString;
     }
 
-    public void setmPriceString(String mPriceString) {
-        this.mPriceString = mPriceString;
+    public void setMarketPriceString(String marketPriceString) {
+        this.marketPriceString = marketPriceString;
     }
 
-    public String getpVolumnString() {
-        return pVolumnString;
+    public String getPassVolumnString() {
+        return passVolumnString;
     }
 
-    public void setpVolumnString(String pVolumnString) {
-        this.pVolumnString = pVolumnString;
+    public void setPassVolumnString(String passVolumnString) {
+        this.passVolumnString = passVolumnString;
     }
 
     public List<Airport> getHubList() {
