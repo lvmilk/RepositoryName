@@ -18,11 +18,11 @@
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
 
                     <p:outputLabel for="marketPrice" value="Enter market price for the route (in SGD): "/>
-                    <p:inputText id="marketPrice"  value="#{RouteManagedBean.mPrice}" label="marketPrice" required="true" validatorMessage="Please enter a valid market price"  requiredMessage="Please enter average market price for the route" size="50">
+                    <p:inputText id="marketPrice"  value="#{RouteManagedBean.mPriceString}" label="marketPrice" required="true" validatorMessage="Please enter a valid market price"  requiredMessage="Please enter average market price for the route" size="50">
                     </p:inputText>
 
                     <p:outputLabel for="passengerVolumn" value="Enter passenger volumn for the route (per year): "/>
-                    <p:inputText id="passengerVolumn"  value="#{RouteManagedBean.pVolumn}" label="passengerVolumn" required="true" validatorMessage="Please enter number of passengers per year"  requiredMessage="Please enter passenger volumn per year" size="50">
+                    <p:inputText id="passengerVolumn"  value="#{RouteManagedBean.pVolumnString}" label="passengerVolumn" required="true" validatorMessage="Please enter number of passengers per year"  requiredMessage="Please enter passenger volumn per year" size="50">
                     </p:inputText>
 
                 </h:panelGrid>
