@@ -27,7 +27,7 @@
                         <f:selectItems value="#{flightManagedBean.routeInfo}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="flightNo" value="Flight Number(e.g. MR123): " />
+                    <p:outputLabel for="flightNo" value="Flight Number (e.g. MR123): " />
                     <p:inputText id="flightNo" value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter outbound flight number" size="30">
                     </p:inputText>
 
@@ -38,9 +38,13 @@
                     <p:calendar  id="scheduleArrTime" value="#{flightManagedBean.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter outbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter outbound flight date adjust"  size="30">
-                        <f:validateRegex pattern="[0-3]" />
-                    </p:inputText>
+<!--                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter 0 or 1 for date adjust" requiredMessage="Please enter outbound flight date adjust"  size="30">
+                        <f:validateRegex pattern="[0-1]" />
+                    </p:inputText>-->
+                     <p:selectOneRadio id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" required="true" requiredMessage="Please select flight date adjust">
+                        <f:selectItem itemLabel="0" itemValue="0" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel for="freq" value="Operation Day of the Week: "/>
                     <p:panel id="freq">

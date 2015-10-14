@@ -19,7 +19,7 @@
 
                     <p:outputLabel for="registrationNo" value="Registration No. (9V-AAA to 9V-ZZZ):" />
                     <p:inputText id="registrationNo" value="#{AMB.registrationNo}" required="true" validatorMessage="Registration No.: please enter a valid number from 9V-AAA to 9V-ZZZ." requiredMessage="Please enter a valid registraction number" label="registrationNo" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z]).{1,20})" />
+                        <f:validateRegex pattern="9V-((?=.*[A-Z]).{3,6})" />
                     </p:inputText>
 
 <!--                    <p:outputLabel for="serialNo" value="Serial No.: " />

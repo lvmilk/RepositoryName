@@ -45,8 +45,10 @@ public class EditFlightFrequencyManagedBean implements Serializable {
 
     private Date startDate;
     private Date endDate;
+    private Date endDateOld;
     private String startDateString;
     private String endDateString;
+    private String endDateOldString;
     private boolean onMon;
     private boolean onTue;
     private boolean onWed;
@@ -65,6 +67,10 @@ public class EditFlightFrequencyManagedBean implements Serializable {
         depTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightDepTime");
         arrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightArrTime");
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightStartDate");
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        startDateString = formatter.format(startDate);
+        endDateOld = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightEndDate");
+        endDateOldString = formatter.format(endDateOld);
         endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightEndDate");
         dateAdjustString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateAdjust");
         onMon = flightFreq.isOnMon();
@@ -79,7 +85,9 @@ public class EditFlightFrequencyManagedBean implements Serializable {
     public void editFlightFrequencyDetail() throws Exception {
         try {
             if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Operation Day of the Week: Please select as least one day of the week.", ""));
+            } else if (endDate.before(endDateOld)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: End Operation Date: The end operation date cannot be later than the initial value " + endDateOldString, ""));
             } else {
                 dateAdjust = Integer.parseInt(dateAdjustString);
                 Format formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -266,6 +274,14 @@ public class EditFlightFrequencyManagedBean implements Serializable {
 
     public void setOnSun(boolean onSun) {
         this.onSun = onSun;
+    }
+
+    public Date getEndDateOld() {
+        return endDateOld;
+    }
+
+    public void setEndDateOld(Date endDateOld) {
+        this.endDateOld = endDateOld;
     }
 
 }

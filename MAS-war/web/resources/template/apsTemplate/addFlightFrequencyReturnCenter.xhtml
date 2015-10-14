@@ -22,7 +22,7 @@
                     <h:outputText value="#{ARFMB.destAirportString}" />
 
                     <p:outputLabel for="inFlightNo" value="Flight Number: " />
-                    <p:inputText id="inFlightNo" value="#{ARFMB.inFlightNo}" label="flightNo" required="true"  requiredMessage="Please enter inbound flight number" size="30">
+                    <p:inputText id="inFlightNo" value="#{ARFMB.inFlightNo}" label="flightNo" required="true" requiredMessage="Please enter inbound flight number" size="30">
                     </p:inputText>
 
                     <p:outputLabel for="inScheduleDepTime" value="Departure Time (UTC+00:00 in HH:mm): " />
@@ -32,9 +32,13 @@
                     <p:calendar  id="inScheduleArrTime" value="#{ARFMB.inArrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter inbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="inDateAdjust" value="Date Adjust: " />
-                    <p:inputText id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter inbound flight date adjust"  size="30">
-                        <f:validateRegex pattern="[0-3]" />
-                    </p:inputText>
+<!--                    <p:inputText id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter 0 or 1 for date adjust" requiredMessage="Please enter inbound flight date adjust"  size="30">
+                        <f:validateRegex pattern="[0-1]" />
+                    </p:inputText>-->
+                    <p:selectOneRadio id="inDateAdjust" value="#{ARFMB.inDateAdjustString}" required="true" requiredMessage="Please select flight date adjust">
+                        <f:selectItem itemLabel="0" itemValue="0" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel  for="inFreq" value="Operation Day of the Week: "/>
                     <p:panel id="inFreq">

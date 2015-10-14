@@ -7,53 +7,82 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
 
-    
+
     <h:body>
         <h:form>
-            <p:panel id="panel" header="All Flight Frequency"  style="width:100%">
-                <p:dataTable var="flightFreq" value="#{flightManagedBean.flightFreqList}" paginator="true" rows="20" emptyMessage="No flight frequencies found.">
+            <p:panel id="panel" header="Edit Flight Frequency"  style="width:100%">
+                <p:dataTable var="flightFreq" value="#{flightManagedBean.flightFreqList}" widgetVar="routeTable" paginator="true" rows="15" emptyMessage="No flight frequencies found.">
 
-                    <p:column headerText="Flight No">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Flight No" filterBy="#{flightFreq.flightNo}" filterMatchMode="contains"/>
+                            <p:column rowspan="2" headerText="Origin" filterBy="#{flightFreq.route.origin.IATA}" filterMatchMode="contains" />
+                            <p:column rowspan="2" headerText="Destination" filterBy="#{flightFreq.route.dest.IATA}" filterMatchMode="contains" />
+                            <p:column rowspan="2" headerText="Departure Time" />
+                            <p:column rowspan="2" headerText="Arrival Time" />
+                            <p:column rowspan="2" headerText="Date Adjust"/>
+                            <p:column colspan="7" headerText="Operation Day of the Week" />
+                            <p:column rowspan="2" headerText="Edit"/>
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Monday"/>
+                            <p:column headerText="Tuesday"/>
+                            <p:column headerText="Wednesday"/>
+                            <p:column headerText="Thursday"/>
+                            <p:column headerText="Friday"/>
+                            <p:column headerText="Saturday"/>
+                            <p:column headerText="Sunday"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
                         <h:outputText value="#{flightFreq.flightNo}" />
                     </p:column>
-                    <p:column headerText="Origin" filterBy="#{flightFreq.route.origin.IATA}" filterMatchMode="contains">
+                    <p:column>
                         <h:outputText value="#{flightFreq.route.origin.IATA}" />
                     </p:column>
-                    <p:column headerText="Destination" filterBy="#{flightFreq.route.dest.IATA}" filterMatchMode="contains">
+                    <p:column>
                         <h:outputText value="#{flightFreq.route.dest.IATA}" />
                     </p:column>
-                    <p:column headerText="Departure Time">
+                    <p:column>
                         <h:outputText value="#{flightFreq.scheduleDepTime}" />
                     </p:column>
-                    <p:column headerText="Arrival Time">
+                    <p:column>
                         <h:outputText value="#{flightFreq.scheduleArrTime}" />
                     </p:column>
-                    <p:column headerText="Date Adjust">
+                    <p:column>
                         <h:outputText value="#{flightFreq.dateAdjust}" />
                     </p:column>
-                    <p:column headerText="Monday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onMon}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onMon}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Tuesday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onTue}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onTue}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Wednesday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onWed}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onWed}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Thursday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onThu}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onThu}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Friday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onFri}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onFri}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Saturday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onSat}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onSat}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Sunday">
-                        <h:outputText value="Yes" rendered="#{flightFreq.onSun}" />
+                    <p:column>
+                        <h:outputText value="Yes" rendered="#{flightFreq.onSun}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
 
-                    <p:column headerText="Edit">
+                    <p:column>
                         <p:commandButton value="Edit" action="#{flightManagedBean.editFlightFrequency(flightFreq)}"  />
                     </p:column>
 
