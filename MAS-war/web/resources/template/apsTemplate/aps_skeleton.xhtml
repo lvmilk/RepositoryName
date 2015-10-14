@@ -17,13 +17,15 @@
 
             .ui-layout-north .ui-layout-unit-content {
                 overflow:visible !important;
-                
+
             }
         </style>
     </h:head>
-      
+
     <h:body>
         <p:layout fullPage="true" >
+            <ui:include src="../cmiTemplate/sessionOut.xhtml"></ui:include>
+            <ui:include src="../cmiTemplate/msgPoll.xhtml"></ui:include>
 
             <p:layoutUnit id="top" position="north" size="50">
                 <ui:insert name="top"></ui:insert>
@@ -33,7 +35,7 @@
                 <ui:insert name="left"></ui:insert>
             </p:layoutUnit>
 
-            
+
             <p:layoutUnit id="center" position="center" >
                 <ui:insert name="center"></ui:insert>
             </p:layoutUnit>

@@ -36,7 +36,7 @@
                    <h:panelGrid columns="2" cellpadding="5">
 
                     <p:outputLabel for="profit_margin" value="Expected Net Profit Margin(net profit/cost) in decimal number: " />
-                    <p:inputText id="profit_margin"  value="#{pricingManagedBean.profitMargin}" label="Expected Net Profit Margin" required="true" requiredMessage="Please enter an expected net profit margin" validatorMessage="Please check net profit margin is decimal number"  size="10">
+                    <p:inputText id="profit_margin"  value="#{pricingManagedBean.profitMargin}" label="Expected Net Profit Margin" required="true" requiredMessage="Please enter an expected net profit margin" validatorMessage="Please check net profit margin is decimal number, and it should not exceed 15"  size="10">
                          <f:validateDoubleRange minimum="0.0" maximum="15.0" />
                     </p:inputText>
 

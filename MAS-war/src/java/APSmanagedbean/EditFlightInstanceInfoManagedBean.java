@@ -10,6 +10,7 @@ import Entity.APS.FlightInstance;
 import Entity.aisEntity.FlightCabin;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
+import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -58,6 +59,12 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
+    @EJB
+    private UserLogSessionBeanLocal ulsbl;
+
+    private String username;
+    private String description;
+
     public EditFlightInstanceInfoManagedBean() {
     }
 
@@ -77,7 +84,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
         actualDateAdjust = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDateAdjust");
         flightInst = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInst");
         flightInstList = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInstList");
-
+        username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
 //        FacesContext.getCurrentInstance().getExternalContext()
         if (FacesContext.getCurrentInstance().getExternalContext().getFlash().get("flightFrequency") != null) {
             flightFreq = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("flightFrequency");
@@ -110,12 +117,14 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
                 bookedSeat = bookedSeat + flightCabinList.get(i).getBookedSeat();
             }
             System.out.println("edit flight info managed bean: edit flight instance: number of booked seats: " + bookedSeat);
-            
+
             if ((bookedSeat != 0) && flightStatus.equals("Cancelled")) {
                 System.out.println("edit flight info managed bean: edit flight instance: number of booked seats: WARNING!!! " + bookedSeat);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "This flight " + flightFreq.getFlightNo() + " on " + flightInst.getDate() + " has reserved seates. Please handle affected customers! ", ""));
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightFrequency", flightFreq);
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightInstance", flightInst);
+                description = username + " Cancel Flight Instances";
+                ulsbl.createLog(username, description);
             }
             ///////////////////////////////////////////////////////////////////////
             fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust);
