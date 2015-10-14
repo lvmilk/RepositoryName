@@ -14,15 +14,20 @@
 
         <h:form>
             <p:panel id="panel" header="View All Route"  style="width:100%">
-                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" rowKey="#{route.id}" paginator="true" rows="20" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
-
+                <p:dataTable var="route" value="#{RouteManagedBean.routeList}" widgetVar="routeTable" rowKey="#{route.id}" paginator="true" rows="20" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
                     <p:columnGroup type="header">
                         <p:row>
-                            <p:column rowspan="2" headerText="Route Id" />
+<!--                            <p:column rowspan="2" headerText="Route Id" />-->
                             <p:column colspan="4" headerText="Origin Airport" />
                             <p:column colspan="4" headerText="Destination Airport" />
                             <p:column rowspan="2" headerText="Distance" sortBy="#{route.distance}"/>
-                            <p:column rowspan="2" headerText="Status" />
+                            <!--                            <p:column rowspan="2" headerText="Status" />-->
                             <p:column rowspan="2" headerText="Action" />
                         </p:row>
                         <p:row>
@@ -37,9 +42,9 @@
                         </p:row>
                     </p:columnGroup>
 
-                    <p:column headerText="Route Id">
+<!--                    <p:column headerText="Route Id">
                         <h:outputText value="#{route.id}" />
-                    </p:column>
+                    </p:column>-->
 
                     <p:column>
                         <h:outputText value="#{route.origin.IATA}" />
@@ -66,13 +71,13 @@
                     <p:column>
                         <h:outputText value="#{route.dest.countryName}" />
                     </p:column>
-                    
+
                     <p:column>
                         <h:outputText value="#{route.distance}" />
                     </p:column>
-                    <p:column>
-                        <h:outputText value="#{route.status}" />
-                    </p:column>
+                    <!--                    <p:column>
+                                            <h:outputText value="#{route.status}" />
+                                        </p:column>-->
                     <p:column>
                         <p:commandButton ajax="true" value="View Detail" actionListener="#{RouteManagedBean.viewRoute}">
                             <f:attribute name="route" value="#{route}" />

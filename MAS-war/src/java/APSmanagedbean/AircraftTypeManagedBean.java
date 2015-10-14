@@ -70,7 +70,7 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void addAircraftType() throws Exception {
         if (!fpb.checkDuplicate(type)) {
-            System.out.println("No duplicates");
+            System.out.println("AircraftTypeManagedBean: addAircraftType: No duplicates");
             fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {

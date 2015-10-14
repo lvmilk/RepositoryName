@@ -7,6 +7,7 @@ import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,8 @@ public class RouteManagedBean implements Serializable {
 
     private String mPriceString;
     private String pVolumnString;
+   private Integer mPrice;
+   private Integer pVolumn;
 
     private List<Airport> hubList;
 
@@ -68,15 +71,22 @@ public class RouteManagedBean implements Serializable {
 
     public void addRoute() throws Exception {
         try {
+            Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+            Double minHour = rpb.minBlockHour(distance);
+            Double maxHour = rpb.maxBlockHour(distance);
+            DecimalFormat formatter = new DecimalFormat("#0.00");
+            DecimalFormat formatter2 = new DecimalFormat("#0.0");
             if (originIATA.equals(destIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Origin airport cannot be same as destination airport.", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Origin airport cannot be same as destination airport.", ""));
             } else if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "At least one of origin airport and  destination airport must be hub.", ""));
-            } else if (distance < rpb.calRouteDistance(originIATA, destIATA)) {
-                Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
-                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " +drDistance + "km");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route distance should be longer than the direct distance " + drDistance + "km", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : At least one of origin airport and  destination airport must be hub.", ""));
+            } else if (distance < drDistance) {
+                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " + drDistance + "km");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance should be longer than the direct distance " + formatter.format(drDistance) + "km.", ""));
+            } else if (blockhour < minHour || blockhour > maxHour) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
             } else {
+                addReturnRoute = true;
                 rpb.checkRouteExist(originIATA, destIATA);
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
@@ -86,7 +96,7 @@ public class RouteManagedBean implements Serializable {
                 String rtNum = "Route ";
                 if (addReturnRoute) {
                     rpb.addRoute(destIATA, originIATA, distance, blockhour);
-                    rt += " ," + destIATA + " - " + originIATA;
+                    rt += ", " + destIATA + " - " + originIATA;
                     rtNum = "Routes ";
                 }
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("addRouteSuccessString", rtNum + rt);
@@ -102,7 +112,7 @@ public class RouteManagedBean implements Serializable {
         System.out.println("1");
         route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", fsb.getFlightOfRoute(route));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
@@ -150,7 +160,13 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibilityResult.xhtml");
     }
 
-    public void checkRouteProfitability(Route route) throws IOException {
+//    public void checkRouteProfitability(Route route) throws IOException {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
+//    }
+    
+    public void checkRouteProfitability(ActionEvent event) throws IOException {
+        route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
     }
@@ -160,6 +176,11 @@ public class RouteManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
     }
+//    public void checkRouteProfit() throws IOException {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPrice", mPrice);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumn", pVolumn);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+//    }
 
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
@@ -308,6 +329,22 @@ public class RouteManagedBean implements Serializable {
 
     public void setHubList(List<Airport> hubList) {
         this.hubList = hubList;
+    }
+
+    public Integer getmPrice() {
+        return mPrice;
+    }
+
+    public void setmPrice(Integer mPrice) {
+        this.mPrice = mPrice;
+    }
+
+    public Integer getpVolumn() {
+        return pVolumn;
+    }
+
+    public void setpVolumn(Integer pVolumn) {
+        this.pVolumn = pVolumn;
     }
 
 }

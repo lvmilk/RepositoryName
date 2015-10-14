@@ -24,41 +24,58 @@
 
                     <p:outputLabel for="airportName" value="Airport Name: " />
                     <p:inputText id="airportName" value="#{editAirportManagedBean.airportName}" label="airportName" required="true"  requiredMessage="Please enter airport name" size="30">
+                        <f:validateRegex pattern="((?=.*[a-zA-Z]).{1,50})" />
                     </p:inputText>
 
                     <p:outputLabel for="cityName" value="City Name: " />
                     <p:inputText id="cityName" value="#{editAirportManagedBean.cityName}" label="cityName" required="true" requiredMessage="Please enter city name" size="30">
+                        <f:validateRegex pattern="((?=.*[a-zA-Z]).{1,30})" />
                     </p:inputText>
 
                     <p:outputLabel for="countryName" value="Country Name: " />
                     <p:inputText id="countryName" value="#{editAirportManagedBean.countryName}" label="countryName" required="true" requiredMessage="Please enter country name" size="30">
+                        <f:validateRegex pattern="((?=.*[a-zA-Z]).{1,30})" />
                     </p:inputText>
 
                     <p:outputLabel for="spec" value="Specification: " />
                     <p:inputText id="spec" value="#{editAirportManagedBean.spec}" label="spec" required="true" requiredMessage="Please enter airport specification" size="30">
+                        <f:validateRegex pattern="((?=.*[a-zA-Z]).{1,30})" />
                     </p:inputText>
 
                     <p:outputLabel for="timeZone" value="Time Zone: " />
-                    <p:inputText id="timeZone" value="#{editAirportManagedBean.timeZone}" label="timeZone" required="true" requiredMessage="Please enter timezone" size="30"> 
-                    </p:inputText>
+                    <p:selectOneMenu id="timeZone" value="#{editAirportManagedBean.timeZone}" required="true" requiredMessage="Please select timezone"style="width:200px">
+                        <f:selectItem itemLabel="-Select TimeZone-" itemValue="" />
+                        <f:selectItems value="#{AirportManagedBean.utcList}" />
+                    </p:selectOneMenu>
 
                     <p:outputLabel for="operationalStatus" value="Operational Status: " />
-                    <p:inputText id="operationalStatus" value="#{editAirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
-                    </p:inputText>
+                    <p:selectOneRadio id="operationalStatus" value="#{AirportManagedBean.opStatus}" required="true" requiredMessage="Please select airport operational status">
+                        <f:selectItem itemLabel="Normal" itemValue="Normal" />
+                        <f:selectItem itemLabel="Closed" itemValue="Closed" />
+                        <f:selectItem itemLabel="Restricted" itemValue="Restricted" />
+                    </p:selectOneRadio>
+<!--                    <p:inputText id="operationalStatus" value="#{editAirportManagedBean.opStatus}" label="operationalStatus" required="true" requiredMessage="Please enter operational status" size="30"> 
+                    </p:inputText>-->
 
                     <p:outputLabel for="strategicLevel" value="Strategic Level: " />
-                    <p:inputText id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
-                    </p:inputText>
+                    <p:selectOneRadio id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" required="true" requiredMessage="Please select airport strategic level">
+                        <f:selectItem itemLabel="Hub" itemValue="Hub" />
+                        <f:selectItem itemLabel="Normal" itemValue="Normal" />
+                    </p:selectOneRadio>
+<!--                    <p:inputText id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
+                    </p:inputText>-->
 
                     <p:outputLabel for="airspace" value="Airspace: " />
-                    <p:inputText id="airspace" value="#{editAirportManagedBean.airspace}" label="airspace" required="true" validatorMessage="Please enter a number and an uppercase alphabet"  requiredMessage="Please enter airspace" size="30">
-                        <!--                                    <f:validateRegex pattern="((?=.*\d).{0,50})" /> -->
-                    </p:inputText>
+                    <p:selectOneRadio id="airspace" value="#{AirportManagedBean.airspace}" required="true" requiredMessage="Please select airport airspace level">
+                        <f:selectItem itemLabel="4E" itemValue="4E" />
+                        <f:selectItem itemLabel="4F" itemValue="4F" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel value="Location (Lat, Long): " />
                     <p:outputLabel value="(#{editAirportManagedBean.latitude}, #{editAirportManagedBean.longitude})" />
 
                 </h:panelGrid>
+                
                 <p:commandButton value="Update" update="@form" actionListener="#{editAirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />
                 <p:commandButton value="Cancel" update="@form" actionListener="#{editAirportManagedBean.editAirportCancel}"  icon="ui-icon-cancel" />
             </p:panel>

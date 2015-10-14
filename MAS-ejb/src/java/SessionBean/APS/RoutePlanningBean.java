@@ -38,6 +38,37 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " exists.");
             throw new Exception("Airport " + airport.getIATA() + " exists.");
         }
+        boolean checkIATA = true;
+        if (IATA.length() != 3) {
+            checkIATA = false;
+        } else {
+            for (int i = 0; i < IATA.length(); i++) {
+                char c = IATA.charAt(i);
+                if (!Character.isLetter(c)) {
+                    checkIATA = false;
+                } else if (!Character.isUpperCase(c)) {
+                    checkIATA = false;
+                }
+            }
+        }
+        if (!checkIATA) {
+            throw new Exception("Airport IATA: should be three UPPERCASE alphabets.");
+        }
+        boolean checkLat = true;
+        if (!(latitude <= 90 && latitude >= -90)) {
+            checkLat = false;
+        }
+        if (!checkLat) {
+            throw new Exception("Latitude: please enter a latitude degree with in range -90 to 90.");
+        }
+        boolean checkLon = true;
+        if (!(longitude <= 180 && longitude >= -180)) {
+            checkLon = false;
+        }
+        if (!checkLon) {
+            throw new Exception("Longitude: please enter a longitude degree with in range -180 to 180.");
+        }
+
         airport = new Airport();
         airport.create(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
         em.persist(airport);
@@ -236,6 +267,16 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         em.flush();
     }
 
+    @Override
+    public Double maxBlockHour(Double distance) {
+        return distance/750;
+    }
+    
+    @Override
+    public Double minBlockHour(Double distance) {
+        return distance/1100;
+    }
+    
     @Override
     public Double calRouteDistance(String originIATA, String destIATA) {
         Airport origin = em.find(Airport.class, originIATA);

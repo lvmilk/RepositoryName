@@ -71,17 +71,18 @@ public class AddReturnFlightManagedBean implements Serializable {
     public void addReturnFlightFrequency() throws Exception {
         try {
             inRoute = rpb.viewRoute(oriAirportString, destAirportString);
-            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-//            Format formatter2 = new SimpleDateFormat("HH:mm");
+//            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Format formatter2 = new SimpleDateFormat("HH:mm");
             fsb.validateFlightNo(inFlightNo);
             if (!(inOnMon || inOnTue || inOnWed || inOnThu || inOnFri || inOnSat || inOnSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Please select as least one day of the week for the return flight.", ""));
             } else {
                 inDateAdjust = Integer.parseInt(inDateAdjustString);
-                inStartDateString = formatter.format(inStartDate);
-                inEndDateString = formatter.format(inEndDate);
-//                inDepTimeString = formatter2.format(inDepTime);
-//                inArrTimeString = formatter2.format(inArrTime);
+                
+//                inStartDateString = formatter.format(inStartDate);
+//                inEndDateString = formatter.format(inEndDate);
+                inDepTimeString = formatter2.format(inDepTime);
+                inArrTimeString = formatter2.format(inArrTime);
 
                 inBound = fsb.addFlightFrequency(inRoute, inFlightNo, inDepTimeString, inArrTimeString, inDateAdjust, inOnMon, inOnTue, inOnWed, inOnThu, inOnFri, inOnSat, inOnSun, inStartDateString, inEndDateString, "", "");
 
