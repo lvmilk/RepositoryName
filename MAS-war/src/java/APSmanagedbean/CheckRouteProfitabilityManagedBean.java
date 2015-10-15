@@ -102,8 +102,6 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     }
 
     public void checkProfitabilityBack(ActionEvent event) throws IOException {
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("marketPriceString", marketPriceString);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passVolumnString", passVolumnString);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitability.xhtml");
     }
 

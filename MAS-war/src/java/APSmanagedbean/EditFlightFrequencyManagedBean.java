@@ -56,6 +56,8 @@ public class EditFlightFrequencyManagedBean implements Serializable {
     private boolean onFri;
     private boolean onSat;
     private boolean onSun;
+    private String freqString;
+    private boolean hasInstance;
 
     public EditFlightFrequencyManagedBean() {
     }
@@ -282,6 +284,45 @@ public class EditFlightFrequencyManagedBean implements Serializable {
 
     public void setEndDateOld(Date endDateOld) {
         this.endDateOld = endDateOld;
+    }
+
+    public boolean isHasInstance() {
+       // System.out.println("EFFMB.isHasInstance(): " + !flightFreq.getFlightList().isEmpty());
+        return !flightFreq.getFlightList().isEmpty();
+    }
+
+    public void setHasInstance(boolean hasInstance) {
+        this.hasInstance = hasInstance;
+    }
+
+    public String getFreqString() {
+        String s = "";
+        if (onMon) {
+            s += "Monday  ";
+        }
+        if (onTue) {
+            s += "Tuesday  ";
+        }
+        if (onWed) {
+            s += "Wednesday  ";
+        }
+        if (onThu) {
+            s += "Thursday  ";
+        }
+        if (onFri) {
+            s += "Friday  ";
+        }
+        if (onSat) {
+            s += "Saturday  ";
+        }
+        if (onSun) {
+            s += "Sunday  ";
+        }
+        return s;
+    }
+
+    public void setFreqString(String freqString) {
+        this.freqString = freqString;
     }
 
 }

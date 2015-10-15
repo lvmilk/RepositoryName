@@ -401,10 +401,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return aircraftList;
     }
 
- public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
+    public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
         List<Aircraft> aircraftList = q1.getResultList();
-        List<Aircraft> newList =new ArrayList<Aircraft>();
+        List<Aircraft> newList = new ArrayList<Aircraft>();
         if (aircraftList.isEmpty()) {
             System.out.println("aircraftList: No aircraft.");
         } else {

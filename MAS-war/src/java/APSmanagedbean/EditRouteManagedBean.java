@@ -12,6 +12,7 @@ import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,6 +20,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -58,28 +60,31 @@ public class EditRouteManagedBean implements Serializable {
 
     private List<AircraftType> acTypeList;
     private List<String> acTypeInfo = new ArrayList();
- 
-//    private Map<String, String> acTypeInfo = new HashMap<String, String>();
 
+//    private Map<String, String> acTypeInfo = new HashMap<String, String>();
     public EditRouteManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("route");
-        
+
         acTypeList = fpb.getAllAircraftType();
         for (int i = 0; i < acTypeList.size(); i++) {
             acTypeString = acTypeList.get(i).getType();
             acTypeInfo.add(acTypeString);
         }
-       // acTypeInfo = getAcTypeInfo();
-       // acTypeString = route.getAcType().getType();
+        // acTypeInfo = getAcTypeInfo();
+        // acTypeString = route.getAcType().getType();
         originIATA = route.getOrigin().getIATA();
         destIATA = route.getDest().getIATA();
         distance = route.getDistance();
-        distance = route.getDistance();
         blockhour = route.getBlockhour();
+        if (route.getAcType() != null) {
+            acTypeString = route.getAcType().getType();
+        } else {
+            acTypeString = "NoAcSelected";
+        }
 //        basicScFare = route.getBasicScFare();
 //        basicFcFare = route.getBasicFcFare();
 //        basicBcFare = route.getBasicBcFare();
@@ -87,19 +92,34 @@ public class EditRouteManagedBean implements Serializable {
 //        basicEcFare = route.getBasicEcFare();
     }
 
-    public void editRoute() throws Exception {
+    public void editRoute(ActionEvent e) throws Exception {
         try {
-            if (acTypeString != null) {
-                acType = fpb.getAircraftType(acTypeString);
+            Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+            Double minHour = rpb.minBlockHour(distance);
+            Double maxHour = rpb.maxBlockHour(distance);
+            DecimalFormat formatter = new DecimalFormat("#0.00");
+            DecimalFormat formatter2 = new DecimalFormat("#0.0");
+            if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : At least one of origin airport and  destination airport must be hub.", ""));
+            } else if (distance < drDistance) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance should be longer than the direct distance " + formatter.format(drDistance) + "km.", ""));
+            } else if (blockhour < minHour || blockhour > maxHour) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
+            } else {
+                System.out.println("ERMB.editRoute(): acTypeString is " + acTypeString);
+                if (!acTypeString.equals("")) {
+                    acType = fpb.getAircraftType(acTypeString);
+                    System.out.println("ERMB.editRoute(): acType is " + acType);
+                }
+                rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
             }
-            rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
-    public void editRouteCancel() throws IOException {
+    public void editRouteCancel(ActionEvent e) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editRoute.xhtml");
     }
 
