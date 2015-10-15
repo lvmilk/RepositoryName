@@ -41,8 +41,8 @@
                     <p:message for="offUsername" display="icon" />
 
                     <p:outputLabel for="offPassword" value="Password: " />
-                    <p:inputText id="offPassword" value="#{login.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="offPassword" value="#{login.password}" type="password" required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="offPassword" display="icon" />
 
@@ -74,8 +74,8 @@
                     <p:message for="grdUsername" display="icon" />
 
                     <p:outputLabel for="grdPassword" value="Password: " />
-                    <p:inputText id="grdPassword" value="#{login.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="grdPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10"  validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="grdPassword" display="icon" />
 
@@ -108,8 +108,8 @@
                     <p:message for="cbUsername" display="icon" />
 
                     <p:outputLabel for="cbPassword" value="Password: " />
-                    <p:inputText id="cbPassword" value="#{login.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="cbPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                       <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="cbPassword" display="icon" />
 
@@ -142,8 +142,8 @@
                     <p:message for="cpUsername" display="icon" />
 
                     <p:outputLabel for="cpPassword" value="Password: " />
-                    <p:inputText id="cpPassword" value="#{login.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="cpPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="cpPassword" display="icon" />
 

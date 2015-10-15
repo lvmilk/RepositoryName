@@ -527,7 +527,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (ac.getAircraftType().equals(fi.getFlightFrequency().getRoute().getAcType()) && ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
                 canAssign = true;
             }
-        } else {
+        } else if (flightTemp.size() != 1) {
             System.out.println("canAssign: CHECK 3");
 
             List<Date> listDates = new ArrayList<Date>();
@@ -567,8 +567,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 System.out.println("Literal 2 check: " + newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin()));
                 System.out.println("Literal 2 check flightTemp : " + newList.get(i).getFlightFrequency().getRoute().getDest().getIATA());
                 System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
+                //if add in front of first of fiList
                 if (fi.getStandardArrTimeDateType().before(newList.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(newList.get(0).getFlightFrequency().getRoute().getOrigin())) {
                     canAssign = true;
+                    //if not the first of fiList
                 } else if ((depCheck.before(fi.getStandardDepTimeDateType())) && newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
                     System.out.println("canAssign: CHECK 6");
                     // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
@@ -585,6 +587,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     }
                 }
             }
+        } else {   // if fiList.size=1
+            if (fi.getStandardArrTimeDateType().before(flightTemp.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(flightTemp.get(0).getFlightFrequency().getRoute().getOrigin())) {
+                canAssign = true;
+            } else if (fi.getStandardDepTimeDateType().after(flightTemp.get(0).getStandardArrTimeDateType()) && fi.getFlightFrequency().getRoute().getOrigin().equals(flightTemp.get(0).getFlightFrequency().getRoute().getDest())) {
+                canAssign = true;
+            }
+
         }
         return canAssign;
     }
@@ -676,7 +685,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //        return canAssign;
 //    }
     @Override
-    public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
+    public void deleteAcFromFi(Aircraft ac, FlightInstance fi
+    ) {
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         flightTemp.remove(fi);
         ac.setFlightInstance(flightTemp);
