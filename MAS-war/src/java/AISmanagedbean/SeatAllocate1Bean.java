@@ -42,8 +42,8 @@ public class SeatAllocate1Bean implements Serializable {
     @EJB
     private SeatAssignBeanLocal sa;
 
-    private Double optimalRev = new Double(0);
-    private Double currentRev = new Double(0);
+    private Double optimalRev;
+    private Double currentRev;
 
     List<FlightFrequency> allFrequency = new ArrayList<>();
     List<FlightFrequency> frequencyList = new ArrayList<>();
@@ -296,7 +296,7 @@ public class SeatAllocate1Bean implements Serializable {
         if (noNull) {
 
             if (priceExist) {
-                bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat3(bookClassInstanceList);
+                bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat4(bookClassInstanceList);
 
                 optimalRev = sa.computeOptimalRev(bookClassInstanceList);
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listInstance", listInstance);

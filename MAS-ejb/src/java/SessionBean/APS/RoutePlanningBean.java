@@ -269,14 +269,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     @Override
     public Double maxBlockHour(Double distance) {
-        return distance/750;
+        return distance / 700;
     }
-    
+
     @Override
     public Double minBlockHour(Double distance) {
-        return distance/1100;
+        return distance / 1000;
     }
-    
+
     @Override
     public Double calRouteDistance(String originIATA, String destIATA) {
         Airport origin = em.find(Airport.class, originIATA);
@@ -320,11 +320,17 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("RoutePlanningBean: editRouteBasic(): Route does not exist.");
         }
         route = (Route) q1.getResultList().get(0);
-        route.setDistance(distance);
-        route.setAcType(acType);
-        route.setBlockhour(blockhour);
-        em.merge(route);
-        em.flush();
+        if (!checkFeasibleAcByDis(route).contains(acType)) {
+            throw new Exception("Infeasible Aircraft Type: The aircraft type max distance is shorter than the route distance.");
+        } else if (!checkFeasibleAcByAsp(route).contains(acType)) {
+            throw new Exception("Infeasible Aircraft Type: The aircraft type minimum airspace is higher than origin/destination airport of the route.");
+        } else {
+            route.setDistance(distance);
+            route.setAcType(acType);
+            route.setBlockhour(blockhour);
+            em.merge(route);
+            em.flush();
+        }
     }
 
     @Override

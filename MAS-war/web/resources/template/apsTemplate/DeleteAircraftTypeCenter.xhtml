@@ -18,12 +18,15 @@
 
             <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
                 <p:messages id="msgs" />  
-                <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.deletedList}" paginator="true" rows="10" emptyMessage="No aircraft type can be deleted!">
+                <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.deletedList}" paginator="true" rows="10" emptyMessage="No aircraft type is allowed to be deleted now!">
 
                     <p:ajax event="rowSelectCheckbox" listener="#{ATMB.check}"   />  
 
                     <f:facet name="header">  
-                        Aircraft Type List (Note: only aircraft types can be deleted are shown)
+                         <h:outputLink id="fade" value="#">
+                            <h:outputText value=" Aircraft Type List (Note: only aircraft types which can be deleted will be shown)" />
+                        </h:outputLink>
+                        <p:tooltip id="toolTipTrack" for="fade" value="If an aircraft is linked with any aircraft or any route, it cannot be directly deleted." trackMouse="true" />
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      
@@ -73,7 +76,7 @@
 
 
             <h:form id="dialogForm">
-                <p:dialog id="dlg" header="Delete Aircraft Type" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
+                <p:dialog id="dlg" header="Delete Aircraft Type" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true" height="100" width="400">
                     <h:outputText value="Delete aircraft type "/> <ui:repeat var="at" value="#{ATMB.selectedList}"> <h:outputText value="#{at.type} "/> </ui:repeat> <h:outputText value="?"/>
                     <h:panelGrid columns="2" cellpadding="10" >
                         <p:commandButton value="Delete"  id="Delete" update="" action="#{ATMB.confirmDeleteAircraftType()}" />

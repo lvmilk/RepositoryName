@@ -15,32 +15,30 @@
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20">
 
-<!--                    <p:outputLabel for="origin" value="Choose origin Airport: " />
-                    <p:selectOneMenu id="origin" value="#{flightManagedBean.oriAirportString}" required="true" requiredMessage="Please select destination airport" style="width:250px">
-                        <f:selectItem itemLabel="-Select Origin-" itemValue="" />
-                        <f:selectItems value="#{flightManagedBean.airportWoSgString}"/>
-                    </p:selectOneMenu>-->
-
                     <p:outputLabel for="route" value="Choose route: " />
                     <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select origin airport" style="width:250px">
                         <f:selectItem itemLabel="-Select Route-" itemValue="" />
                         <f:selectItems value="#{flightManagedBean.routeInfo}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="flightNo" value="Flight Number(e.g. MR123): " />
+                    <p:outputLabel for="flightNo" value="Flight Number (e.g. MR123): " />
                     <p:inputText id="flightNo" value="#{flightManagedBean.flightNo}" label="flightNo" required="true"  requiredMessage="Please enter outbound flight number" size="30">
                     </p:inputText>
 
-                    <p:outputLabel for="scheduleDepTime" value="Departure Time (UTC+00:00 in HH:mm): " />
+                    <p:outputLabel for="scheduleDepTime" value="Departure Time (HH:mm in UTC+00:00): " />
                     <p:calendar  id="scheduleDepTime" value="#{flightManagedBean.depTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter outbound flight flight departure time" size="30"/>
 
-                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (UTC+00:00 in HH:mm): " />
+                    <p:outputLabel for="scheduleArrTime" value="Arrival Time (HH:mm in UTC+00:00): " />
                     <p:calendar  id="scheduleArrTime" value="#{flightManagedBean.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter outbound flight flight arrival time" size="30"/>
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter a number between 0 and 9" requiredMessage="Please enter outbound flight date adjust"  size="30">
-                        <f:validateRegex pattern="[0-3]" />
-                    </p:inputText>
+<!--                    <p:inputText id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter 0 or 1 for date adjust" requiredMessage="Please enter outbound flight date adjust"  size="30">
+                        <f:validateRegex pattern="[0-1]" />
+                    </p:inputText>-->
+                     <p:selectOneRadio id="dateAdjust" value="#{flightManagedBean.dateAdjustString}" required="true" requiredMessage="Please select flight date adjust">
+                        <f:selectItem itemLabel="0" itemValue="0" />
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel for="freq" value="Operation Day of the Week: "/>
                     <p:panel id="freq">

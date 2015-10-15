@@ -13,7 +13,7 @@
 
         <h:form id="formMain">
             <p:panel id="panel" header="Check Route Feasibility Result"  style="width:100%">
-                <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:70%" cellpadding="10" columnClasses="ui-grid-col-4, ui-grid-col-8" >
 
                     <p:outputLabel value="Check Feasibility of Route: "/>
                     <p:outputLabel value="#{CRFMB.route}" />
@@ -66,8 +66,8 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="Back" actionListener="#{CRFMB.checkFeasibilityBack}"  icon="ui-icon-check" />
-                <p:commandButton value="Delete" actionListener="#{RouteManagedBean.deleteRouteBack()}"  icon="ui-icon-check" />
+                <p:commandButton value="Back" actionListener="#{CRFMB.checkFeasibilityBack}"  icon="ui-icon-carat-1-w" />
+                <p:commandButton value="Delete Route" actionListener="#{CRFMB.deleteRoute}"  icon="ui-icon-extlink" rendered="#{not CRFMB.feasibility}" />
 
             </p:panel>
 

@@ -16,37 +16,37 @@
                 <p:messages id="msgs" />
                 <h:panelGrid columns="2"  style="margin-bottom:20px; width:60%" cellpadding="20">
 
-<!--                    <p:outputLabel for="originIATA" value="Origin Airport IATA: " />
-                    <p:inputText id="originIATA" value="#{RouteManagedBean.originIATA}" label="originIATA" required="true" validatorMessage="Please enter three-digit UPPERCASE alphabets" requiredMessage="Please enter origin airport IATA" size="15">
-                        <f:validateRegex pattern="((?=.*[A-Z]).{3,3})" />
-                    </p:inputText>-->
-
                     <p:outputLabel for="originIATA" value="Origin Airport: " />
-                    <p:selectOneMenu id="originIATA" value="#{RouteManagedBean.originIATA}" required="originIATA" requiredMessage="Please select origin airport" style="width:250px">
+                    <p:selectOneMenu id="originIATA" value="#{RouteManagedBean.originIATA}" required="true" requiredMessage="Please select origin airport" style="width:250px">
                         <f:selectItem itemLabel="-Select Origin-" itemValue="" />
                         <f:selectItems value="#{RouteManagedBean.airportInfo}" />
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel for="destIATA" value="Destination Airport: " />
-                    <p:selectOneMenu id="destIATA" value="#{RouteManagedBean.destIATA}" required="destIATA" requiredMessage="Please select destination airport" style="width:250px">
+                    <p:selectOneMenu id="destIATA" value="#{RouteManagedBean.destIATA}" required="true" requiredMessage="Please select destination airport" style="width:250px">
                         <f:selectItem itemLabel="-Select Destination-" itemValue="" />
                         <f:selectItems value="#{RouteManagedBean.airportInfo}" />
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="distance" value="Route Distance: " />
+                    <p:outputLabel for="distance" value="Route Distance (km): " />
                     <p:inputText id="distance" value="#{RouteManagedBean.distance}" label="distance" required="true" requiredMessage="Please enter route distance" size="30">
                     </p:inputText>
 
-                     <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
+                    <p:outputLabel for="blockhour" value="Aircraft Blockhour (hr): " />
                     <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
                     </p:inputText>
+
                     
                 </h:panelGrid>
-                
-<!--                <p:selectBooleanCheckbox value="#{RouteManagedBean.addReturnRoute}" />
-                <h:outputText value="Add return route" />-->
 
-                <p:commandButton id="addRouteBtn" value="Add Inbound and Outbound Route" update="panel" style="margin-right:0" actionListener="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
+                <!--<h:outputText value=""/>-->
+                <p:selectBooleanCheckbox id="check" value="#{RouteManagedBean.addReturnRoute}" />
+                <h:outputText value="Add return route" />
+                <p:tooltip id="toolTipTrack" for="check" value="The return route will have the same distance and blockhour as this route." trackMouse="true" />
+
+                <!--<h:outputText value=""/>-->
+<!--<p:commandButton id="addRouteBtn" value="Add Inbound and Outbound Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />-->
+                <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true"/>
 
             </p:panel>
 

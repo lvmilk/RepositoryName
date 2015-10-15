@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 
 /**
@@ -47,14 +48,18 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
         feasibleAc = rpb.feasibleAc(route);
     }
 
-    public void checkFeasibilityBack() throws IOException {
+    public void checkFeasibilityBack(ActionEvent e) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteFeasibility.xhtml");
+    }
+
+    public void deleteRoute(ActionEvent e) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRoute.xhtml");
     }
 
     public String getFeasibleAcString() {
         String s = "";
-        for(AircraftType a: getFeasibleAc()) {
-           s += a.getType() + " ";
+        for (AircraftType a : getFeasibleAc()) {
+            s += a.getType() + " ";
         }
         return s;
     }
@@ -64,7 +69,7 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
     }
 
     public String getFeasibilityResult() {
-        if(isFeasibility()) {
+        if (isFeasibility()) {
             return "Feasible";
         }
         return "Infeasible: No aircraft type are suitable for this route.";
@@ -82,7 +87,6 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
         this.feasibility = feasibility;
     }
 
-    
     public List<AircraftType> getFeasibleAc() {
         return rpb.feasibleAc(route);
     }

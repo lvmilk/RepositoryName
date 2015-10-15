@@ -23,90 +23,93 @@
                         <f:validateRegex pattern="[a-zA-Z\\s]*"/>
                     </p:inputText>
 
-                    <p:outputLabel for="maxDistance" value="Maximum Distance (km):" />
+                    <p:outputLabel for="maxDistance" value="Maximum Distance (km) [4000,15000]:" />
                     <p:inputText id="maxDistance" value="#{editATMB.maxDistance}" label="Maximum Distance (km)" required="true" validatorMessage="Max Distance should between 8000 km to 15000 km."  requiredMessage="Please enter maximum distance of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="4000.0" maximum="15000.0" />
                     </p:inputText>
 
-                    <p:outputLabel for="leaseCost" value="Lease Cost (SGD per month):" />
-                    <p:inputText id="leaseCost" value="#{editATMB.leaseCost}" label="Lease Cost (per month)" required="true" validatorMessage="Lease Cost (per year): Please enter a valid number"  requiredMessage="Please enter lease cost of the aircraft type" size="50">
+                    <p:outputLabel for="leaseCost" value="Lease Cost (SGD [50000,2M] per month):" />
+                    <p:inputText id="leaseCost" value="#{editATMB.leaseCost}" label="Lease Cost (per month)" required="true" validatorMessage="Lease Cost (per year) should be between 50,000 to 2M SGD"  requiredMessage="Please enter lease cost of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="50000.0" maximum="2000000.0"/>
                     </p:inputText>
 
-                    <p:outputLabel for="fuelCost" value="Fuel Cost (SGD per hour):" />
-                    <p:inputText id="fuelCost" value="#{editATMB.fuelCost}" label="Fuel Cost (per hour)" required="true" validatorMessage="Fuel Cost (per hour): Please enter a valid number"  requiredMessage="Please enter fuel cost of the aircraft type" size="50">
+                    <p:outputLabel for="fuelCost" value="Fuel Cost (SGD [5000,15000] per hour):" />
+                    <p:inputText id="fuelCost" value="#{editATMB.fuelCost}" label="Fuel Cost (per hour)" required="true" validatorMessage="Fuel Cost (per hour) should be between 5,000 to 15,000 SGD"  requiredMessage="Please enter fuel cost of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="5000.0" maximum="15000.0"/>
                     </p:inputText>
                     
-                    <p:outputLabel for="aircraftLength" value="Overall Length(m):" />
+                    <p:outputLabel for="aircraftLength" value="Overall Length(m) [50,120]:" />
                     <p:inputText id="aircraftLength" value="#{editATMB.aircraftLength}" label="Overall Length(m)" required="true" validatorMessage="Overall Length: Please enter a valid number"  requiredMessage="Please enter overall length of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="50.0" maximum="120.0" />
                     </p:inputText>
 
-                    <p:outputLabel for="wingspan" value="Wingspan(m):" />
+                    <p:outputLabel for="wingspan" value="Wingspan(m): [40,100]" />
                     <p:inputText id="wingspan" value="#{editATMB.wingspan}" label="Wingspan(m)" required="true" validatorMessage="Wingspan: Please enter a valid number"  requiredMessage="Please enter wingspan of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="40.0" maximum="100.0" />
                     </p:inputText>
 
                     <p:outputLabel for="minAirspace" value="Minimum Airspace:" />
-                    <p:inputText id="minAirspace" value="#{editATMB.minAirspace}" label="Minimum Airspace" required="true" validatorMessage="Minimum Airspace: Please enter a valid number with an UPPERCASE alphabet"  requiredMessage="Please enter minimum airspace of the aircraft type" size="50">
-                        <f:validateRegex pattern="((?=.*\d)(?=.*[A-Z]).{0,2})" />
-                    </p:inputText>
+                   <p:selectOneRadio id="minAirspace" value="#{editATMB.minAirspace}"  required="true"  requiredMessage="Please enter minimum airspace of the aircraft type">
+                       <f:selectItem itemLabel="4C" itemValue="4C" /> 
+                       <f:selectItem itemLabel="4D" itemValue="4D" />
+                       <f:selectItem itemLabel="4E" itemValue="4E" />
+                        <f:selectItem itemLabel="4F" itemValue="4F" />
+                    </p:selectOneRadio>
 
                     <p:outputLabel for="suiteNo" value="Number of Seat in Suite:" />
-                    <p:inputText id="suiteNo" value="#{editATMB.suiteNo}" label="Number of Seat in Suite" required="true" validatorMessage="Suite: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Suite of the aircraft type" size="50">
+                    <p:inputText id="suiteNo" value="#{editATMB.suiteNo}" label="Number of Seat in Suite" required="true" validatorMessage="Suite: Please enter a valid number (less than 15)"  requiredMessage="Please enter Number of Seat in Suite of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="15" />
                     </p:inputText>
 
                     <p:outputLabel for="fcSeatNo" value="Number of Seat in First Class:" />
-                    <p:inputText id="fcSeatNo" value="#{editATMB.fcSeatNo}" label="Number of Seat in First Class" required="true" validatorMessage="First Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in First Class of the aircraft type" size="50">
+                    <p:inputText id="fcSeatNo" value="#{editATMB.fcSeatNo}" label="Number of Seat in First Class" required="true" validatorMessage="First Class: Please enter a valid number (less than 100)"  requiredMessage="Please enter Number of Seat in First Class of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="100" />
                     </p:inputText>
 
                     <p:outputLabel for="bcSeatNo" value="Number of Seat in Business Class:" />
-                    <p:inputText id="bcSeatNo" value="#{editATMB.bcSeatNo}" label="Number of Seat in Business Class" required="true" validatorMessage="Business Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Business Class of the aircraft type" size="50">
+                    <p:inputText id="bcSeatNo" value="#{editATMB.bcSeatNo}" label="Number of Seat in Business Class" required="true" validatorMessage="Business Class: Please enter a valid number (less than 200)"  requiredMessage="Please enter Number of Seat in Business Class of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="200" />
                     </p:inputText>
 
                     <p:outputLabel for="pecSeatNo" value="Number of Seat in Premium Economy Class:" />
-                    <p:inputText id="pecSeatNo" value="#{editATMB.pecSeatNo}" label="Number of Seat in Premium Economy Class" required="true" validatorMessage="Premium Economy Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Premium Economy Class of the aircraft type" size="50">
+                    <p:inputText id="pecSeatNo" value="#{editATMB.pecSeatNo}" label="Number of Seat in Premium Economy Class" required="true" validatorMessage="Premium Economy Class: Please enter a valid number  (less than 300)"  requiredMessage="Please enter Number of Seat in Premium Economy Class of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="300" />
                     </p:inputText>
 
                     <p:outputLabel for="ecSeatNo" value="Number of Seat in Economy Class:" />
-                    <p:inputText id="ecSeatNo" value="#{editATMB.ecSeatNo}" label="Number of Seat in Economy Class" required="true" validatorMessage="Economy Class: Please enter a valid number"  requiredMessage="Please enter Number of Seat in Economy Class of the aircraft type" size="50">
+                    <p:inputText id="ecSeatNo" value="#{editATMB.ecSeatNo}" label="Number of Seat in Economy Class" required="true" validatorMessage="Economy Class: Please enter a valid number (less than 400)"  requiredMessage="Please enter Number of Seat in Economy Class of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="400" />
                     </p:inputText>
                     
                     <p:outputLabel for="stewardess" value="Number of Stewardess (cabin crew):" />
-                    <p:inputText id="stewardess" value="#{editATMB.stewardess}" label="stewardess number" required="true" validatorMessage="stewardess: Please enter a valid number"  requiredMessage="Please enter number of stewardess of the aircraft type" size="50">
+                    <p:inputText id="stewardess" value="#{editATMB.stewardess}" label="stewardess number" required="true" validatorMessage="stewardess: Please enter a valid number (less than 20)"  requiredMessage="Please enter number of stewardess of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="20" />
                     </p:inputText>
                     
                     <p:outputLabel for="steward" value="Number of Steward (cabin crew):" />
-                    <p:inputText id="steward" value="#{editATMB.steward}" label="steward number" required="true" validatorMessage="steward: Please enter a valid number"  requiredMessage="Please enter number of steward of the aircraft type" size="50">
+                    <p:inputText id="steward" value="#{editATMB.steward}" label="steward number" required="true" validatorMessage="steward: Please enter a valid number (less than 20)"  requiredMessage="Please enter number of steward of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="20" />
                     </p:inputText>
                     
                     <p:outputLabel for="purser" value="Number of Purser (cockpit crew):" />
-                    <p:inputText id="purser" value="#{editATMB.purser}" label="purser number" required="true" validatorMessage="purser: Please enter a valid number"  requiredMessage="Please enter number of purser of the aircraft type" size="50">
+                    <p:inputText id="purser" value="#{editATMB.purser}" label="purser number" required="true" validatorMessage="purser: Please enter a valid number (less than 10)"  requiredMessage="Please enter number of purser of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="10" />
                     </p:inputText>
                     
                     <p:outputLabel for="captain" value="Number of Captain (cockpit crew):" />
-                    <p:inputText id="captain" value="#{editATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
+                    <p:inputText id="captain" value="#{editATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number (less than 3)"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="3" />
                     </p:inputText>
                     
                     <p:outputLabel for="pilot" value="Number of Pilot (cockpit crew):" />
-                    <p:inputText id="pilot" value="#{editATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
+                    <p:inputText id="pilot" value="#{editATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number (less than 3)"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
                         <f:validateLongRange minimum="0" maximum="3" />
                     </p:inputText>
 
 
                 </h:panelGrid>
                 <p:commandButton value="Update" update="@form" actionListener="#{editATMB.editAircraftType()}"  icon="ui-icon-check" />
-                <p:commandButton value="Cancel" update="@form" actionListener="#{editATMB.editAircraftTypeCancel()}"  icon="ui-icon-check" />
+                <p:commandButton value="Cancel" update="@form" immediate="true" actionListener="#{editATMB.editAircraftTypeCancel()}"  icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>

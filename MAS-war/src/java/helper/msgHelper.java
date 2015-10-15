@@ -5,11 +5,15 @@
  */
 package helper;
 
+import java.io.Serializable;
+import javax.faces.view.ViewScoped;
+
 /**
  *
  * @author LI HAO
  */
-public class msgHelper {
+@ViewScoped
+public class msgHelper implements Serializable{
     private int msgCount;
     
     public msgHelper()

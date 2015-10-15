@@ -54,6 +54,7 @@ public class Route implements Serializable {
         this.origin = origin;
         this.dest = dest;
         this.distance = distance;
+//        this.blockhour = distance/900.0;
         this.blockhour = blockhour;
     }
 

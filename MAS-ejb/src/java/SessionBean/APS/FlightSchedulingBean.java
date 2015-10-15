@@ -58,7 +58,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             String sDate, String fDate) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        checkScheduleTime(route, depTimeString, arrTimeString, dateAdjust);
+        checkScheduleTime(depTimeString, arrTimeString, dateAdjust);
         checkOperationDate(startDateString, endDateString);
 
         flightFreq = new FlightFrequency();
@@ -75,7 +75,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flightFreq;
     }
 
-    public void checkScheduleTime(Route route, String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
+    public void checkScheduleTime(String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
 //        LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 //        LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 //        LocalDate depDate = LocalDate.of(2000, 1, 10);
@@ -120,7 +120,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public void validateFlightNo(String flightNo) throws Exception {
         Query q1 = em.createQuery("select f from FlightFrequency f where f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Flight No. has already been used.");
+            throw new Exception("Flight Number: Flight number " + flightNo + " has already been used.");
         }
     }
 
@@ -138,9 +138,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue,
-            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
+            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         flightFreq = (FlightFrequency) q1.getSingleResult();
+        checkScheduleTime(depTime, arrTime, dateAdjust);
         flightFreq.setScheduleDepTime(depTime);
         flightFreq.setScheduleArrTime(arrTime);
         flightFreq.setDateAdjust(dateAdjust);
@@ -257,12 +258,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date ad = df.parse(actualDepTime);
         Date aa = df.parse(actualArrTime);
         System.out.println("flightSchedulingBean: 4 time types: " + ed + " " + ea + " " + ad + " " + aa);
-        Long estimatedDiff = (ea.getTime() - ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
-        Long actualDiff = (ad.getTime() - ad.getTime()) / (60 * 60 * 1000) % 24;
+        Long estimatedDiff = (ea.getTime() +(60 * 60 * 1000*24*estimatedDateAdjust)- ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
+        Long actualDiff = (aa.getTime() +(60 * 60 * 1000*24*actualDateAdjust)- ad.getTime()) / (60 * 60 * 1000) % 24;
         System.out.println("flightSchedulingBean: time hour difference: estimated diff: " + estimatedDiff + " and actual diff: " + actualDiff);
         if ((ed.before(ea) && estimatedDateAdjust != 1) || (ed.compareTo(ea) == 0 && estimatedDateAdjust != 0) || (ed.after(ea) && estimatedDateAdjust == 1)) {
-            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && estimatedDateAdjust == 1)) {
-                if (Math.abs(estimatedDiff - actualDiff) <= 24) {
+            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && actualDateAdjust == 1)) {
+                if (Math.abs(estimatedDiff - actualDiff) <= 2) {
                     List<FlightInstance> flightInstList = q.getResultList();
                     flightInst = flightInstList.get(0);
                     flightInst.setFlightStatus(flightStatus);
@@ -275,7 +276,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     em.merge(flightInst);
                     em.flush();
                 } else {
-                    throw new Exception("Estimated dates and actual dates cannot be different by more than 24h!");
+                    throw new Exception("The hour difference of estimated dates and actual dates cannot be different by more than 2h!");
                 }
             } else {
                 throw new Exception("Actual Dates are not valid! Please adjust.");
