@@ -440,7 +440,7 @@ public class manageAccount implements manageAccountLocal {
                 System.out.println("***Password does not changed***");
                 officeStaff.setOffPassword(password);
             } else {
-                hPwd = this.encrypt(username, password);
+                hPwd = this.encrypt(username, pswEdited);
                 System.out.println("inside editstaff"+hPwd);
                 System.out.println("inside editstaff"+password);
                 officeStaff.setOffPassword(hPwd);
@@ -462,7 +462,7 @@ public class manageAccount implements manageAccountLocal {
                 System.out.println("***Password does not changed***");
                 grdStaff.setGrdPassword(password);
             } else {
-                hPwd = this.encrypt(username, password);
+                hPwd = this.encrypt(username, pswEdited);
                 grdStaff.setGrdPassword(hPwd);
             }
             grdStaff.getUser().setComEmail(emailEdited);
@@ -482,7 +482,7 @@ public class manageAccount implements manageAccountLocal {
                 System.out.println("***Password does not changed***");
                 cbCrew.setCbPassword(password);
             } else {
-                hPwd = this.encrypt(username, password);
+                hPwd = this.encrypt(username, pswEdited);
                 cbCrew.setCbPassword(hPwd);
             }
             cbCrew.getUser().setComEmail(emailEdited);
