@@ -313,7 +313,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
         Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.flightFrequency=:flightFrequency").setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            System.out.println("This flight instance deos not exist.");
+            System.out.println("This flight instance does not exist.");
         }
         return q2.getResultList();
     }

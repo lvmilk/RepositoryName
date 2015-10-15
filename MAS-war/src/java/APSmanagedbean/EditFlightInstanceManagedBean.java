@@ -79,7 +79,7 @@ public class EditFlightInstanceManagedBean implements Serializable {
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
-    private boolean aircraftType;
+    private boolean aircraftCheck = true;
     private boolean startCheck;
     private boolean finishCheck;
 
@@ -145,16 +145,7 @@ public class EditFlightInstanceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightFreq.getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sDate", flightFreq.getsDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fDate", flightFreq.getfDate());
-        if (flightFreq.getsDate() == null) {
-            startCheck = false;
-        } else {
-            startCheck = true;
-        }
-        if (flightFreq.getfDate() == null) {
-            finishCheck = false;
-        } else {
-            finishCheck = true;
-        }
+
         System.out.println("view flight instance flight No: " + flightFreq.getFlightNo());
         flightNo = flightFreq.getFlightNo();
         flightInstList = fsb.getThisFlightInstance(flightNo);
@@ -163,11 +154,12 @@ public class EditFlightInstanceManagedBean implements Serializable {
     }
 
     public void viewThisFlightInstance(FlightInstance flightInst) throws Exception {
-        if (flightInst.getAircraft().getRegistrationNo().equals("9V-000")) {
-            aircraftType = false;
-        } else {
-            aircraftType = true;
-        }
+//        if (flightInst.getAircraft().getRegistrationNo().equals("9V-000")) {
+//            aircraftCheck = false;
+//        } else {
+//            aircraftCheck = true;
+//        }
+//        System.out.println("editFlightInstanceManagedBean: viewThisFlightInstance: aircraftCheck: "+aircraftCheck);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightInst.getFlightFrequency().getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightDateString", flightInst.getDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightStatus", flightInst.getFlightStatus());
@@ -368,12 +360,12 @@ public class EditFlightInstanceManagedBean implements Serializable {
         this.actualDateAdjust = actualDateAdjust;
     }
 
-    public boolean isAircraftType() {
-        return aircraftType;
+    public boolean isAircraftCheck() {
+        return aircraftCheck;
     }
 
-    public void setAircraftType(boolean aircraftType) {
-        this.aircraftType = aircraftType;
+    public void setAircraftCheck(boolean aircraftCheck) {
+        this.aircraftCheck = aircraftCheck;
     }
 
     public String getsDate() {
