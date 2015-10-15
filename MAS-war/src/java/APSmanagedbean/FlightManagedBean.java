@@ -5,7 +5,6 @@
  */
 package APSmanagedbean;
 
-import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -15,7 +14,6 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +23,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 
 /**
@@ -89,7 +88,7 @@ public class FlightManagedBean implements Serializable {
         flightFreqList = fsb.getAllFlightFrequency();
     }
 
-    public void addFlightFrequency() throws Exception {
+    public void addFlightFrequency(ActionEvent e) throws Exception {
         try {
             route = rpb.findRoute(routeID);
             oriAirportString = route.getOrigin().getIATA();
@@ -101,6 +100,8 @@ public class FlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Flight Number: Please enter a flight No. in format of MRxxx, x is a digit, e.g. MR123", ""));
             } else if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Operation Day of the Week: Please select as least one day of the week for flight.", ""));
+            } else if (route.getAcType()==null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Route " + route + " has not set serving aircraft type, please set the aircraft type before adding flight for the route.", ""));
             } else {
                 dateAdjust = Integer.parseInt(dateAdjustString);
                 startDateString = formatter.format(startDate);
@@ -121,7 +122,6 @@ public class FlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
 
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
-
             }
 
         } catch (Exception ex) {
@@ -131,9 +131,11 @@ public class FlightManagedBean implements Serializable {
 
     public void editFlightFrequency(FlightFrequency flightFreq) throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightFreq", flightFreq);
+        System.out.println("FlightManagedBean.editFlightFrequency(): flightFreq to be passed to EFFMB is: " + flightFreq);
         DateFormat formatter = new SimpleDateFormat("HH:mm");
         depTime = formatter.parse(flightFreq.getScheduleDepTime());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightDepTime", depTime);
+        System.out.println("FlightManagedBean.editFlightFrequency(): depTime to be passed to EFFMB is: " + depTime);
         arrTime = formatter.parse(flightFreq.getScheduleArrTime());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightArrTime", arrTime);
         DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");

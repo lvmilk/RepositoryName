@@ -13,7 +13,7 @@
             <p:panel id="panel" header="Flight Frequency Information" style="width: 100%">
 
                 <p:messages id="msgs" autoUpdate="true" />  
-                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:60%" cellpadding="15">
 
                     <p:outputLabel value="Route: " />
                     <p:outputLabel value="#{EFFMB.flightFreq.route}" />
@@ -38,7 +38,7 @@
 
                     <p:outputLabel value="Frequency of the week: " />
                     <p:panel>
-                        <h:panelGrid columns="2" style="margin-bottom:0px" width="65%" cellpadding="5">
+                        <h:panelGrid columns="2" style="margin-bottom:0px" width="50%" cellpadding="5" rendered="#{not EFFMB.hasInstance}">
 
                             <h:outputText value="Monday" />
                             <p:selectBooleanCheckbox value="#{EFFMB.onMon}" />
@@ -62,6 +62,40 @@
                             <p:selectBooleanCheckbox value="#{EFFMB.onSun}" />
 
                         </h:panelGrid>
+                        <!--<h:outputText value="#{EFFMB.freqString}" rendered="#{EFFMB.hasInstance}"/>-->
+                        <h:panelGrid columns="2" style="margin-bottom:0px" width="50%" cellpadding="5" rendered="#{EFFMB.hasInstance}">
+
+                            <h:outputText value="Monday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onMon}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onMon}"/>
+
+                            <h:outputText value="Tuesday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onTue}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onTue}"/>
+
+                            <h:outputText value="Wednesday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onWed}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onWed}"/>
+
+                            <h:outputText value="Thursday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onThu}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onThu}"/>
+
+
+                            <h:outputText value="Friday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onFri}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onFri}"/>
+
+                            <h:outputText value="Saturday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onSat}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onSat}"/>
+
+                            <h:outputText value="Sunday" />
+                            <h:outputText value="Yes" rendered="#{EFFMB.onSun}" styleClass="ui-icon ui-icon-check"/>
+                            <h:outputText value="-" rendered="#{not EFFMB.onSun}"/>
+
+                        </h:panelGrid>
+
                     </p:panel>
 
                     <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): " />
@@ -74,7 +108,7 @@
                 </h:panelGrid>
 
                 <p:commandButton value="Update" update="@form" actionListener="#{EFFMB.editFlightFrequencyDetail}"  icon="ui-icon-check" />
-                <p:commandButton value="Cancel" update="@form" actionListener="#{EFFMB.editFlightFrequencyCancel}"  icon="ui-icon-close" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{EFFMB.editFlightFrequencyCancel}"  icon="ui-icon-cancel" />
             </p:panel>
         </h:form>
 
