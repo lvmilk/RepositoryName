@@ -71,7 +71,9 @@ public class EditAircraftTypeManagedBean implements Serializable {
 
     public void editAircraftType() throws Exception {
         try {
-            fpb.editAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
+            String typeUpper = type.toUpperCase();
+            String manufacturerUpper = manufacturer.toUpperCase();
+            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));

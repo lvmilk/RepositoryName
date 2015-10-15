@@ -20,19 +20,17 @@
 
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
-
-                <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
-                  
-
-                  Flight Instance is successfully added!
-
-
-
+                <f:view beforePhase="#{FIMB.beforePhaseListener}">
+                    <div style="width:100%; p {font-size: 500vmax !important;} margin-right:0%;margin-top:10%; margin-bottom:auto;margin-left:0%; border:0px ;">
+                        <p:messages autoUpdate="true" />
+                    </div>
+                </f:view>
+                <div style="width:50%; p {font-size: 500vmax !important;} margin-right:35%;margin-top:0%; margin-bottom:auto;margin-left:35%; border:0px ;">
+                    Flight Instance is successfully added !
+                    <div style="width:50%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:10%; border:0px ;">
+                        <p:commandButton value="Back"  action="#{FIMB. addFlightInstBack()}" />
+                    </div>
                 </div>
-
-
-
-
             </ui:define>
         </ui:decorate>
     </h:body>

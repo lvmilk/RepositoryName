@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -257,12 +258,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date ad = df.parse(actualDepTime);
         Date aa = df.parse(actualArrTime);
         System.out.println("flightSchedulingBean: 4 time types: " + ed + " " + ea + " " + ad + " " + aa);
-        Long estimatedDiff = (ea.getTime() - ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
-        Long actualDiff = (ad.getTime() - ad.getTime()) / (60 * 60 * 1000) % 24;
+        Long estimatedDiff = (ea.getTime() +(60 * 60 * 1000*24*estimatedDateAdjust)- ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
+        Long actualDiff = (aa.getTime() +(60 * 60 * 1000*24*actualDateAdjust)- ad.getTime()) / (60 * 60 * 1000) % 24;
         System.out.println("flightSchedulingBean: time hour difference: estimated diff: " + estimatedDiff + " and actual diff: " + actualDiff);
         if ((ed.before(ea) && estimatedDateAdjust != 1) || (ed.compareTo(ea) == 0 && estimatedDateAdjust != 0) || (ed.after(ea) && estimatedDateAdjust == 1)) {
-            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && estimatedDateAdjust == 1)) {
-                if (Math.abs(estimatedDiff - actualDiff) <= 24) {
+            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && actualDateAdjust == 1)) {
+                if (Math.abs(estimatedDiff - actualDiff) <= 2) {
                     List<FlightInstance> flightInstList = q.getResultList();
                     flightInst = flightInstList.get(0);
                     flightInst.setFlightStatus(flightStatus);
@@ -275,7 +276,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     em.merge(flightInst);
                     em.flush();
                 } else {
-                    throw new Exception("Estimated dates and actual dates cannot be different by more than 24h!");
+                    throw new Exception("The hour difference of estimated dates and actual dates cannot be different by more than 2h!");
                 }
             } else {
                 throw new Exception("Actual Dates are not valid! Please adjust.");
@@ -313,7 +314,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq = (FlightFrequency) q1.getResultList().get(0);
         Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.flightFrequency=:flightFrequency").setParameter("flightFrequency", flightFreq);
         if (q2.getResultList().isEmpty()) {
-            System.out.println("This flight instance deos not exist.");
+            System.out.println("This flight instance does not exist.");
         }
         return q2.getResultList();
     }
@@ -373,15 +374,27 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     // get all unplanned fight instances for all aircraft 
+//    @Override
+//    public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate) {
+//        List<Aircraft> acList = new ArrayList<Aircraft>();
+//        acList = getAllAircraft();
+//        List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
+//        for (Aircraft ac : acList) {
+//            List<FlightInstance> flightInstList = getUnplannedFlightInstance(ac);
+//            for (FlightInstance temp : flightInstList) {
+//                if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
+//                    newFlightInstList.add(temp);
+//                }
+//            }
+//        }
+//        return newFlightInstList;
+//    }
     @Override
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate) {
-        List<Aircraft> acList = new ArrayList<Aircraft>();
-        acList = getAllAircraft();
         List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
-        for (Aircraft ac : acList) {
-            List<FlightInstance> flightInstList = getUnplannedFlightInstance(ac);
-            for (FlightInstance temp : flightInstList) {
-                if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
+        for (FlightInstance temp : this.getAllFlightInstance()) {
+            if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
+                if (temp.getAircraft().getRegistrationNo().equals("9V-000")) {
                     newFlightInstList.add(temp);
                 }
             }
@@ -436,14 +449,17 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             System.out.println("EDIT firstInstDate to " + firstInstDate);
         }
 
-        for (Aircraft acTemp : getAllAircraft(startDate, endDate)) {
+        for (Aircraft acTemp : getAllAircraft()) {
             System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
             Date currentTime = startDate;    //the current available time of the aircraft
             Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
             System.out.println("FSB: currentAirport: " + currentAirport.getIATA());
             List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
+            
             Collections.sort(unplannedFi);
-            System.out.println("FSB:Sorted unplannedFi : " + unplannedFi.toString());
+
+            System.out.println(
+                    "FSB:Sorted unplannedFi : " + unplannedFi.toString());
             for (FlightInstance fiTemp : unplannedFi) {
                 System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
                 System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
@@ -484,67 +500,188 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
         //------------------need check time conflict------------------
+        boolean flag = canAssign(ac, fi);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         System.out.println("FSB: addAcToFi ");
-        System.out.println("FSB: addAcToFi " + canAssign(ac, fi));
-        if (canAssign(ac, fi)) {
+        System.out.println("FSB: addAcToFi " + flag);
+        if (flag) {
             flightTemp.add(fi);
             ac.setFlightInstance(flightTemp);
             fi.setAircraft(ac);
             em.merge(fi);
             em.merge(ac);
+            System.out.print("FSB: addToFi finished!");
             em.flush();
         }
-        return canAssign(ac, fi);
+        return flag;
     }
 
     public boolean canAssign(Aircraft ac, FlightInstance fi) {
+        boolean canAssign = false;
         System.out.println("canAssign: fi.dep " + fi.getStandardDepTime() + " fi.arrial " + fi.getStandardArrTime());
         System.out.println("canAssign: fi.origin " + fi.getFlightFrequency().getRoute().getOrigin().getIATA() + " fi.arrial " + fi.getFlightFrequency().getRoute().getDest().getIATA());
         System.out.println("canAssign: CHECK 1");
         List<FlightInstance> flightTemp = ac.getFlightInstance();
-        System.out.println("canAssign: CHECK 2");
-        boolean canAssign = false;
-        System.out.println("canAssign: CHECK 3");
-        Collections.sort(flightTemp);
-        System.out.println("canAssign: CHECK 4");
-        Date depCheck = new Date();
-        Date arrCheck = new Date();
-        System.out.println("canAssign: CHECK 5");
-        for (int i = 0; i < flightTemp.size() - 1; i++) {
-            depCheck = flightTemp.get(i).getStandardArrTimeDateType();
-            arrCheck = flightTemp.get(i + 1).getStandardDepTimeDateType();
-            System.out.println("canAssign: depDate" + depCheck);
-            System.out.println("canAssign: arrCheck" + arrCheck);
-            cal = Calendar.getInstance();
-            // last arrival shoulbe be ahead of the fi's departure at least 2 hours
-            cal.setTime(depCheck);
-            cal.add(Calendar.HOUR, 2);
-            depCheck = cal.getTime();
-            System.out.println("Literal 1 check: " + (depCheck.before(fi.getStandardDepTimeDateType())));
-            System.out.println("Literal 2 check: " + flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin()));
-            System.out.println("Literal 2 check flightTemp : " + flightTemp.get(i).getFlightFrequency().getRoute().getDest().getIATA());
-            System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
-            //if (fi.getStandardArrTimeDateType().before(flightTemp.get(0).))
+        System.out.println("canAssign: CHECK 2 " + flightTemp.size());
 
-            if ((depCheck.before(fi.getStandardDepTimeDateType())) && flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
-                System.out.println("canAssign: CHECK 6");
-                // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
-                if (i + 1 < flightTemp.size()) {
-                    cal.setTime(arrCheck);
-                    cal.add(Calendar.HOUR, -2);
-                    arrCheck = cal.getTime();
-                    if ((fi.getStandardArrTimeDateType().before(arrCheck)) && flightTemp.get(i + 1).getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getDest())) {
+        if (flightTemp.size() == 0) {
+            if (ac.getAircraftType().equals(fi.getFlightFrequency().getRoute().getAcType()) && ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
+                canAssign = true;
+            }
+        } else {
+            System.out.println("canAssign: CHECK 3");
+        
+            List<Date> listDates = new ArrayList<Date>();
+            for(FlightInstance fitest: flightTemp){
+               listDates.add(fitest.getStandardDepTimeDateType());
+                
+            }
+            System.out.println("Before sorting: " + listDates);
+            Collections.sort(listDates);
+            System.out.println("After sorting: " + listDates);
+            
+            
+            System.out.println("flightTemp before Sort:" + flightTemp.toString());
+            List<FlightInstance> newList=new ArrayList();
+            for(int k=0;k<listDates.size();k++){
+                for(int j=0;j<flightTemp.size();j++){
+                    if (flightTemp.get(j).getStandardDepTimeDateType().equals(listDates.get(k)))
+                        newList.add(flightTemp.get(j));
+                } 
+            }
+            System.out.println("flightTemp after Sort:" + newList.toString());
+            System.out.println("canAssign: CHECK 4");
+            Date depCheck = new Date();
+            Date arrCheck = new Date();
+            System.out.println("canAssign: CHECK 5");
+            for (int i = 0; i < newList.size() - 1; i++) {
+                depCheck = newList.get(i).getStandardArrTimeDateType();
+                arrCheck = newList.get(i + 1).getStandardDepTimeDateType();
+                System.out.println("canAssign: depDate" + depCheck);
+                System.out.println("canAssign: arrCheck" + arrCheck);
+                cal = Calendar.getInstance();
+                // last arrival shoulbe be ahead of the fi's departure at least 2 hours
+                cal.setTime(depCheck);
+                cal.add(Calendar.HOUR, 2);
+                depCheck = cal.getTime();
+                System.out.println("Literal 1 check: " + (depCheck.before(fi.getStandardArrTimeDateType())));
+                System.out.println("Literal 2 check: " + newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin()));
+                System.out.println("Literal 2 check flightTemp : " + newList.get(i).getFlightFrequency().getRoute().getDest().getIATA());
+                System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
+                //if (fi.getStandardArrTimeDateType().before(flightTemp.get(0).))
+
+                if ((depCheck.before(fi.getStandardDepTimeDateType())) && newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
+                    System.out.println("canAssign: CHECK 6");
+                    // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
+                    if (i + 1 < newList.size()) {
+                        cal.setTime(arrCheck);
+                        cal.add(Calendar.HOUR, -2);
+                        arrCheck = cal.getTime();
+                        if ((fi.getStandardArrTimeDateType().before(arrCheck)) && newList.get(i + 1).getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getDest())) {
+                            canAssign = true;
+                        }
+                    } else {  //it is the last in flighttemp, can anyway assign
+                        System.out.println("canAssign: CHECK 7");
                         canAssign = true;
                     }
-                } else {  //it is the last in flighttemp, can anyway assign
-                    System.out.println("canAssign: CHECK 6");
-                    canAssign = true;
                 }
             }
         }
         return canAssign;
     }
+    
+    
+    
+    
+    
+    
+    
+//    public boolean canAssign(Aircraft ac, FlightInstance fi) {
+//        boolean canAssign = false;
+//        System.out.println("canAssign: fi.dep " + fi.getStandardDepTime() + " fi.arrial " + fi.getStandardArrTime());
+//        System.out.println("canAssign: fi.origin " + fi.getFlightFrequency().getRoute().getOrigin().getIATA() + " fi.arrial " + fi.getFlightFrequency().getRoute().getDest().getIATA());
+//        System.out.println("canAssign: CHECK 1");
+//        List<FlightInstance> flightTemp = ac.getFlightInstance();
+//        System.out.println("canAssign: CHECK 2 " + flightTemp.size());
+//
+//        if (flightTemp.size() == 0) {
+//            if (ac.getAircraftType().equals(fi.getFlightFrequency().getRoute().getAcType()) && ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
+//                canAssign = true;
+//            }
+//        } else {
+//            System.out.println("canAssign: CHECK 3");
+//        
+//            List<Date> listDates = new ArrayList<Date>();
+//            for(FlightInstance fitest: flightTemp){
+//               listDates.add(fitest.getStandardDepTimeDateType());
+//                
+//            }
+////            System.out.println("Before sorting: " + listDates);
+////            Collections.sort(listDates);
+////            System.out.println("After sorting: " + listDates);
+////            
+////            List<FlightInstance> newList=new ArrayList();
+////            for(int k=0;k<listDates.size();k++){
+////                for(int j=0;j<flightTemp.size();j++){
+////                    if (flightTemp.get(j).getStandardDepTimeDateType().equals(listDates.get(k)))
+////                        newList.add(flightTemp.get(j));
+////                } 
+////            }
+//            
+//            System.out.println("flightTemp before Sort:" + flightTemp.toString()+ " "+flightTemp.getClass().toString());
+////                Collections.sort(flightTemp);
+//            IndirectList iList=(IndirectList) flightTemp;
+//            
+//            Collections.sort((List<FlightInstance>)flightTemp, new Comparator<FlightInstance>() {
+//                public int compare(FlightInstance f1, FlightInstance f2) {
+//                    System.out.println("&&&&&&Sort&&&&&&&&&&&&");
+//
+//                    int result = f1.getStandardDepTimeDateType().compareTo(f2.getStandardDepTimeDateType());
+//                    System.out.println("&&&&&&&RESTULT&&&&&&&&& " + result);
+//                    return result;
+//                }
+//            });
+//
+//            System.out.println("flightTemp after Sort:" + flightTemp.toString());
+//            System.out.println("canAssign: CHECK 4");
+//            Date depCheck = new Date();
+//            Date arrCheck = new Date();
+//            System.out.println("canAssign: CHECK 5");
+//            for (int i = 0; i < flightTemp.size() - 1; i++) {
+//                depCheck = flightTemp.get(i).getStandardArrTimeDateType();
+//                arrCheck = flightTemp.get(i + 1).getStandardDepTimeDateType();
+//                System.out.println("canAssign: depDate" + depCheck);
+//                System.out.println("canAssign: arrCheck" + arrCheck);
+//                cal = Calendar.getInstance();
+//                // last arrival shoulbe be ahead of the fi's departure at least 2 hours
+//                cal.setTime(depCheck);
+//                cal.add(Calendar.HOUR, 2);
+//                depCheck = cal.getTime();
+//                System.out.println("Literal 1 check: " + (depCheck.before(fi.getStandardArrTimeDateType())));
+//                System.out.println("Literal 2 check: " + flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin()));
+//                System.out.println("Literal 2 check flightTemp : " + flightTemp.get(i).getFlightFrequency().getRoute().getDest().getIATA());
+//                System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
+//                //if (fi.getStandardArrTimeDateType().before(flightTemp.get(0).))
+//
+//                if ((depCheck.before(fi.getStandardDepTimeDateType())) && flightTemp.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
+//                    System.out.println("canAssign: CHECK 6");
+//                    // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
+//                    if (i + 1 < flightTemp.size()) {
+//                        cal.setTime(arrCheck);
+//                        cal.add(Calendar.HOUR, -2);
+//                        arrCheck = cal.getTime();
+//                        if ((fi.getStandardArrTimeDateType().before(arrCheck)) && flightTemp.get(i + 1).getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getDest())) {
+//                            canAssign = true;
+//                        }
+//                    } else {  //it is the last in flighttemp, can anyway assign
+//                        System.out.println("canAssign: CHECK 7");
+//                        canAssign = true;
+//                    }
+//                }
+//            }
+//        }
+//        return canAssign;
+//    }
 
     @Override
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
@@ -588,8 +725,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (flag) {
             try {
                 setFirstInstDate();
+
             } catch (ParseException ex) {
-                Logger.getLogger(FlightSchedulingBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FlightSchedulingBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
             flag = false;
         }

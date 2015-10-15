@@ -70,6 +70,7 @@ public class PricingManagedBean implements Serializable {
     //private Double pEconFactor; 
     private Map<String, Double> loadfactorMap = new HashMap<String, Double>();
 
+            
     private Integer ecSeatNo;
     private Integer bcSeatNo;
     private Integer suiteNo;
@@ -103,6 +104,8 @@ public class PricingManagedBean implements Serializable {
     public Double getProfitMargin() {
         return profitMargin;
     }
+
+ 
 
     //test init()
 //     @PostConstruct

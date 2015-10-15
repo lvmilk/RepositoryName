@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -115,6 +116,15 @@ public class FlightInstanceManagedBean implements Serializable {
         actualDateAdjust = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDateAdjust");
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getFlash().get("flightFrequency") != null) {
+            flightFreq = (FlightFrequency) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("flightFrequency");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This flight " + flightFreq.getFlightNo() + " fails to generate instances, because it has been already assigned with flight instances within the period from " + flightFreq.getsDate() + " to " + flightFreq.getfDate() + "!", ""));
+        }
+    }
+
+    public void beforePhaseListener(PhaseEvent event) {
+
     }
 
     public void addFlightInstance() throws IOException, ParseException {
@@ -187,7 +197,7 @@ public class FlightInstanceManagedBean implements Serializable {
             Date freqEndDate = df1.parse(flightFreq.getEndDate());
             System.out.println("flightInstanceManagedBean:generateFlightInstance: This flight frequency is scheduled from " + freqStartDate + " to " + freqEndDate);
             System.out.println("flightInstanceManagedBean:generateFlightInstance: This flight Instance is scheduled from " + startDate + " to " + finishDate);
-        //check data in flight frequency
+            //check data in flight frequency
             //  Date sDate = df1.parse(flightFreq.getsDate()); 
             // Date fDate = df1.parse(flightFreq.getfDate());
 
@@ -214,6 +224,19 @@ public class FlightInstanceManagedBean implements Serializable {
                                 cal.add(Calendar.DATE, 1);
                                 startDate = cal.getTime();
                             }
+
+                            if (i > 0 && selectedList.get(i - 1).getsDate() != null && selectedList.get(i - 1).getfDate() != null) {
+                                if (startDate.after(df1.parse(selectedList.get(i - 1).getsDate())) && startDate.before(df1.parse(selectedList.get(i - 1).getsDate()))
+                                        || startDate.after(df1.parse(selectedList.get(i - 1).getfDate())) && finishDate.before(df1.parse(selectedList.get(i - 1).getfDate()))) {
+                                    System.out.println("Checking null situation...//////////////////The last fligt intance is not suitable for the period!");
+                                    System.out.println("flightInstanceManagedBean:generateFlightInstance: flight " + selectedList.get(i - 1).getFlightNo() + " fails to generate instances.....");
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This flight " + selectedList.get(i - 1).getFlightNo()
+                                            + " fails to generate instances, because it has been already assigned with flight instances within the period from "
+                                            + selectedList.get(i - 1).getsDate() + " to " + selectedList.get(i - 1).getfDate() + "!", ""));
+                                    FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightFrequency", flightFreq);
+                                }
+                            }
+
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightInstanceConfirm.xhtml");
                         } else if (startDate.after(df1.parse(flightFreq.getfDate())) || finishDate.before(df1.parse(flightFreq.getsDate()))) {
                             System.out.println("flightInstanceManagedBean:generateFlightInstance:setting up new checking date...");
@@ -241,11 +264,15 @@ public class FlightInstanceManagedBean implements Serializable {
                                 cal.add(Calendar.DATE, 1);
                                 startDate = cal.getTime();
                             }
+                            System.out.println("Checking 1...//////////////////There is at least one fligt intance is suitable for the period!");
+                            System.out.println("flightInstanceManagedBean:generateFlightInstance: flight " + flightNo + " success to generate instances.....");
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightInstanceConfirm.xhtml");
                         } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This period from " + flightFreq.getsDate() + " to " + flightFreq.getfDate() + " has been already assigned with flight instances to this flight " + flightNo + "!", ""));
+                            System.out.println("Checking 2...//////////////////There is at least one fligt intance is not suitable for the period!");
+                            System.out.println("flightInstanceManagedBean:generateFlightInstance: flight " + flightNo + " fails to generate instances.....");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This flight " + flightFreq.getFlightNo() + " fails to generate instances, because it has been already assigned with flight instances within the period from " + flightFreq.getsDate() + " to " + flightFreq.getfDate() + "!", ""));
+                            FacesContext.getCurrentInstance().getExternalContext().getFlash().put("flightFrequency", flightFreq);
                         }
-
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "The Flight Frequency period is from " + flightFreq.getStartDate() + " to " + flightFreq.getEndDate() + ". Please select Flight Instance within the period!", ""));
                     }
@@ -492,7 +519,7 @@ public class FlightInstanceManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
- public Date getStartPlanDate() throws ParseException {
+    public Date getStartPlanDate() throws ParseException {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         startPlanDate = df1.parse(getFirstInstDate());
         return startPlanDate;

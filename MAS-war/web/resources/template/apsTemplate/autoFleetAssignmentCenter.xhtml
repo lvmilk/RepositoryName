@@ -22,7 +22,6 @@
 
                     <h:outputText id="startPlanDate" value="#{FIMB.firstInstDate}" />
 
-
                     <p:outputLabel for="endPlanDate" value="Flight End Assignment Date (yyyy-MM-dd): " />
                     <p:calendar id="endPlanDate" value="#{FIMB.endPlanDate}" pattern="yyyy-MM-dd" mask="true" label="endDate" mindate="#{FIMB.minDate}" required="true" requiredMessage="Please enter flight end assignment date" size="30"> 
                         <f:attribute name="startPlanDate" value="#{FIMB.firstInstDate}" />

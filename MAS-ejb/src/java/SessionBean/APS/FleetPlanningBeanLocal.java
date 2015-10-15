@@ -7,6 +7,7 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
+import Entity.APS.FlightInstance;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +61,8 @@ public interface FleetPlanningBeanLocal {
     public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
 
     public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
+
+    public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
 
     
 }
