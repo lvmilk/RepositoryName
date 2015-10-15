@@ -17,9 +17,9 @@
             <ui:define name="left">
                 <ui:include src="./../resources/template/aisTemplate/LeftMenu.xhtml"></ui:include>
             </ui:define>
-<!--            <ui:define name="right">
-                <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
-            </ui:define>-->
+            <!--            <ui:define name="right">
+                            <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
+                        </ui:define>-->
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
@@ -29,16 +29,16 @@
 
                         <p:panel id="panel" header="View All Booking Classes"  style="width:100%">
                             <p:dataTable var="BookClass" value="#{bookingClassBean.classList}" paginator="true" rows="10" emptyMessage="No Booking Classes">
-                                
-                                
+
+
                                 <p:column headerText="Annotation" sortBy="#{BookClass.annotation}">
                                     <h:outputText value="#{BookClass.annotation}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Cabin Class" sortBy="#{BookClass.cabinName}">
                                     <h:outputText value="#{BookClass.cabinName}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Price as percentage of full fare">
                                     <h:outputText value="#{BookClass.price_percentage}" />
                                 </p:column>
@@ -57,7 +57,7 @@
                                 <p:column headerText="Mile Earning Rate">
                                     <h:outputText value="#{BookClass.earn_mile_percentage}" />
                                 </p:column>
-                                
+
                                 <p:column headerText="Min Days Stay">
                                     <h:outputText value="#{BookClass.min_stay}" />
                                 </p:column>
@@ -71,21 +71,21 @@
                                     <h:outputText value="#{BookClass.ticket_advance}" />
                                 </p:column>
                                 <p:column headerText="Allow Standby Checkin">
-                                    <h:outputText value="#{BookClass.can_standby}" />
+                                      <h:outputText value="Yes" rendered="#{BookClass.can_standby}" styleClass="ui-icon ui-icon-check"/>
                                 </p:column>
                                 <p:column headerText="Available In DDS">
-                                    <h:outputText value="#{BookClass.dds_available}" />
+                                    <h:outputText value="Yes" rendered="#{BookClass.dds_available}" styleClass="ui-icon ui-icon-check"/>
                                 </p:column>
                                 <p:column headerText="Available In GDS">
-                                    <h:outputText value="#{BookClass.gds_available}" />
+                                    <h:outputText value="Yes" rendered="#{BookClass.gds_available}" styleClass="ui-icon ui-icon-check"/>
                                 </p:column>
-                                
-                                
+
+
 
                             </p:dataTable>
                         </p:panel>
 
-                        <p:draggable for="panel" /><p:resizable for="panel" />
+
                     </h:form>
 
 

@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -32,8 +33,8 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private Route route;
-    private String mPriceString;
-    private String pVolumnString;
+    private String marketPriceString;
+    private String passVolumnString;
     private Double mPrice;
     private Integer pVolumn;
     private boolean acToAssign = false;
@@ -54,10 +55,12 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("routeCheck");
-        pVolumnString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pVolumnString");
-        setpVolumnString(pVolumnString);
-        mPriceString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mPriceString");
-        setmPriceString(mPriceString);
+        passVolumnString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pVolumnString");
+        System.out.println("CRPMB.init(): pVolumnString " + passVolumnString);
+        setPassVolumnString(passVolumnString);
+        marketPriceString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mPriceString");
+        System.out.println("CRPMB.init(): mPriceString " + marketPriceString);
+        setMarketPriceString(marketPriceString);
         acList = rpb.feasibleAc(route);
         checkRouteCost();
 
@@ -98,7 +101,7 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteDetail.xhtml");
     }
 
-    public void checkProfitabilityBack() throws IOException {
+    public void checkProfitabilityBack(ActionEvent event) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitability.xhtml");
     }
 
@@ -110,25 +113,25 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
         this.route = route;
     }
 
-    public String getmPriceString() {
-        return mPriceString;
+    public String getMarketPriceString() {
+        return marketPriceString;
     }
 
-    public void setmPriceString(String mPriceString) {
-        this.mPriceString = mPriceString;
+    public void setMarketPriceString(String marketPriceString) {
+        this.marketPriceString = marketPriceString;
     }
 
-    public String getpVolumnString() {
-        return pVolumnString;
+    public String getPassVolumnString() {
+        return passVolumnString;
     }
 
-    public void setpVolumnString(String pVolumnString) {
-        this.pVolumnString = pVolumnString;
+    public void setPassVolumnString(String passVolumnString) {
+        this.passVolumnString = passVolumnString;
     }
 
     public Double getmPrice() {
-        //return Double.valueOf(mPriceString);
-   return Double.parseDouble(mPriceString);
+        //return Double.valueOf(marketPriceString);
+        return Double.parseDouble(marketPriceString);
     }
 
     public void setmPrice(Double mPrice) {
@@ -136,8 +139,9 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     }
 
     public Integer getpVolumn() {
-//        return Integer.valueOf(pVolumnString);
-        return Integer.parseInt(pVolumnString);
+//        return Integer.valueOf(passVolumnString);
+        System.err.println("pVolumnString: " + passVolumnString);
+        return Integer.parseInt(passVolumnString);
     }
 
     public void setpVolumn(Integer pVolumn) {

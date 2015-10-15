@@ -43,13 +43,13 @@
                     </p:inputText>
 
                     <p:outputLabel for="timeZone" value="Time Zone: " />
-                    <p:selectOneMenu id="timeZone" value="#{editAirportManagedBean.timeZone}" required="true" requiredMessage="Please select timezone"style="width:200px">
+                    <p:selectOneMenu id="timeZone" value="#{editAirportManagedBean.timeZone}" required="true" requiredMessage="Please select timezone" style="width:200px" >
                         <f:selectItem itemLabel="-Select TimeZone-" itemValue="" />
                         <f:selectItems value="#{AirportManagedBean.utcList}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="operationalStatus" value="Operational Status: " />
-                    <p:selectOneRadio id="operationalStatus" value="#{AirportManagedBean.opStatus}" required="true" requiredMessage="Please select airport operational status">
+                    <p:selectOneRadio id="operationalStatus" value="#{editAirportManagedBean.opStatus}" required="true" requiredMessage="Please select airport operational status">
                         <f:selectItem itemLabel="Normal" itemValue="Normal" />
                         <f:selectItem itemLabel="Closed" itemValue="Closed" />
                         <f:selectItem itemLabel="Restricted" itemValue="Restricted" />
@@ -58,7 +58,7 @@
                     </p:inputText>-->
 
                     <p:outputLabel for="strategicLevel" value="Strategic Level: " />
-                    <p:selectOneRadio id="strategicLevel" value="#{AirportManagedBean.strategicLevel}" required="true" requiredMessage="Please select airport strategic level">
+                    <p:selectOneRadio id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" required="true" requiredMessage="Please select airport strategic level">
                         <f:selectItem itemLabel="Hub" itemValue="Hub" />
                         <f:selectItem itemLabel="Normal" itemValue="Normal" />
                     </p:selectOneRadio>
@@ -66,7 +66,7 @@
                     </p:inputText>-->
 
                     <p:outputLabel for="airspace" value="Airspace: " />
-                    <p:selectOneRadio id="airspace" value="#{AirportManagedBean.airspace}" required="true" requiredMessage="Please select airport airspace level">
+                    <p:selectOneRadio id="airspace" value="#{editAirportManagedBean.airspace}" required="true" requiredMessage="Please select airport airspace level">
                         <f:selectItem itemLabel="4E" itemValue="4E" />
                         <f:selectItem itemLabel="4F" itemValue="4F" />
                     </p:selectOneRadio>

@@ -17,13 +17,17 @@
 
             <p:panel id="panel" header="Delete Route"  style="width:100%">
                 <p:messages id="msgs" />
-                <p:dataTable var="route" rowKey ="#{route.id}" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
+                <p:dataTable var="route" rowKey ="#{route.id}" widgetVar="routeTable" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
                         <h:outputLink id="fade" value="#">
                             <h:outputText value="Route List (Note: Only routes can be deleted are shown.)" />
                         </h:outputLink>
-                        <p:tooltip id="toolTipTrack" for="fade" value="If a route has a flight, it cannot be deleted." trackMouse="true" />
+                        <p:tooltip id="toolTipTrack" for="fade" value="Note:  If there are flights generated for the route, it cannot be deleted." trackMouse="true" />
+                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
                     </f:facet>
 
                     <p:columnGroup type="header">
@@ -34,13 +38,13 @@
                         </p:row>
                         <p:row>   
                             <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
-                            <p:column headerText="Specification" />
-                            <p:column headerText="City" />
-                            <p:column headerText="Country" />
+                            <p:column headerText="Specification" filterBy="#{route.origin.spec}" filterMatchMode="contains"/>
+                            <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains"/>
+                            <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains"/>
                             <p:column headerText="IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}" filterMatchMode="contains"/>
-                            <p:column headerText="Specification" />
-                            <p:column headerText="City" />
-                            <p:column headerText="Country" />
+                            <p:column headerText="Specification" filterBy="#{route.dest.spec}" filterMatchMode="contains"/>
+                            <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains"/>
+                            <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains"/>
                         </p:row>
                     </p:columnGroup>
 

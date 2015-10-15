@@ -57,7 +57,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             String sDate, String fDate) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        checkScheduleTime(route, depTimeString, arrTimeString, dateAdjust);
+        checkScheduleTime(depTimeString, arrTimeString, dateAdjust);
         checkOperationDate(startDateString, endDateString);
 
         flightFreq = new FlightFrequency();
@@ -74,7 +74,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flightFreq;
     }
 
-    public void checkScheduleTime(Route route, String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
+    public void checkScheduleTime(String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
 //        LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 //        LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
 //        LocalDate depDate = LocalDate.of(2000, 1, 10);
@@ -119,7 +119,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     public void validateFlightNo(String flightNo) throws Exception {
         Query q1 = em.createQuery("select f from FlightFrequency f where f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         if (!q1.getResultList().isEmpty()) {
-            throw new Exception("Flight No. has already been used.");
+            throw new Exception("Flight Number: Flight number " + flightNo + " has already been used.");
         }
     }
 
@@ -137,9 +137,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue,
-            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) {
+            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         flightFreq = (FlightFrequency) q1.getSingleResult();
+        checkScheduleTime(depTime, arrTime, dateAdjust);
         flightFreq.setScheduleDepTime(depTime);
         flightFreq.setScheduleArrTime(arrTime);
         flightFreq.setDateAdjust(dateAdjust);
@@ -400,10 +401,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return aircraftList;
     }
 
- public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
+    public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
         List<Aircraft> aircraftList = q1.getResultList();
-        List<Aircraft> newList =new ArrayList<Aircraft>();
+        List<Aircraft> newList = new ArrayList<Aircraft>();
         if (aircraftList.isEmpty()) {
             System.out.println("aircraftList: No aircraft.");
         } else {

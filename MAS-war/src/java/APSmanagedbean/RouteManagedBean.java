@@ -1,8 +1,10 @@
 package APSmanagedbean;
 
+import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.Route;
+import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
@@ -36,12 +38,15 @@ public class RouteManagedBean implements Serializable {
     @EJB
     private FlightSchedulingBeanLocal fsb;
 
+    @EJB
+    private FleetPlanningBeanLocal fpb;
+
     private UIComponent uIComponent;
 
     private Double distance;
     private Double blockhour;
-    private String originIATA;
-    private String destIATA;
+    private String originIATA = "";
+    private String destIATA = "";
     private boolean addReturnRoute;
     private Route route;
     private List<Route> routeList = new ArrayList<>();
@@ -53,10 +58,14 @@ public class RouteManagedBean implements Serializable {
     private List<Airport> airportList = new ArrayList<>();
     private Map<String, String> airportInfo = new HashMap<String, String>();
 
-    private String mPriceString;
-    private String pVolumnString;
-   private Integer mPrice;
-   private Integer pVolumn;
+//    private List<AircraftType> acTypeList;
+//    private List<String> acTypeInfo = new ArrayList();
+//    private AircraftType acType;
+//    private String acTypeString;
+    private String marketPriceString;
+    private String passVolumnString;
+    private Integer mPrice;
+    private Integer pVolumn;
 
     private List<Airport> hubList;
 
@@ -72,6 +81,7 @@ public class RouteManagedBean implements Serializable {
     public void addRoute() throws Exception {
         try {
             Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+            Double distanceUpper = drDistance * 1.5;
             Double minHour = rpb.minBlockHour(distance);
             Double maxHour = rpb.maxBlockHour(distance);
             DecimalFormat formatter = new DecimalFormat("#0.00");
@@ -81,12 +91,14 @@ public class RouteManagedBean implements Serializable {
             } else if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : At least one of origin airport and  destination airport must be hub.", ""));
             } else if (distance < drDistance) {
-                System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " + drDistance + "km");
+                //System.out.println("Route distance of " + originIATA + "-" + destIATA + " is " + drDistance + "km");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance should be longer than the direct distance " + formatter.format(drDistance) + "km.", ""));
+            } else if (distance > distanceUpper) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance is too long. The direct distance " + formatter.format(drDistance) + "km.", ""));
             } else if (blockhour < minHour || blockhour > maxHour) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
             } else {
-                addReturnRoute = true;
+//                addReturnRoute = true;
                 rpb.checkRouteExist(originIATA, destIATA);
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
@@ -164,16 +176,18 @@ public class RouteManagedBean implements Serializable {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
 //        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
 //    }
-    
     public void checkRouteProfitability(ActionEvent event) throws IOException {
         route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("routeCheck", route);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityEntry.xhtml");
     }
 
-    public void checkRouteProfit() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", mPriceString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", pVolumnString);
+    public void checkRouteProfit(ActionEvent e) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", marketPriceString);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", passVolumnString);
+        System.out.println("rmb.checkRouteProfita()---2: marketPriceString passed is " + marketPriceString);
+        System.out.println("rmb.checkRouteProfit()---2: passVolumnString passed is " + passVolumnString);
+
         FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
     }
 //    public void checkRouteProfit() throws IOException {
@@ -184,8 +198,10 @@ public class RouteManagedBean implements Serializable {
 
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();
+        String ap = "";
         for (Airport a : airportList) {
-            airportInfo.put(a.toString(), a.getIATA());
+            ap = a.toString() + " (" + a.getStrategicLevel() + ")";
+            airportInfo.put(ap, a.getIATA());
         }
         System.out.println("rmb.getAirportInfo()" + airportInfo.toString());
         return airportInfo;
@@ -307,20 +323,20 @@ public class RouteManagedBean implements Serializable {
         this.flightOfRoute = flightOfRoute;
     }
 
-    public String getmPriceString() {
-        return mPriceString;
+    public String getMarketPriceString() {
+        return marketPriceString;
     }
 
-    public void setmPriceString(String mPriceString) {
-        this.mPriceString = mPriceString;
+    public void setMarketPriceString(String marketPriceString) {
+        this.marketPriceString = marketPriceString;
     }
 
-    public String getpVolumnString() {
-        return pVolumnString;
+    public String getPassVolumnString() {
+        return passVolumnString;
     }
 
-    public void setpVolumnString(String pVolumnString) {
-        this.pVolumnString = pVolumnString;
+    public void setPassVolumnString(String passVolumnString) {
+        this.passVolumnString = passVolumnString;
     }
 
     public List<Airport> getHubList() {
@@ -347,4 +363,32 @@ public class RouteManagedBean implements Serializable {
         this.pVolumn = pVolumn;
     }
 
+//    public List<String> getAcTypeInfo() {
+//        List<AircraftType> typeList = fpb.getAllAircraftType();
+//        List<String> typeInfo = new ArrayList<>();
+//        for (AircraftType a : typeList) {
+//            typeInfo.add(a.getType());
+//        }
+//        return typeInfo;
+//    }
+//
+//    public void setAcTypeInfo(List<String> acTypeInfo) {
+//        this.acTypeInfo = acTypeInfo;
+//    }
+//
+//    public String getAcTypeString() {
+//        return acTypeString;
+//    }
+//
+//    public void setAcTypeString(String acTypeString) {
+//        this.acTypeString = acTypeString;
+//    }
+//
+//    public AircraftType getAcType() {
+//        return acType;
+//    }
+//
+//    public void setAcType(AircraftType acType) {
+//        this.acType = acType;
+//    }
 }

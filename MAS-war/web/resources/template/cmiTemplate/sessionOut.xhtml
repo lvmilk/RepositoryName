@@ -18,11 +18,11 @@
                          Please click ok to continue."
                          header="Session out" severity="alert" widgetVar="idleDialog">
 
-            <p:commandButton id="confirm" value="Ok" update="messages"
+            <p:commandButton id="confirm" value="OK" update="messages"
                              oncomplete="PF('idleDialog').hide()"
                              actionListener="#{sessionOutBean.backListener}" />
 
-            <p:commandButton id="Logout" value="Log Out" update="messages"
+            <p:commandButton id="Logout" value="Logout" update="messages"
                              oncomplete="idleDialog.hide()"
                              actionListener="#{sessionOutBean.sessionOutListener}" />
 

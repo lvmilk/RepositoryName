@@ -12,22 +12,22 @@
     <h:body>
 
         <h:form id="formMain">
-            <p:panel id="panel" header="Check Route Profitability Result"  style="width:100%">
+            <p:panel id="panel" header="Check Route Profitability Entry"  style="width:100%">
                 <p:messages id="msgs" autoUpdate="true" />
 
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
 
                     <p:outputLabel for="marketPrice" value="Enter market price for the route (in SGD): "/>
-                    <p:inputText id="marketPrice"  value="#{RouteManagedBean.mPriceString}" label="marketPrice" required="true" validatorMessage="Please enter a valid market price"  requiredMessage="Please enter average market price for the route" size="50">
+                    <p:inputText id="marketPrice"  value="#{RouteManagedBean.marketPriceString}" label="marketPrice" required="true" validatorMessage="Please enter a valid market price"  requiredMessage="Please enter average market price for the route" size="50">
                     </p:inputText>
 
                     <p:outputLabel for="passengerVolumn" value="Enter passenger volumn for the route (per year): "/>
-                    <p:inputText id="passengerVolumn"  value="#{RouteManagedBean.pVolumnString}" label="passengerVolumn" required="true" validatorMessage="Please enter number of passengers per year"  requiredMessage="Please enter passenger volumn per year" size="50">
+                    <p:inputText id="passengerVolumn"  value="#{RouteManagedBean.passVolumnString}" label="passengerVolumn" required="true" validatorMessage="Please enter number of passengers per year"  requiredMessage="Please enter passenger volumn per year" size="50">
                     </p:inputText>
 
                 </h:panelGrid>
-                <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack()}"  icon="ui-icon-carat-1-w" />
-                <p:commandButton value="Check Route Profitability" immediate="true" actionListener="#{RouteManagedBean.checkRouteProfit}"  icon="ui-icon-check" />
+                <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-carat-1-w" />
+                <p:commandButton value="Check Route Profitability" actionListener="#{RouteManagedBean.checkRouteProfit}"  icon="ui-icon-check" />
 
             </p:panel>
 

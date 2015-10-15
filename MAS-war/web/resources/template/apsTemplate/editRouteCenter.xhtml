@@ -10,7 +10,7 @@
     <h:body>
         <h:form>
 
-            <p:panel id="panel" header="All Route"  style="width:100%">
+            <p:panel id="panel" header="Edit Route"  style="width:100%">
                 <p:dataTable var="route" value="#{RouteManagedBean.routeList}" widgetVar="routeTable" paginator="true" rows="20" rowKey="#{route.id}" emptyMessage="No routes found with given criteria." filteredValue="#{RouteManagedBean.filteredRouteList}">
                     <f:facet name="header">
                         <p:outputPanel>

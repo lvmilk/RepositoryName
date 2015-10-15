@@ -21,18 +21,17 @@
                     <p:outputLabel value="Destination Airport: " />
                     <p:outputLabel value="#{editRouteManagedBean.route.dest.IATA}" />
 
-                    <p:outputLabel for="distance" value="Route Distance: " />
-                    <p:inputText id="distance" value="#{editRouteManagedBean.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="30">
+                    <p:outputLabel for="distance" value="Route Distance (km): " />
+                    <p:inputText id="distance" value="#{editRouteManagedBean.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="20">
                     </p:inputText>
 
-                    <p:outputLabel for="blockhour" value="Aircraft Blockhour: " />
-                    <p:inputText id="blockhour" value="#{editRouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
+                    <p:outputLabel for="blockhour" value="Aircraft Blockhour (hr): " />
+                    <p:inputText id="blockhour" value="#{editRouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="20">
                     </p:inputText>
                     
                     <p:outputLabel for="aircraftType" value="Serving Aircraft Type: " />
-                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="false" requiredMessage="Please select aircraft type " style="width:250px">
-                        <f:selectItem itemLabel="-Select One-" itemValue="#{null}" />
-                        <!--<f:selectItems value="#{editRouteManagedBean.acTypeList}" var="aircraftType" itemValue="#{aircraftType.type}" itemLabel="#{aircraftType.type}" />-->
+                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="false" requiredMessage="Please select aircraft type " style="width:150px">
+                        <f:selectItem itemLabel="-Select One-" itemValue="NoAcSelected" />
                         <f:selectItems value="#{editRouteManagedBean.acTypeInfo}"/>
                     </p:selectOneMenu>
 
