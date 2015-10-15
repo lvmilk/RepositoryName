@@ -256,12 +256,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date ad = df.parse(actualDepTime);
         Date aa = df.parse(actualArrTime);
         System.out.println("flightSchedulingBean: 4 time types: " + ed + " " + ea + " " + ad + " " + aa);
-        Long estimatedDiff = (ea.getTime() - ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
-        Long actualDiff = (ad.getTime() - ad.getTime()) / (60 * 60 * 1000) % 24;
+        Long estimatedDiff = (ea.getTime() +(60 * 60 * 1000*24*estimatedDateAdjust)- ed.getTime()) / (60 * 60 * 1000) % 24; //hours differrence
+        Long actualDiff = (aa.getTime() +(60 * 60 * 1000*24*actualDateAdjust)- ad.getTime()) / (60 * 60 * 1000) % 24;
         System.out.println("flightSchedulingBean: time hour difference: estimated diff: " + estimatedDiff + " and actual diff: " + actualDiff);
         if ((ed.before(ea) && estimatedDateAdjust != 1) || (ed.compareTo(ea) == 0 && estimatedDateAdjust != 0) || (ed.after(ea) && estimatedDateAdjust == 1)) {
-            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && estimatedDateAdjust == 1)) {
-                if (Math.abs(estimatedDiff - actualDiff) <= 24) {
+            if ((ad.before(aa) && actualDateAdjust != 1) || (ad.compareTo(aa) == 0 && actualDateAdjust != 0) || (ad.after(aa) && actualDateAdjust == 1)) {
+                if (Math.abs(estimatedDiff - actualDiff) <= 2) {
                     List<FlightInstance> flightInstList = q.getResultList();
                     flightInst = flightInstList.get(0);
                     flightInst.setFlightStatus(flightStatus);
@@ -274,7 +274,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     em.merge(flightInst);
                     em.flush();
                 } else {
-                    throw new Exception("Estimated dates and actual dates cannot be different by more than 24h!");
+                    throw new Exception("The hour difference of estimated dates and actual dates cannot be different by more than 2h!");
                 }
             } else {
                 throw new Exception("Actual Dates are not valid! Please adjust.");

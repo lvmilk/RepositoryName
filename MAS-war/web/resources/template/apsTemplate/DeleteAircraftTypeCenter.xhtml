@@ -18,12 +18,15 @@
 
             <p:panel id="panel" header="Delete Aircraft Type"  style="width:100%">
                 <p:messages id="msgs" />  
-                <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.deletedList}" paginator="true" rows="10" emptyMessage="No aircraft type can be deleted!">
+                <p:dataTable var="AircraftType" rowKey ="#{AircraftType.type}" selection="#{ATMB.selectedList}" value="#{ATMB.deletedList}" paginator="true" rows="10" emptyMessage="No aircraft type is allowed to be deleted now!">
 
                     <p:ajax event="rowSelectCheckbox" listener="#{ATMB.check}"   />  
 
                     <f:facet name="header">  
-                        Aircraft Type List (Note: only aircraft types can be deleted are shown)
+                         <h:outputLink id="fade" value="#">
+                            <h:outputText value=" Aircraft Type List (Note: only aircraft types which can be deleted will be shown)" />
+                        </h:outputLink>
+                        <p:tooltip id="toolTipTrack" for="fade" value="If an aircraft is linked with any aircraft or any route, it cannot be directly deleted." trackMouse="true" />
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      

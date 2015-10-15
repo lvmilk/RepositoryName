@@ -43,9 +43,13 @@
                     <p:column headerText="Actual Date Adjust">
                         <h:outputText value="#{flightInst.actualDateAdjust}" />
                     </p:column>
+                    <p:column headerText="Serving Aircraft">
+                        <h:outputText value="#{flightInst.aircraft.registrationNo}" rendered="#{editFIMB.aircraftType==true} "/>
+                        <h:outputText value="Not Assigned" rendered="#{editFIMB.aircraftType==false }"/>
+                    </p:column>
 
                 </p:dataTable>
-                 <p:commandButton value="Cancel" update="@form" actionListener="#{editFIMB.viewFlightInstCancel()}"  icon="ui-icon-check" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{editFIMB.viewFlightInstCancel()}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>

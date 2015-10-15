@@ -71,7 +71,9 @@ public class AircraftTypeManagedBean implements Serializable {
     public void addAircraftType() throws Exception {
         if (!fpb.checkDuplicate(type)) {
             System.out.println("AircraftTypeManagedBean: addAircraftType: No duplicates");
-            fpb.addAircraftType(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
+            String typeUpper = type.toUpperCase();
+            String manufacturerUpper = manufacturer.toUpperCase();
+            fpb.addAircraftType(typeUpper, manufacturerUpper, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
