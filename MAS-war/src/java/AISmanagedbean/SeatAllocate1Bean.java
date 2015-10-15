@@ -42,8 +42,8 @@ public class SeatAllocate1Bean implements Serializable {
     @EJB
     private SeatAssignBeanLocal sa;
 
-    private Double optimalRev = new Double(0);
-    private Double currentRev = new Double(0);
+    private Double optimalRev;
+    private Double currentRev;
 
     List<FlightFrequency> allFrequency = new ArrayList<>();
     List<FlightFrequency> frequencyList = new ArrayList<>();
