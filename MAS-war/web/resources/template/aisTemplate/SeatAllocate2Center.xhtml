@@ -88,7 +88,7 @@
             </p:dataTable>
 
             <p:commandButton value="Compute optimal seat allocation" update="form" action="#{seatAllocate1Bean.computeOptimalSeat()}"/>
-<!--            <p:commandButton value="Compute expected total revenue from current seat allocation" update="form" action="#{seatAllocate1Bean.computeExpRev()}"/>-->
+            <p:commandButton value="Compute expected total revenue from current seat allocation" update="form" action="#{seatAllocate1Bean.computeExpRev()}"/>
             <p:commandButton value="Back" update="form" action="./SeatAllocate1.xhtml"/>
             <p:separator/>
             <br/>
@@ -104,15 +104,15 @@
                     <h:outputText  id="unallocated"  style="font-weight: bold" value=" #{seatAllocate1Bean.seatUnallocated}"/>
 
                     
-<!--                    <h:outputText  style="font-weight: bold" value="Expected total revenue from OPTIMAL seat allocation:"/>
-                    <h:outputText  id="Optimalrev"  style="font-weight: bold" value=" #{seatAllocate1Bean.optimalRev}">
+                    <h:outputText  style="font-weight: bold" value="Expected total revenue from OPTIMAL seat allocation:"/>
+                    <h:outputText  style="font-weight: bold" value=" #{seatAllocate1Bean.optimalRev}">
                         <f:convertNumber pattern="#0.00"/>
                     </h:outputText>
 
-                    <h:outputText  style="font-weight: bold" value="Expected total revenue from Current seat allocation:"/>
-                    <h:outputText  id="Currentrev"  style="font-weight: bold" value=" #{seatAllocate1Bean.currentRev}">
+                    <h:outputText  style="font-weight: bold" value="Expected total revenue from CURRENT seat allocation:"/>
+                    <h:outputText    style="font-weight: bold" value=" #{seatAllocate1Bean.currentRev}">
                         <f:convertNumber pattern="#0.00"/>
-                    </h:outputText>-->
+                    </h:outputText>
 
                 </h:panelGrid>
             </p:panel>

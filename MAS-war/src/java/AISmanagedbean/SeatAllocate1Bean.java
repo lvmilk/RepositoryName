@@ -296,7 +296,7 @@ public class SeatAllocate1Bean implements Serializable {
         if (noNull) {
 
             if (priceExist) {
-                bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat3(bookClassInstanceList);
+                bookClassInstanceList = (List<BookingClassInstance>) sa.computeOptimalSeat4(bookClassInstanceList);
 
                 optimalRev = sa.computeOptimalRev(bookClassInstanceList);
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("listInstance", listInstance);
