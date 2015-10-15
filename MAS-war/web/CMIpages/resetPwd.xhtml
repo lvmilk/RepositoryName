@@ -16,8 +16,8 @@
                     <p:messages id="msgs" showDetail="true" />
                     <h:panelGrid columns="3" cellpadding="10">
                         <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{fPwdMB.password}" required="true" label="password" size="10">
-                            <f:validateLength minimum="2" />
+                        <p:inputText id="password" type="password" value="#{fPwdMB.password}" required="true" label="password" size="10"  validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                           <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                         </p:inputText>
                         <p:message for="password" display="icon" />
 

@@ -37,7 +37,7 @@ public class manageAccount implements manageAccountLocal {
     private UserEntity userEntity;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
-    private String hPwd;
+    private String hPwd=new String();
     private Integer temp;
     private Integer locked;
 
@@ -441,6 +441,8 @@ public class manageAccount implements manageAccountLocal {
                 officeStaff.setOffPassword(password);
             } else {
                 hPwd = this.encrypt(username, password);
+                System.out.println("inside editstaff"+hPwd);
+                System.out.println("inside editstaff"+password);
                 officeStaff.setOffPassword(hPwd);
             }
             officeStaff.setEmail(emailEdited);
@@ -496,6 +498,8 @@ public class manageAccount implements manageAccountLocal {
         Query query = null;
 
         hPwd = this.encrypt(username, password);
+        System.out.println("validatelogin:"+hPwd);
+        System.out.println("validatelogin:"+password);
         if (stfType.equals("administrator")) {
             query = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName = :inUserName and u.admPassword=:inPassWord and u.stfType=:inStfType");
             query.setParameter("inPassWord", password);
