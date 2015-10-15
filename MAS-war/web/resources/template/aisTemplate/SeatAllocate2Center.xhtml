@@ -105,15 +105,15 @@
 
 
                     <h:outputText  style="font-weight: bold" value="Expected total revenue from OPTIMAL seat allocation:"/>
-                    <h:outputText  style="font-weight: bold" value="$ #{seatAllocate1Bean.optimalRev}">
-                        <f:convertNumber pattern="#0.00"/>
-                        <!--                        <f:convertNumber pattern="#,##0.00"/>-->
+                    <h:outputText  style="font-weight: bold" value="#{seatAllocate1Bean.optimalRev}">
+                           <f:convertNumber type="number" maxFractionDigits="2" pattern="$#,##0.00" />
+<!--                        <f:convertNumber pattern="#,##0.00"/>-->
                     </h:outputText>
 
                     <h:outputText  style="font-weight: bold"  value="Expected total revenue from CURRENT seat allocation:"/>
-                    <h:outputText    style="font-weight: bold" value="$#{seatAllocate1Bean.currentRev}">
+                    <h:outputText    style="font-weight: bold" value="#{seatAllocate1Bean.currentRev}">
                         <!--                        <f:convertNumber pattern="#0.00"/>-->
-                        <f:convertNumber type="number" maxFractionDigits="3" pattern="#0.000" />
+                        <f:convertNumber type="number" maxFractionDigits="2" pattern="$#,##0.00" />
                     </h:outputText>
 
                 </h:panelGrid>
