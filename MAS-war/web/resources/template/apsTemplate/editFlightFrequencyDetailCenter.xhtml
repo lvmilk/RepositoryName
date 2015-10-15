@@ -98,9 +98,9 @@
 
                     </p:panel>
 
-                    <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): " />
-                    <h:outputText value="#{EFFMB.startDateString}" />
-                    <!--<p:calendar id="startDate" value="#{EFFMB.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true"/>-->
+                    <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): "/>
+                    <h:outputText value="#{EFFMB.startDateString}" rendered="#{EFFMB.hasInstance}"/>
+                    <p:calendar id="startDate" value="#{EFFMB.startDate}" label="startDate" required="true" requiredMessage="Please enter flight start operation date" size="30" pattern="yyyy-MM-dd" mask="true" rendered="#{not EFFMB.hasInstance}"/>
 
                     <p:outputLabel for="endDate" value="Flight End Operation Date (yyyy-MM-dd): " />
                     <p:calendar id="endDate" value="#{EFFMB.endDate}" label="endDate" required="true" requiredMessage="Please enter flight end operation date" size="30" pattern="yyyy-MM-dd" mask="true"/> 

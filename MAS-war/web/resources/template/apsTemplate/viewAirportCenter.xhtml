@@ -19,27 +19,30 @@
                     <p:column headerText="IATA" sortBy="#{airport.IATA}" filterBy="#{airport.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{airport.IATA}" />
                     </p:column>
-
                     <p:column headerText="City Name" filterBy="#{airport.cityName}" filterMatchMode="contains">
                         <h:outputText value="#{airport.cityName}" />
                     </p:column>
-
                     <p:column headerText="Country Name" filterBy="#{airport.countryName}" filterMatchMode="contains">
                         <h:outputText value="#{airport.countryName}" />
                     </p:column>
-
-                    <p:column headerText="Specification" >
-                        <h:outputText value="#{airport.spec}" />
-                    </p:column>
-                    
-                    <p:column headerText="Airport Name" >
+                    <p:column headerText="Airport Name" filterBy="#{airport.airportName}" filterMatchMode="contains">
                         <h:outputText value="#{airport.airportName}" />
                     </p:column>
-                    
-                    <p:column headerText="Strategic Level" filterBy="#{airport.strategicLevel}" filterMatchMode="contains">
+                    <p:column headerText="Specification" filterBy="#{airport.spec}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.spec}" />
+                    </p:column>
+                    <p:column headerText="Timezone" sortBy="#{airport.timeZone}" filterBy="#{airport.opStatus}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.timeZone}" />
+                    </p:column>
+                    <p:column headerText="Operational Status" sortBy="#{airport.opStatus}" filterBy="#{airport.opStatus}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.opStatus}" />
+                    </p:column>
+                    <p:column headerText="Strategic Level" sortBy="#{airport.strategicLevel}" filterBy="#{airport.strategicLevel}" filterMatchMode="contains">
                         <h:outputText value="#{airport.strategicLevel}" />
-                    </p:column>>
-
+                    </p:column>
+                    <p:column headerText="Airspace" sortBy="#{airport.airspace}" filterBy="#{airport.airspace}" filterMatchMode="contains">
+                        <h:outputText value="#{airport.airspace}" />
+                    </p:column>
                     <p:column headerText="View Detail">
                         <p:commandButton value="View Detail" actionListener="#{AirportManagedBean.viewAirport(airport)}" ajax="true"/>
                     </p:column>

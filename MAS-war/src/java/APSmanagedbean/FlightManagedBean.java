@@ -58,6 +58,7 @@ public class FlightManagedBean implements Serializable {
     private String dateAdjustString;
     private Integer dateAdjust;
 
+    private Date firstGenerationDate;
     private Date startDate;
     private Date endDate;
     private String startDateString;
@@ -95,8 +96,12 @@ public class FlightManagedBean implements Serializable {
             destAirportString = route.getDest().getIATA();
             Format formatter = new SimpleDateFormat("yyyy-MM-dd");
             Format formatter2 = new SimpleDateFormat("HH:mm");
+            firstGenerationDate = new Date();
+            System.out.println("fmb.addFlightFrequency(): date of setting the first generation date " + firstGenerationDate);
             fsb.validateFlightNo(flightNo);
-            if (flightNo.length() != 5 || flightNo.charAt(0) != 'M' || flightNo.charAt(1) != 'R' || !Character.isDigit(flightNo.charAt(2)) || !Character.isDigit(flightNo.charAt(3)) || !Character.isDigit(flightNo.charAt(4))) {
+            if (rpb.feasibleAc(route).isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot add flight frequency. No aircraft types are feasible for route " + route, ""));
+            } else if (flightNo.length() != 5 || flightNo.charAt(0) != 'M' || flightNo.charAt(1) != 'R' || !Character.isDigit(flightNo.charAt(2)) || !Character.isDigit(flightNo.charAt(3)) || !Character.isDigit(flightNo.charAt(4))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Flight Number: Please enter a flight No. in format of MRxxx, x is a digit, e.g. MR123", ""));
             } else if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Operation Day of the Week: Please select as least one day of the week for flight.", ""));
@@ -144,6 +149,7 @@ public class FlightManagedBean implements Serializable {
         DateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd");
         startDate = formatter2.parse(flightFreq.getStartDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightStartDate", startDate);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstGenerationDate", firstGenerationDate);
         endDate = formatter2.parse(flightFreq.getEndDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightEndDate", endDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateAdjust", flightFreq.getDateAdjust().toString());
@@ -438,6 +444,14 @@ public class FlightManagedBean implements Serializable {
 
     public void setOriAirportString(String oriAirportString) {
         this.oriAirportString = oriAirportString;
+    }
+
+    public Date getFirstGenerationDate() {
+        return firstGenerationDate;
+    }
+
+    public void setFirstGenerationDate(Date firstGenerationDate) {
+        this.firstGenerationDate = firstGenerationDate;
     }
 
 }

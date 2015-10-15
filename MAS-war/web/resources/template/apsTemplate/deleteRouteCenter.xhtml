@@ -21,7 +21,7 @@
 
                     <f:facet name="header">  
                         <h:outputLink id="fade" value="#">
-                            <h:outputText value="Route List (Note: Only routes can be deleted are shown.)" />
+                            <h:outputText value="Route Pair List (Note: Only routes can be deleted are shown.)" />
                         </h:outputLink>
                         <p:tooltip id="toolTipTrack" for="fade" value="Note:  If there are flights generated for the route, it cannot be deleted." trackMouse="true" />
                         <p:outputPanel>
@@ -68,7 +68,7 @@
                     </p:column>
 
                 </p:dataTable>
-
+                <br/>
                 <p:commandButton value="Delete" action="#{RouteManagedBean.toDeleteRoute}" icon="ui-icon-check" />
             </p:panel> 
 

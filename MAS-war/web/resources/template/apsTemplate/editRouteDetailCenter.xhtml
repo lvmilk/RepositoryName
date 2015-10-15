@@ -41,7 +41,7 @@
                 </h:panelGrid>
 
                 <p:commandButton value="Update" update="@form" actionListener="#{editRouteManagedBean.editRoute}"  icon="ui-icon-check" />
-                <p:commandButton value="Cancel" update="@form" actionListener="#{editRouteManagedBean.editRouteCancel}"  icon="ui-icon-cancel" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{editRouteManagedBean.editRouteCancel}" immediate="true" icon="ui-icon-cancel" />
 
             </p:panel>
         </h:form>

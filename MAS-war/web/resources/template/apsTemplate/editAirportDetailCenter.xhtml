@@ -71,13 +71,23 @@
                         <f:selectItem itemLabel="4F" itemValue="4F" />
                     </p:selectOneRadio>
 
-                    <p:outputLabel value="Location (Lat, Long): " />
-                    <p:outputLabel value="(#{editAirportManagedBean.latitude}, #{editAirportManagedBean.longitude})" />
+                    <!--                    <p:outputLabel value="Location (Lat, Long): " />
+                                        <p:outputLabel value="(#{editAirportManagedBean.latitude}, #{editAirportManagedBean.longitude})" />-->
+
+                    <p:outputLabel for="latitude" value="Latitude " />
+                    <p:inputText id="latitude" value="#{editAirportManagedBean.latitude}" label="latitude" required="true" validatorMessage="Please enter latitude degree between -90 and 90"  requiredMessage="Please enter airport location latitude" size="30">
+                        <f:validateDoubleRange minimum="-90.0" maximum="90.0" />
+                    </p:inputText>
+
+                    <p:outputLabel for="longitude" value="Longitude " />
+                    <p:inputText id="longitude" value="#{editAirportManagedBean.longitude}" label="longitude" required="true" validatorMessage="Please enter longitude degree between -180 and 180"  requiredMessage="Please enter airport location longitude" size="30">
+                        <f:validateDoubleRange minimum="-180.0" maximum="180.0" />
+                    </p:inputText>
 
                 </h:panelGrid>
-                
+
                 <p:commandButton value="Update" update="@form" actionListener="#{editAirportManagedBean.editAirportDetail}"  icon="ui-icon-check" />
-                <p:commandButton value="Cancel" update="@form" actionListener="#{editAirportManagedBean.editAirportCancel}"  icon="ui-icon-cancel" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{editAirportManagedBean.editAirportCancel}"  immediate="true" icon="ui-icon-cancel" />
             </p:panel>
         </h:form>
 
