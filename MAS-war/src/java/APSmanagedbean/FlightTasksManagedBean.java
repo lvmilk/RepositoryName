@@ -70,7 +70,7 @@ public class FlightTasksManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         flightFreqList = fsb.getAllFlightFrequency();
-        flightInstList = fsb.getAllFlightInstance();
+        flightInstList =(List<FlightInstance>)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInstList");
         aircraftList = fpb.getAllAircraft();
         defaultAircraft = fpb.getAircraft("9V-000");
         aircraftList.remove(defaultAircraft);
