@@ -58,10 +58,11 @@
                     </p:inputText>-->
 
                     <p:outputLabel for="strategicLevel" value="Strategic Level: " />
-                    <p:selectOneRadio id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" required="true" requiredMessage="Please select airport strategic level">
+                    <p:selectOneRadio id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" required="true" requiredMessage="Please select airport strategic level" rendered="#{not editAirportManagedBean.isHub}">
                         <f:selectItem itemLabel="Hub" itemValue="Hub" />
                         <f:selectItem itemLabel="Normal" itemValue="Normal" />
                     </p:selectOneRadio>
+                    <h:outputText value="#{editAirportManagedBean.strategicLevel}" rendered="#{editAirportManagedBean.isHub}" />
 <!--                    <p:inputText id="strategicLevel" value="#{editAirportManagedBean.strategicLevel}" label="strategicLevel" required="true" requiredMessage="Please enter strategic level" size="30"> 
                     </p:inputText>-->
 

@@ -525,4 +525,19 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
     }
 
+    @Override
+    public boolean airportHasFlight(Airport airport) {
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin=:origin or r.dest=:dest").setParameter("origin", airport).setParameter("dest", airport);
+        List<Route> routeList = (List) q1.getResultList();
+        if (routeList.isEmpty()) {
+            return false;
+        } else {
+            for (Route r : routeList) {
+                if (!r.getFlightFreqList().isEmpty()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }

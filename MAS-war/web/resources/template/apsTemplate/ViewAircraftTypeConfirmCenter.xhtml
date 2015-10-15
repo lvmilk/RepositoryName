@@ -13,8 +13,8 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <p:panel id="panel" header="View This Aircraft Type" style="width: 100%">
-                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="10">
+            <p:panel id="panel" header="View Aircraft Type Information" style="width: 100%">
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:50%" cellpadding="10">
 
                     <p:outputLabel value="Aircraft Type: " />
                     <p:outputLabel value="#{type}" />
@@ -71,8 +71,9 @@
                     <p:outputLabel value="#{pilot}" />
 
                 </h:panelGrid>
-                <p:commandButton value="Back"  action="#{ATMB.viewAircraftTypeConfirm()}" icon="ui-icon-check" />
             </p:panel>
+            <p:commandButton value="Back"  action="#{ATMB.viewAircraftTypeConfirm()}" icon="ui-icon-carat-1-w" />
+
         </h:form>
     </h:body>
 </html>

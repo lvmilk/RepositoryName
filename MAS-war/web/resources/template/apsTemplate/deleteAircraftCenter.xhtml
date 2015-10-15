@@ -23,19 +23,19 @@
                     <p:ajax event="rowSelectCheckbox" listener="#{AMB.check}"   />  
 
                     <f:facet name="header">  
-                        Aircraft List (Note: only aircraft can be deleted are shown)
+                        Aircraft List 
                     </f:facet>  
 
                     <p:column selectionMode="multiple" headerText="Select all" style="width:35px" />      
-                   <p:column headerText="Registration No." sortBy="#{Aircraft.registrationNo}">
+                    <p:column headerText="Registration No." sortBy="#{Aircraft.registrationNo}">
                         <h:outputText value="#{Aircraft.registrationNo}" />
                     </p:column>
                     <p:column headerText="Aircraft Type" sortBy="#{Aircraft.aircraftType.type}">
                         <h:outputText value="#{Aircraft.aircraftType.type}" />
                     </p:column>
-<!--                    <p:column headerText="Serial No.">
-                        <h:outputText value="#{Aircraft.serialNo}" />
-                    </p:column>-->
+                    <!--                    <p:column headerText="Serial No.">
+                                            <h:outputText value="#{Aircraft.serialNo}" />
+                                        </p:column>-->
                     <p:column headerText="Status">
                         <h:outputText value="#{Aircraft.status}" />
                     </p:column>
@@ -48,28 +48,28 @@
                     <p:column headerText="Lease Expiration Date">
                         <h:outputText value="#{Aircraft.retireDate}" />
                     </p:column>
-<!--                    <p:column headerText="Flight Log ID">
-                        <h:outputText value="#{Aircraft.flightLogId}" />
-                    </p:column>
-                    <p:column headerText="Maintenance Log ID">
-                        <h:outputText value="#{Aircraft.maintenanceLogId}" />
-                    </p:column>-->
+                    <!--                    <p:column headerText="Flight Log ID">
+                                            <h:outputText value="#{Aircraft.flightLogId}" />
+                                        </p:column>
+                                        <p:column headerText="Maintenance Log ID">
+                                            <h:outputText value="#{Aircraft.maintenanceLogId}" />
+                                        </p:column>-->
 
                 </p:dataTable>
-                <p:commandButton value="Delete" action="#{AMB.checkSelect()}"  icon="ui-icon-cancel"/>
+                  <br/>
+                <p:commandButton value="Delete" action="#{AMB.checkSelect()}"  icon="ui-icon-check"/>
             </p:panel>
 
             <h:form id="dialogForm">
-                <p:dialog id="dlg" header="Delete Aircraft" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true" height="200" width="500">
-                    <h:outputText value="Delete selected aircrafts ?"/> 
-                    <!--<ui:repeat var="a" value="#{AMB.selectedList}"> <h:outputText value="#{a.registrationNo} "/> </ui:repeat> <h:outputText value="?"/>-->
-                    <h:panelGrid columns="2" cellpadding="10" >
-                        <p:commandButton value="Delete"  id="Delete" update="" action="#{AMB.confirmDeleteAircraft()}" />
-                        <br/>
-                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
-                        <br/>
-                        <p:messages autoUpdate="true" />
-                    </h:panelGrid>
+                <p:dialog id="dlg" header="Delete Aircraft" widgetVar="dlg"  resizable="false" showEffect="fade" dynamic="true">
+                    <p:messages autoUpdate="true" />
+                    <h:outputText value="Delete selected aircraft(s) ?"/> 
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Delete"  id="Delete" update="" action="#{AMB.confirmDeleteAircraft()}" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                        </h:panelGroup>
+                    </f:facet>  
                 </p:dialog>
 
             </h:form>

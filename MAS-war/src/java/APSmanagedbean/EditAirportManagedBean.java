@@ -7,12 +7,14 @@ package APSmanagedbean;
 
 import Entity.APS.Airport;
 import SessionBean.APS.RoutePlanningBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
 import javax.faces.view.ViewScoped;
 
 /**
@@ -39,6 +41,7 @@ public class EditAirportManagedBean implements Serializable {
 
     private Double latitude;
     private Double longitude;
+    private boolean isHub;
 
     public EditAirportManagedBean() {
     }
@@ -56,10 +59,28 @@ public class EditAirportManagedBean implements Serializable {
         airspace = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("airspace");
         latitude = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lat");
         longitude = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lon");
+        isHub = strategicLevel.equalsIgnoreCase("Hub");
+        airport = (Airport) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("airport");
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getFlash().get("airport") != null) {
+            airport = (Airport) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("airport");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This airport " + airport.getIATA() + " has already been linked with flights. Please handle affected flight frequency! ", ""));
+        }
+    }
+
+    public void beforePhaseListener(PhaseEvent event) {
+
     }
 
     public void editAirportDetail() throws Exception {
         try {
+            airport = rpb.findAirport(IATA);
+            if (rpb.airportHasFlight(airport) && opStatus.equals("Closed")) {
+                System.out.println("editAirportManagedBean: editAirportDetail: airport " + airport + " opStatus: WARNING!!! " + opStatus);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "This airport " + airport.getIATA() + " has already been linked with flights. Please handle affected flight frequency! ", ""));
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().put("airport", airport);
+            }
+
             rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -68,6 +89,10 @@ public class EditAirportManagedBean implements Serializable {
     }
 
     public void editAirportCancel() throws Exception {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirport.xhtml");
+    }
+
+    public void editAirportBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirport.xhtml");
     }
 
@@ -165,6 +190,14 @@ public class EditAirportManagedBean implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isIsHub() {
+        return strategicLevel.equalsIgnoreCase("Hub");
+    }
+
+    public void setIsHub(boolean isHub) {
+        this.isHub = isHub;
     }
 
 }
