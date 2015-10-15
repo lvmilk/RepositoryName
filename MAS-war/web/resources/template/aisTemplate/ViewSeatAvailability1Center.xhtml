@@ -16,7 +16,7 @@
             <p:panel id="panel" header=" View Seat Allocation and Availability "  style="margin-bottom:20px">
                 <p:messages id="msgs" />
 
-                <h:panelGrid columns="3" cellpadding="5">
+                <h:panelGrid columns="3" cellpadding="25">
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
                     <!--<p:inputMask id="date" value="#{seatAllocationMangagedBean.date}" mask="9999-99-99"/>-->
                     <p:calendar id="date" value="#{seatAllocationMangagedBean.date}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the date" size="20"/>

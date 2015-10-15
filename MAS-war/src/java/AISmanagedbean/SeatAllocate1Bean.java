@@ -208,6 +208,7 @@ public class SeatAllocate1Bean implements Serializable {
         System.out.println("currentAllocated is " + currentAllocated);
 
         seatUnallocated = seatUnallocated + bInstance.getSeatNo();
+
         if (currentAllocated <= seatUnallocated) {
             bInstance.setSeatNo(currentAllocated);
             sa.editDemandInfo(bInstance);
