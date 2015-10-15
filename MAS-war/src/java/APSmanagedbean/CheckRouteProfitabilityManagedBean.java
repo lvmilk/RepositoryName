@@ -10,6 +10,7 @@ import Entity.APS.Route;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,21 +34,23 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     private RoutePlanningBeanLocal rpb;
 
     private Route route;
-    private String marketPriceString;
-    private String passVolumnString;
-    private Double mPrice;
-    private Integer pVolumn;
+    private Double marketPrice;
+    private Integer passVolumn;
     private boolean acToAssign = false;
     private List<AircraftType> acList = new ArrayList<>();
     private List<String> acKeyList = new ArrayList<>();
-    private Map<String, String> fuelCostMap = new HashMap<String, String>();
-    private Map<String, String> revenueMap = new HashMap<String, String>();
-    private Map<String, String> leaseCostMap = new HashMap<String, String>();
-    private Map<String, String> crewCostMap = new HashMap<String, String>();
-    private Map<String, String> resultMap = new HashMap<String, String>();
-    private Map<String, String> profitMap = new HashMap<String, String>();
-//    private List<String> profResult; // profitability result per aircraft
+    private Map<String, String> fuelCostMap = new HashMap<>();
+    private Map<String, String> revenueMap = new HashMap<>();
+    private Map<String, String> leaseCostMap = new HashMap<>();
+    private Map<String, String> crewCostMap = new HashMap<>();
+    private Map<String, String> resultMap = new HashMap<>();
+    private Map<String, String> profitMap = new HashMap<>();
+    private Map<String, String> mtCostMap = new HashMap<>();
+    private Map<String, String> otherCostMap = new HashMap<>();
+    private Map<String, String> totalCostMap = new HashMap<>();
+    private Map<String, String> profitMarginMap = new HashMap<>();
 
+//    private List<String> profResult; // profitability result per aircraft
     public CheckRouteProfitabilityManagedBean() {
 
     }
@@ -55,15 +58,12 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         route = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("routeCheck");
-        passVolumnString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pVolumnString");
-        System.out.println("CRPMB.init(): pVolumnString " + passVolumnString);
-        setPassVolumnString(passVolumnString);
-        marketPriceString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mPriceString");
-        System.out.println("CRPMB.init(): mPriceString " + marketPriceString);
-        setMarketPriceString(marketPriceString);
+        passVolumn = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("passVolumn");
+        setPassVolumn(passVolumn);
+        marketPrice = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("marketPrice");
+        setMarketPrice(marketPrice);
         acList = rpb.feasibleAc(route);
         checkRouteCost();
-
     }
 
     public void checkRouteProfit() throws IOException {
@@ -71,26 +71,41 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     }
 
     public void checkRouteCost() {
-        pVolumn = getpVolumn();
-        mPrice = getmPrice();
+        passVolumn = getPassVolumn();
+        marketPrice = getMarketPrice();
         for (AircraftType a : acList) {
             Integer seatNo = a.getBcSeatNo() + a.getEcSeatNo() + a.getFcSeatNo() + a.getPecSeatNo() + a.getSuiteNo();
-            Integer flightTimes = pVolumn / seatNo;
-            Double revenue = flightTimes * seatNo * mPrice;
+            System.out.println("CRFMB.checkRouteCost(): aircraft seat number " + seatNo);
+            Integer flightTimes = passVolumn / seatNo;
+            System.out.println("CRFMB.checkRouteCost(): annual flight times " + flightTimes);
+            Double revenue = flightTimes * seatNo * marketPrice / 1000.0;
             Double flightHr = flightTimes * route.getBlockhour();
-            Double fuel = flightHr * a.getFuelCost();
-            Double lease = 12 * a.getLeaseCost(); // leaseCost is monthly
-//            Double crew
+            System.out.println("CRFMB.checkRouteCost(): annual total flight hours " + flightHr);
+            Double fuel = flightHr * a.getFuelCost() / 1000.0;
+            System.out.println("CRFMB.checkRouteCost(): fuel cost thousand SGD " + fuel);
+            Double lease = 12 * a.getLeaseCost() / 1000.0; // leaseCost is monthly
+            Double crew = ((a.getStewardess() * 20 + a.getSteward() * 20 + a.getPurser() * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
+            Double mtCost = 3640.0;
+            Double totalCost = fuel + lease + crew + mtCost;
+            Double profit = revenue - totalCost;
             acKeyList.add(a.getType());
             fuelCostMap.put(a.getType(), fuel.toString());
             leaseCostMap.put(a.getType(), lease.toString());
             revenueMap.put(a.getType(), revenue.toString());
-            Double profit = revenue - fuel - lease;
+            crewCostMap.put(a.getType(), crew.toString());
+            totalCostMap.put(a.getType(), totalCost.toString());
             profitMap.put(a.getType(), profit.toString());
+            mtCostMap.put(a.getType(), mtCost.toString());
+            Double profitMargin = profit / totalCost;
+            DecimalFormat df = new DecimalFormat("#.00%");
             if (profit < 0) {
-                resultMap.put(a.getType(), "Not profitable: negative profit margin.");
+//                profitMarginMap.put(a.getType(), String.format("%.0f%%", profitMargin));
+//                resultMap.put(a.getType(), "Not profitable");
+//                System.out.println(df.format(profitMargin));
+                profitMarginMap.put(a.getType(), df.format(profitMargin));
             } else {
-                resultMap.put(a.getType(), "Profitable: positive profit margin.");
+                profitMarginMap.put(a.getType(), df.format(profitMargin));
+                //  resultMap.put(a.getType(), "Profitable");
                 acToAssign = true;
             }
         }
@@ -111,41 +126,6 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
 
     public void setRoute(Route route) {
         this.route = route;
-    }
-
-    public String getMarketPriceString() {
-        return marketPriceString;
-    }
-
-    public void setMarketPriceString(String marketPriceString) {
-        this.marketPriceString = marketPriceString;
-    }
-
-    public String getPassVolumnString() {
-        return passVolumnString;
-    }
-
-    public void setPassVolumnString(String passVolumnString) {
-        this.passVolumnString = passVolumnString;
-    }
-
-    public Double getmPrice() {
-        //return Double.valueOf(marketPriceString);
-        return Double.parseDouble(marketPriceString);
-    }
-
-    public void setmPrice(Double mPrice) {
-        this.mPrice = mPrice;
-    }
-
-    public Integer getpVolumn() {
-//        return Integer.valueOf(passVolumnString);
-        System.err.println("pVolumnString: " + passVolumnString);
-        return Integer.parseInt(passVolumnString);
-    }
-
-    public void setpVolumn(Integer pVolumn) {
-        this.pVolumn = pVolumn;
     }
 
     public List<AircraftType> getAcList() {
@@ -218,6 +198,54 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
 
     public void setAcToAssign(boolean acToAssign) {
         this.acToAssign = acToAssign;
+    }
+
+    public Double getMarketPrice() {
+        return marketPrice;
+    }
+
+    public void setMarketPrice(Double marketPrice) {
+        this.marketPrice = marketPrice;
+    }
+
+    public Integer getPassVolumn() {
+        return passVolumn;
+    }
+
+    public void setPassVolumn(Integer passVolumn) {
+        this.passVolumn = passVolumn;
+    }
+
+    public Map<String, String> getMtCostMap() {
+        return mtCostMap;
+    }
+
+    public void setMtCostMap(Map<String, String> mtCostMap) {
+        this.mtCostMap = mtCostMap;
+    }
+
+    public Map<String, String> getOtherCostMap() {
+        return otherCostMap;
+    }
+
+    public void setOtherCostMap(Map<String, String> otherCostMap) {
+        this.otherCostMap = otherCostMap;
+    }
+
+    public Map<String, String> getTotalCostMap() {
+        return totalCostMap;
+    }
+
+    public void setTotalCostMap(Map<String, String> totalCostMap) {
+        this.totalCostMap = totalCostMap;
+    }
+
+    public Map<String, String> getProfitMarginMap() {
+        return profitMarginMap;
+    }
+
+    public void setProfitMarginMap(Map<String, String> profitMarginMap) {
+        this.profitMarginMap = profitMarginMap;
     }
 
 }

@@ -84,4 +84,6 @@ public interface RoutePlanningBeanLocal {
 
     public Double minBlockHour(Double distance);
 
+    public List<Route> canDeleteRoutePair();
+
 }

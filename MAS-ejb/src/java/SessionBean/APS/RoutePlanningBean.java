@@ -423,7 +423,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         q1.setParameter("origin", origin);
         q1.setParameter("dest", dest);
         if (q1.getResultList().isEmpty()) {
-            throw new Exception("Route does not exist.");
+            throw new Exception("Route " + originIATA + " - " + destIATA + " does not exist.");
         }
         route = (Route) q1.getResultList().get(0);
         return route;
@@ -444,7 +444,12 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     @Override
     public void deleteRouteList(List<Route> routeList) throws Exception {
-        for (Route r : routeList) {
+        List<Route> routePair = new ArrayList<>();
+        for (Route r1 : routeList) {
+            routePair.add(r1);
+            routePair.add(findRoute(r1.getDest().getIATA(), r1.getOrigin().getIATA()));
+        }
+        for (Route r : routePair) {
             Query q1 = em.createQuery("SELECT r FROM Route r WHERE r.id=:id").setParameter("id", r.getId());
             em.remove(q1.getSingleResult());
         }
@@ -465,6 +470,35 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             }
         }
         return rListCopy;
+    }
+
+    @Override
+    public List<Route> canDeleteRoutePair() {
+        List<Route> r1 = canDeleteRouteList();
+        List<Route> rPair = new ArrayList<>();
+        for (Route r : r1) {
+            Route rReturn = findRoute(r.getDest().getIATA(), r.getOrigin().getIATA());
+            if (rReturn != null) {
+                if (!rPair.contains(r) && !rPair.contains(rReturn)) {
+                    rPair.add(r);
+                }
+            } else {
+                if (!rPair.contains(r)) {
+                    rPair.add(r);
+                }
+            }
+        }
+        return rPair;
+    }
+
+    public Route findRoute(String originIATA, String destIATA) {
+        Airport origin = em.find(Airport.class, originIATA);
+        Airport dest = em.find(Airport.class, destIATA);
+        Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
+        q1.setParameter("origin", origin);
+        q1.setParameter("dest", dest);
+        route = (Route) q1.getResultList().get(0);
+        return route;
     }
 
     @Override

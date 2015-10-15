@@ -60,6 +60,8 @@ public class EditRouteManagedBean implements Serializable {
 
     private List<AircraftType> acTypeList;
     private List<String> acTypeInfo = new ArrayList();
+    
+    private boolean hasFlight;
 
 //    private Map<String, String> acTypeInfo = new HashMap<String, String>();
     public EditRouteManagedBean() {
@@ -83,7 +85,7 @@ public class EditRouteManagedBean implements Serializable {
         if (route.getAcType() != null) {
             acTypeString = route.getAcType().getType();
         } else {
-            acTypeString = "NoAcSelected";
+            acTypeString = "";
         }
 //        basicScFare = route.getBasicScFare();
 //        basicFcFare = route.getBasicFcFare();
@@ -95,14 +97,15 @@ public class EditRouteManagedBean implements Serializable {
     public void editRoute(ActionEvent e) throws Exception {
         try {
             Double drDistance = rpb.calRouteDistance(originIATA, destIATA);
+            Double distanceUpper = drDistance * 1.5;
             Double minHour = rpb.minBlockHour(distance);
             Double maxHour = rpb.maxBlockHour(distance);
             DecimalFormat formatter = new DecimalFormat("#0.00");
             DecimalFormat formatter2 = new DecimalFormat("#0.0");
-            if (!rpb.isHubAirport(destIATA) && !rpb.isHubAirport(originIATA)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : At least one of origin airport and  destination airport must be hub.", ""));
-            } else if (distance < drDistance) {
+            if (distance < drDistance) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance should be longer than the direct distance " + formatter.format(drDistance) + "km.", ""));
+            } else if (distance > distanceUpper) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Route distance is too long. The direct distance " + formatter.format(drDistance) + "km.", ""));
             } else if (blockhour < minHour || blockhour > maxHour) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
             } else {
@@ -283,6 +286,14 @@ public class EditRouteManagedBean implements Serializable {
 
     public void setuIComponent(UIComponent uIComponent) {
         this.uIComponent = uIComponent;
+    }
+
+    public boolean isHasFlight() {
+        return !route.getFlightFreqList().isEmpty();
+    }
+
+    public void setHasFlight(boolean hasFlight) {
+        this.hasFlight = hasFlight;
     }
 
 }

@@ -19,34 +19,63 @@
                     <p:outputLabel value="#{CRPMB.route}" />
 
                     <p:outputLabel value="Average Market Price (in SGD): " />
-                    <p:outputLabel value="#{CRPMB.marketPriceString}" />
+                    <p:outputLabel value="#{CRPMB.marketPrice}" />
 
                     <p:outputLabel value="Expected Annual Passengers: " />
-                    <p:outputLabel value="#{CRPMB.passVolumnString}" />
+                    <p:outputLabel value="#{CRPMB.passVolumn}" />
 
                 </h:panelGrid>
+                <br/>
+                <p:dataTable var="key" value="#{CRPMB.acKeyList}"  emptyMessage="No aircraft types are feasible for this route." style="width:90%">
 
-                <p:dataTable var="key" value="#{CRPMB.acKeyList}"  emptyMessage="No aircraft types are feasible for this route." style="width:70%">
-                    <p:column headerText="Aircraft Type" sortBy="#{key}">
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="2" headerText="Aircraft Type"/>
+                            <p:column colspan="4" headerText="Annual Cost Break Down (thousand SGD)"/>
+                            <p:column rowspan="2" headerText="Annual Total Cost (thousand SGD)" />
+                            <p:column rowspan="2" headerText="Expected Annual Revenue (thousand SGD)" />
+                            <p:column rowspan="2" headerText="Expected Annual Profit (thousand SGD)" />
+                            <p:column rowspan="2" headerText="Profit Margin Ratio" />
+                        </p:row>
+                        <p:row>
+                            <p:column headerText="Annual Fuel Cost (thousand SGD)"/>
+                            <p:column headerText="Annual Lease Cost (thousand SGD)"/>
+                            <p:column headerText="Annual Maintenance Cost (thousand SGD)"/>
+                            <p:column headerText="Annual Flight Crew Cost (thousand SGD)"/>
+                        </p:row>
+                    </p:columnGroup>
+
+                    <p:column>
                         <h:outputText value="#{key}" />
                     </p:column>
-                    <p:column headerText="Annual Fuel Cost (in SGD)">
+                    <p:column>
                         <h:outputText value="#{CRPMB.fuelCostMap[key]}" />
                     </p:column>
-                    <p:column headerText="Annual Lease Cost (in SGD)" >
+                    <p:column>
                         <h:outputText value="#{CRPMB.leaseCostMap[key]}" />
                     </p:column>
-                    <p:column headerText="Expected Annual Revenue (in SGD)" >
+                    <p:column>
+                        <h:outputText value="#{CRPMB.mtCostMap[key]}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{CRPMB.crewCostMap[key]}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{CRPMB.totalCostMap[key]}" />
+                    </p:column>
+                    <p:column>
                         <h:outputText value="#{CRPMB.revenueMap[key]}" />
                     </p:column>
-                    <p:column headerText="Expected Annual Profit (in SGD)" >
+                    <p:column>
                         <h:outputText value="#{CRPMB.profitMap[key]}" />
                     </p:column>
-                    <p:column headerText="Profitability Check Result" >
-                        <h:outputText value="#{CRPMB.resultMap[key]}" />
+                    <p:column>
+                        <h:outputText value="#{CRPMB.profitMarginMap[key]}" />
                     </p:column>
 
                 </p:dataTable>
+
+                <br/>
 
                 <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-carat-1-w" />
                 <p:commandButton value="Assign Aircraft Type to Route" actionListener="#{CRPMB.assignAcToRoute}" rendered="#{CRPMB.acToAssign}" icon="ui-icon-check" />

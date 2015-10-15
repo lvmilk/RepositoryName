@@ -54,6 +54,7 @@ public class RouteManagedBean implements Serializable {
     private List<FlightFrequency> flightOfRoute;
     private List<Route> selectedRoute = new ArrayList<>();
     private List<Route> canDeleteRoute = new ArrayList<>();
+    private List<Route> canDeleteRoutePair = new ArrayList<>();
     private List<Route> deletedRoute = new ArrayList<>();
     private List<Airport> airportList = new ArrayList<>();
     private Map<String, String> airportInfo = new HashMap<String, String>();
@@ -62,10 +63,8 @@ public class RouteManagedBean implements Serializable {
 //    private List<String> acTypeInfo = new ArrayList();
 //    private AircraftType acType;
 //    private String acTypeString;
-    private String marketPriceString;
-    private String passVolumnString;
-    private Integer mPrice;
-    private Integer pVolumn;
+    private Double marketPrice;
+    private Integer passVolumn;
 
     private List<Airport> hubList;
 
@@ -75,7 +74,7 @@ public class RouteManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         routeList = rpb.viewAllRoute();
-        canDeleteRoute = rpb.canDeleteRouteList();
+        canDeleteRoutePair = rpb.canDeleteRoutePair();
     }
 
     public void addRoute() throws Exception {
@@ -98,7 +97,7 @@ public class RouteManagedBean implements Serializable {
             } else if (blockhour < minHour || blockhour > maxHour) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Block hour should be between " + formatter2.format(minHour) + " hrs and " + formatter2.format(maxHour) + " hrs according to the route distance.", ""));
             } else {
-//                addReturnRoute = true;
+                addReturnRoute = true;
                 rpb.checkRouteExist(originIATA, destIATA);
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
@@ -121,13 +120,13 @@ public class RouteManagedBean implements Serializable {
     }
 
     public void viewRoute(ActionEvent event) throws IOException {
-        System.out.println("1");
         route = (Route) event.getComponent().getAttributes().get("route");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", fsb.getFlightOfRoute(route));
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", route.getOrigin());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", route.getDest());
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("distance", route.getDistance());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("hasFlight", !fsb.getFlightOfRoute(route).isEmpty());
         System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
     }
@@ -155,6 +154,7 @@ public class RouteManagedBean implements Serializable {
 
     public void confirmDeleteRoute() throws Exception {
         try {
+            System.out.println("rmb.confirmDeleteRoute() delete routes: " + selectedRoute);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedRoute", selectedRoute);
             rpb.deleteRouteList(selectedRoute);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./deleteRouteSuccess.xhtml");
@@ -183,12 +183,15 @@ public class RouteManagedBean implements Serializable {
     }
 
     public void checkRouteProfit(ActionEvent e) throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPriceString", marketPriceString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumnString", passVolumnString);
-        System.out.println("rmb.checkRouteProfita()---2: marketPriceString passed is " + marketPriceString);
-        System.out.println("rmb.checkRouteProfit()---2: passVolumnString passed is " + passVolumnString);
-
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+        if (marketPrice < 100) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Market price too low. Please check and re-enter. ", ""));
+        } else if (passVolumn < 0.001) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passenger volumn too low. Please check and re-enter. ", ""));
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("marketPrice", marketPrice);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passVolumn", passVolumn);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
+        }
     }
 //    public void checkRouteProfit() throws IOException {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPrice", mPrice);
@@ -308,11 +311,11 @@ public class RouteManagedBean implements Serializable {
     }
 
     public List<Route> getCanDeleteRoute() {
-        return canDeleteRoute;
+        return rpb.canDeleteRouteList();
     }
 
     public void setCanDeleteRoute(List<Route> canDeleteRoute) {
-        this.canDeleteRoute = canDeleteRoute;
+        this.canDeleteRoute = rpb.canDeleteRouteList();
     }
 //
 //    public List<FlightFrequency> getFlightOfRoute(Route route) {
@@ -323,22 +326,6 @@ public class RouteManagedBean implements Serializable {
         this.flightOfRoute = flightOfRoute;
     }
 
-    public String getMarketPriceString() {
-        return marketPriceString;
-    }
-
-    public void setMarketPriceString(String marketPriceString) {
-        this.marketPriceString = marketPriceString;
-    }
-
-    public String getPassVolumnString() {
-        return passVolumnString;
-    }
-
-    public void setPassVolumnString(String passVolumnString) {
-        this.passVolumnString = passVolumnString;
-    }
-
     public List<Airport> getHubList() {
         return rpb.viewHubAirport();
     }
@@ -347,20 +334,20 @@ public class RouteManagedBean implements Serializable {
         this.hubList = hubList;
     }
 
-    public Integer getmPrice() {
-        return mPrice;
+    public Double getMarketPrice() {
+        return marketPrice;
     }
 
-    public void setmPrice(Integer mPrice) {
-        this.mPrice = mPrice;
+    public void setMarketPrice(Double marketPrice) {
+        this.marketPrice = marketPrice;
     }
 
-    public Integer getpVolumn() {
-        return pVolumn;
+    public Integer getPassVolumn() {
+        return passVolumn;
     }
 
-    public void setpVolumn(Integer pVolumn) {
-        this.pVolumn = pVolumn;
+    public void setPassVolumn(Integer passVolumn) {
+        this.passVolumn = passVolumn;
     }
 
 //    public List<String> getAcTypeInfo() {
@@ -391,4 +378,11 @@ public class RouteManagedBean implements Serializable {
 //    public void setAcType(AircraftType acType) {
 //        this.acType = acType;
 //    }
+    public List<Route> getCanDeleteRoutePair() throws Exception {
+        return rpb.canDeleteRoutePair();
+    }
+
+    public void setCanDeleteRoutePair(List<Route> canDeleteRoutePair) {
+        this.canDeleteRoutePair = canDeleteRoutePair;
+    }
 }

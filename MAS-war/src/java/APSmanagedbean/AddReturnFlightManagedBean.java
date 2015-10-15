@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 
 /**
@@ -54,6 +55,7 @@ public class AddReturnFlightManagedBean implements Serializable {
     private boolean inOnSun;
 
     private String inFlightNo;
+    private Route outRoute;
     private Route inRoute;
     private FlightFrequency inBound;
 
@@ -66,21 +68,26 @@ public class AddReturnFlightManagedBean implements Serializable {
         destAirportString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("oriAirportString");
         inStartDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
         inEndDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
+        outRoute = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("outRoute");
     }
 
-    public void addReturnFlightFrequency() throws Exception {
+    public void addReturnFlightFrequency(ActionEvent e) throws Exception {
         try {
             inRoute = rpb.viewRoute(oriAirportString, destAirportString);
+            if (inRoute.getAcType() != null) {
+            } else {
+                inRoute.setAcType(outRoute.getAcType());
+            }
             Format formatter2 = new SimpleDateFormat("HH:mm");
             fsb.validateFlightNo(inFlightNo);
             if (inFlightNo.length() != 5 || inFlightNo.charAt(0) != 'M' || inFlightNo.charAt(1) != 'R' || !Character.isDigit(inFlightNo.charAt(2)) || !Character.isDigit(inFlightNo.charAt(3)) || !Character.isDigit(inFlightNo.charAt(4))) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Flight Number: Please enter a flight No. in format of MRxxx, x is a digit, e.g. MR123", ""));
-            } 
+            }
             if (!(inOnMon || inOnTue || inOnWed || inOnThu || inOnFri || inOnSat || inOnSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operation Day of the Week: Please select as least one day of the week for flight.", ""));
             } else {
                 inDateAdjust = Integer.parseInt(inDateAdjustString);
-                
+
                 inDepTimeString = formatter2.format(inDepTime);
                 inArrTimeString = formatter2.format(inArrTime);
 
@@ -260,6 +267,14 @@ public class AddReturnFlightManagedBean implements Serializable {
 
     public void setInRoute(Route inRoute) {
         this.inRoute = inRoute;
+    }
+
+    public Route getOutRoute() {
+        return outRoute;
+    }
+
+    public void setOutRoute(Route outRoute) {
+        this.outRoute = outRoute;
     }
 
     public FlightFrequency getInBound() {

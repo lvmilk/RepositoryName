@@ -24,16 +24,19 @@
                     <p:outputLabel for="distance" value="Route Distance (km): " />
                     <p:inputText id="distance" value="#{editRouteManagedBean.distance}" label="distance" required="true"  requiredMessage="Please enter route distance" size="20">
                     </p:inputText>
+                    <!--<h:outputText value="#{editRouteManagedBean.route.distance}" />-->
 
                     <p:outputLabel for="blockhour" value="Aircraft Blockhour (hr): " />
                     <p:inputText id="blockhour" value="#{editRouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="20">
                     </p:inputText>
-                    
+                    <!--<h:outputText value="#{editRouteManagedBean.route.blockhour}"/>-->
+
                     <p:outputLabel for="aircraftType" value="Serving Aircraft Type: " />
-                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="false" requiredMessage="Please select aircraft type " style="width:150px">
-                        <f:selectItem itemLabel="-Select One-" itemValue="NoAcSelected" />
+                    <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="true" requiredMessage="Please select aircraft type " style="width:150px" rendered="#{not editRouteManagedBean.hasFlight}">
+                        <f:selectItem itemLabel="-Select One-" itemValue="" />
                         <f:selectItems value="#{editRouteManagedBean.acTypeInfo}"/>
                     </p:selectOneMenu>
+                    <h:outputText value="#{editRouteManagedBean.route.acType.type}" rendered="#{editRouteManagedBean.hasFlight}" />
 
                 </h:panelGrid>
 

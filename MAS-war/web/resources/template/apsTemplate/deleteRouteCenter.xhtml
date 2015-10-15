@@ -15,9 +15,9 @@
 
         <h:form>
 
-            <p:panel id="panel" header="Delete Route"  style="width:100%">
+            <p:panel id="panel" header="Delete Route Pair"  style="width:100%">
                 <p:messages id="msgs" />
-                <p:dataTable var="route" rowKey ="#{route.id}" widgetVar="routeTable" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoute}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
+                <p:dataTable var="route" rowKey ="#{route.id}" widgetVar="routeTable" selection="#{RouteManagedBean.selectedRoute}" value="#{RouteManagedBean.canDeleteRoutePair}" paginator="true" rows="10" emptyMessage="No routes can be deleted.">
 
                     <f:facet name="header">  
                         <h:outputLink id="fade" value="#">
@@ -33,16 +33,14 @@
                     <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" selectionMode="multiple" headerText="Select all" style="width:50px"  />
-                            <p:column colspan="4" headerText="Origin Airport" />
-                            <p:column colspan="4" headerText="Destination Airport" />
+                            <p:column colspan="3" headerText="Outbound Origin / Inbound Destination" />
+                            <p:column colspan="3" headerText="Outbound Destination / Inbound Origin" />
                         </p:row>
                         <p:row>   
                             <p:column headerText="IATA" sortBy="#{route.origin.IATA}" filterBy="#{route.origin.IATA}" filterMatchMode="contains"/>
-                            <p:column headerText="Specification" filterBy="#{route.origin.spec}" filterMatchMode="contains"/>
                             <p:column headerText="City" filterBy="#{route.origin.cityName}" filterMatchMode="contains"/>
                             <p:column headerText="Country" filterBy="#{route.origin.countryName}" filterMatchMode="contains"/>
                             <p:column headerText="IATA" sortBy="#{route.dest.IATA}" filterBy="#{route.dest.IATA}" filterMatchMode="contains"/>
-                            <p:column headerText="Specification" filterBy="#{route.dest.spec}" filterMatchMode="contains"/>
                             <p:column headerText="City" filterBy="#{route.dest.cityName}" filterMatchMode="contains"/>
                             <p:column headerText="Country" filterBy="#{route.dest.countryName}" filterMatchMode="contains"/>
                         </p:row>
@@ -54,9 +52,6 @@
                         <h:outputText value="#{route.origin.IATA}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{route.origin.spec}" />
-                    </p:column>
-                    <p:column>
                         <h:outputText value="#{route.origin.cityName}" />
                     </p:column>
                     <p:column>
@@ -64,9 +59,6 @@
                     </p:column>
                     <p:column>
                         <h:outputText value="#{route.dest.IATA}" />
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{route.dest.spec}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{route.dest.cityName}" />
@@ -82,7 +74,7 @@
 
             <h:form id="dialogForm">
                 <p:dialog id="dlg" header="Delete Route" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
-                    <h:outputText value="Delete selected route(s) ?"/>
+                    <h:outputText value="Are you sure you want to delete selected routes ?"/>
                     <h:panelGrid columns="2" cellpadding="10">
                         <p:commandButton value="Delete"  update="" action="#{RouteManagedBean.confirmDeleteRoute()}" />
                         <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />

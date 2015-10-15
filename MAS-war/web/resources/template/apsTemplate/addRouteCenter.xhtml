@@ -36,17 +36,15 @@
                     <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
                     </p:inputText>
 
-                    
+
                 </h:panelGrid>
 
-                <!--<h:outputText value=""/>-->
-                <p:selectBooleanCheckbox id="check" value="#{RouteManagedBean.addReturnRoute}" />
+<!--                <p:selectBooleanCheckbox id="check" value="#{RouteManagedBean.addReturnRoute}" />
                 <h:outputText value="Add return route" />
-                <p:tooltip id="toolTipTrack" for="check" value="The return route will have the same distance and blockhour as this route." trackMouse="true" />
+                <p:tooltip id="toolTipTrack" for="check" value="The return route will have the same distance and blockhour as this route." trackMouse="true" />-->
 
-                <!--<h:outputText value=""/>-->
-<!--<p:commandButton id="addRouteBtn" value="Add Inbound and Outbound Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />-->
-                <p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true"/>
+                <p:commandButton id="addRouteBtn" value="Add Inbound and Outbound Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true" />
+                                <!--<p:commandButton id="addRouteBtn" value="Add Route" update="panel" style="margin-right:0" action="#{RouteManagedBean.addRoute()}"  icon="ui-icon-check" ajax="true"/>-->
 
             </p:panel>
 

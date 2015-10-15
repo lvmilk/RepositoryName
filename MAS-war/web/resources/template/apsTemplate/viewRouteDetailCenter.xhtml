@@ -27,29 +27,12 @@
                     <p:outputLabel value="Route Distance:" />
                     <p:outputLabel value="#{viewRoute.distance}" />
 
-                    <p:outputLabel value="Serving Aircraft Type " />
-                    <p:outputLabel value="#{viewRoute.acType.type}" />
-
                     <p:outputLabel value="Aircraft Blockhour: " />
                     <p:outputLabel value="#{viewRoute.blockhour}" />
 
-                    <!--                    <p:outputLabel value="Suite Basic Fare: "/>
-                                        <p:outputLabel value="#{viewRoute.basicScFare}" />
-                    
-                                        <p:outputLabel value="First Class Basic Fare: " />
-                                        <p:outputLabel value="#{viewRoute.basicFcFare}" />
-                    
-                                        <p:outputLabel value="Business Class Basic Fare: " />
-                                        <p:outputLabel value="#{viewRoute.basicBcFare}" />
-                    
-                                        <p:outputLabel value="Premium Economic Class Basic Fare: " />
-                                        <p:outputLabel value="#{viewRoute.basicPecFare}" />
-                    
-                                        <p:outputLabel value="Economic Class Basic Fare: " />
-                                        <p:outputLabel value="#{viewRoute.basicEcFare}" />
-                    
-                                        <p:outputLabel value="Route Status: " />
-                                        <p:outputLabel value="#{viewRoute.status}" />-->
+                    <p:outputLabel value="Serving Aircraft Type " />
+                    <p:outputLabel value="#{viewRoute.acType.type}" rendered="#{hasFlight}"/>
+                    <p:outputLabel value="Not Assigned" rendered="#{not hasFlight}"/>
 
                 </h:panelGrid>
 

@@ -100,30 +100,33 @@ public class FlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Flight Number: Please enter a flight No. in format of MRxxx, x is a digit, e.g. MR123", ""));
             } else if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Operation Day of the Week: Please select as least one day of the week for flight.", ""));
-            } else if (route.getAcType()==null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, "Route " + route + " has not set serving aircraft type, please set the aircraft type before adding flight for the route.", ""));
             } else {
-                dateAdjust = Integer.parseInt(dateAdjustString);
-                startDateString = formatter.format(startDate);
-                endDateString = formatter.format(endDate);
-                //default value for checking
-                String sd = "";
-                String fd = "";
-                depTimeString = formatter2.format(depTime);
-                System.out.println("fmb.addFlightFrequency(): depTimeString: " + depTimeString);
-                arrTimeString = formatter2.format(arrTime);
-                System.out.println("fmb.addFlightFrequency(): arrTimeString: " + arrTimeString);
-                fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
+                if (route.getAcType() != null) {
+//if(rpb.viewRoute(destAirportString, oriAirportString)) {}
+                    dateAdjust = Integer.parseInt(dateAdjustString);
+                    startDateString = formatter.format(startDate);
+                    endDateString = formatter.format(endDate);
+                    //default value for checking
+                    String sd = "";
+                    String fd = "";
+                    depTimeString = formatter2.format(depTime);
+                    System.out.println("fmb.addFlightFrequency(): depTimeString: " + depTimeString);
+                    arrTimeString = formatter2.format(arrTime);
+                    System.out.println("fmb.addFlightFrequency(): arrTimeString: " + arrTimeString);
+                    fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
 
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oriAirportString", oriAirportString);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("destAirportString", destAirportString);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oriAirportString", oriAirportString);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("destAirportString", destAirportString);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("outRoute", route);
 
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Route " + route + " has not set serving aircraft type, please set the aircraft type before adding flight for the route.", ""));
+                }
             }
-
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
