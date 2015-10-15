@@ -20,7 +20,7 @@
 
                     <p:outputLabel for="otrPassword" value="Password: " />
                     <p:inputText id="otrPassword" value="#{edProfile.pswEdited}" type="password" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="otrPassword" display="icon" />
 

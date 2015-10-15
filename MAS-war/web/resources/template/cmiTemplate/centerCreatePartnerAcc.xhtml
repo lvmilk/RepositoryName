@@ -37,8 +37,8 @@
                     <p:message for="pid" display="icon" />
 
                     <p:outputLabel for="pPwd" value="Password: " />
-                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" type="password"  required="true" label="Password" size="10">
+                       <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="pPwd" display="icon" />
 
@@ -69,8 +69,8 @@
                     <p:message for="pid" display="icon" />
 
                     <p:outputLabel for="pPwd" value="Password: " />
-                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" required="true" label="Password" size="10">
-                        <f:validateLength minimum="6" />
+                    <p:inputText id="pPwd" value="#{cPartnerMB.password}" type="password"  required="true" label="Password" size="10">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" />
                     </p:inputText>
                     <p:message for="pPwd" display="icon" />
 

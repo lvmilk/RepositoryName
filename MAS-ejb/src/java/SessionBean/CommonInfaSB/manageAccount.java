@@ -88,11 +88,11 @@ public class manageAccount implements manageAccountLocal {
         hPwd = this.encrypt(pid, pPwd);
         if (stfType.equals("agency")) {
             agency = new Agency();
-            agency.createAgencyAcc(pid, pPwd, email, stfType);
+            agency.createAgencyAcc(pid, hPwd, email, stfType);
             em.persist(agency);
         } else if (stfType.equals("alliance")) {
             alliance = new AirAlliances();
-            alliance.createAllianceAcc(pid, pPwd, email, stfType);
+            alliance.createAllianceAcc(pid, hPwd, email, stfType);
             em.persist(alliance);
         }
     }
