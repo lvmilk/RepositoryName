@@ -1,6 +1,6 @@
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A380","Airbus",15200,100000,100,100,100,"4E",6,10,20,50,300,16,4,2,2,2)
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("777-300","Boeing",11400,200000,200,200,200,"4F",3,20,50,100,200,14,2,2,2,2)
-INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A330-200","Airbus",10800,100000,100,200,200,"4F",2,10,50,80,200,10,2,2,2,2)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A380","AIRBUS",15200,1800000,12000,80,75,"4E",6,10,20,50,300,16,4,2,2,2)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("777-300","BOEING",11400,1500000,10000,70,67,"4F",3,20,50,100,200,14,2,2,2,2)
+INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, stewardess, steward, purser, captain, pilot) values("A330-200","AIRBUS",10800,500000,6000,60,55,"4F",2,10,50,80,200,10,2,2,2,2)
 
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("SIN","Singapore Changi Airport","Singapore","Singapore","Changi Intl","UTC+08:00","Normal","Hub","4F", 1.364420, 103.991531)
 INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("XIA","Xi'an Xianyang International Airport","Xi'an","China","Xianyang","UTC+08:00","Normal","Normal","4F", 34.441983, 108.771426)
@@ -20,12 +20,12 @@ INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) val
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(90000,"Premium Economy Class",100,"777-300")
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(100000,"Economy Class",200,"777-300")
 
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-ABC","In Service","2012-01-09","2014-01-03","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-XYZ","In Service","2014-10-09","2015-12-03","2020-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-AAA","In Service","2010-01-09","2011-01-03","2020-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-BBB","In Service","2009-01-09","2011-01-03","2022-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-CCC","In Service","2012-01-09","2013-01-03","2022-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A330-200","9V-000","Testing","2012-01-09","2013-01-03","2050-12-25","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-ABC","0000001","In Service","2012-01-09","2014-01-03","2025-01-03","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-XYZ","0000004","In Service","2014-10-09","2015-12-03","2020-01-03","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-AAA","0000002","In Service","2010-01-09","2011-01-03","2020-01-03","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-BBB","0000003","In Service","2009-01-09","2011-01-03","2022-01-03","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-CCC","0000005","In Service","2012-01-09","2013-01-03","2022-01-03","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A330-200","9V-000","9999999","Testing","2012-01-09","2013-01-03","2050-12-25","SIN")
 
 
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10000,3900,5,0,0,0,0,"777-300","XIA","SIN","Pending",0)
@@ -34,7 +34,6 @@ INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPe
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(40000,6500,4,0,0,0,0,"A380","SIN","DXB","Pending",0)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(50000,6900,4,0,0,0,0,"A380","LHR","DXB","Pending",0)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(60000,6900,4,0,0,0,0,"A380","DXB","LHR","Pending",0)
-
 
 INSERT IGNORE INTO Adminstaff(ID,ADMNAME,ADMPASSWORD,STFTYPE) values(10000,"admin", "admin", "administrator")
 INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("O777777","777@777.com")

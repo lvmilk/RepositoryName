@@ -17,7 +17,7 @@
                 <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
 
                 <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
-                             start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="false" showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
+                             groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
 
                     <p:ajax event="add" update=":formMain:addTaskInner"
                             listener="#{FAMB.onAdd}"
@@ -77,9 +77,12 @@
                 </f:facet>  
             </p:dialog>  
 
-            <h:panelGrid columns="1" style="margin-bottom:50px; width:90%" cellpadding="20">
+            <h:panelGrid columns="2" style="margin-bottom:50px; width:90%" cellpadding="20">
                 <p:outputLabel value="Unassigned Flight Instance List:"/>
-                <p:dataTable var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights remain unassigned." style="width:70%">
+                <p:commandButton value="Refresh" update="unplanned" >
+                    <f:ajax event="click" listener="#{FAMB.refresh}" immediate="true" />
+                </p:commandButton>  
+                <p:dataTable id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights remain unassigned." style="width:70%">
                     <p:column headerText="Flight No">
                         <h:outputText value="#{flight.flightFrequency.flightNo}" />
                     </p:column>
