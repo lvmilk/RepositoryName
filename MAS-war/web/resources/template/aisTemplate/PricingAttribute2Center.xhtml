@@ -15,41 +15,41 @@
 
 
 
-            <h:form id="cabinInfo">
-                <p:panel id="panel" header="Fill in load factors"  style="width:100%">
-                     <p:messages id="msgs" />
+        <h:form id="cabinInfo">
+            <p:panel id="panel" header="Fill in load factors"  style="width:100%">
+                <p:messages id="msgs" />
 
-                    <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
-                        <p:column headerText="Cabin Class Name" sortBy="#{key}">
-                            <h:outputText value="#{key}" />
-                        </p:column>
-                        <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
-                            <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
-                        </p:column>
-                        <p:column headerText="Load Factor(0.0-1.0)">  
-                            <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor of  #{key}" validatorMessage="Please check load factor  of  #{key} should be (0,1]" size="10">
-                                <f:validateDoubleRange minimum="0.01" maximum="1.0" />
-                            </p:inputText>
-                        </p:column>
+                <p:dataTable var="key" value="#{pricingManagedBean.keyList}"  emptyMessage="No Cabin Classes">
+                    <p:column headerText="Cabin Class Name" sortBy="#{key}">
+                        <h:outputText value="#{key}" />
+                    </p:column>
+                    <p:column headerText="Seat Count" sortBy="#{pricingManagedBean.cabinInfo[key]}">
+                        <h:outputText value="#{pricingManagedBean.cabinInfo[key]}" />
+                    </p:column>
+                    <p:column headerText="Load Factor(0.0-1.0)">  
+                        <p:inputText id="loadFactor" value="#{pricingManagedBean.loadfactorMap[key]}"  required="true" requiredMessage="Please enter a number (0,1) for load factor of  #{key}" validatorMessage="Please check load factor  of  #{key} should be (0,1]" size="10">
+                            <f:validateDoubleRange minimum="0.01" maximum="1.0" />
+                        </p:inputText>
+                    </p:column>
 
-                    </p:dataTable>
-                   <h:panelGrid columns="2" cellpadding="5">
+                </p:dataTable>
+                <h:panelGrid columns="2" cellpadding="5">
 
                     <p:outputLabel for="profit_margin" value="Expected Net Profit Margin(net profit/cost) in decimal number: " />
-                    <p:inputText id="profit_margin"  value="#{pricingManagedBean.profitMargin}" label="Expected Net Profit Margin" required="true" requiredMessage="Please enter an expected net profit margin" validatorMessage="Please check net profit margin is decimal number, and it should not exceed 15"  size="10">
-                         <f:validateDoubleRange minimum="0.0" maximum="15.0" />
+                    <p:inputText id="profit_margin"  value="#{pricingManagedBean.profitMargin}" label="Expected Net Profit Margin" required="true" requiredMessage="Please enter an expected net profit margin" validatorMessage="Please check net profit margin is decimal number"  size="10">
+                        <f:validateDoubleRange minimum="0.0" maximum="15.0" />
                     </p:inputText>
 
                     <p:outputLabel for="annual_departures" value="Number of Annual Departures" />
-                     <h:outputText id="annual_departures" value="#{pricingManagedBean.annualDepartures}" />
-                    
-                    </h:panelGrid>
+                    <h:outputText id="annual_departures" value="#{pricingManagedBean.annualDepartures}" />
 
-                    <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />
-                </p:panel>
+                </h:panelGrid>
 
-            </h:form>
-            
+                <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFactor()}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
 
 
 
