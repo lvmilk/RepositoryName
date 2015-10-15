@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Aircraft Flight Task</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="List of Flight Tasks" style="width:100%" >
+                <p:dataTable var="flightInst" value="#{FTMB.flightInstList}" paginator="true" rows="40" emptyMessage="No Related flight task found.">
+
+                    <p:column headerText="Flight No" sortBy="#{flightInst.flightFrequency.flightNo}" filterBy="#{flightInst.flightFrequency.flightNo}" filterMatchMode="contains">
+                        <h:outputText value="#{flightInst.flightFrequency.flightNo}" />
+                    </p:column>
+                    <p:column headerText="Flight Date" sortBy="#{flightInst.date}" filterBy="#{flightInst.date}" filterMatchMode="contains">
+                        <h:outputText value="#{flightInst.date}" />
+                    </p:column>
+                    <p:column headerText="Flight Status" sortBy="#{flightInst.flightStatus}">
+                        <h:outputText value="#{flightInst.flightStatus}" />
+                    </p:column>
+                    <p:column headerText="Departure Time">
+                        <h:outputText value="#{flightInst.flightFrequency.scheduleDepTime}" />
+                    </p:column>
+                    <p:column headerText="Arrival Time">
+                        <h:outputText value="#{flightInst.flightFrequency.scheduleArrTime}" />
+                    </p:column>
+                    <p:column headerText="Date Adjust">
+                        <h:outputText value="#{flightInst.flightFrequency.dateAdjust}" />
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton value="Cancel" update="@form" actionListener="#{FTMB.viewFlightTaskCancel()}"  icon="ui-icon-cancel" />
+                </p:panel>
+        </h:form>
+    </h:body>
+</html>

@@ -9,6 +9,7 @@ import Entity.APS.Aircraft;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,8 +108,8 @@ public class FleetAssignmentManagedBean implements Serializable {
                 cal.set(2014, Calendar.FEBRUARY, 10, 0, 0, 0);
                 Date dummyEnd = cal.getTime();
                 TimelineEvent flightTaskEvent = new TimelineEvent(fsb.getDummyFi(), dummyStart, dummyEnd, true, ac.getRegistrationNo());
-                System.out.println("FAMB: init(): event " + flightTaskEvent);
-                model.add(flightTaskEvent);
+                   System.out.println("FAMB: init(): event " + flightTaskEvent);
+               model.add(flightTaskEvent);     
                 System.out.println("FAMB: init(): group " + group);
                 for (FlightInstance fi : fiList) {
                     System.out.println("FAMB: init(): fi= " + fi.getDate() + fi.getFlightFrequency().getFlightNo());
@@ -128,29 +129,34 @@ public class FleetAssignmentManagedBean implements Serializable {
     public void onAdd(TimelineAddEvent e) {
         System.out.println("-------------------------------aaaabbbbbbbbbbb");
         // get TimelineEvent to be added  
-        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());
+         event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());
         // add the new event to the model in case if user will close or cancel the "Add dialog"  
         // without to update details of the new event. Note: the event is already added in UI.  
-        model.add(event);
+         model.add(event);
     }
 
     public void onDelete(TimelineModificationEvent e) {
         System.out.println("-------------------------------aaaacccccccccccc");
-        event = e.getTimelineEvent();
+          System.out.println("onDelete(): ");
+            event = e.getTimelineEvent();
+              System.out.println("onDelete(): "+e.toString());
+        
     }
 
     public void delete() {
-        System.out.println("event ???" + event.toString());
-        FlightInstance f = (FlightInstance) event.getData();
-        Aircraft a = f.getAircraft();
-        if (a.getFlightInstance().contains(f)) {
-             System.out.println("remove ac from fi !!!!" );
-            fsb.deleteAcFromFi(a, f);
+        if (event != null) {
+            System.out.println("event ???" + event.toString());
+            FlightInstance f = (FlightInstance) event.getData();
+            Aircraft a = f.getAircraft();
+            if (a.getFlightInstance().contains(f)) {
+                System.out.println("remove ac from fi !!!!");
+                fsb.deleteAcFromFi(a, f);
+            }
+            TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
+            model.delete(event, timelineUpdater);
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight task " + f.getFlightFrequency().getFlightNo() + " on "
+                    + f.getDate() + " of " + a.getSerialNo() + " has been deleted", null);
         }
-        TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
-        model.delete(event, timelineUpdater);
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight task " + f.getFlightFrequency().getFlightNo() + " on "
-                + f.getDate() + " of " + a.getSerialNo() + " has been deleted", null);
     }
 
     public void addTask() {
@@ -162,19 +168,22 @@ public class FleetAssignmentManagedBean implements Serializable {
             System.out.println("AircraftID: " + taskAircraftSerial);
 //            start = fi.getStandardDepTimeDateType();
 //            end = fi.getStandardArrTimeDateType();
-            if (fsb.addAcToFi(aircraft, fi)) {
+            
+            if (taskId != null && taskAircraftSerial != null && fsb.addAcToFi(aircraft, fi)) {
                 System.out.println("CHECK 1");
                 event = new TimelineEvent(fi, fi.getStandardDepTimeDateType(), fi.getStandardArrTimeDateType(), true, taskAircraftSerial);
                 System.out.println("event created!!");
                 model.add(event);
                 System.out.println("event added!!");
                 TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
+                System.out.println("HERE?!?!");
                 model.update(event, timelineUpdater);
+                System.out.println("HERE ?!?!?!");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
             } else {
-                System.out.println("CHECK 2");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft " + taskAircraftSerial + "cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
-                System.out.println("Error meesage" + "addTaskError");
+                System.out.println("cannot add task!!!!");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft " + taskAircraftSerial + " cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
+                System.out.println("Error meesage " + "addTaskError");
             }
         } catch (Exception ex) {
             System.out.println("Error meesage: " + ex.getMessage());
@@ -236,7 +245,7 @@ public class FleetAssignmentManagedBean implements Serializable {
                 aircraftList.add(temp);
             }
         }
-        System.out.println("FAMB: SIZE2: " + aircraftList.get(0).getRegistrationNo());
+    //    System.out.println("FAMB: SIZE2: " + aircraftList.get(0).getRegistrationNo());
 //        aircraftList = fpb.getAllAircraft();
         return aircraftList;
     }
@@ -295,12 +304,20 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public String getDeleteMessage() {
-        FlightInstance fi = ((FlightInstance) event.getData());
-        return "Do you want to delete the flight task " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " ?";
+        if (event != null) {
+            FlightInstance fi = ((FlightInstance) event.getData());
+                   return "Do you want to delete the flight task " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " ?";
+
+        }
+       return "Do you want to delete the flight task? ";
     }
 
     public void setDeleteMessage(String deleteMessage) {
         this.deleteMessage = deleteMessage;
     }
 
+    public void refresh() throws IOException {
+        System.out.println("REFRESH!");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./assignFlightView.xhtml");
+    }
 }

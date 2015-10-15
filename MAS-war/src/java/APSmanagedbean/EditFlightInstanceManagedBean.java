@@ -69,6 +69,8 @@ public class EditFlightInstanceManagedBean implements Serializable {
     private boolean onFri;
     private boolean onSat;
     private boolean onSun;
+    private String sDate;
+    private String fDate;
 
     private Calendar cal = new GregorianCalendar();
     private Calendar currentCal = new GregorianCalendar();
@@ -76,6 +78,10 @@ public class EditFlightInstanceManagedBean implements Serializable {
 
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
+
+    private boolean aircraftCheck = true;
+    private boolean startCheck;
+    private boolean finishCheck;
 
     public EditFlightInstanceManagedBean() {
     }
@@ -98,6 +104,8 @@ public class EditFlightInstanceManagedBean implements Serializable {
         finishDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("finishDate");
         flightInst = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInst");
         flightInstList = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInstList");
+        sDate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("sDate");
+        fDate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fDate");
     }
 
     public void editFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
@@ -135,6 +143,9 @@ public class EditFlightInstanceManagedBean implements Serializable {
     public void viewFlightInstance(FlightFrequency flightFreq) throws IOException, ParseException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightFreq", flightFreq);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightFreq.getFlightNo());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sDate", flightFreq.getsDate());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fDate", flightFreq.getfDate());
+
         System.out.println("view flight instance flight No: " + flightFreq.getFlightNo());
         flightNo = flightFreq.getFlightNo();
         flightInstList = fsb.getThisFlightInstance(flightNo);
@@ -143,6 +154,12 @@ public class EditFlightInstanceManagedBean implements Serializable {
     }
 
     public void viewThisFlightInstance(FlightInstance flightInst) throws Exception {
+//        if (flightInst.getAircraft().getRegistrationNo().equals("9V-000")) {
+//            aircraftCheck = false;
+//        } else {
+//            aircraftCheck = true;
+//        }
+//        System.out.println("editFlightInstanceManagedBean: viewThisFlightInstance: aircraftCheck: "+aircraftCheck);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightInst.getFlightFrequency().getFlightNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightDateString", flightInst.getDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightStatus", flightInst.getFlightStatus());
@@ -341,6 +358,46 @@ public class EditFlightInstanceManagedBean implements Serializable {
 
     public void setActualDateAdjust(Integer actualDateAdjust) {
         this.actualDateAdjust = actualDateAdjust;
+    }
+
+    public boolean isAircraftCheck() {
+        return aircraftCheck;
+    }
+
+    public void setAircraftCheck(boolean aircraftCheck) {
+        this.aircraftCheck = aircraftCheck;
+    }
+
+    public String getsDate() {
+        return sDate;
+    }
+
+    public void setsDate(String sDate) {
+        this.sDate = sDate;
+    }
+
+    public String getfDate() {
+        return fDate;
+    }
+
+    public void setfDate(String fDate) {
+        this.fDate = fDate;
+    }
+
+    public boolean isStartCheck() {
+        return startCheck;
+    }
+
+    public void setStartCheck(boolean startCheck) {
+        this.startCheck = startCheck;
+    }
+
+    public boolean isFinishCheck() {
+        return finishCheck;
+    }
+
+    public void setFinishCheck(boolean finishCheck) {
+        this.finishCheck = finishCheck;
     }
 
 }

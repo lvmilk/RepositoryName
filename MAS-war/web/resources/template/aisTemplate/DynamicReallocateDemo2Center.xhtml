@@ -62,7 +62,9 @@
 
 
                 <p:column headerText="Fare">
-                    <h:outputText value="#{bki.price}" />
+                    <h:outputText value="#{bki.price}" >
+                    <f:convertNumber type="number" maxFractionDigits="2" pattern="$#0.00" />
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="Edit" style="width:32px">

@@ -45,7 +45,7 @@
         <br />
         <p:panel id="panel" header="Cabin Class Information" style="text-align: center;width:100%">
             <c:forEach var="cabin" items="#{viewCabin2Bean.cabinList}">
-                <p:panelGrid columns="#{cabin.rowSeatCount+1+viewCabin2Bean.aisleMap[cabin]}" styleClass="ui-panelgrid" >
+                <p:panelGrid columns="#{cabin.rowSeatCount+1+viewCabin2Bean.aisleMap[cabin]}"  styleClass="ui-panelgrid" >
                     <f:facet name="header">
                         <p:row >
                             <p:column >
@@ -67,13 +67,13 @@
 
                             <c:forEach var="row" items="#{viewCabin2Bean.chartMap[cabin]}">
 
-                                <h:outputText value=" #{row[0].substring(0,row[0].length()-1)} " style="height:60px;width:30px"/>
+                                <h:outputText value=" #{row[0].substring(0,row[0].length()-1)} " style="text-align: center;height:60px;width:30px"/>
 
                                 <c:forEach var="value" items="#{row}">
                                     <c:if test="${not empty value}">
                                         <c:choose>
                                             <c:when test="${cabin.cabinName=='Suite'}">
-                                                <div id="seat1"><img src="./../images/suite.jpg" id="mySuite"/></div>
+                                                <div id="seat1"><img text-align="center" src="./../images/suite.jpg" id="mySuite"/></div>
                                             </c:when>
                                             <c:when test="${cabin.cabinName=='First Class'}">
                                                 <div id="seat2"><img src="./../images/first.png" id="myFirst"/></div>
@@ -116,10 +116,11 @@
         <style>
             #mySuite{
                 background: url("./../images/suite.jpg");
+                margin:0 auto;
                 cursor: pointer;
                 display: block;
-                max-width:50px;
-                max-height:70px;
+                max-width:80px;
+                max-height:120px;
                 width:auto;
                 height: auto;;
                 border: none;background-size:cover ;
@@ -127,10 +128,11 @@
 
             #myBiz{
                 background: url("./../images/biz.png");
+                margin:0 auto;
                 cursor: pointer;
                 display: block;
-                max-width:40px;
-                max-height:40px;
+                max-width:45px;
+                max-height:70px;
                 width:auto;
                 height: auto;;
                 border: none;background-size:cover ;
@@ -140,10 +142,11 @@
 
             #myFirst{
                 background: url("./../images/first.png");
+                margin:0 auto;
                 cursor: pointer;
                 display: block;
-                max-width:40px;
-                max-height:70px;
+                max-width:60px;
+                max-height:90px;
                 width:auto;
                 height: auto;;
                 border: none;background-size:cover ;
@@ -151,6 +154,7 @@
 
             #myEcons{
                 background: url("./../images/econs.png");
+                margin:0 auto;
                 cursor: pointer;
                 display: block;
                 max-width:30px;
@@ -162,10 +166,11 @@
 
             #myPecons{
                 background: url("./../images/Pecons.png");
+                margin:0 auto;
                 cursor: pointer;
                 display: block;
                 max-width:30px;
-                max-height:50px;
+                max-height:60px;
                 width:auto;
                 height: auto;;
                 border: none;background-size:cover ;

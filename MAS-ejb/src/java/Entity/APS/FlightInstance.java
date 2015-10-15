@@ -31,7 +31,7 @@ import javax.persistence.Temporal;
  * @author Xu/Lu Xi
  */
 @Entity
-public class FlightInstance implements Serializable, Comparable<FlightInstance> {
+public class FlightInstance implements Comparable<FlightInstance> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -226,21 +226,34 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 //        // thisTime<fiTime return -1
 //        return thisTime.compareTo(fiTime);
 //    }
+    //   @Override
+//    public int compareTo(FlightInstance fi) {
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        Date thisTime = new Date();
+//         Date fiTime = new Date();
+//        try {
+//            thisTime = df1.parse(this.standardDepTime);
+//            fiTime = df1.parse(fi.standardDepTime);  
+//        } catch (ParseException ex) {
+//            Logger.getLogger(FlightInstance.class.getName()).log(Level.SEVERE, null, ex);
+//        }       
+//        // thisTime<fiTime return -1
+//       return thisTime.compareTo(fiTime);
+//    }
      @Override
     public int compareTo(FlightInstance fi) {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date thisTime = new Date();
-         Date fiTime = new Date();
-        try {
-            thisTime = df1.parse(this.standardDepTime);
-            fiTime = df1.parse(fi.standardDepTime);  
-        } catch (ParseException ex) {
-            Logger.getLogger(FlightInstance.class.getName()).log(Level.SEVERE, null, ex);
-        }       
-        // thisTime<fiTime return -1
-       return thisTime.compareTo(fiTime);
+        System.err.println("**********Enter compare");
+        int result=0;
+        if(this.getStandardDepTimeDateType().before(fi.getStandardDepTimeDateType())){
+            result=-1;
+        }else if(this.getStandardDepTimeDateType().after(fi.getStandardDepTimeDateType())){
+            result=1;
+        }
+        System.err.println("********** compare 1 : " + this.getStandardDepTimeDateType().toString()+" to "+ fi.getStandardDepTimeDateType().toString());
+        System.err.println("********** compareTo: " + result);
+        return result;
     }
-    
+
     public Date getStandardDepTimeDateType() {
         return standardDepTimeDateType;
     }
@@ -255,6 +268,11 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 
     public void setStandardArrTimeDateType(Date standardArrTimeDateType) {
         this.standardArrTimeDateType = standardArrTimeDateType;
+    }
+
+    public String toString() {
+        return this.getFlightFrequency().getFlightNo() + " : " + this.getStandardDepTimeDateType() + "-" + this.getStandardArrTimeDateType();
+
     }
 
 }

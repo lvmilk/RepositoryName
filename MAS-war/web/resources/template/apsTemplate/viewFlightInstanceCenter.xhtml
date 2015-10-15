@@ -14,47 +14,54 @@
 
         <h:form>
             <p:panel id="panel" header="Choose a Flight to View"  style="width:100%" >
-                <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" tableStyle="width:auto" emptyMessage="No flight frequencies found.">
+                <p:dataTable var="flightFreq" value="#{FIMB.flightFreqList}" paginator="true" rows="40" emptyMessage="No flight frequencies found.">
 
                     <p:column headerText="Flight No" sortBy="#{flightFreq.flightNo}" filterBy="#{flightFreq.flightNo}" filterMatchMode="contains">
                         <h:outputText value="#{flightFreq.flightNo}" />
                     </p:column>
-                    <p:column headerText="Origin" filterBy="#{flightFreq.route.origin.IATA}" filterMatchMode="contains">
-                        <h:outputText value="#{flightFreq.route.origin.IATA}" />
+                    <p:column headerText="Origin" filterBy="#{flightFreq.route.origin.IATA}" filterMatchMode="contains" >
+                        <h:outputText value="#{flightFreq.route.origin.IATA}"/>
                     </p:column>
                     <p:column headerText="Destination" filterBy="#{flightFreq.route.dest.IATA}" filterMatchMode="contains">
                         <h:outputText value="#{flightFreq.route.dest.IATA}" />
                     </p:column>
-                    <p:column headerText="Scheduled Departure Time">
+                    <p:column headerText="Scheduled Departure Time" style="width: 80px">
                         <h:outputText value="#{flightFreq.scheduleDepTime}" />
                     </p:column>
-                    <p:column headerText="Scheduled Arrival Time">
+                    <p:column headerText="Scheduled Arrival Time" style="width: 80px">
                         <h:outputText value="#{flightFreq.scheduleArrTime}" />
                     </p:column>
-                    <p:column headerText="Date Adjust">
+                    <p:column headerText="Date Adjust" style="width: 30px">
                         <h:outputText value="#{flightFreq.dateAdjust}" />
                     </p:column>
-                    
-                    <p:column headerText="Mon">
+
+                    <p:column headerText="Mon" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onMon}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Tue"  >
+                    <p:column headerText="Tue" style="width: 20px" >
                         <h:outputText value="Yes" rendered="#{flightFreq.onTue}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Wed" >
+                    <p:column headerText="Wed" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onWed}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Thu">
+                    <p:column headerText="Thu" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onThu}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Fri" >
+                    <p:column headerText="Fri" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onFri}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Sat" >
+                    <p:column headerText="Sat" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onSat}" styleClass="ui-icon ui-icon-check"/>
                     </p:column>
-                    <p:column headerText="Sun" >
+                    <p:column headerText="Sun" style="width: 20px">
                         <h:outputText value="Yes" rendered="#{flightFreq.onSun}" styleClass="ui-icon ui-icon-check"/>
+                    </p:column>
+
+                    <p:column headerText="Schedule Start Date">
+                        <h:outputText value="#{flightFreq.sDate}"/>
+                    </p:column>
+                    <p:column headerText="Schedule Finish Date">
+                        <h:outputText value="#{flightFreq.fDate}"/>
                     </p:column>
 
                     <p:column headerText="View Flight Instance">

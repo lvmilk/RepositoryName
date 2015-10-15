@@ -4,6 +4,7 @@ import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
+import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -417,4 +418,17 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
+        @Override
+    public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception {
+        aircraft = em.find(Aircraft.class, registrationNo);
+         if (aircraft == null) {
+            throw new Exception("Aircraft does not exist.");
+        }
+        Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:aircraft").setParameter("aircraft", aircraft);
+        if (q.getResultList().isEmpty()) {
+            System.out.println("This flight instance linked with this aircraft does not exist.");
+        }
+        return q.getResultList();
+    }
+    
 }
