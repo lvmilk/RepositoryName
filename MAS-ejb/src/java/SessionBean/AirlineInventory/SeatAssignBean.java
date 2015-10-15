@@ -56,7 +56,7 @@ public class SeatAssignBean implements SeatAssignBeanLocal {
 
     public List<BookingClassInstance> computeOptimalSeat4(List<BookingClassInstance> classList) {
 
-        this.maxCheck(classList);
+//        this.maxCheck(classList);
 
         ArrayList<Integer> protectLvl = this.computeProtectLvl(classList);
         int needAllocate = 0;

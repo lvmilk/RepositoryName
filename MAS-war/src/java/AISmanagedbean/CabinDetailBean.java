@@ -118,8 +118,8 @@ public class CabinDetailBean implements Serializable {
 
                     mcl.updateCabin(cabinSelected, seatWidth, rowCount, rowSeatCount, rowConfig);
 
-                     FacesMessage msg = new FacesMessage("Cabin configuration edited successfully!");
-                    FacesContext.getCurrentInstance().addMessage(null, msg);
+//                     FacesMessage msg = new FacesMessage("Cabin configuration edited successfully!");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cabin configuration edited successfully!"));
                     }
                                
             }
