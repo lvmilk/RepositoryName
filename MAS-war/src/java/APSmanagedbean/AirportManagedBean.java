@@ -82,6 +82,8 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("airspace", airport.getAirspace());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("latitude", airport.getLat());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("longitude", airport.getLon());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apOriginRouteList", getApOriginRouteList(airport));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("apDestRouteList", getApDestRouteList(airport));
         System.out.println("amb.viewAiport(): Airport " + airport.getIATA() + " detail is displayed. ");

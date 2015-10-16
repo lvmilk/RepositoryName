@@ -13,7 +13,7 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <p:panel id="panel" header="View This Aircraft" style="width: 100%">
+            <p:panel id="panel" header="View Aircraft Information" style="width: 100%">
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="10">
 
                     <p:outputLabel value="Registration No.: " />
@@ -21,9 +21,9 @@
 
                     <p:outputLabel value="Aircraft Type: " />
                     <p:outputLabel value="#{type}" />
-<!--
-                    <p:outputLabel value="Serial No: " />
-                    <p:outputLabel value="#{serialNo}" />-->
+                    <!--
+                                        <p:outputLabel value="Serial No: " />
+                                        <p:outputLabel value="#{serialNo}" />-->
 
                     <p:outputLabel value="Status: " />
                     <p:outputLabel value="#{status}" />
@@ -45,8 +45,8 @@
 
 
                 </h:panelGrid>
-                <p:commandButton value="Back"  action="#{AMB.viewAircraftTypeConfirm()}" icon="ui-icon-cancel" />
             </p:panel>
+            <p:commandButton value="Back"  action="#{AMB.viewAircraftTypeConfirm()}" icon="ui-icon-carat-1-w" />
         </h:form>
     </h:body>
 </html>

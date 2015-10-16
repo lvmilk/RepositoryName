@@ -21,7 +21,7 @@
 
                     <f:facet name="header">  
                         <h:outputLink id="fade" value="#">
-                            <h:outputText value="Route List (Note: Only routes can be deleted are shown.)" />
+                            <h:outputText value="Route Pair List (Note: Only routes can be deleted are shown.)" />
                         </h:outputLink>
                         <p:tooltip id="toolTipTrack" for="fade" value="Note:  If there are flights generated for the route, it cannot be deleted." trackMouse="true" />
                         <p:outputPanel>
@@ -68,17 +68,21 @@
                     </p:column>
 
                 </p:dataTable>
-
+                <br/>
                 <p:commandButton value="Delete" action="#{RouteManagedBean.toDeleteRoute}" icon="ui-icon-check" />
             </p:panel> 
 
             <h:form id="dialogForm">
-                <p:dialog id="dlg" header="Delete Route" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
-                    <h:outputText value="Are you sure you want to delete selected routes ?"/>
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:commandButton value="Delete"  update="" action="#{RouteManagedBean.confirmDeleteRoute()}" />
-                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
-                    </h:panelGrid>
+                <p:dialog id="dlg" header="Delete Route" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" >
+                    <h:outputText value="Delete selected routes ?"/>
+                    <!--                    <h:panelGrid columns="2" cellpadding="10">-->
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Delete"  update="" action="#{RouteManagedBean.confirmDeleteRoute()}" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                        </h:panelGroup>
+                    </f:facet>  
+                    <!--</h:panelGrid>-->
                 </p:dialog>
             </h:form>
 

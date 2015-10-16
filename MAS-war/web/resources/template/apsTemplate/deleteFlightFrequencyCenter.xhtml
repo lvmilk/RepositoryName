@@ -32,12 +32,12 @@
                         </p:outputPanel>
                     </f:facet>
 
-<!--                    <f:facet name="header">
-                        <p:outputPanel>
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>-->
+                    <!--                    <f:facet name="header">
+                                            <p:outputPanel>
+                                                <h:outputText value="Search all fields:" />
+                                                <p:inputText id="globalFilter" onkeyup="PF('routeTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                            </p:outputPanel>
+                                        </f:facet>-->
 
                     <p:columnGroup type="header">
                         <p:row>
@@ -104,17 +104,20 @@
                     </p:column>
 
                 </p:dataTable>
-
+  <br/>
                 <p:commandButton value="Delete" action="#{DFFMB.toDeleteFlightFreq}" icon="ui-icon-check"/>
             </p:panel> 
 
             <h:form id="dialogForm">
-                <p:dialog id="dlg" header="Delete Flight Frequency" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true" height="100" width="300">
-                    <h:outputText value="Delete flight frequency "/> <ui:repeat var="f" value="#{DFFMB.selectedFlightFreq}"> <h:outputText value="#{f.flightNo} "/> </ui:repeat> <h:outputText value="?"/>
-                    <h:panelGrid columns="2" cellpadding="10">
-                        <p:commandButton value="Delete"  update="" action="#{DFFMB.confirmDeleteFlightFreq}" />
-                        <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
-                    </h:panelGrid>
+                <p:dialog id="dlg" header="Delete Flight Frequency" widgetVar="dlg" resizable="false" showEffect="fade" dynamic="true">
+                    <h:outputText value="Delete selected flight frequency/ies?  "/> 
+                    <!--<ui:repeat var="f" value="#{DFFMB.selectedFlightFreq}"> <h:outputText value="#{f.flightNo} "/> </ui:repeat> <h:outputText value="?"/>-->
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Delete"  update="" action="#{DFFMB.confirmDeleteFlightFreq}" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg').hide()" />
+                        </h:panelGroup>
+                    </f:facet>  
                 </p:dialog>
             </h:form>
 

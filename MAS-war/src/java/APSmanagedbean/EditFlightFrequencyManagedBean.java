@@ -43,6 +43,7 @@ public class EditFlightFrequencyManagedBean implements Serializable {
     private String dateAdjustString;
     private Integer dateAdjust;
 
+    private Date firstGenerationDate;
     private Date startDate;
     private Date endDate;
     private Date endDateOld;
@@ -75,6 +76,7 @@ public class EditFlightFrequencyManagedBean implements Serializable {
         endDateOldString = formatter.format(endDateOld);
         endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editFlightEndDate");
         dateAdjustString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateAdjust");
+        firstGenerationDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstGenerationDate");
         onMon = flightFreq.isOnMon();
         onTue = flightFreq.isOnTue();
         onWed = flightFreq.isOnWed();
@@ -88,6 +90,9 @@ public class EditFlightFrequencyManagedBean implements Serializable {
         try {
             if (!(onMon || onTue || onWed || onThu || onFri || onSat || onSun)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Operation Day of the Week: Please select as least one day of the week.", ""));
+            } else if (firstGenerationDate !=null && firstGenerationDate.before(startDate)) {
+                System.out.println("EFFMB.editFlightFrequency(): firstGenerationDate: " + firstGenerationDate);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Start Operation Date: The start operation date cannot be earlier than the initially entered start date " + firstGenerationDate, ""));
             } else if (endDate.before(endDateOld)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: End Operation Date: The end operation date cannot be later than the initial value " + endDateOldString, ""));
             } else {
@@ -287,7 +292,7 @@ public class EditFlightFrequencyManagedBean implements Serializable {
     }
 
     public boolean isHasInstance() {
-       // System.out.println("EFFMB.isHasInstance(): " + !flightFreq.getFlightList().isEmpty());
+        // System.out.println("EFFMB.isHasInstance(): " + !flightFreq.getFlightList().isEmpty());
         return !flightFreq.getFlightList().isEmpty();
     }
 
@@ -323,6 +328,14 @@ public class EditFlightFrequencyManagedBean implements Serializable {
 
     public void setFreqString(String freqString) {
         this.freqString = freqString;
+    }
+
+    public Date getFirstGenerationDate() {
+        return firstGenerationDate;
+    }
+
+    public void setFirstGenerationDate(Date firstGenerationDate) {
+        this.firstGenerationDate = firstGenerationDate;
     }
 
 }

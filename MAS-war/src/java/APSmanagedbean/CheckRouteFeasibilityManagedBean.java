@@ -72,7 +72,7 @@ public class CheckRouteFeasibilityManagedBean implements Serializable {
         if (isFeasibility()) {
             return "Feasible";
         }
-        return "Infeasible: No aircraft type are suitable for this route.";
+        return "Infeasible: no aircraft types are suitable for this route.";
     }
 
     public void setFeasibilityResult(String feasibilityResult) {

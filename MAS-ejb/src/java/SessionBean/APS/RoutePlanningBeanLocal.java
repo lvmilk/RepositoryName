@@ -86,4 +86,6 @@ public interface RoutePlanningBeanLocal {
 
     public List<Route> canDeleteRoutePair();
 
+    public boolean airportHasFlight(Airport airport);
+
 }
