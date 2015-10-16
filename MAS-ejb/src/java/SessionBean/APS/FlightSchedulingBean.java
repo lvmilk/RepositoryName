@@ -569,7 +569,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
                 //if add in front of first of fiList
                 if (fi.getStandardArrTimeDateType().before(newList.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(newList.get(0).getFlightFrequency().getRoute().getOrigin())) {
-                    if(ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin()))
+                    if(ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA()))
                        canAssign = true;
                     //if not the first of fiList
                 } else if ((depCheck.before(fi.getStandardDepTimeDateType())) && newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {

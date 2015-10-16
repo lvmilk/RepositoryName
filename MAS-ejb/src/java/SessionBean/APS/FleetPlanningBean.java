@@ -342,6 +342,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft = new Aircraft();
         aircraft.create(registrationNo, status, firstFlyDate, deliveryDate, retireDate);
         aircraft.setAircraftType(aircraftType);
+        aircraft.setCurrentAirport("SIN");
         em.persist(aircraft);
         em.flush();
         aircraftType.getAircraft().add(aircraft);
