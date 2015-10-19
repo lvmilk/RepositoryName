@@ -29,6 +29,7 @@ public class Aircraft implements Serializable {
     private Long flightLogId;
     private Long maintenanceLogId;
     private String currentAirport;
+    private long accumFlyMinutes;
    
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
@@ -134,6 +135,14 @@ public class Aircraft implements Serializable {
 
     public void setCurrentAirport(String currentAirport) {
         this.currentAirport = currentAirport;
+    }
+
+    public long getAccumFlyMinutes() {
+        return accumFlyMinutes;
+    }
+
+    public void setAccumFlyMinutes(long accumFlyMinutes) {
+        this.accumFlyMinutes = accumFlyMinutes;
     }
     
     
