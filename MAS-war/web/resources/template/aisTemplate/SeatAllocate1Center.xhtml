@@ -20,7 +20,7 @@
                     <p:calendar  id="dateChoose" value="#{seatAllocate1Bean.selectedDate}"  pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20"/>   
                  
                     <p:commandButton value="Get flights on this date" update='frequency' partialSubmit="true" process="@this allocate:dateChoose" actionListener="#{seatAllocate1Bean.onDateChange()}" />
-                    <!--<p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />-->
+                   
 
                     <p:outputLabel for="frequency" value="Select a flight: " />
                     <p:selectOneMenu id="frequency" value="#{seatAllocate1Bean.flightNo}" required="true" requiredMessage="Please select a flight" style="width:100%">    
