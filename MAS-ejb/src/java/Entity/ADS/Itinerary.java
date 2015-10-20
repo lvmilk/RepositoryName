@@ -5,11 +5,15 @@
  */
 package Entity.ADS;
 
+import Entity.AIS.BookingClassInstance;
+import Entity.APS.Seat;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -17,10 +21,24 @@ import javax.persistence.Id;
  */
 @Entity
 public class Itinerary implements Serializable {
-    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long itineraryID;
+    private String depCity;
+    private String arrCity;
+    private String depTime;
+    private String arrTime;
+
+    private Passenger passenger = new Passenger();
+    private BookingClassInstance bkInstance=new BookingClassInstance();
+    
+    
+    @OneToOne(cascade = {CascadeType.ALL})
+    private Seat seat;
+
+    public Itinerary() {
+    }
 
     public Long getItineraryID() {
         return itineraryID;
@@ -54,5 +72,103 @@ public class Itinerary implements Serializable {
     public String toString() {
         return "Entity.ADS.Itinerary[ id=" + itineraryID + " ]";
     }
-    
+
+    /**
+     * @return the depCity
+     */
+    public String getDepCity() {
+        return depCity;
+    }
+
+    /**
+     * @param depCity the depCity to set
+     */
+    public void setDepCity(String depCity) {
+        this.depCity = depCity;
+    }
+
+    /**
+     * @return the arrCity
+     */
+    public String getArrCity() {
+        return arrCity;
+    }
+
+    /**
+     * @param arrCity the arrCity to set
+     */
+    public void setArrCity(String arrCity) {
+        this.arrCity = arrCity;
+    }
+
+    /**
+     * @return the depTime
+     */
+    public String getDepTime() {
+        return depTime;
+    }
+
+    /**
+     * @param depTime the depTime to set
+     */
+    public void setDepTime(String depTime) {
+        this.depTime = depTime;
+    }
+
+    /**
+     * @return the arrTime
+     */
+    public String getArrTime() {
+        return arrTime;
+    }
+
+    /**
+     * @param arrTime the arrTime to set
+     */
+    public void setArrTime(String arrTime) {
+        this.arrTime = arrTime;
+    }
+
+    /**
+     * @return the passenger
+     */
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    /**
+     * @param passenger the passenger to set
+     */
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
+    }
+
+    /**
+     * @return the seat
+     */
+    public Seat getSeat() {
+        return seat;
+    }
+
+    /**
+     * @param seat the seat to set
+     */
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
+    /**
+     * @return the bkInstance
+     */
+    public BookingClassInstance getBkInstance() {
+        return bkInstance;
+    }
+
+    /**
+     * @param bkInstance the bkInstance to set
+     */
+    public void setBkInstance(BookingClassInstance bkInstance) {
+        this.bkInstance = bkInstance;
+    }
+
 }
