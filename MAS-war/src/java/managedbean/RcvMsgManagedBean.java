@@ -5,8 +5,8 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.MsgReceiver;
-import SessionBean.CommonInfaSB.MsgSessionBeanLocal;
+import Entity.CommonInfa.MsgReceiver;
+import SessionBean.CommonInfa.MsgSessionBeanLocal;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

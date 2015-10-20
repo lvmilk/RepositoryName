@@ -5,8 +5,8 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.MsgReceiver;
-import SessionBean.CommonInfaSB.MsgSessionBeanLocal;
+import Entity.CommonInfa.MsgReceiver;
+import SessionBean.CommonInfa.MsgSessionBeanLocal;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

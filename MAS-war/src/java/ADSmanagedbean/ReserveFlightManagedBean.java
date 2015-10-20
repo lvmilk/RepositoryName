@@ -11,10 +11,10 @@ import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
-import Entity.aisEntity.BookingClassInstance;
-import Entity.aisEntity.FlightCabin;
+import Entity.AIS.BookingClassInstance;
+import Entity.AIS.FlightCabin;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.AirlineInventory.SeatAssignBeanLocal;
+import SessionBean.AIS.SeatAssignBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -54,15 +54,18 @@ public class ReserveFlightManagedBean implements Serializable {
     private Calendar currentCal = new GregorianCalendar();
 
     private Boolean returnTrip = false;
+    private Boolean dateSpecific;
+
     private Integer countPerson;
 
     private String origin;
     private String dest;
     private List<Route> routeList;
     private List<FlightFrequency> initialFrequency;
-    private List<FlightFrequency> secondFrequency; 
-    private List<FlightInstance> resultInstances;
-    private List<FlightFrequency>resultFrequencies;
+    private List<FlightFrequency> secondFrequency;
+    private List<FlightInstance> departInstances;
+    private List<FlightInstance> returnInstances;
+    private List<FlightFrequency> resultFrequencies;
 
     private Map<String, FlightFrequency> flightMap;
     private String flightNo;
@@ -78,13 +81,11 @@ public class ReserveFlightManagedBean implements Serializable {
     private FlightInstance selectedFlightInstance;
     private Integer currentAllocated;
 
-     private Date currentDate = new Date();
+    private Date currentDate = new Date();
     private Date departDate = new Date();
     private Date returnDate = new Date();
 
     private List<CabinClass> cabinList = new ArrayList<>();
-
-
 
     public ReserveFlightManagedBean() {
     }
@@ -98,6 +99,18 @@ public class ReserveFlightManagedBean implements Serializable {
         currentDate = currentCal.getTime();
 
         initialFrequency = rf.getAllFlightFrequency();
+        
+        
+    
+       returnTrip= (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
+        dateSpecific=(Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateSpecific");
+        departDate=(Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
+        returnDate=(Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
+        selectedCabin=(CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
+       countPerson= (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+
+        departInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departInstances");
+        returnInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnInstances");
 
         seatUnallocated = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seatUnallocated");
         dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
@@ -139,14 +152,14 @@ public class ReserveFlightManagedBean implements Serializable {
 //            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
 //            System.out.println("onFlightChange: dateString is " + dateString + " and flightNo is " + flightNo);
 //            cabinList = sa.getCabinList(flightNo, dateString);
-            resultFrequencies=rf.findFrequencies(origin,dest);
-             resultInstances=rf.findResultInstanceList(origin,dest,departDate);
-             System.out.println("in onFlightChange(): size of resultFrequencies is "+resultFrequencies.size());
-             cabinList=resultFrequencies.get(0).getRoute().getAcType().getCabinList();
-            
+            resultFrequencies = rf.findFrequencies(origin, dest);
+            departInstances = rf.findResultInstanceList(origin, dest, departDate);
+            System.out.println("in onFlightChange(): size of resultFrequencies is " + resultFrequencies.size());
+            cabinList = resultFrequencies.get(0).getRoute().getAcType().getCabinList();
+
         } else {
-          cabinList=new ArrayList<>();
-         
+            cabinList = new ArrayList<>();
+
         }
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
@@ -175,6 +188,33 @@ public class ReserveFlightManagedBean implements Serializable {
 //
 //        }
 //    }
+    public void findFlightInstance() throws IOException {
+
+        selectedCabin=rf.findCabinClass(cabinName);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("resultFrequencies", resultFrequencies);
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateSpecific", dateSpecific);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDate", departDate);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDate", returnDate);
+        System.out.println("in managed bean findFlightInstance(): cabin selected is "+selectedCabin.getCabinName());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+
+        if (dateSpecific) {
+            departInstances = rf.findResultInstanceList(origin, dest, departDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+            if (returnTrip) {
+                returnInstances = rf.findResultInstanceList(dest, origin, returnDate);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
+            }
+
+        }
+
+              FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+    }
+
     public void findBookClassInstance() throws IOException {
 
         selectedFlightInstance = sa.findFlightInstance(flightNo, dateString);
@@ -394,8 +434,6 @@ public class ReserveFlightManagedBean implements Serializable {
         this.secondFrequency = secondFrequency;
     }
 
-
-
     public String getDest() {
         return dest;
     }
@@ -436,14 +474,6 @@ public class ReserveFlightManagedBean implements Serializable {
         this.currentDate = currentDate;
     }
 
-    public List<FlightInstance> getResultInstances() {
-        return resultInstances;
-    }
-
-    public void setResultInstances(List<FlightInstance> resultInstances) {
-        this.resultInstances = resultInstances;
-    }
-
     public List<FlightFrequency> getResultFrequencies() {
         return resultFrequencies;
     }
@@ -452,9 +482,28 @@ public class ReserveFlightManagedBean implements Serializable {
         this.resultFrequencies = resultFrequencies;
     }
 
-  
+    public Boolean getDateSpecific() {
+        return dateSpecific;
+    }
 
-    
-    
-    
+    public void setDateSpecific(Boolean dateSpecific) {
+        this.dateSpecific = dateSpecific;
+    }
+
+    public List<FlightInstance> getDepartInstances() {
+        return departInstances;
+    }
+
+    public void setDepartInstances(List<FlightInstance> departInstances) {
+        this.departInstances = departInstances;
+    }
+
+    public List<FlightInstance> getReturnInstances() {
+        return returnInstances;
+    }
+
+    public void setReturnInstances(List<FlightInstance> returnInstances) {
+        this.returnInstances = returnInstances;
+    }
+
 }

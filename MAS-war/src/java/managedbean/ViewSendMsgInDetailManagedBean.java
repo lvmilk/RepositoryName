@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.MsgSender;
+import Entity.CommonInfa.MsgSender;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>Create Account_Center panel</title>
+    </h:head>
+    <h:body>
+
+        <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
+
+            <h:form>
+
+                <p:panel id="depart" header="Flight Searching Result"  style="width:100%">
+                    <p:dataTable var="departInstance" value="#{reserveFlightManagedBean.departInstances}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
+
+
+                        <p:column headerText="FlightNo" sortBy="#{departInstance.flightFrequency.flightNo}">
+                            <h:outputText value="#{departInstance.flightFrequency.flightNo}" />
+                        </p:column>
+
+                        <p:column headerText="Departure Date" sortBy="#{departInstance.standardDepTimeDateType}">
+                            <h:outputText value="#{departInstance.standardDepTimeDateType}" />
+                        </p:column>
+
+                        <p:column headerText="Departure Time">
+                            <h:outputText value="#{departInstance.estimatedDepTime}" />
+                        </p:column>
+                        <p:column headerText="Depart From">
+                            <h:outputText value="#{departInstance.flightFrequency.route.origin.airportName}" />
+                        </p:column>
+                        <p:column headerText="Arrive At:">
+                            <h:outputText value="#{departInstance.flightFrequency.route.dest.airportName}" />
+                        </p:column>
+                        <p:column headerText="AircraftType">
+                            <h:outputText value="#{departInstance.flightFrequency.route.acType.type}" />
+                        </p:column>
+                        <p:column headerText="Cabin Class" >
+                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                        </p:column>
+                        <p:column headerText="Total Capacity:">
+                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                        </p:column>
+
+                        <p:column headerText="Available Capacity:">
+                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                        </p:column>
+                       
+<!--
+                        <p:column headerText="Edit">
+                            <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+
+                        </p:column>-->
+
+
+
+                    </p:dataTable>
+                </p:panel>
+
+            </h:form>
+
+
+
+        </div>
+
+
+
+
+
+
+    </h:body>
+</html>
+
