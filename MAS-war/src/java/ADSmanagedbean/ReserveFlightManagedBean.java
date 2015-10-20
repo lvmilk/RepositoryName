@@ -5,7 +5,7 @@
  */
 package ADSmanagedbean;
 
-import ADS.ReserveFlightBeanLocal;
+import Entity.ADS.ReserveFlightBeanLocal;
 import Entity.APS.Airport;
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
