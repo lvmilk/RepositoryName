@@ -6,8 +6,8 @@
 package managedbean;
 
 import Entity.CommonInfaEntity.*;
-import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
-import SessionBean.CommonInfaSB.manageAccountLocal;
+import SessionBean.CommonInfa.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;

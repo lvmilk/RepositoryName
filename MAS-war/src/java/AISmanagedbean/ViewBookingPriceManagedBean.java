@@ -6,8 +6,8 @@
 package AISmanagedbean;
 
 import Entity.APS.FlightFrequency;
-import Entity.aisEntity.BookingClassInstance;
-import SessionBean.AirlineInventory.ViewBookingClassPriceBeanLocal;
+import Entity.AIS.BookingClassInstance;
+import SessionBean.AIS.ViewBookingClassPriceBeanLocal;
 import java.io.IOException;
 import javax.inject.Named;
 import java.io.Serializable;

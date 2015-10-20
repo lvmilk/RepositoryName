@@ -6,7 +6,7 @@
 package managedbean;
 
 import Entity.CommonInfaEntity.UserEntity;
-import SessionBean.CommonInfaSB.MsgSessionBeanLocal;
+import SessionBean.CommonInfa.MsgSessionBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
