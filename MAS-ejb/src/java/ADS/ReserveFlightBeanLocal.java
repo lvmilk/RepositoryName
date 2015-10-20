@@ -5,6 +5,7 @@
  */
 package ADS;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -28,5 +29,7 @@ public interface ReserveFlightBeanLocal {
     public List<FlightInstance> findResultInstanceList(String origin, String dest, Date departDate);
 
     public List<FlightFrequency> findFrequencies(String origin, String dest);
+
+    public CabinClass findCabinClass(String cabinName);
     
 }

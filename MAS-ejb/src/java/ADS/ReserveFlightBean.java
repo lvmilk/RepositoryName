@@ -5,6 +5,7 @@
  */
 package ADS;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -26,6 +27,14 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
     EntityManager em;
     
     
+    public CabinClass findCabinClass(String cabinName){
+    CabinClass select;
+    Query query=em.createQuery("SELECT c FROM CabinClass c WHERE c.cabinName=:cabinName");
+     query.setParameter("cabinName", cabinName);
+    List<CabinClass> resultList=query.getResultList();
+    
+    return resultList.get(0);
+    }
     
     
 
