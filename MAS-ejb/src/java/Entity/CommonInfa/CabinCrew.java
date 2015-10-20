@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.CommonInfaEntity;
+package Entity.CommonInfa;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -19,12 +19,10 @@ import javax.persistence.OneToOne;
  * @author LI HAO
  */
 @Entity
-public class GroundStaff implements Serializable {
-
-
+public class CabinCrew implements Serializable {
     @Id
-    private String grdName;
-    private String grdPassword;
+    private String cbName;
+    private String cbPassword;
     private String stfType;
     @Column(unique=true)
     private String email;
@@ -34,31 +32,32 @@ public class GroundStaff implements Serializable {
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strGrdName, String strGrdPassword, String email, String strType) {
-        this.setGrdName(strGrdName);
-        this.setGrdPassword(strGrdPassword);
+    public void create(String strCbName, String strCbPassword, String email, String strStfType)
+    {
+        this.setCbName(strCbName);
+        this.setCbPassword(strCbPassword);
         this.setEmail(email);
-        this.setStfType(strType);
+        this.setStfType(strStfType);
         this.setAttempt(0);
         this.setLocked(0);
     }
-
+    
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (grdName != null ? grdName.hashCode() : 0);
+        hash += (cbName != null ? cbName.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof GroundStaff)) {
+        if (!(object instanceof CabinCrew)) {
             return false;
         }
-        GroundStaff other = (GroundStaff) object;
-        if ((this.grdName == null && other.grdName != null) || (this.grdName != null && !this.grdName.equals(other.grdName))) {
+        CabinCrew other = (CabinCrew) object;
+        if ((this.cbName == null && other.cbName != null) || (this.cbName != null && !this.cbName.equals(other.cbName))) {
             return false;
         }
         return true;
@@ -66,35 +65,35 @@ public class GroundStaff implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.groudCrew[ id=" + grdName+ " ]";
+        return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
     }
 
     /**
-     * @return the grdName
+     * @return the cbName
      */
-    public String getGrdName() {
-        return grdName;
+    public String getCbName() {
+        return cbName;
     }
 
     /**
-     * @param grdName the grdName to set
+     * @param cbName the cbName to set
      */
-    public void setGrdName(String grdName) {
-        this.grdName = grdName;
+    public void setCbName(String cbName) {
+        this.cbName = cbName;
     }
 
     /**
-     * @return the grdPassword
+     * @return the cbPassword
      */
-    public String getGrdPassword() {
-        return grdPassword;
+    public String getCbPassword() {
+        return cbPassword;
     }
 
     /**
-     * @param grdPassword the grdPassword to set
+     * @param cbPassword the cbPassword to set
      */
-    public void setGrdPassword(String grdPassword) {
-        this.grdPassword = grdPassword;
+    public void setCbPassword(String cbPassword) {
+        this.cbPassword = cbPassword;
     }
 
     /**
@@ -166,5 +165,5 @@ public class GroundStaff implements Serializable {
     public void setUser(UserEntity user) {
         this.user = user;
     }
-
+    
 }

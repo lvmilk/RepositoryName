@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.CommonInfaEntity;
+package Entity.CommonInfa;
 
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -17,49 +17,46 @@ import javax.persistence.Id;
  * @author LI HAO
  */
 @Entity
-public class Agency implements Serializable {
+public class AirAlliances implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    private String agencyID;
-    private String agenPwd;
-    
+    private String allianceID;
+    private String allPwd;
     @Column(unique=true)
     private String email;
-    
     private String pType;
-    
-    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String strAgEmail, String strpType)
-    {
-        this.setAgencyID(strAgencyId);
-        this.setAgenPwd(strAgencyPwd);
-        this.setEmail(strAgEmail);
+
+    public void createAllianceAcc(String strAlId, String strAlPwd, String strAlEmail, String strpType) {
+        this.setAllianceID(strAlId);
+        this.setAllPwd(strAlPwd);
+        this.setEmail(strAlEmail);
         this.setpType(strpType);
     }
-    
-    public String getAgencyID() {
-        return agencyID;
+
+    public String getAllianceID() {
+        return allianceID;
     }
 
-    public void setAgencyID(String agencyID) {
-        this.agencyID = agencyID;
+    public void setAllianceID(String allianceID) {
+        this.allianceID = allianceID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (agencyID != null ? agencyID.hashCode() : 0);
+        hash += (allianceID != null ? allianceID.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the agencyID fields are not set
-        if (!(object instanceof Agency)) {
+        // TODO: Warning - this method won't work in the case the allianceID fields are not set
+        if (!(object instanceof AirAlliances)) {
             return false;
         }
-        Agency other = (Agency) object;
-        if ((this.agencyID == null && other.agencyID != null) || (this.agencyID != null && !this.agencyID.equals(other.agencyID))) {
+        AirAlliances other = (AirAlliances) object;
+        if ((this.allianceID == null && other.allianceID != null) || (this.allianceID != null && !this.allianceID.equals(other.allianceID))) {
             return false;
         }
         return true;
@@ -67,21 +64,21 @@ public class Agency implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.Agency[ id=" + agencyID + " ]";
+        return "Entity.CommonInfaEntity.AirAlliances[ id=" + allianceID + " ]";
     }
 
     /**
-     * @return the agenPwd
+     * @return the allPwd
      */
-    public String getAgenPwd() {
-        return agenPwd;
+    public String getAllPwd() {
+        return allPwd;
     }
 
     /**
-     * @param agenPwd the agenPwd to set
+     * @param allPwd the allPwd to set
      */
-    public void setAgenPwd(String agenPwd) {
-        this.agenPwd = agenPwd;
+    public void setAllPwd(String allPwd) {
+        this.allPwd = allPwd;
     }
 
     /**

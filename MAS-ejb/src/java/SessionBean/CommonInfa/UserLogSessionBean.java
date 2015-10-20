@@ -5,8 +5,8 @@
  */
 package SessionBean.CommonInfa;
 
-import Entity.CommonInfaEntity.UserEntity;
-import Entity.CommonInfaEntity.UserLog;
+import Entity.CommonInfa.UserEntity;
+import Entity.CommonInfa.UserLog;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;

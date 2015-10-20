@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.CommonInfaEntity;
+package Entity.CommonInfa;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -19,46 +19,46 @@ import javax.persistence.OneToOne;
  * @author LI HAO
  */
 @Entity
-public class CockpitCrew implements Serializable {
+public class OfficeStaff implements Serializable {
+
+
     @Id
-    private String cpName;
-    private String cpPassword;
+    private String offName;
+    private String offPassword;
     private String stfType;
     @Column(unique=true)
     private String email;
-    private String licence;
     private Integer attempt;
     private Integer locked;
     
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence)
-    {
-        this.setCpName(strCpName);
-        this.setCpPassword(strCpPassword);
-        this.setEmail(email);
+    public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType) {
+        this.setOffName(strOffName);
+        this.setOffPassword(strOffPassword);
+        this.setEmail(strOffEmail);
         this.setStfType(strStfType);
-        this.setLicence(licence);
         this.setAttempt(0);
         this.setLocked(0);
     }
-    
+
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cpName != null ? cpName.hashCode() : 0);
+        hash += (offName != null ? offName.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the stfId fields are not set
-        if (!(object instanceof CockpitCrew)) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof OfficeStaff)) {
             return false;
         }
-        CockpitCrew other = (CockpitCrew) object;
-        if ((this.cpName == null && other.cpName != null) || (this.cpName!= null && !this.cpName.equals(other.cpName))) {
+        OfficeStaff other = (OfficeStaff) object;
+        if ((this.offName == null && other.offName != null) || (this.offName != null && !this.offName.equals(other.offName))) {
             return false;
         }
         return true;
@@ -66,35 +66,35 @@ public class CockpitCrew implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.CockpitCrew[ id=" + cpName + " ]";
+        return "Entity.CommonInfaEntity.OfficeStaff[ id=" + offName + " ]";
     }
 
     /**
-     * @return the cpName
+     * @return the offName
      */
-    public String getCpName() {
-        return cpName;
+    public String getOffName() {
+        return offName;
     }
 
     /**
-     * @param cpName the cpName to set
+     * @param offName the offName to set
      */
-    public void setCpName(String cpName) {
-        this.cpName = cpName;
+    public void setOffName(String offName) {
+        this.offName = offName;
     }
 
     /**
-     * @return the cpPassword
+     * @return the offPassword
      */
-    public String getCpPassword() {
-        return cpPassword;
+    public String getOffPassword() {
+        return offPassword;
     }
 
     /**
-     * @param cpPassword the cpPassword to set
+     * @param offPassword the offPassword to set
      */
-    public void setCpPassword(String cpPassword) {
-        this.cpPassword = cpPassword;
+    public void setOffPassword(String offPassword) {
+        this.offPassword = offPassword;
     }
 
     /**
@@ -123,20 +123,6 @@ public class CockpitCrew implements Serializable {
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * @return the licence
-     */
-    public String getLicence() {
-        return licence;
-    }
-
-    /**
-     * @param licence the licence to set
-     */
-    public void setLicence(String licence) {
-        this.licence = licence;
     }
 
     /**
@@ -180,5 +166,5 @@ public class CockpitCrew implements Serializable {
     public void setUser(UserEntity user) {
         this.user = user;
     }
-    
+
 }

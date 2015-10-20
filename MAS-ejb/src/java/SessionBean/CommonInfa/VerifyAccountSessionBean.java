@@ -5,10 +5,13 @@
  */
 package SessionBean.CommonInfa;
 
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.CockpitCrew;
 import javax.ejb.Stateless;
 import java.util.*;
 import Entity.*;
-import Entity.CommonInfaEntity.*;
 import static java.time.Clock.system;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

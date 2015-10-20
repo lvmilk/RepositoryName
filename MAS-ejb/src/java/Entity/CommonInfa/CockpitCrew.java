@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.CommonInfaEntity;
+package Entity.CommonInfa;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -19,45 +19,46 @@ import javax.persistence.OneToOne;
  * @author LI HAO
  */
 @Entity
-public class CabinCrew implements Serializable {
+public class CockpitCrew implements Serializable {
     @Id
-    private String cbName;
-    private String cbPassword;
+    private String cpName;
+    private String cpPassword;
     private String stfType;
     @Column(unique=true)
     private String email;
+    private String licence;
     private Integer attempt;
     private Integer locked;
     
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType)
+    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence)
     {
-        this.setCbName(strCbName);
-        this.setCbPassword(strCbPassword);
+        this.setCpName(strCpName);
+        this.setCpPassword(strCpPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
+        this.setLicence(licence);
         this.setAttempt(0);
         this.setLocked(0);
     }
     
-
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cbName != null ? cbName.hashCode() : 0);
+        hash += (cpName != null ? cpName.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CabinCrew)) {
+        // TODO: Warning - this method won't work in the case the stfId fields are not set
+        if (!(object instanceof CockpitCrew)) {
             return false;
         }
-        CabinCrew other = (CabinCrew) object;
-        if ((this.cbName == null && other.cbName != null) || (this.cbName != null && !this.cbName.equals(other.cbName))) {
+        CockpitCrew other = (CockpitCrew) object;
+        if ((this.cpName == null && other.cpName != null) || (this.cpName!= null && !this.cpName.equals(other.cpName))) {
             return false;
         }
         return true;
@@ -65,35 +66,35 @@ public class CabinCrew implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
+        return "Entity.CommonInfaEntity.CockpitCrew[ id=" + cpName + " ]";
     }
 
     /**
-     * @return the cbName
+     * @return the cpName
      */
-    public String getCbName() {
-        return cbName;
+    public String getCpName() {
+        return cpName;
     }
 
     /**
-     * @param cbName the cbName to set
+     * @param cpName the cpName to set
      */
-    public void setCbName(String cbName) {
-        this.cbName = cbName;
+    public void setCpName(String cpName) {
+        this.cpName = cpName;
     }
 
     /**
-     * @return the cbPassword
+     * @return the cpPassword
      */
-    public String getCbPassword() {
-        return cbPassword;
+    public String getCpPassword() {
+        return cpPassword;
     }
 
     /**
-     * @param cbPassword the cbPassword to set
+     * @param cpPassword the cpPassword to set
      */
-    public void setCbPassword(String cbPassword) {
-        this.cbPassword = cbPassword;
+    public void setCpPassword(String cpPassword) {
+        this.cpPassword = cpPassword;
     }
 
     /**
@@ -122,6 +123,20 @@ public class CabinCrew implements Serializable {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the licence
+     */
+    public String getLicence() {
+        return licence;
+    }
+
+    /**
+     * @param licence the licence to set
+     */
+    public void setLicence(String licence) {
+        this.licence = licence;
     }
 
     /**

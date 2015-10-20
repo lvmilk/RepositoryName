@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.CommonInfaEntity;
+package Entity.CommonInfa;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -19,12 +19,12 @@ import javax.persistence.OneToOne;
  * @author LI HAO
  */
 @Entity
-public class OfficeStaff implements Serializable {
+public class GroundStaff implements Serializable {
 
 
     @Id
-    private String offName;
-    private String offPassword;
+    private String grdName;
+    private String grdPassword;
     private String stfType;
     @Column(unique=true)
     private String email;
@@ -34,11 +34,11 @@ public class OfficeStaff implements Serializable {
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType) {
-        this.setOffName(strOffName);
-        this.setOffPassword(strOffPassword);
-        this.setEmail(strOffEmail);
-        this.setStfType(strStfType);
+    public void create(String strGrdName, String strGrdPassword, String email, String strType) {
+        this.setGrdName(strGrdName);
+        this.setGrdPassword(strGrdPassword);
+        this.setEmail(email);
+        this.setStfType(strType);
         this.setAttempt(0);
         this.setLocked(0);
     }
@@ -47,18 +47,18 @@ public class OfficeStaff implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (offName != null ? offName.hashCode() : 0);
+        hash += (grdName != null ? grdName.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof OfficeStaff)) {
+        if (!(object instanceof GroundStaff)) {
             return false;
         }
-        OfficeStaff other = (OfficeStaff) object;
-        if ((this.offName == null && other.offName != null) || (this.offName != null && !this.offName.equals(other.offName))) {
+        GroundStaff other = (GroundStaff) object;
+        if ((this.grdName == null && other.grdName != null) || (this.grdName != null && !this.grdName.equals(other.grdName))) {
             return false;
         }
         return true;
@@ -66,35 +66,35 @@ public class OfficeStaff implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.OfficeStaff[ id=" + offName + " ]";
+        return "Entity.CommonInfaEntity.groudCrew[ id=" + grdName+ " ]";
     }
 
     /**
-     * @return the offName
+     * @return the grdName
      */
-    public String getOffName() {
-        return offName;
+    public String getGrdName() {
+        return grdName;
     }
 
     /**
-     * @param offName the offName to set
+     * @param grdName the grdName to set
      */
-    public void setOffName(String offName) {
-        this.offName = offName;
+    public void setGrdName(String grdName) {
+        this.grdName = grdName;
     }
 
     /**
-     * @return the offPassword
+     * @return the grdPassword
      */
-    public String getOffPassword() {
-        return offPassword;
+    public String getGrdPassword() {
+        return grdPassword;
     }
 
     /**
-     * @param offPassword the offPassword to set
+     * @param grdPassword the grdPassword to set
      */
-    public void setOffPassword(String offPassword) {
-        this.offPassword = offPassword;
+    public void setGrdPassword(String grdPassword) {
+        this.grdPassword = grdPassword;
     }
 
     /**
