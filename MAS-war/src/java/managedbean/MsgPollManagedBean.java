@@ -6,7 +6,7 @@
 package managedbean;
 
 import Entity.CommonInfaEntity.MsgReceiver;
-import SessionBean.CommonInfaSB.MsgSessionBeanLocal;
+import SessionBean.CommonInfa.MsgSessionBeanLocal;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;

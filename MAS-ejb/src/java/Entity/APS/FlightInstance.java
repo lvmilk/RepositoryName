@@ -5,7 +5,7 @@
  */
 package Entity.APS;
 
-import Entity.aisEntity.FlightCabin;
+import Entity.AIS.FlightCabin;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;

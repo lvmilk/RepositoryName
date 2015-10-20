@@ -5,8 +5,8 @@
  */
 package managedbean;
 
-import SessionBean.CommonInfaSB.VerifyAccountSessionBeanLocal;
-import SessionBean.CommonInfaSB.manageAccountLocal;
+import SessionBean.CommonInfa.VerifyAccountSessionBeanLocal;
+import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
