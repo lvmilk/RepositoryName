@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.ADS;
+package SessionBean.ADS;
 
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
