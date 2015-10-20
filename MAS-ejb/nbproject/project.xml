@@ -5,8 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>MAS-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">libs.PrimeFaces 5.2.classpath</included-library>
             <included-library dirs="200">libs.commons-math3-3.5.classpath</included-library>
+            <included-library dirs="200">libs.PrimeFaces_5.2.classpath</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
