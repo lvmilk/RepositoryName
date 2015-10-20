@@ -7,10 +7,10 @@ package APSmanagedbean;
 
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
-import Entity.aisEntity.FlightCabin;
+import Entity.AIS.FlightCabin;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.UserLogSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;

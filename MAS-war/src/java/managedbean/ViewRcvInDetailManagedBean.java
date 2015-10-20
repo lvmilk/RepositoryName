@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.MsgReceiver;
+import Entity.CommonInfa.MsgReceiver;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

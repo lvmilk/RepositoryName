@@ -5,16 +5,16 @@
  */
 package ADSmanagedbean;
 
-import ADS.ReserveFlightBeanLocal;
+import SessionBean.ADS.ReserveFlightBeanLocal;
 import Entity.APS.Airport;
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
-import Entity.aisEntity.BookingClassInstance;
-import Entity.aisEntity.FlightCabin;
+import Entity.AIS.BookingClassInstance;
+import Entity.AIS.FlightCabin;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.AirlineInventory.SeatAssignBeanLocal;
+import SessionBean.AIS.SeatAssignBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

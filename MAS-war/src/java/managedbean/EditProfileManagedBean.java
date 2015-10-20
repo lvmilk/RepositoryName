@@ -5,9 +5,12 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.*;
-import SessionBean.CommonInfaSB.UserLogSessionBeanLocal;
-import SessionBean.CommonInfaSB.manageAccountLocal;
+import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.CabinCrew;
+import SessionBean.CommonInfa.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;

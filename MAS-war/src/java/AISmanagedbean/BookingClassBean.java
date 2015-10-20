@@ -5,14 +5,14 @@
  */
 package AISmanagedbean;
 
+import Entity.AIS.BookingClass;
 import java.io.IOException;
 import java.util.*;
 
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.ejb.EJB;
-import Entity.aisEntity.*;
-import SessionBean.AirlineInventory.BookingClassBeanLocal;
+import SessionBean.AIS.BookingClassBeanLocal;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;

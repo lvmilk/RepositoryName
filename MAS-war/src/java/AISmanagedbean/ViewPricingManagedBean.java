@@ -7,7 +7,7 @@ package AISmanagedbean;
 
 import Entity.APS.AircraftType;
 import Entity.APS.Route;
-import SessionBean.AirlineInventory.PricingBeanLocal;
+import SessionBean.AIS.PricingBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

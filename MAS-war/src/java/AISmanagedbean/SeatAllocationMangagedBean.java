@@ -7,8 +7,8 @@ package AISmanagedbean;
 
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
-import Entity.aisEntity.BookingClassInstance;
-import SessionBean.AirlineInventory.SeatAllocationBeanLocal;
+import Entity.AIS.BookingClassInstance;
+import SessionBean.AIS.SeatAllocationBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
