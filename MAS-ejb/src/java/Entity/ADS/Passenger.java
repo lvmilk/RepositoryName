@@ -33,10 +33,14 @@ public class Passenger implements Serializable {
     private String ffpNo;
     private String email;
     private String contact;
+    private Member member=new Member();
     
-    @OneToMany(cascade={CascadeType.ALL})
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
     private Collection<Itinerary> itineray=new ArrayList<Itinerary>();
     
+    public Passenger()
+    {
+    }
 
     public String getPassport() {
         return passport;
@@ -181,6 +185,20 @@ public class Passenger implements Serializable {
      */
     public void setItineray(Collection<Itinerary> itineray) {
         this.itineray = itineray;
+    }
+
+    /**
+     * @return the member
+     */
+    public Member getMember() {
+        return member;
+    }
+
+    /**
+     * @param member the member to set
+     */
+    public void setMember(Member member) {
+        this.member = member;
     }
     
 }

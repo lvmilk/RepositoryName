@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+
 /**
  *
  * @author LI HAO
@@ -38,9 +39,14 @@ public class Member implements Serializable {
     private String dob;
     private Double miles;
     
-    @OneToMany(cascade={CascadeType.ALL})
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="member")
     private Collection<Passenger> psgs= new ArrayList<Passenger>();
     
+
+    
+    public Member()
+    {
+    }
 
     public Long getMemberID() {
         return memberID;
@@ -228,5 +234,6 @@ public class Member implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
+
     
 }
