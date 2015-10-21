@@ -10,70 +10,114 @@
 
 
     <h:head>
-        <title>Create Account_Center panel</title>
+        <title>Flight Search  Result</title>
     </h:head>
     <h:body>
 
-        <div style="width:100%; p {font-size: 10px !important;}; margin-top:0; margin-bottom:auto; border:0px ;">
 
-            <h:form>
+        <h:form>
 
-                <p:panel id="depart" header="Flight Searching Result"  style="width:100%">
-                    <p:dataTable var="departInstance" value="#{reserveFlightManagedBean.departInstances}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
+            <p:panel id="depart" header="Departure Flight Searching Result"  style="width:100%">
 
+                <p:dataTable var="departInstance" value="#{reserveFlightManagedBean.departInstances}" selection="#{reserveFlightManagedBean.toInstance}" rowKey="#{departInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
 
-                        <p:column headerText="FlightNo" sortBy="#{departInstance.flightFrequency.flightNo}">
-                            <h:outputText value="#{departInstance.flightFrequency.flightNo}" />
-                        </p:column>
+                    <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
+                    
+                    <p:column headerText="FlightNo" sortBy="#{departInstance.flightFrequency.flightNo}">
+                        <h:outputText value="#{departInstance.flightFrequency.flightNo}" />
+                    </p:column>
 
-                        <p:column headerText="Departure Date" sortBy="#{departInstance.date}">
-                            <h:outputText value="#{departInstance.standardDepTimeDateType}" />
-                        </p:column>
+                    <p:column headerText="Departure Date" sortBy="#{departInstance.date}">
+                        <h:outputText value="#{departInstance.date}" />
+                    </p:column>
 
-                        <p:column headerText="Departure Time">
-                            <h:outputText value="#{departInstance.estimatedDepTime}" />
-                        </p:column>
-                        <p:column headerText="Depart From">
-                            <h:outputText value="#{departInstance.flightFrequency.route.origin.airportName}" />
-                        </p:column>
-                        <p:column headerText="Arrive At:">
-                            <h:outputText value="#{departInstance.flightFrequency.route.dest.airportName}" />
-                        </p:column>
-                        <p:column headerText="AircraftType">
-                            <h:outputText value="#{departInstance.flightFrequency.route.acType.type}" />
-                        </p:column>
-                        <p:column headerText="Cabin Class" >
-                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
-                        </p:column>
-                        <p:column headerText="Total Capacity:">
-                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                        </p:column>
+                    <p:column headerText="Departure Time">
+                        <h:outputText value="#{departInstance.estimatedDepTime}" />
+                    </p:column>
+                    <p:column headerText="Depart From">
+                        <h:outputText value="#{departInstance.flightFrequency.route.origin.airportName}" />
+                    </p:column>
+                    <p:column headerText="Arrive At:">
+                        <h:outputText value="#{departInstance.flightFrequency.route.dest.airportName}" />
+                    </p:column>
+                    <p:column headerText="AircraftType">
+                        <h:outputText value="#{departInstance.flightFrequency.route.acType.type}" />
+                    </p:column>
+                    <p:column headerText="Cabin Class" >
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                    </p:column>
+                    <p:column headerText="Total Capacity:">
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                    </p:column>
 
-                        <p:column headerText="Available Capacity:">
-                            <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                        </p:column>
-                       
-<!--
-                        <p:column headerText="Edit">
-                            <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                    <p:column headerText="Available Capacity:">
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                    </p:column>
 
-                        </p:column>-->
-
-
-
-                    </p:dataTable>
-                </p:panel>
-
-            </h:form>
+                    <!--
+                                            <p:column headerText="Edit">
+                                                <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                    
+                                            </p:column>-->
 
 
 
-        </div>
+                </p:dataTable>
+            </p:panel>
+            <br/>
+            <br/>
+            <p:separator/>                
+            <br/>
+            <br/>
+            <p:panel id="return" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result"  style="width:100%">
+                <p:dataTable var="returnInstance" value="#{reserveFlightManagedBean.returnInstances}" selection="#{reserveFlightManagedBean.backInstance}" rowKey="#{returnInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
+
+                     <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
+
+                    <p:column headerText="FlightNo" sortBy="#{returnInstance.flightFrequency.flightNo}">
+                        <h:outputText value="#{returnInstance.flightFrequency.flightNo}" />
+                    </p:column>
+
+                    <p:column headerText="Departure Date" sortBy="#{returnInstance.date}">
+                        <h:outputText value="#{returnInstance.date}" />
+                    </p:column>
+
+                    <p:column headerText="Departure Time">
+                        <h:outputText value="#{returnInstance.estimatedDepTime}" />
+                    </p:column>
+                    <p:column headerText="Depart From">
+                        <h:outputText value="#{returnInstance.flightFrequency.route.origin.airportName}" />
+                    </p:column>
+                    <p:column headerText="Arrive At:">
+                        <h:outputText value="#{returnInstance.flightFrequency.route.dest.airportName}" />
+                    </p:column>
+                    <p:column headerText="AircraftType">
+                        <h:outputText value="#{returnInstance.flightFrequency.route.acType.type}" />
+                    </p:column>
+                    <p:column headerText="Cabin Class" >
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                    </p:column>
+                    <p:column headerText="Total Capacity:">
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                    </p:column>
+
+                    <p:column headerText="Available Capacity:">
+                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                    </p:column>
+
+                    <!--
+                                            <p:column headerText="Edit">
+                                                <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                    
+                                            </p:column>-->
 
 
 
+                </p:dataTable>
+            </p:panel>
 
 
+        </h:form>
 
     </h:body>
 </html>

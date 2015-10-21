@@ -67,6 +67,9 @@ public class ReserveFlightManagedBean implements Serializable {
     private List<FlightInstance> returnInstances;
     private List<FlightFrequency> resultFrequencies;
 
+    private FlightInstance toInstance;
+    private FlightInstance backInstance;
+
     private Map<String, FlightFrequency> flightMap;
     private String flightNo;
     private CabinClass selectedCabin;
@@ -99,15 +102,13 @@ public class ReserveFlightManagedBean implements Serializable {
         currentDate = currentCal.getTime();
 
         initialFrequency = rf.getAllFlightFrequency();
-        
-        
-    
-       returnTrip= (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
-        dateSpecific=(Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateSpecific");
-        departDate=(Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
-        returnDate=(Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
-        selectedCabin=(CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
-       countPerson= (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+
+        returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
+        dateSpecific = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateSpecific");
+        departDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
+        returnDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
+        selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
+        countPerson = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
 
         departInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departInstances");
         returnInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnInstances");
@@ -190,7 +191,7 @@ public class ReserveFlightManagedBean implements Serializable {
 //    }
     public void findFlightInstance() throws IOException {
 
-        selectedCabin=rf.findCabinClass(cabinName);
+        selectedCabin = rf.findCabinClass(cabinName);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("resultFrequencies", resultFrequencies);
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
@@ -198,21 +199,36 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateSpecific", dateSpecific);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDate", departDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDate", returnDate);
-        System.out.println("in managed bean findFlightInstance(): cabin selected is "+selectedCabin.getCabinName());
+        System.out.println("in managed bean findFlightInstance(): cabin selected is " + selectedCabin.getCabinName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
 
         if (dateSpecific) {
             departInstances = rf.findResultInstanceList(origin, dest, departDate);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
-            if (returnTrip) {
-                returnInstances = rf.findResultInstanceList(dest, origin, returnDate);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
+
+            if (!departInstances.isEmpty()) {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+
+                if (returnTrip) {
+                    returnInstances = rf.findResultInstanceList(dest, origin, returnDate);
+
+                    if (!returnInstances.isEmpty()) {
+                        System.out.println("in findFlightInstance(): returnInstances size is "+returnInstances.size());
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                    } else {
+                        System.out.println("in findFlightInstance(): returnInstances is empty");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for Returned date specified ", ""));
+                    }
+                } else {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                }
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for departure date specified ", ""));
             }
-
         }
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
 
-              FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
     }
 
     public void findBookClassInstance() throws IOException {
@@ -505,5 +521,23 @@ public class ReserveFlightManagedBean implements Serializable {
     public void setReturnInstances(List<FlightInstance> returnInstances) {
         this.returnInstances = returnInstances;
     }
+
+    public FlightInstance getToInstance() {
+        return toInstance;
+    }
+
+    public void setToInstance(FlightInstance toInstance) {
+        this.toInstance = toInstance;
+    }
+
+    public FlightInstance getBackInstance() {
+        return backInstance;
+    }
+
+    public void setBackInstance(FlightInstance backInstance) {
+        this.backInstance = backInstance;
+    }
+    
+    
 
 }
