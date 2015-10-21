@@ -32,7 +32,7 @@ public class Itinerary implements Serializable {
 
     private Passenger passenger = new Passenger();
     private BookingClassInstance bkInstance=new BookingClassInstance();
-    
+    private Reservation rsv=new Reservation();
     
     @OneToOne(cascade = {CascadeType.ALL})
     private Seat seat;
@@ -169,6 +169,20 @@ public class Itinerary implements Serializable {
      */
     public void setBkInstance(BookingClassInstance bkInstance) {
         this.bkInstance = bkInstance;
+    }
+
+    /**
+     * @return the rsv
+     */
+    public Reservation getRsv() {
+        return rsv;
+    }
+
+    /**
+     * @param rsv the rsv to set
+     */
+    public void setRsv(Reservation rsv) {
+        this.rsv = rsv;
     }
 
 }

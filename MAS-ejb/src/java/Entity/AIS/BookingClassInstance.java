@@ -6,6 +6,7 @@
 package Entity.AIS;
 
 import Entity.ADS.Itinerary;
+import Entity.ADS.Reservation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -43,6 +45,9 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "bkInstance")
     private Collection<Itinerary> itinaryList = new ArrayList<Itinerary>();
+    
+    @ManyToMany(cascade={CascadeType.ALL},mappedBy="bkclassInstance")
+    private Collection<Reservation> reservation = new ArrayList<Reservation>();
 
     public Integer getBookedSeatNo() {
         return bookedSeatNo;
@@ -161,6 +166,20 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
      */
     public void setItinaryList(Collection<Itinerary> itinaryList) {
         this.itinaryList = itinaryList;
+    }
+
+    /**
+     * @return the reservation
+     */
+    public Collection<Reservation> getReservation() {
+        return reservation;
+    }
+
+    /**
+     * @param reservation the reservation to set
+     */
+    public void setReservation(Collection<Reservation> reservation) {
+        this.reservation = reservation;
     }
 
 }
