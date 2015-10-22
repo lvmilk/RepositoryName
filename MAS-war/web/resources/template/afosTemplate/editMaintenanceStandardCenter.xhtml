@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+
+    <h:body>
+
+        <h:form id="formMain">
+            <p:panel id="panel" header="Edit Aircraft Type Maintenance Standard" style="width: 100%">
+                <p:messages id="msgs" autoUpdate="true"/>
+
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:60%" cellpadding="15">
+
+                    <p:outputLabel for="aircraftType" value="Aircraft Type: " />
+                    <h:outputText id="aircraftType" value="#{EMSMB.acType.type}" />
+
+<!--                    <p:selectOneMenu id="aircraftType" value="#{EMSMB.acTypeString}" required="true" requiredMessage="Please select aircraft type " style="width:150px">
+                        <f:selectItem itemLabel="-Select One-" itemValue="" />
+                        <f:selectItems value="#{EMSMB.acTypeInfo}"/>
+                    </p:selectOneMenu>-->
+
+                        <p:outputLabel value="Daily Check " style="font-weight:bold" />
+                    <h:panelGrid columns="2" style="margin-bottom:10px; width:100%" cellpadding="15">
+
+                        <!--                    <p:outputLabel value="Interval: " />
+                                            <h:outputText value="Daily" /><br/><br/>
+                                            <p:outputLabel value="Duration: " /><br/><br/><br/>-->
+                        <p:outputLabel for="ddu" value="Net Duration (hr): " />
+                        <p:inputText id="ddu" value="#{EMSMB.dailycDu}" label="ddu" required="true"  requiredMessage="Please enter daily check net duration" size="20">
+                            <f:validateLongRange minimum="1" maximum="10" />
+                        </p:inputText>
+                        <p:outputLabel for="dmh" value="Total Man Hour (hr): " />
+                        <p:inputText id="dmh" value="#{EMSMB.dailycMH}" label="dmh" required="true"  requiredMessage="Please enter daily check man hour (MH) required" size="20">
+                            <f:validateLongRange minimum="1" maximum="30" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="Weekly Check " style="font-weight:bold" />
+
+                    <!--                    <p:outputLabel value="Interval: " />
+                                        <h:outputText value="Weekly" /><br/><br/>-->
+                    <h:panelGrid columns="2" style="margin-bottom:10px; width:100%;" cellpadding="15">
+                        <!--<p:outputLabel value="Duration: " /><br/><br/><br/>-->
+                        <p:outputLabel for="wdu" value="Net Duration (hr): " />
+                        <p:inputText id="wdu" value="#{EMSMB.weeklycDu}" label="wdu" required="true"  requiredMessage="Please enter weekly check net duration" size="20">
+                            <f:validateLongRange minimum="1" maximum="10" />
+                        </p:inputText>
+                        <p:outputLabel for="wmh" value="Total Man Hour (hr): " />
+                        <p:inputText id="wmh" value="#{EMSMB.weeklycMH}" label="wmh" required="true"  requiredMessage="Please enter weekly check man hour (MH) required" size="20">
+                            <f:validateLongRange minimum="1" maximum="50" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="A Check " style="font-weight:bold" />
+                    <h:panelGrid columns="2" style="margin-bottom:10px; width:100%" cellpadding="15">
+
+                        <!--<p:outputLabel value="Interval" /><br/><br/><br/>-->
+                        <p:outputLabel for="acind" value="Interval By Flight Day: " />
+                        <p:inputText id="acind" value="#{EMSMB.acInD}" label="acind" required="true"  requiredMessage="Please enter A check interval by flight days" size="20">
+                            <f:validateLongRange minimum="20" maximum="80" />
+                        </p:inputText>
+                        <p:outputLabel for="acin" value="Interval By Flight Hour: " />
+                        <p:inputText id="acin" value="#{EMSMB.acInH}" label="acin" required="true"  requiredMessage="Please enter A check interval by flight hours" size="20">
+                            <f:validateLongRange minimum="300" maximum="1000" />
+                        </p:inputText>
+
+                        <!--<p:outputLabel value="Duration: " /><br/><br/><br/>-->
+                        <p:outputLabel for="acdu" value="Net Duration (hr): " />
+                        <p:inputText id="acdu" value="#{EMSMB.acDu}" label="acdu" required="true"  requiredMessage="Please enter A check net duration" size="20">
+                            <f:validateLongRange minimum="1" maximum="100" />
+                        </p:inputText>
+                        <p:outputLabel for="acmh" value="Total Man Hour (hr): " />
+                        <p:inputText id="acmh" value="#{EMSMB.acMH}" label="acmh" required="true"  requiredMessage="Please enter A check man hour (MH) required" size="20">
+                            <f:validateLongRange minimum="1" maximum="1000" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="C Check " style="font-weight:bold"/>
+                    <h:panelGrid columns="2" style="margin-bottom:10px; width:100%" cellpadding="15">
+
+                        <!--<p:outputLabel value="Interval" /><br/><br/><br/>-->
+                        <p:outputLabel for="ccind" value="Interval By Flight Day: " />
+                        <p:inputText id="ccind" value="#{EMSMB.ccInD}" label="ccind" required="true"  requiredMessage="Please enter C check interval by flight days" size="20">
+                            <f:validateLongRange minimum="400" maximum="800" />
+                        </p:inputText>
+                        <p:outputLabel for="ccinh" value="Interval By Flight Hour: " />
+                        <p:inputText id="ccinh" value="#{EMSMB.ccInH}" label="ccinh" required="true"  requiredMessage="Please enter C check interval by flight hours" size="20">
+                            <f:validateLongRange minimum="5000" maximum="9000" />
+                        </p:inputText>
+                        <p:outputLabel for="ccdu" value="Net Duration (hr): " />
+                        <p:inputText id="ccdu" value="#{EMSMB.ccDu}" label="ccdu" required="true"  requiredMessage="Please enter C check net duration" size="20">
+                            <f:validateLongRange minimum="1" maximum="20" />
+                        </p:inputText>
+                        <p:outputLabel for="ccmh" value="Total Man Hour (hr): " />
+                        <p:inputText id="ccmh" value="#{EMSMB.ccMH}" label="ccmh" required="true"  requiredMessage="Please enter C check man hour (MH) required" size="20">
+                            <f:validateLongRange minimum="1000" maximum="6000" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="D Check " style="font-weight:bold"/>
+                    <h:panelGrid columns="2" style="margin-bottom:10px; width:100%" cellpadding="15">
+
+                        <!--<p:outputLabel value="Interval" /><br/><br/><br/>-->
+                        <p:outputLabel for="dcind" value="Interval By Flight Day: " />
+                        <p:inputText id="dcind" value="#{EMSMB.dcInD}" label="dcind" required="true"  requiredMessage="Please enter D check interval by flight days" size="20">
+                            <f:validateLongRange minimum="2000" maximum="3600" />
+                        </p:inputText>
+                        <p:outputLabel for="dcinh" value="Interval By Flight Hour: " />
+                        <p:inputText id="dcinh" value="#{EMSMB.dcInH}" label="dcinh" required="true"  requiredMessage="Please enter D check interval by flight hours " size="20">
+                            <f:validateLongRange minimum="20000" maximum="50000" />
+                        </p:inputText>
+                        <p:outputLabel for="dcdu" value="Net Duration (hr): " />
+                        <p:inputText id="dcdu" value="#{EMSMB.dcDu}" label="dcdu" required="true"  requiredMessage="Please enter D check net duration" size="20">
+                            <f:validateLongRange minimum="30" maximum="80" />
+                        </p:inputText>
+                        <p:outputLabel for="dcmh" value="Total Man Hour (hr): " />
+                        <p:inputText id="dcmh" value="#{EMSMB.dcMH}" label="dcmh" required="true"  requiredMessage="Please enter D check man hour (MH) required" size="20">
+                            <f:validateLongRange minimum="30000" maximum="60000" />
+                        </p:inputText>
+                    </h:panelGrid>
+
+
+                </h:panelGrid>
+
+                <p:commandButton value="Update" update="@form" actionListener="#{EMSMB.editMaintenanceStandard}"  icon="ui-icon-check" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{EMSMB.editMaintenanceStandardCancel}" immediate="true" icon="ui-icon-cancel" />
+
+            </p:panel>
+        </h:form>
+
+    </h:body>
+
+</html>
+

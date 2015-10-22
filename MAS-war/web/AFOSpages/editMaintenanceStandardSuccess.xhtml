@@ -7,7 +7,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <h:head>
-        <title>Enter Maintenance Log</title>
+        <title>Edit Maintenance Standard Success</title>
     </h:head>
 
     <h:body>
@@ -20,9 +20,18 @@
                 <ui:include src="./../resources/template/afosTemplate/leftMenu.xhtml"></ui:include>
             </ui:define>
             <ui:define name="center">
-                <ui:include src="./../resources/template/afosTemplate/addMaintenanceLogCenter.xhtml"></ui:include>
+                <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
+                <div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">
+<!--                    Successfully deleted route <ui:repeat var="route" value="#{deletedRoute}"> <h:outputText value="#{route} "/> </ui:repeat> !-->
+                    <h:outputText value="Successfully edited maintenance standard of #{acTypeStringMt} !"/>
+
+                    <div style="width:100%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:10%; border:0px ;">
+                        <p:commandButton value="Back"  action="#{EMSMB.editMaintenanceStandardBack}" icon="ui-icon-carat-1-w" />
+                    </div>
+                </div>
             </ui:define>
-            
+
+
         </ui:decorate>
     </h:body>
 </html>
