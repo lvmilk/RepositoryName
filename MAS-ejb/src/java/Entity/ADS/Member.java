@@ -47,6 +47,16 @@ public class Member implements Serializable {
     public Member()
     {
     }
+    
+    public void CreateMember(String title, String firstName, String lastName, String email, String address, String contact, String passport)
+    {
+        this.title=title;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.email=email;
+        this.contact=contact;
+        this.passport=passport;
+    }
 
     public Long getMemberID() {
         return memberID;

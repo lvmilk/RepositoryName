@@ -3,28 +3,64 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h:form >
-            <p:growl id="msgs" showDetail="true" />
+            <ui:repeat var="psg" value="#{mgMB.passengerList}">
+                <p:growl id="msgs" showDetail="true" />
 
-            <p:panelGrid columns="2">
-                <p:outputLabel for="title" value="Title:" />
-                <h:selectOneMenu id="title" value="#{mgMB.title}">
-                    <f:selectItem itemValue="Dr" itemLabel="Dr" />
-                    <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
-                    <f:selectItem itemValue="Miss" itemLabel="Miss" />
-                    <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
-                    <f:selectItem itemValue="Ms" itemLabel="Ms" />
-                    <f:selectItem itemValue="Prof" itemLabel="Prof" />
+                <p:outputLabel value="Passenger" style="font-weight: bold"/>
+                <h:panelGrid columns="2" cellpadding="10">
 
-                </h:selectOneMenu>
 
-            </p:panelGrid>
+                    <p:outputLabel for="title" value="Title:" />
+                    <h:selectOneMenu id="title" value="#{psg.title}">
+                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
+
+                    </h:selectOneMenu>
+
+                    <p:outputLabel  value="First Name: " />
+                    <p:inputText value="#{psg.firstName}"/>
+
+                    <p:outputLabel  value="Last Name: " />
+                    <p:inputText value="#{psg.firstName}"/>            
+
+
+                    <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
+                    <h:selectOneMenu id="ffpProgram" value="#{psg.ffpName}">
+                        <f:selectItem itemValue="TFP" itemLabel="MAS - The Flying Program(TFP) " />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel  value="Frequent flyer membership number: " />
+                    <p:inputText value="#{psg.ffpNo}"/>    
+
+                </h:panelGrid>
+
+            </ui:repeat>
         </h:form>
+
+        <h:form>
+            <p:outputLabel value="Contact Information" style="font-weight: bold"/>
+
+            <h:panelGrid columns="2"   cellpadding="10">
+
+                <p:outputLabel  value="Email Address: " />
+                <p:inputText value="#{mgMB.email}"/>
+
+                <p:outputLabel  value="Contact Number: " />
+                <p:inputText value="#{mgMB.contactNo}"/>   
+            </h:panelGrid>
+        </h:form>
+
+        <p:commandButton value="Confirm" actionListener="#{mgMB.makeReserve}" icon="ui-icon-check" />
     </h:body>
 </html>
-

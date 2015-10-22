@@ -31,8 +31,7 @@ public class Passenger implements Serializable {
     private String lastName;
     private String ffpName;
     private String ffpNo;
-    private String email;
-    private String contact;
+
     private Member member=new Member();
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
@@ -40,6 +39,16 @@ public class Passenger implements Serializable {
     
     public Passenger()
     {
+    }
+    
+    public void CreatePsg(String passport,String title, String firstName, String lastName, String ffpName, String ffpNo)
+    {
+        this.passport=passport;
+        this.title=title;
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.ffpName=ffpName;
+        this.ffpNo=ffpNo;
     }
 
     public String getPassport() {
@@ -143,34 +152,6 @@ public class Passenger implements Serializable {
      */
     public void setFfpNo(String ffpNo) {
         this.ffpNo = ffpNo;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @return the contact
-     */
-    public String getContact() {
-        return contact;
-    }
-
-    /**
-     * @param contact the contact to set
-     */
-    public void setContact(String contact) {
-        this.contact = contact;
     }
 
     /**

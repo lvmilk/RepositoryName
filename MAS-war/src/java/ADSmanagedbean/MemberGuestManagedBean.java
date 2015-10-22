@@ -7,6 +7,7 @@ package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
 import Entity.CommonInfa.MsgSender;
+import SessionBean.ADS.PassengerSessionBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ import javax.inject.Named;
 @Named(value = "mgMB")
 @ViewScoped
 public class MemberGuestManagedBean implements Serializable {
+    
+    private PassengerSessionBeanLocal psgSBlocal;
 
     private String title = "Mr";
 
@@ -46,6 +49,11 @@ public class MemberGuestManagedBean implements Serializable {
         }
     }
     
+    
+    public void makeReserve()
+    {
+//        psgSBlocal
+    }
     
     
     /**
@@ -144,6 +152,34 @@ public class MemberGuestManagedBean implements Serializable {
      */
     public void setFfpNo(String ffpNo) {
         this.ffpNo = ffpNo;
+    }
+
+    /**
+     * @return the passengerList
+     */
+    public ArrayList<Passenger> getPassengerList() {
+        return passengerList;
+    }
+
+    /**
+     * @param passengerList the passengerList to set
+     */
+    public void setPassengerList(ArrayList<Passenger> passengerList) {
+        this.passengerList = passengerList;
+    }
+
+    /**
+     * @return the person
+     */
+    public Passenger getPerson() {
+        return person;
+    }
+
+    /**
+     * @param person the person to set
+     */
+    public void setPerson(Passenger person) {
+        this.person = person;
     }
 
 }

@@ -14,6 +14,11 @@ import javax.ejb.Stateless;
 @Stateless
 public class PassengerSessionBean implements PassengerSessionBeanLocal {
 
+    @Override
+    public void makeReservation() {
+        
+    }
+
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }
