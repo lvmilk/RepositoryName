@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package AISmanagedbean;
 
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
-import Entity.aisEntity.BookingClassInstance;
-import Entity.aisEntity.FlightCabin;
+import Entity.AIS.BookingClassInstance;
+import Entity.AIS.FlightCabin;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.AirlineInventory.SeatAssignBeanLocal;
+import SessionBean.AIS.SeatAssignBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

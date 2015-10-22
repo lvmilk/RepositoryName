@@ -33,9 +33,9 @@ public class ViewRouteManagedBean implements Serializable {
 
     @EJB
     private FlightSchedulingBeanLocal fsb;
-    
+
     private UIComponent uIComponent;
-private Route route;
+    private Route route;
     private List<Route> routeList;
     private List<Route> filteredRouteList;
     private List<FlightFrequency> flightOfRoute;
@@ -52,7 +52,7 @@ private Route route;
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewRoute", route);
         route = (Route) event.getComponent().getAttributes().get("route");
 //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightOfRoute", getFlightOfRoute(route));
-        
+
         System.out.println("rmb.viewRoute(): Route " + route.getOrigin() + " - " + route.getDest() + " detail is displayed.");
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewRouteDetail.xhtml");
     }
@@ -98,9 +98,8 @@ private Route route;
 //    public List<FlightFrequency> getFlightOfRoute(Route route) {
 //        return fsb.getFlightOfRoute(route);
 //    }
-
     public void setFlightOfRoute(List<FlightFrequency> flightOfRoute) {
         this.flightOfRoute = flightOfRoute;
     }
-    
+
 }
