@@ -6,15 +6,10 @@
 package AFOSmanagedbean;
 
 import Entity.APS.AircraftType;
-import Entity.aisEntity.BookingClassInstance;
 import java.io.Serializable;
 import java.util.List;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
-import org.primefaces.event.RowEditEvent;
 
 /**
  *

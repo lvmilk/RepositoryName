@@ -5,7 +5,11 @@
  */
 package SessionBean.ADS;
 
+import java.util.ArrayList;
 import javax.ejb.Stateless;
+import Entity.ADS.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -14,9 +18,12 @@ import javax.ejb.Stateless;
 @Stateless
 public class PassengerSessionBean implements PassengerSessionBeanLocal {
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
-    public void makeReservation() {
-        
+    public void makeReservation(ArrayList passengerList, String email, String contactNo) {
+
     }
 
     // Add business logic below. (Right-click in editor and choose

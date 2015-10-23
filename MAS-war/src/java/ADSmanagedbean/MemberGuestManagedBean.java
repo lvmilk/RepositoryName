@@ -52,7 +52,7 @@ public class MemberGuestManagedBean implements Serializable {
     
     public void makeReserve()
     {
-//        psgSBlocal
+        psgSBlocal.makeReservation(passengerList,email,contactNo);
     }
     
     
