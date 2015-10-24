@@ -46,20 +46,60 @@
                     <p:outputLabel  value="Frequent flyer membership number: " />
                     <p:inputText value="#{psg.ffpNo}"/>    
 
+                    <p:separator/>
+                    <p:separator/>
                 </h:panelGrid>
 
             </ui:repeat>
 
-            <p:outputLabel value="Contact Information" style="font-weight: bold"/>
+            <p:outputLabel value="Contact Information - Booker" style="font-weight: bold"/>
 
-            <h:panelGrid columns="2"   cellpadding="10">
+            <p:selectOneRadio id="memberStatus" value="#{mgMB.selectedOption}" required="true" requiredMessage="Please select either member or non-member" >
+                <f:selectItem itemLabel="Member" itemValue="true" />
+                <f:selectItem itemLabel="Non-Member" itemValue="false" />
+                <p:ajax  event="click" listener="#{mgMB.onSelectReturn}" update="memberPanel, nonMemberPanel"/>
+            </p:selectOneRadio>
 
-                <p:outputLabel  value="Email Address: " />
-                <p:inputText value="#{mgMB.email}"/>
+            <p:panel id="memberPanel"  visible="#{mgMB.visiMember}" style="margin-bottom:20px">
+                <h:panelGrid  columns="2"   cellpadding="10">
+                    <p:outputLabel  value="Member Account: " />
+                    <p:inputText value="#{mgMB.memberId}"/>
 
-                <p:outputLabel  value="Contact Number: " />
-                <p:inputText value="#{mgMB.contactNo}"/>   
-            </h:panelGrid>
+                    <p:outputLabel  value="Email: " />
+                    <p:inputText value="#{mgMB.email}"/>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="nonMemberPanel"  visible="#{mgMB.visiNonMember}" style="margin-bottom:20px">
+                <h:panelGrid  columns="2"   cellpadding="10">
+
+                    <p:outputLabel for="title" value="Title:" />
+                    <h:selectOneMenu id="title" value="#{mgMB.title}">
+                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
+
+                    </h:selectOneMenu>
+
+                    <p:outputLabel  value="First Name: " />
+                    <p:inputText value="#{mgMB.firstName}"/>
+
+                    <p:outputLabel  value="Last Name: " />
+                    <p:inputText value="#{mgMB.lastName}"/>
+
+                    <p:outputLabel  value="Address: " />
+                    <p:inputText value="#{mgMB.address}"/>
+
+                    <p:outputLabel  value="Email Address: " />
+                    <p:inputText value="#{mgMB.email}"/>
+
+                    <p:outputLabel  value="Contact Number: " />
+                    <p:inputText value="#{mgMB.contactNo}"/>   
+                </h:panelGrid>
+            </p:panel>
 
 
             <p:commandButton value="Confirm" actionListener="#{mgMB.makeReserve}" icon="ui-icon-check" />

@@ -27,9 +27,8 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
     private Member member;
 
     @Override
-    public void makeReservation(ArrayList<Passenger> passengerList, String email, String contactNo) {
+    public void makeReservation(ArrayList<Passenger> passengerList, String email, Long memberId) {
         System.out.println("******PassengerList size:" + passengerList.size());
-        boolean status;
         Passenger tempPsg;
 
         for (int i = 0; i < passengerList.size(); i++) {
@@ -43,8 +42,6 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
             em.persist(passengerList.get(i));
         }
 
-        System.out.println("******PassengerList:" + email);
-        System.out.println("******PassengerList:" + contactNo);
     }
 
     public boolean checkPassengerExist(Passenger passenger) {
@@ -67,6 +64,42 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
 
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    @Override
+    public void makeRsvGuest(ArrayList<Passenger> passengerList, String title, String firstName, String lastName, String address, String email, String contactNo) {
+
+        System.out.println("******PassengerList size:" + passengerList.size());
+        Passenger tempPsg;
+        member = new Member();
+
+        member.CreateMember(title, firstName, lastName, email, address, contactNo, false);
+        em.persist(member);
+        em.flush();
+
+        ArrayList<Passenger> psgList = new ArrayList<Passenger>();
+
+        for (int i = 0; i < passengerList.size(); i++) {
+//            System.out.println("******PassengerList size i:"+passengerList.get(i).toString());
+//            status = checkPassengerExist(passengerList.get(i));
+            tempPsg = passengerList.get(i);
+
+            System.out.println("hehe");
+            passenger = new Passenger();
+            passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
+//            em.persist(passengerList.get(i));
+            passenger.setMember(member);
+            em.persist(passenger);
+            em.flush();
+                     
+            psgList.add(passenger);
+
+        }
+        
+        member.setPsgs(psgList);
+        em.merge(member);
+        em.flush();
+        
+        System.out.println("~~~~~~~~The size that member/guest booked" + member.getPsgs().size());
+
+    }
+
 }

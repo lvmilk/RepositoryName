@@ -24,6 +24,7 @@ import javax.inject.Named;
 @Named(value = "mgMB")
 @ViewScoped
 public class MemberGuestManagedBean implements Serializable {
+
     @EJB
     private PassengerSessionBeanLocal psgSBlocal;
 
@@ -34,32 +35,50 @@ public class MemberGuestManagedBean implements Serializable {
     private String ffpProgram;
     private String ffpNo;
 
+    private Long memberId;
+    private String address;
     private String email;
     private String contactNo;
-    
-    private ArrayList<Passenger> passengerList=new ArrayList<>();
-    private Passenger person=new Passenger();
-    
+
+    private boolean visiMember = true;
+    private boolean visiNonMember;
+
+    private boolean selectedOption = true;
+
+    private ArrayList<Passenger> passengerList = new ArrayList<>();
+    private Passenger person = new Passenger();
+
     @PostConstruct
     public void init() {
         try {
             passengerList.add(person);
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-    
-    public void makeReserve()
-    {
-        System.out.print("&&&&&&&&&&This is person: "+person.getFirstName());
-        passengerList.set(0,person);
-        
-        psgSBlocal.makeReservation(passengerList,email,contactNo);
+
+    public void onSelectReturn() {
+        if (isSelectedOption() == true) {
+            visiMember = true;
+            visiNonMember = false;
+        } else if (isSelectedOption() == false) {
+            visiNonMember = true;
+            visiMember = false;
+        }
     }
-    
-    
+
+    public void makeReserve() {
+        System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
+        passengerList.set(0, person);
+
+        if (visiMember == true) {
+            psgSBlocal.makeReservation(passengerList, email, memberId);
+        } else if (visiNonMember == true) {
+            psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+        }
+    }
+
     /**
      * @return the title
      */
@@ -184,6 +203,76 @@ public class MemberGuestManagedBean implements Serializable {
      */
     public void setPerson(Passenger person) {
         this.person = person;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the memberId
+     */
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    /**
+     * @param memberId the memberId to set
+     */
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    /**
+     * @return the visiMember
+     */
+    public boolean isVisiMember() {
+        return visiMember;
+    }
+
+    /**
+     * @param visiMember the visiMember to set
+     */
+    public void setVisiMember(boolean visiMember) {
+        this.visiMember = visiMember;
+    }
+
+    /**
+     * @return the visiNonMember
+     */
+    public boolean isVisiNonMember() {
+        return visiNonMember;
+    }
+
+    /**
+     * @param visiNonMember the visiNonMember to set
+     */
+    public void setVisiNonMember(boolean visiNonMember) {
+        this.visiNonMember = visiNonMember;
+    }
+
+    /**
+     * @return the selectedOption
+     */
+    public boolean isSelectedOption() {
+        return selectedOption;
+    }
+
+    /**
+     * @param selectedOption the selectedOption to set
+     */
+    public void setSelectedOption(boolean selectedOption) {
+        this.selectedOption = selectedOption;
     }
 
 }
