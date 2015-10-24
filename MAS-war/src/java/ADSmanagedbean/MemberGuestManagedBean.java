@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -23,7 +24,7 @@ import javax.inject.Named;
 @Named(value = "mgMB")
 @ViewScoped
 public class MemberGuestManagedBean implements Serializable {
-    
+    @EJB
     private PassengerSessionBeanLocal psgSBlocal;
 
     private String title = "Mr";
@@ -52,6 +53,9 @@ public class MemberGuestManagedBean implements Serializable {
     
     public void makeReserve()
     {
+        System.out.print("&&&&&&&&&&This is person: "+person.getFirstName());
+        passengerList.set(0,person);
+        
         psgSBlocal.makeReservation(passengerList,email,contactNo);
     }
     

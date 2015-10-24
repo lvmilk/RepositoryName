@@ -32,7 +32,10 @@
                     <p:inputText value="#{psg.firstName}"/>
 
                     <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{psg.firstName}"/>            
+                    <p:inputText value="#{psg.lastName}"/>            
+
+                    <p:outputLabel  value="Passport: " />
+                    <p:inputText value="#{psg.passport}"/>       
 
 
                     <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
@@ -46,9 +49,7 @@
                 </h:panelGrid>
 
             </ui:repeat>
-        </h:form>
 
-        <h:form>
             <p:outputLabel value="Contact Information" style="font-weight: bold"/>
 
             <h:panelGrid columns="2"   cellpadding="10">
@@ -59,8 +60,9 @@
                 <p:outputLabel  value="Contact Number: " />
                 <p:inputText value="#{mgMB.contactNo}"/>   
             </h:panelGrid>
-        </h:form>
 
-        <p:commandButton value="Confirm" actionListener="#{mgMB.makeReserve}" icon="ui-icon-check" />
+
+            <p:commandButton value="Confirm" actionListener="#{mgMB.makeReserve}" icon="ui-icon-check" />
+        </h:form>
     </h:body>
 </html>

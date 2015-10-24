@@ -40,7 +40,7 @@ public class Member implements Serializable {
     private Double miles;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="member")
-    private Collection<Passenger> psgs= new ArrayList<Passenger>();
+    private Collection<Passenger> psgs;
     
 
     
@@ -88,7 +88,7 @@ public class Member implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.FFPMember[ id=" + memberID + " ]";
+        return "Entity.ADS.Member[ id=" + memberID + " ]";
     }
 
     /**

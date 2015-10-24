@@ -8,8 +8,10 @@ package SessionBean.ADS;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import Entity.ADS.*;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -21,8 +23,47 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
     @PersistenceContext
     private EntityManager em;
 
+    private Passenger passenger;
+    private Member member;
+
     @Override
-    public void makeReservation(ArrayList passengerList, String email, String contactNo) {
+    public void makeReservation(ArrayList<Passenger> passengerList, String email, String contactNo) {
+        System.out.println("******PassengerList size:" + passengerList.size());
+        boolean status;
+        Passenger tempPsg;
+
+        for (int i = 0; i < passengerList.size(); i++) {
+//            System.out.println("******PassengerList size i:"+passengerList.get(i).toString());
+//            status = checkPassengerExist(passengerList.get(i));
+            tempPsg = passengerList.get(i);
+
+            System.out.println("hehe");
+            passenger = new Passenger();
+//            passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
+            em.persist(passengerList.get(i));
+        }
+
+        System.out.println("******PassengerList:" + email);
+        System.out.println("******PassengerList:" + contactNo);
+    }
+
+    public boolean checkPassengerExist(Passenger passenger) {
+        Query query = null;
+        String tempPassport;
+        List resultList = new ArrayList<Passenger>();
+
+        tempPassport = passenger.getPassport();
+        System.out.println("************Inside checkPassengerExist: " + tempPassport);
+        query = em.createQuery("SELECT u FROM Passenger u WHERE u.passport = :inPsgPassport");
+        query.setParameter("inPsgPassport", tempPassport);
+
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
 
     }
 
