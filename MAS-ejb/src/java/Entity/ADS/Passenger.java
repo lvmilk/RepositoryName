@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -24,15 +25,17 @@ public class Passenger implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String passport;
+    private Long id;
     
+    private String passport;
     private String title;
     private String firstName;
     private String lastName;
     private String ffpName;
     private String ffpNo;
-
-    private Member member=new Member();
+    
+    @ManyToOne
+    private Member member;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
     private Collection<Itinerary> itineray=new ArrayList<Itinerary>();
@@ -51,29 +54,29 @@ public class Passenger implements Serializable {
         this.ffpNo=ffpNo;
     }
 
-    public String getPassport() {
-        return passport;
+    public Long getId() {
+        return id;
     }
 
-    public void setPassport(String passport) {
-        this.passport = passport;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (passport != null ? passport.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the passport fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Passenger)) {
             return false;
         }
         Passenger other = (Passenger) object;
-        if ((this.passport == null && other.passport != null) || (this.passport != null && !this.passport.equals(other.passport))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -81,7 +84,7 @@ public class Passenger implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Passenger[ id=" + passport + " ]";
+        return "Entity.ADS.Passenger[ id=" + id + " ]";
     }
 
     /**
@@ -180,6 +183,20 @@ public class Passenger implements Serializable {
      */
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    /**
+     * @return the passport
+     */
+    public String getPassport() {
+        return passport;
+    }
+
+    /**
+     * @param passport the passport to set
+     */
+    public void setPassport(String passport) {
+        this.passport = passport;
     }
     
 }

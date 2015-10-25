@@ -22,7 +22,7 @@ import javax.ejb.Local;
 @Local
 public interface FleetPlanningBeanLocal {
 
-       public List<AircraftType> getAllAircraftType();
+    public List<AircraftType> getAllAircraftType();
 
     public List<Aircraft> getAllAircraft();
 

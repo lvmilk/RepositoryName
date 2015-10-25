@@ -18,7 +18,7 @@ import javax.persistence.Query;
  * @author LIU YUQI'
  */
 @Stateless
-public class ManageCabin implements ManageCabinLocal {
+public class ManageCabinBean implements ManageCabinBeanLocal {
 
     @PersistenceContext
     EntityManager em;

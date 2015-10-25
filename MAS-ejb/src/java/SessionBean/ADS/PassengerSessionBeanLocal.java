@@ -5,6 +5,8 @@
  */
 package SessionBean.ADS;
 
+import Entity.ADS.Passenger;
+import java.util.ArrayList;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface PassengerSessionBeanLocal {
-    public void makeReservation();
+    public void makeReservation(ArrayList<Passenger> passengerList,String email, Long memberId);
+    public void makeRsvGuest(ArrayList<Passenger> passengerList,String title,String firstName,String lastName,String address,String email,String contactNo);
 }

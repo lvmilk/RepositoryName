@@ -28,7 +28,7 @@ import org.primefaces.model.SelectableDataModel;
  */
 @Named(value = "bookingClassBean")
 @SessionScoped
-public class BookingClassBean implements Serializable {
+public class BookingClassManagedBean implements Serializable {
 
     @EJB
     private BookingClassBeanLocal bcb;
@@ -71,7 +71,7 @@ public class BookingClassBean implements Serializable {
         this.classList = classList;
     }
 
-    public BookingClassBean() {
+    public BookingClassManagedBean() {
         selectedBookClass=null;
         selectedClass = new ArrayList<>();
     }

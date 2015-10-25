@@ -33,6 +33,7 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
     //private LocalDate date;
 
 // Add business logic below. (Right-click in editor and choose
+    @Override
     public List<FlightFrequency> getFlightList(String dateString) {
         flightList = new ArrayList<FlightFrequency>();
         System.out.println("MPB: getFlightList(): date is " + dateString);
@@ -49,6 +50,7 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         return flightList;
     }
 
+    @Override
     public List<BookingClassInstance> getBkiList(String flightNo, String date) {
         List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
         Query query = em.createQuery("SELECT b FROM BookingClassInstance b where b.flightCabin.flightInstance.date=:fdate AND b.flightCabin.flightInstance.flightFrequency.flightNo=:fflightNo");
@@ -58,6 +60,7 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         return bkiList;
     }
 
+    @Override
     public void editPrice(BookingClassInstance bki, Double price) {
         bki.setPrice(price);
         System.out.println("MPB: get price is " + bki.getPrice());
@@ -65,11 +68,5 @@ public class ModifyPriceBean implements ModifyPriceBeanLocal {
         System.out.println("MPB: Price edited!");
         em.flush();
     }
-//public void editPrice(BookingClassInstance bki){
-//    System.out.println("MPB: get price is "+ bki.getPrice());
-//    em.merge(bki);
-//    System.out.println("MPB: Price edited!");
-//    em.flush();
-//}
-// "Insert Code > Add Business Method")
+
 }

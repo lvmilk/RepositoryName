@@ -13,25 +13,24 @@ import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author LIU YUQI'
  */
-@Named(value = "SeatArrangeBean")
-@SessionScoped
-public class SeatArrangeBean implements Serializable {
-
-    private manageAccountLocal mal;
+@Named(value = "viewCabin1Bean")
+@ViewScoped
+public class ViewCabin1ManagedBean implements  Serializable{
+    
+    
+   //  private manageAccountLocal mal;
     private List<SelectItem> options = new ArrayList<SelectItem>();
 
     @EJB
@@ -55,31 +54,19 @@ public class SeatArrangeBean implements Serializable {
     private String selectedName;
     private ArrayList<String> allNames;
 
-    private Integer suiteNo;                //number of seat in suite
-    private Integer fcSeatNo;               //number of seat in first class
-    private Integer bcSeatNo;               //number of seat in business class
-    private Integer pecSeatNo;              //number of seat in premium economy class
-    private Integer ecSeatNo;
+//    private Integer suiteNo;                //number of seat in suite
+//    private Integer fcSeatNo;               //number of seat in first class
+//    private Integer bcSeatNo;               //number of seat in business class
+//    private Integer pecSeatNo;              //number of seat in premium economy class
+//    private Integer ecSeatNo;
 
-    public SeatArrangeBean() {
 
+
+    
+    public ViewCabin1ManagedBean() {
     }
+    
 
-//    @PostConstruct
-//    public void init() {
-////        boolean check = SP.checkAirTypeEmpty();
-//
-//        this.options.add(new SelectItem( "Select One AircraftType"));
-//
-//         
-//            allNames = (ArrayList<String>)this.getAllNames();
-//            if (!allNames.isEmpty()) {
-//                for (int i = 0; i < allNames.size(); i++) {
-//                    this.options.add(new SelectItem(allNames.get(i)));
-//
-//                }
-//            }
-//        } 
     public void searchType() throws IOException {
             
             
@@ -89,7 +76,7 @@ public class SeatArrangeBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList",selectedType.getCabinList() );
          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftType",selectedType);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseCabin.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ViewCabin2.xhtml");
     }
 
 
@@ -133,45 +120,45 @@ public class SeatArrangeBean implements Serializable {
         this.cabin = cabin;
     }
 
-    public Integer getSuiteNo() {
-        return suiteNo;
-    }
-
-    public void setSuiteNo(Integer suiteNo) {
-        this.suiteNo = suiteNo;
-    }
-
-    public Integer getFcSeatNo() {
-        return fcSeatNo;
-    }
-
-    public void setFcSeatNo(Integer fcSeatNo) {
-        this.fcSeatNo = fcSeatNo;
-    }
-
-    public Integer getBcSeatNo() {
-        return bcSeatNo;
-    }
-
-    public void setBcSeatNo(Integer bcSeatNo) {
-        this.bcSeatNo = bcSeatNo;
-    }
-
-    public Integer getPecSeatNo() {
-        return pecSeatNo;
-    }
-
-    public void setPecSeatNo(Integer pecSeatNo) {
-        this.pecSeatNo = pecSeatNo;
-    }
-
-    public Integer getEcSeatNo() {
-        return ecSeatNo;
-    }
-
-    public void setEcSeatNo(Integer ecSeatNo) {
-        this.ecSeatNo = ecSeatNo;
-    }
+//    public Integer getSuiteNo() {
+//        return suiteNo;
+//    }
+//
+//    public void setSuiteNo(Integer suiteNo) {
+//        this.suiteNo = suiteNo;
+//    }
+//
+//    public Integer getFcSeatNo() {
+//        return fcSeatNo;
+//    }
+//
+//    public void setFcSeatNo(Integer fcSeatNo) {
+//        this.fcSeatNo = fcSeatNo;
+//    }
+//
+//    public Integer getBcSeatNo() {
+//        return bcSeatNo;
+//    }
+//
+//    public void setBcSeatNo(Integer bcSeatNo) {
+//        this.bcSeatNo = bcSeatNo;
+//    }
+//
+//    public Integer getPecSeatNo() {
+//        return pecSeatNo;
+//    }
+//
+//    public void setPecSeatNo(Integer pecSeatNo) {
+//        this.pecSeatNo = pecSeatNo;
+//    }
+//
+//    public Integer getEcSeatNo() {
+//        return ecSeatNo;
+//    }
+//
+//    public void setEcSeatNo(Integer ecSeatNo) {
+//        this.ecSeatNo = ecSeatNo;
+//    }
 
     public AircraftType getSelectedType() {
         return selectedType;
@@ -230,22 +217,7 @@ public class SeatArrangeBean implements Serializable {
 
             }
         }
-//        System.out.println("ABCDEFG");
-//
-//        this.options.add(new SelectItem(null, "Select One AircraftType"));
-
-//        if (!SP.checkAirTypeEmpty()) {
-//            allNames = getAllNames();
-//            if (!allNames.isEmpty()) {
-//                for (int i = 0; i < allNames.size(); i++) {
-//                    this.options.add(new SelectItem(allNames.get(i), allNames.get(i)));
-//
-//                }
-//            }
-//        } else {
-//            System.out.println("List is empty");
-//        }
-//        
+      
         return options;
     }
 
@@ -253,14 +225,7 @@ public class SeatArrangeBean implements Serializable {
         this.options = options;
     }
 
-    public manageAccountLocal getMal() {
-        return mal;
-    }
-
-    public void setMal(manageAccountLocal mal) {
-        this.mal = mal;
-    }
-
+  
     public FleetPlanningBeanLocal getFP() {
         return FP;
     }
@@ -286,5 +251,5 @@ public class SeatArrangeBean implements Serializable {
     }
     
     
-
+    
 }

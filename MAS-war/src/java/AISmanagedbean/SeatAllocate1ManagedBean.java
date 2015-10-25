@@ -31,7 +31,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @Named(value = "seatAllocate1Bean")
 @ViewScoped
-public class SeatAllocate1Bean implements Serializable {
+public class SeatAllocate1ManagedBean implements Serializable {
 
     @EJB
     private FlightSchedulingBeanLocal fs;
@@ -64,7 +64,7 @@ public class SeatAllocate1Bean implements Serializable {
 
     private ArrayList<BookingClassInstance> subList = new ArrayList<>();
 
-    public SeatAllocate1Bean() {
+    public SeatAllocate1ManagedBean() {
 
     }
 

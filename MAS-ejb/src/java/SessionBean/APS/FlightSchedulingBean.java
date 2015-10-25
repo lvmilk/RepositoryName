@@ -81,12 +81,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     public void checkScheduleTime(String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
-//        LocalTime depTime = LocalTime.parse(depTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-//        LocalTime arrTime = LocalTime.parse(arrTimeString, DateTimeFormatter.ofPattern("HH:mm"));
-//        LocalDate depDate = LocalDate.of(2000, 1, 10);
-//        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(dateAdjust);
-//        LocalDateTime depDateTime = LocalDateTime.of(depDate, depTime);
-//        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arrTime);
+
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         Date dep = formatter.parse(depTimeString);
         System.out.println("fsb.checkScheduleTime(): " + dep);
@@ -99,10 +94,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             }
         }
 
-//        if (depDateTime.isAfter(arrDateTime)) {
-//            System.out.println("Departure time should before arrival time.");
-//            throw new Exception("Departure time should before arrival time.");
-//        }
     }
 
     public void checkOperationDate(String startDateString, String endDateString) throws Exception {

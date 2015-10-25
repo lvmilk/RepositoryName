@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -23,7 +24,8 @@ import javax.inject.Named;
 @Named(value = "mgMB")
 @ViewScoped
 public class MemberGuestManagedBean implements Serializable {
-    
+
+    @EJB
     private PassengerSessionBeanLocal psgSBlocal;
 
     private String title = "Mr";
@@ -33,29 +35,56 @@ public class MemberGuestManagedBean implements Serializable {
     private String ffpProgram;
     private String ffpNo;
 
+    private Long memberId;
+    private String address;
     private String email;
     private String contactNo;
+
+    private boolean visiMember = true;
+    private boolean visiNonMember;
+
+    private boolean selectedOption = true;
+
+    private ArrayList<Passenger> passengerList = new ArrayList<>();
+    private Passenger person = new Passenger();
     
-    private ArrayList<Passenger> passengerList=new ArrayList<>();
-    private Passenger person=new Passenger();
+    private Integer repeat=2;
     
+
     @PostConstruct
     public void init() {
         try {
-            passengerList.add(person);
-            
+            for(int i=0;i<repeat;i++)
+            {
+              passengerList.add(person);
+              person=new Passenger();
+            }
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
-    
-    public void makeReserve()
-    {
-//        psgSBlocal
+
+    public void onSelectReturn() {
+        if (isSelectedOption() == true) {
+            visiMember = true;
+            visiNonMember = false;
+        } else if (isSelectedOption() == false) {
+            visiNonMember = true;
+            visiMember = false;
+        }
     }
-    
-    
+
+    public void makeReserve() {
+        System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
+
+        if (visiMember == true) {
+            psgSBlocal.makeReservation(passengerList, email, memberId);
+        } else if (visiNonMember == true) {
+            psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+        }
+    }
+
     /**
      * @return the title
      */
@@ -180,6 +209,90 @@ public class MemberGuestManagedBean implements Serializable {
      */
     public void setPerson(Passenger person) {
         this.person = person;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the memberId
+     */
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    /**
+     * @param memberId the memberId to set
+     */
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    /**
+     * @return the visiMember
+     */
+    public boolean isVisiMember() {
+        return visiMember;
+    }
+
+    /**
+     * @param visiMember the visiMember to set
+     */
+    public void setVisiMember(boolean visiMember) {
+        this.visiMember = visiMember;
+    }
+
+    /**
+     * @return the visiNonMember
+     */
+    public boolean isVisiNonMember() {
+        return visiNonMember;
+    }
+
+    /**
+     * @param visiNonMember the visiNonMember to set
+     */
+    public void setVisiNonMember(boolean visiNonMember) {
+        this.visiNonMember = visiNonMember;
+    }
+
+    /**
+     * @return the selectedOption
+     */
+    public boolean isSelectedOption() {
+        return selectedOption;
+    }
+
+    /**
+     * @param selectedOption the selectedOption to set
+     */
+    public void setSelectedOption(boolean selectedOption) {
+        this.selectedOption = selectedOption;
+    }
+
+    /**
+     * @return the repeat
+     */
+    public Integer getRepeat() {
+        return repeat;
+    }
+
+    /**
+     * @param repeat the repeat to set
+     */
+    public void setRepeat(Integer repeat) {
+        this.repeat = repeat;
     }
 
 }
