@@ -1,13 +1,11 @@
 package Entity.APS;
 
-import Entity.APS.Aircraft;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,27 +39,28 @@ public class AircraftType implements Serializable {
     private Integer captain;
     private Integer pilot; //1st officer
 
-    //maintenance interval standard
+    //---------------------after 1st release-------------------------------------------
     private Integer acInH;
     private Integer acInD;
     private Integer acDu;
     private Integer acMH;
 
+    private Integer bcInH;
+    private Integer bcInD;
+    private Integer bcDu;   
+    private Integer bcMH;
+
     private Integer ccInH;
     private Integer ccInD;
-    private Integer ccDu;
+    private Integer ccDu;  // by hour
     private Integer ccMH;
 
     private Integer dcInH;
     private Integer dcInD;
-    private Integer dcDu;
+    private Integer dcDu;  // by hour
     private Integer dcMH;
 
-    private Integer dailycDu;
-    private Integer dailycMH;
-
-    private Integer weeklycDu;
-    private Integer weeklycMH;
+    //---------------------------------------------------------------------------
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private List<Aircraft> aircraft = new ArrayList<>();
@@ -304,6 +303,38 @@ public class AircraftType implements Serializable {
         this.acMH = acMH;
     }
 
+    public Integer getBcInH() {
+        return bcInH;
+    }
+
+    public void setBcInH(Integer bcInH) {
+        this.bcInH = bcInH;
+    }
+
+    public Integer getBcInD() {
+        return bcInD;
+    }
+
+    public void setBcInD(Integer bcInD) {
+        this.bcInD = bcInD;
+    }
+
+    public Integer getBcDu() {
+        return bcDu;
+    }
+
+    public void setBcDu(Integer bcDu) {
+        this.bcDu = bcDu;
+    }
+
+    public Integer getBcMH() {
+        return bcMH;
+    }
+
+    public void setBcMH(Integer bcMH) {
+        this.bcMH = bcMH;
+    }
+
     public Integer getCcInD() {
         return ccInD;
     }
@@ -350,38 +381,6 @@ public class AircraftType implements Serializable {
 
     public void setDcMH(Integer dcMH) {
         this.dcMH = dcMH;
-    }
-
-    public Integer getDailycDu() {
-        return dailycDu;
-    }
-
-    public void setDailycDu(Integer dailycDu) {
-        this.dailycDu = dailycDu;
-    }
-
-    public Integer getDailycMH() {
-        return dailycMH;
-    }
-
-    public void setDailycMH(Integer dailycMH) {
-        this.dailycMH = dailycMH;
-    }
-
-    public Integer getWeeklycDu() {
-        return weeklycDu;
-    }
-
-    public void setWeeklycDu(Integer weeklycDu) {
-        this.weeklycDu = weeklycDu;
-    }
-
-    public Integer getWeeklycMH() {
-        return weeklycMH;
-    }
-
-    public void setWeeklycMH(Integer weeklycMH) {
-        this.weeklycMH = weeklycMH;
     }
 
     public Integer getCcInH() {

@@ -31,7 +31,7 @@ import javax.persistence.Temporal;
  * @author Xu/Lu Xi
  */
 @Entity
-public class FlightInstance implements Comparable<FlightInstance> {
+public class FlightInstance implements Serializable, Comparable<FlightInstance> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,9 +52,9 @@ public class FlightInstance implements Comparable<FlightInstance> {
     private Integer actualDateAdjust;
     private String standardDepTime;
     private String standardArrTime;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardDepTimeDateType;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
 
     @ManyToOne

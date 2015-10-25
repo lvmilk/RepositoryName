@@ -7,6 +7,7 @@ package Entity.AFOS;
 
 import Entity.APS.Aircraft;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,23 +15,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author Xu
  */
 @Entity
-public class Maintenance implements Serializable {
+public class Maintenance implements Serializable, Comparable<Maintenance> {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String startTime;
-    private String endTime;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date startTime;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date endTime;
     private Integer expectedHour;
-    private String objective;       // A Check/ C Check/ D Check/ Weekly/ Daily/ Pre-Departure/ Post-Landing/ Special
-    private String spec;
+    private String objective;       // A Check/ B Check/ C Check/ D Check/ Special
 
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MaintenanceLog log;
@@ -38,7 +41,7 @@ public class Maintenance implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Aircraft aircraft;
 
-    public Maintenance create(Aircraft ac, String startTime, String endTime, String objective) {
+    public Maintenance create(Aircraft ac, Date startTime, Date endTime, String objective) {
         this.aircraft = ac;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -46,19 +49,19 @@ public class Maintenance implements Serializable {
         return this;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -125,6 +128,13 @@ public class Maintenance implements Serializable {
     @Override
     public String toString() {
         return "Entity.AFOS.Maintenance[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(Maintenance mt) {
+        Date thisTime = this.getStartTime();
+        Date mtTime = mt.getStartTime();
+        return thisTime.compareTo(mtTime);
     }
 
 }

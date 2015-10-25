@@ -434,21 +434,20 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void editMtStandard(AircraftType acType, Integer dailycDu, Integer dailycMH, Integer weeklycDu, Integer weeklycMH, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH) {
+    public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH) {
         AircraftType act = em.find(AircraftType.class, acType.getType());
-        act.setDailycDu(dailycDu);
-        System.out.println("Update mt standard dailycDu" + dailycDu);
-        act.setDailycMH(dailycMH);
-        System.out.println("Update mt standard dailycMH" + dailycMH);
-        act.setWeeklycDu(weeklycDu);
-//        System.out.println("Update mt standard weeklycDu " + act.getType()); 
-        act.setWeeklycMH(weeklycMH);
-//        System.out.println("Update mt standard weeklycMH" + act.getType());
+//        act.setDailycDu(dailycDu);
+//        act.setDailycMH(dailycMH);
+//        act.setWeeklycDu(weeklycDu);
+//        act.setWeeklycMH(weeklycMH);
         act.setAcInH(acInH);
-//        System.out.println("Update mt standard weeklyInH" + act.getType());
         act.setAcInD(acInD);
         act.setAcDu(acDu);
         act.setAcMH(acMH);
+        act.setBcInH(bcInH);
+        act.setBcInD(bcInD);
+        act.setBcDu(bcDu);
+        act.setBcMH(bcMH);
         act.setCcInH(ccInH);
         act.setCcInD(ccInD);
         act.setCcDu(ccDu);
