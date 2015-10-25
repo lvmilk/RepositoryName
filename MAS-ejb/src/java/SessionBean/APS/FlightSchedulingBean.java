@@ -5,7 +5,9 @@
  */
 package SessionBean.APS;
 
+import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
+import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
@@ -25,6 +27,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,6 +42,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @PersistenceContext
     EntityManager em;
+
+    @EJB
+    RoutePlanningBeanLocal rpb;
 
     FlightFrequency flightFreq;
     FlightInstance flightInst;
@@ -459,17 +465,84 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
             System.out.println("FSB: currentAirport: " + currentAirport.getIATA());
             List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
+            AircraftType acTempType = acTemp.getAircraftType();
 
             Collections.sort(unplannedFi);
 
-            System.out.println(
-                    "FSB:Sorted unplannedFi : " + unplannedFi.toString());
+            //check whether can add maintenance or not
+            long acInH = acTempType.getAcInH();
+            long acInD = acTempType.getAcInD();
+            Integer acDu = acTempType.getAcDu();
+            long bcInH = acTempType.getBcInH();
+            long bcInD = acTempType.getBcInD();
+            Integer bcDu = acTempType.getBcDu();
+            long ccInH = acTempType.getCcInH();
+            long ccInD = acTempType.getCcInD();
+            Integer ccDu = acTempType.getCcDu();
+            long dcInH = acTempType.getDcInH();
+            long dcInD = acTempType.getDcInD();
+            Integer dcDu = acTempType.getDcDu();
+
+            long acycleFH = acTemp.getAcycleFH();
+            long acycleFD = acTemp.getAcycleFD();
+            long bcycleFH = acTemp.getBcycleFH();
+            long bcycleFD = acTemp.getBcycleFD();
+            long ccycleFH = acTemp.getCcycleFH();
+            long ccycleFD = acTemp.getCcycleFD();
+            long dcycleFH = acTemp.getDcycleFH();
+            long dcycleFD = acTemp.getDcycleFD();
+
+            System.out.println("FSB:Sorted unplannedFi : " + unplannedFi.toString());
             for (FlightInstance fiTemp : unplannedFi) {
                 System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
                 System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
                 System.out.println("FSB: scheduleAcToFi(): flightInstance scheduled time is " + df1.parse(fiTemp.getStandardDepTime()).toString());
                 System.out.println("FSB: scheduleAcToFi(): Check Boolean1 " + currentTime.after(endDate));
                 System.out.println("FSB: scheduleAcToFi(): Check Boolean2 " + df1.parse(fiTemp.getStandardDepTime()).after(endDate));
+
+                // idle time: end time of last task/ maintenance
+                List<FlightInstance> fiList = acTemp.getFlightInstance();
+                Collections.sort(fiList);
+                List<Maintenance> mtList = acTemp.getMaintenanceList();
+                Collections.sort(mtList);
+                Date lastFiEnd = fiList.get(fiList.size() - 1).getStandardArrTimeDateType();
+                Date lastMtEnd = mtList.get(mtList.size() - 1).getEndTime();
+                Date nextFree = (lastFiEnd.after(lastMtEnd)) ? lastFiEnd : lastMtEnd;
+                Calendar c1 = Calendar.getInstance();
+                c1.setTime(nextFree);
+                c1.add(Calendar.HOUR, 1);
+                nextFree = c1.getTime();
+
+                // A check
+                if (acycleFH >= acInH * 0.9 && acycleFH <= acInH * 1.1 || acycleFD >= acInD * 0.9 && acycleFD <= acInD * 1.1) {
+                    c1.setTime(nextFree);
+                    c1.add(Calendar.HOUR, acDu);
+                    Date thisMtEnd = c1.getTime();
+                    Maintenance mta = new Maintenance();
+                    mta.create(acTemp, nextFree, thisMtEnd, "A Check");
+                    mtList.add(mta);
+                    acTemp.setMaintenanceList(mtList);
+                    currentTime = thisMtEnd;
+                    em.merge(mta);
+                    em.merge(acTemp);
+                    em.flush();
+                }
+                
+                // B check
+                if (bcycleFH >= bcInH * 0.9 && bcycleFH <= bcInH * 1.1 || bcycleFD >= bcInD * 0.9 && bcycleFD <= bcInD * 1.1) {
+                    c1.setTime(nextFree);
+                    c1.add(Calendar.HOUR, bcDu);
+                    Date thisMtEnd = c1.getTime();
+                    Maintenance mtb = new Maintenance();
+                    mtb.create(acTemp, nextFree, thisMtEnd, "B Check");
+                    mtList.add(mtb);
+                    acTemp.setMaintenanceList(mtList);
+                    currentTime = thisMtEnd;
+                    em.merge(mtb);
+                    em.merge(acTemp);
+                    em.flush();
+                }
+
                 if (currentTime.after(endDate) || df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
                     System.out.println("FSB: scheduleAcToFi(): Break! ");
                     break;
@@ -480,22 +553,22 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     Date temp = currentTime;
                     Calendar c = Calendar.getInstance();
                     c.setTime(temp);
-                    c.add(Calendar.HOUR, 2);  // number of days to add
+                    c.add(Calendar.HOUR, 1);  // number of hours to add
                     temp = c.getTime();
-                    System.out.println("FSB: scheduleAcToFi(): 2 hours later? " + temp.toString());
+                    System.out.println("FSB: scheduleAcToFi(): 1 hours later? " + temp.toString());
                     if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
                         System.out.println("FSB: Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
-                        fiTemp.setAircraft(acTemp);
-                        currentTime = df1.parse(fiTemp.getStandardArrTime());
-                        currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
-                        acTemp.setCurrentAirport(currentAirport.getIATA());
-                        List<FlightInstance> flightTemp = acTemp.getFlightInstance();
-                        flightTemp.add(fiTemp);
-                        acTemp.setFlightInstance(flightTemp);
-                        em.merge(fiTemp);
-                        em.merge(acTemp);
-                        em.flush();
                     }
+                    fiTemp.setAircraft(acTemp);
+                    currentTime = df1.parse(fiTemp.getStandardArrTime());
+                    currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
+                    acTemp.setCurrentAirport(currentAirport.getIATA());
+                    List<FlightInstance> flightTemp = acTemp.getFlightInstance();
+                    flightTemp.add(fiTemp);
+                    acTemp.setFlightInstance(flightTemp);
+                    em.merge(fiTemp);
+                    em.merge(acTemp);
+                    em.flush();
                 }
             }
         }
@@ -749,7 +822,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public FlightInstance getDummyFi() {
         Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
-//        FlightInstance fi = em.find(FlightInstance.class, 1000000);
+        FlightInstance fi = em.find(FlightInstance.class, 1000000);
         return (FlightInstance) q1.getSingleResult();
     }
 

@@ -28,22 +28,30 @@ public class Aircraft implements Serializable {
     private Long maintenanceLogId;
     private String currentAirport;
 
+    //----------------------After 1st release
     private long accumFlyMinutes;
     private long acycleFH = 0;
     private long acycleFD = 0;
+    private long acycleFC = 0;
+    private long bcycleFH = 0;
+    private long bcycleFD = 0;
+    private long bcycleFC = 0;
     private long ccycleFH = 0;
     private long ccycleFD = 0;
+    private long ccycleFC = 0;
     private long dcycleFH = 0;
     private long dcycleFD = 0;
+    private long dcycleFC = 0;
+
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
+    private List<Maintenance> maintenanceList = new ArrayList<>();
+    //------------------------------------------
 
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
     private List<FlightInstance> flightInstance = new ArrayList<>();
-
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
-    private List<Maintenance> maintenanceList = new ArrayList<>();
 
     public void create(String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) {
         this.setRegistrationNo(registrationNo);
@@ -176,6 +184,22 @@ public class Aircraft implements Serializable {
         this.acycleFD = acycleFD;
     }
 
+    public long getBcycleFH() {
+        return bcycleFH;
+    }
+
+    public void setBcycleFH(long bcycleFH) {
+        this.bcycleFH = bcycleFH;
+    }
+
+    public long getBcycleFD() {
+        return bcycleFD;
+    }
+
+    public void setBcycleFD(long bcycleFD) {
+        this.bcycleFD = bcycleFD;
+    }
+
     public long getCcycleFH() {
         return ccycleFH;
     }
@@ -206,6 +230,38 @@ public class Aircraft implements Serializable {
 
     public void setDcycleFD(long dcycleFD) {
         this.dcycleFD = dcycleFD;
+    }
+
+    public long getAcycleFC() {
+        return acycleFC;
+    }
+
+    public void setAcycleFC(long acycleFC) {
+        this.acycleFC = acycleFC;
+    }
+
+    public long getBcycleFC() {
+        return bcycleFC;
+    }
+
+    public void setBcycleFC(long bcycleFC) {
+        this.bcycleFC = bcycleFC;
+    }
+
+    public long getCcycleFC() {
+        return ccycleFC;
+    }
+
+    public void setCcycleFC(long ccycleFC) {
+        this.ccycleFC = ccycleFC;
+    }
+
+    public long getDcycleFC() {
+        return dcycleFC;
+    }
+
+    public void setDcycleFC(long dcycleFC) {
+        this.dcycleFC = dcycleFC;
     }
 
     @Override
