@@ -124,17 +124,7 @@ public class ViewBookingPriceManagedBean implements Serializable {
 
     }
 
-    public void onRowEdit(RowEditEvent event) {
-        BookingClassInstance bki = (BookingClassInstance) event.getObject();
-        mpb.editPrice(bki, price);
-        FacesMessage msg = new FacesMessage("Fare Edited", ((BookingClassInstance) event.getObject()).getBookingClass().getAnnotation() + " Booking Class  Edited");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
 
-    public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Edit Cancelled", ((BookingClassInstance) event.getObject()).getBookingClass().getAnnotation() + " Booking Class Edit Cancelled");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
 
     public Date getDate() {
         System.out.println("MPMB:get Date");

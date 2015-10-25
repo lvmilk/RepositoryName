@@ -8,7 +8,7 @@ package AISmanagedbean;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
-import SessionBean.APS.ManageCabinLocal;
+import SessionBean.APS.ManageCabinBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -25,7 +25,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "viewCabin3Bean")
 @ViewScoped
-public class ViewCabin3Bean implements Serializable {
+public class ViewCabin3ManagedBean implements Serializable {
 
     CabinClass cabinSelected;
     AircraftType acType;
@@ -38,14 +38,14 @@ public class ViewCabin3Bean implements Serializable {
     private Integer rowSeatCount; //no. of seat counts per row
     private String rowConfig; //e.g for 7 seats/row, 2-3-2
 
-    public ViewCabin3Bean() {
+    public ViewCabin3ManagedBean() {
     }
 
     @EJB
-    private ManageCabinLocal mcl;
+    private ManageCabinBeanLocal mcl;
 
-    @EJB
-    private FleetPlanningBeanLocal FP;
+//    @EJB
+//    private FleetPlanningBeanLocal FP;
 
     @PostConstruct
     public void init() {
@@ -77,42 +77,7 @@ public class ViewCabin3Bean implements Serializable {
     
     }
 
-//    public void saveUpdate() throws IOException {
-//        if (rowCount * rowSeatCount > cabinSelected.getSeatCount()) {
-//            System.out.println("exceed total seat count in cabin");
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "product of rows and seat per row must be less than capacity ", ""));
-//        } else {
-//
-//            String[] parts = rowConfig.split("-");
-//            String part1 = parts[0]; // 004
-//            String part2 = parts[1]; // 034556
-//            String part3 = parts[2];
-//            Integer left = Integer.parseInt(part1);
-//            Integer middle = Integer.parseInt(part2);
-//            Integer right = Integer.parseInt(part3);
-//            System.out.println("left is " + left);
-//            System.out.println("middle is " + middle);
-//            System.out.println("right is " + right);
-//
-//            if (left == 0 || right == 0) {
-//                System.out.println("Left or right is 0");
-//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "left and right segment cannot be 0 ", ""));
-//
-//            } else {
-//
-//                if ((left + middle + right) > rowSeatCount) {
-//                    System.out.println("Exceed row seat count");
-//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "seats in row config exceed no. of seats per row", ""));
-//
-//                } else {
-//
-//                    mcl.updateCabin(cabinSelected, seatWidth, rowCount, rowSeatCount, rowConfig);
-//
-//                    FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCabinSuccess.xhtml");
-//                }
-//            }
-//        }
-//    }
+
 
     public CabinClass getCabinSelected() {
         return cabinSelected;

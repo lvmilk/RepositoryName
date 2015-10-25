@@ -57,6 +57,7 @@ public class SeatAllocationBean implements SeatAllocationBeanLocal {
     }
     public List<CabinClass> getCabinList(String flightNo){
          List<CabinClass> cabinList = new ArrayList<CabinClass>();
+         System.out.println("SAB: getCabinList(): initial flightList size is "+flightList.size());
         for (FlightFrequency f: flightList){
             if(f.getFlightNo().equals(flightNo))
                 cabinList=f.getRoute().getAcType().getCabinList();

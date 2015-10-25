@@ -18,12 +18,12 @@
             <p:growl id="msgs" showDetail="true"/>
 
 
-            <p:dataTable id="bkiList" var="bki" value="#{seatAllocationMangagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="float:left">
+            <p:dataTable id="bkiList" var="bki" value="#{seatAllocationManagedBean.bkiList}" editable="true" emptyMessage="No Cabin Classes" style="float:left">
            
-                <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update=":form:msgs :form:test" />
-<!--                    <p:ajax event="rowEdit" listener="#{seatAllocationMangagedBean.onRowEdit}" update="panel" />-->
+                <p:ajax event="rowEdit" listener="#{seatAllocationManagedBean.onRowEdit}" update=":form:msgs :form:test" />
+<!--                    <p:ajax event="rowEdit" listener="#{seatAllocationManagedBean.onRowEdit}" update="panel" />-->
 
-                <p:ajax event="rowEditCancel" listener="#{seatAllocationMangagedBean.onRowCancel}" update=":form:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{seatAllocationManagedBean.onRowCancel}" update=":form:msgs" />
 
                 <p:column headerText="Cabin Class">
                     <h:outputText value="#{bki.bookingClass.cabinName}" style="center" />
@@ -41,7 +41,7 @@
                             <h:outputText value="#{bki.seatNo-bki.bookedSeatNo}" style="center" />
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{seatAllocationMangagedBean.allocateSeatNo}" style="width:100%" label="Seat Number"/>
+                            <p:inputText value="#{seatAllocationManagedBean.allocateSeatNo}" style="width:100%" label="Seat Number"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -54,13 +54,13 @@
 
             <h:panelGrid id="test" columns="2" cellpadding="5">
                 <p:outputLabel for="totalAvailable" value="Seat Count Required to be Allocated" />
-                <h:outputText id="totalAvailable"  value="#{seatAllocationMangagedBean.totalAvailableSeat}" />
+                <h:outputText id="totalAvailable"  value="#{seatAllocationManagedBean.totalAvailableSeat}" />
                 <p:outputLabel for="allocated" value="Allocated Seat Count" />
-                <h:outputText id="allocated" value="#{seatAllocationMangagedBean.getCurrentTotalAvailableSeat()}" />
+                <h:outputText id="allocated" value="#{seatAllocationManagedBean.getCurrentTotalAvailableSeat()}" />
                <br/><br/><br/><br/>
 
 
-                <p:commandButton value="Back" style="margin-right:0" actionListener="#{seatAllocationMangagedBean.goBack()}"  icon="ui-icon-check" />
+                <p:commandButton value="Back" style="margin-right:0" actionListener="#{seatAllocationManagedBean.goBack()}"  icon="ui-icon-check" />
 
             </h:panelGrid>
             </p:panel>

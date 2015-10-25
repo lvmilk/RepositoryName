@@ -26,7 +26,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "viewCabin2Bean")
 @ViewScoped
-public class ViewCabin2Bean implements Serializable {
+public class ViewCabin2ManagedBean implements Serializable {
 
     AircraftType acType;
     List<CabinClass> cabinList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class ViewCabin2Bean implements Serializable {
     Map<CabinClass, String[][]> chartMap = new HashMap<CabinClass, String[][]>();
     ArrayList<String[][]> chartList=new ArrayList<String[][]>();
 
-    public ViewCabin2Bean() {
+    public ViewCabin2ManagedBean() {
     }
 
     @PostConstruct

@@ -23,13 +23,13 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "addCabinDetailBean")
 @ViewScoped
-public class AddCabinDetailBean implements Serializable {
+public class AddCabinDetailManagedBean implements Serializable {
 
     AircraftType acType;
     Collection<CabinClass> cabinList = new ArrayList<>();
     CabinClass selectedCabin;
 
-    public AddCabinDetailBean() {
+    public AddCabinDetailManagedBean() {
     }
 
     @PostConstruct

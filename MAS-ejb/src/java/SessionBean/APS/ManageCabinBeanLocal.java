@@ -14,7 +14,7 @@ import javax.ejb.Local;
  * @author LIU YUQI'
  */
 @Local
-public interface ManageCabinLocal {
+public interface ManageCabinBeanLocal {
 
     public boolean widthExist(AircraftType type, String cabin);
 

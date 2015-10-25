@@ -29,6 +29,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
     @PersistenceContext
     EntityManager em;
 
+    @Override
     public List<Route> getRouteList() {
         System.out.println("APB: getRouteList");
 
@@ -38,6 +39,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
         return routeList;
     }
 
+    @Override
     public List<FlightFrequency> getFlightFrequencyList(Long routeID) {
         System.out.println("APB: getFFList");
         Route route = new Route();
@@ -53,6 +55,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
     }
 
     // get the list of flight instance that have no asoociated flightCabin and bookingClassInstance
+    @Override
     public List<FlightInstance> getFlightInstanceList(String flightNo) {
         System.out.println("APB: flightNo " + flightNo);
         List<FlightInstance> fiListAll = new ArrayList<FlightInstance>();
@@ -78,6 +81,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
         return fiList;
     }
 
+    @Override
     public void generateBookingClass(FlightInstance fi) {
         for (CabinClass temp : fi.getFlightFrequency().getRoute().getAcType().getCabinList()) {
             FlightCabin flightCabin = new FlightCabin();
@@ -128,6 +132,7 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
 
     }
 
+    @Override
     public List<BookingClassInstance> getBkiList(FlightInstance fi) {
         List<BookingClassInstance> bkiList = new ArrayList<BookingClassInstance>();
         System.out.println("APB: getBkiLIst(): " + bkiList.size());
