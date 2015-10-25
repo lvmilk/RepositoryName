@@ -1,0 +1,130 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Entity.AFOS;
+
+import Entity.APS.Aircraft;
+import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+/**
+ *
+ * @author Xu
+ */
+@Entity
+public class Maintenance implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    private String startTime;
+    private String endTime;
+    private Integer expectedHour;
+    private String objective;       // A Check/ C Check/ D Check/ Weekly/ Daily/ Pre-Departure/ Post-Landing/ Special
+    private String spec;
+
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private MaintenanceLog log;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private Aircraft aircraft;
+
+    public Maintenance create(Aircraft ac, String startTime, String endTime, String objective) {
+        this.aircraft = ac;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.objective = objective;
+        return this;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public Integer getExpectedHour() {
+        return expectedHour;
+    }
+
+    public void setExpectedHour(Integer expectedHour) {
+        this.expectedHour = expectedHour;
+    }
+
+    public String getObjective() {
+        return objective;
+    }
+
+    public void setObjective(String objective) {
+        this.objective = objective;
+    }
+
+    public MaintenanceLog getLog() {
+        return log;
+    }
+
+    public void setLog(MaintenanceLog log) {
+        this.log = log;
+    }
+
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Maintenance)) {
+            return false;
+        }
+        Maintenance other = (Maintenance) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity.AFOS.Maintenance[ id=" + id + " ]";
+    }
+
+}

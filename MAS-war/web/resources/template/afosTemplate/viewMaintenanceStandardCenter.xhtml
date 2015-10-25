@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <p:panel id="panel" header="View Maintenance Standard"  style="width:100%">
+                <p:dataTable var="ac" value="#{VMSMB.acTypeList}" paginator="true" rows="40" emptyMessage="No aircraft types found.">
+
+                    <f:facet name="header">
+                        Maintenance Standard
+                    </f:facet>
+
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column rowspan="3" headerText="Aircraft Type"/>
+                            <p:column colspan="2" headerText="Daily Check"/>
+                            <p:column colspan="2" headerText="Weekly Check"/>
+                            <p:column colspan="4" headerText="A Check" />
+                            <p:column colspan="4" headerText="C Check" />
+                            <p:column colspan="4" headerText="D Check"/>
+                            <p:column rowspan="3" headerText="Action"/>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" headerText="Duration"/>
+                            <p:column colspan="2" headerText="Duration"/>
+                            <p:column colspan="2" headerText="Interval"/>
+                            <p:column colspan="2" headerText="Duration"/>
+                            <p:column colspan="2" headerText="Interval"/>
+                            <p:column colspan="2" headerText="Duration"/>
+                            <p:column colspan="2" headerText="Interval"/>                                                 
+                            <p:column colspan="2" headerText="Duration"/>
+                        </p:row>
+                        <p:row> 
+                            <p:column headerText="Net Duration (hr)"/>
+                            <p:column headerText="Total Man Hour (hr)"/>
+                            <p:column headerText="Net Duration (hr)"/>
+                            <p:column headerText="Total Man Hour (hr)"/>
+
+                            <p:column headerText="By Flight Day"/>
+                            <p:column headerText="By Flight Hour"/>
+                            <p:column headerText="Net Duration (hr)"/>
+                            <p:column headerText="Total Man Hour (hr)"/>
+
+                            <p:column headerText="By Flight Day"/>
+                            <p:column headerText="By Flight Hour"/>
+                            <p:column headerText="Net Duration (hr)"/>
+                            <p:column headerText="Total Man Hour (hr)"/>
+
+                            <p:column headerText="By Flight Day"/>
+                            <p:column headerText="By Flight Hour"/>
+                            <p:column headerText="Net Duration (hr)"/>
+                            <p:column headerText="Total Man Hour (hr)"/>
+                            <!--                            <p:column headerText="Duration(hr)/ Man hour (hr)"/>
+                                                        <p:column headerText="Interval (FH/days)*"/>
+                                                        <p:column headerText="Duration (hr)/ Man hour (hr)"/>
+                                                        <p:column headerText="Interval (month)"/>
+                                                        <p:column headerText="Duration (day)/ Man hour (hr)"/>
+                                                        <p:column headerText="Interval (month)"/>
+                                                        <p:column headerText="Duration (day)/ Man hour (hr)"/>-->
+                        </p:row>
+                    </p:columnGroup>
+
+
+                    <p:column>
+                        <h:outputText value="#{ac.type}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dailycDu}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dailycMH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.weeklycDu}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.weeklycMH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.acInD}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.acInH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.acDu}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.acMH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.ccInD}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.ccInH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.ccDu}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.ccMH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dcInD}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dcInH}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dcDu}" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{ac.dcMH}" />
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="Edit" action="#{VMSMB.editMaintenanceStandard(ac)}"  />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

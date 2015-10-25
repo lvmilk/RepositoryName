@@ -193,11 +193,7 @@ public class RouteManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
         }
     }
-//    public void checkRouteProfit() throws IOException {
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mPrice", mPrice);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pVolumn", pVolumn);
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("./checkRouteProfitabilityResult.xhtml");
-//    }
+
 
     public Map<String, String> getAirportInfo() {
         airportList = getAirportList();

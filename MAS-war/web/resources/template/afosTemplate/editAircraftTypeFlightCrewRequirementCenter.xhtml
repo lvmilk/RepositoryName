@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+
+    <h:body>
+ <h:form id="form">
+            <p:panel id="panel" header="Edit Aircraft Type Flight Crew Requirement"  style="width:100%">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="actList" var="act" value="#{EATFCRMB.actList}" editable="true" emptyMessage="No Aircraft Types" style="margin-bottom:20px">
+                    <p:ajax event="rowEdit" listener="#{EATFCRMB.onRowEdit}" update=":form:msgs" />
+                    <p:ajax event="rowEditCancel" listener="#{EATFCRMB.onRowCancel}" update=":form:msgs" />
+                    <p:column headerText="Aircraft Type">
+                        <h:outputText value="#{act.bookingClass.cabinName}" style="center" />
+                    </p:column>
+                    <p:column headerText="Booking Class Annotation">
+                        <!--                    <p:cellEditor>-->
+                        <!--                        <f:facet name="output">-->
+                        <h:outputText value="#{bki.bookingClass.annotation}" />
+                        <!--</f:facet>-->
+                        <!--                        <f:facet name="input">
+                                                    <p:inputText value="#{bki.bookingClass.annotation}" style="width:100%" label="Fare"/>
+                                                </f:facet>-->
+                        <!--</p:cellEditor>-->
+                    </p:column>
+
+                    <p:column headerText="Seat Count">
+                        <!--                    <p:cellEditor>-->
+                        <!--                        <f:facet name="output">-->
+                        <h:outputText value="#{bki.seatNo}" />
+                        <!--</f:facet>-->
+                        <!--                        <f:facet name="input">
+                                                    <p:inputText value="#{bki.seatNo}" style="width:100%" label="Fare"/>
+                                                </f:facet>
+                                            </p:cellEditor>-->
+                    </p:column>
+
+                    <p:column headerText="Fare">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{bki.price}" >
+                                 <f:convertNumber pattern="#0.00" />
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="#{modifyPriceManagedBean.price}" style="width:100%" label="Fare"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Back" style="margin-right:0" actionListener="#{modifyPriceManagedBean.goBack()}"  icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+
+    </h:body>
+
+</html>
+

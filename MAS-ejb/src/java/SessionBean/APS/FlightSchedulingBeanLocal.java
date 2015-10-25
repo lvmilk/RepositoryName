@@ -71,4 +71,6 @@ public interface FlightSchedulingBeanLocal {
     public FlightInstance findFlight(String flightNo, String flightDate) throws Exception;
 
     public FlightInstance getDummyFi();
+
+    public long getFlightAccumMinute(FlightFrequency ff);
 }

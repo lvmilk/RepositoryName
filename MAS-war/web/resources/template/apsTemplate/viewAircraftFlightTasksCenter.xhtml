@@ -19,7 +19,7 @@
                     <p:column headerText="Registration No." sortBy="#{aircraft.registrationNo}" filterBy="#{aircraft.registrationNo}" filterMatchMode="contains">
                         <h:outputText value="#{aircraft.registrationNo}" />
                     </p:column>
-                    <p:column headerText="Type" filterBy="#{aircraft.aircraftType.type}" filterMatchMode="contains" >
+                    <p:column headerText="Type" sortBy="#{aircraft.aircraftType.type}" filterBy="#{aircraft.aircraftType.type}" filterMatchMode="contains" >
                         <h:outputText value="#{aircraft.aircraftType.type}"/>
                     </p:column>
                     <p:column headerText="View Flight Task">

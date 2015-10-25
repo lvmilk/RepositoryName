@@ -1,11 +1,9 @@
 package Entity.APS;
 
+import Entity.AFOS.Maintenance;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.*;
 import java.util.List;
-import java.sql.Time;
-import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,12 +27,23 @@ public class Aircraft implements Serializable {
     private Long flightLogId;
     private Long maintenanceLogId;
     private String currentAirport;
-   
+
+    private long accumFlyMinutes;
+    private long acycleFH = 0;
+    private long acycleFD = 0;
+    private long ccycleFH = 0;
+    private long ccycleFD = 0;
+    private long dcycleFH = 0;
+    private long dcycleFD = 0;
+
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
     private List<FlightInstance> flightInstance = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
+    private List<Maintenance> maintenanceList = new ArrayList<>();
 
     public void create(String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) {
         this.setRegistrationNo(registrationNo);
@@ -95,7 +104,6 @@ public class Aircraft implements Serializable {
         this.retireDate = retireDate;
     }
 
-
     public Long getFlightLogId() {
         return flightLogId;
     }
@@ -135,8 +143,70 @@ public class Aircraft implements Serializable {
     public void setCurrentAirport(String currentAirport) {
         this.currentAirport = currentAirport;
     }
-    
-    
+
+    public long getAccumFlyMinutes() {
+        return accumFlyMinutes;
+    }
+
+    public void setAccumFlyMinutes(long accumFlyMinutes) {
+        this.accumFlyMinutes = accumFlyMinutes;
+    }
+
+    public List<Maintenance> getMaintenanceList() {
+        return maintenanceList;
+    }
+
+    public void setMaintenanceList(List<Maintenance> maintenanceList) {
+        this.maintenanceList = maintenanceList;
+    }
+
+    public long getAcycleFH() {
+        return acycleFH;
+    }
+
+    public void setAcycleFH(long acycleFH) {
+        this.acycleFH = acycleFH;
+    }
+
+    public long getAcycleFD() {
+        return acycleFD;
+    }
+
+    public void setAcycleFD(long acycleFD) {
+        this.acycleFD = acycleFD;
+    }
+
+    public long getCcycleFH() {
+        return ccycleFH;
+    }
+
+    public void setCcycleFH(long ccycleFH) {
+        this.ccycleFH = ccycleFH;
+    }
+
+    public long getCcycleFD() {
+        return ccycleFD;
+    }
+
+    public void setCcycleFD(long ccycleFD) {
+        this.ccycleFD = ccycleFD;
+    }
+
+    public long getDcycleFH() {
+        return dcycleFH;
+    }
+
+    public void setDcycleFH(long dcycleFH) {
+        this.dcycleFH = dcycleFH;
+    }
+
+    public long getDcycleFD() {
+        return dcycleFD;
+    }
+
+    public void setDcycleFD(long dcycleFD) {
+        this.dcycleFD = dcycleFD;
+    }
 
     @Override
     public int hashCode() {

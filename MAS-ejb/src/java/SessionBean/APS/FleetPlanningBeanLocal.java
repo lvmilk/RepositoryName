@@ -64,5 +64,7 @@ public interface FleetPlanningBeanLocal {
 
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
 
+    public void editMtStandard(AircraftType acType, Integer dailycDu, Integer dailycMH, Integer weeklycDu, Integer weeklycMH, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH);
+
     
 }

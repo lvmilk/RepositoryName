@@ -428,6 +428,20 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
+    public long getFlightAccumMinute(FlightFrequency ff) {
+        LocalTime depTime = LocalTime.parse(ff.getScheduleDepTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime arrTime = LocalTime.parse(ff.getScheduleArrTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate depDate = LocalDate.of(2000, 1, 10);
+        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(ff.getDateAdjust());
+        LocalDateTime depDateTime = LocalDateTime.of(depDate, depTime);
+        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arrTime);
+        long diffInMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
+        long diffInHours = java.time.Duration.between(depDateTime, arrDateTime).toHours();
+        System.out.println("fsb.getFlightAccumHour(): flight elapsed hour and minute is :" + diffInHours + " " + diffInMinutes);
+        return diffInMinutes;
+    }
+
+    @Override
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException, Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
@@ -489,7 +503,6 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
-        //------------------need check time conflict------------------
         boolean flag = canAssign(ac, fi);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         System.out.println("FSB: addAcToFi ");
@@ -497,6 +510,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (flag) {
             flightTemp.add(fi);
             ac.setFlightInstance(flightTemp);
+            long min = ac.getAccumFlyMinutes();
+            min += getFlightAccumMinute(fi.getFlightFrequency());
+            ac.setAccumFlyMinutes(min);
             fi.setAircraft(ac);
             em.merge(fi);
             em.merge(ac);
@@ -560,8 +576,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 System.out.println("Literal 2 check fi: " + fi.getFlightFrequency().getRoute().getOrigin().getIATA());
                 //if add in front of first of fiList
                 if (fi.getStandardArrTimeDateType().before(newList.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(newList.get(0).getFlightFrequency().getRoute().getOrigin())) {
-                    if(ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA()))
-                       canAssign = true;
+                    if (ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
+                        canAssign = true;
+                    }
                     //if not the first of fiList
                 } else if ((depCheck.before(fi.getStandardDepTimeDateType())) && newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
                     System.out.println("canAssign: CHECK 6");

@@ -5,19 +5,27 @@
  */
 package Entity.AIS;
 
+import Entity.ADS.Itinerary;
+import Entity.ADS.Reservation;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author wang
  */
 @Entity
-public class BookingClassInstance implements Serializable, Comparable<BookingClassInstance>  {
+public class BookingClassInstance implements Serializable, Comparable<BookingClassInstance> {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,12 +36,18 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     private Double price;
     private Integer seatNo;
     private Integer optimalSeatNo;
-    private Integer bookedSeatNo=0; //set default value =0
+    private Integer bookedSeatNo = 0; //set default value =0
     private Integer avgDemand;
     private Integer std;
-    
-     @ManyToOne
+
+    @ManyToOne
     private BookingClass bookingClass;
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "bkInstance")
+    private Collection<Itinerary> itinaryList = new ArrayList<Itinerary>();
+    
+    @ManyToMany(cascade={CascadeType.ALL},mappedBy="bkclassInstance")
+    private Collection<Reservation> reservation = new ArrayList<Reservation>();
 
     public Integer getBookedSeatNo() {
         return bookedSeatNo;
@@ -43,8 +57,6 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
         this.bookedSeatNo = bookedSeatNo;
     }
 
-   
-     
     public BookingClass getBookingClass() {
         return bookingClass;
     }
@@ -52,8 +64,7 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     public void setBookingClass(BookingClass bookingClass) {
         this.bookingClass = bookingClass;
     }
-     
-     
+
     public Integer getSeatNo() {
         return seatNo;
     }
@@ -61,18 +72,16 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     public void setSeatNo(Integer seatNo) {
         this.seatNo = seatNo;
     }
-    
-    
+
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
-        System.out.println("BKI Entity class :setPrice"+price);
+        System.out.println("BKI Entity class :setPrice" + price);
         this.price = price;
     }
-    
-    
+
     public FlightCabin getFlightCabin() {
         return flightCabin;
     }
@@ -104,9 +113,7 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     public void setOptimalSeatNo(Integer optimalSeatNo) {
         this.optimalSeatNo = optimalSeatNo;
     }
-   
-    
-    
+
     public Long getId() {
         return id;
     }
@@ -143,10 +150,36 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     @Override
     public int compareTo(BookingClassInstance Bi) {
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-         return this.price.compareTo(Bi.getPrice());
-        
+        return this.price.compareTo(Bi.getPrice());
+
     }
-    
-    
-    
+
+    /**
+     * @return the itinaryList
+     */
+    public Collection<Itinerary> getItinaryList() {
+        return itinaryList;
+    }
+
+    /**
+     * @param itinaryList the itinaryList to set
+     */
+    public void setItinaryList(Collection<Itinerary> itinaryList) {
+        this.itinaryList = itinaryList;
+    }
+
+    /**
+     * @return the reservation
+     */
+    public Collection<Reservation> getReservation() {
+        return reservation;
+    }
+
+    /**
+     * @param reservation the reservation to set
+     */
+    public void setReservation(Collection<Reservation> reservation) {
+        this.reservation = reservation;
+    }
+
 }

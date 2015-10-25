@@ -1,6 +1,10 @@
 package Entity.APS;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -37,7 +41,7 @@ public class FlightFrequency implements Serializable {
     private String scheduleArrTime;   //utc time
     private String startDate;
     private String endDate;
-//    private String timeInterval;
+    private long durationMinutes;
 //    private LocalDate startDate;
 //    private LocalDate endDate;
     private boolean onMon;
@@ -82,7 +86,13 @@ public class FlightFrequency implements Serializable {
         this.onSun = onSun;
         this.startDate = startDate;
         this.endDate = endDate;
-//        this.status = "Pending";
+        LocalTime dep = LocalTime.parse(depTime, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime arr = LocalTime.parse(arrTime, DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate depDate = LocalDate.of(2000, 1, 10);
+        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(dateAdjust);
+        LocalDateTime depDateTime = LocalDateTime.of(depDate, dep);
+        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arr);
+        durationMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
         return this;
     }
 
@@ -322,6 +332,14 @@ public class FlightFrequency implements Serializable {
 
     public void setfDate(String fDate) {
         this.fDate = fDate;
+    }
+
+    public long getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public void setDurationMinutes(long durationMinutes) {
+        this.durationMinutes = durationMinutes;
     }
 
 //    public FlightPackage getFlightPackage() {
