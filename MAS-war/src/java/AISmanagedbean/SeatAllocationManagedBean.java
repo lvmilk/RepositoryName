@@ -29,9 +29,9 @@ import org.primefaces.event.RowEditEvent;
  *
  * @author wang
  */
-@Named(value = "seatAllocationMangagedBean")
+@Named(value = "seatAllocationManagedBean")
 @ViewScoped
-public class SeatAllocationMangagedBean implements Serializable {
+public class SeatAllocationManagedBean implements Serializable {
 
     @EJB
     private SeatAllocationBeanLocal sab;
@@ -297,7 +297,7 @@ public class SeatAllocationMangagedBean implements Serializable {
     /**
      * Creates a new instance of SeatAllocationMangagedBean
      */
-    public SeatAllocationMangagedBean() {
+    public SeatAllocationManagedBean() {
     }
 
 }

@@ -8,7 +8,7 @@ package AISmanagedbean;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
-import SessionBean.APS.ManageCabinLocal;
+import SessionBean.APS.ManageCabinBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -26,7 +26,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "cabinDetailBean")
 @ViewScoped
-public class CabinDetailBean implements Serializable {
+public class CabinDetailManagedBean implements Serializable {
 
     CabinClass cabinSelected;
     AircraftType acType;
@@ -40,7 +40,7 @@ public class CabinDetailBean implements Serializable {
     private String rowConfig; //e.g for 7 seats/row, 2-3-2
 
     @EJB
-    private ManageCabinLocal mcl;
+    private ManageCabinBeanLocal mcl;
 
     @EJB
     private FleetPlanningBeanLocal FP;
@@ -48,7 +48,7 @@ public class CabinDetailBean implements Serializable {
     /**
      * Creates a new instance of CabiniDetailBean
      */
-    public CabinDetailBean() {
+    public CabinDetailManagedBean() {
 
     }
 

@@ -66,6 +66,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
 
     }
 
+    @Override
     public boolean checkGotInstance(ArrayList<BookingClass> selectedClass) {
 
         boolean check = false;
@@ -84,6 +85,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
 
     }
 
+    @Override
     public boolean addBookingClass(String annotation, String cabinName, Double price_percentage, Double refund_percentage, Double change_route_percentage,
             Double change_date_percentage, Double change_passenger_percentage, Double open_jaw_percentage, Double earn_mile_percentage, Integer min_stay, Integer max_stay,
             Integer ticket_advance, Integer reserve_advance, Boolean can_standby, Boolean dds_available, Boolean gds_available) {
@@ -111,6 +113,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
         return true;
     }
 
+    @Override
     public BookingClass editBookingClass(String annotation, String annotation2, String cabinName, Double price_percentage, Double refund_percentage, Double change_route_percentage,
             Double change_date_percentage, Double change_passenger_percentage, Double open_jaw_percentage, Double earn_mile_percentage, Integer min_stay, Integer max_stay,
             Integer ticket_advance, Integer reserve_advance, Boolean can_standby, Boolean dds_available, Boolean gds_available) {
@@ -147,6 +150,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
         return bookingClass;
     }
 
+    @Override
     public boolean checkDuplicate(String annotation) {
 
         Query query = entityManager.createQuery("SELECT b FROM BookingClass b WHERE b.annotation = :annotation ");
@@ -164,6 +168,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
 
     }
 
+    @Override
     public boolean deleteBookingClass(ArrayList<BookingClass> selectedClass) {
         if (selectedClass.size() > 0) {
             for (int i = 0; i < selectedClass.size(); i++) {
@@ -181,6 +186,7 @@ public class BookingClassBean implements BookingClassBeanLocal {
 
     }
 
+    @Override
     public List<BookingClass> getAllBookingClasses() {
         Query query = entityManager.createQuery("SELECT b FROM BookingClass b ");
         List<BookingClass> resultList = (List) query.getResultList();

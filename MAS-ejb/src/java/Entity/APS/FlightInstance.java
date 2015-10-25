@@ -31,7 +31,7 @@ import javax.persistence.Temporal;
  * @author Xu/Lu Xi
  */
 @Entity
-public class FlightInstance implements Comparable<FlightInstance> {
+public class FlightInstance implements Comparable<FlightInstance>,Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id

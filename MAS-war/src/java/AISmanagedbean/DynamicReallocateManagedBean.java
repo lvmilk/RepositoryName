@@ -35,7 +35,7 @@ import org.primefaces.event.RowEditEvent;
  */
 @Named(value = "dynamicReallocateBean")
 @ViewScoped
-public class DynamicReallocateBean implements Serializable {
+public class DynamicReallocateManagedBean implements Serializable {
 
     @EJB
     private FlightSchedulingBeanLocal fs;
@@ -68,7 +68,7 @@ public class DynamicReallocateBean implements Serializable {
 
     private ArrayList<BookingClassInstance> subList = new ArrayList<>();
 
-    public DynamicReallocateBean() {
+    public DynamicReallocateManagedBean() {
 
     }
 
