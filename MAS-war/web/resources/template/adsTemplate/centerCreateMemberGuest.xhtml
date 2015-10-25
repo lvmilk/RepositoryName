@@ -10,13 +10,15 @@
     </h:head>
     <h:body>
         <h:form >
-            <ui:repeat var="psg" value="#{mgMB.passengerList}">
+            <ui:repeat var="psg" value="#{mgMB.passengerList}" varStatus="myStatus">
                 <p:growl id="msgs" showDetail="true" />
 
-                <p:outputLabel value="Passenger" style="font-weight: bold"/>
+                <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold"/>
                 <h:panelGrid columns="2" cellpadding="10">
 
 
+                    
+                    
                     <p:outputLabel for="title" value="Title:" />
                     <h:selectOneMenu id="title" value="#{psg.title}">
                         <f:selectItem itemValue="Dr" itemLabel="Dr" />
