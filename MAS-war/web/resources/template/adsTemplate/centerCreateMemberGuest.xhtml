@@ -15,10 +15,7 @@
 
                 <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold"/>
                 <h:panelGrid columns="2" cellpadding="10">
-
-
-                    
-                    
+               
                     <p:outputLabel for="title" value="Title:" />
                     <h:selectOneMenu id="title" value="#{psg.title}">
                         <f:selectItem itemValue="Dr" itemLabel="Dr" />
@@ -68,7 +65,7 @@
                     <p:inputText value="#{mgMB.memberId}"/>
 
                     <p:outputLabel  value="Email: " />
-                    <p:inputText value="#{mgMB.email}"/>
+                    <p:inputText value="#{mgMB.existEmail}"/>
                 </h:panelGrid>
             </p:panel>
 

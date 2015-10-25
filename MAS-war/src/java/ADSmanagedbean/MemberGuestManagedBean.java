@@ -38,6 +38,7 @@ public class MemberGuestManagedBean implements Serializable {
     private Long memberId;
     private String address;
     private String email;
+    private String existEmail;
     private String contactNo;
 
     private boolean visiMember = true;
@@ -77,9 +78,10 @@ public class MemberGuestManagedBean implements Serializable {
 
     public void makeReserve() {
         System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
-
+        System.out.print("&&&&&&&&&&This is email: " + existEmail);
+        
         if (visiMember == true) {
-            psgSBlocal.makeReservation(passengerList, email, memberId);
+            psgSBlocal.makeReservation(passengerList, existEmail, memberId);
         } else if (visiNonMember == true) {
             psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
         }
@@ -293,6 +295,20 @@ public class MemberGuestManagedBean implements Serializable {
      */
     public void setRepeat(Integer repeat) {
         this.repeat = repeat;
+    }
+
+    /**
+     * @return the existEmail
+     */
+    public String getExistEmail() {
+        return existEmail;
+    }
+
+    /**
+     * @param existEmail the existEmail to set
+     */
+    public void setExistEmail(String existEmail) {
+        this.existEmail = existEmail;
     }
 
 }
