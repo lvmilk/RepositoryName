@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -20,7 +21,7 @@ import javax.inject.Named;
  * @author LI HAO
  */
 @Named(value = "etMemberGuestMB")
-@ViewScoped
+@SessionScoped
 public class EditMemberGuestManagedBean implements Serializable{
     
     @EJB
@@ -56,6 +57,11 @@ public class EditMemberGuestManagedBean implements Serializable{
         this.memberStatus=member.isMemberStatus();
         FacesContext.getCurrentInstance().getExternalContext().redirect("./adsEditMGpage.xhtml");
         
+        
+    }
+    
+    public void editMemberAccount() throws IOException
+    {
         
     }
 
