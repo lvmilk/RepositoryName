@@ -38,20 +38,22 @@
 
                 <h:panelGrid columns="3" cellpadding="10">
                     <p:outputLabel for="mbFirstName" value="First Name: " />
-                    <p:inputText id="mbFirstName" value="#{etMemberGuestMB.firstName}" />
+                    <p:inputText id="mbFirstName" value="#{etMemberGuestMB.firstName}" required="true" requiredMessage="Please enter first name"/>
                     <p:message for="mbFirstName" display="icon" />
 
                     <p:outputLabel for="mbLastName" value="Last Name: " />
-                    <p:inputText id="mbLastName" value="#{etMemberGuestMB.lastName}" />
+                    <p:inputText id="mbLastName" value="#{etMemberGuestMB.lastName}" required="true" requiredMessage="Please enter last name"/>
                     <p:message for="mbLastName" display="icon" />
 
                     <p:outputLabel for="mbEmail" value="Email: " />
-                    <p:inputText id="mbEmail" value="#{etMemberGuestMB.email}" />
+                    <p:inputText id="mbEmail" value="#{etMemberGuestMB.email}" validatorMessage="Invalid email format">
+                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                    </p:inputText>
                     <p:message for="mbEmail" display="icon" />
 
 
                     <p:outputLabel for="mbDOB" value="Date of Birth: " />
-                    <p:outputLabel id="mbDOB" value="#{etMemberGuestMB.dob}"  />
+                    <p:outputLabel id="mbDOB" value="#{etMemberGuestMB.dob}" />
                     <p:message for="mbDOB" display="icon" />
 
                     <p:outputLabel for="mbContact" value="Contact: " />

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,9 +31,12 @@ public class Member implements Serializable {
     private String firstName;
     private String lastName;
     
+    @Column(unique=true)
     private String email;
     private String address;
     private String contact;
+    
+    @Column(unique=true)
     private String passport;
     
     private boolean memberStatus;

@@ -16,4 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface MemberSessionBeanLocal {
     public List<Member> getAllMember();
+    public boolean checkEmailDuplicate(String email, String emailEdited);
+    public void editMember();
+    
 }
