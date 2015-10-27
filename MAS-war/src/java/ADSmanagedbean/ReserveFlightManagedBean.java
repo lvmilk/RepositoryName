@@ -51,6 +51,14 @@ public class ReserveFlightManagedBean implements Serializable {
     @EJB
     private ReserveFlightBeanLocal rf;
 
+    private String selectedIndex;
+
+    private Map<String, ArrayList<Integer>> dayToSelectIndex = new HashMap();
+    private Map<String, Boolean> departDayToCheck = new HashMap<>();
+    private Map<String, Boolean> returnDayToCheck = new HashMap<>();
+    private Map<String, String> departDayOfWeek = new HashMap<>();
+    private Map<String, String> returnDayOfWeek = new HashMap<>();
+
     private Map<String, ArrayList<ArrayList<FlightInstance>>> departMap = new HashMap<>();
     private Map<String, ArrayList<ArrayList<FlightInstance>>> returnMap = new HashMap<>();
 
@@ -106,6 +114,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
         initialFrequency = rf.getAllFlightFrequency();
 
+        departDayToCheck = (Map<String, Boolean>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayToCheck");
+        departDayOfWeek = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayOfWeek");
+
         dateOfWeek2 = (ArrayList<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateOfWeek2");
         returnMap = (Map<String, ArrayList<ArrayList<FlightInstance>>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnMap");
 
@@ -129,6 +140,106 @@ public class ReserveFlightManagedBean implements Serializable {
 //        cabinList = (List<FlightCabin>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
 
+    }
+
+    public void onDepartOptionChange(int index, String day) {
+        System.out.println("Getting into onDepartOptionChange");
+        Boolean duplicate = false;
+        Integer i = (Integer) index;
+        if (i != null) {
+
+            ArrayList<Integer> departSelectIndex = new ArrayList<>();
+            Boolean dayFound = false;
+            if (!dayToSelectIndex.isEmpty()) {
+                for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
+                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    if (entry.getKey().equals(day)) {
+                        departSelectIndex = entry.getValue();
+                        if (!departSelectIndex.isEmpty()) {
+                            if (departSelectIndex.contains((Integer) i)) {
+                                departSelectIndex.remove((Integer) i);
+                            } else {
+                                departSelectIndex.add((Integer) i);
+                            }
+                        } else {
+                            departSelectIndex.add((Integer) i);
+                        }
+                        dayFound = true;
+                        break;
+                    }
+                }
+                if (!dayFound) {
+                    departSelectIndex = new ArrayList<>();
+                    departSelectIndex.add((Integer) i);
+                    dayToSelectIndex.put(day, departSelectIndex);
+                }
+            } else {
+                departSelectIndex = new ArrayList<>();
+                departSelectIndex.add((Integer) i);
+                dayToSelectIndex.put(day, departSelectIndex);
+            }
+        }
+        System.out.println("size of daytoSelectIndex map is " + dayToSelectIndex.size());
+        for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
+            ArrayList<Integer> indexList = entry.getValue();
+            System.out.println("for day " + entry.getKey());
+            for (int f = 0; f < indexList.size(); f++) {
+                System.out.println("index chosen is " + indexList.get(f));
+
+            }
+        }
+
+    }
+
+    public void onSelectOption() {
+        int checkCount = 0;
+        String selectedDay = "";
+        for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+            if (entry.getValue() == true) {
+                selectedDay = entry.getKey();
+                checkCount++;
+            }
+        }
+
+        if (checkCount == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one day for departure trip ", ""));
+        } else if (checkCount > 1) {
+            for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                System.out.println(entry.getKey() + "/" + entry.getValue());
+                if (entry.getValue() == true) {
+                    selectedDay = entry.getKey();
+                    dayToSelectIndex.remove(selectedDay);
+                }
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for departure trip ", ""));
+        } else {
+
+            if (!returnTrip) {
+                ArrayList<Integer> selectedByIndex = new ArrayList<>();
+                selectedByIndex = dayToSelectIndex.get(selectedDay);
+
+                if (!selectedByIndex.isEmpty()) {
+                    if (selectedByIndex.size() > 1) {
+                        for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                            System.out.println(entry.getKey() + "/" + entry.getValue());
+                            if (entry.getValue() == true) {
+                                selectedDay = entry.getKey();
+                                dayToSelectIndex.remove(selectedDay);
+                            }
+                        }
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have select more than one option for departure trip on " + selectedDay, ""));
+                    } else {
+                        ArrayList<FlightInstance> departSelected=departMap.get(selectedDay).get(selectedByIndex.get(0));
+                        System.out.println("selection for departure trip is correct");
+                        System.out.println("departure package chosen is "+departSelected);
+                    }
+
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option ", ""));
+                }
+            }
+        }
     }
 
     public boolean ifStartSale(List<BookingClassInstance> instanceList) {
@@ -162,26 +273,6 @@ public class ReserveFlightManagedBean implements Serializable {
     public void onDestChange() {
         departInstances = new ArrayList<>();
         returnInstances = new ArrayList<>();
-//        if (!dest.equals("1")) {
-////            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
-////            System.out.println("onFlightChange: dateString is " + dateString + " and flightNo is " + flightNo);
-////            cabinList = sa.getCabinList(flightNo, dateString);
-//            resultFrequencies = rf.findFrequencies(origin, dest);
-//            List<FlightInstance> result = rf.findResultInstanceList(origin, dest, departDate);
-//            for (int i = 0; i < result.size(); i++) {
-//                departInstances.add(result.get(i));
-//
-//            }
-//
-//            System.out.println("in onFlightChange(): size of resultFrequencies is " + resultFrequencies.size());
-//            if (!resultFrequencies.isEmpty()) {
-//                cabinList = resultFrequencies.get(0).getRoute().getAcType().getCabinList();
-//            }
-//
-//        } else {
-//            cabinList = new ArrayList<>();
-//
-//        }
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
 
@@ -247,8 +338,6 @@ public class ReserveFlightManagedBean implements Serializable {
             else {
                 Calendar c = Calendar.getInstance();
                 c.setTime(departDate);
-                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-                System.out.println("Day of week for date chosen is " + dayOfWeek);
 
                 // Set the calendar to monday of the current week
                 c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -258,26 +347,35 @@ public class ReserveFlightManagedBean implements Serializable {
                 dateOfWeek = new ArrayList<String>();
                 departMap = new HashMap<String, ArrayList<ArrayList<FlightInstance>>>();
                 departsByDay = new ArrayList<>();
+                departDayToCheck = new HashMap<>();
+                departDayOfWeek = new HashMap<>();
+
                 for (int i = 0; i < 7; i++) {
                     departsByDay = new ArrayList<>();
 
-                   departsByDay=rf.findResultInstanceList(origin, dest, c.getTime());
+                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime());
 
                     df = new SimpleDateFormat("dd MMM yyyy");
                     String oneDate = df.format(c.getTime());
 
                     System.out.println("one date is " + oneDate);
                     dateOfWeek.add(oneDate);
+                    String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+                    departDayToCheck.put(oneDate, false);
+                    departDayOfWeek.put(oneDate, dayOfWeek);
 
                     if (departsByDay != null && !departsByDay.isEmpty()) {
                         departMap.put(oneDate, departsByDay);
                     }
                     c.add(Calendar.DATE, 1);
+
                 }
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departMap", departMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek", dateOfWeek);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departsByDay", departsByDay);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayToCheck", departDayToCheck);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
 
                 if (!returnTrip) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
@@ -285,7 +383,7 @@ public class ReserveFlightManagedBean implements Serializable {
                     c = Calendar.getInstance();
                     c.setTime(returnDate);
                     int dayOfWeek2 = c.get(Calendar.DAY_OF_WEEK);
-                    System.out.println("Day of week for date chosen is " + dayOfWeek);
+                    System.out.println("Day of week for date chosen is " + dayOfWeek2);
 
                     // Set the calendar to monday of the current week
                     c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -662,6 +760,52 @@ public class ReserveFlightManagedBean implements Serializable {
         this.dateOfWeek2 = dateOfWeek2;
     }
 
-    
-    
+    public Map<String, Boolean> getDepartDayToCheck() {
+        return departDayToCheck;
+    }
+
+    public void setDepartDayToCheck(Map<String, Boolean> departDayToCheck) {
+        this.departDayToCheck = departDayToCheck;
+    }
+
+    public Map<String, Boolean> getReturnDayToCheck() {
+        return returnDayToCheck;
+    }
+
+    public void setReturnDayToCheck(Map<String, Boolean> returnDayToCheck) {
+        this.returnDayToCheck = returnDayToCheck;
+    }
+
+    public Map<String, String> getDepartDayOfWeek() {
+        return departDayOfWeek;
+    }
+
+    public void setDepartDayOfWeek(Map<String, String> departDayOfWeek) {
+        this.departDayOfWeek = departDayOfWeek;
+    }
+
+    public Map<String, String> getReturnDayOfWeek() {
+        return returnDayOfWeek;
+    }
+
+    public void setReturnDayOfWeek(Map<String, String> returnDayOfWeek) {
+        this.returnDayOfWeek = returnDayOfWeek;
+    }
+
+    public Map<String, ArrayList<Integer>> getDayToSelectIndex() {
+        return dayToSelectIndex;
+    }
+
+    public void setDayToSelectIndex(Map<String, ArrayList<Integer>> dayToSelectIndex) {
+        this.dayToSelectIndex = dayToSelectIndex;
+    }
+
+    public String getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public void setSelectedIndex(String selectedIndex) {
+        this.selectedIndex = selectedIndex;
+    }
+
 }
