@@ -52,8 +52,9 @@ public class ReserveFlightManagedBean implements Serializable {
     private ReserveFlightBeanLocal rf;
 
     private String selectedIndex;
-
+    private String selectedIndex2;
     private Map<String, ArrayList<Integer>> dayToSelectIndex = new HashMap();
+    private Map<String, ArrayList<Integer>> dayToSelectIndex2 = new HashMap();
     private Map<String, Boolean> departDayToCheck = new HashMap<>();
     private Map<String, Boolean> returnDayToCheck = new HashMap<>();
     private Map<String, String> departDayOfWeek = new HashMap<>();
@@ -113,6 +114,9 @@ public class ReserveFlightManagedBean implements Serializable {
     public void init() {
 
         initialFrequency = rf.getAllFlightFrequency();
+
+        returnDayToCheck = (Map<String, Boolean>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDayToCheck");
+        returnDayOfWeek = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDayOfWeek");
 
         departDayToCheck = (Map<String, Boolean>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayToCheck");
         departDayOfWeek = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayOfWeek");
@@ -191,6 +195,55 @@ public class ReserveFlightManagedBean implements Serializable {
 
     }
 
+    public void onReturnOptionChange(int index, String day) {
+        System.out.println("Getting into onDepartOptionChange");
+        Boolean duplicate = false;
+        Integer i = (Integer) index;
+        if (i != null) {
+
+            ArrayList<Integer> returnSelectIndex = new ArrayList<>();
+            Boolean dayFound = false;
+            if (!dayToSelectIndex2.isEmpty()) {
+                for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex2.entrySet()) {
+                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    if (entry.getKey().equals(day)) {
+                        returnSelectIndex = entry.getValue();
+                        if (!returnSelectIndex.isEmpty()) {
+                            if (returnSelectIndex.contains((Integer) i)) {
+                                returnSelectIndex.remove((Integer) i);
+                            } else {
+                                returnSelectIndex.add((Integer) i);
+                            }
+                        } else {
+                            returnSelectIndex.add((Integer) i);
+                        }
+                        dayFound = true;
+                        break;
+                    }
+                }
+                if (!dayFound) {
+                    returnSelectIndex = new ArrayList<>();
+                    returnSelectIndex.add((Integer) i);
+                    dayToSelectIndex2.put(day, returnSelectIndex);
+                }
+            } else {
+                returnSelectIndex = new ArrayList<>();
+                returnSelectIndex.add((Integer) i);
+                dayToSelectIndex2.put(day, returnSelectIndex);
+            }
+        }
+        System.out.println("size of daytoSelectIndex2 map is " + dayToSelectIndex2.size());
+        for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex2.entrySet()) {
+            ArrayList<Integer> indexList = entry.getValue();
+            System.out.println("for return day " + entry.getKey());
+            for (int f = 0; f < indexList.size(); f++) {
+                System.out.println("return index chosen is " + indexList.get(f));
+
+            }
+        }
+
+    }
+
     public void onSelectOption() {
         int checkCount = 0;
         String selectedDay = "";
@@ -214,7 +267,6 @@ public class ReserveFlightManagedBean implements Serializable {
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for departure trip ", ""));
         } else {
-
             if (!returnTrip) {
                 ArrayList<Integer> selectedByIndex = new ArrayList<>();
                 selectedByIndex = dayToSelectIndex.get(selectedDay);
@@ -230,17 +282,85 @@ public class ReserveFlightManagedBean implements Serializable {
                         }
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have select more than one option for departure trip on " + selectedDay, ""));
                     } else {
-                        ArrayList<FlightInstance> departSelected=departMap.get(selectedDay).get(selectedByIndex.get(0));
+                        ArrayList<FlightInstance> departSelected = departMap.get(selectedDay).get(selectedByIndex.get(0));
                         System.out.println("selection for departure trip is correct");
-                        System.out.println("departure package chosen is "+departSelected);
+                        System.out.println("departure package chosen is " + departSelected);
                     }
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option ", ""));
                 }
+            } else {
+                int count2;
+                count2 = checkReturnDaySelect();
+                if (count2 == 0) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one day for return trip ", ""));
+                } else if (count2 > 1) {
+                    for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+                        System.out.println(entry.getKey() + "/" + entry.getValue());
+                        if (entry.getValue() == true) {
+                            selectedDay = entry.getKey();
+                            dayToSelectIndex2.remove(selectedDay);
+                        }
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for return trip ", ""));
+                } else {
+
+                    ArrayList<Integer> selectedByIndex = new ArrayList<>();
+                    selectedDay=this.getSelectedReturnDay();
+                    selectedByIndex = dayToSelectIndex2.get(selectedDay);
+
+                    if (!selectedByIndex.isEmpty()) {
+                        if (selectedByIndex.size() > 1) {
+                            for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+                                System.out.println(entry.getKey() + "/" + entry.getValue());
+                                if (entry.getValue() == true) {
+                                    selectedDay = entry.getKey();
+                                    dayToSelectIndex2.remove(selectedDay);
+                                }
+                            }
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have select more than one option for return trip on " + selectedDay, ""));
+                        } else {
+                            ArrayList<FlightInstance> returnSelected = returnMap.get(selectedDay).get(selectedByIndex.get(0));
+                            System.out.println("selection for departure trip is correct");
+                            System.out.println("departure package chosen is " + returnSelected);
+                        }
+
+                    }
+
+                }
+
             }
         }
     }
+
+    public int checkReturnDaySelect() {
+        int checkCount2 = 0;
+        String selectedDay2 = "";
+        for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+            if (entry.getValue() == true) {
+                selectedDay2 = entry.getKey();
+                checkCount2++;
+            }
+        }
+
+        return checkCount2;
+
+    }
+
+    public String getSelectedReturnDay() {
+        String selectedDay2 = "";
+        for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+            if (entry.getValue() == true) {
+                selectedDay2 = entry.getKey();
+                break;
+            }
+        }
+        return selectedDay2;
+    }
+    
 
     public boolean ifStartSale(List<BookingClassInstance> instanceList) {
         boolean startSale = false;
@@ -382,8 +502,6 @@ public class ReserveFlightManagedBean implements Serializable {
                 } else {
                     c = Calendar.getInstance();
                     c.setTime(returnDate);
-                    int dayOfWeek2 = c.get(Calendar.DAY_OF_WEEK);
-                    System.out.println("Day of week for date chosen is " + dayOfWeek2);
 
                     // Set the calendar to monday of the current week
                     c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -393,6 +511,9 @@ public class ReserveFlightManagedBean implements Serializable {
                     dateOfWeek2 = new ArrayList<String>();
                     returnMap = new HashMap<String, ArrayList<ArrayList<FlightInstance>>>();
                     returnsByDay = new ArrayList<>();
+                    returnDayToCheck = new HashMap<>();
+                    returnDayOfWeek = new HashMap<>();
+
                     for (int i = 0; i < 7; i++) {
                         returnsByDay = new ArrayList<>();
                         returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime());
@@ -402,6 +523,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
                         System.out.println("one date is " + oneDate);
                         dateOfWeek2.add(oneDate);
+                        String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+                        returnDayToCheck.put(oneDate, false);
+                        returnDayOfWeek.put(oneDate, dayOfWeek);
 
                         if (returnsByDay != null && !returnsByDay.isEmpty()) {
                             returnMap.put(oneDate, returnsByDay);
@@ -412,6 +536,8 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnMap", returnMap);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayToCheck", returnDayToCheck);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
 
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
                 }
@@ -806,6 +932,22 @@ public class ReserveFlightManagedBean implements Serializable {
 
     public void setSelectedIndex(String selectedIndex) {
         this.selectedIndex = selectedIndex;
+    }
+
+    public String getSelectedIndex2() {
+        return selectedIndex2;
+    }
+
+    public void setSelectedIndex2(String selectedIndex2) {
+        this.selectedIndex2 = selectedIndex2;
+    }
+
+    public Map<String, ArrayList<Integer>> getDayToSelectIndex2() {
+        return dayToSelectIndex2;
+    }
+
+    public void setDayToSelectIndex2(Map<String, ArrayList<Integer>> dayToSelectIndex2) {
+        this.dayToSelectIndex2 = dayToSelectIndex2;
     }
 
 }
