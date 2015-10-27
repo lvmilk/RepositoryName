@@ -17,6 +17,7 @@ import SessionBean.APS.FlightSchedulingBeanLocal;
 import SessionBean.AIS.SeatAssignBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,22 +51,29 @@ public class ReserveFlightManagedBean implements Serializable {
     @EJB
     private ReserveFlightBeanLocal rf;
 
-    private Calendar cal = new GregorianCalendar();
-    private Calendar currentCal = new GregorianCalendar();
+    private Map<String, ArrayList<ArrayList<FlightInstance>>> departMap = new HashMap<>();
+    private Map<String, ArrayList<ArrayList<FlightInstance>>> returnMap = new HashMap<>();
 
     private Boolean returnTrip = false;
     private Boolean dateSpecific;
 
     private Integer countPerson;
+    private Integer availableSeat;
 
     private String origin;
     private String dest;
     private List<Route> routeList;
     private List<FlightFrequency> initialFrequency;
     private List<FlightFrequency> secondFrequency;
-    private List<FlightInstance> departInstances;
-    private List<FlightInstance> returnInstances;
+    private ArrayList<FlightInstance> departInstances;
+    private ArrayList<FlightInstance> returnInstances;
     private List<FlightFrequency> resultFrequencies;
+
+    private ArrayList<ArrayList<FlightInstance>> departsByDay = new ArrayList<>();
+    private ArrayList<ArrayList<FlightInstance>> returnsByDay = new ArrayList<>();
+
+    private ArrayList<String> dateOfWeek = new ArrayList<>();
+    private ArrayList<String> dateOfWeek2 = new ArrayList<>();
 
     private FlightInstance toInstance;
     private FlightInstance backInstance;
@@ -96,26 +104,27 @@ public class ReserveFlightManagedBean implements Serializable {
     @PostConstruct
     public void init() {
 
-        currentCal = Calendar.getInstance();
-        currentCal.setTime(currentDate);
-        currentCal.add(Calendar.DATE, 1);
-        currentDate = currentCal.getTime();
-
         initialFrequency = rf.getAllFlightFrequency();
+
+        dateOfWeek2 = (ArrayList<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateOfWeek2");
+        returnMap = (Map<String, ArrayList<ArrayList<FlightInstance>>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnMap");
+
+        departMap = (Map<String, ArrayList<ArrayList<FlightInstance>>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departMap");
+        dateOfWeek = (ArrayList<String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateOfWeek");
 
         returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
         dateSpecific = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateSpecific");
-        departDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
-        returnDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
-        selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
-        countPerson = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+//        departDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
+//        returnDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
+//        selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
+//        countPerson = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
 
-        departInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departInstances");
-        returnInstances = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnInstances");
+        departInstances = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departInstances");
+        returnInstances = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnInstances");
 
-        seatUnallocated = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seatUnallocated");
-        dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
-        bookClassInstanceList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstances");
+//        seatUnallocated = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seatUnallocated");
+//        dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
+//        bookClassInstanceList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstances");
         selectedFlightInstance = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlightInstance");
 //        cabinList = (List<FlightCabin>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
@@ -143,92 +152,175 @@ public class ReserveFlightManagedBean implements Serializable {
     }
 
     public void onOriginChange() {
+//        secondFrequency = rf.getSecondFrequency(origin);
         secondFrequency = rf.getSecondFrequency(origin);
+
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("secondFrequency", secondFrequency);
 
     }
 
-    public void onFlightChange() {
-        if (!dest.equals("1")) {
-//            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
-//            System.out.println("onFlightChange: dateString is " + dateString + " and flightNo is " + flightNo);
-//            cabinList = sa.getCabinList(flightNo, dateString);
-            resultFrequencies = rf.findFrequencies(origin, dest);
-            departInstances = rf.findResultInstanceList(origin, dest, departDate);
-            System.out.println("in onFlightChange(): size of resultFrequencies is " + resultFrequencies.size());
-            cabinList = resultFrequencies.get(0).getRoute().getAcType().getCabinList();
-
-        } else {
-            cabinList = new ArrayList<>();
-
-        }
+    public void onDestChange() {
+        departInstances = new ArrayList<>();
+        returnInstances = new ArrayList<>();
+//        if (!dest.equals("1")) {
+////            dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+////            System.out.println("onFlightChange: dateString is " + dateString + " and flightNo is " + flightNo);
+////            cabinList = sa.getCabinList(flightNo, dateString);
+//            resultFrequencies = rf.findFrequencies(origin, dest);
+//            List<FlightInstance> result = rf.findResultInstanceList(origin, dest, departDate);
+//            for (int i = 0; i < result.size(); i++) {
+//                departInstances.add(result.get(i));
+//
+//            }
+//
+//            System.out.println("in onFlightChange(): size of resultFrequencies is " + resultFrequencies.size());
+//            if (!resultFrequencies.isEmpty()) {
+//                cabinList = resultFrequencies.get(0).getRoute().getAcType().getCabinList();
+//            }
+//
+//        } else {
+//            cabinList = new ArrayList<>();
+//
+//        }
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
 
     }
 
-//    public void onDateChange() {
-//        System.out.println("geting into onDateChange()");
-//        System.out.println("SELECTED DATE IS " + departDate);
-//        dateString = new String();
-//        frequencyList = new ArrayList<>();
-//        System.out.println("Getting in to onDateChange()");
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//        dateString = formatter.format(departDate);
-//        System.out.println(dateString);
-//
-//        if (dateString != null && !dateString.equals("")) {
-//            frequencyList = sa.getFlightList(dateString);
-//            System.out.println("size of frequencyList is " + frequencyList.size());
-//            if (frequencyList.size() > 0) {
-//                for (int i = 0; i < frequencyList.size(); i++) {
-//                    System.out.println(frequencyList.get(i).getFlightNo() + " " + frequencyList.get(i).getRoute().toString());
-//                }
-//            }
-//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", dateString);
-//
-//        }
-//    }
     public void findFlightInstance() throws IOException {
 
-        selectedCabin = rf.findCabinClass(cabinName);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("resultFrequencies", resultFrequencies);
+        List<FlightInstance> result = new ArrayList<>();
 
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateSpecific", dateSpecific);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDate", departDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDate", returnDate);
-        System.out.println("in managed bean findFlightInstance(): cabin selected is " + selectedCabin.getCabinName());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+        if (dest.equals("1") || origin.equals("1")) {
+            if (dest.equals("1")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a valid destination ", ""));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select a valid origin ", ""));
+            }
 
-        if (dateSpecific) {
-            departInstances = rf.findResultInstanceList(origin, dest, departDate);
+        } else {
 
-            if (!departInstances.isEmpty()) {
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+            selectedCabin = rf.findCabinClass(cabinName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("resultFrequencies", resultFrequencies);
 
-                if (returnTrip) {
-                    returnInstances = rf.findResultInstanceList(dest, origin, returnDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateSpecific", dateSpecific);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDate", departDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDate", returnDate);
+            System.out.println("in managed bean findFlightInstance(): cabin selected is " + selectedCabin.getCabinName());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedCabin", selectedCabin);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
 
-                    if (!returnInstances.isEmpty()) {
-                        System.out.println("in findFlightInstance(): returnInstances size is "+returnInstances.size());
-                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+            if (dateSpecific) {
+
+//                result = rf.findResultInstanceList(origin, dest, departDate);
+//                for (int i = 0; i < result.size(); i++) {
+//                    departInstances.add(result.get(i));
+//
+//                }
+                if (!departInstances.isEmpty()) {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+
+                    if (returnTrip) {
+
+//                        result = rf.findResultInstanceList(dest, origin, returnDate);
+//                        for (int i = 0; i < result.size(); i++) {
+//                            returnInstances.add(result.get(i));
+//
+//                        }
+                        if (!returnInstances.isEmpty()) {
+                            System.out.println("in findFlightInstance(): returnInstances size is " + returnInstances.size());
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                        } else {
+                            System.out.println("in findFlightInstance(): returnInstances is empty");
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for Returned date specified ", ""));
+                        }
                     } else {
-                        System.out.println("in findFlightInstance(): returnInstances is empty");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for Returned date specified ", ""));
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
                     }
                 } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for departure date specified ", ""));
+                }
+            } //        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+            else {
+                Calendar c = Calendar.getInstance();
+                c.setTime(departDate);
+                int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                System.out.println("Day of week for date chosen is " + dayOfWeek);
+
+                // Set the calendar to monday of the current week
+                c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+// Print dates of the current week starting on Monday
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                dateOfWeek = new ArrayList<String>();
+                departMap = new HashMap<String, ArrayList<ArrayList<FlightInstance>>>();
+                departsByDay = new ArrayList<>();
+                for (int i = 0; i < 7; i++) {
+                    departsByDay = new ArrayList<>();
+
+                   departsByDay=rf.findResultInstanceList(origin, dest, c.getTime());
+
+                    df = new SimpleDateFormat("dd MMM yyyy");
+                    String oneDate = df.format(c.getTime());
+
+                    System.out.println("one date is " + oneDate);
+                    dateOfWeek.add(oneDate);
+
+                    if (departsByDay != null && !departsByDay.isEmpty()) {
+                        departMap.put(oneDate, departsByDay);
+                    }
+                    c.add(Calendar.DATE, 1);
+                }
+
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departMap", departMap);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek", dateOfWeek);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departsByDay", departsByDay);
+
+                if (!returnTrip) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                } else {
+                    c = Calendar.getInstance();
+                    c.setTime(returnDate);
+                    int dayOfWeek2 = c.get(Calendar.DAY_OF_WEEK);
+                    System.out.println("Day of week for date chosen is " + dayOfWeek);
+
+                    // Set the calendar to monday of the current week
+                    c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+// Print dates of the current week starting on Monday
+                    df = new SimpleDateFormat("yyyy-MM-dd");
+                    dateOfWeek2 = new ArrayList<String>();
+                    returnMap = new HashMap<String, ArrayList<ArrayList<FlightInstance>>>();
+                    returnsByDay = new ArrayList<>();
+                    for (int i = 0; i < 7; i++) {
+                        returnsByDay = new ArrayList<>();
+                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime());
+
+                        df = new SimpleDateFormat("dd MMM yyyy");
+                        String oneDate = df.format(c.getTime());
+
+                        System.out.println("one date is " + oneDate);
+                        dateOfWeek2.add(oneDate);
+
+                        if (returnsByDay != null && !returnsByDay.isEmpty()) {
+                            returnMap.put(oneDate, returnsByDay);
+                        }
+                        c.add(Calendar.DATE, 1);
+                    }
+
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnMap", returnMap);
+
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
                 }
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for departure date specified ", ""));
-            }
-        }
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
 
+            }
+
+        }
     }
 
     public void findBookClassInstance() throws IOException {
@@ -466,22 +558,6 @@ public class ReserveFlightManagedBean implements Serializable {
         this.origin = origin;
     }
 
-    public Calendar getCal() {
-        return cal;
-    }
-
-    public void setCal(Calendar cal) {
-        this.cal = cal;
-    }
-
-    public Calendar getCurrentCal() {
-        return currentCal;
-    }
-
-    public void setCurrentCal(Calendar currentCal) {
-        this.currentCal = currentCal;
-    }
-
     public Date getCurrentDate() {
         return currentDate;
     }
@@ -506,19 +582,19 @@ public class ReserveFlightManagedBean implements Serializable {
         this.dateSpecific = dateSpecific;
     }
 
-    public List<FlightInstance> getDepartInstances() {
+    public ArrayList<FlightInstance> getDepartInstances() {
         return departInstances;
     }
 
-    public void setDepartInstances(List<FlightInstance> departInstances) {
+    public void setDepartInstances(ArrayList<FlightInstance> departInstances) {
         this.departInstances = departInstances;
     }
 
-    public List<FlightInstance> getReturnInstances() {
+    public ArrayList<FlightInstance> getReturnInstances() {
         return returnInstances;
     }
 
-    public void setReturnInstances(List<FlightInstance> returnInstances) {
+    public void setReturnInstances(ArrayList<FlightInstance> returnInstances) {
         this.returnInstances = returnInstances;
     }
 
@@ -537,7 +613,55 @@ public class ReserveFlightManagedBean implements Serializable {
     public void setBackInstance(FlightInstance backInstance) {
         this.backInstance = backInstance;
     }
-    
-    
 
+    public ArrayList<String> getDateOfWeek() {
+        return dateOfWeek;
+    }
+
+    public void setDateOfWeek(ArrayList<String> dateOfWeek) {
+        this.dateOfWeek = dateOfWeek;
+    }
+
+    public Map<String, ArrayList<ArrayList<FlightInstance>>> getDepartMap() {
+        return departMap;
+    }
+
+    public void setDepartMap(Map<String, ArrayList<ArrayList<FlightInstance>>> departMap) {
+        this.departMap = departMap;
+    }
+
+    public ArrayList<ArrayList<FlightInstance>> getDepartsByDay() {
+        return departsByDay;
+    }
+
+    public void setDepartsByDay(ArrayList<ArrayList<FlightInstance>> departsByDay) {
+        this.departsByDay = departsByDay;
+    }
+
+    public ArrayList<ArrayList<FlightInstance>> getReturnsByDay() {
+        return returnsByDay;
+    }
+
+    public void setReturnsByDay(ArrayList<ArrayList<FlightInstance>> returnsByDay) {
+        this.returnsByDay = returnsByDay;
+    }
+
+    public Map<String, ArrayList<ArrayList<FlightInstance>>> getReturnMap() {
+        return returnMap;
+    }
+
+    public void setReturnMap(Map<String, ArrayList<ArrayList<FlightInstance>>> returnMap) {
+        this.returnMap = returnMap;
+    }
+
+    public ArrayList<String> getDateOfWeek2() {
+        return dateOfWeek2;
+    }
+
+    public void setDateOfWeek2(ArrayList<String> dateOfWeek2) {
+        this.dateOfWeek2 = dateOfWeek2;
+    }
+
+    
+    
 }

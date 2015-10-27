@@ -16,109 +16,214 @@
 
 
         <h:form>
+            <c:choose>
+                <c:when test="${reserveFlightManagedBean.dateSpecific}">
 
-            <p:panel id="depart" header="Departure Flight Searching Result"  style="width:100%">
+                    <p:panel id="depart" header="Departure Flight Searching Result"  style="width:100%">
 
-                <p:dataTable var="departInstance" value="#{reserveFlightManagedBean.departInstances}" selection="#{reserveFlightManagedBean.toInstance}" rowKey="#{departInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
+                        <p:dataTable var="departInstance" value="#{reserveFlightManagedBean.departInstances}" selection="#{reserveFlightManagedBean.toInstance}" rowKey="#{departInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
 
-                    <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
-                    
-                    <p:column headerText="FlightNo" sortBy="#{departInstance.flightFrequency.flightNo}">
-                        <h:outputText value="#{departInstance.flightFrequency.flightNo}" />
-                    </p:column>
+                            <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
 
-                    <p:column headerText="Departure Date" sortBy="#{departInstance.date}">
-                        <h:outputText value="#{departInstance.date}" />
-                    </p:column>
+                            <p:column headerText="FlightNo" sortBy="#{departInstance.flightFrequency.flightNo}">
+                                <h:outputText value="#{departInstance.flightFrequency.flightNo}" />
+                            </p:column>
 
-                    <p:column headerText="Departure Time">
-                        <h:outputText value="#{departInstance.estimatedDepTime}" />
-                    </p:column>
-                    <p:column headerText="Depart From">
-                        <h:outputText value="#{departInstance.flightFrequency.route.origin.airportName}" />
-                    </p:column>
-                    <p:column headerText="Arrive At:">
-                        <h:outputText value="#{departInstance.flightFrequency.route.dest.airportName}" />
-                    </p:column>
-                    <p:column headerText="AircraftType">
-                        <h:outputText value="#{departInstance.flightFrequency.route.acType.type}" />
-                    </p:column>
-                    <p:column headerText="Cabin Class" >
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
-                    </p:column>
-                    <p:column headerText="Total Capacity:">
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                    </p:column>
+                            <p:column headerText="Departure Date" sortBy="#{departInstance.date}">
+                                <h:outputText value="#{departInstance.date}" />
+                            </p:column>
 
-                    <p:column headerText="Available Capacity:">
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                    </p:column>
+                            <p:column headerText="Departure Time">
+                                <h:outputText value="#{departInstance.estimatedDepTime}" />
+                            </p:column>
+                            <p:column headerText="Depart From">
+                                <h:outputText value="#{departInstance.flightFrequency.route.origin.airportName}" />
+                            </p:column>
+                            <p:column headerText="Arrive At:">
+                                <h:outputText value="#{departInstance.flightFrequency.route.dest.airportName}" />
+                            </p:column>
+                            <p:column headerText="AircraftType">
+                                <h:outputText value="#{departInstance.flightFrequency.route.acType.type}" />
+                            </p:column>
+                            <p:column headerText="Cabin Class" >
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            </p:column>
+                            <p:column headerText="Total Capacity:">
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                            </p:column>
 
-                    <!--
-                                            <p:column headerText="Edit">
-                                                <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
-                    
-                                            </p:column>-->
+                            <p:column headerText="Available Capacity:">
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                            </p:column>
 
-
-
-                </p:dataTable>
-            </p:panel>
-            <br/>
-            <br/>
-            <p:separator/>                
-            <br/>
-            <br/>
-            <p:panel id="return" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result"  style="width:100%">
-                <p:dataTable var="returnInstance" value="#{reserveFlightManagedBean.returnInstances}" selection="#{reserveFlightManagedBean.backInstance}" rowKey="#{returnInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
-
-                     <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
-
-                    <p:column headerText="FlightNo" sortBy="#{returnInstance.flightFrequency.flightNo}">
-                        <h:outputText value="#{returnInstance.flightFrequency.flightNo}" />
-                    </p:column>
-
-                    <p:column headerText="Departure Date" sortBy="#{returnInstance.date}">
-                        <h:outputText value="#{returnInstance.date}" />
-                    </p:column>
-
-                    <p:column headerText="Departure Time">
-                        <h:outputText value="#{returnInstance.estimatedDepTime}" />
-                    </p:column>
-                    <p:column headerText="Depart From">
-                        <h:outputText value="#{returnInstance.flightFrequency.route.origin.airportName}" />
-                    </p:column>
-                    <p:column headerText="Arrive At:">
-                        <h:outputText value="#{returnInstance.flightFrequency.route.dest.airportName}" />
-                    </p:column>
-                    <p:column headerText="AircraftType">
-                        <h:outputText value="#{returnInstance.flightFrequency.route.acType.type}" />
-                    </p:column>
-                    <p:column headerText="Cabin Class" >
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
-                    </p:column>
-                    <p:column headerText="Total Capacity:">
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                    </p:column>
-
-                    <p:column headerText="Available Capacity:">
-                        <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
-                    </p:column>
-
-                    <!--
-                                            <p:column headerText="Edit">
-                                                <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
-                    
-                                            </p:column>-->
+                            <!--
+                                                    <p:column headerText="Edit">
+                                                        <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                            
+                                                    </p:column>-->
 
 
 
-                </p:dataTable>
-            </p:panel>
+                        </p:dataTable>
+                    </p:panel>
+                    <br/>
+                    <br/>
+                    <p:separator/>                
+                    <br/>
+                    <br/>
+                    <p:panel id="return" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result"  style="width:100%">
+                        <p:dataTable var="returnInstance" value="#{reserveFlightManagedBean.returnInstances}" selection="#{reserveFlightManagedBean.backInstance}" rowKey="#{returnInstance.id}" paginator="true" rows="10" emptyMessage="No Flight on the day chosen">
 
+                            <p:column selectionMode="single" headerText="Select One" style="width:50px" />  
+
+                            <p:column headerText="FlightNo" sortBy="#{returnInstance.flightFrequency.flightNo}">
+                                <h:outputText value="#{returnInstance.flightFrequency.flightNo}" />
+                            </p:column>
+
+                            <p:column headerText="Departure Date" sortBy="#{returnInstance.date}">
+                                <h:outputText value="#{returnInstance.date}" />
+                            </p:column>
+
+                            <p:column headerText="Departure Time">
+                                <h:outputText value="#{returnInstance.estimatedDepTime}" />
+                            </p:column>
+                            <p:column headerText="Depart From">
+                                <h:outputText value="#{returnInstance.flightFrequency.route.origin.airportName}" />
+                            </p:column>
+                            <p:column headerText="Arrive At:">
+                                <h:outputText value="#{returnInstance.flightFrequency.route.dest.airportName}" />
+                            </p:column>
+                            <p:column headerText="AircraftType">
+                                <h:outputText value="#{returnInstance.flightFrequency.route.acType.type}" />
+                            </p:column>
+                            <p:column headerText="Cabin Class" >
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            </p:column>
+                            <p:column headerText="Total Capacity:">
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                            </p:column>
+
+                            <p:column headerText="Available Capacity:">
+                                <h:outputText value="#{reserveFlightManagedBean.selectedCabin.seatCount}" />
+                            </p:column>
+
+                            <!--
+                                                    <p:column headerText="Edit">
+                                                        <p:commandButton value="Edit" action="#{bookingClassBean.EditBookClassInfo(BookClass)}"  />
+                            
+                                                    </p:column>-->
+
+
+
+                        </p:dataTable>
+                    </p:panel>
+                </c:when>
+
+
+                <c:otherwise>
+           
+
+
+                    <p:tabView value="#{reserveFlightManagedBean.dateOfWeek}" var="day">
+                        <p:tab title="Date - #{day}">
+
+
+                            <ui:repeat var="package" value="#{reserveFlightManagedBean.departMap[day]}" varStatus="myStatus">
+
+<!--                                <p:panel header="Option #{reserveFlightManagedBean.departsByDay.indexOf(package)+1}">-->
+                                <p:panel header="Option #{myStatus.index+1}">
+
+                                    <ui:repeat var="instance" value="#{package}">
+
+                                        <h:panelGrid columns="8"   cellpadding="10">
+
+                                            <p:outputLabel  value="FlightNo: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                            <p:outputLabel  value="Depart From: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                            <p:outputLabel  value="Arrive At: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                            <p:outputLabel  value="Aircraft Type: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                            <p:outputLabel  value="Cabin Class: " />
+                                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                        </h:panelGrid>
+                                        <p:separator />
+                                    </ui:repeat>
+
+
+                                </p:panel>
+                            </ui:repeat>
+
+                        </p:tab>
+                    </p:tabView>
+
+                    <p:separator /> 
+
+                    <p:tabView rendered="#{reserveFlightManagedBean.returnTrip}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
+                        <p:tab title="Date - #{day}">
+
+
+                            <ui:repeat var="package" value="#{reserveFlightManagedBean.returnMap[day]}" varStatus="myStatus">
+
+                                <p:panel header="Option #{myStatus.index+1}">
+
+                                    <ui:repeat var="instance" value="#{package}">
+
+                                        <h:panelGrid columns="8"   cellpadding="10">
+
+                                            <p:outputLabel  value="FlightNo: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                            <p:outputLabel  value="Depart From: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                            <p:outputLabel  value="Arrive At: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                            <p:outputLabel  value="Aircraft Type: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                            <p:outputLabel  value="Cabin Class: " />
+                                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                        </h:panelGrid>
+                                        <p:separator />
+                                    </ui:repeat>
+
+
+                                </p:panel>
+                            </ui:repeat>
+
+                        </p:tab>
+                    </p:tabView>
+
+
+
+
+                </c:otherwise>
+            </c:choose>
 
         </h:form>
 
     </h:body>
+
 </html>
 

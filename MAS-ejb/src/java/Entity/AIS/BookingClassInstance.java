@@ -144,7 +144,7 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
 
     @Override
     public String toString() {
-        return "Entity.aisEntity.BookingClassInstance[ id=" + id + " ]";
+        return "Entity.AIS.BookingClassInstance[ id=" + id + " ]";
     }
 
     @Override
