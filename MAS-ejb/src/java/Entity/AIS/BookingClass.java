@@ -205,7 +205,7 @@ public class BookingClass implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.aisEntity.BookingClass[ id=" + id + " ]";
+        return "Entity.AIS.BookingClass[ id=" + id + " ]";
     }
     
     
