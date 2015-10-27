@@ -52,9 +52,9 @@ public class FlightInstance implements Comparable<FlightInstance> {
     private Integer actualDateAdjust;
     private String standardDepTime;
     private String standardArrTime;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardDepTimeDateType;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
 
     @ManyToOne
