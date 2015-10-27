@@ -5,6 +5,10 @@
  */
 package managedbean;
 
+import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.CabinCrew;
 import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -17,7 +21,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import managedbean.Control;
-import Entity.CommonInfaEntity.*;
 import SessionBean.CommonInfa.UserLogSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;

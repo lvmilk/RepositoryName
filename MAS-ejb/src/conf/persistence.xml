@@ -6,12 +6,12 @@
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
       
-<!--      kindly replace your address and comment the others-->
-<!--      <property name="javax.persistence.sql-load-script-source"
-          value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />-->
-<!--
-      <property name="javax.persistence.sql-load-script-source"
-          value="file:///G:/NetBeanProject/MAS/data.sql" />-->
+            <!--      kindly replace your address and comment the others-->
+            <!--      <property name="javax.persistence.sql-load-script-source"
+            value="file:///Users/wang/NetBeansProjects/MAS/data.sql" />-->
+
+            <property name="javax.persistence.sql-load-script-source"
+                value="file:///G:/NetBeanProject/MAS/data.sql" />
           
 <!--          <property name="javax.persistence.sql-load-script-source"
           value="file:///E:/MAS/data.sql" />-->
@@ -22,6 +22,6 @@
 <!--           <property name="javax.persistence.sql-load-script-source"
           value="file:///D:/Learning%20Material/IS3102/MAS/data.sql" />-->
    
-    </properties>
-  </persistence-unit>
+        </properties>
+    </persistence-unit>
 </persistence>

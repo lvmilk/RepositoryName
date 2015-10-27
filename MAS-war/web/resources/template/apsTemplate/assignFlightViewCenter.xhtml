@@ -27,7 +27,7 @@
                             onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
 
                     <f:facet name="group">  
-                        <h:outputText value="#{group.registrationNo}" style="font-weight:bold;"/>  
+                        <h:outputText value="#{group.registrationNo}/ #{group.aircraftType.type}" style="font-weight:bold;"/>  
                     </f:facet>  
 
                     <h:panelGrid columns="1">

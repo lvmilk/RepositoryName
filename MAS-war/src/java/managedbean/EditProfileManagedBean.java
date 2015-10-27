@@ -5,7 +5,10 @@
  */
 package managedbean;
 
-import Entity.CommonInfaEntity.*;
+import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.CabinCrew;
 import SessionBean.CommonInfa.UserLogSessionBeanLocal;
 import SessionBean.CommonInfa.manageAccountLocal;
 import java.io.IOException;

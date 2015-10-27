@@ -5,7 +5,10 @@
  */
 package SessionBean.CommonInfa;
 
-import Entity.CommonInfaEntity.*;
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.CockpitCrew;
 import java.util.List;
 import javax.ejb.Local;
 

@@ -1,13 +1,11 @@
 package Entity.APS;
 
-import Entity.APS.Aircraft;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,16 +30,38 @@ public class AircraftType implements Serializable {
     private Integer bcSeatNo;               //number of seat in business class
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
-    
+
     //number of cabin crew
     private Integer stewardess; //cabin female
     private Integer steward; //cabin male
     private Integer purser; //cabin master
-   //number of cockpit crew
-    private Integer captain; 
+    //number of cockpit crew
+    private Integer captain;
     private Integer pilot; //1st officer
-    
-    
+
+    //---------------------after 1st release-------------------------------------------
+    private Integer acInH;
+    private Integer acInD;
+    private Integer acDu;
+    private Integer acMH;
+
+    private Integer bcInH;
+    private Integer bcInD;
+    private Integer bcDu;   
+    private Integer bcMH;
+
+    private Integer ccInH;
+    private Integer ccInD;
+    private Integer ccDu;  // by hour
+    private Integer ccMH;
+
+    private Integer dcInH;
+    private Integer dcInD;
+    private Integer dcDu;  // by hour
+    private Integer dcMH;
+
+    //---------------------------------------------------------------------------
+
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private List<Aircraft> aircraft = new ArrayList<>();
 //    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
@@ -53,7 +73,7 @@ public class AircraftType implements Serializable {
     private List<CabinClass> cabinList = new ArrayList<CabinClass>();
 
     public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser,Integer captain,Integer pilot) {
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) {
 
         this.setType(type);
         this.setManufacturer(manufacturer);
@@ -76,8 +96,6 @@ public class AircraftType implements Serializable {
 
     }
 
-
-    
     public List<Aircraft> getAircraft() {
         return aircraft;
     }
@@ -230,7 +248,6 @@ public class AircraftType implements Serializable {
         this.pilot = pilot;
     }
 
-    
     public List<Route> getRouteMatchList() {
         return routeMatchList;
     }
@@ -252,6 +269,134 @@ public class AircraftType implements Serializable {
 
     public void setCabinList(List<CabinClass> cabinList) {
         this.cabinList = cabinList;
+    }
+
+    public Integer getAcInH() {
+        return acInH;
+    }
+
+    public void setAcInH(Integer acInH) {
+        this.acInH = acInH;
+    }
+
+    public Integer getAcInD() {
+        return acInD;
+    }
+
+    public void setAcInD(Integer acInD) {
+        this.acInD = acInD;
+    }
+
+    public Integer getAcDu() {
+        return acDu;
+    }
+
+    public void setAcDu(Integer acDu) {
+        this.acDu = acDu;
+    }
+
+    public Integer getAcMH() {
+        return acMH;
+    }
+
+    public void setAcMH(Integer acMH) {
+        this.acMH = acMH;
+    }
+
+    public Integer getBcInH() {
+        return bcInH;
+    }
+
+    public void setBcInH(Integer bcInH) {
+        this.bcInH = bcInH;
+    }
+
+    public Integer getBcInD() {
+        return bcInD;
+    }
+
+    public void setBcInD(Integer bcInD) {
+        this.bcInD = bcInD;
+    }
+
+    public Integer getBcDu() {
+        return bcDu;
+    }
+
+    public void setBcDu(Integer bcDu) {
+        this.bcDu = bcDu;
+    }
+
+    public Integer getBcMH() {
+        return bcMH;
+    }
+
+    public void setBcMH(Integer bcMH) {
+        this.bcMH = bcMH;
+    }
+
+    public Integer getCcInD() {
+        return ccInD;
+    }
+
+    public void setCcInD(Integer ccInD) {
+        this.ccInD = ccInD;
+    }
+
+    public Integer getCcDu() {
+        return ccDu;
+    }
+
+    public void setCcDu(Integer ccDu) {
+        this.ccDu = ccDu;
+    }
+
+    public Integer getCcMH() {
+        return ccMH;
+    }
+
+    public void setCcMH(Integer ccMH) {
+        this.ccMH = ccMH;
+    }
+
+    public Integer getDcInD() {
+        return dcInD;
+    }
+
+    public void setDcInD(Integer dcInD) {
+        this.dcInD = dcInD;
+    }
+
+    public Integer getDcDu() {
+        return dcDu;
+    }
+
+    public void setDcDu(Integer dcDu) {
+        this.dcDu = dcDu;
+    }
+
+    public Integer getDcMH() {
+        return dcMH;
+    }
+
+    public void setDcMH(Integer dcMH) {
+        this.dcMH = dcMH;
+    }
+
+    public Integer getCcInH() {
+        return ccInH;
+    }
+
+    public void setCcInH(Integer ccInH) {
+        this.ccInH = ccInH;
+    }
+
+    public Integer getDcInH() {
+        return dcInH;
+    }
+
+    public void setDcInH(Integer dcInH) {
+        this.dcInH = dcInH;
     }
 
     //    public Double getCruiseSpeed() {

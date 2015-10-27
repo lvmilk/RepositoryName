@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -63,7 +65,6 @@ public class EditRouteManagedBean implements Serializable {
     
     private boolean hasFlight;
 
-//    private Map<String, String> acTypeInfo = new HashMap<String, String>();
     public EditRouteManagedBean() {
     }
 

@@ -5,9 +5,9 @@
  */
 package SessionBean.CommonInfa;
 
-import Entity.CommonInfaEntity.MsgReceiver;
-import Entity.CommonInfaEntity.MsgSender;
-import Entity.CommonInfaEntity.UserEntity;
+import Entity.CommonInfa.MsgReceiver;
+import Entity.CommonInfa.MsgSender;
+import Entity.CommonInfa.UserEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

@@ -31,6 +31,12 @@ INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,fi
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10001,0,0,0,0,0,0,"777-300","SIN","SIN","Pending",0)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10002,0,0,0,0,0,0,"A380","SIN","SIN","Pending",0)
 
+INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10001,0,0,0,0,0,0,"777-300","SIN","SIN","Pending",0)
+INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10002,0,0,0,0,0,0,"A380","SIN","SIN","Pending",0)
+
+INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10001,0,0,0,0,0,0,"777-300","SIN","SIN","Pending",0)
+INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10002,0,0,0,0,0,0,"A380","SIN","SIN","Pending",0)
+
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10000,3900,5,0,0,0,0,"777-300","XIA","SIN","Pending",0)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(20000,3900,5,0,0,0,0,"777-300","SIN","XIA","Pending",0)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(30000,6500,4,0,0,0,0,"A380","DXB","SIN","Pending",0)
@@ -69,6 +75,8 @@ INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, startDate,endDate,sche
 INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo,  startDate,endDate,scheduleDepTime,scheduleArrTime, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (60000,60000,'MR006',"2012-10-08","2022-10-08","16:00","22:00",0,False,False,True,False,True,False,True)
 
 
+
+
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000000,10000,"2015-10-13","10:00","15:00","10:00","15:00","Testing",0,0,"2015-10-13 10:00","2015-10-13 15:00","9V-000",'2015-10-13 10:00','2015-10-13 15:00')
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000001,20000,"2015-10-13","18:00","23:00","18:00","23:00","Testing",0,0,"2015-10-13 18:00","2015-10-13 23:00","9V-000",'2015-10-13 18:00','2015-10-13 23:00')
 
@@ -84,6 +92,17 @@ INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,es
 -- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(80000,50000,"2015-12-15","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-15 17:00","2015-12-15 20:00","9V-000",'2015-12-15 17:00','2015-12-15 20:00')
 -- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(90000,50000,"2015-12-17","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-17 17:00","2015-12-17 20:00","9V-000",'2015-12-17 17:00','2015-12-17 20:00')
 -- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(100000,50000,"2015-12-19","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-19 17:00","2015-12-19 20:00","9V-000",'2015-12-19 17:00','2015-12-19 20:00')
+
+
+
+
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(50000,30000,"2015-12-15","10:00","15:00","10:00","15:00","Testing",0,0,"2015-12-15 10:00","2015-12-15 15:00","9V-000",'2015-12-15 10:00','2015-12-15 15:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(60000,30000,"2015-12-17","10:00","15:00","10:00","15:00","Testing",0,0,"2015-12-17 10:00","2015-12-17 15:00","9V-000",'2015-12-17 10:00','2015-12-17 15:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(70000,30000,"2015-12-19","10:00","15:00","10:00","15:00","Testing",0,0,"2015-12-19 10:00","2015-12-19 15:00","9V-000",'2015-12-19 10:00','2015-12-19 15:00')
+
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(80000,50000,"2015-12-15","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-15 17:00","2015-12-15 20:00","9V-000",'2015-12-15 17:00','2015-12-15 20:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(90000,50000,"2015-12-17","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-17 17:00","2015-12-17 20:00","9V-000",'2015-12-17 17:00','2015-12-17 20:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(100000,50000,"2015-12-19","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-19 17:00","2015-12-19 20:00","9V-000",'2015-12-19 17:00','2015-12-19 20:00')
 
 
 
@@ -186,3 +205,6 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(510000,110000,200000,0,40,0)
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(520000,120000,200000,0,45,0)
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(530000,130000,200000,0,55,0)
+
+INSERT IGNORE INTO Member(memberid,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(99,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","hao","li",true,0,"G12345678","Dr")
+INSERT IGNORE INTO Member(memberid,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(999,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","li","hao",true,0,"G12345678","Mr")

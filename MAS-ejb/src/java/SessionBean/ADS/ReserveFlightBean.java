@@ -5,6 +5,7 @@
  */
 package SessionBean.ADS;
 
+import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -24,9 +25,15 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
 
     @PersistenceContext
     EntityManager em;
-    
-    
-    
+
+    public CabinClass findCabinClass(String cabinName) {
+        CabinClass select;
+        Query query = em.createQuery("SELECT c FROM CabinClass c WHERE c.cabinName=:cabinName");
+        query.setParameter("cabinName", cabinName);
+        List<CabinClass> resultList = query.getResultList();
+
+        return resultList.get(0);
+    }
     
 
     public List<FlightInstance> findResultInstanceList(String origin, String dest, Date departDate) {
@@ -41,25 +48,19 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
         return resultList;
 
     }
-    
-    
-    public List<FlightFrequency> findFrequencies(String origin,String dest){
-    
-       Query query = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.route.origin.airportName=:origin AND f.route.dest.airportName=:dest" );
+
+    public List<FlightFrequency> findFrequencies(String origin, String dest) {
+
+        Query query = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.route.origin.airportName=:origin AND f.route.dest.airportName=:dest");
         query.setParameter("origin", origin);
         query.setParameter("dest", dest);
-    
 
         List<FlightFrequency> resultList = query.getResultList();
 
         System.out.println("In ReserveFlightBean: findFrequencies():flightfrequency size returned is " + resultList.size());
         return resultList;
-    
-    
-    
+
     }
-    
-    
 
     public List<FlightFrequency> getAllFlightFrequency() {
 

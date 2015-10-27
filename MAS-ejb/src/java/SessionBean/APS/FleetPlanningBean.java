@@ -271,7 +271,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 typeList3.remove(at);
             }
         }
-        System.out.println("fleetPlanningBean: canDeleteTypeList: check 1: type list 2: "+typeList2+" and type List 3: "+typeList3);
+        System.out.println("fleetPlanningBean: canDeleteTypeList: check 1: type list 2: " + typeList2 + " and type List 3: " + typeList3);
         for (int j = 0; j < typeList2.size(); j++) {
             at2 = typeList2.get(j);
             Query q3 = em.createQuery("SELECT r FROM Route r where r.acType =:aircraftType").setParameter("aircraftType", at2);
@@ -279,7 +279,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 typeList3.remove(at2);
             }
         }
-         System.out.println("fleetPlanningBean: canDeleteTypeList: check 2: type list 3: "+typeList3);
+        System.out.println("fleetPlanningBean: canDeleteTypeList: check 2: type list 3: " + typeList3);
         return typeList3;
     }
 
@@ -419,10 +419,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
-        @Override
+
+    @Override
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
-         if (aircraft == null) {
+        if (aircraft == null) {
             throw new Exception("Aircraft does not exist.");
         }
         Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:aircraft").setParameter("aircraft", aircraft);
@@ -431,5 +432,33 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         }
         return q.getResultList();
     }
-    
+
+    @Override
+    public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH) {
+        AircraftType act = em.find(AircraftType.class, acType.getType());
+//        act.setDailycDu(dailycDu);
+//        act.setDailycMH(dailycMH);
+//        act.setWeeklycDu(weeklycDu);
+//        act.setWeeklycMH(weeklycMH);
+        act.setAcInH(acInH);
+        act.setAcInD(acInD);
+        act.setAcDu(acDu);
+        act.setAcMH(acMH);
+        act.setBcInH(bcInH);
+        act.setBcInD(bcInD);
+        act.setBcDu(bcDu);
+        act.setBcMH(bcMH);
+        act.setCcInH(ccInH);
+        act.setCcInD(ccInD);
+        act.setCcDu(ccDu);
+        act.setCcMH(ccMH);
+        act.setDcInH(dcInH);
+        act.setDcInD(dcInD);
+        act.setDcDu(dcDu);
+        act.setDcMH(dcMH);
+        em.merge(act);
+        em.flush();
+        System.out.println("Update mt standard for " + act.getType());
+    }
+
 }

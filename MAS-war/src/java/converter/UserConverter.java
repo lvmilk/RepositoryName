@@ -7,7 +7,7 @@
 package converter;
 
 
-import Entity.CommonInfaEntity.UserEntity;
+import Entity.CommonInfa.UserEntity;
 import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;

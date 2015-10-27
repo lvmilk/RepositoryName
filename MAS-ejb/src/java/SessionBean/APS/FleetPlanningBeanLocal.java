@@ -22,7 +22,7 @@ import javax.ejb.Local;
 @Local
 public interface FleetPlanningBeanLocal {
 
-       public List<AircraftType> getAllAircraftType();
+    public List<AircraftType> getAllAircraftType();
 
     public List<Aircraft> getAllAircraft();
 
@@ -63,6 +63,8 @@ public interface FleetPlanningBeanLocal {
     public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
 
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
+
+    public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH);
 
     
 }

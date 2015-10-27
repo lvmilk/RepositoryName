@@ -122,17 +122,6 @@ public class AssignPriceManagedBean implements Serializable {
         this.setFfList(apb.getFlightFrequencyList(routeID));
     }
 
-//    public void generateBookingClass(FlightInstance fi) throws IOException  {
-//        apb.generateBookingClass(fi);
-//        flightInst = fi;
-//        fiList.remove(fi);
-//        this.setBkiList(apb.getBkiList(fi));
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInst", flightInst);
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkiList", bkiList);
-//
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPriceSuccess.xhtml");
-//    }
     public void generateBookingClass(ActionEvent event) throws IOException {
         flightInst = (FlightInstance) event.getComponent().getAttributes().get("fi");
         System.out.println("flightInsantance: " + flightInst.getDate());

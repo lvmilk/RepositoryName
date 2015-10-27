@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Add Maintenance Log" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20">
+
+                    <p:outputLabel for="route" value="Choose route: " />
+                    <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select origin airport" style="width:250px">
+                        <f:selectItem itemLabel="-Select Route-" itemValue="" />
+                        <f:selectItems value="#{flightManagedBean.routeInfo}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="activity" value="Work Performed: " />
+                    <p:inputTextarea rows="6" cols="33"  id="activity" value="#{AMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter maintenance activity "/>
+
+                    <p:inputText id="activity" value="#{AMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter outbound flight number" size="30"/>
+
+
+                    <p:outputLabel for="startTime" value="Maintenance Start Time (HH:mm in UTC+00:00): " />
+                    <p:calendar  id="startTime" value="#{AMLMB.startTime}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance start time" size="30"/>
+
+                    <p:outputLabel for="endTime" value="Maintenance End Time (HH:mm in UTC+00:00): " />
+                    <p:calendar  id="endTime" value="#{AMLMB.endTime}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance end time" size="30"/>
+
+                    <p:selectBooleanCheckbox value="#{AMLMB.checkSign}" />
+                    <h:outputText value="I certify that this aircraft was inspected in accordance with a #{AMLMB.mtType} inspection and was determined to be in an airworthy condition.  All work was accomplished in accordance with current Federal Aviation Regulations and manufacturer’s maintenance instructions." />
+
+                    <p:outputLabel for="mtCrew" value="Maintenance Crew (Split with ','): " />
+                    <p:inputText id="mtCrew" value="#{AMLMB.mtCrew}" label="mtCrew" required="true"  requiredMessage="Please enter name of the maintenance crew" size="30"/>
+
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Add Maintenance Log" update="panel" style="margin-right:0" actionListener="#{AMLMB.addMaintenanceLog}"  icon="ui-icon-check" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+
+</html>
+

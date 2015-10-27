@@ -7,24 +7,23 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author wang
  */
 @Named(value = "testPageManagedBean")
-@Dependent
+@ViewScoped
 public class testPageManagedBean implements Serializable{
 //private Map<String, Boolean> testMap=new HashMap<String, Boolean>();
 private List<Integer> testMap=new ArrayList< Integer>();
 //private Boolean flag;
-static Integer flag=0;
+private Integer flag=0;
 private String inputString;
-static Boolean test;
+private Boolean test;
 @PostConstruct
 
 public void init(){
