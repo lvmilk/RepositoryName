@@ -5,6 +5,7 @@
  */
 package SessionBean.ADS;
 
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
@@ -83,14 +84,14 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                     c.setTime(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType());
                     c.add(Calendar.HOUR, 24);
                     Date maxLimit = c.getTime();
-  
+
                     for (int k = 0; k < allFlightInstance.size(); k++) {
 
                         Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), allFlightInstance.get(k));
 
-                        if (!checkDuplicate &&!(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
+                        if (!checkDuplicate && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
                             if (!tempUncomplete.get(f).contains(allFlightInstance.get(k))) {
-                                System.out.println("Final leg is "+allFlightInstance.get(k));
+                                System.out.println("Final leg is " + allFlightInstance.get(k));
                                 System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName());
                                 System.out.println("New leg's dest is " + dest);
 
@@ -100,7 +101,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                                 tempUncomplete.set(f, temp);
                             }
 //                            tempUncomplete.remove(temp2);
-                        } else if (i < 2 && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size()-1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) &&!(tempUncomplete.get(f).contains(allFlightInstance.get(k))) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
+                        } else if (i < 2 && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).contains(allFlightInstance.get(k))) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
 
                             ArrayList<FlightInstance> temp = tempUncomplete.get(f);
                             temp.add(allFlightInstance.get(k));
@@ -123,14 +124,39 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
     }
 
     public Boolean findDuplicateInstance(ArrayList<FlightInstance> tempList, FlightInstance instance) {
-       if(tempList.contains(instance)){
-       return true;
-       }
-       else{
-         return false;
-       }
+        if (tempList.contains(instance)) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
+
+    public Double computeTotalPrice(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, CabinClass cabin, Integer countPerson) {
+        Double totalPrice = 0.0;
+        System.out.println("getting into computeTotalPrice");
+         System.out.println("cabin class is "+cabin);
+
+        List<BookingClassInstance> bookList = new ArrayList<>();
+        if (departSelected != null && !departSelected.isEmpty()) {
+            System.out.println("departedSelected is not null or empty");
+            for (int i = 0; i < departSelected.size(); i++) {
+                FlightInstance flight = departSelected.get(i);
+                Query query = em.createQuery("SELECT b FROM BookingClassInstance b WHERE b.flightCabin.cabinClass=:cabin AND b.flightCabin.flightInstance=:flight");
+                query.setParameter("cabin", cabin);
+                query.setParameter("flight", flight);
+                bookList = query.getResultList();
+                if(!bookList.isEmpty()){
+                 System.out.println("size of bookingClassInstancelist is "+bookList.size());
+                
+                }
+                for (int k = 0; k < bookList.size(); k++) {
+                    System.out.println(bookList.get(k));
+                }
+
+            }
+        }
+        return totalPrice;
+    }
 
     public List<FlightFrequency> findFrequencies(String origin, String dest) {
 

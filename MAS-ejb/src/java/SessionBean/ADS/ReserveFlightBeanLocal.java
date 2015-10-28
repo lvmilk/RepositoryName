@@ -35,6 +35,8 @@ public interface ReserveFlightBeanLocal {
 
     public Boolean findDuplicateInstance(ArrayList<FlightInstance> tempList, FlightInstance instance);
 
+    public Double computeTotalPrice(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, CabinClass cabin, Integer countPerson);
+
 
     
 }
