@@ -7,16 +7,9 @@ package Entity.APS;
 
 import Entity.AIS.FlightCabin;
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -52,9 +45,9 @@ public class FlightInstance implements Comparable<FlightInstance>,Serializable {
     private Integer actualDateAdjust;
     private String standardDepTime;
     private String standardArrTime;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardDepTimeDateType;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
 
     @ManyToOne
