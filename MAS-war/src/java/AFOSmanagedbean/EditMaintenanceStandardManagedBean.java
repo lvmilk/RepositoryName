@@ -36,6 +36,11 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
     private Integer acDu;
     private Integer acMH;
 
+    private Integer bcInH;
+    private Integer bcInD;
+    private Integer bcDu;
+    private Integer bcMH;
+
     private Integer ccInH;
     private Integer ccInD;
     private Integer ccDu;
@@ -46,11 +51,6 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
     private Integer dcDu;
     private Integer dcMH;
 
-    private Integer dailycDu;
-    private Integer dailycMH;
-
-    private Integer weeklycDu;
-    private Integer weeklycMH;
 
     public EditMaintenanceStandardManagedBean() {
     }
@@ -58,14 +58,18 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         acType = (AircraftType) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("acTypeMt");
-        dailycDu = acType.getDailycDu();
-        dailycMH = acType.getDailycMH();
-        weeklycDu = acType.getWeeklycDu();
-        weeklycMH = acType.getWeeklycMH();
+//        dailycDu = acType.getDailycDu();
+//        dailycMH = acType.getDailycMH();
+//        weeklycDu = acType.getWeeklycDu();
+//        weeklycMH = acType.getWeeklycMH();
         acInH = acType.getAcInH();
         acInD = acType.getAcInD();
         acDu = acType.getAcDu();
         acMH = acType.getAcMH();
+        bcInH = acType.getBcInH();
+        bcInD = acType.getBcInD();
+        bcDu = acType.getBcDu();
+        bcMH = acType.getBcMH();
         ccInH = acType.getCcInH();
         ccInD = acType.getCcInD();
         ccDu = acType.getCcDu();
@@ -77,7 +81,7 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
     }
 
     public void editMaintenanceStandard(ActionEvent e) throws Exception {
-        fpb.editMtStandard(acType, dailycDu, dailycMH, weeklycDu, weeklycMH, acInH, acInD, acDu, acMH, ccInH, ccInD, ccDu, ccMH, dcInH, dcInD, dcDu, dcMH);
+        fpb.editMtStandard(acType, acInH, acInD, acDu, acMH, bcInH, bcInD, bcDu, bcMH, ccInH, ccInD, ccDu, ccMH, dcInH, dcInD, dcDu, dcMH);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("acTypeStringMt", acType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editMaintenanceStandardSuccess.xhtml");
     }
@@ -150,6 +154,38 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.acMH = acMH;
     }
 
+    public Integer getBcInH() {
+        return bcInH;
+    }
+
+    public void setBcInH(Integer bcInH) {
+        this.bcInH = bcInH;
+    }
+
+    public Integer getBcInD() {
+        return bcInD;
+    }
+
+    public void setBcInD(Integer bcInD) {
+        this.bcInD = bcInD;
+    }
+
+    public Integer getBcDu() {
+        return bcDu;
+    }
+
+    public void setBcDu(Integer bcDu) {
+        this.bcDu = bcDu;
+    }
+
+    public Integer getBcMH() {
+        return bcMH;
+    }
+
+    public void setBcMH(Integer bcMH) {
+        this.bcMH = bcMH;
+    }
+
     public Integer getCcDu() {
         return ccDu;
     }
@@ -214,36 +250,36 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.dcMH = dcMH;
     }
 
-    public Integer getDailycDu() {
-        return dailycDu;
-    }
-
-    public void setDailycDu(Integer dailycDu) {
-        this.dailycDu = dailycDu;
-    }
-
-    public Integer getDailycMH() {
-        return dailycMH;
-    }
-
-    public void setDailycMH(Integer dailycMH) {
-        this.dailycMH = dailycMH;
-    }
-
-    public Integer getWeeklycDu() {
-        return weeklycDu;
-    }
-
-    public void setWeeklycDu(Integer weeklycDu) {
-        this.weeklycDu = weeklycDu;
-    }
-
-    public Integer getWeeklycMH() {
-        return weeklycMH;
-    }
-
-    public void setWeeklycMH(Integer weeklycMH) {
-        this.weeklycMH = weeklycMH;
-    }
+//    public Integer getDailycDu() {
+//        return dailycDu;
+//    }
+//
+//    public void setDailycDu(Integer dailycDu) {
+//        this.dailycDu = dailycDu;
+//    }
+//
+//    public Integer getDailycMH() {
+//        return dailycMH;
+//    }
+//
+//    public void setDailycMH(Integer dailycMH) {
+//        this.dailycMH = dailycMH;
+//    }
+//
+//    public Integer getWeeklycDu() {
+//        return weeklycDu;
+//    }
+//
+//    public void setWeeklycDu(Integer weeklycDu) {
+//        this.weeklycDu = weeklycDu;
+//    }
+//
+//    public Integer getWeeklycMH() {
+//        return weeklycMH;
+//    }
+//
+//    public void setWeeklycMH(Integer weeklycMH) {
+//        this.weeklycMH = weeklycMH;
+//    }
 
 }

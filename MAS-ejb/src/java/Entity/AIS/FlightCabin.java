@@ -105,7 +105,7 @@ public class FlightCabin implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.aisEntity.FlightCabin[ id=" + id + " ]";
+        return "Entity.AIS.FlightCabin[ id=" + id + " ]";
     }
     
 }

@@ -9,6 +9,7 @@ import Entity.APS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
@@ -26,10 +27,14 @@ public interface ReserveFlightBeanLocal {
 
     public List<FlightFrequency> getSecondFrequency(String origin);
 
-    public List<FlightInstance> findResultInstanceList(String origin, String dest, Date departDate);
+    public ArrayList<ArrayList<FlightInstance>> findResultInstanceList(String origin, String dest, Date departDate);
 
     public List<FlightFrequency> findFrequencies(String origin, String dest);
 
     public CabinClass findCabinClass(String cabinName);
+
+    public Boolean findDuplicateInstance(ArrayList<FlightInstance> tempList, FlightInstance instance);
+
+
     
 }

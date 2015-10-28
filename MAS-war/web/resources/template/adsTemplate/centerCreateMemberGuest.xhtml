@@ -10,13 +10,12 @@
     </h:head>
     <h:body>
         <h:form >
-            <ui:repeat var="psg" value="#{mgMB.passengerList}">
+            <ui:repeat var="psg" value="#{mgMB.passengerList}" varStatus="myStatus">
                 <p:growl id="msgs" showDetail="true" />
 
-                <p:outputLabel value="Passenger" style="font-weight: bold"/>
+                <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold"/>
                 <h:panelGrid columns="2" cellpadding="10">
-
-
+               
                     <p:outputLabel for="title" value="Title:" />
                     <h:selectOneMenu id="title" value="#{psg.title}">
                         <f:selectItem itemValue="Dr" itemLabel="Dr" />
@@ -29,13 +28,13 @@
                     </h:selectOneMenu>
 
                     <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{psg.firstName}"/>
+                    <p:inputText value="#{psg.firstName}" required="true" requiredMessage="please enter first name"/>
 
                     <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{psg.lastName}"/>            
+                    <p:inputText value="#{psg.lastName}" required="true" requiredMessage="please enter last name"/>            
 
                     <p:outputLabel  value="Passport: " />
-                    <p:inputText value="#{psg.passport}"/>       
+                    <p:inputText value="#{psg.passport}" required="true" requiredMessage="please enter passport"/>       
 
 
                     <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
@@ -63,10 +62,12 @@
             <p:panel id="memberPanel"  visible="#{mgMB.visiMember}" style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
                     <p:outputLabel  value="Member Account: " />
-                    <p:inputText value="#{mgMB.memberId}"/>
+                    <p:inputText value="#{mgMB.memberId}" required="#{mgMB.visiMember}"/>
 
                     <p:outputLabel  value="Email: " />
-                    <p:inputText value="#{mgMB.email}"/>
+                    <p:inputText value="#{mgMB.existEmail}" required="#{mgMB.visiMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
                 </h:panelGrid>
             </p:panel>
 
@@ -85,19 +86,21 @@
                     </h:selectOneMenu>
 
                     <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{mgMB.firstName}"/>
+                    <p:inputText value="#{mgMB.firstName}" required="#{mgMB.visiNonMember}" requiredMessage="please enter first name"/>
 
                     <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{mgMB.lastName}"/>
+                    <p:inputText value="#{mgMB.lastName}" required="#{mgMB.visiNonMember}" requiredMessage="please enter last name"/>
 
                     <p:outputLabel  value="Address: " />
-                    <p:inputText value="#{mgMB.address}"/>
+                    <p:inputText value="#{mgMB.address}" required="#{mgMB.visiNonMember}" requiredMessage="please enter address"/>
 
                     <p:outputLabel  value="Email Address: " />
-                    <p:inputText value="#{mgMB.email}"/>
+                    <p:inputText value="#{mgMB.email}" required="#{mgMB.visiNonMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
 
                     <p:outputLabel  value="Contact Number: " />
-                    <p:inputText value="#{mgMB.contactNo}"/>   
+                    <p:inputText value="#{mgMB.contactNo}" required="true"/>   
                 </h:panelGrid>
             </p:panel>
 

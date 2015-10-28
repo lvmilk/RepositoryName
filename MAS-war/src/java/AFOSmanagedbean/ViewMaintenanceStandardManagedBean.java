@@ -27,29 +27,28 @@ public class ViewMaintenanceStandardManagedBean implements Serializable {
     @EJB
     FleetPlanningBeanLocal fpb;
 
-    private AircraftType acType;
-    private String acTypeString;
-    private List<String> acTypeInfo = new ArrayList();
-
-    private Integer acInH;
-    private Integer acInD;
-    private Integer acDu;
-    private Integer acMH;
-
-    private Integer ccInM;
-    private Integer ccDu;
-    private Integer ccMH;
-
-    private Integer dcInM;
-    private Integer dcDu;
-    private Integer dcMH;
-
-    private Integer dailycDu;
-    private Integer dailycMH;
-
-    private Integer weeklycDu;
-    private Integer weeklycMH;
-
+//    private AircraftType acType;
+//    private String acTypeString;
+//    private List<String> acTypeInfo = new ArrayList();
+//
+//    private Integer acInH;
+//    private Integer acInD;
+//    private Integer acDu;
+//    private Integer acMH;
+//
+//    private Integer ccInM;
+//    private Integer ccDu;
+//    private Integer ccMH;
+//
+//    private Integer dcInM;
+//    private Integer dcDu;
+//    private Integer dcMH;
+//
+//    private Integer dailycDu;
+//    private Integer dailycMH;
+//
+//    private Integer weeklycDu;
+//    private Integer weeklycMH;
     List<AircraftType> acTypeList = new ArrayList<>();
 
     public ViewMaintenanceStandardManagedBean() {
@@ -57,7 +56,7 @@ public class ViewMaintenanceStandardManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        acTypeList = fpb.getAllAircraftType();
+        getAcTypeList();
     }
 
     public void editMaintenanceStandard(AircraftType ac) throws Exception {
@@ -66,7 +65,14 @@ public class ViewMaintenanceStandardManagedBean implements Serializable {
     }
 
     public List<AircraftType> getAcTypeList() {
-        return fpb.getAllAircraftType();
+        List<AircraftType> act = fpb.getAllAircraftType();
+        List<AircraftType> actCopy = fpb.getAllAircraftType();
+        for (AircraftType a : act) {
+            if (a.getType().equalsIgnoreCase("A330-200")) {
+                actCopy.remove(a);
+            }
+        }
+        return actCopy;
     }
 
     public void setAcTypeList(List<AircraftType> acTypeList) {
