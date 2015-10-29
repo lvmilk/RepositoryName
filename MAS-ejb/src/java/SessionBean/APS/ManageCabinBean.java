@@ -6,7 +6,7 @@
 package SessionBean.APS;
 
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

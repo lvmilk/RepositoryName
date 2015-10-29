@@ -6,7 +6,7 @@
 package ADSmanagedbean;
 
 import Entity.ADS.Member;
-import SessionBean.ADS.MemberSessionBeanLocal;
+import SessionBean.ADS.MemberBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -26,7 +26,7 @@ import javax.inject.Named;
 public class EditMemberGuestManagedBean implements Serializable {
 
     @EJB
-    private MemberSessionBeanLocal mbsbl;
+    private MemberBeanLocal mbsbl;
 
     private List<Member> memberList;
 

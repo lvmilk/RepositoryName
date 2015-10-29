@@ -14,7 +14,7 @@ import javax.ejb.Local;
  * @author LI HAO
  */
 @Local
-public interface PassengerSessionBeanLocal {
+public interface PassengerBeanLocal {
     public void makeReservation(ArrayList<Passenger> passengerList,String email, Long memberId);
     public void makeRsvGuest(ArrayList<Passenger> passengerList,String title,String firstName,String lastName,String address,String email,String contactNo);
 }

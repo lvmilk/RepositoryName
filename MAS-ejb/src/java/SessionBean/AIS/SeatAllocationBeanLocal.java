@@ -5,7 +5,7 @@
  */
 package SessionBean.AIS;
 
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.AIS.BookingClassInstance;
 import java.util.List;

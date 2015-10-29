@@ -1,7 +1,7 @@
 
 package AISmanagedbean;
 
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.AIS.BookingClassInstance;

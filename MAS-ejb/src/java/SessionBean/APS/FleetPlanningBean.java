@@ -2,7 +2,7 @@ package SessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;

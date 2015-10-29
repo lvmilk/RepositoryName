@@ -1,5 +1,6 @@
 package Entity.APS;
 
+import Entity.AIS.CabinClass;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.persistence.CascadeType;

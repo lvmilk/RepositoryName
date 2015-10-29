@@ -28,7 +28,7 @@ public class PricingBean implements PricingBeanLocal {
 
     private AircraftType aircraftType = new AircraftType();
     private Route route = new Route();
-    private List<Route> routeList = new ArrayList<>();
+    private List<Route> routeList = new ArrayList<Route>();
     private Double crewCost;
     private Double calculatedFare;
     private Map<String, Double> allFare = new HashMap<String, Double>();
@@ -51,8 +51,16 @@ public class PricingBean implements PricingBeanLocal {
     public void setRouteList() {
         Query query = em.createQuery("SELECT r FROM Route r");
         List<Route> resultList = query.getResultList();
+        List<Route> newList = new ArrayList<Route>();
+      
         if (resultList.size() != 0) {
-            this.routeList = resultList;
+            for(Route r:resultList){
+                if(!r.getOrigin().equals(r.getDest())){
+                    newList.add(r);
+                }
+                    
+            }
+            this.routeList = newList;
         }
         System.out.println("SessionBean:setRouteList: size " + this.routeList.size());
     }

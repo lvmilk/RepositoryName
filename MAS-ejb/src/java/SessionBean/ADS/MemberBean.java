@@ -17,7 +17,7 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class MemberSessionBean implements MemberSessionBeanLocal {
+public class MemberBean implements MemberBeanLocal {
 
     @PersistenceContext
     EntityManager em;

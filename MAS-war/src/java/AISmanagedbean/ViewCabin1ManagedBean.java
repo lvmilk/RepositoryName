@@ -6,7 +6,7 @@
 package AISmanagedbean;
 
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.AIS.SeatPlanBeanLocal;
 import SessionBean.CommonInfa.manageAccountLocal;
