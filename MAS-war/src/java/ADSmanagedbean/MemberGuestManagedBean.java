@@ -7,12 +7,14 @@ package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
 import Entity.CommonInfa.MsgSender;
+import SessionBean.ADS.MemberSessionBeanLocal;
 import SessionBean.ADS.PassengerSessionBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -27,6 +29,8 @@ public class MemberGuestManagedBean implements Serializable {
 
     @EJB
     private PassengerSessionBeanLocal psgSBlocal;
+    @EJB
+    private MemberSessionBeanLocal msblocal;
 
     private String title = "Mr";
 
@@ -38,6 +42,7 @@ public class MemberGuestManagedBean implements Serializable {
     private Long memberId;
     private String address;
     private String email;
+    private String existEmail;
     private String contactNo;
 
     private boolean visiMember = true;
@@ -48,12 +53,14 @@ public class MemberGuestManagedBean implements Serializable {
     private ArrayList<Passenger> passengerList = new ArrayList<>();
     private Passenger person = new Passenger();
     
-    private Integer repeat=2;
+    private Integer repeat;
     
 
     @PostConstruct
     public void init() {
         try {
+            repeat=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+            
             for(int i=0;i<repeat;i++)
             {
               passengerList.add(person);
@@ -77,11 +84,24 @@ public class MemberGuestManagedBean implements Serializable {
 
     public void makeReserve() {
         System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
-
+        System.out.print("&&&&&&&&&&This is email: " + existEmail);
+        
         if (visiMember == true) {
-            psgSBlocal.makeReservation(passengerList, email, memberId);
+            if(psgSBlocal.checkMemberExist(memberId, email))
+            {
+                psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+            }else
+            {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
+            }
         } else if (visiNonMember == true) {
-            psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+            if(msblocal.checkEmailExists(email))
+            {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email address is already been used ", ""));
+            }else
+            {
+                psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+            }
         }
     }
 
@@ -293,6 +313,20 @@ public class MemberGuestManagedBean implements Serializable {
      */
     public void setRepeat(Integer repeat) {
         this.repeat = repeat;
+    }
+
+    /**
+     * @return the existEmail
+     */
+    public String getExistEmail() {
+        return existEmail;
+    }
+
+    /**
+     * @param existEmail the existEmail to set
+     */
+    public void setExistEmail(String existEmail) {
+        this.existEmail = existEmail;
     }
 
 }

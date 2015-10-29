@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel id="memberGuest"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="3" cellpadding="10">
+
+
+                    <p:outputLabel for="mbId" value="Member / Guest ID: " />
+                    <p:outputLabel id="mbId" value="#{etMemberGuestMB.memberId}"  />
+                    <p:message for="mbId" display="icon" />
+
+                    <p:outputLabel for="mbTitle" value="Title:" />
+                    <h:selectOneMenu id="mbTitle" value="#{etMemberGuestMB.title}">
+                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
+                    </h:selectOneMenu>
+
+                </h:panelGrid>
+
+                <p:selectOneRadio id="memberStatus" value="#{etMemberGuestMB.memberStatus}" required="true" requiredMessage="Please select either member status" >
+                    <f:selectItem itemLabel="Member" itemValue="true" />
+                    <f:selectItem itemLabel="Non-Member" itemValue="false" />
+                </p:selectOneRadio>
+
+                <h:panelGrid columns="3" cellpadding="10">
+                    <p:outputLabel for="mbFirstName" value="First Name: " />
+                    <p:inputText id="mbFirstName" value="#{etMemberGuestMB.firstName}" required="true" requiredMessage="Please enter first name"/>
+                    <p:message for="mbFirstName" display="icon" />
+
+                    <p:outputLabel for="mbLastName" value="Last Name: " />
+                    <p:inputText id="mbLastName" value="#{etMemberGuestMB.lastName}" required="true" requiredMessage="Please enter last name"/>
+                    <p:message for="mbLastName" display="icon" />
+
+                    <p:outputLabel for="mbEmail" value="Email: " />
+                    <p:inputText id="mbEmail" value="#{etMemberGuestMB.emailEdited}" validatorMessage="Invalid email format">
+                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                    </p:inputText>
+                    <p:message for="mbEmail" display="icon" />
+
+
+                    <p:outputLabel for="mbDOB" value="Date of Birth: " />
+                    <p:outputLabel id="mbDOB" value="#{etMemberGuestMB.dob}" />
+                    <p:message for="mbDOB" display="icon" />
+
+                    <p:outputLabel for="mbContact" value="Contact: " />
+                    <p:inputText id="mbContact" value="#{etMemberGuestMB.contactNo}" />
+                    <p:message for="mbContact" display="icon" />
+
+                    <p:outputLabel for="mbAdress" value="Address: " />
+                    <p:inputText id="mbAdress" value="#{etMemberGuestMB.address}" />
+                    <p:message for="mbAdress" display="icon" />
+
+                    <p:outputLabel for="mbMiles" value="Miles: " />
+                    <p:outputLabel id="mbMiles" value="#{etMemberGuestMB.miles}"  />
+                    <p:message for="mbMiles" display="icon" />
+
+                    <p:outputLabel for="mbPassport" value="Passport: " />
+                    <p:inputText id="mbPassport" value="#{etMemberGuestMB.passport}" />
+                    <p:message for="mbPassport" display="icon" />
+
+                </h:panelGrid>
+
+                <p:commandButton value="Edit" update="memberGuest" actionListener="#{etMemberGuestMB.editMemberAccount}" icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

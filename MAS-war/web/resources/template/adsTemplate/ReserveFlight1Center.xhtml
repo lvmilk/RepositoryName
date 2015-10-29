@@ -14,7 +14,7 @@
             <p:messages id="msgs" showDetail="true" />
 
             <p:panel id="thisPanel" header="Select a Flight" style="margin-bottom:10px;">
-                <h:panelGrid columns="2" cellpadding="25">
+                <h:panelGrid columns="2" cellpadding="20">
 
 
                     <p:selectOneRadio id="whetherReturn" value="#{reserveFlightManagedBean.returnTrip}" required="true" requiredMessage="Please select to search one-way or returned trip" >
@@ -22,14 +22,14 @@
                         <f:selectItem itemLabel="Returned" itemValue="true" />
                         <p:ajax  event="click" listener="#{reserveFlightManagedBean.onSelectReturn}" update=":allocate:returnDate "/>
                     </p:selectOneRadio>
-                  
+
 
                     <p:selectOneRadio id="dateSpecific" value="#{reserveFlightManagedBean.dateSpecific}" required="true" requiredMessage="Please select time requirement" >
                         <f:selectItem itemLabel="Travel only on this day" itemValue="true" />
                         <f:selectItem itemLabel="Flexible travel time" itemValue="false" />
 <!--                        <p:ajax  event="click" listener="#{reserveFlightManagedBean.onSelectReturn}" update=":allocate:returnDate "/>-->
                     </p:selectOneRadio>
-           
+
 
                     <h:outputLabel for="departDate"  value="Departure Date:(YYYY-MM-DD)" />
                     <p:calendar  id="departDate"  value="#{reserveFlightManagedBean.departDate}"  mindate="#{reserveFlightManagedBean.currentDate}" pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
@@ -53,7 +53,7 @@
 
                     <p:outputLabel for="destination" value="To: " />
                     <p:selectOneMenu id="destination" value="#{reserveFlightManagedBean.dest}" required="true" requiredMessage="Please select destination" style="width:100%;">    
-                        <p:ajax  listener="#{reserveFlightManagedBean.onFlightChange}"  update="flightCabin" /> 
+                        <p:ajax  listener="#{reserveFlightManagedBean.onDestChange}"  update="flightCabin" /> 
                         <f:selectItem itemLabel="Select Destination" itemValue="1" />
                         <f:selectItems value="#{reserveFlightManagedBean.secondFrequency}"  var="flight" itemValue="#{flight.route.dest.airportName}" itemLabel="#{flight.route.dest.airportName} #{flight.route.dest.IATA}"/>
                     </p:selectOneMenu>
@@ -62,11 +62,15 @@
                     <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
                     <p:selectOneMenu id="flightCabin" value="#{reserveFlightManagedBean.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
                         <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
-                        <f:selectItems value="#{reserveFlightManagedBean.cabinList}"  var="cabin" itemValue="#{cabin.cabinName}" itemLabel="#{cabin.cabinName}"/>
+                        <f:selectItem itemLabel="Suite" itemValue="Suite" />
+                        <f:selectItem itemLabel="First Class" itemValue="First Class" />
+                        <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
+                        <f:selectItem itemLabel="Premium Economy Class" itemValue="Premium Economy Class" />
+                        <f:selectItem itemLabel="Economy Class" itemValue="Economy Class" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="countPerson" value="No. of people: " />
-                    <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}">
+                    <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
                         <f:validateLongRange minimum="1"/>
                     </p:inputText>
 

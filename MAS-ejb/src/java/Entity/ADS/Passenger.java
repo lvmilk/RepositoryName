@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +28,9 @@ public class Passenger implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(unique=true)
     private String passport;
+    
     private String title;
     private String firstName;
     private String lastName;
@@ -38,7 +41,7 @@ public class Passenger implements Serializable {
     private Member member;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
-    private Collection<Itinerary> itineray=new ArrayList<Itinerary>();
+    private Collection<Ticket> ticket=new ArrayList<Ticket>();
     
     public Passenger()
     {
@@ -158,17 +161,17 @@ public class Passenger implements Serializable {
     }
 
     /**
-     * @return the itineray
+     * @return the ticket
      */
-    public Collection<Itinerary> getItineray() {
-        return itineray;
+    public Collection<Ticket> getTicket() {
+        return ticket;
     }
 
     /**
-     * @param itineray the itineray to set
+     * @param ticket the ticket to set
      */
-    public void setItineray(Collection<Itinerary> itineray) {
-        this.itineray = itineray;
+    public void setTicket(Collection<Ticket> ticket) {
+        this.ticket = ticket;
     }
 
     /**

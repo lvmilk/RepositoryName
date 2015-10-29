@@ -30,16 +30,60 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
     public void makeReservation(ArrayList<Passenger> passengerList, String email, Long memberId) {
         System.out.println("******PassengerList size:" + passengerList.size());
         Passenger tempPsg;
+        boolean status;
 
-        for (int i = 0; i < passengerList.size(); i++) {
-//            System.out.println("******PassengerList size i:"+passengerList.get(i).toString());
-//            status = checkPassengerExist(passengerList.get(i));
-            tempPsg = passengerList.get(i);
+        status = checkMemberExist(memberId, email);
 
-            System.out.println("hehe");
-            passenger = new Passenger();
-//            passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
-            em.persist(passengerList.get(i));
+        if (status == true) {
+            member = new Member();
+            member = em.find(Member.class, memberId);
+
+            ArrayList<Passenger> psgList = new ArrayList<Passenger>();
+
+            for (int i = 0; i < passengerList.size(); i++) {
+
+                tempPsg = passengerList.get(i);
+
+                System.out.println("hehe");
+                passenger = new Passenger();
+                passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
+
+                passenger.setMember(member);
+                em.persist(passenger);
+                em.flush();
+
+                psgList.add(passenger);
+
+            }
+            member.setPsgs(psgList);
+            em.merge(member);
+            em.flush();
+
+        } else {
+            System.out.println("##########Make reservation: member does not exist");
+        }
+
+    }
+
+    @Override
+    public boolean checkMemberExist(Long memberId, String email) {
+        Query query = null;
+        List resultList = new ArrayList<Member>();
+        query = em.createQuery("SELECT u FROM Member u WHERE u.memberID = :inMemberId and u.email = :inEmail");
+        query.setParameter("inMemberId", memberId);
+        query.setParameter("inEmail", email);
+
+        System.out.println("##########Check Member Exist");
+        System.out.println("##########MemberId" + memberId);
+        System.out.println("##########Email" + email);
+        resultList = (List) query.getResultList();
+        if (resultList.size() == 1) {
+            System.out.println("##########Check Member Exist, size:" + resultList.size());
+            return true;
+
+        } else {
+
+            return false;
         }
 
     }
@@ -89,17 +133,36 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
             passenger.setMember(member);
             em.persist(passenger);
             em.flush();
-                     
+
             psgList.add(passenger);
 
         }
-        
+
         member.setPsgs(psgList);
         em.merge(member);
         em.flush();
-        
+
         System.out.println("~~~~~~~~The size that member/guest booked" + member.getPsgs().size());
 
+    }
+
+    public boolean checkPassportExist(String passport) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Passenger u WHERE u.passport = :inUserPassport");
+        query.setParameter("inUserPassport", passport);
+        return checkList(query);
+    }
+
+    private boolean checkList(Query query) {
+        List resultList = new ArrayList();
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
     }
 
 }

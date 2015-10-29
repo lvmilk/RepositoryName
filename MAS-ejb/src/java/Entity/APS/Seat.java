@@ -6,7 +6,7 @@
 
 package Entity.APS;
 
-import Entity.ADS.Itinerary;
+import Entity.ADS.Ticket;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,24 +16,23 @@ import javax.persistence.OneToOne;
 
 /**
  *
- * @author victor
+ * @author wang
  */
 @Entity
 public class Seat implements Serializable {
-//    @OneToOne(mappedBy = "seatSelected")
-//    private FlightBookingRecord flightBookingRecord;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String SeatNumberToPassenger;
-    private int row;
-    private int col;
-    private int Width;
-    private String Status;
+    private int rowNo;
+    private int colNo;
+    private int width;
+    private String status;
 
     @OneToOne(mappedBy="seat")
-    private Itinerary itinerary;
+    private Ticket itinerary;
 
     public Long getId() {
         return id;
@@ -82,61 +81,40 @@ public class Seat implements Serializable {
         this.SeatNumberToPassenger = SeatNumberToPassenger;
     }
 
-    /**
-     * @return the row
-     */
-    public int getRow() {
-        return row;
+    public int getRowNo() {
+        return rowNo;
     }
 
-    /**
-     * @param row the row to set
-     */
-    public void setRow(int row) {
-        this.row = row;
+    public void setRowNo(int rowNo) {
+        this.rowNo = rowNo;
     }
 
-    /**
-     * @return the col
-     */
-    public int getCol() {
-        return col;
+    public int getColNo() {
+        return colNo;
     }
 
-    /**
-     * @param col the col to set
-     */
-    public void setCol(int col) {
-        this.col = col;
+    public void setColNo(int colNo) {
+        this.colNo = colNo;
     }
 
-    /**
-     * @return the Width
-     */
+    
     public int getWidth() {
-        return Width;
+        return width;
     }
 
-    /**
-     * @param Width the Width to set
-     */
-    public void setWidth(int Width) {
-        this.Width = Width;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    /**
-     * @return the Status
-     */
     public String getStatus() {
-        return Status;
+        return status;
     }
 
-    /**
-     * @param Status the Status to set
-     */
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatus(String status) {
+        this.status = status;
     }
+
+   
 
 
 //    /**
@@ -156,14 +134,14 @@ public class Seat implements Serializable {
     /**
      * @return the itinerary
      */
-    public Itinerary getItinerary() {
+    public Ticket getItinerary() {
         return itinerary;
     }
 
     /**
      * @param itinerary the itinerary to set
      */
-    public void setItinerary(Itinerary itinerary) {
+    public void setItinerary(Ticket itinerary) {
         this.itinerary = itinerary;
     }
     
