@@ -307,10 +307,6 @@ public class ReserveFlightManagedBean implements Serializable {
                     totalPrice *= countPerson;
                     System.out.println("Total price is " + totalPrice);
 
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
 
                 } else {
                     if (returnIndexes.isEmpty()) {
