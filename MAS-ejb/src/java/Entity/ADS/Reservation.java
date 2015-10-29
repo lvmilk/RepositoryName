@@ -30,7 +30,7 @@ public class Reservation implements Serializable {
     private Long airlineRsvCode;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="rsv")
-    private Collection<Itinerary> itinerary= new ArrayList<Itinerary>();
+    private Collection<Ticket> ticket= new ArrayList<Ticket>();
     
     @ManyToMany(cascade={CascadeType.ALL})
     @JoinTable(name="RSV_BKCLASSINSTANCE")
@@ -78,17 +78,17 @@ public class Reservation implements Serializable {
     }
 
     /**
-     * @return the itinerary
+     * @return the ticket
      */
-    public Collection<Itinerary> getItinerary() {
-        return itinerary;
+    public Collection<Ticket> getTicket() {
+        return ticket;
     }
 
     /**
-     * @param itinerary the itinerary to set
+     * @param ticket the ticket to set
      */
-    public void setItinerary(Collection<Itinerary> itinerary) {
-        this.itinerary = itinerary;
+    public void setTicket(Collection<Ticket> ticket) {
+        this.ticket = ticket;
     }
 
     /**

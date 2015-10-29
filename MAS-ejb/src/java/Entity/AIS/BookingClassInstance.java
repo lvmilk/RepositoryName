@@ -5,7 +5,7 @@
  */
 package Entity.AIS;
 
-import Entity.ADS.Itinerary;
+import Entity.ADS.Ticket;
 import Entity.ADS.Reservation;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     private BookingClass bookingClass;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "bkInstance")
-    private Collection<Itinerary> itinaryList = new ArrayList<Itinerary>();
+    private Collection<Ticket> itinaryList = new ArrayList<Ticket>();
     
     @ManyToMany(cascade={CascadeType.ALL},mappedBy="bkclassInstance")
     private Collection<Reservation> reservation = new ArrayList<Reservation>();
@@ -157,14 +157,14 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     /**
      * @return the itinaryList
      */
-    public Collection<Itinerary> getItinaryList() {
+    public Collection<Ticket> getItinaryList() {
         return itinaryList;
     }
 
     /**
      * @param itinaryList the itinaryList to set
      */
-    public void setItinaryList(Collection<Itinerary> itinaryList) {
+    public void setItinaryList(Collection<Ticket> itinaryList) {
         this.itinaryList = itinaryList;
     }
 

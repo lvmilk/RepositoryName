@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
  * @author LI HAO
  */
 @Entity
-public class Itinerary implements Serializable {
+public class Ticket implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +37,7 @@ public class Itinerary implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private Seat seat;
 
-    public Itinerary() {
+    public Ticket() {
     }
 
     public Long getItineraryID() {
@@ -58,10 +58,10 @@ public class Itinerary implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the itineraryID fields are not set
-        if (!(object instanceof Itinerary)) {
+        if (!(object instanceof Ticket)) {
             return false;
         }
-        Itinerary other = (Itinerary) object;
+        Ticket other = (Ticket) object;
         if ((this.itineraryID == null && other.itineraryID != null) || (this.itineraryID != null && !this.itineraryID.equals(other.itineraryID))) {
             return false;
         }
