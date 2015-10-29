@@ -41,22 +41,22 @@ public class AircraftType implements Serializable {
 
     //---------------------after 1st release-------------------------------------------
     private Integer acInH;
-    private Integer acInD;
+    private Integer acInC;
     private Integer acDu;
     private Integer acMH;
 
     private Integer bcInH;
-    private Integer bcInD;
+    private Integer bcInC;
     private Integer bcDu;   
     private Integer bcMH;
 
     private Integer ccInH;
-    private Integer ccInD;
+    private Integer ccInC;
     private Integer ccDu;  // by hour
     private Integer ccMH;
 
     private Integer dcInH;
-    private Integer dcInD;
+    private Integer dcInC;
     private Integer dcDu;  // by hour
     private Integer dcMH;
 
@@ -279,12 +279,12 @@ public class AircraftType implements Serializable {
         this.acInH = acInH;
     }
 
-    public Integer getAcInD() {
-        return acInD;
+    public Integer getAcInC() {
+        return acInC;
     }
 
-    public void setAcInD(Integer acInD) {
-        this.acInD = acInD;
+    public void setAcInC(Integer acInC) {
+        this.acInC = acInC;
     }
 
     public Integer getAcDu() {
@@ -311,12 +311,12 @@ public class AircraftType implements Serializable {
         this.bcInH = bcInH;
     }
 
-    public Integer getBcInD() {
-        return bcInD;
+    public Integer getBcInC() {
+        return bcInC;
     }
 
-    public void setBcInD(Integer bcInD) {
-        this.bcInD = bcInD;
+    public void setBcInC(Integer bcInC) {
+        this.bcInC = bcInC;
     }
 
     public Integer getBcDu() {
@@ -335,12 +335,12 @@ public class AircraftType implements Serializable {
         this.bcMH = bcMH;
     }
 
-    public Integer getCcInD() {
-        return ccInD;
+    public Integer getCcInC() {
+        return ccInC;
     }
 
-    public void setCcInD(Integer ccInD) {
-        this.ccInD = ccInD;
+    public void setCcInC(Integer ccInC) {
+        this.ccInC = ccInC;
     }
 
     public Integer getCcDu() {
@@ -359,12 +359,12 @@ public class AircraftType implements Serializable {
         this.ccMH = ccMH;
     }
 
-    public Integer getDcInD() {
-        return dcInD;
+    public Integer getDcInC() {
+        return dcInC;
     }
 
-    public void setDcInD(Integer dcInD) {
-        this.dcInD = dcInD;
+    public void setDcInC(Integer dcInC) {
+        this.dcInC = dcInC;
     }
 
     public Integer getDcDu() {

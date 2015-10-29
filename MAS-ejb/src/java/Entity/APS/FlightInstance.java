@@ -242,15 +242,15 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 //    }
      @Override
     public int compareTo(FlightInstance fi) {
-        System.err.println("**********Enter compare");
+       // System.err.println("**********Enter compare");
         int result=0;
         if(this.getStandardDepTimeDateType().before(fi.getStandardDepTimeDateType())){
             result=-1;
         }else if(this.getStandardDepTimeDateType().after(fi.getStandardDepTimeDateType())){
             result=1;
         }
-        System.err.println("********** compare 1 : " + this.getStandardDepTimeDateType().toString()+" to "+ fi.getStandardDepTimeDateType().toString());
-        System.err.println("********** compareTo: " + result);
+       // System.err.println("********** compare 1 : " + this.getStandardDepTimeDateType().toString()+" to "+ fi.getStandardDepTimeDateType().toString());
+       // System.err.println("********** compareTo: " + result);
         return result;
     }
 

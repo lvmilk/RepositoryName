@@ -21,12 +21,12 @@
                     <ui:repeat var="selectedFlight" value="#{selectedFlight}"> <h:outputText value="#{selectedFlight.flightNo}  "/> </ui:repeat>
                     
                     <p:outputLabel for="startDate" value="Start Date: " />
-                    <p:calendar id="startDate" value="#{FIMB.startDate}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true"  mindate="#{FIMB.currentDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
+                    <p:calendar id="startDate" value="#{FIMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true"  mindate="#{FIMB.currentDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" size="50">
                         <p:ajax event="dateSelect" update="finishDate" />
                     </p:calendar>
 
                     <p:outputLabel for="finishDate" value="Finish Date: " />
-                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{FIMB.startDate}" validatorMessage="Finish Date: Please enter a date in valid range"  requiredMessage="Please enter the flight finish date" size="50">
+                    <p:calendar id="finishDate" value="#{FIMB.finishDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{FIMB.startDate}" validatorMessage="Finish Date: Please enter a date in valid range"  requiredMessage="Please enter the flight finish date" size="50">
                         <f:attribute name="startDate" value="#{FIMB.startDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
