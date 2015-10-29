@@ -51,9 +51,18 @@ public class ReserveFlightManagedBean implements Serializable {
     @EJB
     private ReserveFlightBeanLocal rf;
 
-    private String selectedIndex;
+    private ArrayList<Integer> departIndexes = new ArrayList<>();
+    private ArrayList<Integer> returnIndexes = new ArrayList<>();
 
+    private ArrayList<ArrayList<FlightInstance>> departSpecificList = new ArrayList<>();
+    private ArrayList<ArrayList<FlightInstance>> returnSpecificList = new ArrayList<>();
+
+    private Double totalPrice = 0.0;
+
+    private String selectedIndex;
+    private String selectedIndex2;
     private Map<String, ArrayList<Integer>> dayToSelectIndex = new HashMap();
+    private Map<String, ArrayList<Integer>> dayToSelectIndex2 = new HashMap();
     private Map<String, Boolean> departDayToCheck = new HashMap<>();
     private Map<String, Boolean> returnDayToCheck = new HashMap<>();
     private Map<String, String> departDayOfWeek = new HashMap<>();
@@ -114,6 +123,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
         initialFrequency = rf.getAllFlightFrequency();
 
+        returnDayToCheck = (Map<String, Boolean>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDayToCheck");
+        returnDayOfWeek = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDayOfWeek");
+
         departDayToCheck = (Map<String, Boolean>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayToCheck");
         departDayOfWeek = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDayOfWeek");
 
@@ -128,10 +140,10 @@ public class ReserveFlightManagedBean implements Serializable {
 //        departDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDate");
 //        returnDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDate");
 //        selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
-//        countPerson = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+        countPerson = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
 
-        departInstances = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departInstances");
-        returnInstances = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnInstances");
+        departSpecificList = (ArrayList<ArrayList<FlightInstance>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSpecificList");
+        returnSpecificList = (ArrayList<ArrayList<FlightInstance>>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSpecificList");
 
 //        seatUnallocated = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seatUnallocated");
 //        dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
@@ -144,82 +156,216 @@ public class ReserveFlightManagedBean implements Serializable {
 
     public void onDepartOptionChange(int index, String day) {
         System.out.println("Getting into onDepartOptionChange");
+        System.out.println("dateSpecific is " + dateSpecific);
         Boolean duplicate = false;
         Integer i = (Integer) index;
-        if (i != null) {
 
-            ArrayList<Integer> departSelectIndex = new ArrayList<>();
-            Boolean dayFound = false;
-            if (!dayToSelectIndex.isEmpty()) {
-                for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
-                    System.out.println(entry.getKey() + "/" + entry.getValue());
-                    if (entry.getKey().equals(day)) {
-                        departSelectIndex = entry.getValue();
-                        if (!departSelectIndex.isEmpty()) {
-                            if (departSelectIndex.contains((Integer) i)) {
-                                departSelectIndex.remove((Integer) i);
+        if (!dateSpecific) {
+            if (i != null) {
+
+                ArrayList<Integer> departSelectIndex = new ArrayList<>();
+                Boolean dayFound = false;
+                if (!dayToSelectIndex.isEmpty()) {
+                    for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
+                        System.out.println(entry.getKey() + "/" + entry.getValue());
+                        if (entry.getKey().equals(day)) {
+                            departSelectIndex = entry.getValue();
+                            if (!departSelectIndex.isEmpty()) {
+                                if (departSelectIndex.contains((Integer) i)) {
+                                    departSelectIndex.remove((Integer) i);
+                                } else {
+                                    departSelectIndex.add((Integer) i);
+                                }
                             } else {
                                 departSelectIndex.add((Integer) i);
                             }
-                        } else {
-                            departSelectIndex.add((Integer) i);
+                            dayFound = true;
+                            break;
                         }
-                        dayFound = true;
-                        break;
                     }
-                }
-                if (!dayFound) {
+                    if (!dayFound) {
+                        departSelectIndex = new ArrayList<>();
+                        departSelectIndex.add((Integer) i);
+                        dayToSelectIndex.put(day, departSelectIndex);
+                    }
+                } else {
                     departSelectIndex = new ArrayList<>();
                     departSelectIndex.add((Integer) i);
                     dayToSelectIndex.put(day, departSelectIndex);
                 }
-            } else {
-                departSelectIndex = new ArrayList<>();
-                departSelectIndex.add((Integer) i);
-                dayToSelectIndex.put(day, departSelectIndex);
             }
-        }
-        System.out.println("size of daytoSelectIndex map is " + dayToSelectIndex.size());
-        for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
-            ArrayList<Integer> indexList = entry.getValue();
-            System.out.println("for day " + entry.getKey());
-            for (int f = 0; f < indexList.size(); f++) {
-                System.out.println("index chosen is " + indexList.get(f));
+            System.out.println("size of daytoSelectIndex map is " + dayToSelectIndex.size());
+            for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex.entrySet()) {
+                ArrayList<Integer> indexList = entry.getValue();
+                System.out.println("for day " + entry.getKey());
+                for (int f = 0; f < indexList.size(); f++) {
+                    System.out.println("index chosen is " + indexList.get(f));
 
+                }
             }
-        }
+        } else {
 
+            System.out.println("size of departIndexes is " + departIndexes.size());
+            if (i != null) {
+                if (!departIndexes.isEmpty()) {
+                    if (departIndexes.contains((Integer) i)) {
+                        departIndexes.remove((Integer) i);
+                    } else {
+                        departIndexes.add((Integer) i);
+                    }
+                } else {
+                    departIndexes.add(i);
+                }
+            }
+            System.out.println("size of departIndexes now is " + departIndexes.size());
+        }
+    }
+
+    public void onReturnOptionChange(int index, String day) {
+        System.out.println("Getting into onDepartOptionChange");
+        Boolean duplicate = false;
+        Integer i = (Integer) index;
+
+        if (!dateSpecific) {
+            if (i != null) {
+
+                ArrayList<Integer> returnSelectIndex = new ArrayList<>();
+                Boolean dayFound = false;
+                if (!dayToSelectIndex2.isEmpty()) {
+                    for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex2.entrySet()) {
+                        System.out.println(entry.getKey() + "/" + entry.getValue());
+                        if (entry.getKey().equals(day)) {
+                            returnSelectIndex = entry.getValue();
+                            if (!returnSelectIndex.isEmpty()) {
+                                if (returnSelectIndex.contains((Integer) i)) {
+                                    returnSelectIndex.remove((Integer) i);
+                                } else {
+                                    returnSelectIndex.add((Integer) i);
+                                }
+                            } else {
+                                returnSelectIndex.add((Integer) i);
+                            }
+                            dayFound = true;
+                            break;
+                        }
+                    }
+                    if (!dayFound) {
+                        returnSelectIndex = new ArrayList<>();
+                        returnSelectIndex.add((Integer) i);
+                        dayToSelectIndex2.put(day, returnSelectIndex);
+                    }
+                } else {
+                    returnSelectIndex = new ArrayList<>();
+                    returnSelectIndex.add((Integer) i);
+                    dayToSelectIndex2.put(day, returnSelectIndex);
+                }
+            }
+            System.out.println("size of daytoSelectIndex2 map is " + dayToSelectIndex2.size());
+            for (Map.Entry<String, ArrayList<Integer>> entry : dayToSelectIndex2.entrySet()) {
+                ArrayList<Integer> indexList = entry.getValue();
+                System.out.println("for return day " + entry.getKey());
+                for (int f = 0; f < indexList.size(); f++) {
+                    System.out.println("return index chosen is " + indexList.get(f));
+
+                }
+            }
+        } else {
+            System.out.println("size of returnIndexes is " + returnIndexes.size());
+            if (i != null) {
+                if (!returnIndexes.isEmpty()) {
+                    if (returnIndexes.contains((Integer) i)) {
+                        returnIndexes.remove((Integer) i);
+                    } else {
+                        returnIndexes.add((Integer) i);
+                    }
+                } else {
+                    returnIndexes.add(i);
+                }
+            }
+            System.out.println("size of departIndexes now is " + returnIndexes.size());
+
+        }
     }
 
     public void onSelectOption() {
         int checkCount = 0;
         String selectedDay = "";
-        for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
-            System.out.println(entry.getKey() + "/" + entry.getValue());
-            if (entry.getValue() == true) {
-                selectedDay = entry.getKey();
-                checkCount++;
-            }
-        }
 
-        if (checkCount == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one day for departure trip ", ""));
-        } else if (checkCount > 1) {
+        if (dateSpecific) {
+            if (departIndexes.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option for departure trip ", ""));
+            } else if (departIndexes.size() > 1) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have selected more than one option for departure trip ", ""));
+            } else {
+                if (!returnTrip) {
+                    ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
+                    ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+                    System.out.println("selection for departure trip is correct");
+                    System.out.println("departure package chosen is " + departSelected);
+
+                    totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                    totalPrice *= countPerson;
+                    System.out.println("Total price is " + totalPrice);
+
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
+                } else {
+                    if (returnIndexes.isEmpty()) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option for return trip ", ""));
+                    } else if (returnIndexes.size() > 1) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have selected more than one option for return trip ", ""));
+                    } else {
+                        ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
+                        System.out.println("selection for departure trip is correct");
+                        System.out.println("departure package chosen is " + departSelected);
+
+                        ArrayList<FlightInstance> returnSelected = returnSpecificList.get(returnIndexes.get(0));
+                        System.out.println("selection for return trip is correct");
+                        System.out.println("return package chosen is " + returnSelected);
+
+                        totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                        totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
+
+                        totalPrice *= countPerson;
+                        System.out.println("Total price is " + totalPrice);
+
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
+                    }
+                }
+            }
+        } else {
             for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
                 System.out.println(entry.getKey() + "/" + entry.getValue());
                 if (entry.getValue() == true) {
                     selectedDay = entry.getKey();
-                    dayToSelectIndex.remove(selectedDay);
+                    checkCount++;
                 }
             }
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for departure trip ", ""));
-        } else {
 
-            if (!returnTrip) {
+            if (checkCount == 0) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one day for departure trip ", ""));
+            } else if (checkCount > 1) {
+                for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                    System.out.println(entry.getKey() + "/" + entry.getValue());
+                    if (entry.getValue() == true) {
+                        selectedDay = entry.getKey();
+                        dayToSelectIndex.remove(selectedDay);
+                    }
+                }
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for departure trip ", ""));
+            } else {
+
                 ArrayList<Integer> selectedByIndex = new ArrayList<>();
                 selectedByIndex = dayToSelectIndex.get(selectedDay);
 
-                if (!selectedByIndex.isEmpty()) {
+                if (selectedByIndex != null && !selectedByIndex.isEmpty()) {
                     if (selectedByIndex.size() > 1) {
                         for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
                             System.out.println(entry.getKey() + "/" + entry.getValue());
@@ -230,16 +376,136 @@ public class ReserveFlightManagedBean implements Serializable {
                         }
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have select more than one option for departure trip on " + selectedDay, ""));
                     } else {
-                        ArrayList<FlightInstance> departSelected=departMap.get(selectedDay).get(selectedByIndex.get(0));
-                        System.out.println("selection for departure trip is correct");
-                        System.out.println("departure package chosen is "+departSelected);
-                    }
+                        if (!returnTrip) {
+                            ArrayList<FlightInstance> departSelected = departMap.get(selectedDay).get(selectedByIndex.get(0));
+                            System.out.println("selection for departure trip is correct");
+                            System.out.println("departure package chosen is " + departSelected);
+                            ArrayList<FlightInstance> returnSelected = new ArrayList<>();
 
+                            totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+
+                            totalPrice *= countPerson;
+                            System.out.println("Total price is " + totalPrice);
+
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
+                        }
+                    }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option ", ""));
                 }
+                if (returnTrip) {
+                    int count2;
+                    count2 = checkReturnDaySelect();
+                    if (count2 == 0) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one day for return trip ", ""));
+                    } else if (count2 > 1) {
+                        for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                            System.out.println(entry.getKey() + "/" + entry.getValue());
+                            if (entry.getValue() == true) {
+                                selectedDay = entry.getKey();
+                                dayToSelectIndex.remove(selectedDay);
+                            }
+                        }
+
+                        for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+                            System.out.println(entry.getKey() + "/" + entry.getValue());
+                            if (entry.getValue() == true) {
+                                selectedDay = entry.getKey();
+                                dayToSelectIndex2.remove(selectedDay);
+                            }
+                        }
+
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You cannot select more than one day for return trip ", ""));
+                    } else {
+
+                        ArrayList<Integer> selectedByIndex2 = new ArrayList<>();
+                        String selectedDay2 = this.getSelectedReturnDay();
+                        selectedByIndex2 = dayToSelectIndex2.get(selectedDay2);
+
+                        if (selectedByIndex2 != null && !selectedByIndex2.isEmpty()) {
+                            if (selectedByIndex2.size() > 1) {
+                                for (Map.Entry<String, Boolean> entry2 : returnDayToCheck.entrySet()) {
+                                    System.out.println(entry2.getKey() + "/" + entry2.getValue());
+                                    if (entry2.getValue() == true) {
+                                        selectedDay2 = entry2.getKey();
+                                        dayToSelectIndex2.remove(selectedDay2);
+                                    }
+
+                                    for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                                        System.out.println(entry.getKey() + "/" + entry.getValue());
+                                        if (entry.getValue() == true) {
+                                            selectedDay = entry.getKey();
+                                            dayToSelectIndex.remove(selectedDay);
+                                        }
+                                    }
+                                }
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have select more than one option for return trip on " + selectedDay, ""));
+                            } else {
+                                System.out.println("selectedDay is " + selectedDay);
+                                ArrayList<FlightInstance> departSelected = departMap.get(selectedDay).get(selectedByIndex.get(0));
+                                System.out.println("selection for departure trip is correct");
+                                System.out.println("departure package chosen is " + departSelected);
+
+                                ArrayList<FlightInstance> returnSelected = returnMap.get(selectedDay2).get(selectedByIndex2.get(0));
+                                System.out.println("selection for return trip is correct");
+                                System.out.println("return package chosen is " + returnSelected);
+
+                                totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                                totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
+
+                                totalPrice *= countPerson;
+                                System.out.println("Total price is " + totalPrice);
+
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                            }
+                        } else {
+                            for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
+                                System.out.println(entry.getKey() + "/" + entry.getValue());
+                                if (entry.getValue() == true) {
+                                    selectedDay = entry.getKey();
+                                    dayToSelectIndex.remove(selectedDay);
+                                }
+                            }
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option for return trip ", ""));
+                        }
+                    }
+                }
             }
         }
+    }
+
+    public int checkReturnDaySelect() {
+        int checkCount2 = 0;
+        String selectedDay2 = "";
+        for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+            if (entry.getValue() == true) {
+                selectedDay2 = entry.getKey();
+                checkCount2++;
+            }
+        }
+
+        return checkCount2;
+
+    }
+
+    public String getSelectedReturnDay() {
+        String selectedDay2 = "";
+        for (Map.Entry<String, Boolean> entry : returnDayToCheck.entrySet()) {
+            System.out.println(entry.getKey() + "/" + entry.getValue());
+            if (entry.getValue() == true) {
+                selectedDay2 = entry.getKey();
+                break;
+            }
+        }
+        return selectedDay2;
     }
 
     public boolean ifStartSale(List<BookingClassInstance> instanceList) {
@@ -305,27 +571,20 @@ public class ReserveFlightManagedBean implements Serializable {
 
             if (dateSpecific) {
 
-//                result = rf.findResultInstanceList(origin, dest, departDate);
-//                for (int i = 0; i < result.size(); i++) {
-//                    departInstances.add(result.get(i));
-//
-//                }
-                if (!departInstances.isEmpty()) {
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departInstances", departInstances);
+                departSpecificList = rf.findResultInstanceList(origin, dest, departDate, selectedCabin, countPerson);
+
+                if (!departSpecificList.isEmpty()) {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSpecificList", departSpecificList);
 
                     if (returnTrip) {
+                        returnSpecificList = rf.findResultInstanceList(dest, origin, returnDate, selectedCabin, countPerson);
 
-//                        result = rf.findResultInstanceList(dest, origin, returnDate);
-//                        for (int i = 0; i < result.size(); i++) {
-//                            returnInstances.add(result.get(i));
-//
-//                        }
-                        if (!returnInstances.isEmpty()) {
-                            System.out.println("in findFlightInstance(): returnInstances size is " + returnInstances.size());
-                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnInstances", returnInstances);
+                        if (!returnSpecificList.isEmpty()) {
+                            System.out.println("in findFlightInstance(): returnSpecificList size is " + returnSpecificList.size());
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSpecificList", returnSpecificList);
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
                         } else {
-                            System.out.println("in findFlightInstance(): returnInstances is empty");
+                            System.out.println("in findFlightInstance(): returnSpecificList is empty");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for Returned date specified ", ""));
                         }
                     } else {
@@ -353,7 +612,7 @@ public class ReserveFlightManagedBean implements Serializable {
                 for (int i = 0; i < 7; i++) {
                     departsByDay = new ArrayList<>();
 
-                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime());
+                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime(), selectedCabin, countPerson);
 
                     df = new SimpleDateFormat("dd MMM yyyy");
                     String oneDate = df.format(c.getTime());
@@ -382,8 +641,6 @@ public class ReserveFlightManagedBean implements Serializable {
                 } else {
                     c = Calendar.getInstance();
                     c.setTime(returnDate);
-                    int dayOfWeek2 = c.get(Calendar.DAY_OF_WEEK);
-                    System.out.println("Day of week for date chosen is " + dayOfWeek2);
 
                     // Set the calendar to monday of the current week
                     c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -393,15 +650,21 @@ public class ReserveFlightManagedBean implements Serializable {
                     dateOfWeek2 = new ArrayList<String>();
                     returnMap = new HashMap<String, ArrayList<ArrayList<FlightInstance>>>();
                     returnsByDay = new ArrayList<>();
+                    returnDayToCheck = new HashMap<>();
+                    returnDayOfWeek = new HashMap<>();
+
                     for (int i = 0; i < 7; i++) {
                         returnsByDay = new ArrayList<>();
-                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime());
+                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime(), selectedCabin, countPerson);
 
                         df = new SimpleDateFormat("dd MMM yyyy");
                         String oneDate = df.format(c.getTime());
 
                         System.out.println("one date is " + oneDate);
                         dateOfWeek2.add(oneDate);
+                        String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+                        returnDayToCheck.put(oneDate, false);
+                        returnDayOfWeek.put(oneDate, dayOfWeek);
 
                         if (returnsByDay != null && !returnsByDay.isEmpty()) {
                             returnMap.put(oneDate, returnsByDay);
@@ -412,6 +675,8 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnMap", returnMap);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayToCheck", returnDayToCheck);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
 
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
                 }
@@ -806,6 +1071,38 @@ public class ReserveFlightManagedBean implements Serializable {
 
     public void setSelectedIndex(String selectedIndex) {
         this.selectedIndex = selectedIndex;
+    }
+
+    public String getSelectedIndex2() {
+        return selectedIndex2;
+    }
+
+    public void setSelectedIndex2(String selectedIndex2) {
+        this.selectedIndex2 = selectedIndex2;
+    }
+
+    public Map<String, ArrayList<Integer>> getDayToSelectIndex2() {
+        return dayToSelectIndex2;
+    }
+
+    public void setDayToSelectIndex2(Map<String, ArrayList<Integer>> dayToSelectIndex2) {
+        this.dayToSelectIndex2 = dayToSelectIndex2;
+    }
+
+    public ArrayList<ArrayList<FlightInstance>> getDepartSpecificList() {
+        return departSpecificList;
+    }
+
+    public void setDepartSpecificList(ArrayList<ArrayList<FlightInstance>> departSpecificList) {
+        this.departSpecificList = departSpecificList;
+    }
+
+    public ArrayList<ArrayList<FlightInstance>> getReturnSpecificList() {
+        return returnSpecificList;
+    }
+
+    public void setReturnSpecificList(ArrayList<ArrayList<FlightInstance>> returnSpecificList) {
+        this.returnSpecificList = returnSpecificList;
     }
 
 }
