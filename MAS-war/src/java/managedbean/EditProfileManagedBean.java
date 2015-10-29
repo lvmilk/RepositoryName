@@ -10,7 +10,7 @@ import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.CabinCrew;
 import SessionBean.CommonInfa.UserLogSessionBeanLocal;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -30,7 +30,7 @@ import javax.inject.Named;
 public class EditProfileManagedBean implements Serializable {
 
     @EJB
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
 
     @EJB
     private UserLogSessionBeanLocal ulsbl;
