@@ -57,6 +57,8 @@ public class ReserveFlightManagedBean implements Serializable {
     private ArrayList<ArrayList<FlightInstance>> departSpecificList = new ArrayList<>();
     private ArrayList<ArrayList<FlightInstance>> returnSpecificList = new ArrayList<>();
 
+    private Double totalPrice = 0.0;
+
     private String selectedIndex;
     private String selectedIndex2;
     private Map<String, ArrayList<Integer>> dayToSelectIndex = new HashMap();
@@ -297,11 +299,21 @@ public class ReserveFlightManagedBean implements Serializable {
             } else {
                 if (!returnTrip) {
                     ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
+                    ArrayList<FlightInstance> returnSelected = new ArrayList<>();
                     System.out.println("selection for departure trip is correct");
                     System.out.println("departure package chosen is " + departSelected);
 
+                    totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                    totalPrice *= countPerson;
+                    System.out.println("Total price is " + totalPrice);
+
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
                 } else {
-                    if (returnIndexes.isEmpty()) {         
+                    if (returnIndexes.isEmpty()) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one option for return trip ", ""));
                     } else if (returnIndexes.size() > 1) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have selected more than one option for return trip ", ""));
@@ -313,8 +325,18 @@ public class ReserveFlightManagedBean implements Serializable {
                         ArrayList<FlightInstance> returnSelected = returnSpecificList.get(returnIndexes.get(0));
                         System.out.println("selection for return trip is correct");
                         System.out.println("return package chosen is " + returnSelected);
-                        
-                           rf.computeTotalPrice(departSelected, returnSelected, selectedCabin,countPerson);
+
+                        totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                        totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
+
+                        totalPrice *= countPerson;
+                        System.out.println("Total price is " + totalPrice);
+
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
                     }
                 }
             }
@@ -358,12 +380,18 @@ public class ReserveFlightManagedBean implements Serializable {
                             ArrayList<FlightInstance> departSelected = departMap.get(selectedDay).get(selectedByIndex.get(0));
                             System.out.println("selection for departure trip is correct");
                             System.out.println("departure package chosen is " + departSelected);
-                            
-                            ArrayList<FlightInstance> returnSelected=new ArrayList<>();
+                            ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+
+                            totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+
+                            totalPrice *= countPerson;
+                            System.out.println("Total price is " + totalPrice);
+
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
-                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
-                          
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
                         }
                     }
                 } else {
@@ -425,12 +453,17 @@ public class ReserveFlightManagedBean implements Serializable {
                                 ArrayList<FlightInstance> returnSelected = returnMap.get(selectedDay2).get(selectedByIndex2.get(0));
                                 System.out.println("selection for return trip is correct");
                                 System.out.println("return package chosen is " + returnSelected);
-                                
-                             
-                                
-                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
-                                  FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
-                                       FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+
+                                totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
+                                totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
+
+                                totalPrice *= countPerson;
+                                System.out.println("Total price is " + totalPrice);
+
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
                             }
                         } else {
                             for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
@@ -538,13 +571,13 @@ public class ReserveFlightManagedBean implements Serializable {
 
             if (dateSpecific) {
 
-                departSpecificList = rf.findResultInstanceList(origin, dest, departDate);
+                departSpecificList = rf.findResultInstanceList(origin, dest, departDate, selectedCabin, countPerson);
 
                 if (!departSpecificList.isEmpty()) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSpecificList", departSpecificList);
 
                     if (returnTrip) {
-                        returnSpecificList = rf.findResultInstanceList(dest, origin, returnDate);
+                        returnSpecificList = rf.findResultInstanceList(dest, origin, returnDate, selectedCabin, countPerson);
 
                         if (!returnSpecificList.isEmpty()) {
                             System.out.println("in findFlightInstance(): returnSpecificList size is " + returnSpecificList.size());
@@ -579,7 +612,7 @@ public class ReserveFlightManagedBean implements Serializable {
                 for (int i = 0; i < 7; i++) {
                     departsByDay = new ArrayList<>();
 
-                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime());
+                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime(), selectedCabin, countPerson);
 
                     df = new SimpleDateFormat("dd MMM yyyy");
                     String oneDate = df.format(c.getTime());
@@ -622,7 +655,7 @@ public class ReserveFlightManagedBean implements Serializable {
 
                     for (int i = 0; i < 7; i++) {
                         returnsByDay = new ArrayList<>();
-                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime());
+                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime(), selectedCabin, countPerson);
 
                         df = new SimpleDateFormat("dd MMM yyyy");
                         String oneDate = df.format(c.getTime());
