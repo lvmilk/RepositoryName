@@ -17,4 +17,5 @@ import javax.ejb.Local;
 public interface PassengerSessionBeanLocal {
     public void makeReservation(ArrayList<Passenger> passengerList,String email, Long memberId);
     public void makeRsvGuest(ArrayList<Passenger> passengerList,String title,String firstName,String lastName,String address,String email,String contactNo);
+    public boolean checkMemberExist(Long memberId, String email);
 }

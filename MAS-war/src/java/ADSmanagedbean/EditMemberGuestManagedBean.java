@@ -10,6 +10,7 @@ import SessionBean.ADS.MemberSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -41,8 +42,9 @@ public class EditMemberGuestManagedBean implements Serializable {
     private Double miles;
     private String passport;
     private boolean memberStatus;
-    
+
     private String emailEdited;
+
 
     public void SelectEditMember(Member member) throws IOException {
         setMemberId(member.getMemberID());
@@ -56,13 +58,14 @@ public class EditMemberGuestManagedBean implements Serializable {
         this.miles = member.getMiles();
         this.passport = member.getPassport();
         this.memberStatus = member.isMemberStatus();
+        this.setEmailEdited(email);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./adsEditMGpage.xhtml");
 
     }
 
     public void editMemberAccount() throws IOException {
         if (!mbsbl.checkEmailDuplicate(email, emailEdited)) {
-            mbsbl.editMember();
+            mbsbl.editMember(memberId, title, firstName, lastName, address, email, contactNo, dob, miles, passport, memberStatus);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
