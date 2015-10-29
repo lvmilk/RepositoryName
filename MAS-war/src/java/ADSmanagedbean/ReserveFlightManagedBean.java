@@ -287,7 +287,7 @@ public class ReserveFlightManagedBean implements Serializable {
         }
     }
 
-    public void onSelectOption() {
+    public void onSelectOption() throws IOException {
         int checkCount = 0;
         String selectedDay = "";
 
@@ -307,6 +307,12 @@ public class ReserveFlightManagedBean implements Serializable {
                     totalPrice *= countPerson;
                     System.out.println("Total price is " + totalPrice);
 
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSelected", departSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
                 } else {
                     if (returnIndexes.isEmpty()) {
@@ -332,6 +338,8 @@ public class ReserveFlightManagedBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
                     }
                 }
@@ -387,6 +395,8 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                            
+                             FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
                         }
                     }
@@ -460,6 +470,8 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                                
+                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                             }
                         } else {
                             for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {

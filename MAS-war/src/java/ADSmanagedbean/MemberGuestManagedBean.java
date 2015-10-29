@@ -53,12 +53,14 @@ public class MemberGuestManagedBean implements Serializable {
     private ArrayList<Passenger> passengerList = new ArrayList<>();
     private Passenger person = new Passenger();
     
-    private Integer repeat=2;
+    private Integer repeat;
     
 
     @PostConstruct
     public void init() {
         try {
+            repeat=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+            
             for(int i=0;i<repeat;i++)
             {
               passengerList.add(person);
