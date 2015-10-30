@@ -5,10 +5,12 @@ import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
+import SessionBean.AIS.SeatPlanBeanLocal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +27,9 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     EntityManager em;
     AircraftType aircraftType;
     Aircraft aircraft;
+    
+    @EJB
+    SeatPlanBeanLocal sp;
 
     private Map<String, Integer> allSize = new HashMap<String, Integer>();
     private Map<String, String> allManufacturer = new HashMap<String, String>();
@@ -35,64 +40,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     public FleetPlanningBean() {
     }
 
-    public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo) {
-        AircraftType AirType = em.find(AircraftType.class, aircraftType.getType());
-        System.out.println("Aircraft Type found is " + aircraftType.getType());
-        List<CabinClass> cabinSet = new ArrayList<CabinClass>();
-        AirType.setCabinList(cabinSet);
-
-        if (suiteNo > 0) {
-            CabinClass suite = new CabinClass();
-            suite.setCabinName("Suite");
-            suite.setSeatCount(suiteNo);
-            suite.setAircraftType(AirType);
-//            em.persist(suite);
-            AirType.getCabinList().add(suite);
-        }
-
-        if (fcSeatNo > 0) {
-            CabinClass First = new CabinClass();
-            First.setCabinName("First Class");
-            First.setSeatCount(fcSeatNo);
-            First.setAircraftType(AirType);
-//            em.persist(First);
-
-            AirType.getCabinList().add(First);
-        }
-
-        if (bcSeatNo > 0) {
-            CabinClass biz = new CabinClass();
-            biz.setCabinName("Business Class");
-            biz.setSeatCount(bcSeatNo);
-            biz.setAircraftType(AirType);
-//            em.persist(biz);
-            AirType.getCabinList().add(biz);
-        }
-
-        if (pecSeatNo > 0) {
-            CabinClass Pecon = new CabinClass();
-            Pecon.setCabinName("Premium Economy Class");
-            Pecon.setSeatCount(pecSeatNo);
-            Pecon.setAircraftType(AirType);
-//            em.persist(Pecon);
-            cabinSet.add(Pecon);
-        }
-
-        if (ecSeatNo > 0) {
-            CabinClass econ = new CabinClass();
-            econ.setCabinName("Economy Class");
-            econ.setSeatCount(ecSeatNo);
-            econ.setAircraftType(AirType);
-//            em.persist(econ);
-            AirType.getCabinList().add(econ);
-        }
-//        AirType.setCabinList(cabinSet);
-        System.out.println("in addCabin: aircraftType is " + AirType.getType());
-        System.out.println("No. of cabin class in this type is " + AirType.getCabinList().size());
-
-        em.merge(AirType);
-
-    }
+   
 
     @Override
     public Map<String, List<String>> getAllNum(String type) {
@@ -162,7 +110,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         em.persist(aircraftType);
         em.flush();
         System.out.println("Aircrat Type is added!");
-        addCabin(aircraftType, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
+        sp.addCabin(aircraftType, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
     }
 
     @Override
