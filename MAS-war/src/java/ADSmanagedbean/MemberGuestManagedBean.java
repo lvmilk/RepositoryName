@@ -7,8 +7,8 @@ package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
 import Entity.CommonInfa.MsgSender;
-import SessionBean.ADS.MemberSessionBeanLocal;
-import SessionBean.ADS.PassengerSessionBeanLocal;
+import SessionBean.ADS.MemberBeanLocal;
+import SessionBean.ADS.PassengerBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,9 @@ import javax.inject.Named;
 public class MemberGuestManagedBean implements Serializable {
 
     @EJB
-    private PassengerSessionBeanLocal psgSBlocal;
+    private PassengerBeanLocal psgSBlocal;
     @EJB
-    private MemberSessionBeanLocal msblocal;
+    private MemberBeanLocal msblocal;
 
     private String title = "Mr";
 
