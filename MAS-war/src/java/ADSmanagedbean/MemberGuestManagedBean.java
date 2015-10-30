@@ -90,6 +90,10 @@ public class MemberGuestManagedBean implements Serializable {
             if(psgSBlocal.checkMemberExist(memberId, email))
             {
                 psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList",passengerList );
+                
             }else
             {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
@@ -101,6 +105,7 @@ public class MemberGuestManagedBean implements Serializable {
             }else
             {
                 psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
             }
         }
     }
