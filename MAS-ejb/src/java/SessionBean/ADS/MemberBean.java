@@ -6,6 +6,7 @@
 package SessionBean.ADS;
 
 import Entity.ADS.Member;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,14 +33,62 @@ public class MemberBean implements MemberBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
     @Override
     public boolean checkEmailDuplicate(String email, String emailEdited) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (email.equals(emailEdited)) {
+            return false;
+        } else {
+            return checkEmailExists(emailEdited);
+        }
     }
 
     @Override
-    public void editMember() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean checkEmailExists(String email) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Member u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        return checkList(query);
+
+    }
+
+    @Override
+    public boolean checkPassportExists(String passport) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Member u WHERE u.passport = :inUserPassport");
+        query.setParameter("inUserPassport", passport);
+        return checkList(query);
+
+    }
+
+    @Override
+    public void editMember(Long memberId,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus) {
+        Member member=em.find(Member.class, memberId);
+        member.setTitle(title);
+        member.setFirstName(firstName);
+        member.setLastName(lastName);
+        member.setAddress(address);
+        member.setEmail(email);
+        member.setContact(contactNo);
+        member.setDob(dob);
+        member.setMiles(miles);
+        member.setPassport(passport);
+        member.setMemberStatus(memberStatus);
+        
+        em.merge(member);
+        em.flush();
+        
+    }
+
+    private boolean checkList(Query query) {
+        List resultList = new ArrayList();
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
     }
 }

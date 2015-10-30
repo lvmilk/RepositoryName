@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import managedbean.Control;
-import SessionBean.CommonInfa.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.UserLogBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;

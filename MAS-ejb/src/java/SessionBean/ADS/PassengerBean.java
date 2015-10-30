@@ -65,6 +65,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
     }
 
+    @Override
     public boolean checkMemberExist(Long memberId, String email) {
         Query query = null;
         List resultList = new ArrayList<Member>();
@@ -144,5 +145,25 @@ public class PassengerBean implements PassengerBeanLocal {
         System.out.println("~~~~~~~~The size that member/guest booked" + member.getPsgs().size());
 
     }
+
+    public boolean checkPassportExist(String passport) {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM Passenger u WHERE u.passport = :inUserPassport");
+        query.setParameter("inUserPassport", passport);
+        return checkList(query);
+    }
+
+    private boolean checkList(Query query) {
+        List resultList = new ArrayList();
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+
 
 }

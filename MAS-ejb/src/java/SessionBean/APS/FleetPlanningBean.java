@@ -3,7 +3,7 @@ package SessionBean.APS;
 import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -33,17 +33,19 @@ public class PricingBean implements PricingBeanLocal {
     private Double calculatedFare;
     private Map<String, Double> allFare = new HashMap<String, Double>();
 
-    public void setAircraftType(String type) {
+    public void setAircraftType(String type) throws Exception {
         Query query = em.createQuery("SELECT a FROM AircraftType a where a.type=:atype ");
         query.setParameter("atype", type);
         List<AircraftType> resultList = query.getResultList();
         if (resultList.size() != 0) {
+            throw new Exception("Aircraft Type Not Found");
+        }else{
             aircraftType = resultList.get(0);
         }
     }
 
-    @Override
-    public AircraftType getAircraftType(String type) {
+
+    public AircraftType getAircraftType(String type) throws Exception {
         setAircraftType(type);
         return aircraftType;
     }
@@ -171,4 +173,6 @@ public class PricingBean implements PricingBeanLocal {
     public void setCrewCost(Double crewCost) {
         this.crewCost = crewCost;
     }
+
+ 
 }

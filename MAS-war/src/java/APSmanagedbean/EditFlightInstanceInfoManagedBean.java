@@ -10,7 +10,7 @@ import Entity.APS.FlightInstance;
 import Entity.AIS.FlightCabin;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.CommonInfa.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.UserLogBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -62,7 +62,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
     DateFormat df2 = new SimpleDateFormat("HH:mm");
 
     @EJB
-    private UserLogSessionBeanLocal ulsbl;
+    private UserLogBeanLocal ulsbl;
 
     private String username;
     private String description;

@@ -17,6 +17,8 @@ import javax.ejb.Local;
 public interface MemberBeanLocal {
     public List<Member> getAllMember();
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editMember();
+    public void editMember(Long memberId,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus);
+    public boolean checkEmailExists(String email);
+    public boolean checkPassportExists(String passport);
     
 }
