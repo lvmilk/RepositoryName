@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -295,7 +296,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (flightInstList.isEmpty()) {
             System.out.println("flightInstList: No flight instance.");
         } else {
-            System.out.println("flightInstList got");
+            //    System.out.println("flightInstList got");
         }
         return flightInstList;
     }
@@ -355,10 +356,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightInstList = getAllFlightInstance();
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
-            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
-            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
-//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :"+(temp.getAircraft() != null));
-            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+//            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
+//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
+//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
             if ((temp.getAircraft().getRegistrationNo().equals("9V-000")) && (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
                 System.out.println("FSB： getUnplannedFlightInstance(): ADDED " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
                 flightInstListCopy.add(temp);
@@ -393,6 +393,17 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 if (temp.getAircraft().getRegistrationNo().equals("9V-000")) {
                     newFlightInstList.add(temp);
                 }
+            }
+        }
+        return newFlightInstList;
+    }
+
+    @Override
+    public List<FlightInstance> getAllUnplannedFi() {
+        List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
+        for (FlightInstance temp : this.getAllFlightInstance()) {
+            if (temp.getAircraft().getRegistrationNo().equals("9V-000")) {
+                newFlightInstList.add(temp);
             }
         }
         return newFlightInstList;
@@ -434,148 +445,290 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public long getFlightAccumMinute(FlightFrequency ff) {
-        LocalTime depTime = LocalTime.parse(ff.getScheduleDepTime(), DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime arrTime = LocalTime.parse(ff.getScheduleArrTime(), DateTimeFormatter.ofPattern("HH:mm"));
-        LocalDate depDate = LocalDate.of(2000, 1, 10);
-        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(ff.getDateAdjust());
-        LocalDateTime depDateTime = LocalDateTime.of(depDate, depTime);
-        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arrTime);
-        long diffInMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
-        long diffInHours = java.time.Duration.between(depDateTime, arrDateTime).toHours();
-        System.out.println("fsb.getFlightAccumHour(): flight elapsed hour and minute is :" + diffInHours + " " + diffInMinutes);
-        return diffInMinutes;
-    }
-
-    @Override
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException, Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         if (!flag) {
             System.out.println("EDIT firstInstDate!!");
             Calendar c = Calendar.getInstance();
             c.setTime(endDate);
-            c.add(Calendar.DATE, 1);  // number of days to add
+            c.add(Calendar.DATE, 0);  // number of days to add
             firstInstDate = df1.format(c.getTime());
             System.out.println("EDIT firstInstDate to " + firstInstDate);
         }
 
         for (Aircraft acTemp : getAllAircraft()) {
-            System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
-            Date currentTime = startDate;    //the current available time of the aircraft
-            Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
-            System.out.println("FSB: currentAirport: " + currentAirport.getIATA());
-            List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
-            AircraftType acTempType = acTemp.getAircraftType();
+            if (!acTemp.getRegistrationNo().equals("9V-000")) {
+                System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
 
-            Collections.sort(unplannedFi);
+                List<FlightInstance> fiList0 = acTemp.getFlightInstance();
+                Collections.sort(fiList0);
+                List<Maintenance> mtList0 = acTemp.getMaintenanceList();
+                Collections.sort(mtList0);
+                Date lastFiEnd0 = (fiList0.size() > 0) ? fiList0.get(fiList0.size() - 1).getStandardArrTimeDateType() : Calendar.getInstance().getTime();
+                Date lastMtEnd0 = (mtList0.size() > 0) ? mtList0.get(mtList0.size() - 1).getEndTime() : Calendar.getInstance().getTime();
+                Date nextFree0 = (lastFiEnd0.after(lastMtEnd0)) ? lastFiEnd0 : lastMtEnd0;
+                Date currentTime = (nextFree0.after(startDate)) ? nextFree0 : startDate;    //the current available time of the aircraft
 
-            //check whether can add maintenance or not
-            long acInH = acTempType.getAcInH();
-            long acInD = acTempType.getAcInD();
-            Integer acDu = acTempType.getAcDu();
-            long bcInH = acTempType.getBcInH();
-            long bcInD = acTempType.getBcInD();
-            Integer bcDu = acTempType.getBcDu();
-            long ccInH = acTempType.getCcInH();
-            long ccInD = acTempType.getCcInD();
-            Integer ccDu = acTempType.getCcDu();
-            long dcInH = acTempType.getDcInH();
-            long dcInD = acTempType.getDcInD();
-            Integer dcDu = acTempType.getDcDu();
+                Airport currentAirport = em.find(Airport.class, acTemp.getCurrentAirport());//need to add the new attribute:  currentAirport
+                System.out.println("FSB: currentAirport: " + currentAirport.getIATA());
+                List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
+                AircraftType acTempType = acTemp.getAircraftType();
+                Airport sgAirport = em.find(Airport.class, "SIN");
 
-            long acycleFH = acTemp.getAcycleFH();
-            long acycleFD = acTemp.getAcycleFD();
-            long bcycleFH = acTemp.getBcycleFH();
-            long bcycleFD = acTemp.getBcycleFD();
-            long ccycleFH = acTemp.getCcycleFH();
-            long ccycleFD = acTemp.getCcycleFD();
-            long dcycleFH = acTemp.getDcycleFH();
-            long dcycleFD = acTemp.getDcycleFD();
+                Collections.sort(unplannedFi);
 
-            System.out.println("FSB:Sorted unplannedFi : " + unplannedFi.toString());
-            for (FlightInstance fiTemp : unplannedFi) {
-                System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
-                System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
-                System.out.println("FSB: scheduleAcToFi(): flightInstance scheduled time is " + df1.parse(fiTemp.getStandardDepTime()).toString());
-                System.out.println("FSB: scheduleAcToFi(): Check Boolean1 " + currentTime.after(endDate));
-                System.out.println("FSB: scheduleAcToFi(): Check Boolean2 " + df1.parse(fiTemp.getStandardDepTime()).after(endDate));
+                //check whether can add maintenance or not
+                long acInH = acTempType.getAcInH();
+                long acInC = acTempType.getAcInC();
+                Integer acDu = acTempType.getAcDu();
+                long bcInH = acTempType.getBcInH();
+                long bcInC = acTempType.getBcInC();
+                Integer bcDu = acTempType.getBcDu();
+                long ccInH = acTempType.getCcInH();
+                long ccInC = acTempType.getCcInC();
+                Integer ccDu = acTempType.getCcDu();
+                long dcInH = acTempType.getDcInH();
+                long dcInC = acTempType.getDcInC();
+                Integer dcDu = acTempType.getDcDu();
 
-                // idle time: end time of last task/ maintenance
-                List<FlightInstance> fiList = acTemp.getFlightInstance();
-                Collections.sort(fiList);
-                List<Maintenance> mtList = acTemp.getMaintenanceList();
-                Collections.sort(mtList);
-                Date lastFiEnd = fiList.get(fiList.size() - 1).getStandardArrTimeDateType();
-                Date lastMtEnd = mtList.get(mtList.size() - 1).getEndTime();
-                Date nextFree = (lastFiEnd.after(lastMtEnd)) ? lastFiEnd : lastMtEnd;
-                Calendar c1 = Calendar.getInstance();
-                c1.setTime(nextFree);
-                c1.add(Calendar.HOUR, 1);
-                nextFree = c1.getTime();
+                // unused, want to see if mt is scheduled
+                boolean scheduleA = true;
+                boolean scheduleB = true;
+                boolean scheduleC = true;
+                boolean scheduleD = true;
 
-                // A check
-                if (acycleFH >= acInH * 0.9 && acycleFH <= acInH * 1.1 || acycleFD >= acInD * 0.9 && acycleFD <= acInD * 1.1) {
+                System.out.println("FSB:Sorted unplannedFi : " + unplannedFi.toString());
+                for (FlightInstance fiTemp : unplannedFi) {
+                    long acycleFM = acTemp.getAcycleFM();
+                    long acycleFC = acTemp.getAcycleFC();
+                    long bcycleFM = acTemp.getBcycleFM();
+                    long bcycleFC = acTemp.getBcycleFC();
+                    long ccycleFM = acTemp.getCcycleFM();
+                    long ccycleFC = acTemp.getCcycleFC();
+                    long dcycleFM = acTemp.getDcycleFM();
+                    long dcycleFC = acTemp.getDcycleFC();
+
+                    System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
+                    System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
+                    System.out.println("FSB: scheduleAcToFi(): flightInstance scheduled time is " + df1.parse(fiTemp.getStandardDepTime()).toString());
+                    System.out.println("FSB: scheduleAcToFi(): Check Boolean1 " + currentTime.after(endDate));
+                    System.out.println("FSB: scheduleAcToFi(): Check Boolean2 " + df1.parse(fiTemp.getStandardDepTime()).after(endDate));
+
+                    // idle time: end time of last task/ maintenance
+                    List<FlightInstance> fiList = acTemp.getFlightInstance();
+                    Collections.sort(fiList);
+                    List<Maintenance> mtList = acTemp.getMaintenanceList();
+                    Collections.sort(mtList);
+                    Date lastFiEnd = (fiList.size() > 0) ? fiList.get(fiList.size() - 1).getStandardArrTimeDateType() : Calendar.getInstance().getTime();
+                    Date lastMtEnd = (mtList.size() > 0) ? mtList.get(mtList.size() - 1).getEndTime() : Calendar.getInstance().getTime();
+                    Date nextFree = (lastFiEnd.after(lastMtEnd)) ? lastFiEnd : lastMtEnd;
+                    Calendar c1 = Calendar.getInstance();
                     c1.setTime(nextFree);
-                    c1.add(Calendar.HOUR, acDu);
-                    Date thisMtEnd = c1.getTime();
-                    Maintenance mta = new Maintenance();
-                    mta.create(acTemp, nextFree, thisMtEnd, "A Check");
-                    mtList.add(mta);
-                    acTemp.setMaintenanceList(mtList);
-                    currentTime = thisMtEnd;
-                    em.merge(mta);
-                    em.merge(acTemp);
-                    em.flush();
-                }
-                
-                // B check
-                if (bcycleFH >= bcInH * 0.9 && bcycleFH <= bcInH * 1.1 || bcycleFD >= bcInD * 0.9 && bcycleFD <= bcInD * 1.1) {
-                    c1.setTime(nextFree);
-                    c1.add(Calendar.HOUR, bcDu);
-                    Date thisMtEnd = c1.getTime();
-                    Maintenance mtb = new Maintenance();
-                    mtb.create(acTemp, nextFree, thisMtEnd, "B Check");
-                    mtList.add(mtb);
-                    acTemp.setMaintenanceList(mtList);
-                    currentTime = thisMtEnd;
-                    em.merge(mtb);
-                    em.merge(acTemp);
-                    em.flush();
-                }
+                    c1.add(Calendar.HOUR, 1);
+                    nextFree = c1.getTime();
 
-                if (currentTime.after(endDate) || df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
-                    System.out.println("FSB: scheduleAcToFi(): Break! ");
-                    break;
-                } else {
-                    System.out.println("FSB: scheduleAcToFi(): Check Boolean3 " + currentTime.before(df1.parse(fiTemp.getStandardDepTime())));
-                    System.out.println("FSB: scheduleAcToFi(): Check Boolean4 " + currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin()));
-                    //check whether currenTime is at least two hours earlier that the next departure
-                    Date temp = currentTime;
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(temp);
-                    c.add(Calendar.HOUR, 1);  // number of hours to add
-                    temp = c.getTime();
-                    System.out.println("FSB: scheduleAcToFi(): 1 hours later? " + temp.toString());
-                    if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
-                        System.out.println("FSB: Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
+                    // A check
+                    System.out.println("FSB.scheduleAcToFi(): acyclehour = " + (acycleFM / 60) + " acycles = " + acycleFC);
+                    //  System.out.println("FSB.scheduleAcToFi(): check Maintenance A Check boolean 1 is === " + ((acycleFM / 60) >= (acInH * 0.9) && (acycleFM / 60) <= (acInH * 1.1)));
+                    //  System.out.println("FSB.scheduleAcToFi(): check Maintenance A Check boolean 2 is === " + (acycleFC >= (acInC * 0.9) && acycleFC <= (acInC * 1.1)));
+                    if ((acycleFM / 60) >= acInH * 0.9 && (acycleFM / 60) <= acInH * 1.1 || acycleFC >= acInC * 0.9 && acycleFC <= acInC * 1.1) {
+                        c1.setTime(nextFree);
+                        c1.add(Calendar.HOUR, acDu);
+                        Date thisMtEnd = c1.getTime();
+                        Maintenance mta = new Maintenance();
+                        mta.create(acTemp, nextFree, thisMtEnd, "A Check");
+                        System.out.println("FSB.scheduleAcToFi(): create A check === " + mta);
+                        mtList.add(mta);
+                        acTemp.setMaintenanceList(mtList);
+                        currentTime = thisMtEnd;
+                        acTemp.setAcycleFM(0);
+                        acTemp.setAcycleFC(0);
+                        em.persist(mta);
+                        em.merge(acTemp);
+                        em.flush();
+                        System.out.println("FSB.scheduleAcToFi(): add maintenance A Check detail === " + mta);
                     }
-                    fiTemp.setAircraft(acTemp);
-                    currentTime = df1.parse(fiTemp.getStandardArrTime());
-                    currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
-                    acTemp.setCurrentAirport(currentAirport.getIATA());
-                    List<FlightInstance> flightTemp = acTemp.getFlightInstance();
-                    flightTemp.add(fiTemp);
-                    acTemp.setFlightInstance(flightTemp);
-                    em.merge(fiTemp);
-                    em.merge(acTemp);
-                    em.flush();
+
+                    // B check
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance B Check boolean 1 is === " + ((acycleFM / 60) >= acInH * 0.9 && (acycleFM / 60) <= acInH * 1.1));
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance B Check boolean 2 is === " + (bcycleFC >= bcInC * 0.97 && bcycleFC <= bcInC * 1.03));
+                    if ((bcycleFM / 60) >= bcInH * 0.97 && (bcycleFM / 60) <= bcInH * 1.03 || bcycleFC >= bcInC * 0.97 && bcycleFC <= bcInC * 1.03) {
+                        c1.setTime(nextFree);
+                        c1.add(Calendar.HOUR, bcDu);
+                        Date thisMtEnd = c1.getTime();
+                        Maintenance mtb = new Maintenance();
+                        mtb.create(acTemp, nextFree, thisMtEnd, "B Check");
+                        System.out.println("FSB.scheduleAcToFi(): create B check === " + mtb);
+                        mtList.add(mtb);
+                        acTemp.setMaintenanceList(mtList);
+                        currentTime = thisMtEnd;
+                        acTemp.setBcycleFM(0);
+                        acTemp.setBcycleFC(0);
+                        em.persist(mtb);
+                        em.merge(acTemp);
+                        em.flush();
+                        System.out.println("FSB.scheduleAcToFi(): add maintenance B Check detail ===" + mtb);
+                    }
+
+                    // C check
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance C Check boolean 1 is === " + ((ccycleFM / 60) >= ccInH * 0.98 && (ccycleFM / 60) <= ccInH * 1.02));
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance C Check boolean 2 is === " + (ccycleFC >= ccInC * 0.98 && ccycleFC <= ccInC * 1.02));
+                    if ((ccycleFM / 60) >= ccInH * 0.98 && (ccycleFM / 60) <= ccInH * 1.02 || ccycleFC >= ccInC * 0.98 && ccycleFC <= ccInC * 1.02) {
+                        if (currentAirport.equals(sgAirport)) {
+                            c1.setTime(nextFree);
+                            c1.add(Calendar.HOUR, ccDu);
+                            Date thisMtEnd = c1.getTime();
+                            Maintenance mtc = new Maintenance();
+                            mtc.create(acTemp, nextFree, thisMtEnd, "C Check");
+                            System.out.println("FSB.scheduleAcToFi(): create C check === " + mtc);
+                            mtList.add(mtc);
+                            acTemp.setMaintenanceList(mtList);
+                            currentTime = thisMtEnd;
+                            acTemp.setCcycleFM(0);
+                            acTemp.setCcycleFC(0);
+                            em.persist(mtc);
+                            em.merge(acTemp);
+                            em.flush();
+                            System.out.println("FSB.scheduleAcToFi(): add maintenance C Check detail ===" + mtc);
+                        }
+                    }
+
+                    // D check
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance D Check boolean 1 is === " + ((dcycleFM / 60) >= dcInH * 0.99 && (dcycleFM / 60) <= dcInH * 1.01));
+                    //    System.out.println("FSB.scheduleAcToFi(): check Maintenance D Check boolean 2 is === " + (dcycleFC >= dcInC * 0.99 && dcycleFC <= dcInC * 1.01));
+                    if ((dcycleFM / 60) >= dcInH * 0.99 && (dcycleFM / 60) <= dcInH * 1.01 || dcycleFC >= dcInC * 0.99 && dcycleFC <= dcInC * 1.01) {
+                        if (currentAirport.equals(sgAirport)) {
+                            c1.setTime(nextFree);
+                            c1.add(Calendar.HOUR, dcDu);
+                            Date thisMtEnd = c1.getTime();
+                            Maintenance mtd = new Maintenance();
+                            mtd.create(acTemp, nextFree, thisMtEnd, "D Check");
+                            System.out.println("FSB.scheduleAcToFi(): create D check === " + mtd);
+                            mtList.add(mtd);
+                            acTemp.setMaintenanceList(mtList);
+                            currentTime = thisMtEnd;
+                            acTemp.setDcycleFM(0);
+                            acTemp.setDcycleFC(0);
+                            em.persist(mtd);
+                            em.merge(acTemp);
+                            em.flush();
+                            System.out.println("FSB.scheduleAcToFi(): add maintenance D Check detail ===" + mtd);
+                        }
+                    }
+
+                    if (currentTime.after(endDate) || df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
+                        System.out.println("FSB: scheduleAcToFi(): Break! ");
+                        break;
+                    } else {
+                        System.out.println("FSB: scheduleAcToFi(): Check Boolean3 " + currentTime.before(df1.parse(fiTemp.getStandardDepTime())));
+                        System.out.println("FSB: scheduleAcToFi(): Check Boolean4 " + currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin()));
+                        //check whether currenTime is at least two hours-->one hour earlier that the next departure
+                        Date temp = currentTime;
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(temp);
+                        c.add(Calendar.HOUR, 1);  // number of hours to add
+                        temp = c.getTime();
+                        System.out.println("FSB: scheduleAcToFi(): 1 hours later? " + temp.toString());
+                        if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
+                            System.out.println("FSB: ----------> Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
+
+                            fiTemp.setAircraft(acTemp);
+                            currentTime = df1.parse(fiTemp.getStandardArrTime());
+                            currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
+                            acTemp.setCurrentAirport(currentAirport.getIATA());
+                            List<FlightInstance> flightTemp = acTemp.getFlightInstance();
+                            flightTemp.add(fiTemp);
+                            acTemp.setFlightInstance(flightTemp);
+
+                            // add fi duration to ABCD check cycle flight hour
+                            long fiMin = getFlightAccumMinute(fiTemp.getFlightFrequency());
+                            long min = acTemp.getAcycleFM();
+                            min += fiMin;
+                            acTemp.setAcycleFM(min);
+                            System.out.println("========== ACycleFM " + min);
+                            min = acTemp.getBcycleFM();
+                            min += fiMin;
+                            acTemp.setBcycleFM(min);
+                            System.out.println("========== BCycleFM " + min);
+                            min = acTemp.getCcycleFM();
+                            min += fiMin;
+                            acTemp.setCcycleFM(min);
+                            System.out.println("========== CCycleFM " + min);
+                            min = acTemp.getDcycleFM();
+                            min += fiMin;
+                            acTemp.setDcycleFM(min);
+                            System.out.println("========== DCycleFM " + min);
+
+                            long cycleCount = acTemp.getAcycleFC();
+                            acTemp.setAcycleFC(++cycleCount);
+                            cycleCount = acTemp.getBcycleFC();
+                            acTemp.setBcycleFC(++cycleCount);
+                            cycleCount = acTemp.getCcycleFC();
+                            acTemp.setCcycleFC(++cycleCount);
+                            cycleCount = acTemp.getDcycleFC();
+                            acTemp.setDcycleFC(++cycleCount);
+
+//                            setCycleFlightDays(acTemp, "A Check", currentTime);
+//                            setCycleFlightDays(acTemp, "B Check", currentTime);
+//                            setCycleFlightDays(acTemp, "C Check", currentTime);
+//                            setCycleFlightDays(acTemp, "D Check", currentTime);
+                            em.merge(fiTemp);
+                            em.merge(acTemp);
+                            em.flush();
+                        }
+                    }
                 }
             }
         }
     }
 
     @Override
-    public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
+    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd) {
+        boolean flag1 = canAssignMt(ac, obj, mtStart, mtEnd);
+        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        System.out.println("FSB: addMtToAc ");
+        System.out.println("FSB: addMtToAc " + flag1);
+        if (flag1) {
+            Maintenance newMt = new Maintenance();
+            newMt.create(ac, mtStart, mtEnd, obj);
+            em.persist(newMt);
+            
+            mtTemp.add(newMt);
+            ac.setMaintenanceList(mtTemp);
+
+            switch (obj.charAt(0)) {
+                case 'A': {
+                    ac.setAcycleFM(0);
+                    ac.setAcycleFC(0);
+                    break;
+                }
+                case 'B': {
+                    ac.setBcycleFM(0);
+                    ac.setBcycleFC(0);
+                    break;
+                }
+                case 'C': {
+                    ac.setCcycleFM(0);
+                    ac.setCcycleFC(0);
+                    break;
+                }
+                case 'D': {
+                    ac.setDcycleFM(0);
+                    ac.setDcycleFC(0);
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            em.merge(ac);
+            em.flush();
+        }
+        return flag1;
+    }
+
+    @Override
+    public boolean addAcToFi(Aircraft ac, FlightInstance fi) throws ParseException {
         boolean flag = canAssign(ac, fi);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         System.out.println("FSB: addAcToFi ");
@@ -583,9 +736,38 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (flag) {
             flightTemp.add(fi);
             ac.setFlightInstance(flightTemp);
-            long min = ac.getAccumFlyMinutes();
-            min += getFlightAccumMinute(fi.getFlightFrequency());
-            ac.setAccumFlyMinutes(min);
+
+            // update maintenance counter
+            long fiMin = getFlightAccumMinute(fi.getFlightFrequency());
+            long min = ac.getAcycleFM();
+            min += fiMin;
+            ac.setAcycleFM(min);
+            min = ac.getBcycleFM();
+            min += fiMin;
+            ac.setBcycleFM(min);
+            min = ac.getCcycleFM();
+            min += fiMin;
+            ac.setCcycleFM(min);
+            min = ac.getDcycleFM();
+            min += fiMin;
+            ac.setDcycleFM(min);
+            long cycleCount = ac.getAcycleFC();
+            ac.setAcycleFC(++cycleCount);
+            cycleCount = ac.getBcycleFC();
+            ac.setBcycleFC(++cycleCount);
+            cycleCount = ac.getCcycleFC();
+            ac.setCcycleFC(++cycleCount);
+            cycleCount = ac.getDcycleFC();
+            ac.setDcycleFC(++cycleCount);
+
+            Collections.sort(flightTemp);
+            Date lastFiEnd = (flightTemp.size() > 0) ? flightTemp.get(flightTemp.size() - 1).getStandardArrTimeDateType() : Calendar.getInstance().getTime();
+            Date lastLastFiEnd = (lastFiEnd.before(fi.getStandardArrTimeDateType())) ? fi.getStandardArrTimeDateType() : lastFiEnd;
+//            setCycleFlightDays(ac, "A Check", lastLastFiEnd);
+//            setCycleFlightDays(ac, "B Check", lastLastFiEnd);
+//            setCycleFlightDays(ac, "C Check", lastLastFiEnd);
+//            setCycleFlightDays(ac, "D Check", lastLastFiEnd);
+
             fi.setAircraft(ac);
             em.merge(fi);
             em.merge(ac);
@@ -595,26 +777,154 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flag;
     }
 
+    public boolean canAssignMt(Aircraft ac, String obj, Date startTime, Date endTime) {
+        boolean canAssign = false;
+        boolean canAssignMt = false;
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
+        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        Airport sgAirport = em.find(Airport.class, "SIN");
+        Collections.sort(flightTemp);
+        Collections.sort(mtTemp);
+
+        boolean isAC = (obj.charAt(0) == 'A');
+
+        Date startCheck = startTime;
+        Date endCheck = endTime;
+        cal.setTime(startCheck);
+        cal.add(Calendar.HOUR, -1);
+        startCheck = cal.getTime();
+        cal.setTime(endCheck);
+        cal.add(Calendar.HOUR, 1);
+        endCheck = cal.getTime();
+
+        // check time conflict with maintenance
+        if (mtTemp.isEmpty()) {
+            canAssignMt = true;
+        } else if (mtTemp.size() == 1) {
+            if (endCheck.before(mtTemp.get(0).getStartTime()) || startCheck.after(mtTemp.get(0).getEndTime())) {
+                canAssignMt = true;
+            }
+        } else {
+            if (endCheck.before(mtTemp.get(0).getStartTime())) {
+                canAssignMt = true;
+            }
+            for (int i = 0; i < mtTemp.size() - 2; i++) {
+                Maintenance mt1 = mtTemp.get(i);
+                Maintenance mt2 = mtTemp.get(i + 1);
+                if (startCheck.after(mt1.getEndTime()) && endCheck.before(mt2.getStartTime())) {
+                    canAssignMt = true;
+                }
+            }
+            if (startCheck.after(mtTemp.get(mtTemp.size() - 1).getEndTime())) {
+                canAssignMt = true;
+            }
+        }
+
+        // check time conflict with flight instances
+        if (flightTemp.isEmpty()) {
+            if (isAC || ac.getCurrentAirport().equals("SIN")) {
+                canAssign = true;
+            }
+        } else if (flightTemp.size() == 1) {
+            if (((isAC || flightTemp.get(0).getFlightFrequency().getRoute().getOrigin().getIATA().equals("SIN")) && endCheck.before(flightTemp.get(0).getStandardDepTimeDateType()))
+                    || (isAC || flightTemp.get(0).getFlightFrequency().getRoute().getDest().getIATA().equals("SIN")) && startCheck.after(flightTemp.get(0).getStandardArrTimeDateType())) {
+                canAssign = true;
+            }
+        } else {
+            if (endCheck.before(flightTemp.get(0).getStandardDepTimeDateType()) && (isAC || ac.getCurrentAirport().equals("SIN"))) {
+                canAssign = true;
+            }
+            for (int i = 0; i < flightTemp.size() - 2; i++) {
+                FlightInstance f1 = flightTemp.get(i);
+                FlightInstance f2 = flightTemp.get(i + 1);
+//                if(startCheck.after(flightTemp.get(flightTemp.size()-1).getStandardArrTimeDateType()) && (isAC || flightTemp.get(flightTemp.size()-1).getFlightFrequency().getRoute().getDest().getIATA().equals("SIN"))) {}
+                if (isAC || f1.getFlightFrequency().getRoute().getDest().getIATA().equals("SIN")) {
+                    if (startCheck.after(f1.getStandardArrTimeDateType()) && endCheck.before(f2.getStandardDepTimeDateType())) {
+                        canAssign = true;
+                    }
+                }
+            }
+            if (startCheck.after(flightTemp.get(flightTemp.size() - 1).getStandardArrTimeDateType()) && (isAC || flightTemp.get(flightTemp.size() - 1).getFlightFrequency().getRoute().getDest().getIATA().equals("SIN"))) {
+                canAssignMt = true;
+            }
+        }
+
+        return (canAssign && canAssignMt);
+    }
+
     public boolean canAssign(Aircraft ac, FlightInstance fi) {
         boolean canAssign = false;
-        System.out.println("canAssign: fi.dep " + fi.getStandardDepTime() + " fi.arrial " + fi.getStandardArrTime());
-        System.out.println("canAssign: fi.origin " + fi.getFlightFrequency().getRoute().getOrigin().getIATA() + " fi.arrial " + fi.getFlightFrequency().getRoute().getDest().getIATA());
+        boolean canAssignMt = false;
+        System.out.println("canAssign: fi.dep " + fi.getStandardDepTime() + " fi.arrival " + fi.getStandardArrTime());
+        System.out.println("canAssign: fi.origin " + fi.getFlightFrequency().getRoute().getOrigin().getIATA() + " fi.arrival " + fi.getFlightFrequency().getRoute().getDest().getIATA());
         System.out.println("canAssign: CHECK 1");
         List<FlightInstance> flightTemp = ac.getFlightInstance();
+//        Collections.sort(flightTemp);
         System.out.println("canAssign: CHECK 2 " + flightTemp.size());
+        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        Collections.sort(mtTemp);
 
-        if (flightTemp.size() == 0) {
+        // add 1 hour after and delete 1 hour before 
+        Date depCheck = fi.getStandardDepTimeDateType();
+        Date arrCheck = fi.getStandardArrTimeDateType();
+        cal.setTime(depCheck);
+        cal.add(Calendar.HOUR, -1);
+        depCheck = cal.getTime();
+        cal.setTime(arrCheck);
+        cal.add(Calendar.HOUR, 1);
+        arrCheck = cal.getTime();
+
+        if (mtTemp.isEmpty()) {
+            canAssignMt = true;
+            System.out.println("Check Mt>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
+        } else if (mtTemp.size() == 1) {
+            if (arrCheck.before(mtTemp.get(0).getStartTime()) || depCheck.after(mtTemp.get(0).getEndTime())) {
+                canAssignMt = true;
+                System.out.println("Check Mt>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
+            }
+//            if (mtTemp.get(0).getObjective().charAt(0) == 'A') {
+//                if (fi.getStandardArrTimeDateType().before(mtTemp.get(0).getStartTime()) || fi.getStandardDepTimeDateType().after(mtTemp.get(0).getEndTime())) {
+//                    canAssignMt = true;
+//                }
+//            } else {
+//                if (fi.getStandardArrTimeDateType().before(mtTemp.get(0).getStartTime()) && fi.getFlightFrequency().getRoute().getDest().getIATA().equals("SIN")) {
+//                    canAssignMt = true;
+//                } else if (fi.getStandardDepTimeDateType().after(mtTemp.get(0).getEndTime()) && fi.getFlightFrequency().getRoute().getOrigin().getIATA().equals("SIN")) {
+//                    canAssignMt = true;
+//                }
+//            }
+        } else {
+            if (arrCheck.before(mtTemp.get(0).getStartTime())) {
+                canAssignMt = true;
+                System.out.println("Check Mt>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
+            }
+            for (int i = 0; i < mtTemp.size() - 2; i++) {
+                Maintenance mt1 = mtTemp.get(i);
+                Maintenance mt2 = mtTemp.get(i + 1);
+                if (depCheck.after(mt1.getEndTime()) && arrCheck.before(mt2.getStartTime())) {
+                    canAssignMt = true;
+                    System.out.println("Check Mt>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
+                }
+            }
+            if (depCheck.after(mtTemp.get(mtTemp.size() - 1).getEndTime())) {
+                canAssignMt = true;
+                System.out.println("Check Mt>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
+            }
+        }
+
+        if (flightTemp.isEmpty()) {
             if (ac.getAircraftType().equals(fi.getFlightFrequency().getRoute().getAcType()) && ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
                 canAssign = true;
+                System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
             }
         } else if (flightTemp.size() != 1) {
             System.out.println("canAssign: CHECK 3");
 
-            List<Date> listDates = new ArrayList<Date>();
+            List<Date> listDates = new ArrayList<>();
             for (FlightInstance fitest : flightTemp) {
                 listDates.add(fitest.getStandardDepTimeDateType());
-
             }
+
             System.out.println("Before sorting: " + listDates);
             Collections.sort(listDates);
             System.out.println("After sorting: " + listDates);
@@ -630,8 +940,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             }
             System.out.println("flightTemp after Sort:" + newList.toString());
             System.out.println("canAssign: CHECK 4");
-            Date depCheck = new Date();
-            Date arrCheck = new Date();
+            depCheck = new Date();
+            arrCheck = new Date();
             System.out.println("canAssign: CHECK 5");
             for (int i = 0; i < newList.size() - 1; i++) {
                 depCheck = newList.get(i).getStandardArrTimeDateType();
@@ -639,9 +949,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 System.out.println("canAssign: depDate" + depCheck);
                 System.out.println("canAssign: arrCheck" + arrCheck);
                 cal = Calendar.getInstance();
-                // last arrival shoulbe be ahead of the fi's departure at least 2 hours
+                // last arrival shoulbe be ahead of the fi's departure at least 2 hours-->1 hour
                 cal.setTime(depCheck);
-                cal.add(Calendar.HOUR, 2);
+                cal.add(Calendar.HOUR, 1);
                 depCheck = cal.getTime();
                 System.out.println("Literal 1 check: " + (depCheck.before(fi.getStandardArrTimeDateType())));
                 System.out.println("Literal 2 check: " + newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin()));
@@ -650,21 +960,23 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 //if add in front of first of fiList
                 if (fi.getStandardArrTimeDateType().before(newList.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(newList.get(0).getFlightFrequency().getRoute().getOrigin())) {
                     if (ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
+                        System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
                         canAssign = true;
                     }
                     //if not the first of fiList
                 } else if ((depCheck.before(fi.getStandardDepTimeDateType())) && newList.get(i).getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getOrigin())) {
                     System.out.println("canAssign: CHECK 6");
-                    // if it is not the last in flighttemp, next departure shoulbe at least 2 hours later than the fi's arrival
+                    // if it is not the last in flighttemp, next departure shoulbe at least 2 hours-->1 hour later than the fi's arrival
                     if (i + 1 < newList.size()) {
                         cal.setTime(arrCheck);
-                        cal.add(Calendar.HOUR, -2);
+                        cal.add(Calendar.HOUR, -1);
                         arrCheck = cal.getTime();
                         if ((fi.getStandardArrTimeDateType().before(arrCheck)) && newList.get(i + 1).getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getDest())) {
+                            System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
                             canAssign = true;
                         }
                     } else {  //it is the last in flighttemp, can anyway assign
-                        System.out.println("canAssign: CHECK 7");
+                        System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
                         canAssign = true;
                     }
                 }
@@ -672,14 +984,159 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         } else {   // if fiList.size=1
             if (fi.getStandardArrTimeDateType().before(flightTemp.get(0).getStandardDepTimeDateType()) && fi.getFlightFrequency().getRoute().getDest().equals(flightTemp.get(0).getFlightFrequency().getRoute().getOrigin())) {
                 canAssign = true;
+                System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
             } else if (fi.getStandardDepTimeDateType().after(flightTemp.get(0).getStandardArrTimeDateType()) && fi.getFlightFrequency().getRoute().getOrigin().equals(flightTemp.get(0).getFlightFrequency().getRoute().getDest())) {
                 canAssign = true;
+                System.out.println("Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
             }
 
         }
-        return canAssign;
+        return (canAssign && canAssignMt);
     }
 
+    @Override
+    public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
+        List<FlightInstance> flightTemp = ac.getFlightInstance();
+        // update maintenance counter
+        long fiMin = getFlightAccumMinute(fi.getFlightFrequency());
+        long min = ac.getAcycleFM();
+        min -= fiMin;
+        ac.setAcycleFM(min);
+        min = ac.getBcycleFM();
+        min -= fiMin;
+        ac.setBcycleFM(min);
+        min = ac.getCcycleFM();
+        min -= fiMin;
+        ac.setCcycleFM(min);
+        min = ac.getDcycleFM();
+        min -= fiMin;
+        ac.setDcycleFM(min);
+        long cycleCount = ac.getAcycleFC();
+        ac.setAcycleFC(--cycleCount);
+        cycleCount = ac.getBcycleFC();
+        ac.setBcycleFC(--cycleCount);
+        cycleCount = ac.getCcycleFC();
+        ac.setCcycleFC(--cycleCount);
+        cycleCount = ac.getDcycleFC();
+        ac.setDcycleFC(--cycleCount);
+
+        flightTemp.remove(fi);
+        ac.setFlightInstance(flightTemp);
+        Aircraft acTemp = em.find(Aircraft.class, "9V-000");
+        fi.setAircraft(acTemp);
+        em.merge(fi);
+        em.merge(ac);
+        em.flush();
+    }
+
+    @Override
+    public void deleteMtFromAc(Aircraft ac, Maintenance mt) {
+        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        mtTemp.remove(mt);
+        ac.setMaintenanceList(mtTemp);
+        em.remove(mt);
+        em.merge(ac);
+        em.flush();
+    }
+
+    @Override
+    public List<FlightInstance> getUnassignedFlight() {
+        Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", "9V-000");
+        Aircraft a = (Aircraft) q1.getResultList().get(0);
+        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default").setParameter("default", a);
+        return (List<FlightInstance>) q2.getResultList();
+    }
+
+    public void setFirstInstDate() throws ParseException {
+        System.out.println("FSB: setFirstInstDate for the first time!!!");
+        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
+        fiList = getAllFlightInstance();
+        Collections.sort(fiList);
+        firstInstDate = fiList.get(0).getStandardDepTime();
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date temp = df1.parse(firstInstDate);
+        Calendar c = Calendar.getInstance();
+        c.setTime(temp);
+        c.add(Calendar.DATE, -1);  // number of days to add
+        firstInstDate = df1.format(c.getTime());
+        System.out.println("FSB: firstInstDate: " + firstInstDate);
+    }
+
+    @Override
+    public String getFirstInstDate() {
+        System.out.println("FSB: Flag: " + flag);
+        System.out.println("FSB:getFirstInstDate()" + firstInstDate);
+        if (flag) {
+            try {
+                setFirstInstDate();
+            } catch (ParseException ex) {
+                Logger.getLogger(FlightSchedulingBean.class
+                        .getName()).log(Level.SEVERE, null, ex);
+            }
+            flag = false;
+        }
+        return firstInstDate;
+    }
+
+    @Override
+    public FlightInstance getDummyFi() {
+        Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
+//        FlightInstance fi = em.find(FlightInstance.class, 1000000);
+        return (FlightInstance) q1.getSingleResult();
+    }
+
+    @Override
+    public long getFlightAccumMinute(FlightFrequency ff) {
+        LocalTime depTime = LocalTime.parse(ff.getScheduleDepTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalTime arrTime = LocalTime.parse(ff.getScheduleArrTime(), DateTimeFormatter.ofPattern("HH:mm"));
+        LocalDate depDate = LocalDate.of(2000, 1, 10);
+        LocalDate arrDate = LocalDate.of(2000, 1, 10).plusDays(ff.getDateAdjust());
+        LocalDateTime depDateTime = LocalDateTime.of(depDate, depTime);
+        LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arrTime);
+        long diffInMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
+        long diffInHours = java.time.Duration.between(depDateTime, arrDateTime).toHours();
+        System.out.println("fsb.getFlightAccumHour(): flight elapsed hour is : " + diffInHours);
+        System.out.println("fsb.getFlightAccumHour(): flight elapsed minute is : " + diffInMinutes);
+        return diffInMinutes;
+    }
+
+//    public void setCycleFlightDays(Aircraft ac, String checkType, Date fiEnd) throws ParseException {
+//        List<Maintenance> mtList = ac.getMaintenanceList();
+//        List<Maintenance> mtSelect = new ArrayList<>();
+//        for (Maintenance mt : mtList) {
+//            if (mt.getObjective().equalsIgnoreCase(checkType)) {
+//                mtSelect.add(mt);
+//            }
+//        }
+//        Collections.sort(mtSelect);
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//        // Convert last mt date to localdate type
+//        Date firstFlyDate = df2.parse(ac.getFirstFlyDate());
+//        Date last = (mtSelect.size() > 0) ? mtSelect.get(mtSelect.size() - 1).getEndTime() : firstFlyDate;
+//        String lastDateString = df.format(last);
+//        LocalDate lastLocalDate = LocalDate.parse(lastDateString, formatter);
+//        // Convert flight end date to localdate type
+//        String fiEndDateString = df.format(fiEnd);
+//        LocalDate fiEndLocalDate = LocalDate.parse(fiEndDateString, formatter);
+//        long days = ChronoUnit.DAYS.between(lastLocalDate, fiEndLocalDate);
+//        if (checkType.charAt(0) == 'A') {
+//            ac.setAcycleFD(days);
+//            System.out.println("FSB.setCycleFlightDays(): " + ac.getRegistrationNo() + " A check cycle flight days passed " + days);
+//        } else if (checkType.charAt(0) == 'B') {
+//            ac.setBcycleFD(days);
+//            System.out.println("FSB.setCycleFlightDays(): " + ac.getRegistrationNo() + " B check cycle flight days passed " + days);
+//        } else if (checkType.charAt(0) == 'C') {
+//            ac.setCcycleFD(days);
+//            System.out.println("FSB.setCycleFlightDays(): " + ac.getRegistrationNo() + " C check cycle flight days passed " + days);
+//        } else if (checkType.charAt(0) == 'D') {
+//            ac.setDcycleFD(days);
+//            System.out.println("FSB.setCycleFlightDays(): " + ac.getRegistrationNo() + " D check cycle flight days passed " + days);
+//        }
+//        em.merge(ac);
+//        em.flush();
+//    }
 //    public boolean canAssign(Aircraft ac, FlightInstance fi) {
 //        boolean canAssign = false;
 //        System.out.println("canAssign: fi.dep " + fi.getStandardDepTime() + " fi.arrial " + fi.getStandardArrTime());
@@ -766,64 +1223,4 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //        }
 //        return canAssign;
 //    }
-    @Override
-    public void deleteAcFromFi(Aircraft ac, FlightInstance fi
-    ) {
-        List<FlightInstance> flightTemp = ac.getFlightInstance();
-        flightTemp.remove(fi);
-        ac.setFlightInstance(flightTemp);
-        Aircraft acTemp = em.find(Aircraft.class, "9V-000");
-        fi.setAircraft(acTemp);
-        em.merge(fi);
-        em.merge(ac);
-        em.flush();
-    }
-
-    @Override
-    public List<FlightInstance> getUnassignedFlight() {
-        Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", "9V-000");
-        Aircraft a = (Aircraft) q1.getResultList().get(0);
-        Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default").setParameter("default", a);
-        return (List<FlightInstance>) q2.getResultList();
-    }
-
-    public void setFirstInstDate() throws ParseException {
-        System.out.println("FSB: setFirstInstDate for the first time!!!");
-        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
-        fiList = getAllFlightInstance();
-        Collections.sort(fiList);
-        firstInstDate = fiList.get(0).getStandardDepTime();
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date temp = df1.parse(firstInstDate);
-        Calendar c = Calendar.getInstance();
-        c.setTime(temp);
-        c.add(Calendar.DATE, -1);  // number of days to add
-        firstInstDate = df1.format(c.getTime());
-        System.out.println("FSB: firstInstDate: " + firstInstDate);
-    }
-
-    @Override
-    public String getFirstInstDate() {
-        System.out.println("FSB: Flag: " + flag);
-        System.out.println("FSB:getFirstInstDate()" + firstInstDate);
-        if (flag) {
-            try {
-                setFirstInstDate();
-
-            } catch (ParseException ex) {
-                Logger.getLogger(FlightSchedulingBean.class
-                        .getName()).log(Level.SEVERE, null, ex);
-            }
-            flag = false;
-        }
-        return firstInstDate;
-    }
-
-    @Override
-    public FlightInstance getDummyFi() {
-        Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.id=:id").setParameter("id", 1000000);
-        FlightInstance fi = em.find(FlightInstance.class, 1000000);
-        return (FlightInstance) q1.getSingleResult();
-    }
-
 }

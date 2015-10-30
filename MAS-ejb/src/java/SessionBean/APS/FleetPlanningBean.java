@@ -1,15 +1,11 @@
 package SessionBean.APS;
 
+import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.APS.CabinClass;
-import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
-import Entity.APS.Route;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -390,6 +386,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 } else {
                     String type = selectedList.get(i).getAircraftType().getType();
                     aircraft = em.find(Aircraft.class, registrationNo);
+                    //-------------------------------remove maintenance------------------------
+                    Query q1 = em.createQuery("SELECT m FROM Maintenance m where m.aircraft.registrationNo =:registrationNo").setParameter("registrationNo", registrationNo);
+                    List<Maintenance> mList = q1.getResultList();
+                    for (Maintenance m : mList) {
+                        em.remove(m);
+                    }
                     aircraftType = em.find(AircraftType.class, type);
                     aircraftType.getAircraft().remove(aircraft);
                     em.remove(aircraft);
@@ -441,19 +443,19 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 //        act.setWeeklycDu(weeklycDu);
 //        act.setWeeklycMH(weeklycMH);
         act.setAcInH(acInH);
-        act.setAcInD(acInD);
+        act.setAcInC(acInD);
         act.setAcDu(acDu);
         act.setAcMH(acMH);
         act.setBcInH(bcInH);
-        act.setBcInD(bcInD);
+        act.setBcInC(bcInD);
         act.setBcDu(bcDu);
         act.setBcMH(bcMH);
         act.setCcInH(ccInH);
-        act.setCcInD(ccInD);
+        act.setCcInC(ccInD);
         act.setCcDu(ccDu);
         act.setCcMH(ccMH);
         act.setDcInH(dcInH);
-        act.setDcInD(dcInD);
+        act.setDcInC(dcInD);
         act.setDcDu(dcDu);
         act.setDcMH(dcMH);
         em.merge(act);

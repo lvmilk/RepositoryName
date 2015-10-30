@@ -44,11 +44,14 @@
                         <h:outputText value="#{flightInst.actualDateAdjust}" />
                     </p:column>
                     <p:column headerText="Serving Aircraft *">
-                        <h:outputText value="#{flightInst.aircraft.registrationNo}"/>
+                        <!--<h:outputText value="#{flightInst.aircraft.registrationNo}" style="color: #{flightInst.aircraft.registrationNo == '9V-000' ? '#c7d3ab' : 'black'};" />-->
+                        <h:outputText value="#{flightInst.aircraft.registrationNo}" rendered="#{flightInst.aircraft.registrationNo != '9V-000'}" />
+                        <h:outputText value="Not assigned" rendered="#{flightInst.aircraft.registrationNo == '9V-000'}" />
+
                     </p:column>
                 </p:dataTable>
                 <p:commandButton value="Back" update="@form" actionListener="#{editFIMB.viewFlightInstCancel()}"  icon="ui-icon-carat-1-w" />
-                </p:panel>
+            </p:panel>
         </h:form>
     </h:body>
 </html>

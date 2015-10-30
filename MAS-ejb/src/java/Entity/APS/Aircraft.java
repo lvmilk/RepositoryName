@@ -30,17 +30,17 @@ public class Aircraft implements Serializable {
 
     //----------------------After 1st release
     private long accumFlyMinutes;
-    private long acycleFH = 0;
-    private long acycleFD = 0;
+    private long acycleFM = 0;
+//    private long acycleFD = 0;
     private long acycleFC = 0;
-    private long bcycleFH = 0;
-    private long bcycleFD = 0;
+    private long bcycleFM = 0;
+//    private long bcycleFD = 0;
     private long bcycleFC = 0;
-    private long ccycleFH = 0;
-    private long ccycleFD = 0;
+    private long ccycleFM = 0;
+//    private long ccycleFD = 0;
     private long ccycleFC = 0;
-    private long dcycleFH = 0;
-    private long dcycleFD = 0;
+    private long dcycleFM = 0;
+//    private long dcycleFD = 0;
     private long dcycleFC = 0;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
@@ -168,69 +168,69 @@ public class Aircraft implements Serializable {
         this.maintenanceList = maintenanceList;
     }
 
-    public long getAcycleFH() {
-        return acycleFH;
+    public long getAcycleFM() {
+        return acycleFM;
     }
 
-    public void setAcycleFH(long acycleFH) {
-        this.acycleFH = acycleFH;
+    public void setAcycleFM(long acycleFM) {
+        this.acycleFM = acycleFM;
     }
 
-    public long getAcycleFD() {
-        return acycleFD;
+//    public long getAcycleFD() {
+//        return acycleFD;
+//    }
+//
+//    public void setAcycleFD(long acycleFD) {
+//        this.acycleFD = acycleFD;
+//    }
+
+    public long getBcycleFM() {
+        return bcycleFM;
     }
 
-    public void setAcycleFD(long acycleFD) {
-        this.acycleFD = acycleFD;
+    public void setBcycleFM(long bcycleFM) {
+        this.bcycleFM = bcycleFM;
     }
 
-    public long getBcycleFH() {
-        return bcycleFH;
+//    public long getBcycleFD() {
+//        return bcycleFD;
+//    }
+//
+//    public void setBcycleFD(long bcycleFD) {
+//        this.bcycleFD = bcycleFD;
+//    }
+
+    public long getCcycleFM() {
+        return ccycleFM;
     }
 
-    public void setBcycleFH(long bcycleFH) {
-        this.bcycleFH = bcycleFH;
+    public void setCcycleFM(long ccycleFM) {
+        this.ccycleFM = ccycleFM;
     }
 
-    public long getBcycleFD() {
-        return bcycleFD;
+//    public long getCcycleFD() {
+//        return ccycleFD;
+//    }
+//
+//    public void setCcycleFD(long ccycleFD) {
+//        this.ccycleFD = ccycleFD;
+//    }
+
+    public long getDcycleFM() {
+        return dcycleFM;
     }
 
-    public void setBcycleFD(long bcycleFD) {
-        this.bcycleFD = bcycleFD;
+    public void setDcycleFM(long dcycleFM) {
+        this.dcycleFM = dcycleFM;
     }
 
-    public long getCcycleFH() {
-        return ccycleFH;
-    }
-
-    public void setCcycleFH(long ccycleFH) {
-        this.ccycleFH = ccycleFH;
-    }
-
-    public long getCcycleFD() {
-        return ccycleFD;
-    }
-
-    public void setCcycleFD(long ccycleFD) {
-        this.ccycleFD = ccycleFD;
-    }
-
-    public long getDcycleFH() {
-        return dcycleFH;
-    }
-
-    public void setDcycleFH(long dcycleFH) {
-        this.dcycleFH = dcycleFH;
-    }
-
-    public long getDcycleFD() {
-        return dcycleFD;
-    }
-
-    public void setDcycleFD(long dcycleFD) {
-        this.dcycleFD = dcycleFD;
-    }
+//    public long getDcycleFD() {
+//        return dcycleFD;
+//    }
+//
+//    public void setDcycleFD(long dcycleFD) {
+//        this.dcycleFD = dcycleFD;
+//    }
 
     public long getAcycleFC() {
         return acycleFC;
