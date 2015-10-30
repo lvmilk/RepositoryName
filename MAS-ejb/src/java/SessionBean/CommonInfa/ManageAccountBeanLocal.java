@@ -17,7 +17,7 @@ import javax.ejb.Local;
  * @author LIU YUQI & LI HAO'
  */
 @Local
-public interface manageAccountLocal {
+public interface ManageAccountBeanLocal {
     
     
     public boolean validateLogin (String username, String password, String staffType);

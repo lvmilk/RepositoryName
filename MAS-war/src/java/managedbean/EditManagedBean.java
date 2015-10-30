@@ -9,7 +9,7 @@ import Entity.CommonInfa.OfficeStaff;
 import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.CabinCrew;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -33,7 +33,7 @@ import java.util.List;
 public class EditManagedBean implements Serializable {
 
     @EJB
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
 
     private String username;
     private String username_origin;

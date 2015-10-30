@@ -6,10 +6,10 @@
 package AISmanagedbean;
 
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.AIS.SeatPlanBeanLocal;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import javax.faces.view.ViewScoped;
 public class ViewCabin1ManagedBean implements  Serializable{
     
     
-   //  private manageAccountLocal mal;
+   //  private ManageAccountBeanLocal mal;
     private List<SelectItem> options = new ArrayList<SelectItem>();
 
     @EJB

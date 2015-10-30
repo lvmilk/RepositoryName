@@ -18,7 +18,7 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class MemberSessionBean implements MemberSessionBeanLocal {
+public class MemberBean implements MemberBeanLocal {
 
     @PersistenceContext
     EntityManager em;
@@ -63,8 +63,8 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
     }
 
     @Override
-    public void editMember(Long memberId,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus) {
-        Member member=em.find(Member.class, memberId);
+    public void editMember(Long memberId, String title, String firstName, String lastName, String address, String email, String contactNo, String dob, Double miles, String passport, boolean memberStatus) {
+        Member member = em.find(Member.class, memberId);
         member.setTitle(title);
         member.setFirstName(firstName);
         member.setLastName(lastName);
@@ -75,10 +75,10 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         member.setMiles(miles);
         member.setPassport(passport);
         member.setMemberStatus(memberStatus);
-        
+
         em.merge(member);
         em.flush();
-        
+
     }
 
     private boolean checkList(Query query) {
@@ -90,5 +90,26 @@ public class MemberSessionBean implements MemberSessionBeanLocal {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public Long retrieveMemberID(String email) {
+        Query query = null;
+        Long temp=new Long(0);
+
+        query = em.createQuery("SELECT u FROM Member u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        List<Member> resultList= query.getResultList();
+        if(!resultList.isEmpty())
+        {
+            return resultList.get(0).getMemberID();
+        }
+        return temp;
+    }
+
+    @Override
+    public Member retrieveMember(Long mermberId) {
+        Member member=em.find(Member.class, mermberId);
+        return member;
     }
 }

@@ -5,7 +5,6 @@
  */
 package Entity.AIS;
 
-import Entity.APS.CabinClass;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;

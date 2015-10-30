@@ -18,7 +18,7 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class PassengerSessionBean implements PassengerSessionBeanLocal {
+public class PassengerBean implements PassengerBeanLocal {
 
     @PersistenceContext
     private EntityManager em;
@@ -164,5 +164,6 @@ public class PassengerSessionBean implements PassengerSessionBeanLocal {
             return true;
         }
     }
+
 
 }

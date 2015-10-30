@@ -28,22 +28,24 @@ public class PricingBean implements PricingBeanLocal {
 
     private AircraftType aircraftType = new AircraftType();
     private Route route = new Route();
-    private List<Route> routeList = new ArrayList<>();
+    private List<Route> routeList = new ArrayList<Route>();
     private Double crewCost;
     private Double calculatedFare;
     private Map<String, Double> allFare = new HashMap<String, Double>();
 
-    public void setAircraftType(String type) {
+    public void setAircraftType(String type) throws Exception {
         Query query = em.createQuery("SELECT a FROM AircraftType a where a.type=:atype ");
         query.setParameter("atype", type);
         List<AircraftType> resultList = query.getResultList();
         if (resultList.size() != 0) {
+            throw new Exception("Aircraft Type Not Found");
+        }else{
             aircraftType = resultList.get(0);
         }
     }
 
-    @Override
-    public AircraftType getAircraftType(String type) {
+
+    public AircraftType getAircraftType(String type) throws Exception {
         setAircraftType(type);
         return aircraftType;
     }
@@ -51,8 +53,16 @@ public class PricingBean implements PricingBeanLocal {
     public void setRouteList() {
         Query query = em.createQuery("SELECT r FROM Route r");
         List<Route> resultList = query.getResultList();
+        List<Route> newList = new ArrayList<Route>();
+      
         if (resultList.size() != 0) {
-            this.routeList = resultList;
+            for(Route r:resultList){
+                if(!r.getOrigin().equals(r.getDest())){
+                    newList.add(r);
+                }
+                    
+            }
+            this.routeList = newList;
         }
         System.out.println("SessionBean:setRouteList: size " + this.routeList.size());
     }
@@ -163,4 +173,6 @@ public class PricingBean implements PricingBeanLocal {
     public void setCrewCost(Double crewCost) {
         this.crewCost = crewCost;
     }
+
+ 
 }

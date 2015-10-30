@@ -7,7 +7,7 @@ package SessionBean.ADS;
 
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.FlightCabin;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;

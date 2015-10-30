@@ -6,10 +6,10 @@
 package AISmanagedbean;
 
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.AIS.SeatPlanBeanLocal;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class SeatArrangeManagedBean implements Serializable {
 
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
     private List<SelectItem> options = new ArrayList<SelectItem>();
 
     @EJB
@@ -253,11 +253,11 @@ public class SeatArrangeManagedBean implements Serializable {
         this.options = options;
     }
 
-    public manageAccountLocal getMal() {
+    public ManageAccountBeanLocal getMal() {
         return mal;
     }
 
-    public void setMal(manageAccountLocal mal) {
+    public void setMal(ManageAccountBeanLocal mal) {
         this.mal = mal;
     }
 

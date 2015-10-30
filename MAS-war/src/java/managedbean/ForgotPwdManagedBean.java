@@ -5,8 +5,8 @@
  */
 package managedbean;
 
-import SessionBean.CommonInfa.VerifyAccountSessionBeanLocal;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.VerifyAccountBeanLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -25,7 +25,7 @@ import javax.inject.Named;
 @SessionScoped
 public class ForgotPwdManagedBean implements Serializable{
     @EJB
-    private VerifyAccountSessionBeanLocal val;
+    private VerifyAccountBeanLocal val;
 
     private String username;
     private String password;
