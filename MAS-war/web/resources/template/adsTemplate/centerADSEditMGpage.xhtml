@@ -46,7 +46,7 @@
                     <p:message for="mbLastName" display="icon" />
 
                     <p:outputLabel for="mbEmail" value="Email: " />
-                    <p:inputText id="mbEmail" value="#{etMemberGuestMB.email}" validatorMessage="Invalid email format">
+                    <p:inputText id="mbEmail" value="#{etMemberGuestMB.emailEdited}" validatorMessage="Invalid email format">
                         <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                     </p:inputText>
                     <p:message for="mbEmail" display="icon" />

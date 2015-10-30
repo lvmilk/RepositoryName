@@ -520,14 +520,13 @@ public class FlightInstanceManagedBean implements Serializable {
     }
 
     public Date getStartPlanDate() throws ParseException {
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        startPlanDate = df1.parse(getFirstInstDate());
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        startPlanDate = df1.parse(getFirstInstDate());
         return startPlanDate;
     }
 
     public void setStartPlanDate(Date startPlanDate) {
         System.out.println("FSMB:getStartPlanDate is " + startPlanDate.toString());
-
         this.startPlanDate = startPlanDate;
 
     }
@@ -564,9 +563,11 @@ public class FlightInstanceManagedBean implements Serializable {
 
     public String getFirstInstDate() throws ParseException {
         System.out.println("FIMB: getFirstInstDate!");
-        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        startPlanDate = df1.parse(fsb.getFirstInstDate());
-        return fsb.getFirstInstDate();
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date firstInst = df1.parse(fsb.getFirstInstDate());
+        firstInstDate = df1.format(firstInst);
+        return firstInstDate;
+//        return fsb.getFirstInstDate();
     }
 
     public String getMinDate() throws ParseException {

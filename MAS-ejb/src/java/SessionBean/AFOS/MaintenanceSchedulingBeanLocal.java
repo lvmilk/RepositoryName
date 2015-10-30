@@ -5,6 +5,8 @@
  */
 package SessionBean.AFOS;
 
+import Entity.AFOS.Maintenance;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface MaintenanceSchedulingBeanLocal {
+
+    public void addMaintenanceLog(Maintenance mt, String aircraft, String acType, String objective, Date startTime, Date endTime, Integer manhour, String activity, String remark, String mtCrew);
     
 }

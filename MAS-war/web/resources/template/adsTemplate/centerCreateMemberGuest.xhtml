@@ -14,7 +14,7 @@
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold"/>
-                <h:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="15">
                
                     <p:outputLabel for="title" value="Title:" />
                     <h:selectOneMenu id="title" value="#{psg.title}">
@@ -66,7 +66,7 @@
 
                     <p:outputLabel  value="Email: " />
                     <p:inputText value="#{mgMB.existEmail}" required="#{mgMB.visiMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
-                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                     </p:inputText>
                 </h:panelGrid>
             </p:panel>
@@ -96,7 +96,7 @@
 
                     <p:outputLabel  value="Email Address: " />
                     <p:inputText value="#{mgMB.email}" required="#{mgMB.visiNonMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
-                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                     </p:inputText>
 
                     <p:outputLabel  value="Contact Number: " />
