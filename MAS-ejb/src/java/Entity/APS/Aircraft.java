@@ -44,8 +44,7 @@ public class Aircraft implements Serializable {
     private long dcycleFC = 0;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
-    private List<Maintenance> maintenanceList = new ArrayList<>();
-    //------------------------------------------
+    private List<Maintenance> maintenanceList= new ArrayList<>();
 
     @ManyToOne
     private AircraftType aircraftType = new AircraftType();
