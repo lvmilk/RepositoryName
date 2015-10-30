@@ -10,6 +10,7 @@ import Entity.ADS.Passenger;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.MemberBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
+import SessionBean.ADS.RsvConfirmationBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
@@ -30,6 +31,8 @@ public class TicketManagedBean implements Serializable{
     private PassengerBeanLocal psgSBlocal;
     @EJB
     private MemberBeanLocal msblocal;
+    @EJB
+    private RsvConfirmationBeanLocal rsvCflocal;
     
     private Long memberId;
     private String firstName;
@@ -67,7 +70,12 @@ public class TicketManagedBean implements Serializable{
             ex.printStackTrace();
         }
     }
-
+    
+    public void rsvConfirm()
+    {
+        rsvCflocal.setupPsg_Ticket(departSelected,returnSelected,passengerList);
+    }
+    
     /**
      * @return the memberId
      */
