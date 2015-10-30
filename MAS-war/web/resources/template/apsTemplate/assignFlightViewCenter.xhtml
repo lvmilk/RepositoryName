@@ -13,18 +13,35 @@
     <h:body>
         <h:form id="formMain">
             <h:outputStylesheet name="css/assignFleetStyle.css" />
+
+            <style>
+                .specialDialog.ui-panel {
+                    border: none;
+                }
+
+                .specialDialog.ui-panel-content {
+                    border: none;
+                }
+
+                .buttonAdd.ui-button {
+                    color: #3c9fb4;   
+                    position: absolute;
+                    right: 5px;
+                }
+            </style>
+
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
 
-                <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
+                <p:growl id="growl" showSummary="true" showDetail="true" autoUpdate="true"/>
 
                 <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
-                             groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
+                             groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" minHeight="200" widgetVar="timelineWdgt">
 
                     <!--                    <p:ajax event="add" update=":formMain:addTaskInner"
                                                 listener="#{FAMB.onAdd}"
                                                 oncomplete="PF('addTaskWdgt').show()"/>-->
-                    <p:ajax event="delete" update=":formMain:deleteTaskInner"
-                            listener="#{FAMB.onDelete}"
+                    
+                    <p:ajax event="delete" update="@form" listener="#{FAMB.onDelete}"
                             onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
 
                     <f:facet name="group">  
@@ -43,12 +60,10 @@
             </p:panel>
 
 
-            <!--<p:panelGrid columns="2"  style="margin-bottom:20px; width:70%">-->
-            <p:commandButton value="Add Flight Task" oncomplete="PF('addTaskWdgt').show()" immediate="true"/>
-            <p:commandButton value="Add Maintenance" oncomplete="PF('addMtTaskWdgt').show()" immediate="true"/>  
-            <!--</p:panelGrid>-->
+            <p:commandButton value="Add Flight Task" immediate="true" oncomplete="PF('addTaskWdgt').show()"/>
+            <p:commandButton value="Add Maintenance" immediate="true" oncomplete="PF('addMtTaskWdgt').show()" />  
 
-            <p:commandButton value="Refresh" update="unplanned" class="refreshButton" >
+            <p:commandButton value="Refresh" update="unplanned" styleClass="buttonAdd" >
                 <f:ajax event="click" listener="#{FAMB.refresh}" immediate="true" />
             </p:commandButton>  
 
@@ -106,9 +121,17 @@
 
 
 
-            <p:dialog rendered="#{flighttask.class.simpleName == 'FlightInstance'}" id="deleteTaskDlg" header="Delete Flight Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
+            <p:dialog id="deleteTaskDlg" header="Delete Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="false" >  
                 <h:panelGroup id="deleteTaskInner" layout="block" style="margin:10px;">  
-                    <h:outputText value="#{FAMB.deleteMessage}"/>  
+                    <p:panel visible="#{flighttask.class.simpleName == 'FlightInstance'}" styleClass="specialDialog">
+                        <h:outputText value="#{FAMB.deleteMessage}" />      
+                    </p:panel>
+
+                    <p:panel visible="#{flighttask.class.simpleName == 'Maintenance'}" styleClass="specialDialog">
+                        <h:outputText value="#{FAMB.deleteMtMessage}" />    
+                    </p:panel>
+
+
                 </h:panelGroup>  
 
                 <f:facet name="footer">  
@@ -120,18 +143,19 @@
             </p:dialog>  
 
 
-            <p:dialog rendered="#{flighttask.class.simpleName == 'Maintenance'}" id="deleteMtTaskDlg" header="Delete Maintenance" widgetVar="deleteMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
+<!--            <p:dialog rendered="#{flighttask.class.simpleName == 'Maintenance'}" id="deleteMtTaskDlg" header="Delete Maintenance" widgetVar="deleteMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup id="deleteMtTaskInner" layout="block" style="margin:10px;">  
                     <h:outputText value="#{FAMB.deleteMtMessage}"/>  
                 </h:panelGroup>  
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Delete" process="deleteMtTaskDlg" update="@none" action="#{FAMB.deleteMt}" oncomplete="PF('deleteMtTaskWdgt').hide()"/>  
+                        <p:commandButton value="Delete" process="deleteMtTaskDlg" update="growl" action="#{FAMB.deleteMt}" oncomplete="PF('deleteMtTaskWdgt').hide()"/>  
                         <p:commandButton type="button" value="Cancel" onclick="PF('deleteMtTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
-            </p:dialog>  
+            </p:dialog>  -->
+
 
             <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <!--<h:panelGroup id="addTaskInner" layout="block" style="margin:15px;">-->
@@ -156,7 +180,7 @@
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()" />  
+                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="msgs2" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()" />  
                         <p:commandButton type="button" value="Cancel" onclick="PF('addTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
@@ -195,7 +219,7 @@
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Add Maintenance" process="addMtTaskDlg" update="@none" action="#{FAMB.addMtTask}" oncomplete="PF('addMtTaskWdgt').hide()" />  
+                        <p:commandButton value="Add Maintenance" process="addMtTaskDlg" update="msgs" action="#{FAMB.addMtTask}" oncomplete="PF('addMtTaskWdgt').hide()" />  
                         <p:commandButton type="button" value="Cancel" onclick="PF('addMtTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  

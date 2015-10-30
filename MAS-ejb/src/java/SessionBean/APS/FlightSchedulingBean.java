@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -536,7 +535,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         c1.add(Calendar.HOUR, acDu);
                         Date thisMtEnd = c1.getTime();
                         Maintenance mta = new Maintenance();
-                        mta.create(acTemp, nextFree, thisMtEnd, "A Check");
+                        mta.create(nextFree, thisMtEnd, "A Check");
+                        mta.setAircraft(acTemp);
                         System.out.println("FSB.scheduleAcToFi(): create A check === " + mta);
                         mtList.add(mta);
                         acTemp.setMaintenanceList(mtList);
@@ -557,7 +557,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         c1.add(Calendar.HOUR, bcDu);
                         Date thisMtEnd = c1.getTime();
                         Maintenance mtb = new Maintenance();
-                        mtb.create(acTemp, nextFree, thisMtEnd, "B Check");
+                        mtb.create(nextFree, thisMtEnd, "B Check");
+                        mtb.setAircraft(acTemp);
                         System.out.println("FSB.scheduleAcToFi(): create B check === " + mtb);
                         mtList.add(mtb);
                         acTemp.setMaintenanceList(mtList);
@@ -579,7 +580,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             c1.add(Calendar.HOUR, ccDu);
                             Date thisMtEnd = c1.getTime();
                             Maintenance mtc = new Maintenance();
-                            mtc.create(acTemp, nextFree, thisMtEnd, "C Check");
+                            mtc.create(nextFree, thisMtEnd, "C Check");
+                            mtc.setAircraft(acTemp);
                             System.out.println("FSB.scheduleAcToFi(): create C check === " + mtc);
                             mtList.add(mtc);
                             acTemp.setMaintenanceList(mtList);
@@ -602,7 +604,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             c1.add(Calendar.HOUR, dcDu);
                             Date thisMtEnd = c1.getTime();
                             Maintenance mtd = new Maintenance();
-                            mtd.create(acTemp, nextFree, thisMtEnd, "D Check");
+                            mtd.create(nextFree, thisMtEnd, "D Check");
+                            mtd.setAircraft(acTemp);
                             System.out.println("FSB.scheduleAcToFi(): create D check === " + mtd);
                             mtList.add(mtd);
                             acTemp.setMaintenanceList(mtList);
@@ -683,48 +686,75 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd) {
+    public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd) {
+        Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", act.getRegistrationNo());
+        Aircraft ac = (Aircraft) q1.getResultList().get(0);
         boolean flag1 = canAssignMt(ac, obj, mtStart, mtEnd);
         List<Maintenance> mtTemp = ac.getMaintenanceList();
         System.out.println("FSB: addMtToAc ");
         System.out.println("FSB: addMtToAc " + flag1);
         if (flag1) {
             Maintenance newMt = new Maintenance();
-            newMt.create(ac, mtStart, mtEnd, obj);
+            newMt.create(mtStart, mtEnd, obj);
+            newMt.setAircraft(ac);
+            System.err.println("FSB: addMtToAc " + "finish creating mt " + newMt.toString());
+
             em.persist(newMt);
-            
+            em.flush();
+            System.err.println("FSB: addMtToAc " + "mt in database " + newMt.toString());
+
             mtTemp.add(newMt);
             ac.setMaintenanceList(mtTemp);
 
             switch (obj.charAt(0)) {
                 case 'A': {
-                    ac.setAcycleFM(0);
-                    ac.setAcycleFC(0);
+                    if (!hasMtAfterThis(ac, newMt)) {
+                        ac.setAcycleFM(0);
+                        ac.setAcycleFC(0);
+                    }
                     break;
                 }
                 case 'B': {
-                    ac.setBcycleFM(0);
-                    ac.setBcycleFC(0);
+                    if (!hasMtAfterThis(ac, newMt)) {
+                        ac.setBcycleFM(0);
+                        ac.setBcycleFC(0);
+                    }
                     break;
                 }
                 case 'C': {
-                    ac.setCcycleFM(0);
-                    ac.setCcycleFC(0);
+                    if (!hasMtAfterThis(ac, newMt)) {
+                        ac.setCcycleFM(0);
+                        ac.setCcycleFC(0);
+                    }
                     break;
                 }
                 case 'D': {
-                    ac.setDcycleFM(0);
-                    ac.setDcycleFC(0);
+                    if (!hasMtAfterThis(ac, newMt)) {
+                        ac.setDcycleFM(0);
+                        ac.setDcycleFC(0);
+                    }
                     break;
                 }
                 default:
                     break;
             }
-
             em.merge(ac);
             em.flush();
         }
         return flag1;
+    }
+
+    public boolean hasMtAfterThis(Aircraft ac, Maintenance mt) {
+        boolean has = false;
+        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        for (Maintenance m : mtTemp) {
+            if (m.getObjective().equals(mt.getObjective())) {
+                if (m.getStartTime().after(mt.getStartTime())) {
+                    has = true;
+                }
+            }
+        }
+        return has;
     }
 
     @Override
@@ -1031,10 +1061,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @Override
     public void deleteMtFromAc(Aircraft ac, Maintenance mt) {
+        Query q1 = em.createQuery("SELECT a FROM Maintenance a where a.id=:id").setParameter("id", mt.getId());
+        Maintenance mtM = (Maintenance) q1.getResultList().get(0);
         List<Maintenance> mtTemp = ac.getMaintenanceList();
-        mtTemp.remove(mt);
+        mtTemp.remove(mtM);
         ac.setMaintenanceList(mtTemp);
-        em.remove(mt);
+        em.remove(mtM);
         em.merge(ac);
         em.flush();
     }

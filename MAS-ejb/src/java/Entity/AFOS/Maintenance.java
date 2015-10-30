@@ -42,8 +42,7 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Aircraft aircraft;
 
-    public Maintenance create(Aircraft ac, Date startTime, Date endTime, String objective) {
-        this.aircraft = ac;
+    public Maintenance create(Date startTime, Date endTime, String objective) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.objective = objective;
