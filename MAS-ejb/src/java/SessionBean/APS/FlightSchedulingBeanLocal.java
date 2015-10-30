@@ -71,13 +71,13 @@ public interface FlightSchedulingBeanLocal {
 
     public FlightInstance findFlight(String flightNo, String flightDate) throws Exception;
 
-    public FlightInstance getDummyFi();
-
     public long getFlightAccumMinute(FlightFrequency ff);
 
-    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd);
+    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd) throws Exception;
 
     public List<FlightInstance> getAllUnplannedFi();
 
     public void deleteMtFromAc(Aircraft ac, Maintenance mt);
+
+    public FlightInstance getDummyFi(String outOrIn);
 }
