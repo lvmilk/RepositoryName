@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -24,13 +25,17 @@ public class Ticket implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long itineraryID;
+    private Long ticketID;
     private String depCity;
     private String arrCity;
     private String depTime;
     private String arrTime;
+    private String flightNo;
+    private String bookSystem;
 
-    private Passenger passenger = new Passenger();
+    @ManyToOne
+    private Passenger passenger;
+    
     private BookingClassInstance bkInstance=new BookingClassInstance();
     private Reservation rsv=new Reservation();
     
@@ -39,30 +44,40 @@ public class Ticket implements Serializable {
 
     public Ticket() {
     }
-
-    public Long getItineraryID() {
-        return itineraryID;
+    
+    public void createTicket(String depCity, String arrCity, String depTime, String arrTime,String flightNo,String bookSystem)
+    {
+        this.depCity=depCity;
+        this.arrCity=arrCity;
+        this.depTime=depTime;
+        this.arrTime=arrTime;
+        this.flightNo=flightNo;
+        this.bookSystem=bookSystem;
     }
 
-    public void setItineraryID(Long itineraryID) {
-        this.itineraryID = itineraryID;
+    public Long getTicketID() {
+        return ticketID;
+    }
+
+    public void setTicketID(Long ticketID) {
+        this.ticketID = ticketID;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (itineraryID != null ? itineraryID.hashCode() : 0);
+        hash += (ticketID != null ? ticketID.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the itineraryID fields are not set
+        // TODO: Warning - this method won't work in the case the ticketID fields are not set
         if (!(object instanceof Ticket)) {
             return false;
         }
         Ticket other = (Ticket) object;
-        if ((this.itineraryID == null && other.itineraryID != null) || (this.itineraryID != null && !this.itineraryID.equals(other.itineraryID))) {
+        if ((this.ticketID == null && other.ticketID != null) || (this.ticketID != null && !this.ticketID.equals(other.ticketID))) {
             return false;
         }
         return true;
@@ -70,7 +85,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Itinerary[ id=" + itineraryID + " ]";
+        return "Entity.ADS.Itinerary[ id=" + ticketID + " ]";
     }
 
     /**
@@ -183,6 +198,34 @@ public class Ticket implements Serializable {
      */
     public void setRsv(Reservation rsv) {
         this.rsv = rsv;
+    }
+
+    /**
+     * @return the flightNo
+     */
+    public String getFlightNo() {
+        return flightNo;
+    }
+
+    /**
+     * @param flightNo the flightNo to set
+     */
+    public void setFlightNo(String flightNo) {
+        this.flightNo = flightNo;
+    }
+
+    /**
+     * @return the bookSystem
+     */
+    public String getBookSystem() {
+        return bookSystem;
+    }
+
+    /**
+     * @param bookSystem the bookSystem to set
+     */
+    public void setBookSystem(String bookSystem) {
+        this.bookSystem = bookSystem;
     }
 
 }
