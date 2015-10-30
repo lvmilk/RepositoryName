@@ -9,6 +9,7 @@ import Entity.ADS.Passenger;
 import Entity.CommonInfa.MsgSender;
 import SessionBean.ADS.MemberBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,9 +83,10 @@ public class MemberGuestManagedBean implements Serializable {
         }
     }
 
-    public void makeReserve() {
+    public void makeReserve() throws IOException {
         System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
         System.out.print("&&&&&&&&&&This is email: " + existEmail);
+        Long temp;
         
         if (visiMember == true) {
             if(psgSBlocal.checkMemberExist(memberId, email))
@@ -93,6 +95,7 @@ public class MemberGuestManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList",passengerList );
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
                 
             }else
             {
@@ -106,6 +109,17 @@ public class MemberGuestManagedBean implements Serializable {
             {
                 psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
+                temp=msblocal.retrieveMemberID(email);
+                if(temp.equals(0))
+                {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member ID does not found ", ""));
+                }else
+                {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", temp);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList",passengerList );
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                }
+                
             }
         }
     }

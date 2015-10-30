@@ -27,7 +27,7 @@ public class MemberBean implements MemberBeanLocal {
     public List<Member> getAllMember() {
         Query query = em.createQuery("SELECT a FROM Member a ");
         List<Member> resultList = (List) query.getResultList();
-        
+
         return resultList;
     }
 
@@ -63,8 +63,8 @@ public class MemberBean implements MemberBeanLocal {
     }
 
     @Override
-    public void editMember(Long memberId,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus) {
-        Member member=em.find(Member.class, memberId);
+    public void editMember(Long memberId, String title, String firstName, String lastName, String address, String email, String contactNo, String dob, Double miles, String passport, boolean memberStatus) {
+        Member member = em.find(Member.class, memberId);
         member.setTitle(title);
         member.setFirstName(firstName);
         member.setLastName(lastName);
@@ -75,10 +75,10 @@ public class MemberBean implements MemberBeanLocal {
         member.setMiles(miles);
         member.setPassport(passport);
         member.setMemberStatus(memberStatus);
-        
+
         em.merge(member);
         em.flush();
-        
+
     }
 
     private boolean checkList(Query query) {
@@ -90,5 +90,26 @@ public class MemberBean implements MemberBeanLocal {
         } else {
             return true;
         }
+    }
+
+    @Override
+    public Long retrieveMemberID(String email) {
+        Query query = null;
+        Long temp=new Long(0);
+
+        query = em.createQuery("SELECT u FROM Member u WHERE u.email = :inUserEmail");
+        query.setParameter("inUserEmail", email);
+        List<Member> resultList= query.getResultList();
+        if(!resultList.isEmpty())
+        {
+            return resultList.get(0).getMemberID();
+        }
+        return temp;
+    }
+
+    @Override
+    public Member retrieveMember(Long mermberId) {
+        Member member=em.find(Member.class, mermberId);
+        return member;
     }
 }
