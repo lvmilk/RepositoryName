@@ -20,12 +20,12 @@ INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) val
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(90000,"Premium Economy Class",100,"A330-200")
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(100000,"Economy Class",200,"777-300")
 
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-ABC","0000001","In Service","2015-10-04","2015-10-12","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A380","9V-XYZ","0000004","In Service","2015-10-04","2015-10-12","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-AAA","0000002","In Service","2015-10-05","2015-10-10","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-BBB","0000003","In Service","2015-10-05","2015-10-10","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("777-300","9V-CCC","0000005","In Service","2015-10-05","2015-10-10","2025-01-03","SIN")
-INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport) values("A330-200","9V-000","9999999","Testing","2015-09-30","2015-10-09","2050-12-25","SIN")
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("A380","9V-ABC","0000001","In Service","2015-02-04","2015-10-12","2025-01-03","SIN",10)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("A380","9V-XYZ","0000004","In Service","2015-01-04","2015-10-12","2025-01-03","SIN",10)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("777-300","9V-AAA","0000002","In Service","2015-03-05","2015-10-10","2025-01-03","SIN",10)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("777-300","9V-BBB","0000003","In Service","2015-04-05","2015-10-10","2025-01-03","SIN",10)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("777-300","9V-CCC","0000005","In Service","2015-05-05","2015-10-10","2025-01-03","SIN",10)
+INSERT IGNORE INTO Aircraft (aircraftType_type,registrationNo,serialNo,status,firstFlyDate,deliveryDate,retireDate,currentAirport,yearDiff) values("A330-200","9V-000","9999999","Testing","2015-02-30","2017-10-09","2050-12-25","SIN",10)
 
 
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare) values(10001,0,0,0,0,0,0,"777-300","SIN","SIN","Pending",0)
