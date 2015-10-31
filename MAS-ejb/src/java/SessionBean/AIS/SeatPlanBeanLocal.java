@@ -16,4 +16,6 @@ import javax.ejb.Local;
 public interface SeatPlanBeanLocal {
       public boolean checkAirTypeEmpty();
      public AircraftType findType(String type);
+
+    public void addCabin(AircraftType aircraftType, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo);
 }

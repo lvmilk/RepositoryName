@@ -39,11 +39,14 @@
                     <p:column headerText="Max Distance">
                         <h:outputText value="#{AircraftType.maxDistance}" />
                     </p:column>
-                    <p:column headerText="Lease Cost/month (SGD)">
-                        <h:outputText value="#{AircraftType.leaseCost}" />
+                    <p:column headerText="Purchase Cost (SGD)">
+                        <h:outputText value="#{AircraftType.purchaseCost/1000000}" />
                     </p:column>
                     <p:column headerText="Fuel Cost/hour (SGD)">
                         <h:outputText value="#{AircraftType.fuelCost}" />
+                    </p:column>
+                    <p:column headerText="Maintenance Cost/hour (SGD)">
+                        <h:outputText value="#{AircraftType.mtCost}" />
                     </p:column>
                     <p:column headerText="Length">
                         <h:outputText value="#{AircraftType.aircraftLength}" />
@@ -54,21 +57,7 @@
                     <p:column headerText="Min Airspace">
                         <h:outputText value="#{AircraftType.minAirspace}" />
                     </p:column>
-                    <p:column headerText="# of Seat in Suite">
-                        <h:outputText value="#{AircraftType.suiteNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in First Class" >
-                        <h:outputText value="#{AircraftType.fcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Business Class">
-                        <h:outputText value="#{AircraftType.bcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Premium Economy Class">
-                        <h:outputText value="#{AircraftType.fcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Economy Class">
-                        <h:outputText value="#{AircraftType.ecSeatNo}" />
-                    </p:column>
+
 
                 </p:dataTable>
                   <br/>

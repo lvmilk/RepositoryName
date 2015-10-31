@@ -28,7 +28,6 @@ public class Passenger implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @Column(unique=true)
     private String passport;
     
     private String title;
@@ -41,7 +40,7 @@ public class Passenger implements Serializable {
     private Member member;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
-    private Collection<Ticket> ticket=new ArrayList<Ticket>();
+    private Collection<Ticket> ticket;
     
     public Passenger()
     {

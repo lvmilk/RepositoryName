@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Reservation Confirmation</title>
     </h:head>
@@ -11,17 +12,83 @@
         <h:form>
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
-                   
+
                     <p:outputLabel  value="Reserved by: " />
-                    <p:outputLabel value="#{mgMB.firstName} #{mgMB.lastName}" />
-                    
-                    <p:outputLabel  value="Passenger: " />
-                    <p:outputLabel value="#{mgMB.firstName} #{mgMB.lastName}" />
-                    
-                    
+                    <p:outputLabel value="#{tkMB.firstName} #{tkMB.lastName}" />
+
+                    <p:outputLabel  value="No. of Passenger: " />
+                    <p:outputLabel value="#{tkMB.psgCount}" />
+
                 </h:panelGrid>
             </p:panel>
+
+
+
+            <p:panel header="Departure trip " >             
+                <ui:repeat value="#{tkMB.departSelected}" var="instance">
+                    <h:panelGrid columns="8" cellpadding="15" >
+
+                        <p:outputLabel  value="FlightNo: " />
+                        <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                        <p:outputLabel  value="Depart From: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                        <p:outputLabel  value="Arrive At: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                        <p:outputLabel  value="Departure Time: " />
+                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                        <p:outputLabel  value="Arrival Time Time: " />
+                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                        <p:outputLabel  value="Aircraft Type: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                        <p:outputLabel  value="Cabin Class: " />
+                        <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                    </h:panelGrid>
+                    <p:separator />
+                </ui:repeat>
+            </p:panel>
+
+            <br/>
+            <p:panel header="return trip " rendered="#{tkMB.returnSelected.size()>0}">             
+                <ui:repeat value="#{tkMB.returnSelected}" var="instance">
+                    <h:panelGrid columns="8" cellpadding="15" >
+
+                        <p:outputLabel  value="FlightNo: " />
+                        <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                        <p:outputLabel  value="Depart From: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                        <p:outputLabel  value="Arrive At: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                        <p:outputLabel  value="Departure Time: " />
+                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                        <p:outputLabel  value="Arrival Time Time: " />
+                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                        <p:outputLabel  value="Aircraft Type: " />
+                        <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                        <p:outputLabel  value="Cabin Class: " />
+                        <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                    </h:panelGrid>
+                    <p:separator />
+                </ui:repeat>
+            </p:panel>
+            
+            
+            <p:commandButton value="Confirm" actionListener="#{tkMB.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>
+
 

@@ -22,20 +22,14 @@
                         <f:validateRegex pattern="9V-((?=.*[A-Z]).{3,3})" />
                     </p:inputText>
 
-
-<!--                    <p:outputLabel for="serialNo" value="Serial No.: " />
-                    <p:inputText id="serialNo"  value="#{AMB.serialNo}" label="serialNo" required="true" validatorMessage="Serial No.: please enter a valid serial number"  requiredMessage="Please enter serial number" size="50">
-                        <f:validateRegex pattern="((?=.*\d).{1,20})"/>
-                    </p:inputText>-->
-
                     <p:outputLabel for="firstFlyDate" value="First Fly Date :" />
                     <p:calendar id="firstFlyDate" value="#{AMB.firstFlyDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="firstFlyDate" required="true" validatorMessage="First Fly Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the first fly date of the aircraft" size="50"/>
 
                     <p:outputLabel for="deliveryDate" value="Delivery Date :" />
                     <p:calendar id="deliveryDate" value="#{AMB.deliveryDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
 
-                    <p:outputLabel for="retireDate" value="Lease Expiration Date:" />
-                    <p:calendar id="retireDate" value="#{AMB.retireDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Lease Expiration Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the lease expiration date of the aircraft" size="50"/>
+                    <p:outputLabel for="retireDate" value="Retire Date:" />
+                    <p:calendar id="retireDate" value="#{AMB.retireDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
 
                     <!--                    <p:outputLabel for="flightLogId" value="Flight Log ID:" />
                                         <p:inputText id="flightLogId" value="#{AMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">

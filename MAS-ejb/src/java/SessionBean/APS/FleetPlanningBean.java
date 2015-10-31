@@ -5,10 +5,12 @@ import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
 import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
+import SessionBean.AIS.SeatPlanBeanLocal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,6 +27,9 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     EntityManager em;
     AircraftType aircraftType;
     Aircraft aircraft;
+
+    @EJB
+    SeatPlanBeanLocal sp;
 
     private Map<String, Integer> allSize = new HashMap<String, Integer>();
     private Map<String, String> allManufacturer = new HashMap<String, String>();
@@ -144,8 +149,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) throws Exception {
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         System.out.println("get in addAircraftType");
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
@@ -154,11 +159,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
             throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
         }
-        if ((stewardess + steward + purser + captain + pilot) > 30) {
-            throw new Exception("Total number of crews exceeds the max capacity (30)!");
+        if ((cabinCrew + purser + captain + pilot) > 25) {
+            throw new Exception("Total number of crews exceeds the max capacity (25)!");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
+        aircraftType.create(type, manufacturer, maxDistance, purchaseCost, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
         em.persist(aircraftType);
         em.flush();
         System.out.println("Aircrat Type is added!");
@@ -166,8 +171,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) throws Exception {
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
@@ -175,13 +180,14 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
             throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
         }
-        if ((stewardess + steward + purser + captain + pilot) > 30) {
-            throw new Exception("Total number of crews exceeds the max capacity (30)!");
+        if ((cabinCrew + purser + captain + pilot) > 25) {
+            throw new Exception("Total number of crews exceeds the max capacity (25)!");
         }
         aircraftType.setManufacturer(manufacturer);
         aircraftType.setMaxDistance(maxDistance);
-        aircraftType.setLeaseCost(leaseCost);
+        aircraftType.setPurchaseCost(purchaseCost);
         aircraftType.setFuelCost(fuelCost);
+        aircraftType.setMtCost(mtCost);
         aircraftType.setAircraftLength(aircraftLength);
         aircraftType.setWingspan(wingspan);
         aircraftType.setMinAirspace(minAirspace);
@@ -190,8 +196,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setBcSeatNo(bcSeatNo);
         aircraftType.setPecSeatNo(pecSeatNo);
         aircraftType.setEcSeatNo(ecSeatNo);
-        aircraftType.setStewardess(stewardess);
-        aircraftType.setSteward(steward);
+        aircraftType.setCabinCrew(cabinCrew);
         aircraftType.setPurser(purser);
         aircraftType.setCaptain(captain);
         aircraftType.setPilot(pilot);
@@ -386,12 +391,6 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 } else {
                     String type = selectedList.get(i).getAircraftType().getType();
                     aircraft = em.find(Aircraft.class, registrationNo);
-                    //-------------------------------remove maintenance------------------------
-                    Query q1 = em.createQuery("SELECT m FROM Maintenance m where m.aircraft.registrationNo =:registrationNo").setParameter("registrationNo", registrationNo);
-                    List<Maintenance> mList = q1.getResultList();
-                    for (Maintenance m : mList) {
-                        em.remove(m);
-                    }
                     aircraftType = em.find(AircraftType.class, type);
                     aircraftType.getAircraft().remove(aircraft);
                     em.remove(aircraft);
@@ -435,7 +434,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         return q.getResultList();
     }
 
-    @Override
+ @Override
     public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH) {
         AircraftType act = em.find(AircraftType.class, acType.getType());
 //        act.setDailycDu(dailycDu);
@@ -464,3 +463,4 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
 }
+

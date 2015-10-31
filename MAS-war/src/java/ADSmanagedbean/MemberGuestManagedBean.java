@@ -6,9 +6,11 @@
 package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
+import Entity.APS.FlightInstance;
 import Entity.CommonInfa.MsgSender;
 import SessionBean.ADS.MemberBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,19 +54,24 @@ public class MemberGuestManagedBean implements Serializable {
 
     private ArrayList<Passenger> passengerList = new ArrayList<>();
     private Passenger person = new Passenger();
-    
+
     private Integer repeat;
-    
+
+    private ArrayList<FlightInstance> departSelected = new ArrayList<>();
+    private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+    private Double totalPrice;
 
     @PostConstruct
     public void init() {
         try {
-            repeat=(Integer)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
-            
-            for(int i=0;i<repeat;i++)
-            {
-              passengerList.add(person);
-              person=new Passenger();
+            departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
+            returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");
+            totalPrice = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalPrice");
+            repeat = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+
+            for (int i = 0; i < repeat; i++) {
+                passengerList.add(person);
+                person = new Passenger();
             }
 
         } catch (Exception ex) {
@@ -82,30 +89,43 @@ public class MemberGuestManagedBean implements Serializable {
         }
     }
 
-    public void makeReserve() {
+    public void makeReserve() throws IOException {
         System.out.print("&&&&&&&&&&This is person: " + person.getFirstName());
         System.out.print("&&&&&&&&&&This is email: " + existEmail);
-        
+        Long temp;
+
         if (visiMember == true) {
-            if(psgSBlocal.checkMemberExist(memberId, email))
-            {
-                psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+            if (psgSBlocal.checkMemberExist(memberId, existEmail)) {
+                passengerList=psgSBlocal.makeReservation(passengerList, existEmail, memberId);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList",passengerList );
-                
-            }else
-            {
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
+
+                System.out.println("#########This is in makeReserver and the id of passenger is:"+passengerList.get(0).getId());
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
+
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+
+            } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
             }
         } else if (visiNonMember == true) {
-            if(msblocal.checkEmailExists(email))
-            {
+            if (msblocal.checkEmailExists(email)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email address is already been used ", ""));
-            }else
-            {
-                psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+            } else {
+                passengerList=psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
+                temp = msblocal.retrieveMemberID(email);
+                if (temp.equals(0)) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member ID does not found ", ""));
+                } else {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", temp);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
+
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                }
+
             }
         }
     }
@@ -334,4 +354,31 @@ public class MemberGuestManagedBean implements Serializable {
         this.existEmail = existEmail;
     }
 
+    public ArrayList<FlightInstance> getDepartSelected() {
+        return departSelected;
+    }
+
+    public void setDepartSelected(ArrayList<FlightInstance> departSelected) {
+        this.departSelected = departSelected;
+    }
+
+    public ArrayList<FlightInstance> getReturnSelected() {
+        return returnSelected;
+    }
+
+    public void setReturnSelected(ArrayList<FlightInstance> returnSelected) {
+        this.returnSelected = returnSelected;
+    }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    
+    
+    
 }
