@@ -27,18 +27,18 @@ public class PassengerBean implements PassengerBeanLocal {
     private Member member;
 
     @Override
-    public void makeReservation(ArrayList<Passenger> passengerList, String email, Long memberId) {
+    public ArrayList<Passenger> makeReservation(ArrayList<Passenger> passengerList, String email, Long memberId) {
         System.out.println("******PassengerList size:" + passengerList.size());
         Passenger tempPsg;
         boolean status;
 
         status = checkMemberExist(memberId, email);
-
+        ArrayList<Passenger> psgList = new ArrayList<Passenger>();
         if (status == true) {
             member = new Member();
             member = em.find(Member.class, memberId);
 
-            ArrayList<Passenger> psgList = new ArrayList<Passenger>();
+            
 
             for (int i = 0; i < passengerList.size(); i++) {
 
@@ -59,10 +59,12 @@ public class PassengerBean implements PassengerBeanLocal {
             em.merge(member);
             em.flush();
 
+            
         } else {
             System.out.println("##########Make reservation: member does not exist");
+            
         }
-
+        return psgList;
     }
 
     @Override
@@ -109,7 +111,7 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public void makeRsvGuest(ArrayList<Passenger> passengerList, String title, String firstName, String lastName, String address, String email, String contactNo) {
+    public ArrayList<Passenger> makeRsvGuest(ArrayList<Passenger> passengerList, String title, String firstName, String lastName, String address, String email, String contactNo) {
 
         System.out.println("******PassengerList size:" + passengerList.size());
         Passenger tempPsg;
@@ -141,9 +143,10 @@ public class PassengerBean implements PassengerBeanLocal {
         member.setPsgs(psgList);
         em.merge(member);
         em.flush();
-
+        
+        
         System.out.println("~~~~~~~~The size that member/guest booked" + member.getPsgs().size());
-
+        return psgList;
     }
 
     public boolean checkPassportExist(String passport) {

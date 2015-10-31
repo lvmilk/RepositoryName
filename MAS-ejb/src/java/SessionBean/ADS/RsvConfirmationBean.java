@@ -28,96 +28,99 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
 
     private Ticket ticket;
     private Passenger psg;
-    
+
     private String depCity;
     private String arrCity;
     private String depTime;
     private String arrTime;
     private String flightNo;
-    
-    private String bookSystem="ARS";
-    
+
+    private String bookSystem = "ARS";
+
     @Override
     public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList) {
-        Ticket depTicket=new Ticket();
-        Ticket arrTicket=new Ticket();
+        Ticket depTicket;
+        Ticket arrTicket;
         Date temp;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        
+
+        System.out.println("^^^^^^^^^^^^^^^Size of passengerList is: " + passengerList.size());
+
         for (int i = 0; i < departSelected.size(); i++) {
 //            depTicket=new Ticket();
-            depCity=departSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
-            arrCity=departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
-            temp=departSelected.get(i).getStandardDepTimeDateType();
-            depTime=df.format(temp);
-            flightNo=departSelected.get(i).getFlightFrequency().getFlightNo();
-            depTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
-            
-            for(int j=0;j<passengerList.size();j++)
-            {
-                psg=passengerList.get(j);
+            depCity = departSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
+            arrCity = departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
+            temp = departSelected.get(i).getStandardDepTimeDateType();
+            depTime = df.format(temp);
+            flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
+
+            for (int j = 0; j < passengerList.size(); j++) {
+                depTicket = new Ticket();
+                depTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
+                psg = passengerList.get(j);
+                System.out.println("*************Passenger Id is :" + psg.getId());
                 Passenger psgl = em.find(Passenger.class, psg.getId());
-                if (psgl!=null)
-                {
+                if (psgl != null) {
                     depTicket.setPassenger(psgl);
+                    em.persist(depTicket);
+//                    em.flush();
+                    psgl.getTicket().add(depTicket);
+                    em.merge(psgl);
+                    em.flush();
                 }
             }
-            em.persist(depTicket);
-            em.flush();
-            
-            for(int k=0;k<passengerList.size();k++)
-            {
-                psg=passengerList.get(k);
-                Passenger psgl = em.find(Passenger.class, psg.getId());
-                if (psgl!=null)
-                {
-                    psgl.getTicket().add(depTicket);
-                }
-                em.merge(psgl);
-                em.flush();
-            }    
+
+//            for (int k = 0; k < passengerList.size(); k++) {
+//                psg = passengerList.get(k);
+//                Passenger psgl = em.find(Passenger.class, psg.getId());
+//                if (psgl != null) {
+//                    psgl.getTicket().add(depTicket);
+//                }
+//                em.merge(psgl);
+//                em.flush();
+//            }
         }
-        
+
         for (int i = 0; i < returnSelected.size(); i++) {
 //            arrTicket=new Ticket();
-            depCity=departSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
-            arrCity=departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
-            temp=departSelected.get(i).getStandardDepTimeDateType();
-            depTime=df.format(temp);
-            flightNo=departSelected.get(i).getFlightFrequency().getFlightNo();
-            arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
-            
-            for(int j=0;j<passengerList.size();j++)
-            {
-                psg=passengerList.get(j);
+            depCity = departSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
+            arrCity = departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
+            temp = departSelected.get(i).getStandardDepTimeDateType();
+            arrTime = df.format(temp);
+            flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
+
+            for (int j = 0; j < passengerList.size(); j++) {
+                arrTicket = new Ticket();
+                arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
+                psg = passengerList.get(j);
                 Passenger psgl = em.find(Passenger.class, psg.getId());
-                if (psgl!=null)
-                {
-                    depTicket.setPassenger(psgl);
-                }      
-            }
-            em.persist(arrTicket);
-            em.flush();
-            
-            for(int k=0;k<passengerList.size();k++)
-            {
-                psg=passengerList.get(k);
-                Passenger psgl = em.find(Passenger.class, psg.getId());
-                if (psgl!=null)
-                {
-                    psgl.getTicket().add(depTicket);
+                if (psgl != null) {
+                    arrTicket.setPassenger(psgl);
+                    em.persist(arrTicket);
+//                    em.flush();
+
+                    psgl.getTicket().add(arrTicket);
+                    em.merge(psgl);
+                    em.flush();
                 }
-                em.merge(psgl);
-                em.flush();
             }
-            
+
+//            for (int k = 0; k < passengerList.size(); k++) {
+//                psg = passengerList.get(k);
+//                Passenger psgl = em.find(Passenger.class, psg.getId());
+//                if (psgl != null) {
+//                    psgl.getTicket().add(arrTicket);
+//                }
+//                em.merge(psgl);
+//                em.flush();
+//            }
+
         }
-        
+
     }
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-
     /**
      * @return the ticket
      */
