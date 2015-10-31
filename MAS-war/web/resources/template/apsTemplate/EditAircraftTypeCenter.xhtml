@@ -9,7 +9,7 @@
 
 
     <h:head>
-     <title>Edit Aircraft Type</title>
+        <title>Edit Aircraft Type</title>
     </h:head>
     <h:body>
         <h:form>
@@ -28,11 +28,14 @@
                     <p:column headerText="Max Distance">
                         <h:outputText value="#{AircraftType.maxDistance}" />
                     </p:column>
-                    <p:column headerText="Lease Cost">
-                        <h:outputText value="#{AircraftType.leaseCost}" />
+                    <p:column headerText="Purchase Cost">
+                        <h:outputText value="#{AircraftType.purchaseCost}" />
                     </p:column>
                     <p:column headerText="Fuel Cost">
                         <h:outputText value="#{AircraftType.fuelCost}" />
+                    </p:column>
+                    <p:column headerText="Maintenance Cost">
+                        <h:outputText value="#{AircraftType.mtCost}" />
                     </p:column>
                     <p:column headerText="Length">
                         <h:outputText value="#{AircraftType.aircraftLength}" />
@@ -58,13 +61,10 @@
                     <p:column headerText="# of Seat in Economy Class">
                         <h:outputText value="#{AircraftType.ecSeatNo}" />
                     </p:column>
-                    <p:column headerText="# of Stewardess">
-                        <h:outputText value="#{AircraftType.stewardess}" />
+                    <p:column headerText="Ratio of Cabin Crew">
+                        <h:outputText value="#{AircraftType.cabinCrew}" />
                     </p:column>
-                    <p:column headerText="# of Steward">
-                        <h:outputText value="#{AircraftType.steward}" />
-                    </p:column>
-                    <p:column headerText="# of Purser">
+                    <p:column headerText="Ratio of Purser">
                         <h:outputText value="#{AircraftType.purser}" />
                     </p:column>
                     <p:column headerText="# of Captain">
@@ -73,9 +73,6 @@
                     <p:column headerText="# of Pilot">
                         <h:outputText value="#{AircraftType.pilot}" />
                     </p:column>
-                    
-                    
-                    
 
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{ATMB.editAircraftType(AircraftType)}"  />

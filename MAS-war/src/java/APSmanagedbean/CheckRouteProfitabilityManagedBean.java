@@ -83,8 +83,8 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
             System.out.println("CRFMB.checkRouteCost(): annual total flight hours " + flightHr);
             Double fuel = flightHr * a.getFuelCost() / 1000.0;
             System.out.println("CRFMB.checkRouteCost(): fuel cost thousand SGD " + fuel);
-            Double lease = 12 * a.getLeaseCost() / 1000.0; // leaseCost is monthly
-            Double crew = ((a.getStewardess() * 20 + a.getSteward() * 20 + a.getPurser() * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
+            Double lease = 12 * a.getPurchaseCost() / 1000.0; // leaseCost is monthly
+            Double crew = ((a.getCabinCrew()*seatNo * 20 + a.getPurser()*seatNo * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
             Double mtCost = 3640.0;
             Double totalCost = fuel + lease + crew + mtCost;
             Double profit = revenue - totalCost;

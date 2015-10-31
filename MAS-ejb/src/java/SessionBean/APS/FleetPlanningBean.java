@@ -148,8 +148,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) throws Exception {
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         System.out.println("get in addAircraftType");
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType != null) {
@@ -158,11 +158,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
             throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
         }
-        if ((stewardess + steward + purser + captain + pilot) > 30) {
-            throw new Exception("Total number of crews exceeds the max capacity (30)!");
+        if ((cabinCrew + purser + captain + pilot) > 25) {
+            throw new Exception("Total number of crews exceeds the max capacity (25)!");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
+        aircraftType.create(type, manufacturer, maxDistance, purchaseCost, fuelCost,mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
         em.persist(aircraftType);
         em.flush();
         System.out.println("Aircrat Type is added!");
@@ -170,8 +170,8 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) throws Exception {
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
@@ -179,13 +179,14 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if ((suiteNo + fcSeatNo + bcSeatNo + pecSeatNo + ecSeatNo) > 800) {
             throw new Exception("Total number of cabin classes exceeds the max capacity (800)!");
         }
-        if ((stewardess + steward + purser + captain + pilot) > 30) {
-            throw new Exception("Total number of crews exceeds the max capacity (30)!");
+        if ((cabinCrew + purser + captain + pilot) > 25) {
+            throw new Exception("Total number of crews exceeds the max capacity (25)!");
         }
         aircraftType.setManufacturer(manufacturer);
         aircraftType.setMaxDistance(maxDistance);
-        aircraftType.setLeaseCost(leaseCost);
+        aircraftType.setPurchaseCost(purchaseCost);
         aircraftType.setFuelCost(fuelCost);
+        aircraftType.setMtCost(mtCost);
         aircraftType.setAircraftLength(aircraftLength);
         aircraftType.setWingspan(wingspan);
         aircraftType.setMinAirspace(minAirspace);
@@ -194,8 +195,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setBcSeatNo(bcSeatNo);
         aircraftType.setPecSeatNo(pecSeatNo);
         aircraftType.setEcSeatNo(ecSeatNo);
-        aircraftType.setStewardess(stewardess);
-        aircraftType.setSteward(steward);
+        aircraftType.setCabinCrew(cabinCrew);
         aircraftType.setPurser(purser);
         aircraftType.setCaptain(captain);
         aircraftType.setPilot(pilot);
