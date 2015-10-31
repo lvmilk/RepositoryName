@@ -5,7 +5,6 @@
  */
 package Entity.AIS;
 
-import Entity.APS.CabinClass;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -105,7 +104,7 @@ public class FlightCabin implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.aisEntity.FlightCabin[ id=" + id + " ]";
+        return "Entity.AIS.FlightCabin[ id=" + id + " ]";
     }
     
 }

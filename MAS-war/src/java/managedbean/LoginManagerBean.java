@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -26,7 +26,7 @@ import managedbean.EditProfileManagedBean;
 public class LoginManagerBean implements Serializable {
 
     @EJB
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
 
     private String username;
     private String password;

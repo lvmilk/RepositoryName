@@ -20,7 +20,7 @@ public interface PricingBeanLocal {
 
     // public void setAircraftType(String type);
 
-    public AircraftType getAircraftType(String type);
+    //public AircraftType getAircraftType(String type) throws Exception;
 
     //public Integer calculateCrewNo(Integer seatNo);
 

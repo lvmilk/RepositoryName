@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
  * @author LI HAO
  */
 @Stateless
-public class UserLogSessionBean implements UserLogSessionBeanLocal {
+public class UserLogBean implements UserLogBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

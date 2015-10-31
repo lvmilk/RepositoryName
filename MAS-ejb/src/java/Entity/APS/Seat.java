@@ -6,7 +6,7 @@
 
 package Entity.APS;
 
-import Entity.ADS.Itinerary;
+import Entity.ADS.Ticket;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,7 +32,7 @@ public class Seat implements Serializable {
     private String status;
 
     @OneToOne(mappedBy="seat")
-    private Itinerary itinerary;
+    private Ticket itinerary;
 
     public Long getId() {
         return id;
@@ -116,6 +116,8 @@ public class Seat implements Serializable {
 
    
 
+   
+
 
 //    /**
 //     * @return the flightBookingRecord
@@ -134,14 +136,14 @@ public class Seat implements Serializable {
     /**
      * @return the itinerary
      */
-    public Itinerary getItinerary() {
+    public Ticket getItinerary() {
         return itinerary;
     }
 
     /**
      * @param itinerary the itinerary to set
      */
-    public void setItinerary(Itinerary itinerary) {
+    public void setItinerary(Ticket itinerary) {
         this.itinerary = itinerary;
     }
     

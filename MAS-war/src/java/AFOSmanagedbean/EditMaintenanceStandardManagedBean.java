@@ -63,19 +63,19 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
 //        weeklycDu = acType.getWeeklycDu();
 //        weeklycMH = acType.getWeeklycMH();
         acInH = acType.getAcInH();
-        acInD = acType.getAcInD();
+        acInD = acType.getAcInC();
         acDu = acType.getAcDu();
         acMH = acType.getAcMH();
         bcInH = acType.getBcInH();
-        bcInD = acType.getBcInD();
+        bcInD = acType.getBcInC();
         bcDu = acType.getBcDu();
         bcMH = acType.getBcMH();
         ccInH = acType.getCcInH();
-        ccInD = acType.getCcInD();
+        ccInD = acType.getCcInC();
         ccDu = acType.getCcDu();
         ccMH = acType.getCcMH();
         dcInH = acType.getDcInH();
-        dcInD = acType.getDcInD();
+        dcInD = acType.getDcInC();
         dcDu = acType.getDcDu();
         dcMH = acType.getDcMH();
     }

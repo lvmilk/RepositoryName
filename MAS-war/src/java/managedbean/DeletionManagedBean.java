@@ -9,7 +9,7 @@ import Entity.CommonInfa.OfficeStaff;
 import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.CabinCrew;
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import managedbean.Control;
-import SessionBean.CommonInfa.UserLogSessionBeanLocal;
+import SessionBean.CommonInfa.UserLogBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -36,7 +36,7 @@ import org.primefaces.context.RequestContext;
 public class DeletionManagedBean implements Serializable {
 
     @EJB
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
 
 
     private String username;

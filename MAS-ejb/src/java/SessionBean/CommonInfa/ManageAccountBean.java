@@ -29,7 +29,7 @@ import util.CryptoHelper;
  * @author LIU YUQI & LI HAO'
  */
 @Stateless
-public class manageAccount implements manageAccountLocal {
+public class ManageAccountBean implements ManageAccountBeanLocal {
 
     @PersistenceContext
     EntityManager em;
@@ -48,7 +48,7 @@ public class manageAccount implements manageAccountLocal {
     private Integer temp;
     private Integer locked;
 
-    public manageAccount() {
+    public ManageAccountBean() {
 
     }
 

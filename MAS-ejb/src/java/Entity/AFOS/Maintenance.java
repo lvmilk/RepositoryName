@@ -32,20 +32,21 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
     private Date startTime;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date endTime;
-    private Integer expectedHour;
+//    private Integer expectedHour;
     private String objective;       // A Check/ B Check/ C Check/ D Check/ Special
-
+    private String status;
+    
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MaintenanceLog log;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Aircraft aircraft;
 
-    public Maintenance create(Aircraft ac, Date startTime, Date endTime, String objective) {
-        this.aircraft = ac;
+    public Maintenance create(Date startTime, Date endTime, String objective) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.objective = objective;
+        this.status = "Scheduled";
         return this;
     }
 
@@ -65,13 +66,13 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
         this.endTime = endTime;
     }
 
-    public Integer getExpectedHour() {
-        return expectedHour;
-    }
-
-    public void setExpectedHour(Integer expectedHour) {
-        this.expectedHour = expectedHour;
-    }
+//    public Integer getExpectedHour() {
+//        return expectedHour;
+//    }
+//
+//    public void setExpectedHour(Integer expectedHour) {
+//        this.expectedHour = expectedHour;
+//    }
 
     public String getObjective() {
         return objective;
@@ -105,6 +106,14 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
         this.id = id;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -127,7 +136,7 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
 
     @Override
     public String toString() {
-        return "Entity.AFOS.Maintenance[ id=" + id + " ]";
+        return objective + " : for " + aircraft.getRegistrationNo() + " from " + startTime.toString() + " to " + endTime.toString() ;
     }
 
     @Override

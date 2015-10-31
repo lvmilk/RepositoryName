@@ -15,34 +15,40 @@
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20">
 
-                    <p:outputLabel for="route" value="Choose route: " />
+                    <p:outputLabel value="Aircraft: " />
+                    <h:outputText value="#{AMLMB.ac} / #{AMLMB.ac.aircraftType.type}" />
+
+                    <p:outputLabel value="Maintenance Type: " />
+                    <h:outputText value="#{AMLMB.obj}" />
+
+
                     <p:selectOneMenu id="route" value="#{flightManagedBean.routeID}" required="true" requiredMessage="Please select origin airport" style="width:250px">
                         <f:selectItem itemLabel="-Select Route-" itemValue="" />
                         <f:selectItems value="#{flightManagedBean.routeInfo}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="activity" value="Work Performed: " />
-                    <p:inputTextarea rows="6" cols="33"  id="activity" value="#{AMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter maintenance activity "/>
+                    <p:inputTextarea rows="6" cols="33"  id="activity" value="#{AMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter maintenance activity performed"/>
 
-                    <p:inputText id="activity" value="#{AMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter outbound flight number" size="30"/>
+                    <p:outputLabel for="startTime" value="Maintenance Start Time: " />
+                    <p:calendar  id="startTime" value="#{AMLMB.actStart}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance start time" size="30"/>
 
+                    <p:outputLabel for="endTime" value="Maintenance End Time: " />
+                    <p:calendar  id="endTime" value="#{AMLMB.actEnd}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance end time" size="30"/>
 
-                    <p:outputLabel for="startTime" value="Maintenance Start Time (HH:mm in UTC+00:00): " />
-                    <p:calendar  id="startTime" value="#{AMLMB.startTime}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance start time" size="30"/>
-
-                    <p:outputLabel for="endTime" value="Maintenance End Time (HH:mm in UTC+00:00): " />
-                    <p:calendar  id="endTime" value="#{AMLMB.endTime}" pattern="yyyy-MM-dd HH:mm" timeOnly="true" required="true" requiredMessage="Please enter maintenance end time" size="30"/>
-
-                    <p:selectBooleanCheckbox value="#{AMLMB.checkSign}" />
-                    <h:outputText value="I certify that this aircraft was inspected in accordance with a #{AMLMB.mtType} inspection and was determined to be in an airworthy condition.  All work was accomplished in accordance with current Federal Aviation Regulations and manufacturer’s maintenance instructions." />
+                    <p:outputLabel for="manhour" value="Total Man Hour (Expected #{AMLMB.mtdu} hrs)" rendered="#{mtdu!=0}"/>
+                    <p:outputLabel for="manhour" value="Total Man Hour " rendered="#{mtdu==0}"/>
+                    <p:inputText id="manhour" value="#{AMLMB.manhour}" label="manhour" required="true"  requiredMessage="Please enter total man hour for the maintenance" size="30"/>
 
                     <p:outputLabel for="mtCrew" value="Maintenance Crew (Split with ','): " />
-                    <p:inputText id="mtCrew" value="#{AMLMB.mtCrew}" label="mtCrew" required="true"  requiredMessage="Please enter name of the maintenance crew" size="30"/>
+                    <p:inputText id="mtCrew" value="#{AMLMB.mtCrew}" label="mtCrew" required="true"  requiredMessage="Please enter name of all maintenance crew" size="30"/>
 
+                    <p:selectBooleanCheckbox value="#{AMLMB.checkSign}" />
+                    <h:outputText value="I certify that this aircraft was inspected in accordance with a #{AMLMB.mt.objective} inspection and was determined to be in an airworthy condition.  All work was accomplished in accordance with current Federal Aviation Regulations and manufacturer’s maintenance instructions." />
 
                 </h:panelGrid>
 
-                <p:commandButton id="btn" value="Add Maintenance Log" update="panel" style="margin-right:0" actionListener="#{AMLMB.addMaintenanceLog}"  icon="ui-icon-check" ajax="true" />
+                <p:commandButton id="btn" value="Add Maintenance Log" update="panel" style="margin-right:0" action="#{AMLMB.addMaintenanceLog}"  icon="ui-icon-check" ajax="true" />
 
             </p:panel>
 

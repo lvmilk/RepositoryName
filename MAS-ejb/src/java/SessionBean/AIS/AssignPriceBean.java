@@ -5,7 +5,7 @@
  */
 package SessionBean.AIS;
 
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -35,7 +35,18 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
 
         List<Route> routeList = new ArrayList<Route>();
         Query query = em.createQuery("SELECT r FROM Route r");
+        List<Route> newList = new ArrayList<Route>();
         routeList = query.getResultList();
+        if (routeList.size() != 0) {
+            for(Route r:routeList){
+                if(!r.getOrigin().equals(r.getDest())){
+                    newList.add(r);
+                }
+                    
+            }
+           routeList = newList;
+        }
+        
         return routeList;
     }
 

@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import SessionBean.CommonInfa.manageAccountLocal;
+import SessionBean.CommonInfa.ManageAccountBeanLocal;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -23,7 +23,7 @@ import javax.inject.Named;
 public class CreatePartnerManagedBean implements Serializable {
 
     @EJB
-    private manageAccountLocal mal;
+    private ManageAccountBeanLocal mal;
     private String partnerID;
     private String password;
     private String stfType="agency";

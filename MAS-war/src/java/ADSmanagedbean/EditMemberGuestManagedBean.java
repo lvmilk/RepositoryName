@@ -6,11 +6,14 @@
 package ADSmanagedbean;
 
 import Entity.ADS.Member;
-import SessionBean.ADS.MemberSessionBeanLocal;
+import SessionBean.ADS.MemberBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -20,14 +23,14 @@ import javax.inject.Named;
  * @author LI HAO
  */
 @Named(value = "etMemberGuestMB")
-@ViewScoped
-public class EditMemberGuestManagedBean implements Serializable{
-    
+@SessionScoped
+public class EditMemberGuestManagedBean implements Serializable {
+
     @EJB
-    private MemberSessionBeanLocal mbsbl;
-    
+    private MemberBeanLocal mbsbl;
+
     private List<Member> memberList;
-    
+
     private Long memberId;
     private String title;
     private String firstName;
@@ -39,24 +42,35 @@ public class EditMemberGuestManagedBean implements Serializable{
     private Double miles;
     private String passport;
     private boolean memberStatus;
-    
-    
-    
+
+    private String emailEdited;
+
+
     public void SelectEditMember(Member member) throws IOException {
         setMemberId(member.getMemberID());
-        this.title=member.getTitle();
-        this.firstName=member.getFirstName();
-        this.lastName=member.getLastName();
-        this.address=member.getAddress();
-        this.email=member.getEmail();
-        this.contactNo=member.getContact();
-        this.dob=member.getDob();
-        this.miles=member.getMiles();
-        this.passport=member.getPassport();
-        this.memberStatus=member.isMemberStatus();
+        this.title = member.getTitle();
+        this.firstName = member.getFirstName();
+        this.lastName = member.getLastName();
+        this.address = member.getAddress();
+        this.email = member.getEmail();
+        this.contactNo = member.getContact();
+        this.dob = member.getDob();
+        this.miles = member.getMiles();
+        this.passport = member.getPassport();
+        this.memberStatus = member.isMemberStatus();
+        this.setEmailEdited(email);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./adsEditMGpage.xhtml");
-        
-        
+
+    }
+
+    public void editMemberAccount() throws IOException {
+        if (!mbsbl.checkEmailDuplicate(email, emailEdited)) {
+            mbsbl.editMember(memberId, title, firstName, lastName, address, email, contactNo, dob, miles, passport, memberStatus);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
+        }
     }
 
     public List<Member> getMemberList() {
@@ -68,7 +82,6 @@ public class EditMemberGuestManagedBean implements Serializable{
 
         return memberList;
     }
-    
 
     /**
      * @param memberList the memberList to set
@@ -230,5 +243,19 @@ public class EditMemberGuestManagedBean implements Serializable{
     public void setMemberStatus(boolean memberStatus) {
         this.memberStatus = memberStatus;
     }
-    
+
+    /**
+     * @return the emailEdited
+     */
+    public String getEmailEdited() {
+        return emailEdited;
+    }
+
+    /**
+     * @param emailEdited the emailEdited to set
+     */
+    public void setEmailEdited(String emailEdited) {
+        this.emailEdited = emailEdited;
+    }
+
 }

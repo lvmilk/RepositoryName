@@ -6,7 +6,7 @@
 package AISmanagedbean;
 
 import Entity.APS.AircraftType;
-import Entity.APS.CabinClass;
+import Entity.AIS.CabinClass;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.APS;
+package Entity.AIS;
 
 import Entity.AIS.FlightCabin;
+import Entity.APS.AircraftType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;

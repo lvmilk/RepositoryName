@@ -12,91 +12,236 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
+            <h:outputStylesheet name="css/assignFleetStyle.css" />
+
+            <style>
+                .specialDialog.ui-panel {
+                    border: none;
+                }
+
+                .specialDialog.ui-panel-content {
+                    border: none;
+                }
+
+                .buttonAdd.ui-button {
+                    color: #3c9fb4;   
+                    position: absolute;
+                    right: 5px;
+                }
+            </style>
+
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
 
                 <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
 
                 <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
-                             groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" showButtonNew="true" minHeight="200" widgetVar="timelineWdgt">
+                             groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" minHeight="200" widgetVar="timelineWdgt">
 
-                    <p:ajax event="add" update=":formMain:addTaskInner"
-                            listener="#{FAMB.onAdd}"
-                            oncomplete="PF('addTaskWdgt').show()"/>
-                    <p:ajax event="delete" update=":formMain:deleteTaskInner"
-                            listener="#{FAMB.onDelete}"
+                    <!--<p:ajax event="add" update=":formMain:addTaskInner" listener="#{FAMB.onAdd}" oncomplete="PF('addTaskWdgt').show()"/>-->
+
+                    <!--<p:ajax event="edit" update=":dialogForm:detailsMtInner" listener="#{FAMB.onEdit}" oncomplete="PF('detailsMtWdgt').show()"/>-->  
+
+                    <p:ajax event="delete" update="@form" listener="#{FAMB.onDelete}"
                             onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
 
                     <f:facet name="group">  
                         <h:outputText value="#{group.registrationNo}/ #{group.aircraftType.type}" style="font-weight:bold;"/>  
                     </f:facet>  
 
-                    <h:panelGrid columns="1">
-                        <h:outputText value="#{flighttask.flightFrequency.flightNo}  #{flighttask.flightFrequency.route}"/>
-                        <h:outputText value="#{flighttask.flightFrequency.scheduleDepTime} - #{flighttask.flightFrequency.scheduleArrTime}"/>
+                    <h:panelGrid columns="1" >
+                        <h:outputText rendered="#{flighttask.class.simpleName == 'FlightInstance'}" value="#{flighttask.flightFrequency.flightNo}  #{flighttask.flightFrequency.route}" />
+                        <h:outputText rendered="#{flighttask.class.simpleName == 'FlightInstance'}" value="#{flighttask.flightFrequency.scheduleDepTime} - #{flighttask.flightFrequency.scheduleArrTime}"/>
+                        <h:outputText rendered="#{flighttask.class.simpleName == 'Maintenance'}" value="#{flighttask.objective}"/>
+                        <h:outputText rendered="#{flighttask.class.simpleName == 'Maintenance'}" value="#{flighttask.startTime} - #{flighttask.endTime}"/>
                     </h:panelGrid>      
 
                 </pe:timeline>
 
             </p:panel>
 
-            <p:dialog id="deleteTaskDlg" header="Delete Flight Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
+
+            <p:commandButton value="Add Flight Task" immediate="true" oncomplete="PF('addTaskWdgt').show()"/>
+            <p:commandButton value="Add Maintenance" immediate="true" oncomplete="PF('addMtTaskWdgt').show()" />  
+
+            <p:commandButton value="Refresh" update="unplanned" styleClass="buttonAdd" >
+                <f:ajax event="click" listener="#{FAMB.refresh}" immediate="true" />
+            </p:commandButton>  
+
+            <br/><br/>
+
+            <p:dataTable id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights of the planning period remain unassigned." style="width:60%">
+                <f:facet name="header" class="unassignedFlightTable">
+                    <h:outputText value="Unassigned Flight Instance(s) within Planning Period #{FAMB.startPl} - #{FAMB.endPl}"/>
+                </f:facet>
+                <p:column headerText="Flight No">
+                    <h:outputText value="#{flight.flightFrequency.flightNo}" />
+                </p:column>
+                <p:column headerText="Origin" sortBy="#{flight.flightFrequency.route.origin.IATA}" filterBy="#{flight.flightFrequency.route.origin.IATA}">
+                    <h:outputText value="#{flight.flightFrequency.route.origin.IATA}" />
+                </p:column>
+                <p:column headerText="Destination" sortBy="#{flight.flightFrequency.route.dest.IATA}" filterBy="#{flight.flightFrequency.route.dest.IATA}">
+                    <h:outputText value="#{flight.flightFrequency.route.dest.IATA}" />
+                </p:column>
+                <p:column headerText="Departure Time" sortBy="#{flight.standardDepTime}" filterBy="#{flight.standardDepTime}" >
+                    <h:outputText value="#{flight.standardDepTime}" />
+                </p:column>
+                <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTime}" filterBy="#{flight.standardArrTime}" >
+                    <h:outputText value="#{flight.standardArrTime}" />
+                </p:column>
+                <p:column headerText="Required Aircraft Type" sortBy="#{flight.flightFrequency.route.acType.type}" filterBy="#{flight.flightFrequency.route.acType.type}">
+                    <h:outputText value="#{flight.flightFrequency.route.acType.type}" />
+                </p:column>
+            </p:dataTable>
+
+            <br/>
+
+            <p:dataTable id="unplannedAll" var="flight" value="#{FAMB.unassignedFlightAll}"  emptyMessage="No flights of previous planning period remain unassigned." style="width:60%">
+                <f:facet name="header" class="unassignedFlightTable">
+                    Unassigned Flight Instance(s) of Previous Planning Period
+                </f:facet>
+                <p:column headerText="Flight No">
+                    <h:outputText value="#{flight.flightFrequency.flightNo}" />
+                </p:column>
+                <p:column headerText="Origin" sortBy="#{flight.flightFrequency.route.origin.IATA}" filterBy="#{flight.flightFrequency.route.origin.IATA}">
+                    <h:outputText value="#{flight.flightFrequency.route.origin.IATA}" />
+                </p:column>
+                <p:column headerText="Destination" sortBy="#{flight.flightFrequency.route.dest.IATA}" filterBy="#{flight.flightFrequency.route.dest.IATA}">
+                    <h:outputText value="#{flight.flightFrequency.route.dest.IATA}" />
+                </p:column>
+                <p:column headerText="Departure Time" sortBy="#{flight.standardDepTime}" filterBy="#{flight.standardDepTime}" >
+                    <h:outputText value="#{flight.standardDepTime}" />
+                </p:column>
+                <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTime}" filterBy="#{flight.standardArrTime}" >
+                    <h:outputText value="#{flight.standardArrTime}" />
+                </p:column>
+                <p:column headerText="Required Aircraft Type" sortBy="#{flight.flightFrequency.route.acType.type}" filterBy="#{flight.flightFrequency.route.acType.type}">
+                    <h:outputText value="#{flight.flightFrequency.route.acType.type}" />
+                </p:column>
+            </p:dataTable>
+
+
+<!--            <p:dialog id="detailsMtDlg" header="Maintenance Details" widgetVar="detailsMtWdgt" showEffect="clip" hideEffect="clip" rendered="#{flighttask.class.simpleName == 'Maintenance'}" >  
+                <h:panelGroup id="detailsMtInner" layout="block">  
+                    <h:panelGrid columns="2">  
+                        <h:outputText value="Aircraft"/>  
+                        <p:inputText value="#{editServerTimelineController.event.data.roomNumber}"  
+                                     rendered="#{not empty editServerTimelineController.event}"  
+                                     required="true" label="Room"/>  
+                        <h:outputText value="#{FAMB.event.data.aircraft}"/>  
+                        
+                        <h:outputText value="From"/>  
+                        <p:calendar value="#{editServerTimelineController.event.startDate}"  
+                                    rendered="#{not empty editServerTimelineController.event}"  
+                                    timeZone="#{editServerTimelineController.timeZone}"  
+                                    pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>  
+
+                        <h:outputText value="Until"/>  
+                        <p:calendar value="#{editServerTimelineController.event.endDate}"  
+                                    rendered="#{not empty editServerTimelineController.event}"  
+                                    timeZone="#{editServerTimelineController.timeZone}"  
+                                    pattern="dd/MM/yyyy HH:mm" label="Until"/>  
+  
+                    </h:panelGrid>  
+                </h:panelGroup>  
+
+                <f:facet name="footer">  
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                        <p:commandButton value="Save" process="detailsBookingDlg" update="@none"  
+                                         action="#{editServerTimelineController.saveDetails}"  
+                                         oncomplete="if(!args.validationFailed){PF('detailsBookingWdgt').hide();}"/>  
+                        <p:commandButton type="button" value="Close" onclick="PF('detailsBookingWdgt').hide()"/>  
+                    </h:panelGroup>  
+                </f:facet>  
+            </p:dialog>  -->
+
+
+            <p:dialog id="deleteTaskDlg" header="Delete Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="false" >  
                 <h:panelGroup id="deleteTaskInner" layout="block" style="margin:10px;">  
-                    <h:outputText value="#{FAMB.deleteMessage}"/>  
+                    <p:panel visible="#{flighttask.class.simpleName == 'FlightInstance'}" styleClass="specialDialog">
+                        <h:outputText value="#{FAMB.deleteMessage}" />      
+                    </p:panel>
+
+                    <p:panel visible="#{flighttask.class.simpleName == 'Maintenance'}" styleClass="specialDialog">
+                        <h:outputText value="#{FAMB.deleteMtMessage}" />    
+                    </p:panel>
                 </h:panelGroup>  
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
                         <p:commandButton value="Delete" process="deleteTaskDlg" update="@none" action="#{FAMB.delete}" oncomplete="PF('deleteTaskWdgt').hide()"/>  
-                        <p:commandButton type="button" value="Cancel" onclick="PF('deleteTaskWdgt').hide()"/>  
+                        <p:commandButton value="Cancel" type="button" onclick="PF('deleteTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
             </p:dialog>  
 
+
             <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
-                <h:panelGroup id="addTaskInner" layout="block" style="margin:15px;">
-                    <p:messages id="msgs" autoUpdate="true" />
+                <!--<h:panelGroup id="addTaskInner" layout="block" style="margin:15px;">-->
+                <h:panelGroup layout="block" style="margin:15px;">
+                    <p:messages id="msgs2" autoUpdate="true" />
                     <p:panelGrid columns="2" columnClasses="">
+
                         <h:outputLabel for="aircraft" value="Choose an aircraft"/>
-                        <p:selectOneMenu id="aircraft" value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px">
+                        <p:selectOneMenu id="aircraft" value="#{FAMB.taskAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px" >
                             <f:selectItem itemLabel="-Select Aircraft-" itemValue="" />
                             <f:selectItems value="#{FAMB.aircraftList}" var="aircraft" itemValue="#{aircraft.registrationNo}" itemLabel="#{aircraft.registrationNo} / #{aircraft.aircraftType.type}"/>
                         </p:selectOneMenu>
-                        <h:outputLabel for="flight" value="Choose a flight to assign"/>
-                        <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px">
+
+                        <h:outputLabel for="flight" value="Choose a flight to assign" />
+                        <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px" >
                             <f:selectItem itemLabel="-Select Flight-" itemValue="" />
                             <f:selectItems value="#{FAMB.unassignedFlight}" var="flight" itemValue="#{flight.id}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.date} #{flight.flightFrequency.route.toString()}"/>
                         </p:selectOneMenu>
+
                     </p:panelGrid>
                 </h:panelGroup>
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="@none" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()" />  
+                        <p:commandButton value="Add Flight Task" process="addTaskDlg" update="msgs2" action="#{FAMB.addTask}" oncomplete="PF('addTaskWdgt').hide()" />  
                         <p:commandButton type="button" value="Cancel" onclick="PF('addTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
             </p:dialog>  
 
-            <h:panelGrid columns="2" style="margin-bottom:50px; width:90%" cellpadding="20">
-                <p:outputLabel value="Unassigned Flight Instance List:"/>
-                <p:commandButton value="Refresh" update="unplanned" >
-                    <f:ajax event="click" listener="#{FAMB.refresh}" immediate="true" />
-                </p:commandButton>  
-                <p:dataTable id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights remain unassigned." style="width:70%">
-                    <p:column headerText="Flight No">
-                        <h:outputText value="#{flight.flightFrequency.flightNo}" />
-                    </p:column>
-                    <p:column headerText="Origin-Destination">
-                        <h:outputText value="#{flight.flightFrequency.route}" />
-                    </p:column>
-                    <p:column headerText="Time">
-                        <h:outputText value="#{flight.standardDepTime} - #{flight.standardArrTime}" />
-                    </p:column>
-                    <p:column headerText="Required Aircraft Type">
-                        <h:outputText value="#{flight.flightFrequency.route.acType.type}" />
-                    </p:column>
-                </p:dataTable>
-            </h:panelGrid>
+
+            <p:dialog id="addMtTaskDlg" header="Add Maintenance" widgetVar="addMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
+                <h:panelGroup layout="block" style="margin:15px;">
+                    <p:messages id="msgs" autoUpdate="true" />
+                    <p:panelGrid columns="2" columnClasses="">
+
+                        <h:outputLabel for="aircraftMt" value="Choose an aircraft" />
+                        <p:selectOneMenu id="aircraftMt" value="#{FAMB.taskMtAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px" >
+                            <f:selectItem itemLabel="-Select Aircraft-" itemValue="" />
+                            <f:selectItems value="#{FAMB.aircraftList}" var="aircraft" itemValue="#{aircraft.registrationNo}" itemLabel="#{aircraft.registrationNo} / #{aircraft.aircraftType.type}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="mt" value="Choose maintenance type"/>
+                        <p:selectOneMenu id="mt" value="#{FAMB.mtObj}" required="true" requiredMessage="Please select maintenance type" style="width:250px" >
+                            <f:selectItem itemLabel="-Select Maintenance Objective-" itemValue="" />
+                            <f:selectItem itemLabel="A Check" itemValue="A Check" />
+                            <f:selectItem itemLabel="B Check" itemValue="B Check" />
+                            <f:selectItem itemLabel="C Check" itemValue="C Check" />
+                            <f:selectItem itemLabel="D Check" itemValue="D Check" />                        
+                            <f:selectItem itemLabel="Special Maintenance" itemValue="Special" />                           
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="mtStartTime" value="Maintenance Start Time: "/>
+                        <p:calendar id="mtStartTime" value="#{FAMB.mtStartTime}" pattern="yyyy-MM-dd HH:mm" mask="true" navigator="true" required="true" requiredMessage="Please enter maintenance start time" size="30"/>
+
+                        <p:outputLabel for="mtEndTime" value="Maintenance End Time: " />
+                        <p:calendar id="mtEndTime" value="#{FAMB.mtEndTime}" pattern="yyyy-MM-dd HH:mm" mask="true" navigator="true" required="true" requiredMessage="Please enter maintenance end time" size="30"/>
+
+                    </p:panelGrid>
+                </h:panelGroup>
+
+                <f:facet name="footer">  
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                        <p:commandButton value="Add Maintenance" process="addMtTaskDlg" update="msgs" action="#{FAMB.addMtTask}" oncomplete="PF('addMtTaskWdgt').hide()" />  
+                        <p:commandButton type="button" value="Cancel" onclick="PF('addMtTaskWdgt').hide()"/>  
+                    </h:panelGroup>  
+                </f:facet>  
+            </p:dialog>  
 
 
 

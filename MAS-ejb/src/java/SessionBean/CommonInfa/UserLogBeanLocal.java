@@ -12,6 +12,6 @@ import javax.ejb.Local;
  * @author LI HAO
  */
 @Local
-public interface UserLogSessionBeanLocal {
+public interface UserLogBeanLocal {
     public void createLog(String username, String description);
 }

@@ -6,6 +6,7 @@
  */
 package SessionBean.APS;
 
+import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
@@ -52,7 +53,7 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
-    public boolean addAcToFi(Aircraft ac, FlightInstance fi);
+    public boolean addAcToFi(Aircraft ac, FlightInstance fi) throws ParseException;
 
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
 
@@ -70,7 +71,13 @@ public interface FlightSchedulingBeanLocal {
 
     public FlightInstance findFlight(String flightNo, String flightDate) throws Exception;
 
-    public FlightInstance getDummyFi();
-
     public long getFlightAccumMinute(FlightFrequency ff);
+
+    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd) throws Exception;
+
+    public List<FlightInstance> getAllUnplannedFi();
+
+    public void deleteMtFromAc(Aircraft ac, Maintenance mt);
+
+    public FlightInstance getDummyFi(String outOrIn);
 }

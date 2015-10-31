@@ -13,7 +13,7 @@ import javax.ejb.Local;
  * @author LI HAO
  */
 @Local
-public interface VerifyAccountSessionBeanLocal {
+public interface VerifyAccountBeanLocal {
     public boolean validateAccInfo(String username,String email,String stfType);
     public void resetPwd(String username,String password, String stfType);
 }
