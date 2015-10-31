@@ -41,7 +41,7 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
     private List<String> acKeyList = new ArrayList<>();
     private Map<String, String> fuelCostMap = new HashMap<>();
     private Map<String, String> revenueMap = new HashMap<>();
-    private Map<String, String> leaseCostMap = new HashMap<>();
+    private Map<String, String> acCostMap = new HashMap<>();
     private Map<String, String> crewCostMap = new HashMap<>();
     private Map<String, String> resultMap = new HashMap<>();
     private Map<String, String> profitMap = new HashMap<>();
@@ -83,14 +83,14 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
             System.out.println("CRFMB.checkRouteCost(): annual total flight hours " + flightHr);
             Double fuel = flightHr * a.getFuelCost() / 1000.0;
             System.out.println("CRFMB.checkRouteCost(): fuel cost thousand SGD " + fuel);
-            Double lease = 12 * a.getLeaseCost() / 1000.0; // leaseCost is monthly
-            Double crew = ((a.getStewardess() * 20 + a.getSteward() * 20 + a.getPurser() * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
+            Double acCost = 12 * a.getPurchaseCost() / 1000.0; // leaseCost is monthly
+            Double crew = ((a.getCabinCrew()*seatNo * 20 + a.getPurser()*seatNo * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
             Double mtCost = 3640.0;
-            Double totalCost = fuel + lease + crew + mtCost;
+            Double totalCost = fuel + acCost + crew + mtCost;
             Double profit = revenue - totalCost;
             acKeyList.add(a.getType());
             fuelCostMap.put(a.getType(), fuel.toString());
-            leaseCostMap.put(a.getType(), lease.toString());
+            acCostMap.put(a.getType(), acCost.toString());
             revenueMap.put(a.getType(), revenue.toString());
             crewCostMap.put(a.getType(), crew.toString());
             totalCostMap.put(a.getType(), totalCost.toString());
@@ -160,12 +160,12 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
         this.revenueMap = revenueMap;
     }
 
-    public Map<String, String> getLeaseCostMap() {
-        return leaseCostMap;
+    public Map<String, String> getAcCostMap() {
+        return acCostMap;
     }
 
-    public void setLeaseCostMap(Map<String, String> leaseCostMap) {
-        this.leaseCostMap = leaseCostMap;
+    public void setAcCostMap(Map<String, String> acCostMap) {
+        this.acCostMap = acCostMap;
     }
 
     public Map<String, String> getCrewCostMap() {

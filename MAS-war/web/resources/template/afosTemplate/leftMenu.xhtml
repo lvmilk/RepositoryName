@@ -16,6 +16,11 @@
                 <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
                     <p:menu id='APS'  style="width:300px" toggleable="true">
 
+                        <p:submenu label="Maintenance Management">
+                            <p:menuitem value="Manage Maintenance Standard" url="viewMaintenanceStandard.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Maintenance Schedule" url="viewMaintenance.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+
                         <p:submenu label="Flight Crew Grouping Management">
                             <!--                            <p:menuitem value="View Aircraft Type Flight Crew Requirement" url="viewAircraftTypeFlightCrewRequirement.xhtml"  icon="ui-icon-disk" />
                                                         <p:menuitem value="Edit Aircraft Type Flight Crew Requirement" url="editAircraftTypeFlightCrewRequirement.xhtml"  icon="ui-icon-disk" />-->
@@ -24,23 +29,18 @@
                             <p:menuitem value="Edit Flight Crew Group" url="editFlightCrewGroup.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
 
-                        <p:submenu label="Ground Crew Grouping Management">
-                            <p:menuitem value="View Ground Crew Group" url="viewGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Add Ground Crew Group" url="addGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Edit Ground Crew Group" url="editGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
-                        </p:submenu>
-
                         <p:submenu label="Flight Crew Group Scheduling Management">
                             <p:menuitem value="View Flight Crew Group Schedule" url="viewFlightCrewGroupSchedule.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="Plan Flight Crew Group Schedule" url="planFlightCrewGroupSchedule.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="Edit Flight Crew Group Schedule" url="editFlightCrewGroupSchedule.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
 
-                        <p:submenu label="Maintenance Management">
-                            <p:menuitem value="Manage Maintenance Standard" url="viewMaintenanceStandard.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Maintenance Schedule" url="viewAircraft.xhtml"  icon="ui-icon-disk" />
-
+                        <p:submenu label="Ground Crew Grouping Management">
+                            <p:menuitem value="View Ground Crew Group" url="viewGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Add Ground Crew Group" url="addGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Edit Ground Crew Group" url="editGroundCrewGroup.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
+
 
                     </p:menu>
 

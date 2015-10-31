@@ -20,8 +20,9 @@ public class AircraftType implements Serializable {
     private String type;
     private String manufacturer;
     private Double maxDistance;
-    private Double leaseCost;
+    private Double purchaseCost;
     private Double fuelCost;
+   
     private Double aircraftLength;
     private Double wingspan;
     private String minAirspace;
@@ -32,10 +33,12 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
+     private Double mtCost;  // new added maintenance cost
     //number of cabin crew
-    private Integer stewardess; //cabin female
-    private Integer steward; //cabin male
-    private Integer purser; //cabin master
+    private Double cabinCrew; // new added
+    private Double purser; //cabin master
+//    private Integer stewardess; //cabin female
+//    private Integer steward; //cabin male
     //number of cockpit crew
     private Integer captain;
     private Integer pilot; //1st officer
@@ -73,14 +76,15 @@ public class AircraftType implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private List<CabinClass> cabinList = new ArrayList<CabinClass>();
 
-    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double aircraftLength, Double wingspan, String minAirspace,
-            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Integer stewardess, Integer steward, Integer purser, Integer captain, Integer pilot) {
+    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+            Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) {
 
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
-        this.setLeaseCost(leaseCost);
+        this.setPurchaseCost(leaseCost);
         this.setFuelCost(fuelCost);
+        this.setMtCost(mtCost);
         this.setAircraftLength(aircraftLength);
         this.setWingspan(wingspan);
         this.setMinAirspace(minAirspace);
@@ -89,8 +93,7 @@ public class AircraftType implements Serializable {
         this.setBcSeatNo(bcSeatNo);
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
-        this.setStewardess(stewardess);
-        this.setSteward(steward);
+        this.setCabinCrew(cabinCrew);
         this.setPurser(purser);
         this.setCaptain(captain);
         this.setPilot(pilot);
@@ -129,12 +132,12 @@ public class AircraftType implements Serializable {
         this.maxDistance = maxDistance;
     }
 
-    public Double getLeaseCost() {
-        return leaseCost;
+    public Double getPurchaseCost() {
+        return purchaseCost;
     }
 
-    public void setLeaseCost(Double leaseCost) {
-        this.leaseCost = leaseCost;
+    public void setPurchaseCost(Double purchaseCost) {
+        this.purchaseCost = purchaseCost;
     }
 
     public Double getFuelCost() {
@@ -145,6 +148,15 @@ public class AircraftType implements Serializable {
         this.fuelCost = fuelCost;
     }
 
+    public Double getMtCost() {
+        return mtCost;
+    }
+
+    public void setMtCost(Double mtCost) {
+        this.mtCost = mtCost;
+    }
+
+    
     public Double getAircraftLength() {
         return aircraftLength;
     }
@@ -209,27 +221,19 @@ public class AircraftType implements Serializable {
         this.ecSeatNo = ecSeatNo;
     }
 
-    public Integer getStewardess() {
-        return stewardess;
+    public Double getCabinCrew() {
+        return cabinCrew;
     }
 
-    public void setStewardess(Integer stewardess) {
-        this.stewardess = stewardess;
+    public void setCabinCrew(Double cabinCrew) {
+        this.cabinCrew = cabinCrew;
     }
 
-    public Integer getSteward() {
-        return steward;
-    }
-
-    public void setSteward(Integer steward) {
-        this.steward = steward;
-    }
-
-    public Integer getPurser() {
+    public Double getPurser() {
         return purser;
     }
 
-    public void setPurser(Integer purser) {
+    public void setPurser(Double purser) {
         this.purser = purser;
     }
 

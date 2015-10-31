@@ -25,7 +25,7 @@ public class EditAircraftTypeManagedBean implements Serializable {
     private String manufacturer;
     private Double maxDistance;
     private Double aircraftLength;
-    private Double leaseCost;
+    private Double purchaseCost;
     private Double fuelCost;
     private Double wingspan;
     private String minAirspace;
@@ -36,14 +36,15 @@ public class EditAircraftTypeManagedBean implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
+    private Double mtCost;  // new added maintenance cost
+
     //number of cabin crew
-    private Integer stewardess; //cabin female
-    private Integer steward; //cabin male
-    private Integer purser; //cabin master
-   //number of cockpit crew
-    private Integer captain; 
+    private Double cabinCrew; // new added
+    private Double purser; //cabin master
+    //number of cockpit crew
+    private Integer captain;
     private Integer pilot; //1st officer
-    
+
     public EditAircraftTypeManagedBean() {
     }
 
@@ -53,8 +54,9 @@ public class EditAircraftTypeManagedBean implements Serializable {
         manufacturer = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manufacturer");
         maxDistance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maxDistance");
         aircraftLength = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraftLength");
-        leaseCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("leaseCost");
+        purchaseCost = ((Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purchaseCost"))/1000000;
         fuelCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fuelCost");
+        mtCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mtCost");
         wingspan = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wingspan");
         minAirspace = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minAirspace");
         suiteNo = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("suiteNo");
@@ -62,9 +64,8 @@ public class EditAircraftTypeManagedBean implements Serializable {
         bcSeatNo = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bcSeatNo");
         pecSeatNo = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pecSeatNo");
         ecSeatNo = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ecSeatNo");
-        stewardess = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("stewardess");
-        steward = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("steward");
-        purser = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purser");
+        cabinCrew = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinCrew");
+        purser = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purser");
         captain = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("captain");
         pilot = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("pilot");
     }
@@ -73,18 +74,19 @@ public class EditAircraftTypeManagedBean implements Serializable {
         try {
             String typeUpper = type.toUpperCase();
             String manufacturerUpper = manufacturer.toUpperCase();
-            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, leaseCost, fuelCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, stewardess, steward, purser, captain, pilot);
+            Double purchaseCostM=purchaseCost*1000000;
+            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCostM, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    public void editAircraftTypeCancel() throws Exception{
+
+    public void editAircraftTypeCancel() throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftType.xhtml");
     }
-    
-    //////////////////////////////////////////
 
+    //////////////////////////////////////////
     public AircraftType getAircraftType() {
         return aircraftType;
     }
@@ -125,12 +127,12 @@ public class EditAircraftTypeManagedBean implements Serializable {
         this.aircraftLength = aircraftLength;
     }
 
-    public Double getLeaseCost() {
-        return leaseCost;
+    public Double getPurchaseCost() {
+        return purchaseCost;
     }
 
-    public void setLeaseCost(Double leaseCost) {
-        this.leaseCost = leaseCost;
+    public void setPurchaseCost(Double purchaseCost) {
+        this.purchaseCost = purchaseCost;
     }
 
     public Double getFuelCost() {
@@ -197,27 +199,27 @@ public class EditAircraftTypeManagedBean implements Serializable {
         this.ecSeatNo = ecSeatNo;
     }
 
-    public Integer getStewardess() {
-        return stewardess;
+    public Double getMtCost() {
+        return mtCost;
     }
 
-    public void setStewardess(Integer stewardess) {
-        this.stewardess = stewardess;
+    public void setMtCost(Double mtCost) {
+        this.mtCost = mtCost;
     }
 
-    public Integer getSteward() {
-        return steward;
+    public Double getCabinCrew() {
+        return cabinCrew;
     }
 
-    public void setSteward(Integer steward) {
-        this.steward = steward;
+    public void setCabinCrew(Double cabinCrew) {
+        this.cabinCrew = cabinCrew;
     }
 
-    public Integer getPurser() {
+    public Double getPurser() {
         return purser;
     }
 
-    public void setPurser(Integer purser) {
+    public void setPurser(Double purser) {
         this.purser = purser;
     }
 

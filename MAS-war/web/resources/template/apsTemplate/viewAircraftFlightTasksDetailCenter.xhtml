@@ -28,9 +28,6 @@
                     <p:column headerText="Destination" sortBy="#{flightInst.flightFrequency.route.dest}" filterBy="#{flightInst.flightFrequency.route.dest}" >
                         <h:outputText value="#{flightInst.flightFrequency.route.dest}" />
                     </p:column>
-                    <p:column headerText="Flight Status" sortBy="#{flightInst.flightStatus}">
-                        <h:outputText value="#{flightInst.flightStatus}" />
-                    </p:column>
                     <p:column headerText="Departure Time">
                         <h:outputText value="#{flightInst.flightFrequency.scheduleDepTime}" />
                     </p:column>
@@ -39,6 +36,9 @@
                     </p:column>
                     <p:column headerText="Date Adjust">
                         <h:outputText value="#{flightInst.flightFrequency.dateAdjust}" />
+                    </p:column>
+                    <p:column headerText="Flight Status" sortBy="#{flightInst.flightStatus}">
+                        <h:outputText value="#{flightInst.flightStatus}" />
                     </p:column>
 
                 </p:dataTable>
