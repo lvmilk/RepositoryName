@@ -10,7 +10,7 @@ import Entity.APS.FlightInstance;
 import Entity.AIS.FlightCabin;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
-import SessionBean.CommonInfa.UserLogBeanLocal;
+import SessionBean.CommonInfra.UserLogBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
