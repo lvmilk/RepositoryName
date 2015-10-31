@@ -29,6 +29,12 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long airlineRsvCode;
     
+    private String bkFirstName;
+    private String bkLastName;
+    private String bkEmail;
+    
+    private String rsvDate;
+    
     @OneToMany(cascade={CascadeType.ALL},mappedBy="rsv")
     private Collection<Ticket> ticket= new ArrayList<Ticket>();
     
@@ -117,6 +123,62 @@ public class Reservation implements Serializable {
      */
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    /**
+     * @return the bkFirstName
+     */
+    public String getBkFirstName() {
+        return bkFirstName;
+    }
+
+    /**
+     * @param bkFirstName the bkFirstName to set
+     */
+    public void setBkFirstName(String bkFirstName) {
+        this.bkFirstName = bkFirstName;
+    }
+
+    /**
+     * @return the bkLastName
+     */
+    public String getBkLastName() {
+        return bkLastName;
+    }
+
+    /**
+     * @param bkLastName the bkLastName to set
+     */
+    public void setBkLastName(String bkLastName) {
+        this.bkLastName = bkLastName;
+    }
+
+    /**
+     * @return the bkEmail
+     */
+    public String getBkEmail() {
+        return bkEmail;
+    }
+
+    /**
+     * @param bkEmail the bkEmail to set
+     */
+    public void setBkEmail(String bkEmail) {
+        this.bkEmail = bkEmail;
+    }
+
+    /**
+     * @return the rsvDate
+     */
+    public String getRsvDate() {
+        return rsvDate;
+    }
+
+    /**
+     * @param rsvDate the rsvDate to set
+     */
+    public void setRsvDate(String rsvDate) {
+        this.rsvDate = rsvDate;
     }
     
 }

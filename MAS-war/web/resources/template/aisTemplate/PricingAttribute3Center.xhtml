@@ -17,7 +17,7 @@
 
 
             <h:form id="cost">
-                <p:panel id="panel" header="Input Cost(in SGD)"  style="width:100%">
+                <p:panel id="panel" header="Input Cost(in SGD)"  style="width:100%" footer="**Other costs include Fees and Taxes,Govt. Imposed Aviation Levy, Airport Imposed Pax Security Fee, Airport Imposed Pax Service Fee and Fuel Surcharge.">
                     <p:messages id="msgs" />
                     <h:panelGrid columns="2" cellpadding="5">
 
@@ -40,20 +40,19 @@
                         
                         <p:outputLabel for="admin" value="Admin cost per block hour in SGD" />
                         <p:inputText id="admin"  value="#{pricingManagedBean.adminCost}" label="Admin cost per block hour" required="true" requiredMessage="Please enter admin cost per block hour" validatorMessage="Please check admin cost is lower than $80/hr"  size="10">
-                            <f:validateDoubleRange minimum="0.1" maximum="80.0" />
+                            <f:validateDoubleRange minimum="5.0" maximum="80.0" />
                         </p:inputText>
                         
                         <p:outputLabel for="otherCost" value="Other costs per block hour in SGD" />
                         <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please check other cost is lower than $100/hr"  size="10">
-                            <f:validateDoubleRange minimum="0.1" maximum="100.0" />
+                            <f:validateDoubleRange minimum="2000.0" maximum="10000.0" />
                         </p:inputText>
                         
                     </h:panelGrid>
 
-                  
                     <p:commandButton value="Next" update="panel" style="margin-right:0" actionListener="#{pricingManagedBean.checkFinal()}"  icon="ui-icon-check" />
                 </p:panel>
-
+             
             </h:form>
             
 

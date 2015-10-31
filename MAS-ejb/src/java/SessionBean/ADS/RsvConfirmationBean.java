@@ -218,4 +218,9 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
     }
+
+    @Override
+    public void setupTicket_Reservation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

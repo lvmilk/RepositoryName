@@ -32,6 +32,7 @@ public class Ticket implements Serializable {
     private String arrTime;
     private String flightNo;
     private String bookSystem;
+    private boolean checkinStatus;
 
     @ManyToOne
     private Passenger passenger;
@@ -53,6 +54,7 @@ public class Ticket implements Serializable {
         this.arrTime=arrTime;
         this.flightNo=flightNo;
         this.bookSystem=bookSystem;
+        this.checkinStatus=false;
     }
 
     public Long getTicketID() {
@@ -226,6 +228,20 @@ public class Ticket implements Serializable {
      */
     public void setBookSystem(String bookSystem) {
         this.bookSystem = bookSystem;
+    }
+
+    /**
+     * @return the checkinStatus
+     */
+    public boolean isCheckinStatus() {
+        return checkinStatus;
+    }
+
+    /**
+     * @param checkinStatus the checkinStatus to set
+     */
+    public void setCheckinStatus(boolean checkinStatus) {
+        this.checkinStatus = checkinStatus;
     }
 
 }
