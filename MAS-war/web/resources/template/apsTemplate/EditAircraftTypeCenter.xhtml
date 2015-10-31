@@ -29,7 +29,7 @@
                         <h:outputText value="#{AircraftType.maxDistance}" />
                     </p:column>
                     <p:column headerText="Purchase Cost">
-                        <h:outputText value="#{AircraftType.purchaseCost}" />
+                        <h:outputText value="#{AircraftType.purchaseCost/1000000}" />
                     </p:column>
                     <p:column headerText="Fuel Cost">
                         <h:outputText value="#{AircraftType.fuelCost}" />
@@ -45,33 +45,6 @@
                     </p:column>
                     <p:column headerText="Min Airspace">
                         <h:outputText value="#{AircraftType.minAirspace}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Suite">
-                        <h:outputText value="#{AircraftType.suiteNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in First Class" >
-                        <h:outputText value="#{AircraftType.fcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Business Class">
-                        <h:outputText value="#{AircraftType.bcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Premium Economy Class">
-                        <h:outputText value="#{AircraftType.fcSeatNo}" />
-                    </p:column>
-                    <p:column headerText="# of Seat in Economy Class">
-                        <h:outputText value="#{AircraftType.ecSeatNo}" />
-                    </p:column>
-                    <p:column headerText="Ratio of Cabin Crew">
-                        <h:outputText value="#{AircraftType.cabinCrew}" />
-                    </p:column>
-                    <p:column headerText="Ratio of Purser">
-                        <h:outputText value="#{AircraftType.purser}" />
-                    </p:column>
-                    <p:column headerText="# of Captain">
-                        <h:outputText value="#{AircraftType.captain}" />
-                    </p:column>
-                    <p:column headerText="# of Pilot">
-                        <h:outputText value="#{AircraftType.pilot}" />
                     </p:column>
 
                     <p:column headerText="Edit">

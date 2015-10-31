@@ -50,11 +50,11 @@ public class AircraftTypeManagedBean implements Serializable {
     private Integer bcSeatNo;               //number of seat in business class
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
-    
-     private Double mtCost;  // new added maintenance cost
+
+    private Double mtCost;  // new added maintenance cost
 
     //number of cabin crew
-     private Double cabinCrew; // new added
+    private Double cabinCrew; // new added
     private Double purser; //cabin master
     //number of cockpit crew
     private Integer captain;
@@ -74,7 +74,8 @@ public class AircraftTypeManagedBean implements Serializable {
             System.out.println("AircraftTypeManagedBean: addAircraftType: No duplicates");
             String typeUpper = type.toUpperCase();
             String manufacturerUpper = manufacturer.toUpperCase();
-            fpb.addAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCost, fuelCost, mtCost,aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
+            Double purchaseCostM = purchaseCost * 1000000;
+            fpb.addAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCostM, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ConfirmAddAircraftType.xhtml");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aircraft Type has already been used! ", ""));
@@ -128,8 +129,9 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manufacturer", aircraftType.getManufacturer());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maxDistance", aircraftType.getMaxDistance());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purchaseCost", aircraftType.getPurchaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purchaseCostM", aircraftType.getPurchaseCost()/1000000);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fuelCost", aircraftType.getFuelCost());
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceCost", aircraftType.getMtCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mtCost", aircraftType.getMtCost());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftLength", aircraftType.getAircraftLength());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wingspan", aircraftType.getWingspan());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minAirspace", aircraftType.getMinAirspace());
@@ -152,8 +154,9 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manufacturer", aircraftType.getManufacturer());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maxDistance", aircraftType.getMaxDistance());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purchaseCost", aircraftType.getPurchaseCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purchaseCostM", aircraftType.getPurchaseCost() / 1000000);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fuelCost", aircraftType.getFuelCost());
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("maintenanceCost", aircraftType.getMtCost());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mtCost", aircraftType.getMtCost());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftLength", aircraftType.getAircraftLength());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("wingspan", aircraftType.getWingspan());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("minAirspace", aircraftType.getMinAirspace());
@@ -163,7 +166,7 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leaseCost", aircraftType.getPurchaseCost());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinCrew", aircraftType.getCabinCrew());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinCrew", aircraftType.getCabinCrew());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getPurser());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("captain", aircraftType.getCaptain());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pilot", aircraftType.getPilot());
@@ -334,8 +337,6 @@ public class AircraftTypeManagedBean implements Serializable {
     public void setPurser(Double purser) {
         this.purser = purser;
     }
-
-
 
     public Integer getCaptain() {
         return captain;

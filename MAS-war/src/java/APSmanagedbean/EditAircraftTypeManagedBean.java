@@ -39,12 +39,12 @@ public class EditAircraftTypeManagedBean implements Serializable {
     private Double mtCost;  // new added maintenance cost
 
     //number of cabin crew
-     private Double cabinCrew; // new added
+    private Double cabinCrew; // new added
     private Double purser; //cabin master
     //number of cockpit crew
     private Integer captain;
     private Integer pilot; //1st officer
-    
+
     public EditAircraftTypeManagedBean() {
     }
 
@@ -54,9 +54,9 @@ public class EditAircraftTypeManagedBean implements Serializable {
         manufacturer = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manufacturer");
         maxDistance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maxDistance");
         aircraftLength = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraftLength");
-        purchaseCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("leaseCost");
+        purchaseCost = ((Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purchaseCost"))/1000000;
         fuelCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fuelCost");
-        mtCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maintenanceCost");
+        mtCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mtCost");
         wingspan = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wingspan");
         minAirspace = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("minAirspace");
         suiteNo = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("suiteNo");
@@ -74,18 +74,19 @@ public class EditAircraftTypeManagedBean implements Serializable {
         try {
             String typeUpper = type.toUpperCase();
             String manufacturerUpper = manufacturer.toUpperCase();
-            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCost, fuelCost,mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
+            Double purchaseCostM=purchaseCost*1000000;
+            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCostM, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    public void editAircraftTypeCancel() throws Exception{
+
+    public void editAircraftTypeCancel() throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftType.xhtml");
     }
-    
-    //////////////////////////////////////////
 
+    //////////////////////////////////////////
     public AircraftType getAircraftType() {
         return aircraftType;
     }

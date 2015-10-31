@@ -28,9 +28,9 @@
                         <f:validateDoubleRange minimum="4000.0" maximum="15000.0" />
                     </p:inputText>
 
-                    <p:outputLabel for="purchaseCost" value="Purchase Cost (SGD) [50000000,200000000]:" />
-                    <p:inputText id="purchaseCost" value="#{ATMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="50000000.0" maximum="200000000.0"/>
+                    <p:outputLabel for="purchaseCost" value="Purchase Cost (Million SGD) [50,200]:" />
+                    <p:inputText id="purchaseCost" value="#{editATMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft type" size="50">
+                        <f:validateDoubleRange minimum="50.0" maximum="200.0"/>
                     </p:inputText>
 
                     <p:outputLabel for="fuelCost" value="Fuel Cost (SGD [5000,15000] per hour):" />
@@ -38,9 +38,9 @@
                         <f:validateDoubleRange minimum="5000.0" maximum="15000.0"/>
                     </p:inputText>
 
-                    <p:outputLabel for="maintenanceCost" value="Maintenance Cost (SGD) [500,3000]/per hour:" />
-                    <p:inputText id="maintenanceCost" value="#{ATMB.mtCost}" label="Maintenance Cost (per hour)" required="true" validatorMessage="Maintenance Cost (SGD) should be between 500 to 3000 SGD"  requiredMessage="Please enter maintenance cost of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="500.0" maximum="3000.0"/>
+                    <p:outputLabel for="mtCost" value="Maintenance Cost (SGD) [500,3000]/per hour:" />
+                    <p:inputText id="mtCost" value="#{editATMB.mtCost}" label="Maintenance Cost (per hour)" required="true" validatorMessage="Maintenance Cost (SGD) should be between 500 to 3000 SGD"  requiredMessage="Please enter maintenance cost of the aircraft type" size="50">
+                        <f:validateDoubleRange minimum="500.0" maximum="2000.0"/>
                     </p:inputText>
 
                     <p:outputLabel for="aircraftLength" value="Overall Length(m) [50,120]:" />
@@ -87,23 +87,23 @@
                     </p:inputText>
 
                     <p:outputLabel for="cabinCrew" value="Ratio of Cabin Crew:" />
-                    <p:inputText id="cabinCrew" value="#{ATMB.cabinCrew}" label="cabinCrew ratio" required="true" validatorMessage="cabin crew: Please enter a valid double number (2%-4%)"  requiredMessage="Please enter ratio of cabin crew of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0.02" maximum="0.04" />
+                    <p:inputText id="cabinCrew" value="#{editATMB.cabinCrew}" label="cabinCrew ratio" required="true" validatorMessage="cabin crew: Please enter a valid double number (0.02-0.04)"  requiredMessage="Please enter ratio of cabin crew of the aircraft type" size="50">
+                        <f:validateDoubleRange minimum="0.02" maximum="0.04" />
                     </p:inputText>
 
                     <p:outputLabel for="purser" value="Ratio of Purser:" />
-                    <p:inputText id="purser" value="#{ATMB.purser}" label="purser ratio" required="true" validatorMessage="purser: Please enter a valid double number (0.5% - 0.6%)"  requiredMessage="Please enter ratio of purser of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0.005" maximum="0.006" />
+                    <p:inputText id="purser" value="#{editATMB.purser}" label="purser ratio" required="true" validatorMessage="purser: Please enter a valid double number (0.005 - 0.006)"  requiredMessage="Please enter ratio of purser of the aircraft type" size="50">
+                        <f:validateDoubleRange minimum="0.005" maximum="0.006" />
                     </p:inputText>
 
-                    <p:outputLabel for="captain" value="Number of Captain (cockpit crew):" />
-                    <p:inputText id="captain" value="#{editATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number (less than 3)"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="3" />
+                    <p:outputLabel for="captain" value="Number of Captain:" />
+                    <p:inputText id="captain" value="#{editATMB.captain}" label="captain number" required="true" validatorMessage="captain: Please enter a valid number (1 or 2)"  requiredMessage="Please enter number of captain of the aircraft type" size="50">
+                        <f:validateLongRange minimum="1" maximum="2" />
                     </p:inputText>
 
-                    <p:outputLabel for="pilot" value="Number of Pilot (cockpit crew):" />
-                    <p:inputText id="pilot" value="#{editATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number (less than 3)"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
-                        <f:validateLongRange minimum="0" maximum="3" />
+                    <p:outputLabel for="pilot" value="Number of Pilot:" />
+                    <p:inputText id="pilot" value="#{editATMB.pilot}" label="pilot number" required="true" validatorMessage="pilot: Please enter a valid number (1 or 2)"  requiredMessage="Please enter number of pilot of the aircraft type" size="50">
+                        <f:validateLongRange minimum="1" maximum="2" />
                     </p:inputText>
 
 
