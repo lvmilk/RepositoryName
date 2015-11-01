@@ -34,8 +34,8 @@ public class CockpitCrew implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST})
-//    private FlightCrewTeam flightTeam;
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private FlightCrewTeam flightTeam;
 
     public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence) {
         this.setCpName(strCpName);
@@ -184,12 +184,12 @@ public class CockpitCrew implements Serializable {
         this.user = user;
     }
 
-//    public FlightCrewTeam getFlightTeam() {
-//        return flightTeam;
-//    }
-//
-//    public void setFlightTeam(FlightCrewTeam flightTeam) {
-//        this.flightTeam = flightTeam;
-//    }
+    public FlightCrewTeam getFlightTeam() {
+        return flightTeam;
+    }
+
+    public void setFlightTeam(FlightCrewTeam flightTeam) {
+        this.flightTeam = flightTeam;
+    }
 
 }

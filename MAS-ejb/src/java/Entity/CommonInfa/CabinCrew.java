@@ -33,8 +33,8 @@ public class CabinCrew implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST})
-//    private FlightCrewTeam flightTeam;
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private FlightCrewTeam flightTeam;
 
     public void create(String strCbName, String strCbPassword, String email, String strStfType) {
         this.setCbName(strCbName);
@@ -168,12 +168,12 @@ public class CabinCrew implements Serializable {
         this.user = user;
     }
 
-//    public FlightCrewTeam getFlightTeam() {
-//        return flightTeam;
-//    }
-//
-//    public void setFlightTeam(FlightCrewTeam flightTeam) {
-//        this.flightTeam = flightTeam;
-//    }
+    public FlightCrewTeam getFlightTeam() {
+        return flightTeam;
+    }
+
+    public void setFlightTeam(FlightCrewTeam flightTeam) {
+        this.flightTeam = flightTeam;
+    }
 
 }
