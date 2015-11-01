@@ -46,7 +46,7 @@ public class Passenger implements Serializable {
     {
     }
     
-    public void CreatePsg(String passport,String title, String firstName, String lastName, String ffpName, String ffpNo)
+    public void createPsg(String passport,String title, String firstName, String lastName, String ffpName, String ffpNo)
     {
         this.passport=passport;
         this.title=title;
