@@ -5,13 +5,13 @@
  */
 package Entity.CommonInfa;
 
+import Entity.AFOS.FlightCrewTeam;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -20,20 +20,23 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class CabinCrew implements Serializable {
+
     @Id
     private String cbName;
     private String cbPassword;
     private String stfType;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private Integer attempt;
     private Integer locked;
-    
-    @OneToOne(cascade={CascadeType.ALL})
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType)
-    {
+//    @ManyToOne(cascade = {CascadeType.PERSIST})
+//    private FlightCrewTeam flightTeam;
+
+    public void create(String strCbName, String strCbPassword, String email, String strStfType) {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
@@ -41,7 +44,6 @@ public class CabinCrew implements Serializable {
         this.setAttempt(0);
         this.setLocked(0);
     }
-    
 
     @Override
     public int hashCode() {
@@ -165,5 +167,13 @@ public class CabinCrew implements Serializable {
     public void setUser(UserEntity user) {
         this.user = user;
     }
-    
+
+//    public FlightCrewTeam getFlightTeam() {
+//        return flightTeam;
+//    }
+//
+//    public void setFlightTeam(FlightCrewTeam flightTeam) {
+//        this.flightTeam = flightTeam;
+//    }
+
 }

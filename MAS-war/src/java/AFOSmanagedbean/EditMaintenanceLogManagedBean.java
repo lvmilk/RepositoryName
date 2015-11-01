@@ -10,6 +10,8 @@ import Entity.APS.Aircraft;
 import SessionBean.AFOS.MaintenanceSchedulingBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -22,9 +24,9 @@ import javax.faces.view.ViewScoped;
  *
  * @author Xu
  */
-@Named(value = "AMLMB")
+@Named(value = "EMLMB")
 @ViewScoped
-public class AddMaintenanceLogManagedBean implements Serializable {
+public class EditMaintenanceLogManagedBean implements Serializable {
 
     @EJB
     MaintenanceSchedulingBeanLocal msb;
@@ -35,6 +37,8 @@ public class AddMaintenanceLogManagedBean implements Serializable {
     private Date schEnd;
     private Date actStart;
     private Date actEnd;
+    private String startTime;
+    private String endTime;
     private String obj;
     private String activity;
     private String remark;
@@ -43,28 +47,35 @@ public class AddMaintenanceLogManagedBean implements Serializable {
     private boolean checkSign;
     private Integer mtdu;
 
-    public AddMaintenanceLogManagedBean() {
+    public EditMaintenanceLogManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        mt = (Maintenance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("addMtLog");
-        System.out.println("*************** MT ************* " + mt);
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        mt = (Maintenance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("editMtLog");
         ac = mt.getAircraft();
-        System.out.println("*************** AC ************* " + ac);
-        schStart = mt.getStartTime();
-        System.out.println("*************** MT ST *************" + schStart);
-        schEnd = mt.getEndTime();
-        System.out.println("*************** MT END *************" + schEnd);
-        actStart = schStart;
-        actEnd = schEnd;
         obj = mt.getObjective();
-        System.out.println("*************** MT OBJ *************" + obj);
+        activity = mt.getLog().getActivity();
+//        schStart = mt.getStartTime();
+//        schEnd = mt.getEndTime();
+        actStart = mt.getLog().getStartTime();
+        System.out.println("***************************** MT START TIME ******************" + actStart);
+        startTime = df.format(actStart);
+        System.out.println("***************************** MT ST TIME ******************" + startTime);
+        actEnd = mt.getLog().getEndTime();
+        System.out.println("***************************** MT END TIME ******************" + actEnd);
+        endTime = df.format(actEnd);
+        System.out.println("***************************** MT ED TIME ******************" + endTime);
+        manhour = mt.getLog().getManhour();
+        mtCrew = mt.getLog().getMtCrew();
+        remark = mt.getLog().getRemark();
+        checkSign = true;
     }
 
-    public void addMaintenanceLog() throws IOException {
-        long startDiffHour = Math.abs(actStart.getTime() - schStart.getTime()) / (60 * 60 * 1000);
-        long endDiffHour = Math.abs(actEnd.getTime() - schEnd.getTime()) / (60 * 60 * 1000);
+    public void editMaintenanceLog() throws IOException {
+//        long startDiffHour = Math.abs(actStart.getTime() - schStart.getTime()) / (60 * 60 * 1000);
+//        long endDiffHour = Math.abs(actEnd.getTime() - schEnd.getTime()) / (60 * 60 * 1000);
         switch (obj.charAt(0)) {
             case 'A':
                 mtdu = ac.getAircraftType().getAcMH();
@@ -84,22 +95,18 @@ public class AddMaintenanceLogManagedBean implements Serializable {
         }
         if (actEnd.before(actStart)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Maintenance end time should be after start time.", ""));
-        } else if (startDiffHour > 10) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance start time. Scheduled start time is " + schStart.getTime(), ""));
-        } else if (endDiffHour > 10) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance end time. Scheduled end time is " + schEnd.getTime(), ""));
         } else if (mtdu != 0 && (manhour > mtdu * 1.3 || manhour < mtdu * 0.7)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check total man hour. Expected manhour is " + mtdu, ""));
         } else if (!checkSign) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please sign to agree the maintenance standard.", ""));
         } else {
-            msb.addMaintenanceLog(mt, ac.getRegistrationNo(), ac.getAircraftType().getType(), obj, actStart, actEnd, manhour, activity, remark, mtCrew);
+            msb.editMaintenanceLog(mt, ac.getRegistrationNo(), ac.getAircraftType().getType(), obj, actStart, actEnd, manhour, activity, remark, mtCrew);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mt", mt);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./addMaintenanceLogSuccess.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editMaintenanceLogSuccess.xhtml");
         }
     }
 
-    public void addMaintenanceLogBack() throws IOException {
+    public void editMaintenanceLogBack() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewMaintenanceList.xhtml");
     }
 
@@ -135,6 +142,38 @@ public class AddMaintenanceLogManagedBean implements Serializable {
         this.schEnd = schEnd;
     }
 
+    public Date getActStart() {
+        return actStart;
+    }
+
+    public void setActStart(Date actStart) {
+        this.actStart = actStart;
+    }
+
+    public Date getActEnd() {
+        return actEnd;
+    }
+
+    public void setActEnd(Date actEnd) {
+        this.actEnd = actEnd;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
     public String getObj() {
         return obj;
     }
@@ -149,6 +188,22 @@ public class AddMaintenanceLogManagedBean implements Serializable {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getMtCrew() {
+        return mtCrew;
+    }
+
+    public void setMtCrew(String mtCrew) {
+        this.mtCrew = mtCrew;
     }
 
     public Integer getManhour() {
@@ -167,56 +222,7 @@ public class AddMaintenanceLogManagedBean implements Serializable {
         this.checkSign = checkSign;
     }
 
-    public Date getActStart() {
-        return actStart;
-    }
-
-    public void setActStart(Date actStart) {
-        this.actStart = actStart;
-    }
-
-    public Date getActEnd() {
-        return actEnd;
-    }
-
-    public void setActEnd(Date actEnd) {
-        this.actEnd = actEnd;
-    }
-
-    public String getMtCrew() {
-        return mtCrew;
-    }
-
-    public void setMtCrew(String mtCrew) {
-        this.mtCrew = mtCrew;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public Integer getMtdu() {
-        switch (obj.charAt(0)) {
-            case 'A':
-                mtdu = ac.getAircraftType().getAcMH();
-                break;
-            case 'B':
-                mtdu = ac.getAircraftType().getBcMH();
-                break;
-            case 'C':
-                mtdu = ac.getAircraftType().getCcMH();
-                break;
-            case 'D':
-                mtdu = ac.getAircraftType().getDcMH();
-                break;
-            default:
-                mtdu = 0;
-                break;
-        }
         return mtdu;
     }
 

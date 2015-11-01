@@ -693,7 +693,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd) throws Exception{
+    public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd) throws Exception {
         Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", act.getRegistrationNo());
         Aircraft ac = (Aircraft) q1.getResultList().get(0);
         boolean flag1 = canAssignMt(ac, obj, mtStart, mtEnd);
@@ -814,11 +814,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return flag;
     }
 
-    public boolean canAssignMt(Aircraft ac, String obj, Date startTime, Date endTime) throws Exception{
+    public boolean canAssignMt(Aircraft ac, String obj, Date startTime, Date endTime) throws Exception {
         boolean canAssign = false;
         boolean canAssignMt = false;
         List<FlightInstance> flightTempBeforeSort = ac.getFlightInstance();
-        List<Maintenance> mtTemp = ac.getMaintenanceList();
+        List<Maintenance> mtTempBeforeSort = ac.getMaintenanceList();
         Airport sgAirport = em.find(Airport.class, "SIN");
 
 //        for (FlightInstance f : flightTemp) {
@@ -828,8 +828,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 //         for (FlightInstance f : flightTemp) {
 //            System.err.println("CHECK AFTER SORTING *************************************** " + f.getStandardDepTimeDateType() + " ~~~ " + f.getStandardArrTimeDateType());
 //        }
-        Collections.sort(mtTemp);
-
+//        Collections.sort(mtTemp);
+        // Sort flightinstance list
         List<Date> listDates = new ArrayList<>();
         for (FlightInstance fitest : flightTempBeforeSort) {
             listDates.add(fitest.getStandardDepTimeDateType());
@@ -845,6 +845,24 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 }
             }
         }
+
+        // Sort maintenance list
+        List<Date> listDates2 = new ArrayList<>();
+        for (Maintenance mttest : mtTempBeforeSort) {
+            listDates2.add(mttest.getStartTime());
+        }
+
+        Collections.sort(listDates2);
+
+        List<Maintenance> mtTemp = new ArrayList();
+        for (int k = 0; k < listDates2.size(); k++) {
+            for (int j = 0; j < mtTempBeforeSort.size(); j++) {
+                if (mtTempBeforeSort.get(j).getStartTime().equals(listDates2.get(k))) {
+                    mtTemp.add(mtTempBeforeSort.get(j));
+                }
+            }
+        }
+
         for (FlightInstance f : flightTemp) {
             System.err.println("CHECK AFTER SORTING *************************************** " + f.getStandardDepTimeDateType() + " ~~~ " + f.getStandardArrTimeDateType());
         }
@@ -943,8 +961,25 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightTemp = ac.getFlightInstance();
 //        Collections.sort(flightTemp);
         System.out.println("canAssign: CHECK 2 " + flightTemp.size());
-        List<Maintenance> mtTemp = ac.getMaintenanceList();
-        Collections.sort(mtTemp);
+        List<Maintenance> mtTempBeforeSort = ac.getMaintenanceList();
+//        Collections.sort(mtTemp);
+
+        
+        List<Date> listDates2 = new ArrayList<>();
+        for (Maintenance mttest : mtTempBeforeSort) {
+            listDates2.add(mttest.getStartTime());
+        }
+
+        Collections.sort(listDates2);
+
+        List<Maintenance> mtTemp = new ArrayList();
+        for (int k = 0; k < listDates2.size(); k++) {
+            for (int j = 0; j < mtTempBeforeSort.size(); j++) {
+                if (mtTempBeforeSort.get(j).getStartTime().equals(listDates2.get(k))) {
+                    mtTemp.add(mtTempBeforeSort.get(j));
+                }
+            }
+        }
 
         // add 1 hour after and delete 1 hour before 
         Date depCheck = fi.getStandardDepTimeDateType();

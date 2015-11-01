@@ -1,5 +1,6 @@
 package Entity.APS;
 
+import Entity.AFOS.FlightCrewTeam;
 import Entity.AIS.CabinClass;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -65,6 +67,9 @@ public class AircraftType implements Serializable {
     private Integer dcDu;  // by hour
     private Integer dcMH;
 
+    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "act")
+    private List<FlightCrewTeam> flightTeam = new ArrayList<>();
+    
     //---------------------------------------------------------------------------
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
@@ -430,6 +435,16 @@ public class AircraftType implements Serializable {
 //    public void setCruiseAltitude(Double cruiseAltitude) {
 //        this.cruiseAltitude = cruiseAltitude;
 //    }
+
+    public List<FlightCrewTeam> getFlightTeam() {
+        return flightTeam;
+    }
+
+    public void setFlightTeam(List<FlightCrewTeam> flightTeam) {
+        this.flightTeam = flightTeam;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
