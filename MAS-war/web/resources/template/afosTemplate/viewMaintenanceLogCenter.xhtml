@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="View Maintenance Log" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20" columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+                    <p:outputLabel value="Aircraft: " />
+                    <h:outputText value="#{VMTLMB.ac.registrationNo} / #{VMTLMB.ac.aircraftType.type}" />
+
+                    <p:outputLabel value="Maintenance Type: " />
+                    <h:outputText value="#{VMTLMB.obj}" />
+
+                    <p:outputLabel value="Maintenance Start Time: " />
+                    <h:outputText value="#{VMTLMB.startTime}"/>
+
+                    <p:outputLabel value="Maintenance End Time: " />
+                    <h:outputText value="#{VMTLMB.endTime}"/>
+
+                    <p:outputLabel value="Work Performed: " />
+                    <h:outputText value="#{VMTLMB.activity}"/>
+
+                    <p:outputLabel value="Total Man Hour" />
+                    <h:outputText value="#{VMTLMB.manhour}"/>
+
+                    <p:outputLabel value="Maintenance Crew (Split with ','): " />
+                    <h:outputText value="#{VMTLMB.mtCrew}"/>
+
+                    <p:outputLabel value="Remark: " />
+                    <h:outputText value="#{VMTLMB.remark}"/>
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Back" update="panel" style="margin-right:0" action="#{VMTLMB.viewMaintenanceLogBack}"  icon="ui-icon-carat-1-w" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+
+</html>
+

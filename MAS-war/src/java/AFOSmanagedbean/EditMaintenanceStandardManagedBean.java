@@ -32,22 +32,22 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
 //    private List<String> acTypeInfo = new ArrayList();
 
     private Integer acInH;
-    private Integer acInD;
+    private Integer acInC;
     private Integer acDu;
     private Integer acMH;
 
     private Integer bcInH;
-    private Integer bcInD;
+    private Integer bcInC;
     private Integer bcDu;
     private Integer bcMH;
 
     private Integer ccInH;
-    private Integer ccInD;
+    private Integer ccInC;
     private Integer ccDu;
     private Integer ccMH;
 
     private Integer dcInH;
-    private Integer dcInD;
+    private Integer dcInC;
     private Integer dcDu;
     private Integer dcMH;
 
@@ -63,25 +63,25 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
 //        weeklycDu = acType.getWeeklycDu();
 //        weeklycMH = acType.getWeeklycMH();
         acInH = acType.getAcInH();
-        acInD = acType.getAcInC();
+        acInC = acType.getAcInC();
         acDu = acType.getAcDu();
         acMH = acType.getAcMH();
         bcInH = acType.getBcInH();
-        bcInD = acType.getBcInC();
+        bcInC = acType.getBcInC();
         bcDu = acType.getBcDu();
         bcMH = acType.getBcMH();
         ccInH = acType.getCcInH();
-        ccInD = acType.getCcInC();
+        ccInC = acType.getCcInC();
         ccDu = acType.getCcDu();
         ccMH = acType.getCcMH();
         dcInH = acType.getDcInH();
-        dcInD = acType.getDcInC();
+        dcInC = acType.getDcInC();
         dcDu = acType.getDcDu();
         dcMH = acType.getDcMH();
     }
 
     public void editMaintenanceStandard(ActionEvent e) throws Exception {
-        fpb.editMtStandard(acType, acInH, acInD, acDu, acMH, bcInH, bcInD, bcDu, bcMH, ccInH, ccInD, ccDu, ccMH, dcInH, dcInD, dcDu, dcMH);
+        fpb.editMtStandard(acType, acInH, acInC, acDu, acMH, bcInH, bcInC, bcDu, bcMH, ccInH, ccInC, ccDu, ccMH, dcInH, dcInC, dcDu, dcMH);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("acTypeStringMt", acType.getType());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editMaintenanceStandardSuccess.xhtml");
     }
@@ -130,12 +130,12 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.acInH = acInH;
     }
 
-    public Integer getAcInD() {
-        return acInD;
+    public Integer getAcInC() {
+        return acInC;
     }
 
-    public void setAcInD(Integer acInD) {
-        this.acInD = acInD;
+    public void setAcInC(Integer acInC) {
+        this.acInC = acInC;
     }
 
     public Integer getAcDu() {
@@ -162,12 +162,12 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.bcInH = bcInH;
     }
 
-    public Integer getBcInD() {
-        return bcInD;
+    public Integer getBcInC() {
+        return bcInC;
     }
 
-    public void setBcInD(Integer bcInD) {
-        this.bcInD = bcInD;
+    public void setBcInC(Integer bcInC) {
+        this.bcInC = bcInC;
     }
 
     public Integer getBcDu() {
@@ -210,12 +210,12 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.ccInH = ccInH;
     }
 
-    public Integer getCcInD() {
-        return ccInD;
+    public Integer getCcInC() {
+        return ccInC;
     }
 
-    public void setCcInD(Integer ccInD) {
-        this.ccInD = ccInD;
+    public void setCcInC(Integer ccInC) {
+        this.ccInC = ccInC;
     }
 
     public Integer getDcInH() {
@@ -226,12 +226,12 @@ public class EditMaintenanceStandardManagedBean implements Serializable {
         this.dcInH = dcInH;
     }
 
-    public Integer getDcInD() {
-        return dcInD;
+    public Integer getDcInC() {
+        return dcInC;
     }
 
-    public void setDcInD(Integer dcInD) {
-        this.dcInD = dcInD;
+    public void setDcInC(Integer dcInC) {
+        this.dcInC = dcInC;
     }
 
     public Integer getDcDu() {

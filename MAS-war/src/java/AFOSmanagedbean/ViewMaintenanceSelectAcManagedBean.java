@@ -9,6 +9,7 @@ import Entity.APS.Aircraft;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -27,14 +28,19 @@ public class ViewMaintenanceSelectAcManagedBean implements Serializable {
     @EJB
     private FleetPlanningBeanLocal fpb;
 
-    List<Aircraft> acList;
+    List<Aircraft> acList = new ArrayList<>();
 
     public ViewMaintenanceSelectAcManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        acList = fpb.getAllAircraft();
+        List<Aircraft> acList0 = fpb.getAllAircraft();
+        for (Aircraft a : acList0) {
+            if (!a.getRegistrationNo().equals("9V-000")) {
+                acList.add(a);
+            }
+        }
     }
 
     public void viewMaintenanceList(Aircraft ac) throws IOException {

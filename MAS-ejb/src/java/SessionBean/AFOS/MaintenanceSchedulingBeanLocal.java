@@ -17,5 +17,7 @@ import javax.ejb.Local;
 public interface MaintenanceSchedulingBeanLocal {
 
     public void addMaintenanceLog(Maintenance mt, String aircraft, String acType, String objective, Date startTime, Date endTime, Integer manhour, String activity, String remark, String mtCrew);
+
+    public void editMaintenanceLog(Maintenance mt, String aircraft, String acType, String objective, Date startTime, Date endTime, Integer manhour, String activity, String remark, String mtCrew);
     
 }

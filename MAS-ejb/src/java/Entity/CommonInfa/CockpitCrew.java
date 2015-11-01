@@ -5,13 +5,13 @@
  */
 package Entity.CommonInfa;
 
+import Entity.AFOS.FlightCrewTeam;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -20,21 +20,24 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class CockpitCrew implements Serializable {
+
     @Id
     private String cpName;
     private String cpPassword;
     private String stfType;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private String licence;
     private Integer attempt;
     private Integer locked;
-    
-    @OneToOne(cascade={CascadeType.ALL})
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence)
-    {
+//    @ManyToOne(cascade = {CascadeType.PERSIST})
+//    private FlightCrewTeam flightTeam;
+
+    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence) {
         this.setCpName(strCpName);
         this.setCpPassword(strCpPassword);
         this.setEmail(email);
@@ -43,7 +46,7 @@ public class CockpitCrew implements Serializable {
         this.setAttempt(0);
         this.setLocked(0);
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -58,7 +61,7 @@ public class CockpitCrew implements Serializable {
             return false;
         }
         CockpitCrew other = (CockpitCrew) object;
-        if ((this.cpName == null && other.cpName != null) || (this.cpName!= null && !this.cpName.equals(other.cpName))) {
+        if ((this.cpName == null && other.cpName != null) || (this.cpName != null && !this.cpName.equals(other.cpName))) {
             return false;
         }
         return true;
@@ -180,5 +183,13 @@ public class CockpitCrew implements Serializable {
     public void setUser(UserEntity user) {
         this.user = user;
     }
-    
+
+//    public FlightCrewTeam getFlightTeam() {
+//        return flightTeam;
+//    }
+//
+//    public void setFlightTeam(FlightCrewTeam flightTeam) {
+//        this.flightTeam = flightTeam;
+//    }
+
 }

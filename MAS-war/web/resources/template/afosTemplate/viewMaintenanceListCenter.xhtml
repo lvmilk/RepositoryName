@@ -13,7 +13,7 @@
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="View Maintenance List of #{VMLMB.viewAcMt}"   style="width:100%">
+            <p:panel id="panel" header="View Maintenance List of  #{VMLMB.viewAcMt.registrationNo} / #{VMLMB.viewAcMt.aircraftType.type}"   style="width:100%">
                 <p:dataTable var="mt" value="#{VMLMB.viewMt}" paginator="true" rows="40" emptyMessage="No Maintenance scheduled for this aircraft.">
 
                     <p:column headerText="Maintenance Objective" sortBy="#{mt.objective}" filterBy="#{mt.objective}">
@@ -21,19 +21,32 @@
                     </p:column>
 
                     <p:column headerText="Scheduled Start Time" sortBy="#{mt.startTime}" filterBy="#{mt.startTime}">
-                        <h:outputText value="#{mt.startTime}" />
+                        <h:outputText value="#{mt.startTime}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/></h:outputText>
                     </p:column>
 
-                     <p:column headerText="Scheduled End Time" sortBy="#{mt.endTime}" filterBy="#{mt.endTime}">
-                        <h:outputText value="#{mt.endTime}" />
+                    <p:column headerText="Scheduled End Time" sortBy="#{mt.endTime}" filterBy="#{mt.endTime}">
+                        <h:outputText value="#{mt.endTime}">
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/></h:outputText>
                     </p:column>
-                    
-                     <p:column headerText="Status" sortBy="#{mt.endTime}" filterBy="#{mt.endTime}">
+
+                    <p:column headerText="Status" sortBy="#{mt.endTime}" filterBy="#{mt.endTime}">
                         <h:outputText value="#{mt.status}" />
                     </p:column>
-                    
-                    <p:column headerText="Action">
-                        <p:commandButton value="Add Log" action="#{VMLMB.addMtLog(mt)}" />
+
+                    <p:column headerText="Add Log">
+                        <p:commandButton value="Add Log" action="#{VMLMB.addMtLog(mt)}" rendered="#{mt.log == null}"/>
+                        <h:outputText value="Maintenance Log Already Added" rendered="#{mt.log != null}"/>
+                    </p:column>
+
+                    <p:column headerText="Edit Log">
+                        <p:commandButton value="Edit Log" action="#{VMLMB.editMtLog(mt)}" rendered="#{mt.log != null}"/>
+                        <h:outputText value="Maintenance Log Not Added" rendered="#{mt.log == null}"/>
+                    </p:column>
+
+                    <p:column headerText="View Log">
+                        <p:commandButton value="View Log" action="#{VMLMB.viewMtLog(mt)}" rendered="#{mt.log != null}"/>
+                        <h:outputText value="Maintenance Log Not Added" rendered="#{mt.log == null}"/>
                     </p:column>
 
                 </p:dataTable>
