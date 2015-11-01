@@ -34,6 +34,9 @@ public class LoginManagerBean implements Serializable {
     private String email;
 
     private String licence;
+    private String name;
+    private String stfLevel;
+    private Double salary;
 
     public void logIn() throws IOException {
 
@@ -99,7 +102,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
-            mal.addAccount(username, password, email, stfType);
+            mal.addAccount(username, password, email, stfType, name, stfLevel,salary);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -126,7 +129,7 @@ public class LoginManagerBean implements Serializable {
         System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
-            mal.addCocpitAcc(username, password, email, stfType, licence);
+            mal.addCocpitAcc(username, password, email, stfType, name, stfLevel,salary,licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
         } else if (!blCreateEmail && blCreateAcc) {
@@ -213,5 +216,47 @@ public class LoginManagerBean implements Serializable {
      */
     public void setLicence(String licence) {
         this.licence = licence;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
+    }
+
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 }

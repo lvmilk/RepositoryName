@@ -28,18 +28,24 @@ public class CabinCrew implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
+    private String stfLevel;
+    private String name;
+    private Double salary;
     
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType)
+    public void create(String strCbName, String strCbPassword, String email, String strStfType, String name, String stfLevel, Double salary)
     {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
+        this.name=name;
+        this.stfLevel=stfLevel;
         this.setAttempt(0);
         this.setLocked(0);
+        this.setSalary(salary);
     }
     
 
@@ -164,6 +170,48 @@ public class CabinCrew implements Serializable {
      */
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
+    }
+
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
     
 }

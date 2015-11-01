@@ -20,30 +20,36 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class CockpitCrew implements Serializable {
+
     @Id
     private String cpName;
     private String cpPassword;
     private String stfType;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private String licence;
     private Integer attempt;
     private Integer locked;
-    
-    @OneToOne(cascade={CascadeType.ALL})
+    private String stfLevel;
+    private String name;
+    private Double salary;
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence)
-    {
+    public void create(String strCpName, String strCpPassword, String email, String strStfType, String name, String stfLevel, Double salary, String licence) {
         this.setCpName(strCpName);
         this.setCpPassword(strCpPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
         this.setLicence(licence);
+        this.setName(name);
+        this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
+        this.setSalary(salary);
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -58,7 +64,7 @@ public class CockpitCrew implements Serializable {
             return false;
         }
         CockpitCrew other = (CockpitCrew) object;
-        if ((this.cpName == null && other.cpName != null) || (this.cpName!= null && !this.cpName.equals(other.cpName))) {
+        if ((this.cpName == null && other.cpName != null) || (this.cpName != null && !this.cpName.equals(other.cpName))) {
             return false;
         }
         return true;
@@ -180,5 +186,47 @@ public class CockpitCrew implements Serializable {
     public void setUser(UserEntity user) {
         this.user = user;
     }
-    
+
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
+    }
+
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
 }
