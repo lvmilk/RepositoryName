@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Edit Maintenance Log" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20" columnClasses="ui-grid-col-4, ui-grid-col-8">
+
+                    <p:outputLabel value="Aircraft: " />
+                    <h:outputText value="#{EMLMB.ac.registrationNo} / #{EMLMB.ac.aircraftType.type}" />
+
+                    <p:outputLabel value="Maintenance Type: " />
+                    <h:outputText value="#{EMLMB.obj}" />
+
+                    <p:outputLabel value="Maintenance Start Time: " />
+                    <h:outputText value="#{EMLMB.startTime}"/>
+
+                    <p:outputLabel value="Maintenance End Time: " />
+                    <h:outputText value="#{EMLMB.endTime}"/>
+
+                    <p:outputLabel for="activity" value="Work Performed: " />
+                    <p:inputTextarea rows="6" cols="33"  id="activity" value="#{EMLMB.activity}" label="activity" required="true"  requiredMessage="Please enter maintenance activity performed"/>
+
+                    <p:outputLabel for="manhour" value="Total Man Hour" />
+                    <p:inputText id="manhour" value="#{EMLMB.manhour}" label="manhour" required="true"  requiredMessage="Please enter total man hour for the maintenance" size="30"/>
+
+                    <p:outputLabel for="mtCrew" value="Maintenance Crew (Split with ','): " />
+                    <p:inputText id="mtCrew" value="#{EMLMB.mtCrew}" label="mtCrew" required="true"  requiredMessage="Please enter name of all maintenance crew" size="30"/>
+
+                    <p:outputLabel for="remark" value="Remark: " />
+                    <p:inputTextarea id="remark" value="#{EMLMB.remark}" label="remark" rows="4" cols="33" />
+
+                    <p:selectBooleanCheckbox value="#{EMLMB.checkSign}" />
+                    <h:outputText value="I certify that this aircraft was inspected in accordance with a #{EMLMB.mt.objective} inspection and was determined to be in an airworthy condition.  All work was accomplished in accordance with current Federal Aviation Regulations and manufacturer’s maintenance instructions." />
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Edit Maintenance Log" update="panel" style="margin-right:0" action="#{EMLMB.editMaintenanceLog}"  icon="ui-icon-check" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+
+</html>
+

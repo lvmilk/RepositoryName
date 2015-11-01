@@ -5,13 +5,13 @@
  */
 package Entity.CommonInfa;
 
+import Entity.AFOS.FlightCrewTeam;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -20,11 +20,12 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class CabinCrew implements Serializable {
+
     @Id
     private String cbName;
     private String cbPassword;
     private String stfType;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private Integer attempt;
     private Integer locked;
@@ -47,7 +48,6 @@ public class CabinCrew implements Serializable {
         this.setLocked(0);
         this.setSalary(salary);
     }
-    
 
     @Override
     public int hashCode() {

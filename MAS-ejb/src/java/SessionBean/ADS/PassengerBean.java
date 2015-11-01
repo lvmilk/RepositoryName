@@ -46,7 +46,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
                 System.out.println("hehe");
                 passenger = new Passenger();
-                passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
+                passenger.createPsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
 
                 passenger.setMember(member);
                 em.persist(passenger);
@@ -117,7 +117,7 @@ public class PassengerBean implements PassengerBeanLocal {
         Passenger tempPsg;
         member = new Member();
 
-        member.CreateMember(title, firstName, lastName, email, address, contactNo, false);
+        member.createMember(title, firstName, lastName, email, address, contactNo, false);
         em.persist(member);
         em.flush();
 
@@ -130,7 +130,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
             System.out.println("hehe");
             passenger = new Passenger();
-            passenger.CreatePsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
+            passenger.createPsg(tempPsg.getPassport(), tempPsg.getTitle(), tempPsg.getFirstName(), tempPsg.getLastName(), tempPsg.getFfpName(), tempPsg.getFfpNo());
 //            em.persist(passengerList.get(i));
             passenger.setMember(member);
             em.persist(passenger);

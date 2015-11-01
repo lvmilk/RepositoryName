@@ -13,7 +13,17 @@
     </h:head>
     <h:body>
         <h:form> 
+
             <p:growl id="topbar"/>
+
+
+            <style>
+                .clock.ui-clock {
+                    color: #35bad6;
+                    position: relative;
+                    margin-right: 2em;
+                }
+            </style>
 
             <p:menubar  styleClass = "menu" style="text-align: center">
 
@@ -53,7 +63,12 @@
 
                 <p:menuitem value="Logout" style="margin-right: 30px !important;" actionListener="#{SslManagedBean.endSsl}"  icon="ui-icon-extlink" />
 
+<!--                <p:menuitem styleClass="clock">
+                    <p:clock pattern="yyyy-MM-dd HH:mm:ss"/>
+                </p:menuitem>-->
+
             </p:menubar>
+
         </h:form>
 
     </h:body>

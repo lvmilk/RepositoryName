@@ -14,7 +14,7 @@
 
         <h:form>
             <p:panel id="panel" header="View All Aircraft"  style="width:100%">
-                <p:dataTable var="aircraft" value="#{AMB.aircraftList}" paginator="true" rows="40" emptyMessage="No Aircraft">
+                <p:dataTable var="aircraft" value="#{VMSAMB.acList}" paginator="true" rows="40" emptyMessage="No Aircraft">
 
                     <p:column headerText="Aircraft Registration No" sortBy="#{aircraft.registrationNo}" filterBy="#{aircraft.registrationNo}">
                         <h:outputText value="#{aircraft.registrationNo}" />
@@ -24,8 +24,8 @@
                         <h:outputText value="#{aircraft.aircraftType.type}" />
                     </p:column>
 
-                    <p:column headerText="View">
-                        <p:commandButton value="View" action="#{VMLMB.viewMaintenanceList(aircraft)}" />
+                    <p:column headerText="View Maintenance">
+                        <p:commandButton value="View Maintenance" action="#{VMSAMB.viewMaintenanceList(aircraft)}" />
                     </p:column>
 
                 </p:dataTable>

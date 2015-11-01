@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Entity.APS;
+package Entity.ADS;
 
 import Entity.ADS.Ticket;
 import java.io.Serializable;
@@ -32,7 +32,7 @@ public class Seat implements Serializable {
     private String status;
 
     @OneToOne(mappedBy="seat")
-    private Ticket itinerary;
+    private Ticket ticket;
 
     public Long getId() {
         return id;
@@ -134,17 +134,17 @@ public class Seat implements Serializable {
 //    }
 
     /**
-     * @return the itinerary
+     * @return the ticket
      */
-    public Ticket getItinerary() {
-        return itinerary;
+    public Ticket getTicket() {
+        return ticket;
     }
 
     /**
-     * @param itinerary the itinerary to set
+     * @param ticket the ticket to set
      */
-    public void setItinerary(Ticket itinerary) {
-        this.itinerary = itinerary;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
     
 }

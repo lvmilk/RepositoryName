@@ -37,7 +37,19 @@ public class ViewMaintenanceListManagedBean implements Serializable {
 
     public void addMtLog(Maintenance mt) throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("addMtLog", mt);
+        System.out.println("VMLMB *************** MT ************* " + mt);
+
         FacesContext.getCurrentInstance().getExternalContext().redirect("./addMaintenanceLog.xhtml");
+    }
+
+    public void editMtLog(Maintenance mt) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editMtLog", mt);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editMaintenanceLog.xhtml");
+    }
+
+    public void viewMtLog(Maintenance mt) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewMtLog", mt);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewMaintenanceLog.xhtml");
     }
 
     public Aircraft getViewAcMt() {
