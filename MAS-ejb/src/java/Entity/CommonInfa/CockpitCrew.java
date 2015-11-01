@@ -30,23 +30,24 @@ public class CockpitCrew implements Serializable {
     private String licence;
     private Integer attempt;
     private Integer locked;
-    private Double basicSalary;
-    private Double hourPay;
+    private String stfLevel;
+    private String name;
+    private Double salary;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-//    @ManyToOne(cascade = {CascadeType.PERSIST})
-//    private FlightCrewTeam flightTeam;
-
-    public void create(String strCpName, String strCpPassword, String email, String strStfType, String licence) {
+    public void create(String strCpName, String strCpPassword, String email, String strStfType, String name, String stfLevel, Double salary, String licence) {
         this.setCpName(strCpName);
         this.setCpPassword(strCpPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
         this.setLicence(licence);
+        this.setName(name);
+        this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
+        this.setSalary(salary);
     }
 
     @Override
@@ -186,28 +187,46 @@ public class CockpitCrew implements Serializable {
         this.user = user;
     }
 
-//    public FlightCrewTeam getFlightTeam() {
-//        return flightTeam;
-//    }
-//
-//    public void setFlightTeam(FlightCrewTeam flightTeam) {
-//        this.flightTeam = flightTeam;
-//    }
-
-    public Double getBasicSalary() {
-        return basicSalary;
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
     }
 
-    public void setBasicSalary(Double basicSalary) {
-        this.basicSalary = basicSalary;
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
     }
 
-    public Double getHourPay() {
-        return hourPay;
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 
-    public void setHourPay(Double hourPay) {
-        this.hourPay = hourPay;
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
 }

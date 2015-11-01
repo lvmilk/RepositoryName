@@ -30,6 +30,25 @@
                     </p:inputText>
                     <p:message for="otrEmail" display="icon" />
 
+                    <p:outputLabel for="otrName" value="Name: " />
+                    <p:inputText id="otrName" value="#{etManagedBean.name}" validatorMessage="Please enter the name" required="true" label="name" size="10">
+
+                    </p:inputText>
+                    <p:message for="otrName" display="icon" />
+
+                    <p:outputLabel for="otrStfLevel" value="Role/Level: " />
+                    <p:inputText id="otrStfLevel" value="#{etManagedBean.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
+
+                    </p:inputText>
+                    <p:message for="otrStfLevel" display="icon" />
+
+                    <p:outputLabel for="otrSalary" value="Salary: " />
+                    <p:inputText id="otrSalary" value="#{etManagedBean.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+
+                    </p:inputText>
+                    <p:message for="otrSalary" display="icon" />
+
+
                     <p:outputLabel for="otrAttempt" value="Attempt: " />
                     <p:inputText id="otrAttempt" value="#{etManagedBean.attempt}" required="true" label="Attempt" size="10">
                         <f:validateLength maximum="1" />
