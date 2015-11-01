@@ -6,12 +6,14 @@
 package Entity.ADS;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -30,6 +32,8 @@ public class Payment implements Serializable {
     private String expiryDate;
     private String securityCode;
     private String billAddress;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date paymentDate;
     
     @OneToOne(cascade={CascadeType.ALL})
     private Reservation reservation;
@@ -182,6 +186,14 @@ public class Payment implements Serializable {
      */
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
     
 }

@@ -9,6 +9,7 @@ import Entity.AIS.BookingClassInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -34,10 +36,11 @@ public class Reservation implements Serializable {
     private String bkLastName;
     private String bkEmail;
 
-    private String rsvDate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date rsvDate;
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
-    private Collection<Ticket> ticket;
+    private Collection<Ticket> tickets;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "RSV_BKCLASSINSTANCE")
@@ -50,7 +53,7 @@ public class Reservation implements Serializable {
 
     }
 
-    public void createReservation(String bkFirstName, String bkLastName, String bkEmail,String rsvDate) {
+    public void createReservation(String bkFirstName, String bkLastName, String bkEmail,Date rsvDate) {
         this.bkFirstName = bkFirstName;
         this.bkLastName = bkLastName;
         this.bkEmail = bkEmail;
@@ -91,17 +94,17 @@ public class Reservation implements Serializable {
     }
 
     /**
-     * @return the ticket
+     * @return the tickets
      */
-    public Collection<Ticket> getTicket() {
-        return ticket;
+    public Collection<Ticket> getTickets() {
+        return tickets;
     }
 
     /**
-     * @param ticket the ticket to set
+     * @param tickets the tickets to set
      */
-    public void setTicket(Collection<Ticket> ticket) {
-        this.ticket = ticket;
+    public void setTickets(Collection<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     /**
@@ -174,18 +177,14 @@ public class Reservation implements Serializable {
         this.bkEmail = bkEmail;
     }
 
-    /**
-     * @return the rsvDate
-     */
-    public String getRsvDate() {
+    public Date getRsvDate() {
         return rsvDate;
     }
 
-    /**
-     * @param rsvDate the rsvDate to set
-     */
-    public void setRsvDate(String rsvDate) {
+    public void setRsvDate(Date rsvDate) {
         this.rsvDate = rsvDate;
     }
+
+
 
 }

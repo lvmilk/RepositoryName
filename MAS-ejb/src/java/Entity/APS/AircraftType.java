@@ -33,10 +33,11 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
+    private Integer totalSeatNum;
      private Double mtCost;  // new added maintenance cost
     //number of cabin crew
     private Double cabinCrew; // new added
-    private Double purser; //cabin master
+    private Double cabinLeader; //cabin master
 //    private Integer stewardess; //cabin female
 //    private Integer steward; //cabin male
     //number of cockpit crew
@@ -94,10 +95,11 @@ public class AircraftType implements Serializable {
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
         this.setCabinCrew(cabinCrew);
-        this.setPurser(purser);
+        this.setCabinLeader(purser);
         this.setCaptain(captain);
         this.setPilot(pilot);
-
+        totalSeatNum=suiteNo+fcSeatNo+bcSeatNo+pecSeatNo+ecSeatNo;
+        this.setTotalSeatNum(totalSeatNum);
     }
 
     public List<Aircraft> getAircraft() {
@@ -229,12 +231,12 @@ public class AircraftType implements Serializable {
         this.cabinCrew = cabinCrew;
     }
 
-    public Double getPurser() {
-        return purser;
+    public Double getCabinLeader() {
+        return cabinLeader;
     }
 
-    public void setPurser(Double purser) {
-        this.purser = purser;
+    public void setCabinLeader(Double cabinLeader) {
+        this.cabinLeader = cabinLeader;
     }
 
     public Integer getCaptain() {
@@ -403,6 +405,15 @@ public class AircraftType implements Serializable {
     public void setDcInH(Integer dcInH) {
         this.dcInH = dcInH;
     }
+
+    public Integer getTotalSeatNum() {
+        return totalSeatNum;
+    }
+
+    public void setTotalSeatNum(Integer totalSeatNum) {
+        this.totalSeatNum = totalSeatNum;
+    }
+    
 
     //    public Double getCruiseSpeed() {
 //        return cruiseSpeed;

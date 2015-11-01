@@ -6,7 +6,6 @@
 package Entity.ADS;
 
 import Entity.AIS.BookingClassInstance;
-import Entity.APS.Seat;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,6 +32,7 @@ public class Ticket implements Serializable {
     private String flightNo;
     private String bookSystem;
     private boolean checkinStatus;
+    private Double price;
 
     @ManyToOne
     private Passenger passenger;
@@ -244,6 +244,14 @@ public class Ticket implements Serializable {
      */
     public void setCheckinStatus(boolean checkinStatus) {
         this.checkinStatus = checkinStatus;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
 }

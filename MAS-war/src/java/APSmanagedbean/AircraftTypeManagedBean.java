@@ -142,7 +142,7 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinCrew", aircraftType.getCabinCrew());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getPurser());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getCabinLeader());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("captain", aircraftType.getCaptain());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pilot", aircraftType.getPilot());
         System.out.println("Which type is changed? : " + aircraftType.getType());
@@ -167,7 +167,7 @@ public class AircraftTypeManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pecSeatNo", aircraftType.getPecSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ecSeatNo", aircraftType.getEcSeatNo());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinCrew", aircraftType.getCabinCrew());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getPurser());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("purser", aircraftType.getCabinLeader());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("captain", aircraftType.getCaptain());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("pilot", aircraftType.getPilot());
         System.out.println("Which type is displayed? : " + aircraftType.getType());

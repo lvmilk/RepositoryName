@@ -67,7 +67,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
                     depTicket.setPassenger(psgl);
                     em.persist(depTicket);
 //                    em.flush();
-                    psgl.getTicket().add(depTicket);
+                    psgl.getTickets().add(depTicket);
                     em.merge(psgl);
                     em.flush();
                     tkList.add(depTicket);
@@ -96,7 +96,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
                     em.persist(arrTicket);
 //                    em.flush();
 
-                    psgl.getTicket().add(arrTicket);
+                    psgl.getTickets().add(arrTicket);
                     em.merge(psgl);
                     em.flush();
                     tkList.add(arrTicket);
