@@ -29,8 +29,11 @@ public class CabinCrew implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
-
-    @OneToOne(cascade = {CascadeType.ALL})
+    private String stfLevel;
+    private String name;
+    private Double salary;
+    
+    @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
@@ -41,8 +44,11 @@ public class CabinCrew implements Serializable {
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
+        this.name=name;
+        this.stfLevel=stfLevel;
         this.setAttempt(0);
         this.setLocked(0);
+        this.setSalary(salary);
     }
 
     @Override
@@ -176,4 +182,39 @@ public class CabinCrew implements Serializable {
         this.flightTeam = flightTeam;
     }
 
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+    
 }

@@ -30,6 +30,9 @@ public class CockpitCrew implements Serializable {
     private String licence;
     private Integer attempt;
     private Integer locked;
+    private String stfLevel;
+    private String name;
+    private Double salary;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
@@ -43,8 +46,11 @@ public class CockpitCrew implements Serializable {
         this.setEmail(email);
         this.setStfType(strStfType);
         this.setLicence(licence);
+        this.setName(name);
+        this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
+        this.setSalary(salary);
     }
 
     @Override

@@ -48,6 +48,10 @@ public class EditManagedBean implements Serializable {
     private Integer attempt;
     private Integer locked;
 
+    private String name;
+    private String stfLevel;
+    private Double salary;
+
     private List<OfficeStaff> selectedOffStf;
     private List<OfficeStaff> offStfList;
     private List<GroundStaff> grdStfList;
@@ -69,6 +73,9 @@ public class EditManagedBean implements Serializable {
         setStfType(officeStaff.getStfType());
         setPassword(officeStaff.getOffPassword());
         setPswEdited(officeStaff.getOffPassword());
+        setName(officeStaff.getName());
+        setStfLevel(officeStaff.getStfLevel());
+        setSalary(officeStaff.getSalary());
         setAttempt(officeStaff.getAttempt());
         setLocked(officeStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -82,6 +89,9 @@ public class EditManagedBean implements Serializable {
         setStfType(grdStaff.getStfType());
         setPassword(grdStaff.getGrdPassword());
         setPswEdited(grdStaff.getGrdPassword());
+        setName(grdStaff.getName());
+        setStfLevel(grdStaff.getStfLevel());
+        setSalary(grdStaff.getSalary());
         setAttempt(grdStaff.getAttempt());
         setLocked(grdStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -94,6 +104,9 @@ public class EditManagedBean implements Serializable {
         setStfType(cbCrew.getStfType());
         setPassword(cbCrew.getCbPassword());
         setPswEdited(cbCrew.getCbPassword());
+        setName(cbCrew.getName());
+        setStfLevel(cbCrew.getStfLevel());
+        setSalary(cbCrew.getSalary());
         setAttempt(cbCrew.getAttempt());
         setLocked(cbCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -106,7 +119,10 @@ public class EditManagedBean implements Serializable {
         setStfType(cpCrew.getStfType());
         setPassword(cpCrew.getCpPassword());
         setPswEdited(cpCrew.getCpPassword());
+        setName(cpCrew.getName());
+        setStfLevel(cpCrew.getStfLevel());
         setLicence(cpCrew.getLicence());
+        setSalary(cpCrew.getSalary());
         setAttempt(cpCrew.getAttempt());
         setLocked(cpCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCockpitPage.xhtml");
@@ -115,7 +131,7 @@ public class EditManagedBean implements Serializable {
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited,email, emailEdited,attempt,locked);
+            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -126,7 +142,7 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited,email, emailEdited, licence,attempt,locked);
+            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, licence, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -338,6 +354,48 @@ public class EditManagedBean implements Serializable {
      */
     public void setLocked(Integer locked) {
         this.locked = locked;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
+    }
+
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
 }

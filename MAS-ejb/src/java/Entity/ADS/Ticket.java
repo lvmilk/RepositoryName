@@ -7,6 +7,7 @@ package Entity.ADS;
 
 import Entity.AIS.BookingClassInstance;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -30,9 +32,12 @@ public class Ticket implements Serializable {
     private String depTime;
     private String arrTime;
     private String flightNo;
-    private String bookSystem;
+    
     private boolean checkinStatus;
     private Double price;
+    private String bookSystem;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date bookDate;
 
     @ManyToOne
     private Passenger passenger;
@@ -120,32 +125,30 @@ public class Ticket implements Serializable {
         this.arrCity = arrCity;
     }
 
-    /**
-     * @return the depTime
-     */
     public String getDepTime() {
         return depTime;
     }
 
-    /**
-     * @param depTime the depTime to set
-     */
     public void setDepTime(String depTime) {
         this.depTime = depTime;
     }
 
-    /**
-     * @return the arrTime
-     */
     public String getArrTime() {
         return arrTime;
     }
 
-    /**
-     * @param arrTime the arrTime to set
-     */
     public void setArrTime(String arrTime) {
         this.arrTime = arrTime;
+    }
+
+
+
+    public Date getBookDate() {
+        return bookDate;
+    }
+
+    public void setBookDate(Date bookDate) {
+        this.bookDate = bookDate;
     }
 
     /**
