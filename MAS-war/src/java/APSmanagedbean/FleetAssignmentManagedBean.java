@@ -51,7 +51,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     private TimelineEvent event; // current event to be changed, edited, deleted or added  
 
     private List<Aircraft> aircraftList;
-    ;
+    
     private Aircraft aircraft;
     private FlightInstance flightInstance;
     private FlightInstance fi;

@@ -95,13 +95,13 @@ public class MemberGuestManagedBean implements Serializable {
         Long temp;
 
         if (visiMember == true) {
-            if (psgSBlocal.checkMemberExist(memberId, email)) {
-                psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+            if (psgSBlocal.checkMemberExist(memberId, existEmail)) {
+                passengerList=psgSBlocal.makeReservation(passengerList, existEmail, memberId);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
 
-                
+                System.out.println("#########This is in makeReserver and the id of passenger is:"+passengerList.get(0).getId());
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
 
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
@@ -113,7 +113,7 @@ public class MemberGuestManagedBean implements Serializable {
             if (msblocal.checkEmailExists(email)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email address is already been used ", ""));
             } else {
-                psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+                passengerList=psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 temp = msblocal.retrieveMemberID(email);
                 if (temp.equals(0)) {

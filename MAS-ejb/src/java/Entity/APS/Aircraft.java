@@ -2,6 +2,7 @@ package Entity.APS;
 
 import Entity.AFOS.Maintenance;
 import java.io.Serializable;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -24,12 +25,13 @@ public class Aircraft implements Serializable {
     private String firstFlyDate;
     private String deliveryDate;
     private String retireDate;   //Lease Expiration Date
-    private Long flightLogId;
-    private Long maintenanceLogId;
+//    private Long flightLogId;
+//    private Long maintenanceLogId;
     private String currentAirport;
 
     //----------------------After 1st release
-    private long accumFlyMinutes;
+    private Integer yearDiff; 
+ //  private long accumFlyMinutes;
     private long acycleFM = 0;
 //    private long acycleFD = 0;
     private long acycleFC = 0;
@@ -59,6 +61,10 @@ public class Aircraft implements Serializable {
         this.setFirstFlyDate(firstFlyDate);
         this.setDeliveryDate(deliveryDate);
         this.setRetireDate(retireDate);
+        Integer start = Integer.parseInt(deliveryDate.substring(0, 4));
+        Integer end = Integer.parseInt(retireDate.substring(0, 4));
+        yearDiff = end - start;
+        this.setYearDiff(yearDiff);
 //        this.setFlightLogId(flightLogId);
 //        this.setMaintenanceLogId(maintenanceLogId);
     }
@@ -111,21 +117,21 @@ public class Aircraft implements Serializable {
         this.retireDate = retireDate;
     }
 
-    public Long getFlightLogId() {
-        return flightLogId;
-    }
-
-    public void setFlightLogId(Long flightLogId) {
-        this.flightLogId = flightLogId;
-    }
-
-    public Long getMaintenanceLogId() {
-        return maintenanceLogId;
-    }
-
-    public void setMaintenanceLogId(Long maintenanceLogId) {
-        this.maintenanceLogId = maintenanceLogId;
-    }
+//    public Long getFlightLogId() {
+//        return flightLogId;
+//    }
+//
+//    public void setFlightLogId(Long flightLogId) {
+//        this.flightLogId = flightLogId;
+//    }
+//
+//    public Long getMaintenanceLogId() {
+//        return maintenanceLogId;
+//    }
+//
+//    public void setMaintenanceLogId(Long maintenanceLogId) {
+//        this.maintenanceLogId = maintenanceLogId;
+//    }
 
     public AircraftType getAircraftType() {
         return aircraftType;
@@ -149,14 +155,6 @@ public class Aircraft implements Serializable {
 
     public void setCurrentAirport(String currentAirport) {
         this.currentAirport = currentAirport;
-    }
-
-    public long getAccumFlyMinutes() {
-        return accumFlyMinutes;
-    }
-
-    public void setAccumFlyMinutes(long accumFlyMinutes) {
-        this.accumFlyMinutes = accumFlyMinutes;
     }
 
     public List<Maintenance> getMaintenanceList() {
@@ -262,6 +260,16 @@ public class Aircraft implements Serializable {
     public void setDcycleFC(long dcycleFC) {
         this.dcycleFC = dcycleFC;
     }
+
+    public Integer getYearDiff() {
+        return yearDiff;
+    }
+
+    public void setYearDiff(Integer yearDiff) {
+        this.yearDiff = yearDiff;
+    }
+    
+    
 
     @Override
     public int hashCode() {
