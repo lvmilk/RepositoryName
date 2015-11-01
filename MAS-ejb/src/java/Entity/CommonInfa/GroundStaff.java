@@ -30,6 +30,7 @@ public class GroundStaff implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
+    private Integer salary;
     
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
@@ -165,6 +166,14 @@ public class GroundStaff implements Serializable {
      */
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Integer salary) {
+        this.salary = salary;
     }
 
 }

@@ -30,6 +30,7 @@ public class OfficeStaff implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
+    private Double salary;
     
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
@@ -165,6 +166,14 @@ public class OfficeStaff implements Serializable {
      */
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
 }

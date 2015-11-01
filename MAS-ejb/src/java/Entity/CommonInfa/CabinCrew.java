@@ -29,6 +29,8 @@ public class CabinCrew implements Serializable {
     private String email;
     private Integer attempt;
     private Integer locked;
+      private Double basicSalary;
+    private Double hourPay;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
@@ -175,5 +177,21 @@ public class CabinCrew implements Serializable {
 //    public void setFlightTeam(FlightCrewTeam flightTeam) {
 //        this.flightTeam = flightTeam;
 //    }
+
+    public Double getBasicSalary() {
+        return basicSalary;
+    }
+
+    public void setBasicSalary(Double basicSalary) {
+        this.basicSalary = basicSalary;
+    }
+
+    public Double getHourPay() {
+        return hourPay;
+    }
+
+    public void setHourPay(Double hourPay) {
+        this.hourPay = hourPay;
+    }
 
 }
