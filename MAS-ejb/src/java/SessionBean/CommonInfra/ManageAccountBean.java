@@ -316,7 +316,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, String licence, Integer attempt, Integer locked) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
@@ -325,6 +325,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         cpCrew.setName(name);
         cpCrew.setStfLevel(stfLevel);
         cpCrew.setSalary(salary);
+        cpCrew.setHourPay(hourPay);
         cpCrew.setLicence(licence);
         cpCrew.setAttempt(attempt);
         cpCrew.setLocked(locked);
@@ -437,7 +438,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, Integer attempt, Integer locked) {
+    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
@@ -447,6 +448,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             officeStaff.setName(name);
             officeStaff.setStfLevel(stfLevel);
             officeStaff.setSalary(salary);
+            officeStaff.setHourPay(hourPay);
             officeStaff.setAttempt(attempt);
             officeStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
@@ -472,6 +474,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             grdStaff.setName(name);
             grdStaff.setStfLevel(stfLevel);
             grdStaff.setSalary(salary);
+            grdStaff.setHourPay(hourPay);
             grdStaff.setAttempt(attempt);
             grdStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
@@ -495,6 +498,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             cbCrew.setName(name);
             cbCrew.setStfLevel(stfLevel);
             cbCrew.setSalary(salary);
+            cbCrew.setHourPay(hourPay);
             cbCrew.setAttempt(attempt);
             cbCrew.setLocked(locked);
             if (password.equals(pswEdited)) {

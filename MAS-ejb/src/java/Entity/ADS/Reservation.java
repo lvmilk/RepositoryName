@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -42,9 +43,8 @@ public class Reservation implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
     private Collection<Ticket> tickets;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name = "RSV_BKCLASSINSTANCE")
-    private Collection<BookingClassInstance> bkclassInstance = new ArrayList<BookingClassInstance>();
+    @ManyToOne
+    private BookingClassInstance bkclassInstance;
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
@@ -107,19 +107,7 @@ public class Reservation implements Serializable {
         this.tickets = tickets;
     }
 
-    /**
-     * @return the bkclassInstance
-     */
-    public Collection<BookingClassInstance> getBkclassInstance() {
-        return bkclassInstance;
-    }
 
-    /**
-     * @param bkclassInstance the bkclassInstance to set
-     */
-    public void setBkclassInstance(Collection<BookingClassInstance> bkclassInstance) {
-        this.bkclassInstance = bkclassInstance;
-    }
 
     /**
      * @return the payment
@@ -183,6 +171,20 @@ public class Reservation implements Serializable {
 
     public void setRsvDate(Date rsvDate) {
         this.rsvDate = rsvDate;
+    }
+
+    /**
+     * @return the bkclassInstance
+     */
+    public BookingClassInstance getBkclassInstance() {
+        return bkclassInstance;
+    }
+
+    /**
+     * @param bkclassInstance the bkclassInstance to set
+     */
+    public void setBkclassInstance(BookingClassInstance bkclassInstance) {
+        this.bkclassInstance = bkclassInstance;
     }
 
 
