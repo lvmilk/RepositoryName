@@ -38,7 +38,9 @@ public class Ticket implements Serializable {
     private Passenger passenger;
     
     private BookingClassInstance bkInstance=new BookingClassInstance();
-    private Reservation rsv=new Reservation();
+    
+    @ManyToOne
+    private Reservation rsv;
     
     @OneToOne(cascade = {CascadeType.ALL})
     private Seat seat;

@@ -41,6 +41,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList) {
         Ticket depTicket;
         Ticket arrTicket;
+        ArrayList<Ticket> tkList=new ArrayList<Ticket>();
         Date temp;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -52,6 +53,8 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
             arrCity = departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
             temp = departSelected.get(i).getStandardDepTimeDateType();
             depTime = df.format(temp);
+            temp = departSelected.get(i).getStandardArrTimeDateType();
+            arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
 
             for (int j = 0; j < passengerList.size(); j++) {
@@ -67,27 +70,21 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
                     psgl.getTicket().add(depTicket);
                     em.merge(psgl);
                     em.flush();
+                    tkList.add(depTicket);
                 }
             }
 
-//            for (int k = 0; k < passengerList.size(); k++) {
-//                psg = passengerList.get(k);
-//                Passenger psgl = em.find(Passenger.class, psg.getId());
-//                if (psgl != null) {
-//                    psgl.getTicket().add(depTicket);
-//                }
-//                em.merge(psgl);
-//                em.flush();
-//            }
         }
 
         for (int i = 0; i < returnSelected.size(); i++) {
 //            arrTicket=new Ticket();
-            depCity = departSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
-            arrCity = departSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
-            temp = departSelected.get(i).getStandardDepTimeDateType();
+            depCity = returnSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
+            arrCity = returnSelected.get(i).getFlightFrequency().getRoute().getDest().getCityName();
+            temp = returnSelected.get(i).getStandardDepTimeDateType();
+            depTime = df.format(temp);
+            temp = returnSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
-            flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
+            flightNo = returnSelected.get(i).getFlightFrequency().getFlightNo();
 
             for (int j = 0; j < passengerList.size(); j++) {
                 arrTicket = new Ticket();
@@ -102,21 +99,19 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
                     psgl.getTicket().add(arrTicket);
                     em.merge(psgl);
                     em.flush();
+                    tkList.add(arrTicket);
                 }
             }
 
-//            for (int k = 0; k < passengerList.size(); k++) {
-//                psg = passengerList.get(k);
-//                Passenger psgl = em.find(Passenger.class, psg.getId());
-//                if (psgl != null) {
-//                    psgl.getTicket().add(arrTicket);
-//                }
-//                em.merge(psgl);
-//                em.flush();
-//            }
-
         }
+        
+        setupTicket_Reservation(arrTime, arrTime, depCity,tkList);
 
+    }
+    
+    private void setupTicket_Reservation(String firstName,String lastName,String email,ArrayList<Ticket> tkList)
+    {
+        
     }
 
     // Add business logic below. (Right-click in editor and choose
@@ -219,8 +214,5 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
         this.flightNo = flightNo;
     }
 
-    @Override
-    public void setupTicket_Reservation() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 }

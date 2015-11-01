@@ -25,31 +25,38 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class Reservation implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long airlineRsvCode;
-    
+
     private String bkFirstName;
     private String bkLastName;
     private String bkEmail;
-    
+
     private String rsvDate;
-    
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="rsv")
-    private Collection<Ticket> ticket= new ArrayList<Ticket>();
-    
-    @ManyToMany(cascade={CascadeType.ALL})
-    @JoinTable(name="RSV_BKCLASSINSTANCE")
-    private Collection<BookingClassInstance> bkclassInstance=new ArrayList<BookingClassInstance>();
-    
-    @OneToOne(mappedBy="reservation")
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
+    private Collection<Ticket> ticket;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "RSV_BKCLASSINSTANCE")
+    private Collection<BookingClassInstance> bkclassInstance = new ArrayList<BookingClassInstance>();
+
+    @OneToOne(mappedBy = "reservation")
     private Payment payment;
-    
-    public Reservation()
-    {
+
+    public Reservation() {
+
     }
-    
-    
+
+    public void createReservation(String bkFirstName, String bkLastName, String bkEmail,String rsvDate) {
+        this.bkFirstName = bkFirstName;
+        this.bkLastName = bkLastName;
+        this.bkEmail = bkEmail;
+        this.rsvDate = rsvDate;
+    }
+
     public Long getAirlineRsvCode() {
         return airlineRsvCode;
     }
@@ -180,5 +187,5 @@ public class Reservation implements Serializable {
     public void setRsvDate(String rsvDate) {
         this.rsvDate = rsvDate;
     }
-    
+
 }
