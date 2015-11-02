@@ -7,6 +7,7 @@ package Entity.ADS;
 
 import Entity.AIS.BookingClassInstance;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -61,6 +62,7 @@ public class Ticket implements Serializable {
         this.arrTime=arrTime;
         this.flightNo=flightNo;
         this.bookSystem=bookSystem;
+        this.setBookDate(Calendar.getInstance().getTime());
         this.checkinStatus=false;
     }
 
