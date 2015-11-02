@@ -8,6 +8,7 @@ package SessionBean.ADS;
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.FlightCabin;
 import Entity.AIS.CabinClass;
+import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -61,7 +62,6 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
         System.out.println("origin is "+origin);
          System.out.println("dest is "+dest);
           System.out.println("departDate is "+departDate);
-           System.out.println("returnDate is "+departDate);
           
         
         
@@ -72,6 +72,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                 for (int k = 0; k < allFlightInstance.size(); k++) {
 
                     if (allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(origin) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getDate().equals(departString)) {
+                      System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
                         if (this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                             resultOptionTrue.add(allFlightInstance.get(k));
                             System.out.println("flight " + allFlightInstance.get(k).getFlightFrequency().getFlightNo() + " on date " + allFlightInstance.get(k).getDate() + " fulfills criteria");
@@ -79,6 +80,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                             resultOptionTrue = new ArrayList<>();
                         }
                     } else if (allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(origin) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getDate().equals(departString)) {
+                         System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
                         if (this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                             System.out.println("flight " + allFlightInstance.get(k).getFlightFrequency().getFlightNo() + " on date " + allFlightInstance.get(k).getDate() + " fulfills intermediate criteria");
                             resultOptionFalse.add(allFlightInstance.get(k));
@@ -103,6 +105,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                         Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), allFlightInstance.get(k));
 
                         if (!checkDuplicate && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
+                           System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
                             if (!tempUncomplete.get(f).contains(allFlightInstance.get(k)) && this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                                 System.out.println("Final leg is " + allFlightInstance.get(k));
                                 System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName());
@@ -116,6 +119,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
 //                            tempUncomplete.remove(temp2);
                         } else if (i < 2 && this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).contains(allFlightInstance.get(k))) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
 
+                            System.out.println("%%%%%%%%%%%%%%%getting into 4th step");
                             ArrayList<FlightInstance> temp = tempUncomplete.get(f);
                             temp.add(allFlightInstance.get(k));
                             tempUncomplete.set(f, temp);
@@ -155,7 +159,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                             System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightInstance "+flight);
                             System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightCabin "+fCabin);
                             System.out.println("~~~~~~~~~~~~~~~~~~~~~for bookingclassinstance "+fCabin.getBookingClassInstances().get(k));
-                                    
+
                         }
                         if (countAvailable >= countPerson) {
                             available = true;
@@ -168,6 +172,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                 }
             }
         }
+
         return available;
     }
     
@@ -273,11 +278,11 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
 
     }
 
-    public List<FlightFrequency> getSecondFrequency(String origin) {
-        Query query = em.createQuery("SELECT f FROM FlightFrequency f where f.route.dest.airportName!=:origin  AND f.flightList IS NOT EMPTY ");
+    public List<Airport> getDestList(String origin) {
+        Query query = em.createQuery("SELECT a FROM Airport a where a.airportName!=:origin  ");
         query.setParameter("origin", origin);
 
-        List<FlightFrequency> resultList = query.getResultList();
+        List<Airport> resultList = query.getResultList();
 
         System.out.println("flightFrequency size returned is " + resultList.size());
         return resultList;

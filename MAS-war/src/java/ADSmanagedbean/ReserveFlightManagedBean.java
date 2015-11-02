@@ -18,6 +18,7 @@ import SessionBean.AIS.SeatAssignBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +60,8 @@ public class ReserveFlightManagedBean implements Serializable {
 
     private Double totalPrice = 0.0;
 
+    private List<Airport> otherPlaces = new ArrayList<>();
+
     private String selectedIndex;
     private String selectedIndex2;
     private Map<String, ArrayList<Integer>> dayToSelectIndex = new HashMap();
@@ -81,7 +84,7 @@ public class ReserveFlightManagedBean implements Serializable {
     private String dest;
     private List<Route> routeList;
     private List<FlightFrequency> initialFrequency;
-    private List<FlightFrequency> secondFrequency;
+//    private List<FlightFrequency> secondFrequency;
     private ArrayList<FlightInstance> departInstances;
     private ArrayList<FlightInstance> returnInstances;
     private List<FlightFrequency> resultFrequencies;
@@ -120,6 +123,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        
+         origin=  (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
+          dest= (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
 
         initialFrequency = rf.getAllFlightFrequency();
 
@@ -153,6 +159,193 @@ public class ReserveFlightManagedBean implements Serializable {
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
 
     }
+
+     public void onPrevious2() throws ParseException {
+        System.out.println("1st day of dateofweek is " + dateOfWeek2.get(0));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        Date thisDate = formatter.parse(dateOfWeek2.get(0));
+        Calendar c = Calendar.getInstance();
+        c.setTime(thisDate);
+        c.add(Calendar.DATE, -7);
+        dateOfWeek2 = new ArrayList<>();
+        returnDayToCheck = new HashMap<>();
+        returnDayOfWeek = new HashMap<>();
+        returnMap = new HashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+            returnsByDay = new ArrayList<>();
+
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String f = formatter.format(c.getTime());
+            Date firstDate = formatter.parse(f);
+            System.out.println("firstDate is " + f);
+
+            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson);
+            formatter = new SimpleDateFormat("dd MMM yyyy");
+            f = formatter.format(c.getTime());
+
+            dateOfWeek2.add(f);
+            String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+            returnDayToCheck.put(f, false);
+            returnDayOfWeek.put(f, dayOfWeek);
+
+            if (returnsByDay != null && !returnsByDay.isEmpty()) {
+                returnMap.put(f, returnsByDay);
+            }
+            c.add(Calendar.DATE, 1);
+
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnMap", returnMap);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayToCheck", returnDayToCheck);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
+
+    }
+     
+     
+      public void onNext2() throws ParseException {
+        System.out.println("1st day of dateofweek is " + dateOfWeek2.get(0));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        Date thisDate = formatter.parse(dateOfWeek2.get(0));
+        Calendar c = Calendar.getInstance();
+        c.setTime(thisDate);
+        c.add(Calendar.DATE, 7);
+        dateOfWeek2 = new ArrayList<>();
+        returnDayToCheck = new HashMap<>();
+        returnDayOfWeek = new HashMap<>();
+        returnMap = new HashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+            returnsByDay = new ArrayList<>();
+
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String f = formatter.format(c.getTime());
+            Date firstDate = formatter.parse(f);
+            System.out.println("firstDate is " + f);
+
+            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson);
+            formatter = new SimpleDateFormat("dd MMM yyyy");
+            f = formatter.format(c.getTime());
+
+            dateOfWeek2.add(f);
+            String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+            returnDayToCheck.put(f, false);
+            returnDayOfWeek.put(f, dayOfWeek);
+
+            if (returnsByDay != null && !returnsByDay.isEmpty()) {
+                returnMap.put(f, returnsByDay);
+            }
+            c.add(Calendar.DATE, 1);
+
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnMap", returnMap);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayToCheck", returnDayToCheck);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
+
+    }
+     
+    
+    
+    
+    public void onPrevious() throws ParseException {
+        System.out.println("1st day of dateofweek is " + dateOfWeek.get(0));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        Date thisDate = formatter.parse(dateOfWeek.get(0));
+        Calendar c = Calendar.getInstance();
+        c.setTime(thisDate);
+        c.add(Calendar.DATE, -7);
+        dateOfWeek = new ArrayList<>();
+        departDayToCheck = new HashMap<>();
+        departDayOfWeek = new HashMap<>();
+        departMap = new HashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+            departsByDay = new ArrayList<>();
+
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String f = formatter.format(c.getTime());
+            Date firstDate = formatter.parse(f);
+            System.out.println("firstDate is " + f);
+
+            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson);
+            formatter = new SimpleDateFormat("dd MMM yyyy");
+            f = formatter.format(c.getTime());
+
+            dateOfWeek.add(f);
+            String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+            departDayToCheck.put(f, false);
+            departDayOfWeek.put(f, dayOfWeek);
+
+            if (departsByDay != null && !departsByDay.isEmpty()) {
+                departMap.put(f, departsByDay);
+            }
+            c.add(Calendar.DATE, 1);
+
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departMap", departMap);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek", dateOfWeek);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departsByDay", departsByDay);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayToCheck", departDayToCheck);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
+
+    }
+    
+    
+    
+      public void onNext() throws ParseException {
+        System.out.println("1st day of dateofweek is " + dateOfWeek.get(0));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+        Date thisDate = formatter.parse(dateOfWeek.get(0));
+        Calendar c = Calendar.getInstance();
+        c.setTime(thisDate);
+        c.add(Calendar.DATE, 7);
+        dateOfWeek = new ArrayList<>();
+        departDayToCheck = new HashMap<>();
+        departDayOfWeek = new HashMap<>();
+        departMap = new HashMap<>();
+
+        for (int i = 0; i < 7; i++) {
+            departsByDay = new ArrayList<>();
+
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String f = formatter.format(c.getTime());
+            Date firstDate = formatter.parse(f);
+            System.out.println("firstDate is " + f);
+            
+            System.out.println("origin is "+origin);
+             System.out.println("dest is "+dest);
+
+            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson);
+            formatter = new SimpleDateFormat("dd MMM yyyy");
+            f = formatter.format(c.getTime());
+
+            dateOfWeek.add(f);
+            String dayOfWeek = new SimpleDateFormat("EE").format(c.getTime());
+            departDayToCheck.put(f, false);
+            departDayOfWeek.put(f, dayOfWeek);
+
+            if (departsByDay != null && !departsByDay.isEmpty()) {
+                departMap.put(f, departsByDay);
+            }
+            c.add(Calendar.DATE, 1);
+
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departMap", departMap);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek", dateOfWeek);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departsByDay", departsByDay);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayToCheck", departDayToCheck);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
+
+    }
+    
+    
 
     public void onDepartOptionChange(int index, String day) {
         System.out.println("Getting into onDepartOptionChange");
@@ -395,8 +588,8 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
-                            
-                             FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
                         }
                     }
@@ -470,8 +663,8 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
-                                
-                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                             }
                         } else {
                             for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
@@ -538,9 +731,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
     public void onOriginChange() {
 //        secondFrequency = rf.getSecondFrequency(origin);
-        secondFrequency = rf.getSecondFrequency(origin);
+        otherPlaces = rf.getDestList(origin);
 
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("secondFrequency", secondFrequency);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("otherPlaces", otherPlaces);
 
     }
 
@@ -692,6 +885,8 @@ public class ReserveFlightManagedBean implements Serializable {
             }
 
         }
+         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", origin);
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
     }
 
     public void findBookClassInstance() throws IOException {
@@ -905,14 +1100,6 @@ public class ReserveFlightManagedBean implements Serializable {
         this.initialFrequency = intialFrequency;
     }
 
-    public List<FlightFrequency> getSecondFrequency() {
-        return secondFrequency;
-    }
-
-    public void setSecondFrequency(List<FlightFrequency> secondFrequency) {
-        this.secondFrequency = secondFrequency;
-    }
-
     public String getDest() {
         return dest;
     }
@@ -1111,6 +1298,14 @@ public class ReserveFlightManagedBean implements Serializable {
 
     public void setReturnSpecificList(ArrayList<ArrayList<FlightInstance>> returnSpecificList) {
         this.returnSpecificList = returnSpecificList;
+    }
+
+    public List<Airport> getOtherPlaces() {
+        return otherPlaces;
+    }
+
+    public void setOtherPlaces(List<Airport> otherPlaces) {
+        this.otherPlaces = otherPlaces;
     }
 
 }
