@@ -5,6 +5,9 @@
  */
 package SessionBean.ADS;
 
+import Entity.ADS.Passenger;
+import Entity.APS.FlightInstance;
+import java.util.ArrayList;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +16,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface RsvConfirmationBeanLocal {
-    public void setupPsg_Ticket();
+    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected,ArrayList<FlightInstance> returnSelected,ArrayList<Passenger> passengerList);
+//    public void setupTicket_Reservation();
 }

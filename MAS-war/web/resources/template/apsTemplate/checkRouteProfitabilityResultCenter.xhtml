@@ -39,7 +39,7 @@
                         </p:row>
                         <p:row>
                             <p:column headerText="Annual Fuel Cost (thousand SGD)"/>
-                            <p:column headerText="Annual Lease Cost (thousand SGD)"/>
+                            <p:column headerText="Annual Aircraft Depreciation Cost (thousand SGD)"/>
                             <p:column headerText="Annual Maintenance Cost (thousand SGD)"/>
                             <p:column headerText="Annual Flight Crew Cost (thousand SGD)"/>
                         </p:row>
@@ -52,7 +52,7 @@
                         <h:outputText value="#{CRPMB.fuelCostMap[key]}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{CRPMB.leaseCostMap[key]}" />
+                        <h:outputText value="#{CRPMB.acCostMap[key]}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{CRPMB.mtCostMap[key]}" />

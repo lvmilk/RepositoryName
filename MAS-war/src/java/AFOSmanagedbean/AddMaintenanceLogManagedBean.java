@@ -8,6 +8,7 @@ package AFOSmanagedbean;
 import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import SessionBean.AFOS.MaintenanceSchedulingBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -22,7 +23,7 @@ import javax.faces.view.ViewScoped;
  * @author Xu
  */
 @Named(value = "AMLMB")
-
+@ViewScoped
 public class AddMaintenanceLogManagedBean implements Serializable {
 
     @EJB
@@ -48,15 +49,20 @@ public class AddMaintenanceLogManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         mt = (Maintenance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("addMtLog");
+        System.out.println("*************** MT ************* " + mt);
         ac = mt.getAircraft();
+        System.out.println("*************** AC ************* " + ac);
         schStart = mt.getStartTime();
+        System.out.println("*************** MT ST *************" + schStart);
         schEnd = mt.getEndTime();
+        System.out.println("*************** MT END *************" + schEnd);
         actStart = schStart;
         actEnd = schEnd;
         obj = mt.getObjective();
+        System.out.println("*************** MT OBJ *************" + obj);
     }
 
-    public void addMaintenanceLog() {
+    public void addMaintenanceLog() throws IOException {
         long startDiffHour = Math.abs(actStart.getTime() - schStart.getTime()) / (60 * 60 * 1000);
         long endDiffHour = Math.abs(actEnd.getTime() - schEnd.getTime()) / (60 * 60 * 1000);
         switch (obj.charAt(0)) {
@@ -79,17 +85,22 @@ public class AddMaintenanceLogManagedBean implements Serializable {
         if (actEnd.before(actStart)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Maintenance end time should be after start time.", ""));
         } else if (startDiffHour > 10) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance start time.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance start time. Scheduled start time is " + schStart.getTime(), ""));
         } else if (endDiffHour > 10) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance end time.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance end time. Scheduled end time is " + schEnd.getTime(), ""));
         } else if (mtdu != 0 && (manhour > mtdu * 1.3 || manhour < mtdu * 0.7)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check total man hour. Expected manhour is " + mtdu, ""));
         } else if (!checkSign) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please sign to agree the maintenance standard.", ""));
         } else {
             msb.addMaintenanceLog(mt, ac.getRegistrationNo(), ac.getAircraftType().getType(), obj, actStart, actEnd, manhour, activity, remark, mtCrew);
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("./addMaintenanceLogSuccess.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("mt", mt);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./addMaintenanceLogSuccess.xhtml");
         }
+    }
+
+    public void addMaintenanceLogBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewMaintenanceList.xhtml");
     }
 
     public Maintenance getMt() {

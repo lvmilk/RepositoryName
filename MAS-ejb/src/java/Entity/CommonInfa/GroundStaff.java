@@ -21,28 +21,33 @@ import javax.persistence.OneToOne;
 @Entity
 public class GroundStaff implements Serializable {
 
-
     @Id
     private String grdName;
     private String grdPassword;
     private String stfType;
-    @Column(unique=true)
+    @Column(unique = true)
     private String email;
     private Integer attempt;
     private Integer locked;
-    
-    @OneToOne(cascade={CascadeType.ALL})
+    private String stfLevel;
+    private String name;
+    private Double salary;
+    private Double hourPay;
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strGrdName, String strGrdPassword, String email, String strType) {
+    public void create(String strGrdName, String strGrdPassword, String email, String strType, String name, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
         this.setGrdPassword(strGrdPassword);
         this.setEmail(email);
         this.setStfType(strType);
+        this.setName(name);
+        this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
+        this.setHourPay(0.0);
     }
-
 
     @Override
     public int hashCode() {
@@ -66,7 +71,7 @@ public class GroundStaff implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.CommonInfaEntity.groudCrew[ id=" + grdName+ " ]";
+        return "Entity.CommonInfaEntity.groudCrew[ id=" + grdName + " ]";
     }
 
     /**
@@ -165,6 +170,62 @@ public class GroundStaff implements Serializable {
      */
     public void setUser(UserEntity user) {
         this.user = user;
+    }
+
+    /**
+     * @return the stfLevel
+     */
+    public String getStfLevel() {
+        return stfLevel;
+    }
+
+    /**
+     * @param stfLevel the stfLevel to set
+     */
+    public void setStfLevel(String stfLevel) {
+        this.stfLevel = stfLevel;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the salary
+     */
+    public Double getSalary() {
+        return salary;
+    }
+
+    /**
+     * @param salary the salary to set
+     */
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    /**
+     * @return the hourPay
+     */
+    public Double getHourPay() {
+        return hourPay;
+    }
+
+    /**
+     * @param hourPay the hourPay to set
+     */
+    public void setHourPay(Double hourPay) {
+        this.hourPay = hourPay;
     }
 
 }

@@ -21,7 +21,7 @@
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
 
                 Successfully deleted <ui:repeat var="f" value="#{deletedFlightFreq}"> <h:outputText value="#{f.flightNo} "/> </ui:repeat> !
-                <p:commandButton value="Back"  action="#{DFFMB.deleteFlightFreqBack}" />
+                <p:commandButton value="Back"  action="#{DFFMB.deleteFlightFreqBack}" icon="ui-icon-carat-1-w"/>
 
             </ui:define>
         </ui:decorate>

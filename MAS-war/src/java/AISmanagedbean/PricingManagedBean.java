@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
+import java.lang.*;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
@@ -276,7 +277,7 @@ public class PricingManagedBean implements Serializable {
     public void retrieveAircraftTypeInfo(AircraftType aircraftType) {
 
         System.out.println("MB: Enter retrieveAircraftTypeInfo");
-        ownershipCost = aircraftType.getLeaseCost() * 12;
+        ownershipCost = aircraftType.getPurchaseCost() * 12;
         if (aircraftType.getSuiteNo() > 0) {
             cabinInfo.put("Suite", aircraftType.getSuiteNo());
             loadfactorMap.put("Suite", 0.0);
@@ -307,7 +308,9 @@ public class PricingManagedBean implements Serializable {
         totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
         System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
         //  crewNo = pb.calculateCrewNo(totalSeatNo);
-        crewNo = aircraftType.getPilot() + aircraftType.getPurser() + aircraftType.getSteward() + aircraftType.getStewardess();
+        Double crewNum = aircraftType.getCabinCrew()*totalSeatNo;
+        Double purserNum = aircraftType.getCabinLeader()*totalSeatNo;
+        crewNo = aircraftType.getCaptain()+aircraftType.getPilot() + purserNum.intValue() + crewNum.intValue();
         System.out.println("MB: AircraftType Crew No: " + crewNo);
         keyList = new ArrayList<String>(cabinInfo.keySet());
         System.out.println("MB: AircraftType key List Size: " + keyList.size());

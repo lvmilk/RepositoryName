@@ -9,7 +9,7 @@ import Entity.APS.AircraftType;
 import Entity.AIS.CabinClass;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.AIS.SeatPlanBeanLocal;
-import SessionBean.CommonInfa.ManageAccountBeanLocal;
+import SessionBean.CommonInfra.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;

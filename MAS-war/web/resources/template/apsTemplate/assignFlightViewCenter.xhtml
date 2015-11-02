@@ -32,15 +32,15 @@
 
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
 
-                <p:growl id="growl" showSummary="true" showDetail="true" autoUpdate="true"/>
+                <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
 
-                <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
+                <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}" 
                              groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" minHeight="200" widgetVar="timelineWdgt">
 
-                    <!--                    <p:ajax event="add" update=":formMain:addTaskInner"
-                                                listener="#{FAMB.onAdd}"
-                                                oncomplete="PF('addTaskWdgt').show()"/>-->
-                    
+                    <!--<p:ajax event="add" update=":formMain:addTaskInner" listener="#{FAMB.onAdd}" oncomplete="PF('addTaskWdgt').show()"/>-->
+
+                    <!--<p:ajax event="edit" update=":dialogForm:detailsMtInner" listener="#{FAMB.onEdit}" oncomplete="PF('detailsMtWdgt').show()"/>-->  
+
                     <p:ajax event="delete" update="@form" listener="#{FAMB.onDelete}"
                             onstart="PF('timelineWdgt').cancelDelete()" oncomplete="PF('deleteTaskWdgt').show()"/>
 
@@ -71,7 +71,7 @@
 
             <p:dataTable id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights of the planning period remain unassigned." style="width:60%">
                 <f:facet name="header" class="unassignedFlightTable">
-                    Unassigned Flight Instance(s) within Planning Period #{FAMB.startPl} - #{FAMB.endPl}
+                    <h:outputText value="Unassigned Flight Instance(s) within Planning Period #{FAMB.startPl} - #{FAMB.endPl}"/>
                 </f:facet>
                 <p:column headerText="Flight No">
                     <h:outputText value="#{flight.flightFrequency.flightNo}" />
@@ -120,6 +120,40 @@
             </p:dataTable>
 
 
+<!--            <p:dialog id="detailsMtDlg" header="Maintenance Details" widgetVar="detailsMtWdgt" showEffect="clip" hideEffect="clip" rendered="#{flighttask.class.simpleName == 'Maintenance'}" >  
+                <h:panelGroup id="detailsMtInner" layout="block">  
+                    <h:panelGrid columns="2">  
+                        <h:outputText value="Aircraft"/>  
+                        <p:inputText value="#{editServerTimelineController.event.data.roomNumber}"  
+                                     rendered="#{not empty editServerTimelineController.event}"  
+                                     required="true" label="Room"/>  
+                        <h:outputText value="#{FAMB.event.data.aircraft}"/>  
+                        
+                        <h:outputText value="From"/>  
+                        <p:calendar value="#{editServerTimelineController.event.startDate}"  
+                                    rendered="#{not empty editServerTimelineController.event}"  
+                                    timeZone="#{editServerTimelineController.timeZone}"  
+                                    pattern="dd/MM/yyyy HH:mm" required="true" label="From"/>  
+
+                        <h:outputText value="Until"/>  
+                        <p:calendar value="#{editServerTimelineController.event.endDate}"  
+                                    rendered="#{not empty editServerTimelineController.event}"  
+                                    timeZone="#{editServerTimelineController.timeZone}"  
+                                    pattern="dd/MM/yyyy HH:mm" label="Until"/>  
+  
+                    </h:panelGrid>  
+                </h:panelGroup>  
+
+                <f:facet name="footer">  
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                        <p:commandButton value="Save" process="detailsBookingDlg" update="@none"  
+                                         action="#{editServerTimelineController.saveDetails}"  
+                                         oncomplete="if(!args.validationFailed){PF('detailsBookingWdgt').hide();}"/>  
+                        <p:commandButton type="button" value="Close" onclick="PF('detailsBookingWdgt').hide()"/>  
+                    </h:panelGroup>  
+                </f:facet>  
+            </p:dialog>  -->
+
 
             <p:dialog id="deleteTaskDlg" header="Delete Task" widgetVar="deleteTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="false" >  
                 <h:panelGroup id="deleteTaskInner" layout="block" style="margin:10px;">  
@@ -130,31 +164,15 @@
                     <p:panel visible="#{flighttask.class.simpleName == 'Maintenance'}" styleClass="specialDialog">
                         <h:outputText value="#{FAMB.deleteMtMessage}" />    
                     </p:panel>
-
-
                 </h:panelGroup>  
 
                 <f:facet name="footer">  
                     <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
                         <p:commandButton value="Delete" process="deleteTaskDlg" update="@none" action="#{FAMB.delete}" oncomplete="PF('deleteTaskWdgt').hide()"/>  
-                        <p:commandButton type="button" value="Cancel" onclick="PF('deleteTaskWdgt').hide()"/>  
+                        <p:commandButton value="Cancel" type="button" onclick="PF('deleteTaskWdgt').hide()"/>  
                     </h:panelGroup>  
                 </f:facet>  
             </p:dialog>  
-
-
-<!--            <p:dialog rendered="#{flighttask.class.simpleName == 'Maintenance'}" id="deleteMtTaskDlg" header="Delete Maintenance" widgetVar="deleteMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
-                <h:panelGroup id="deleteMtTaskInner" layout="block" style="margin:10px;">  
-                    <h:outputText value="#{FAMB.deleteMtMessage}"/>  
-                </h:panelGroup>  
-
-                <f:facet name="footer">  
-                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
-                        <p:commandButton value="Delete" process="deleteMtTaskDlg" update="growl" action="#{FAMB.deleteMt}" oncomplete="PF('deleteMtTaskWdgt').hide()"/>  
-                        <p:commandButton type="button" value="Cancel" onclick="PF('deleteMtTaskWdgt').hide()"/>  
-                    </h:panelGroup>  
-                </f:facet>  
-            </p:dialog>  -->
 
 
             <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
@@ -190,7 +208,7 @@
             <p:dialog id="addMtTaskDlg" header="Add Maintenance" widgetVar="addMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup layout="block" style="margin:15px;">
                     <p:messages id="msgs" autoUpdate="true" />
-                    <p:panelGrid columns="2" columnClasses="">
+                    <p:panelGrid columns="2">
 
                         <h:outputLabel for="aircraftMt" value="Choose an aircraft" />
                         <p:selectOneMenu id="aircraftMt" value="#{FAMB.taskMtAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px" >
