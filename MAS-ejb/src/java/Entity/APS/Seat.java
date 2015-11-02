@@ -32,7 +32,7 @@ public class Seat implements Serializable {
     private String status;
 
     @OneToOne(mappedBy="seat")
-    private Ticket itinerary;
+    private Ticket ticket;
 
     public Long getId() {
         return id;
@@ -114,6 +114,14 @@ public class Seat implements Serializable {
         this.status = status;
     }
 
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
    
 
    
@@ -136,15 +144,6 @@ public class Seat implements Serializable {
     /**
      * @return the itinerary
      */
-    public Ticket getItinerary() {
-        return itinerary;
-    }
-
-    /**
-     * @param itinerary the itinerary to set
-     */
-    public void setItinerary(Ticket itinerary) {
-        this.itinerary = itinerary;
-    }
+ 
     
 }
