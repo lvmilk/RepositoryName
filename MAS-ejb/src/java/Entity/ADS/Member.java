@@ -52,7 +52,7 @@ public class Member implements Serializable {
     {
     }
     
-    public void CreateMember(String title, String firstName, String lastName, String email, String address, String contact,boolean memberStatus)
+    public void createMember(String title, String firstName, String lastName, String email, String address, String contact,boolean memberStatus)
     {
         this.title=title;
         this.firstName=firstName;

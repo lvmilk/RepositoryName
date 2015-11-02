@@ -309,7 +309,7 @@ public class PricingManagedBean implements Serializable {
         System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
         //  crewNo = pb.calculateCrewNo(totalSeatNo);
         Double crewNum = aircraftType.getCabinCrew()*totalSeatNo;
-        Double purserNum = aircraftType.getPurser()*totalSeatNo;
+        Double purserNum = aircraftType.getCabinLeader()*totalSeatNo;
         crewNo = aircraftType.getCaptain()+aircraftType.getPilot() + purserNum.intValue() + crewNum.intValue();
         System.out.println("MB: AircraftType Crew No: " + crewNo);
         keyList = new ArrayList<String>(cabinInfo.keySet());

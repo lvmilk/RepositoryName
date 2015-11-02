@@ -22,10 +22,10 @@ public interface ManageAccountBeanLocal {
     
     public boolean validateLogin (String username, String password, String staffType);
     public void addAdmin(String username,String password, String stfType);
-    public void addAccount(String username, String password,String email, String stfType);
+    public void addAccount(String username, String password,String email, String stfType, String name, String stfLevel, Double salary);
     public void addPartnerAcc(String pid, String pPwd, String email, String stfType);
     
-    public void addCocpitAcc(String username, String password, String email ,String stfType, String licence );
+    public void addCocpitAcc(String username, String password, String email ,String stfType, String name, String stfLevel, Double salary,String licence );
     public boolean checkAccDuplicate(String username,String stfType);
     public boolean checkNameDuplicate(String username, String usernameEdited);
     
@@ -37,8 +37,8 @@ public interface ManageAccountBeanLocal {
     public boolean checkEmailExists(String email);
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editStaff(String username, String stfType, String password,String pswEdited,String email, String emailEdited, Integer attempt, Integer locked);
-    public void editCpCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String licence, Integer attempt, Integer locked);
+    public void editStaff(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,Integer attempt, Integer locked);
+    public void editCpCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,String licence, Integer attempt, Integer locked);
     public void editProfile(String username, String stfType, String pswEdited,String email, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);

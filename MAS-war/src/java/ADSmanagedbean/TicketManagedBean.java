@@ -63,6 +63,7 @@ public class TicketManagedBean implements Serializable {
             member = msblocal.retrieveMember(memberId);
             this.setFirstName(member.getFirstName());
             this.setLastName(member.getLastName());
+            this.setEmail(member.getEmail());
 
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
@@ -76,6 +77,7 @@ public class TicketManagedBean implements Serializable {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
         rsvCflocal.setupPsg_Ticket(departSelected, returnSelected, passengerList);
+//        rsvCflocal.setupTicket_Reservation(firstName,lastName,email);
     }
 
     /**

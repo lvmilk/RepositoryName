@@ -1,5 +1,6 @@
 package Entity.APS;
 
+import Entity.AFOS.FlightCrewTeam;
 import Entity.AIS.CabinClass;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -33,10 +35,11 @@ public class AircraftType implements Serializable {
     private Integer pecSeatNo;              //number of seat in premium economy class
     private Integer ecSeatNo;               //number of seat in economy class
 
+    private Integer totalSeatNum;
      private Double mtCost;  // new added maintenance cost
     //number of cabin crew
     private Double cabinCrew; // new added
-    private Double purser; //cabin master
+    private Double cabinLeader; //cabin master
 //    private Integer stewardess; //cabin female
 //    private Integer steward; //cabin male
     //number of cockpit crew
@@ -64,6 +67,9 @@ public class AircraftType implements Serializable {
     private Integer dcDu;  // by hour
     private Integer dcMH;
 
+    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "act")
+    private List<FlightCrewTeam> flightTeam = new ArrayList<>();
+    
     //---------------------------------------------------------------------------
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
@@ -94,10 +100,11 @@ public class AircraftType implements Serializable {
         this.setPecSeatNo(pecSeatNo);
         this.setEcSeatNo(ecSeatNo);
         this.setCabinCrew(cabinCrew);
-        this.setPurser(purser);
+        this.setCabinLeader(purser);
         this.setCaptain(captain);
         this.setPilot(pilot);
-
+        totalSeatNum=suiteNo+fcSeatNo+bcSeatNo+pecSeatNo+ecSeatNo;
+        this.setTotalSeatNum(totalSeatNum);
     }
 
     public List<Aircraft> getAircraft() {
@@ -229,12 +236,12 @@ public class AircraftType implements Serializable {
         this.cabinCrew = cabinCrew;
     }
 
-    public Double getPurser() {
-        return purser;
+    public Double getCabinLeader() {
+        return cabinLeader;
     }
 
-    public void setPurser(Double purser) {
-        this.purser = purser;
+    public void setCabinLeader(Double cabinLeader) {
+        this.cabinLeader = cabinLeader;
     }
 
     public Integer getCaptain() {
@@ -404,6 +411,15 @@ public class AircraftType implements Serializable {
         this.dcInH = dcInH;
     }
 
+    public Integer getTotalSeatNum() {
+        return totalSeatNum;
+    }
+
+    public void setTotalSeatNum(Integer totalSeatNum) {
+        this.totalSeatNum = totalSeatNum;
+    }
+    
+
     //    public Double getCruiseSpeed() {
 //        return cruiseSpeed;
 //    }
@@ -419,6 +435,16 @@ public class AircraftType implements Serializable {
 //    public void setCruiseAltitude(Double cruiseAltitude) {
 //        this.cruiseAltitude = cruiseAltitude;
 //    }
+
+    public List<FlightCrewTeam> getFlightTeam() {
+        return flightTeam;
+    }
+
+    public void setFlightTeam(List<FlightCrewTeam> flightTeam) {
+        this.flightTeam = flightTeam;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -6,8 +6,8 @@
 package Entity.ADS;
 
 import Entity.AIS.BookingClassInstance;
-import Entity.APS.Seat;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -31,13 +32,20 @@ public class Ticket implements Serializable {
     private String depTime;
     private String arrTime;
     private String flightNo;
+    
+    private boolean checkinStatus;
+    private Double price;
     private String bookSystem;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date bookDate;
 
     @ManyToOne
     private Passenger passenger;
     
     private BookingClassInstance bkInstance=new BookingClassInstance();
-    private Reservation rsv=new Reservation();
+    
+    @ManyToOne
+    private Reservation rsv;
     
     @OneToOne(cascade = {CascadeType.ALL})
     private Seat seat;
@@ -53,6 +61,7 @@ public class Ticket implements Serializable {
         this.arrTime=arrTime;
         this.flightNo=flightNo;
         this.bookSystem=bookSystem;
+        this.checkinStatus=false;
     }
 
     public Long getTicketID() {
@@ -116,32 +125,30 @@ public class Ticket implements Serializable {
         this.arrCity = arrCity;
     }
 
-    /**
-     * @return the depTime
-     */
     public String getDepTime() {
         return depTime;
     }
 
-    /**
-     * @param depTime the depTime to set
-     */
     public void setDepTime(String depTime) {
         this.depTime = depTime;
     }
 
-    /**
-     * @return the arrTime
-     */
     public String getArrTime() {
         return arrTime;
     }
 
-    /**
-     * @param arrTime the arrTime to set
-     */
     public void setArrTime(String arrTime) {
         this.arrTime = arrTime;
+    }
+
+
+
+    public Date getBookDate() {
+        return bookDate;
+    }
+
+    public void setBookDate(Date bookDate) {
+        this.bookDate = bookDate;
     }
 
     /**
@@ -226,6 +233,28 @@ public class Ticket implements Serializable {
      */
     public void setBookSystem(String bookSystem) {
         this.bookSystem = bookSystem;
+    }
+
+    /**
+     * @return the checkinStatus
+     */
+    public boolean isCheckinStatus() {
+        return checkinStatus;
+    }
+
+    /**
+     * @param checkinStatus the checkinStatus to set
+     */
+    public void setCheckinStatus(boolean checkinStatus) {
+        this.checkinStatus = checkinStatus;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
 }

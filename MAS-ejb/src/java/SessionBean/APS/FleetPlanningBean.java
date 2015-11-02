@@ -197,7 +197,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setPecSeatNo(pecSeatNo);
         aircraftType.setEcSeatNo(ecSeatNo);
         aircraftType.setCabinCrew(cabinCrew);
-        aircraftType.setPurser(purser);
+        aircraftType.setCabinLeader(purser);
         aircraftType.setCaptain(captain);
         aircraftType.setPilot(pilot);
         em.merge(aircraftType);

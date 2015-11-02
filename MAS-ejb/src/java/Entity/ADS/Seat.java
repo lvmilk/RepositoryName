@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Entity.APS;
+package Entity.ADS;
 
 import Entity.ADS.Ticket;
 import java.io.Serializable;
@@ -114,14 +114,6 @@ public class Seat implements Serializable {
         this.status = status;
     }
 
-    public Ticket getTicket() {
-        return ticket;
-    }
-
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
    
 
    
@@ -142,8 +134,17 @@ public class Seat implements Serializable {
 //    }
 
     /**
-     * @return the itinerary
+     * @return the ticket
      */
- 
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    /**
+     * @param ticket the ticket to set
+     */
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
     
 }

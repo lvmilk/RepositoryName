@@ -23,8 +23,6 @@
                     <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="3" headerText="Aircraft Type"/>
-                            <!--                            <p:column colspan="2" headerText="Daily Check"/>
-                                                        <p:column colspan="2" headerText="Weekly Check"/>-->
                             <p:column colspan="4" headerText="A Check" />
                             <p:column colspan="4" headerText="B Check" />
                             <p:column colspan="4" headerText="C Check" />
@@ -32,8 +30,6 @@
                             <p:column rowspan="3" headerText="Action"/>
                         </p:row>
                         <p:row>
-                            <!--                            <p:column colspan="2" headerText="Duration"/>
-                                                        <p:column colspan="2" headerText="Duration"/>-->
                             <p:column colspan="2" headerText="Interval"/>
                             <p:column colspan="2" headerText="Duration"/>
                             <p:column colspan="2" headerText="Interval"/>
@@ -44,10 +40,6 @@
                             <p:column colspan="2" headerText="Duration"/>
                         </p:row>
                         <p:row> 
-                            <!--                            <p:column headerText="Net Duration (hr)"/>
-                                                        <p:column headerText="Total Man Hour (hr)"/>
-                                                        <p:column headerText="Net Duration (hr)"/>
-                                                        <p:column headerText="Total Man Hour (hr)"/>-->
 
                             <p:column headerText="By Flight Cycle"/>
                             <p:column headerText="By Flight Hour"/>
@@ -76,20 +68,9 @@
                     <p:column>
                         <h:outputText value="#{ac.type}" />
                     </p:column>
-                    <!--                    <p:column>
-                                            <h:outputText value="#{ac.dailycDu}" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{ac.dailycMH}" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{ac.weeklycDu}" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{ac.weeklycMH}" />
-                                        </p:column>-->
+
                     <p:column>
-                        <h:outputText value="#{ac.acInD}" />
+                        <h:outputText value="#{ac.acInC}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{ac.acInH}" />
@@ -101,7 +82,7 @@
                         <h:outputText value="#{ac.acMH}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{ac.bcInD}" />
+                        <h:outputText value="#{ac.bcInC}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{ac.bcInH}" />
@@ -113,7 +94,7 @@
                         <h:outputText value="#{ac.bcMH}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{ac.ccInD}" />
+                        <h:outputText value="#{ac.ccInC}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{ac.ccInH}" />
@@ -125,7 +106,7 @@
                         <h:outputText value="#{ac.ccMH}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{ac.dcInD}" />
+                        <h:outputText value="#{ac.dcInC}" />
                     </p:column>
                     <p:column>
                         <h:outputText value="#{ac.dcInH}" />

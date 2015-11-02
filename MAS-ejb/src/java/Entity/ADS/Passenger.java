@@ -40,13 +40,13 @@ public class Passenger implements Serializable {
     private Member member;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
-    private Collection<Ticket> ticket;
+    private Collection<Ticket> tickets;
     
     public Passenger()
     {
     }
     
-    public void CreatePsg(String passport,String title, String firstName, String lastName, String ffpName, String ffpNo)
+    public void createPsg(String passport,String title, String firstName, String lastName, String ffpName, String ffpNo)
     {
         this.passport=passport;
         this.title=title;
@@ -160,17 +160,17 @@ public class Passenger implements Serializable {
     }
 
     /**
-     * @return the ticket
+     * @return the tickets
      */
-    public Collection<Ticket> getTicket() {
-        return ticket;
+    public Collection<Ticket> getTickets() {
+        return tickets;
     }
 
     /**
-     * @param ticket the ticket to set
+     * @param tickets the tickets to set
      */
-    public void setTicket(Collection<Ticket> ticket) {
-        this.ticket = ticket;
+    public void setTickets(Collection<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     /**

@@ -34,7 +34,7 @@
 
                 <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
 
-                <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}"
+                <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}" 
                              groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" minHeight="200" widgetVar="timelineWdgt">
 
                     <!--<p:ajax event="add" update=":formMain:addTaskInner" listener="#{FAMB.onAdd}" oncomplete="PF('addTaskWdgt').show()"/>-->
@@ -208,7 +208,7 @@
             <p:dialog id="addMtTaskDlg" header="Add Maintenance" widgetVar="addMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup layout="block" style="margin:15px;">
                     <p:messages id="msgs" autoUpdate="true" />
-                    <p:panelGrid columns="2" columnClasses="">
+                    <p:panelGrid columns="2">
 
                         <h:outputLabel for="aircraftMt" value="Choose an aircraft" />
                         <p:selectOneMenu id="aircraftMt" value="#{FAMB.taskMtAircraftSerial}" required="true" requiredMessage="Please select an aircraft" style="width:250px" >
