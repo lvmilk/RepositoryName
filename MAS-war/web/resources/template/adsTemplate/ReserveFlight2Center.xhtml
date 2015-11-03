@@ -20,10 +20,12 @@
                 <c:when test="${reserveFlightManagedBean.dateSpecific}">
 
                     <p:panel id="departSpecific" header="Departure Flight Searching Result" toggleable="true" >
+                           
 
                         <ui:repeat var="package" value="#{reserveFlightManagedBean.departSpecificList}"   varStatus="myStatus">
 
                             <p:panel header="Option #{myStatus.index+1}">
+                            
 
                                 <h:panelGrid columns="2"  cellpadding="15"> 
                                     <p:selectManyCheckbox>
@@ -70,6 +72,7 @@
 
                     <p:panel id="returnSpecific" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result" toggleable="true" style="width:100%">
 
+                        
                         <ui:repeat var="package" value="#{reserveFlightManagedBean.returnSpecificList}" varStatus="myStatus">
 
                             <p:panel header="Option #{myStatus.index+1}">
@@ -122,12 +125,20 @@
 
                 <c:otherwise>
                     <p:panel header="Departure Flight" toggleable="true" >
+                        <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
+                        <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
+                        <br/>
+                        <br/>
 
                         <p:tabView value="#{reserveFlightManagedBean.dateOfWeek}" var="day">
                             <p:tab title="#{reserveFlightManagedBean.departDayOfWeek[day]}- #{day}">
 
-                                <h:outputText value="Select this day: " />
-                                <p:selectBooleanCheckbox value="#{reserveFlightManagedBean.departDayToCheck[day]}">
+                                <h:outputText  rendered="#{empty reserveFlightManagedBean.departMap.get(day)}"  value="No Flights on this day  " />                         
+
+                                <br/>
+
+                                <h:outputText rendered="#{not empty reserveFlightManagedBean.departMap.get(day)}" value="Select this day: " />
+                                <p:selectBooleanCheckbox rendered="#{not empty reserveFlightManagedBean.departMap.get(day) }" value="#{reserveFlightManagedBean.departDayToCheck[day]}">
                                     <p:ajax update="toResultPanel" event="change"  />
                                 </p:selectBooleanCheckbox>
                                 <br />
@@ -171,7 +182,7 @@
                                                         <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
 
                                                     </h:panelGrid>
-                                                  <p:separator />
+                                                    <p:separator />
                                                 </ui:repeat>
                                             </h:panelGrid>
 
@@ -185,11 +196,19 @@
 
 
                     <p:panel header="Return Flight" rendered="#{reserveFlightManagedBean.returnTrip}" toggleable="true" >
+                         <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious2()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
+                        <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext2()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
+                        <br/>
+                        <br/>
                         <p:tabView  rendered="#{reserveFlightManagedBean.returnTrip}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
                             <p:tab title="#{reserveFlightManagedBean.returnDayOfWeek[day]}- #{day}">
+                                
+                                  <h:outputText  rendered="#{empty reserveFlightManagedBean.returnMap.get(day)}"  value="No Flights on this day  " />                         
 
-                                <h:outputText value="Select this day: " />
-                                <p:selectBooleanCheckbox value="#{reserveFlightManagedBean.returnDayToCheck[day]}">
+                                <br/>
+                                <br/>
+                                <h:outputText rendered="#{not empty reserveFlightManagedBean.returnMap.get(day) }" value="Select this day: " />
+                                <p:selectBooleanCheckbox rendered="#{not empty reserveFlightManagedBean.returnMap.get(day)}" value="#{reserveFlightManagedBean.returnDayToCheck[day]}">
                                     <p:ajax update="backResultPanel" event="change"  />
                                 </p:selectBooleanCheckbox>
                                 <br />
@@ -238,11 +257,11 @@
                                             </h:panelGrid>
 
                                         </p:panel>
-                                       <br/>
+                                        <br/>
                                     </ui:repeat>
-                                  
+
                                 </p:panel>
-                                
+
                             </p:tab>
                         </p:tabView>
                     </p:panel>
@@ -256,6 +275,19 @@
         </h:form>
 
     </h:body>
+
+    <style>
+        .buttonBack.ui-button{
+            position: absolute;
+            left: 20px;
+        }
+
+        .buttonForward.ui-button{
+            position: absolute;
+            right:20px;
+        }
+
+    </style>
 
 </html>
 

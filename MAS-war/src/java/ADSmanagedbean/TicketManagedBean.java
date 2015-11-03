@@ -76,7 +76,7 @@ public class TicketManagedBean implements Serializable {
     public void rsvConfirm() {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        rsvCflocal.setupPsg_Ticket(departSelected, returnSelected, passengerList);
+        rsvCflocal.setupPsg_Ticket(departSelected, returnSelected, passengerList,memberId);
 //        rsvCflocal.setupTicket_Reservation(firstName,lastName,email);
     }
 

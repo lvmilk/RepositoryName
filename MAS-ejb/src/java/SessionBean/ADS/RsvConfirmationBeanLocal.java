@@ -16,6 +16,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface RsvConfirmationBeanLocal {
-    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected,ArrayList<FlightInstance> returnSelected,ArrayList<Passenger> passengerList);
+    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected,ArrayList<FlightInstance> returnSelected,ArrayList<Passenger> passengerList,Long memberId);
 //    public void setupTicket_Reservation();
 }

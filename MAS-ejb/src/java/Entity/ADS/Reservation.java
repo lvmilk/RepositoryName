@@ -8,6 +8,7 @@ package Entity.ADS;
 import Entity.AIS.BookingClassInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -17,7 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -31,7 +31,7 @@ public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long airlineRsvCode;
+    private Long id;
 
     private String bkFirstName;
     private String bkLastName;
@@ -43,8 +43,9 @@ public class Reservation implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
     private Collection<Ticket> tickets;
 
-    @ManyToOne
-    private BookingClassInstance bkclassInstance;
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="RESERVATION_BKCINSTANCE")
+    private Collection<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
@@ -53,36 +54,36 @@ public class Reservation implements Serializable {
 
     }
 
-    public void createReservation(String bkFirstName, String bkLastName, String bkEmail,Date rsvDate) {
+    public void createReservation(String bkFirstName, String bkLastName, String bkEmail) {
         this.bkFirstName = bkFirstName;
         this.bkLastName = bkLastName;
         this.bkEmail = bkEmail;
-        this.rsvDate = rsvDate;
+        this.rsvDate = Calendar.getInstance().getTime();
     }
 
-    public Long getAirlineRsvCode() {
-        return airlineRsvCode;
+    public Long getRsvCode() {
+        return id;
     }
 
-    public void setAirlineRsvCode(Long airlineRsvCode) {
-        this.airlineRsvCode = airlineRsvCode;
+    public void setRsvCode(Long rsvCode) {
+        this.id = rsvCode;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (airlineRsvCode != null ? airlineRsvCode.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the airlineRsvCode fields are not set
+        // TODO: Warning - this method won't work in the case the rsvCode fields are not set
         if (!(object instanceof Reservation)) {
             return false;
         }
         Reservation other = (Reservation) object;
-        if ((this.airlineRsvCode == null && other.airlineRsvCode != null) || (this.airlineRsvCode != null && !this.airlineRsvCode.equals(other.airlineRsvCode))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -90,7 +91,7 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Reservation[ id=" + airlineRsvCode + " ]";
+        return "Entity.ADS.Reservation[ id=" + id + " ]";
     }
 
     /**
@@ -174,18 +175,19 @@ public class Reservation implements Serializable {
     }
 
     /**
-     * @return the bkclassInstance
+     * @return the bkcInstance
      */
-    public BookingClassInstance getBkclassInstance() {
-        return bkclassInstance;
+    public Collection<BookingClassInstance> getBkcInstance() {
+        return bkcInstance;
     }
 
     /**
-     * @param bkclassInstance the bkclassInstance to set
+     * @param bkcInstance the bkcInstance to set
      */
-    public void setBkclassInstance(BookingClassInstance bkclassInstance) {
-        this.bkclassInstance = bkclassInstance;
+    public void setBkcInstance(Collection<BookingClassInstance> bkcInstance) {
+        this.bkcInstance = bkcInstance;
     }
+
 
 
 
