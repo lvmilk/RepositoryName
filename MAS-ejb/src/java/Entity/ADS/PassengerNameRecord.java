@@ -5,13 +5,16 @@
  */
 package Entity.ADS;
 
+import Entity.CommonInfa.AirAlliances;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,8 +27,12 @@ public class PassengerNameRecord implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    
     private Collection<Passenger> psgList=new ArrayList<Passenger>();
     private Collection<Ticket> tkList=new ArrayList<Ticket>();
+    
+    @OneToOne(cascade={CascadeType.ALL})
+    private AirAlliances alliance;
     private String contact;
     private Member member;
     
@@ -117,6 +124,20 @@ public class PassengerNameRecord implements Serializable {
      */
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    /**
+     * @return the alliance
+     */
+    public AirAlliances getAlliance() {
+        return alliance;
+    }
+
+    /**
+     * @param alliance the alliance to set
+     */
+    public void setAlliance(AirAlliances alliance) {
+        this.alliance = alliance;
     }
     
 }
