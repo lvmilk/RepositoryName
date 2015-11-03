@@ -43,7 +43,6 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Passenger passenger;
     
-    private BookingClassInstance bkInstance=new BookingClassInstance();
     
     @ManyToOne
     private Reservation rsv;
@@ -181,19 +180,6 @@ public class Ticket implements Serializable {
         this.seat = seat;
     }
 
-    /**
-     * @return the bkInstance
-     */
-    public BookingClassInstance getBkInstance() {
-        return bkInstance;
-    }
-
-    /**
-     * @param bkInstance the bkInstance to set
-     */
-    public void setBkInstance(BookingClassInstance bkInstance) {
-        this.bkInstance = bkInstance;
-    }
 
     /**
      * @return the rsv
