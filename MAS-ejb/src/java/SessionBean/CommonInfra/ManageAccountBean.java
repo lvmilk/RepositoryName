@@ -242,7 +242,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         } else if (stfType.equals("officeStaff")) {
             offStaff = new OfficeStaff();
             userEntity = new UserEntity();
-            offStaff.create(username, hPwd, email, stfType, name, stfLevel,salary);
+            offStaff.create(username, hPwd, email, stfType, name, stfLevel, salary);
             userEntity.create(username, email);
             offStaff.setUser(userEntity);
             userEntity.setOffStaff(offStaff);
@@ -250,7 +250,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
             userEntity = new UserEntity();
-            grdStaff.create(username, hPwd, email, stfType, name, stfLevel,salary);
+            grdStaff.create(username, hPwd, email, stfType, name, stfLevel, salary);
             userEntity.create(username, email);
             grdStaff.setUser(userEntity);
             userEntity.setGrdStaff(grdStaff);
@@ -269,7 +269,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void addCocpitAcc(String username, String password, String email, String stfType, String name, String stfLevel, Double salary,String licence) {
+    public void addCocpitAcc(String username, String password, String email, String stfType, String name, String stfLevel, Double salary, String licence) {
         cpCrew = new CockpitCrew();
         userEntity = new UserEntity();
         hPwd = this.encrypt(username, password);
@@ -316,7 +316,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, String licence, Integer attempt, Integer locked) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel, Double salary, Double hourPay, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
@@ -325,6 +325,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         cpCrew.setName(name);
         cpCrew.setStfLevel(stfLevel);
         cpCrew.setSalary(salary);
+        cpCrew.setHourPay(hourPay);
         cpCrew.setLicence(licence);
         cpCrew.setAttempt(attempt);
         cpCrew.setLocked(locked);
@@ -437,7 +438,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel,Double salary, Integer attempt, Integer locked) {
+    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel, Double salary, Double hourPay, Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
@@ -447,6 +448,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             officeStaff.setName(name);
             officeStaff.setStfLevel(stfLevel);
             officeStaff.setSalary(salary);
+            officeStaff.setHourPay(hourPay);
             officeStaff.setAttempt(attempt);
             officeStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
@@ -472,6 +474,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             grdStaff.setName(name);
             grdStaff.setStfLevel(stfLevel);
             grdStaff.setSalary(salary);
+            grdStaff.setHourPay(hourPay);
             grdStaff.setAttempt(attempt);
             grdStaff.setLocked(locked);
             if (password.equals(pswEdited)) {
@@ -495,6 +498,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             cbCrew.setName(name);
             cbCrew.setStfLevel(stfLevel);
             cbCrew.setSalary(salary);
+            cbCrew.setHourPay(hourPay);
             cbCrew.setAttempt(attempt);
             cbCrew.setLocked(locked);
             if (password.equals(pswEdited)) {
@@ -809,6 +813,28 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     public CockpitCrew getCockpitCrew(String username) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
         return cpCrew;
+    }
+
+    @Override
+    public boolean validateDDSLogin(String username, String password) {
+        Query query = null;
+
+        hPwd = this.encrypt(username, password);
+        System.out.println("validatelogin:" + hPwd);
+        System.out.println("validatelogin:" + password);
+
+        query = em.createQuery("SELECT u FROM Agency u WHERE u.agencyID = :inUserName and u.agenPwd= :inPassWord ");
+        query.setParameter("inPassWord", hPwd);
+        query.setParameter("inUserName", username);
+        List resultList = new ArrayList<Agency>();
+        resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+
+        } else {
+            return true;
+        }
+
     }
 
 }

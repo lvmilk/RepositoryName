@@ -51,6 +51,7 @@ public class EditManagedBean implements Serializable {
     private String name;
     private String stfLevel;
     private Double salary;
+    private Double hourPay;
 
     private List<OfficeStaff> selectedOffStf;
     private List<OfficeStaff> offStfList;
@@ -76,6 +77,7 @@ public class EditManagedBean implements Serializable {
         setName(officeStaff.getName());
         setStfLevel(officeStaff.getStfLevel());
         setSalary(officeStaff.getSalary());
+        setHourPay(officeStaff.getHourPay());
         setAttempt(officeStaff.getAttempt());
         setLocked(officeStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -92,6 +94,7 @@ public class EditManagedBean implements Serializable {
         setName(grdStaff.getName());
         setStfLevel(grdStaff.getStfLevel());
         setSalary(grdStaff.getSalary());
+        setHourPay(grdStaff.getHourPay());
         setAttempt(grdStaff.getAttempt());
         setLocked(grdStaff.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -107,6 +110,7 @@ public class EditManagedBean implements Serializable {
         setName(cbCrew.getName());
         setStfLevel(cbCrew.getStfLevel());
         setSalary(cbCrew.getSalary());
+        setHourPay(cbCrew.getHourPay());
         setAttempt(cbCrew.getAttempt());
         setLocked(cbCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
@@ -123,6 +127,7 @@ public class EditManagedBean implements Serializable {
         setStfLevel(cpCrew.getStfLevel());
         setLicence(cpCrew.getLicence());
         setSalary(cpCrew.getSalary());
+        setHourPay(cpCrew.getHourPay());
         setAttempt(cpCrew.getAttempt());
         setLocked(cpCrew.getLocked());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCockpitPage.xhtml");
@@ -131,7 +136,7 @@ public class EditManagedBean implements Serializable {
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, attempt, locked);
+            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, hourPay, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -142,7 +147,7 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, licence, attempt, locked);
+            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, hourPay, licence, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -396,6 +401,20 @@ public class EditManagedBean implements Serializable {
      */
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    /**
+     * @return the hourPay
+     */
+    public Double getHourPay() {
+        return hourPay;
+    }
+
+    /**
+     * @param hourPay the hourPay to set
+     */
+    public void setHourPay(Double hourPay) {
+        this.hourPay = hourPay;
     }
 
 }

@@ -37,8 +37,8 @@ public interface ManageAccountBeanLocal {
     public boolean checkEmailExists(String email);
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editStaff(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, Integer attempt, Integer locked);
-    public void editCpCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, String licence, Integer attempt, Integer locked);
+    public void editStaff(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,Integer attempt, Integer locked);
+    public void editCpCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String name, String stfLevel,Double salary, Double hourPay,String licence, Integer attempt, Integer locked);
     public void editProfile(String username, String stfType, String pswEdited,String email, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);
     public boolean delGrdAcc(List<GroundStaff> selectedGrdStf);
@@ -55,4 +55,6 @@ public interface ManageAccountBeanLocal {
     public CockpitCrew getCockpitCrew(String username);
 
     public int getLockedOutStatus(String username, String stfType);
+    
+    public boolean validateDDSLogin(String username, String password);
 }

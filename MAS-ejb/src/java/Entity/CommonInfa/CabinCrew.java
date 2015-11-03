@@ -36,19 +36,9 @@ public class CabinCrew implements Serializable {
     private String stfLevel;
     private String name;
     private Double salary;
-    private String secondLang;
-    private long yearAccumMin = 0;
-    private long monthAccumMin = 0;
-    private long weekAccumMin = 0;
-    private Integer firstSB = 0;    // monthly stand-by counter
-    private Integer secondSB = 0;
-
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinList")
-    private List<FlightInstance> fiList = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinStandByList")
-    private List<FlightInstance> fiStandByList = new ArrayList<>();
-
-    @OneToOne(cascade = {CascadeType.ALL})
+    private Double hourPay;
+    
+    @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
@@ -64,6 +54,7 @@ public class CabinCrew implements Serializable {
         this.setAttempt(0);
         this.setLocked(0);
         this.setSalary(salary);
+        this.setHourPay(0.0);
     }
 
     @Override
@@ -236,6 +227,20 @@ public class CabinCrew implements Serializable {
         this.salary = salary;
     }
 
+    /**
+     * @return the hourPay
+     */
+    public Double getHourPay() {
+        return hourPay;
+    }
+
+    /**
+     * @param hourPay the hourPay to set
+     */
+    public void setHourPay(Double hourPay) {
+        this.hourPay = hourPay;
+    }
+    
     public String getSecondLang() {
         return secondLang;
     }
