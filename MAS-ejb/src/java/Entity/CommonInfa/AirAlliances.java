@@ -114,4 +114,18 @@ public class AirAlliances implements Serializable {
         this.pType = pType;
     }
 
+    /**
+     * @return the pnr
+     */
+    public PassengerNameRecord getPnr() {
+        return pnr;
+    }
+
+    /**
+     * @param pnr the pnr to set
+     */
+    public void setPnr(PassengerNameRecord pnr) {
+        this.pnr = pnr;
+    }
+
 }
