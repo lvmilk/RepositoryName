@@ -5,6 +5,7 @@
  */
 package SessionBean.ADS;
 
+import Entity.AIS.BookingClassInstance;
 import Entity.AIS.CabinClass;
 import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
@@ -42,6 +43,8 @@ public interface ReserveFlightBeanLocal {
     public Double getLowestPrice(ArrayList<FlightInstance> option, CabinClass cabin, int countPerson);
 
     public List<Airport> getDestList(String origin);
+
+    public BookingClassInstance findCheapestAvailable(FlightInstance flight, CabinClass cabin, int countPerson);
 
 
     

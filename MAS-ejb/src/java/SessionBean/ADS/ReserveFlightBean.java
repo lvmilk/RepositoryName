@@ -58,13 +58,10 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
 
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         String departString = s.format(departDate);
-        
-        System.out.println("origin is "+origin);
-         System.out.println("dest is "+dest);
-          System.out.println("departDate is "+departDate);
-          
-        
-        
+
+        System.out.println("origin is " + origin);
+        System.out.println("dest is " + dest);
+        System.out.println("departDate is " + departDate);
 
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
@@ -72,7 +69,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                 for (int k = 0; k < allFlightInstance.size(); k++) {
 
                     if (allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(origin) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getDate().equals(departString)) {
-                      System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
+                        System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
                         if (this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                             resultOptionTrue.add(allFlightInstance.get(k));
                             System.out.println("flight " + allFlightInstance.get(k).getFlightFrequency().getFlightNo() + " on date " + allFlightInstance.get(k).getDate() + " fulfills criteria");
@@ -80,7 +77,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                             resultOptionTrue = new ArrayList<>();
                         }
                     } else if (allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(origin) && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getDate().equals(departString)) {
-                         System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
+                        System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
                         if (this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                             System.out.println("flight " + allFlightInstance.get(k).getFlightFrequency().getFlightNo() + " on date " + allFlightInstance.get(k).getDate() + " fulfills intermediate criteria");
                             resultOptionFalse.add(allFlightInstance.get(k));
@@ -105,7 +102,7 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                         Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), allFlightInstance.get(k));
 
                         if (!checkDuplicate && !(allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && allFlightInstance.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && allFlightInstance.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && allFlightInstance.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && allFlightInstance.get(k).getStandardDepTimeDateType().before(maxLimit)) {
-                           System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
+                            System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
                             if (!tempUncomplete.get(f).contains(allFlightInstance.get(k)) && this.whetherAvailable(allFlightInstance.get(k), selectedCabin, countPerson)) {
                                 System.out.println("Final leg is " + allFlightInstance.get(k));
                                 System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName());
@@ -144,21 +141,21 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
         boolean available = false;
         int countAvailable = 0;
         FlightCabin fCabin;
-        System.out.println("flightinstance is "+flight);
+        System.out.println("flightinstance is " + flight);
         if (flight.getFlightCabins() != null) {
-            System.out.println("~~~~~~~~~getflightcabin size is "+flight.getFlightCabins().size());
+            System.out.println("~~~~~~~~~getflightcabin size is " + flight.getFlightCabins().size());
             for (int i = 0; i < flight.getFlightCabins().size(); i++) {
-                System.out.println("~~~~~~flight.getFlightCabins() "+flight.getFlightCabins().get(i).getCabinClass());
-                System.out.println("~~~~~~cabin is  "+cabin);
-                
+                System.out.println("~~~~~~flight.getFlightCabins() " + flight.getFlightCabins().get(i).getCabinClass());
+                System.out.println("~~~~~~cabin is  " + cabin);
+
                 if (flight.getFlightCabins().get(i).getCabinClass().equals(cabin)) {
                     fCabin = flight.getFlightCabins().get(i);
                     for (int k = fCabin.getBookingClassInstances().size() - 1; k >= 0; k--) {
                         if (fCabin.getBookingClassInstances().get(k).getSeatNo() != null && fCabin.getBookingClassInstances().get(k).getBookedSeatNo() != null) {
                             countAvailable = fCabin.getBookingClassInstances().get(k).getSeatNo() - fCabin.getBookingClassInstances().get(k).getBookedSeatNo();
-                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightInstance "+flight);
-                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightCabin "+fCabin);
-                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for bookingclassinstance "+fCabin.getBookingClassInstances().get(k));
+                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightInstance " + flight);
+                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for flightCabin " + fCabin);
+                            System.out.println("~~~~~~~~~~~~~~~~~~~~~for bookingclassinstance " + fCabin.getBookingClassInstances().get(k));
 
                         }
                         if (countAvailable >= countPerson) {
@@ -174,6 +171,34 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
         }
 
         return available;
+    }
+
+    public BookingClassInstance findCheapestAvailable(FlightInstance flight, CabinClass cabin, int countPerson) {
+        FlightCabin fCabin;
+        Boolean available = false;
+        int countAvailable = 0;
+        BookingClassInstance bookInstance = new BookingClassInstance();
+
+        if (flight.getFlightCabins() != null) {
+            for (int i = 0; i < flight.getFlightCabins().size(); i++) {
+
+                if (flight.getFlightCabins().get(i).getCabinClass().equals(cabin)) {
+                    fCabin = flight.getFlightCabins().get(i);
+                    for (int k = fCabin.getBookingClassInstances().size() - 1; k >= 0; k--) {
+                        if (fCabin.getBookingClassInstances().get(k).getSeatNo() != null && fCabin.getBookingClassInstances().get(k).getBookedSeatNo() != null) {
+                            countAvailable = fCabin.getBookingClassInstances().get(k).getSeatNo() - fCabin.getBookingClassInstances().get(k).getBookedSeatNo();
+                        }
+                        if (countAvailable >= countPerson) {
+                            bookInstance = fCabin.getBookingClassInstances().get(k);
+                            available = true;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return bookInstance;
     }
     
     
@@ -206,17 +231,17 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
                                 break;
                             }
                         }
-                        if(available){
-                        price+=bookInstance.getPrice();
-                        available=false;
-                        break;
+                        if (available) {
+                            price += bookInstance.getPrice();
+                            available = false;
+                            break;
                         }
                     }
                 }
             }
         }
-        System.out.println("price is "+ price);
-      return price;
+        System.out.println("price is " + price);
+        return price;
     }
 
     public Boolean findDuplicateInstance(ArrayList<FlightInstance> tempList, FlightInstance instance) {

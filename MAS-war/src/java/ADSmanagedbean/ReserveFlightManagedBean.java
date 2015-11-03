@@ -123,9 +123,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        
-         origin=  (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
-          dest= (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
+
+        origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
+        dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
 
         initialFrequency = rf.getAllFlightFrequency();
 
@@ -160,7 +160,7 @@ public class ReserveFlightManagedBean implements Serializable {
 
     }
 
-     public void onPrevious2() throws ParseException {
+    public void onPrevious2() throws ParseException {
         System.out.println("1st day of dateofweek is " + dateOfWeek2.get(0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
         Date thisDate = formatter.parse(dateOfWeek2.get(0));
@@ -203,9 +203,8 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
 
     }
-     
-     
-      public void onNext2() throws ParseException {
+
+    public void onNext2() throws ParseException {
         System.out.println("1st day of dateofweek is " + dateOfWeek2.get(0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
         Date thisDate = formatter.parse(dateOfWeek2.get(0));
@@ -248,10 +247,7 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
 
     }
-     
-    
-    
-    
+
     public void onPrevious() throws ParseException {
         System.out.println("1st day of dateofweek is " + dateOfWeek.get(0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
@@ -295,10 +291,8 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
 
     }
-    
-    
-    
-      public void onNext() throws ParseException {
+
+    public void onNext() throws ParseException {
         System.out.println("1st day of dateofweek is " + dateOfWeek.get(0));
         SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
         Date thisDate = formatter.parse(dateOfWeek.get(0));
@@ -317,9 +311,9 @@ public class ReserveFlightManagedBean implements Serializable {
             String f = formatter.format(c.getTime());
             Date firstDate = formatter.parse(f);
             System.out.println("firstDate is " + f);
-            
-            System.out.println("origin is "+origin);
-             System.out.println("dest is "+dest);
+
+            System.out.println("origin is " + origin);
+            System.out.println("dest is " + dest);
 
             departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson);
             formatter = new SimpleDateFormat("dd MMM yyyy");
@@ -344,8 +338,6 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
 
     }
-    
-    
 
     public void onDepartOptionChange(int index, String day) {
         System.out.println("Getting into onDepartOptionChange");
@@ -491,10 +483,25 @@ public class ReserveFlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have selected more than one option for departure trip ", ""));
             } else {
                 if (!returnTrip) {
+
                     ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
                     ArrayList<FlightInstance> returnSelected = new ArrayList<>();
                     System.out.println("selection for departure trip is correct");
                     System.out.println("departure package chosen is " + departSelected);
+                    ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+
+                    for (int i = 0; i < departSelected.size(); i++) {
+                        BookClassInstanceList.add(rf.findCheapestAvailable(departSelected.get(i), selectedCabin, countPerson));
+                    }
+
+                    BookingClassInstance bInstance;
+
+                    for (int i = 0; i < departSelected.size(); i++) {
+                        bInstance = rf.findCheapestAvailable(departSelected.get(i), selectedCabin, countPerson);
+                        if (bInstance != null) {
+                            BookClassInstanceList.add(bInstance);
+                        }
+                    }
 
                     totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
                     totalPrice *= countPerson;
@@ -504,6 +511,7 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstanceList", BookClassInstanceList);
 
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
@@ -521,6 +529,23 @@ public class ReserveFlightManagedBean implements Serializable {
                         System.out.println("selection for return trip is correct");
                         System.out.println("return package chosen is " + returnSelected);
 
+                        ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+                        BookingClassInstance bInstance;
+
+                        for (int i = 0; i < departSelected.size(); i++) {
+                            bInstance = rf.findCheapestAvailable(departSelected.get(i), selectedCabin, countPerson);
+                            if (bInstance != null) {
+                                BookClassInstanceList.add(bInstance);
+                            }
+                        }
+
+                        for (int i = 0; i < returnSelected.size(); i++) {
+                            bInstance = rf.findCheapestAvailable(returnSelected.get(i), selectedCabin, countPerson);
+                            if (bInstance != null) {
+                                BookClassInstanceList.add(bInstance);
+                            }
+                        }
+
                         totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
                         totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
 
@@ -531,6 +556,7 @@ public class ReserveFlightManagedBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstanceList", BookClassInstanceList);
 
                         FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
@@ -578,6 +604,16 @@ public class ReserveFlightManagedBean implements Serializable {
                             System.out.println("selection for departure trip is correct");
                             System.out.println("departure package chosen is " + departSelected);
                             ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+                            ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+
+                            BookingClassInstance bInstance;
+
+                            for (int i = 0; i < departSelected.size(); i++) {
+                                bInstance = rf.findCheapestAvailable(departSelected.get(i), selectedCabin, countPerson);
+                                if (bInstance != null) {
+                                    BookClassInstanceList.add(bInstance);
+                                }
+                            }
 
                             totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
 
@@ -588,6 +624,7 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstanceList", BookClassInstanceList);
 
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
 
@@ -653,6 +690,23 @@ public class ReserveFlightManagedBean implements Serializable {
                                 System.out.println("selection for return trip is correct");
                                 System.out.println("return package chosen is " + returnSelected);
 
+                                ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+                                BookingClassInstance bInstance;
+
+                                for (int i = 0; i < departSelected.size(); i++) {
+                                    bInstance = rf.findCheapestAvailable(departSelected.get(i), selectedCabin, countPerson);
+                                    if (bInstance != null) {
+                                        BookClassInstanceList.add(bInstance);
+                                    }
+                                }
+
+                                for (int i = 0; i < returnSelected.size(); i++) {
+                                    bInstance = rf.findCheapestAvailable(returnSelected.get(i), selectedCabin, countPerson);
+                                    if (bInstance != null) {
+                                        BookClassInstanceList.add(bInstance);
+                                    }
+                                }
+
                                 totalPrice += rf.getLowestPrice(departSelected, selectedCabin, countPerson);
                                 totalPrice += rf.getLowestPrice(returnSelected, selectedCabin, countPerson);
 
@@ -663,6 +717,7 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSelected", returnSelected);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalPrice", totalPrice);
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BookClassInstanceList", BookClassInstanceList);
 
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                             }
@@ -885,8 +940,8 @@ public class ReserveFlightManagedBean implements Serializable {
             }
 
         }
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", origin);
-           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", origin);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
     }
 
     public void findBookClassInstance() throws IOException {
