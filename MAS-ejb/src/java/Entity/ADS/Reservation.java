@@ -31,7 +31,7 @@ public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long rsvCode;
+    private Long id;
 
     private String bkFirstName;
     private String bkLastName;
@@ -62,17 +62,17 @@ public class Reservation implements Serializable {
     }
 
     public Long getRsvCode() {
-        return rsvCode;
+        return id;
     }
 
     public void setRsvCode(Long rsvCode) {
-        this.rsvCode = rsvCode;
+        this.id = rsvCode;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (rsvCode != null ? rsvCode.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -83,7 +83,7 @@ public class Reservation implements Serializable {
             return false;
         }
         Reservation other = (Reservation) object;
-        if ((this.rsvCode == null && other.rsvCode != null) || (this.rsvCode != null && !this.rsvCode.equals(other.rsvCode))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -91,7 +91,7 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Reservation[ id=" + rsvCode + " ]";
+        return "Entity.ADS.Reservation[ id=" + id + " ]";
     }
 
     /**
