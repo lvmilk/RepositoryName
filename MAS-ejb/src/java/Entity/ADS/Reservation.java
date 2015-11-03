@@ -8,6 +8,7 @@ package Entity.ADS;
 import Entity.AIS.BookingClassInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -53,11 +54,11 @@ public class Reservation implements Serializable {
 
     }
 
-    public void createReservation(String bkFirstName, String bkLastName, String bkEmail,Date rsvDate) {
+    public void createReservation(String bkFirstName, String bkLastName, String bkEmail) {
         this.bkFirstName = bkFirstName;
         this.bkLastName = bkLastName;
         this.bkEmail = bkEmail;
-        this.rsvDate = rsvDate;
+        this.rsvDate = Calendar.getInstance().getTime();
     }
 
     public Long getAirlineRsvCode() {

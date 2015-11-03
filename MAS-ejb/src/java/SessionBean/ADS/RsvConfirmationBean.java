@@ -5,13 +5,16 @@
  */
 package SessionBean.ADS;
 
+import Entity.ADS.Member;
 import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
 import Entity.ADS.Ticket;
 import Entity.APS.FlightInstance;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +29,9 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     @PersistenceContext
     EntityManager em;
 
+    @EJB
+    MemberBeanLocal msblocal;
+
     private Ticket ticket;
     private Passenger psg;
 
@@ -38,10 +44,10 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     private String bookSystem = "ARS";
 
     @Override
-    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList) {
+    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Long memberId) {
         Ticket depTicket;
         Ticket arrTicket;
-        ArrayList<Ticket> tkList=new ArrayList<Ticket>();
+        ArrayList<Ticket> tkList = new ArrayList<Ticket>();
         Date temp;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -104,14 +110,29 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
             }
 
         }
-        
-        setupTicket_Reservation(arrTime, arrTime, depCity,tkList);
+
+        setupTicket_Reservation(memberId, tkList);
 
     }
-    
-    private void setupTicket_Reservation(String firstName,String lastName,String email,ArrayList<Ticket> tkList)
-    {
+
+    private void setupTicket_Reservation(Long memberId, ArrayList<Ticket> tkList) {
+        Member member = new Member();
+        member = msblocal.retrieveMember(memberId);
+
+        Reservation rsv = new Reservation();
+        rsv.createReservation(member.getFirstName(), member.getLastName(), member.getEmail());
+        rsv.setTickets(tkList);
+        em.persist(rsv);
+        em.flush();
         
+        for (int i = 0; i < tkList.size(); i++) {
+            System.out.println("@@@@@@This is in setupTicket_Reservation:" + tkList.get(i));
+            tkList.get(i).setRsv(rsv);
+            em.merge(tkList.get(i));
+            em.flush();
+        }
+        
+
     }
 
     // Add business logic below. (Right-click in editor and choose
@@ -213,6 +234,5 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
     }
-
 
 }
