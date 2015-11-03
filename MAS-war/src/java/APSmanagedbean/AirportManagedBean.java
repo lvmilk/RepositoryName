@@ -43,6 +43,7 @@ public class AirportManagedBean implements Serializable {
     private List<String> utcList;
     private List<Route> apOriginRouteList;
     private List<Route> apDestRouteList;
+    private String lang;
 
     private Double latitude;
     private Double longitude;
@@ -64,7 +65,7 @@ public class AirportManagedBean implements Serializable {
 
     public void addAirport() throws Exception {
         try {
-            rpb.addAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
+            rpb.addAirport(IATA, airportName, cityName, countryName, spec, lang, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("IATA", IATA);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addAirportSuccess.xhtml");
         } catch (Exception ex) {
@@ -78,6 +79,7 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryName", airport.getCountryName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lang", airport.getLang());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
@@ -100,6 +102,7 @@ public class AirportManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cityName", airport.getCityName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countryName", airport.getCountryName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("spec", airport.getSpec());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lang", airport.getLang());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("timeZone", airport.getTimeZone());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("opStatus", airport.getOpStatus());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("strategicLevel", airport.getStrategicLevel());
@@ -114,7 +117,7 @@ public class AirportManagedBean implements Serializable {
 
     public void editAirportDetail() throws Exception {
         try {
-            rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.editAirport(IATA, airportName, cityName, countryName, spec, lang, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -377,6 +380,14 @@ public class AirportManagedBean implements Serializable {
 
     public void setUtcList(List<String> utcList) {
         this.utcList = utcList;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
 }

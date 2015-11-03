@@ -6,6 +6,8 @@
 package Entity.APS;
 
 import Entity.AIS.FlightCabin;
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.CockpitCrew;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -49,6 +52,15 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     private Date standardDepTimeDateType;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private List<CabinCrew> cabinList;
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private List<CockpitCrew> cockpitList;
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private List<CabinCrew> cabinStandByList;
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    private List<CockpitCrew> cockpitStandByList;
 
     @ManyToOne
     private Aircraft aircraft = new Aircraft();
@@ -212,6 +224,54 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.standardArrTime = standardArrTime;
     }
 
+    public Date getStandardDepTimeDateType() {
+        return standardDepTimeDateType;
+    }
+
+    public void setStandardDepTimeDateType(Date standardDepTimeDateType) {
+        this.standardDepTimeDateType = standardDepTimeDateType;
+    }
+
+    public Date getStandardArrTimeDateType() {
+        return standardArrTimeDateType;
+    }
+
+    public void setStandardArrTimeDateType(Date standardArrTimeDateType) {
+        this.standardArrTimeDateType = standardArrTimeDateType;
+    }
+
+    public List<CabinCrew> getCabinList() {
+        return cabinList;
+    }
+
+    public void setCabinList(List<CabinCrew> cabinList) {
+        this.cabinList = cabinList;
+    }
+
+    public List<CockpitCrew> getCockpitList() {
+        return cockpitList;
+    }
+
+    public void setCockpitList(List<CockpitCrew> cockpitList) {
+        this.cockpitList = cockpitList;
+    }
+
+    public List<CabinCrew> getCabinStandByList() {
+        return cabinStandByList;
+    }
+
+    public void setCabinStandByList(List<CabinCrew> cabinStandByList) {
+        this.cabinStandByList = cabinStandByList;
+    }
+
+    public List<CockpitCrew> getCockpitStandByList() {
+        return cockpitStandByList;
+    }
+
+    public void setCockpitStandByList(List<CockpitCrew> cockpitStandByList) {
+        this.cockpitStandByList = cockpitStandByList;
+    }
+
 //    @Override
 //    public int compareTo(FlightInstance fi) {
 //        LocalTime thisTime = LocalTime.parse(this.standardDepTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -233,34 +293,18 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 //        // thisTime<fiTime return -1
 //       return thisTime.compareTo(fiTime);
 //    }
-     @Override
+    @Override
     public int compareTo(FlightInstance fi) {
-       // System.err.println("**********Enter compare");
-        int result=0;
-        if(this.getStandardDepTimeDateType().before(fi.getStandardDepTimeDateType())){
-            result=-1;
-        }else if(this.getStandardDepTimeDateType().after(fi.getStandardDepTimeDateType())){
-            result=1;
+        // System.err.println("**********Enter compare");
+        int result = 0;
+        if (this.getStandardDepTimeDateType().before(fi.getStandardDepTimeDateType())) {
+            result = -1;
+        } else if (this.getStandardDepTimeDateType().after(fi.getStandardDepTimeDateType())) {
+            result = 1;
         }
-       // System.err.println("********** compare 1 : " + this.getStandardDepTimeDateType().toString()+" to "+ fi.getStandardDepTimeDateType().toString());
-       // System.err.println("********** compareTo: " + result);
+        // System.err.println("********** compare 1 : " + this.getStandardDepTimeDateType().toString()+" to "+ fi.getStandardDepTimeDateType().toString());
+        // System.err.println("********** compareTo: " + result);
         return result;
-    }
-
-    public Date getStandardDepTimeDateType() {
-        return standardDepTimeDateType;
-    }
-
-    public void setStandardDepTimeDateType(Date standardDepTimeDateType) {
-        this.standardDepTimeDateType = standardDepTimeDateType;
-    }
-
-    public Date getStandardArrTimeDateType() {
-        return standardArrTimeDateType;
-    }
-
-    public void setStandardArrTimeDateType(Date standardArrTimeDateType) {
-        this.standardArrTimeDateType = standardArrTimeDateType;
     }
 
     public String toString() {
