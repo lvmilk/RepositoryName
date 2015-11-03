@@ -41,17 +41,19 @@ public class AuthFilter implements Filter {
             HttpServletResponse res = (HttpServletResponse) response;
             HttpSession ses = req.getSession(true);
             String path = req.getServletPath();
+            
+
 
             if (path.startsWith("/javax.faces.resource")
                     || path.equals("/login.xhtml") || path.equals("/staffMain.xhtml") || path.equals("/Permission.xhtml") || path.equals("/CMIpages/forgetPwd.xhtml")
-                    || path.equals("/CMIpages/resetPwd.xhtml")) {
+                    || path.equals("/CMIpages/resetPwd.xhtml") || path.equals("/DDSpages/ddsLogin.xhtml")) {
                 chain.doFilter(request, response);
             } else {
                 if (ses.getAttribute("stfType") == null) {
                     res.sendRedirect("/MAS-war/login.xhtml");
                 } else {
                     String stfType = (String) ses.getAttribute("stfType");
-
+                    System.out.println(stfType);
                     if (stfType.equals("officeStaff")) {
                         if (path.contains("sAdm") || path.equals("/EditStaffPage.xhtml") || path.equals("/EditCockpitPage.xhtml")) {
                             res.sendRedirect("/MAS-war/Permission.xhtml");
@@ -66,6 +68,10 @@ public class AuthFilter implements Filter {
                         }
                     } else if (stfType.equals("cockpit")) {
                         if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages")) {
+                            res.sendRedirect("/MAS-war/Permission.xhtml");
+                        }
+                    } else if (stfType.equals("agency")) {
+                        if (!path.startsWith("/DDSpages")) {
                             res.sendRedirect("/MAS-war/Permission.xhtml");
                         }
                     }
