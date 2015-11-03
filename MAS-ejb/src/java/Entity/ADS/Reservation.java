@@ -18,7 +18,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -44,8 +43,9 @@ public class Reservation implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
     private Collection<Ticket> tickets;
 
-    @ManyToOne
-    private BookingClassInstance bkclassInstance;
+    @ManyToMany(cascade={CascadeType.ALL})
+    @JoinTable(name="RESERVATION_BKCINSTANCE")
+    private Collection<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
@@ -175,18 +175,19 @@ public class Reservation implements Serializable {
     }
 
     /**
-     * @return the bkclassInstance
+     * @return the bkcInstance
      */
-    public BookingClassInstance getBkclassInstance() {
-        return bkclassInstance;
+    public Collection<BookingClassInstance> getBkcInstance() {
+        return bkcInstance;
     }
 
     /**
-     * @param bkclassInstance the bkclassInstance to set
+     * @param bkcInstance the bkcInstance to set
      */
-    public void setBkclassInstance(BookingClassInstance bkclassInstance) {
-        this.bkclassInstance = bkclassInstance;
+    public void setBkcInstance(Collection<BookingClassInstance> bkcInstance) {
+        this.bkcInstance = bkcInstance;
     }
+
 
 
 
