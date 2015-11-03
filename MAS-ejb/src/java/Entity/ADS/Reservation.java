@@ -31,7 +31,7 @@ public class Reservation implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long airlineRsvCode;
+    private Long rsvCode;
 
     private String bkFirstName;
     private String bkLastName;
@@ -61,29 +61,29 @@ public class Reservation implements Serializable {
         this.rsvDate = Calendar.getInstance().getTime();
     }
 
-    public Long getAirlineRsvCode() {
-        return airlineRsvCode;
+    public Long getRsvCode() {
+        return rsvCode;
     }
 
-    public void setAirlineRsvCode(Long airlineRsvCode) {
-        this.airlineRsvCode = airlineRsvCode;
+    public void setRsvCode(Long rsvCode) {
+        this.rsvCode = rsvCode;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (airlineRsvCode != null ? airlineRsvCode.hashCode() : 0);
+        hash += (rsvCode != null ? rsvCode.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the airlineRsvCode fields are not set
+        // TODO: Warning - this method won't work in the case the rsvCode fields are not set
         if (!(object instanceof Reservation)) {
             return false;
         }
         Reservation other = (Reservation) object;
-        if ((this.airlineRsvCode == null && other.airlineRsvCode != null) || (this.airlineRsvCode != null && !this.airlineRsvCode.equals(other.airlineRsvCode))) {
+        if ((this.rsvCode == null && other.rsvCode != null) || (this.rsvCode != null && !this.rsvCode.equals(other.rsvCode))) {
             return false;
         }
         return true;
@@ -91,7 +91,7 @@ public class Reservation implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Reservation[ id=" + airlineRsvCode + " ]";
+        return "Entity.ADS.Reservation[ id=" + rsvCode + " ]";
     }
 
     /**
