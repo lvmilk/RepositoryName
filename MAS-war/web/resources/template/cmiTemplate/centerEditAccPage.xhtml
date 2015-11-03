@@ -48,6 +48,12 @@
                     </p:inputText>
                     <p:message for="otrSalary" display="icon" />
 
+                    <p:outputLabel for="otrHourPay" value="Hour Pay: " />
+                    <p:inputText id="otrHourPay" value="#{etManagedBean.hourPay}" validatorMessage="Please enter staff hour pay" required="true" label="StaffLevel" size="10">
+
+                    </p:inputText>
+                    <p:message for="otrHourPay" display="icon" />
+                    
 
                     <p:outputLabel for="otrAttempt" value="Attempt: " />
                     <p:inputText id="otrAttempt" value="#{etManagedBean.attempt}" required="true" label="Attempt" size="10">

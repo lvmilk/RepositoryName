@@ -6,6 +6,7 @@
 package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.MsgSender;
 import SessionBean.ADS.MemberBeanLocal;
@@ -60,10 +61,12 @@ public class MemberGuestManagedBean implements Serializable {
     private ArrayList<FlightInstance> departSelected = new ArrayList<>();
     private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
     private Double totalPrice;
+    private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
 
     @PostConstruct
     public void init() {
         try {
+            BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
             departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
             returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");
             totalPrice = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalPrice");
@@ -96,12 +99,12 @@ public class MemberGuestManagedBean implements Serializable {
 
         if (visiMember == true) {
             if (psgSBlocal.checkMemberExist(memberId, existEmail)) {
-                passengerList=psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+                passengerList = psgSBlocal.makeReservation(passengerList, existEmail, memberId);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
 
-                System.out.println("#########This is in makeReserver and the id of passenger is:"+passengerList.get(0).getId());
+                System.out.println("#########This is in makeReserver and the id of passenger is:" + passengerList.get(0).getId());
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
 
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
@@ -113,7 +116,7 @@ public class MemberGuestManagedBean implements Serializable {
             if (msblocal.checkEmailExists(email)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email address is already been used ", ""));
             } else {
-                passengerList=psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+                passengerList = psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 temp = msblocal.retrieveMemberID(email);
                 if (temp.equals(0)) {
@@ -378,7 +381,4 @@ public class MemberGuestManagedBean implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    
-    
-    
 }

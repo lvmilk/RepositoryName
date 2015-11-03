@@ -33,6 +33,7 @@ public class CockpitCrew implements Serializable {
     private String stfLevel;
     private String name;
     private Double salary;
+    private Double hourPay;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
@@ -48,6 +49,7 @@ public class CockpitCrew implements Serializable {
         this.setAttempt(0);
         this.setLocked(0);
         this.setSalary(salary);
+        this.setHourPay(0.0);
     }
 
     @Override
@@ -227,6 +229,20 @@ public class CockpitCrew implements Serializable {
      */
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    /**
+     * @return the hourPay
+     */
+    public Double getHourPay() {
+        return hourPay;
+    }
+
+    /**
+     * @param hourPay the hourPay to set
+     */
+    public void setHourPay(Double hourPay) {
+        this.hourPay = hourPay;
     }
 
 }
