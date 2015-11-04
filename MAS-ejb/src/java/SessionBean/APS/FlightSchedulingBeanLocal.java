@@ -80,4 +80,6 @@ public interface FlightSchedulingBeanLocal {
     public void deleteMtFromAc(Aircraft ac, Maintenance mt);
 
     public FlightInstance getDummyFi(String outOrIn);
+
+    public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate);
 }

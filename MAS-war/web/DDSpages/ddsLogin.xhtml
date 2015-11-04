@@ -13,44 +13,30 @@
         <div style="width:50%; margin-right:15%;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
             <h:form>
 
-                <p:panel id="panel" header="Login" style="width: 50%">
+                <p:panel id="panel" header="Agency Login" style="width: 50%">
 
                     <p:messages id="msgs" showDetail="true" />
                     <h:panelGrid columns="3" cellpadding="10">
                         <p:outputLabel for="username" value="Username:" />
-                        <p:inputText id="username" value="#{login.username}" required="true" label="Username" size="10">
+                        <p:inputText id="username" value="#{ddslogin.username}" required="true" label="Username" size="10">
                             <f:validateLength minimum="2" />
                         </p:inputText>
                         <p:message for="username" display="icon" />
 
                         <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{login.password}" label="Password" required="true" size="10">
+                        <p:inputText id="password" type="password" value="#{ddslogin.password}" label="Password" required="true" size="10">
                             <f:validateLength minimum="2" />
                             <p:ajax update="msgPassword" event="keyup" />
                         </p:inputText>
                         <p:message for="password" id="msgPassword" display="icon" />
 
-                        <p:outputLabel for="domain" value="Staff domain:" />
-                        <h:selectOneMenu id="domain" value="#{login.stfType}">
-                            <f:selectItem itemValue="administrator" itemLabel="Admin Staff" />
-                            <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
-                            <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />
-                            <f:selectItem itemValue="cabin" itemLabel="Cabin Crew" />
-                            <f:selectItem itemValue="cockpit" itemLabel="Cockpit Crew" />
-                        </h:selectOneMenu>
 
                     </h:panelGrid>
 <!--                    <p:captcha id="captcha" secure="true"></p:captcha>-->
-                    <p:commandButton value="Login" update='panel' ajax="false" actionListener="#{login.logIn()}" icon="ui-icon-check" />
+                    <p:commandButton value="Login" update='panel' ajax="false" actionListener="#{ddslogin.logIn()}" icon="ui-icon-check" />
                                         
                 </p:panel>
             </h:form>
-            <h:form>
-                <h:commandLink value="Forgot password" style="font-size:10px" actionListener="#{login.foget()}" />
-                <br></br>
-                <h:commandLink value="Login As Partner" style="font-size:10px" actionListener="#{login.redirectDDS()}" />
-            </h:form>
-
 
         </div>
 

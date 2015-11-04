@@ -55,4 +55,6 @@ public interface ManageAccountBeanLocal {
     public CockpitCrew getCockpitCrew(String username);
 
     public int getLockedOutStatus(String username, String stfType);
+    
+    public boolean validateDDSLogin(String username, String password);
 }

@@ -26,18 +26,20 @@ public class Airport implements Serializable {
     private String opStatus;
     private String strategicLevel;
     private String airspace;
+    private String lang;
 
     private Double lat;
     private Double lon;
 
 //    private Collection<Route> routeList = new ArrayList<Route>();
-    public void create(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone,
+    public void create(String IATA, String airportName, String cityName, String countryName, String spec,String lang, String timeZone,
             String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) {
         this.IATA = IATA;
         this.airportName = airportName;
         this.cityName = cityName;
         this.countryName = countryName;
         this.spec = spec;
+        this.lang = lang;
         this.timeZone = timeZone;
         this.opStatus = opStatus;
         this.strategicLevel = strategicLevel;
@@ -132,6 +134,14 @@ public class Airport implements Serializable {
 
     public void setLon(Double lon) {
         this.lon = lon;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     

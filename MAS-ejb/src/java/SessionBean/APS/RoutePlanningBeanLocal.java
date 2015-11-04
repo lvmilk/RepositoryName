@@ -18,11 +18,9 @@ import javax.ejb.Local;
 @Local
 public interface RoutePlanningBeanLocal {
 
-    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) throws Exception;
+    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String lang, String timeZone, String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) throws Exception;
 
-//    public void addAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception;
-   
-    public void editAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception;
+    public void editAirport(String IATA, String airportName, String cityName, String countryCode, String spec, String lang, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception;
 
     public void deleteAirport(Airport airport) throws Exception;
 

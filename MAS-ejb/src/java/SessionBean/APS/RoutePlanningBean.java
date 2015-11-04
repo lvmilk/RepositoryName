@@ -32,7 +32,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) throws Exception {
+    public void addAirport(String IATA, String airportName, String cityName, String countryName, String spec, String lang, String timeZone, String opStatus, String strategicLevel, String airspace, Double latitude, Double longitude) throws Exception {
         airport = em.find(Airport.class, IATA);
         if (airport != null) {
             System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " exists.");
@@ -70,14 +70,14 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         }
 
         airport = new Airport();
-        airport.create(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
+        airport.create(IATA, airportName, cityName, countryName, spec, lang, timeZone, opStatus, strategicLevel, airspace, latitude, longitude);
         em.persist(airport);
         em.flush();
         System.out.println("rpb.addAirport(): Airport " + airport.getIATA() + " added!");
     }
 
     @Override
-    public void editAirport(String IATA, String airportName, String cityName, String countryName, String spec, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
+    public void editAirport(String IATA, String airportName, String cityName, String countryName, String spec, String lang, String timeZone, String opStatus, String strategicLevel, String airspace) throws Exception {
         airport = em.find(Airport.class, IATA);
         if (airport == null) {
             throw new Exception("Airport does not exist.");
@@ -86,6 +86,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
         airport.setCityName(cityName);
         airport.setCountryName(countryName);
         airport.setSpec(spec);
+        airport.setLang(lang);
         airport.setTimeZone(timeZone);
         airport.setOpStatus(opStatus);
         airport.setStrategicLevel(strategicLevel);

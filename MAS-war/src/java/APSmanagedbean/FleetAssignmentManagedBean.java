@@ -361,6 +361,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     public void setFlightDate(Date flightDate) {
         this.flightDate = flightDate;
     }
+   
 
     public List<FlightInstance> getUnassignedFlight() {
         return fsb.getUnplannedFiWithinPeriod(start, end);
