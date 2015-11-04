@@ -46,6 +46,8 @@ public interface ReserveFlightBeanLocal {
 
     public BookingClassInstance findCheapestAvailable(FlightInstance flight, CabinClass cabin, int countPerson);
 
+    public Airport findAirport(String name);
+
 
     
 }
