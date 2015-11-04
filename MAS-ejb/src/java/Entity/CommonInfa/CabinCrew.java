@@ -38,6 +38,16 @@ public class CabinCrew implements Serializable {
     private Double salary;
     private Double hourPay;
     
+      ////
+    private String secondLang;
+    private long yearAccumMin;
+    private long monthAccumMin;
+    private long weekAccumMin;
+    private List<FlightInstance> fiList;
+    private List<FlightInstance> fiStandByList;
+    private Integer firstSB;
+    private Integer secondSB; 
+    
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 

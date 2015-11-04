@@ -268,6 +268,8 @@ public class CockpitCrew implements Serializable {
      */
     public void setHourPay(Double hourPay) {
         this.hourPay = hourPay;
+    }
+    
     public long getYearAccumMin() {
         return yearAccumMin;
     }
