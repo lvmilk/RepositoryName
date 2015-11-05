@@ -5,6 +5,8 @@
  */
 package SessionBean.AFOS;
 
+import java.text.ParseException;
+import java.util.Date;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CrewSchedulingBeanLocal {
+
+    public void scheduleFlightCrew(Date startDate, Date endDate) throws ParseException;
     
 }

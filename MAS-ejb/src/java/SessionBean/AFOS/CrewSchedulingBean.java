@@ -172,6 +172,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 //        List<FlightInstance> fiList = fsb.getSortedFiWithinPeriod(startDate, endDate);
 //    }
 // pre-condition: startDate should be Monday of the first week, endDate should be Sunday of the fourth week
+    @Override
     public void scheduleFlightCrew(Date startDate, Date endDate) throws ParseException {
         List<FlightInstance> fiList = fsb.getSortedFiWithinPeriod(startDate, endDate);
 

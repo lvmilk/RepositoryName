@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Schedule Flight Crew_Result</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Flight Crew Schedule"  style="width:100%">
+                <p:dataTable var="fi" value="#{VFCSMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instance for the period">
+                    <f:facet name="header">
+                        Flight Crew Scheduling for Period #{startDateString} - #{endDateString}
+                    </f:facet>
+
+                    <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
+                        <h:outputText value="#{fi.flightFrequency.flightNo}" />
+                    </p:column>
+
+                    <p:column headerText="Assigned Aircraft" sortBy="#{fi.aircraft.registrationNo}" filterBy="#{fi.aircraft.registrationNo}" >
+                        <h:outputText value="#{fi.aircraft.registrationNo}" />
+                    </p:column>
+
+                    <p:column headerText="Origin" sortBy="#{fi.flightFrequency.route.origin.IATA}" filterBy="#{fi.flightFrequency.route.origin.IATA}" >
+                        <h:outputText value=#{fi.flightFrequency.route.origin.IATA} />
+                    </p:column>
+
+                    <p:column headerText="Destination" sortBy="#{fi.flightFrequency.route.dest.IATA}" filterBy="#{fi.flightFrequency.route.dest.IATA}" >
+                        <h:outputText value=#{fi.flightFrequency.route.dest.IATA} />
+                    </p:column>
+
+                    <p:column headerText="Departure Time" sortBy="#{fi.standardDepTimeDateType}" filterBy="#{fi.standardDepTimeDateType}" >
+                        <h:outputText value="#{fi.standardDepTimeDateType}" />
+                    </p:column>
+
+                    <p:column headerText="Arrival Time" sortBy="#{fi.standardArrTimeDateType}" filterBy="#{fi.standardArrTimeDateType}" >
+                        <h:outputText value="#{fi.standardArrTimeDateType}" />
+                    </p:column>
+
+                    <p:column headerText="Captain">
+                        <h:outputText value="#{fi.cockpitList}" />
+                    </p:column>
+
+                     <p:column headerText="Pilot">
+                        <h:outputText value="#{fi.cockpitList}" />
+                    </p:column>
+
+                     <p:column headerText="Captain">
+                        <h:outputText value="#{fi.cockpitList}" />
+                    </p:column>
+                    
+                     <p:column headerText="Captain">
+                        <h:outputText value="#{fi.cockpitList}" />
+                    </p:column>
+                    
+                    <p:column headerText="View Maintenance">
+                        <p:commandButton value="View Maintenance" action="#{VMSAMB.viewMaintenanceList(aircraft)}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:draggable for="panel" /><p:resizable for="panel" />
+        </h:form>
+    </h:body>
+</html>
