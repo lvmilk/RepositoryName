@@ -7,12 +7,15 @@ package ADSmanagedbean;
 
 import Entity.ADS.Member;
 import Entity.ADS.Passenger;
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.MemberBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
 import SessionBean.ADS.RsvConfirmationBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -34,6 +37,7 @@ public class TicketManagedBean implements Serializable {
     @EJB
     private RsvConfirmationBeanLocal rsvCflocal;
 
+    private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
     private Long memberId;
     private String firstName;
     private String lastName;
@@ -48,9 +52,16 @@ public class TicketManagedBean implements Serializable {
     private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
     private Double totalPrice;
 
+    private String origin;
+    private String dest;
+    private Boolean returnTrip;
+
     @PostConstruct
     public void init() {
         try {
+            origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
+            dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
+           returnTrip= (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
 
             departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
             returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");
@@ -64,6 +75,7 @@ public class TicketManagedBean implements Serializable {
             this.setFirstName(member.getFirstName());
             this.setLastName(member.getLastName());
             this.setEmail(member.getEmail());
+            BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
 
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
@@ -73,11 +85,12 @@ public class TicketManagedBean implements Serializable {
         }
     }
 
-    public void rsvConfirm() {
+    public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        rsvCflocal.setupPsg_Ticket(departSelected, returnSelected, passengerList,memberId);
-//        rsvCflocal.setupTicket_Reservation(firstName,lastName,email);
+        rsvCflocal.setupPsg_Ticket(departSelected, returnSelected, passengerList, memberId, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./payment.xhtml");
+
     }
 
     /**
