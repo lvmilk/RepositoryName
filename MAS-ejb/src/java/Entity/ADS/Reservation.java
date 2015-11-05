@@ -20,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -55,6 +56,10 @@ public class Reservation implements Serializable {
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
+    
+   @ManyToOne
+   private Booker booker;
+    
 
     public Reservation() {
 
@@ -221,6 +226,14 @@ public class Reservation implements Serializable {
 
     public void setReturnTrip(Boolean returnTrip) {
         this.returnTrip = returnTrip;
+    }
+
+    public Booker getBooker() {
+        return booker;
+    }
+
+    public void setBooker(Booker booker) {
+        this.booker = booker;
     }
 
 

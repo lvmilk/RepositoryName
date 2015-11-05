@@ -191,7 +191,7 @@ public class DynamicReallocateManagedBean implements Serializable {
 
             totalAvailable = totalAvailable - bookedSeatCount;
             bInstance.setBookedSeatNo(bookedSeatCount);
-            sa.changeBookdSeatCount(bInstance);
+            sa.changeBookedSeatCount(bInstance);
             Integer seatAvailable;
 
             for (int i = 0; i < bookClassInstanceList.size(); i++) {

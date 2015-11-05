@@ -8,6 +8,7 @@ package Entity.ADS;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,11 +37,9 @@ public class Passenger implements Serializable {
     private String ffpName;
     private String ffpNo;
     
-    @ManyToOne
-    private Member member;
     
     @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
-    private Collection<Ticket> tickets;
+    private List<Ticket> tickets;
     
     public Passenger()
     {
@@ -162,30 +161,19 @@ public class Passenger implements Serializable {
     /**
      * @return the tickets
      */
-    public Collection<Ticket> getTickets() {
+    public List<Ticket> getTickets() {
         return tickets;
     }
 
     /**
      * @param tickets the tickets to set
      */
-    public void setTickets(Collection<Ticket> tickets) {
+    public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
 
     /**
-     * @return the member
-     */
-    public Member getMember() {
-        return member;
-    }
 
-    /**
-     * @param member the member to set
-     */
-    public void setMember(Member member) {
-        this.member = member;
-    }
 
     /**
      * @return the passport

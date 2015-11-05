@@ -35,17 +35,12 @@ public interface SeatAssignBeanLocal {
     
     public List<FlightCabin> getCabinList(String flightNo, String dateString);
     
-    public void changeBookdSeatCount(BookingClassInstance bInstance);
+    public void changeBookedSeatCount(BookingClassInstance bInstance);
 
     public void changeSeatNo(BookingClassInstance bInstance);
     
     public double computeCurrentRev(List<BookingClassInstance> bookClassInstanceList);
 
-    public List<BookingClassInstance> computeOptimalSeat3(List<BookingClassInstance> bookClassInstanceList);
-
-    public ArrayList<Integer> computeProtectLvl(List<BookingClassInstance> bookClassInstanceList);
-
-    public Integer getMaxPriceIndex(List<BookingClassInstance> classList, Integer protect);
 
     public List<BookingClassInstance> computeOptimalSeat4(List<BookingClassInstance> classList);
 }
