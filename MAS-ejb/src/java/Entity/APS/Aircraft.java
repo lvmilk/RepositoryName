@@ -31,18 +31,13 @@ public class Aircraft implements Serializable {
 
     //----------------------After 1st release
     private Integer yearDiff; 
- //  private long accumFlyMinutes;
     private long acycleFM = 0;
-//    private long acycleFD = 0;
     private long acycleFC = 0;
     private long bcycleFM = 0;
-//    private long bcycleFD = 0;
     private long bcycleFC = 0;
     private long ccycleFM = 0;
-//    private long ccycleFD = 0;
     private long ccycleFC = 0;
     private long dcycleFM = 0;
-//    private long dcycleFD = 0;
     private long dcycleFC = 0;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")

@@ -40,6 +40,16 @@
                         <f:validateRegex pattern="((?=.*[a-zA-Z]).{1,30})" />
                     </p:inputText>
 
+                    <p:outputLabel for="lang" value="Local Language " />
+                    <p:selectOneRadio id="lang" value="#{AirportManagedBean.lang}" required="true" requiredMessage="Please select local language for the airport">
+                        <f:selectItem itemLabel="Arabic" itemValue="Arabic" />
+                        <f:selectItem itemLabel="French" itemValue="French" />
+                        <f:selectItem itemLabel="Germany" itemValue="Germany" />
+                        <f:selectItem itemLabel="Japanese" itemValue="Japanese" />
+                        <f:selectItem itemLabel="Mandarin" itemValue="Mandarin" />
+                        <f:selectItem itemLabel="English(and if other languages)" itemValue="English" />
+                    </p:selectOneRadio>
+
                     <p:outputLabel for="timeZone" value="UTC Time Zone : " />
                     <p:selectOneMenu id="timeZone" value="#{AirportManagedBean.timeZone}" required="true" requiredMessage="Please select timezone" style="width:230px" >
                         <f:selectItem itemLabel="-Select TimeZone-" itemValue="" />
