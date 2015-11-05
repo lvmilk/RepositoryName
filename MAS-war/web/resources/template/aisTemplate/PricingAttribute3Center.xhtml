@@ -44,7 +44,7 @@
                         </p:inputText>
                         
                         <p:outputLabel for="otherCost" value="Other costs per block hour in SGD" />
-                        <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please check other cost is lower than $100/hr"  size="10">
+                        <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please check other cost is lower than $2000/hr"  size="10">
                             <f:validateDoubleRange minimum="2000.0" maximum="10000.0" />
                         </p:inputText>
                         
