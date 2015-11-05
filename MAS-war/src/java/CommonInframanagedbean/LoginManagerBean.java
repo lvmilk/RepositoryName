@@ -72,9 +72,12 @@ public class LoginManagerBean implements Serializable {
         }
     }
 
-
     public void foget() throws IOException {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./CMIpages/forgetPwd.xhtml");
+    }
+
+    public void redirectDDS() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./DDSpages/ddsLogin.xhtml");
     }
 
     public void createAdmin() {
@@ -102,7 +105,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
-            mal.addAccount(username, password, email, stfType, name, stfLevel,salary);
+            mal.addAccount(username, password, email, stfType, name, stfLevel, salary);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -129,7 +132,7 @@ public class LoginManagerBean implements Serializable {
         System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
-            mal.addCocpitAcc(username, password, email, stfType, name, stfLevel,salary,licence);
+            mal.addCocpitAcc(username, password, email, stfType, name, stfLevel, salary, licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
         } else if (!blCreateEmail && blCreateAcc) {

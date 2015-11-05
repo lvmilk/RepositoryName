@@ -38,7 +38,7 @@ public class EditAirportManagedBean implements Serializable {
     private String opStatus;
     private String strategicLevel;
     private String airspace;
-
+    private String lang;
     private Double latitude;
     private Double longitude;
     private boolean isHub;
@@ -53,6 +53,7 @@ public class EditAirportManagedBean implements Serializable {
         cityName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cityName");
         countryName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countryName");
         spec = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("spec");
+        lang = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lang");
         timeZone = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("timeZone");
         opStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("opStatus");
         strategicLevel = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("strategicLevel");
@@ -81,7 +82,7 @@ public class EditAirportManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("airport", airport);
             }
 
-            rpb.editAirport(IATA, airportName, cityName, countryName, spec, timeZone, opStatus, strategicLevel, airspace);
+            rpb.editAirport(IATA, airportName, cityName, countryName, spec, lang, timeZone, opStatus, strategicLevel, airspace);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editAirportSuccess.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -198,6 +199,14 @@ public class EditAirportManagedBean implements Serializable {
 
     public void setIsHub(boolean isHub) {
         this.isHub = isHub;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
 }

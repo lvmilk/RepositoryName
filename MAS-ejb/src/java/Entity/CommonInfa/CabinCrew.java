@@ -6,11 +6,15 @@
 package Entity.CommonInfa;
 
 import Entity.AFOS.FlightCrewTeam;
+import Entity.APS.FlightInstance;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -34,17 +38,29 @@ public class CabinCrew implements Serializable {
     private Double salary;
     private Double hourPay;
     
+      ////
+    private String secondLang;
+    private long yearAccumMin;
+    private long monthAccumMin;
+    private long weekAccumMin;
+    private List<FlightInstance> fiList;
+    private List<FlightInstance> fiStandByList;
+    private Integer firstSB;
+    private Integer secondSB; 
+    
     @OneToOne(cascade={CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType, String name, String stfLevel, Double salary)
-    {
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private FlightCrewTeam flightTeam;
+
+    public void create(String strCbName, String strCbPassword, String email, String strStfType, String name, String stfLevel, Double salary) {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
-        this.name=name;
-        this.stfLevel=stfLevel;
+        this.name = name;
+        this.stfLevel = stfLevel;
         this.setAttempt(0);
         this.setLocked(0);
         this.setSalary(salary);
@@ -174,9 +190,14 @@ public class CabinCrew implements Serializable {
         this.user = user;
     }
 
-    /**
-     * @return the stfLevel
-     */
+    public FlightCrewTeam getFlightTeam() {
+        return flightTeam;
+    }
+
+    public void setFlightTeam(FlightCrewTeam flightTeam) {
+        this.flightTeam = flightTeam;
+    }
+
     public String getStfLevel() {
         return stfLevel;
     }
@@ -230,4 +251,68 @@ public class CabinCrew implements Serializable {
         this.hourPay = hourPay;
     }
     
+    public String getSecondLang() {
+        return secondLang;
+    }
+
+    public void setSecondLang(String secondLang) {
+        this.secondLang = secondLang;
+    }
+
+    public long getYearAccumMin() {
+        return yearAccumMin;
+    }
+
+    public void setYearAccumMin(long yearAccumMin) {
+        this.yearAccumMin = yearAccumMin;
+    }
+
+    public long getMonthAccumMin() {
+        return monthAccumMin;
+    }
+
+    public void setMonthAccumMin(long monthAccumMin) {
+        this.monthAccumMin = monthAccumMin;
+    }
+
+    public long getWeekAccumMin() {
+        return weekAccumMin;
+    }
+
+    public void setWeekAccumMin(long weekAccumMin) {
+        this.weekAccumMin = weekAccumMin;
+    }
+
+    public List<FlightInstance> getFiList() {
+        return fiList;
+    }
+
+    public void setFiList(List<FlightInstance> fiList) {
+        this.fiList = fiList;
+    }
+
+    public List<FlightInstance> getFiStandByList() {
+        return fiStandByList;
+    }
+
+    public void setFiStandByList(List<FlightInstance> fiStandByList) {
+        this.fiStandByList = fiStandByList;
+    }
+
+    public Integer getFirstSB() {
+        return firstSB;
+    }
+
+    public void setFirstSB(Integer firstSB) {
+        this.firstSB = firstSB;
+    }
+
+    public Integer getSecondSB() {
+        return secondSB;
+    }
+
+    public void setSecondSB(Integer secondSB) {
+        this.secondSB = secondSB;
+    }
+
 }

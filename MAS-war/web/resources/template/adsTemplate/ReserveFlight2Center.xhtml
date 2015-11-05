@@ -130,7 +130,7 @@
                         <br/>
                         <br/>
 
-                        <p:tabView value="#{reserveFlightManagedBean.dateOfWeek}" var="day">
+                        <p:tabView value="#{reserveFlightManagedBean.dateOfWeek}" dynamic="true" activeIndex="#{reserveFlightManagedBean.departDefault}"  var="day">
                             <p:tab title="#{reserveFlightManagedBean.departDayOfWeek[day]}- #{day}">
 
                                 <h:outputText  rendered="#{empty reserveFlightManagedBean.departMap.get(day)}"  value="No Flights on this day  " />                         
@@ -200,7 +200,7 @@
                         <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext2()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
                         <br/>
                         <br/>
-                        <p:tabView  rendered="#{reserveFlightManagedBean.returnTrip}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
+                        <p:tabView  rendered="#{reserveFlightManagedBean.returnTrip}" dynamic="true" activeIndex="#{reserveFlightManagedBean.returnDefault}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
                             <p:tab title="#{reserveFlightManagedBean.returnDayOfWeek[day]}- #{day}">
                                 
                                   <h:outputText  rendered="#{empty reserveFlightManagedBean.returnMap.get(day)}"  value="No Flights on this day  " />                         

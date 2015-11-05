@@ -35,6 +35,15 @@ public class ReserveFlightBean implements ReserveFlightBeanLocal {
     EntityManager em;
     @EJB
     FlightSchedulingBeanLocal fs;
+    
+    
+    public Airport findAirport(String name){
+    Airport airport;
+     Query query = em.createQuery("SELECT a FROM Airport a WHERE a.airportName=:name");
+        query.setParameter("name", name);
+        List<Airport> resultList = query.getResultList();
+        return resultList.get(0);
+    }
 
     public CabinClass findCabinClass(String cabinName) {
         CabinClass select;

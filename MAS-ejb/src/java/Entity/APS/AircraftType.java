@@ -67,8 +67,8 @@ public class AircraftType implements Serializable {
     private Integer dcDu;  // by hour
     private Integer dcMH;
 
-    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "act")
-    private List<FlightCrewTeam> flightTeam = new ArrayList<>();
+//    @OneToOne(cascade = {CascadeType.PERSIST}, mappedBy = "act")
+//    private List<FlightCrewTeam> flightTeam = new ArrayList<>();
     
     //---------------------------------------------------------------------------
 
@@ -436,13 +436,13 @@ public class AircraftType implements Serializable {
 //        this.cruiseAltitude = cruiseAltitude;
 //    }
 
-    public List<FlightCrewTeam> getFlightTeam() {
-        return flightTeam;
-    }
-
-    public void setFlightTeam(List<FlightCrewTeam> flightTeam) {
-        this.flightTeam = flightTeam;
-    }
+//    public List<FlightCrewTeam> getFlightTeam() {
+//        return flightTeam;
+//    }
+//
+//    public void setFlightTeam(List<FlightCrewTeam> flightTeam) {
+//        this.flightTeam = flightTeam;
+//    }
     
     
     @Override

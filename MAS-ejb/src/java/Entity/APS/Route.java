@@ -38,6 +38,9 @@ public class Route implements Serializable {
     private Double basicEcFare;
     // private boolean canEBP;
     private String status;
+    
+    //Include fees and taxes, government imposed aviation levy, airport security fees and service fees and fuel surchages
+    private Double otherCost;
 
     @ManyToOne
     private AircraftType acType;
@@ -175,6 +178,14 @@ public class Route implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Double getOtherCost() {
+        return otherCost;
+    }
+
+    public void setOtherCost(Double otherCost) {
+        this.otherCost = otherCost;
     }
 
 //     public boolean getCanEBP() {
