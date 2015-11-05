@@ -107,7 +107,7 @@ public class EditManagedBean implements Serializable {
         setStfType(cbCrew.getStfType());
         setPassword(cbCrew.getCbPassword());
         setPswEdited(cbCrew.getCbPassword());
-        setName(cbCrew.getName());
+        setName(cbCrew.getSurName());
         setStfLevel(cbCrew.getStfLevel());
         setSalary(cbCrew.getSalary());
         setHourPay(cbCrew.getHourPay());
@@ -123,7 +123,7 @@ public class EditManagedBean implements Serializable {
         setStfType(cpCrew.getStfType());
         setPassword(cpCrew.getCpPassword());
         setPswEdited(cpCrew.getCpPassword());
-        setName(cpCrew.getName());
+        setName(cpCrew.getSurName());
         setStfLevel(cpCrew.getStfLevel());
         setLicence(cpCrew.getLicence());
         setSalary(cpCrew.getSalary());
