@@ -30,19 +30,21 @@ public class GroundStaff implements Serializable {
     private Integer attempt;
     private Integer locked;
     private String stfLevel;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Double salary;
     private Double hourPay;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strGrdName, String strGrdPassword, String email, String strType, String name, String stfLevel, Double salary) {
+    public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
         this.setGrdPassword(strGrdPassword);
         this.setEmail(email);
         this.setStfType(strType);
-        this.setName(name);
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
@@ -187,17 +189,17 @@ public class GroundStaff implements Serializable {
     }
 
     /**
-     * @return the name
+     * @return the firstName
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * @param name the name to set
+     * @param firstName the firstName to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -226,6 +228,20 @@ public class GroundStaff implements Serializable {
      */
     public void setHourPay(Double hourPay) {
         this.hourPay = hourPay;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }
