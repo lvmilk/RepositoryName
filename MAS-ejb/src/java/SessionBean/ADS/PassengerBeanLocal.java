@@ -7,6 +7,7 @@ package SessionBean.ADS;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
 import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
@@ -31,6 +32,8 @@ public interface PassengerBeanLocal {
     public Booker checkMemberExist(Long memberId, String email);
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo);
+
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount);
 
 
 

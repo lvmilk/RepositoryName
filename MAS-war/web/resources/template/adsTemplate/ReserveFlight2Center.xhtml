@@ -19,7 +19,7 @@
             <c:choose>
                 <c:when test="${reserveFlightManagedBean.dateSpecific}">
 
-                    <p:panel id="departSpecific" header="Departure Flight Searching Result" toggleable="true" >
+                    <p:panel id="departSpecific" header="Departure Flight Searching Result" toggleable="true" style="width: 75%">
 
 
                         <ui:repeat var="package" value="#{reserveFlightManagedBean.departSpecificList}"   varStatus="myStatus">
@@ -124,7 +124,7 @@
 
 
                 <c:otherwise>
-                    <p:panel header="Departure Flight" toggleable="true" >
+                    <p:panel header="Departure Flight" toggleable="true"  >
                         <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
                         <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
                         <br/>
