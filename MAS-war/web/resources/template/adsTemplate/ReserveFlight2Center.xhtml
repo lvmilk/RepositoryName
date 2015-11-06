@@ -20,12 +20,12 @@
                 <c:when test="${reserveFlightManagedBean.dateSpecific}">
 
                     <p:panel id="departSpecific" header="Departure Flight Searching Result" toggleable="true" >
-                           
+
 
                         <ui:repeat var="package" value="#{reserveFlightManagedBean.departSpecificList}"   varStatus="myStatus">
 
                             <p:panel header="Option #{myStatus.index+1}">
-                            
+
 
                                 <h:panelGrid columns="2"  cellpadding="15"> 
                                     <p:selectManyCheckbox>
@@ -72,7 +72,7 @@
 
                     <p:panel id="returnSpecific" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result" toggleable="true" style="width:100%">
 
-                        
+
                         <ui:repeat var="package" value="#{reserveFlightManagedBean.returnSpecificList}" varStatus="myStatus">
 
                             <p:panel header="Option #{myStatus.index+1}">
@@ -196,14 +196,14 @@
 
 
                     <p:panel header="Return Flight" rendered="#{reserveFlightManagedBean.returnTrip}" toggleable="true" >
-                         <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious2()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
+                        <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious2()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
                         <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext2()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
                         <br/>
                         <br/>
                         <p:tabView  rendered="#{reserveFlightManagedBean.returnTrip}" dynamic="true" activeIndex="#{reserveFlightManagedBean.returnDefault}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
                             <p:tab title="#{reserveFlightManagedBean.returnDayOfWeek[day]}- #{day}">
-                                
-                                  <h:outputText  rendered="#{empty reserveFlightManagedBean.returnMap.get(day)}"  value="No Flights on this day  " />                         
+
+                                <h:outputText  rendered="#{empty reserveFlightManagedBean.returnMap.get(day)}"  value="No Flights on this day  " />                         
 
                                 <br/>
                                 <br/>
@@ -282,11 +282,20 @@
             left: 20px;
         }
 
+
         .buttonForward.ui-button{
             position: absolute;
             right:20px;
         }
 
+        .buttonForward.ui-button-text {
+            padding: 0.4em 2.1em 0.4em 1em;
+        }
+
+        .buttonForward.ui-button-icon-primary {
+            left: auto;
+            right: 0.5em;
+        }
     </style>
 
 </html>
