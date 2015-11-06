@@ -56,7 +56,7 @@ public class MemberGuestManagedBean implements Serializable {
 
     private ArrayList<Passenger> passengerList = new ArrayList<>();
     private Passenger person = new Passenger();
-    private Booker booker=new Booker();
+    private Booker booker = new Booker();
 
     private Integer repeat;
 
@@ -100,36 +100,34 @@ public class MemberGuestManagedBean implements Serializable {
         Long temp;
 
         if (visiMember == true) {
-            booker=psgSBlocal.checkMemberExist(bookerId, existEmail);
-            if (booker!=null) {
+            booker = psgSBlocal.checkMemberExist(bookerId, existEmail);
+            if (booker != null) {
 //                passengerList = psgSBlocal.makeReservation(passengerList, existEmail, bookerId);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
-                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("visiMember", visiMember);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("visiMember", visiMember);
 
                 System.out.println("#########This is in makeReserver and the id of passenger is:" + passengerList.get(0).getId());
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
-             
-                
+
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
             }
         } else if (visiNonMember == true) {
-            
-            booker=psgSBlocal.createTempBooker( title, firstName, lastName, address, email, contactNo);
+
+            booker = psgSBlocal.createTempBooker(title, firstName, lastName, address, email, contactNo);
 
 //                passengerList = psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
 //            temp = msblocal.retrieveBookerID(email);
 //            if (temp.equals(0)) {
 //                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member ID does not found ", ""));
-            
+
 //            } else {
-            
-              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("visiMember", visiMember);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
@@ -383,6 +381,4 @@ public class MemberGuestManagedBean implements Serializable {
         this.bookerId = bookerId;
     }
 
-    
-    
 }

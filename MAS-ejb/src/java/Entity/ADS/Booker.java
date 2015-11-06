@@ -48,7 +48,7 @@ public class Booker implements Serializable {
     @OneToMany(cascade={CascadeType.ALL},mappedBy="booker")
     private List<Reservation> rsvList;
     
-
+    
     
     public Booker()
     {
@@ -248,6 +248,8 @@ public class Booker implements Serializable {
     public void setRsvList(List<Reservation> rsvList) {
         this.rsvList = rsvList;
     }
+
+
 
     
     

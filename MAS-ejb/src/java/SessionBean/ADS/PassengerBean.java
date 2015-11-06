@@ -75,17 +75,34 @@ public class PassengerBean implements PassengerBeanLocal {
         createPsgList(passengerList);
 
         tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip);
-        
-        setupTicket_Reservation(rsv,tickets);
+
+        setupTicket_Reservation(rsv, tickets);
+
+        Payment payment = makeRsvPayment(rsv, psgCount);
 
     }
-    
+
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount) {
+        Double totalPrice = 0.0;
+        for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
+            totalPrice += rsv.getBkcInstance().get(i).getPrice();
+        }
+        totalPrice *= psgCount;
+        Payment payment = new Payment();
+        payment.createPayment(totalPrice);
+        rsv = em.find(Reservation.class, rsv.getId());
+        payment.setReservation(rsv);
+        rsv.setPayment(payment);
+        em.persist(payment);
+        return payment;
+    }
+
     public void setupTicket_Reservation(Reservation rsv, ArrayList<Ticket> tickets) {
 
         rsv.setTickets(tickets);
         em.persist(rsv);
         em.flush();
-        
+
         for (int i = 0; i < tickets.size(); i++) {
             System.out.println("@@@@@@This is in setupTicket_Reservation:" + tickets.get(i));
             tickets.get(i).setRsv(rsv);
@@ -94,8 +111,6 @@ public class PassengerBean implements PassengerBeanLocal {
         }
 
     }
-    
-    
 
     public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
         Ticket depTicket;
@@ -168,8 +183,6 @@ public class PassengerBean implements PassengerBeanLocal {
         return tkList;
     }
 
-    
-    
     public Reservation makeRsvBookInstance(Reservation rsv, ArrayList<BookingClassInstance> BookClassInstanceList) {
         rsv = em.find(Reservation.class, rsv.getId());
         BookingClassInstance instance = new BookingClassInstance();
@@ -321,7 +334,6 @@ public class PassengerBean implements PassengerBeanLocal {
 //        System.out.println("~~~~~~~~The size that member/guest booked" + member.getPsgs().size());
 //        return psgList;
 //    }
-
     public boolean checkPassportExist(String passport) {
         Query query = null;
 
