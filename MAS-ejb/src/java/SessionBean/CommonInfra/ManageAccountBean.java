@@ -307,6 +307,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         }
     }
 
+    @Override
     public boolean checkEmailDuplicate(String email, String emailEdited) {
         if (email.equals(emailEdited)) {
             return false;
