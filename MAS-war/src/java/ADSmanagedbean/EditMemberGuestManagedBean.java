@@ -5,8 +5,8 @@
  */
 package ADSmanagedbean;
 
-import Entity.ADS.Member;
-import SessionBean.ADS.MemberBeanLocal;
+import Entity.ADS.Booker;
+import SessionBean.ADS.BookerBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -27,9 +27,9 @@ import javax.inject.Named;
 public class EditMemberGuestManagedBean implements Serializable {
 
     @EJB
-    private MemberBeanLocal mbsbl;
+    private BookerBeanLocal mbsbl;
 
-    private List<Member> memberList;
+    private List<Booker> memberList;
 
     private Long memberId;
     private String title;
@@ -46,18 +46,18 @@ public class EditMemberGuestManagedBean implements Serializable {
     private String emailEdited;
 
 
-    public void SelectEditMember(Member member) throws IOException {
-        setMemberId(member.getMemberID());
-        this.title = member.getTitle();
-        this.firstName = member.getFirstName();
-        this.lastName = member.getLastName();
-        this.address = member.getAddress();
-        this.email = member.getEmail();
-        this.contactNo = member.getContact();
-        this.dob = member.getDob();
-        this.miles = member.getMiles();
-        this.passport = member.getPassport();
-        this.memberStatus = member.isMemberStatus();
+    public void SelectEditMember(Booker booker) throws IOException {
+        setMemberId(booker.getId());
+        this.title = booker.getTitle();
+        this.firstName = booker.getFirstName();
+        this.lastName = booker.getLastName();
+        this.address = booker.getAddress();
+        this.email = booker.getEmail();
+        this.contactNo = booker.getContact();
+        this.dob = booker.getDob();
+        this.miles = booker.getMiles();
+        this.passport = booker.getPassport();
+        this.memberStatus = booker.isMemberStatus();
         this.setEmailEdited(email);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./adsEditMGpage.xhtml");
 
@@ -65,7 +65,7 @@ public class EditMemberGuestManagedBean implements Serializable {
 
     public void editMemberAccount() throws IOException {
         if (!mbsbl.checkEmailDuplicate(email, emailEdited)) {
-            mbsbl.editMember(memberId, title, firstName, lastName, address, email, contactNo, dob, miles, passport, memberStatus);
+            mbsbl.editBooker(memberId, title, firstName, lastName, address, email, contactNo, dob, miles, passport, memberStatus);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -73,11 +73,11 @@ public class EditMemberGuestManagedBean implements Serializable {
         }
     }
 
-    public List<Member> getMemberList() {
-        memberList = mbsbl.getAllMember();
+    public List<Booker> getMemberList() {
+        memberList = mbsbl.getAllBooker();
         System.out.println("Member List size is " + memberList.size());
         for (Integer i = 0; i < memberList.size(); i++) {
-            System.out.println(memberList.get(i).getMemberID());
+            System.out.println(memberList.get(i).getId());
         }
 
         return memberList;
@@ -86,7 +86,7 @@ public class EditMemberGuestManagedBean implements Serializable {
     /**
      * @param memberList the memberList to set
      */
-    public void setMemberList(List<Member> memberList) {
+    public void setMemberList(List<Booker> memberList) {
         this.memberList = memberList;
     }
 

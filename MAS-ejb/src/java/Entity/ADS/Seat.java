@@ -6,12 +6,13 @@
 
 package Entity.ADS;
 
-import Entity.ADS.Ticket;
+import Entity.AIS.FlightCabin;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -33,11 +34,22 @@ public class Seat implements Serializable {
 
     @OneToOne(mappedBy="seat")
     private Ticket ticket;
+    @ManyToOne
+    private FlightCabin flightCabin;
 
+    public FlightCabin getFlightCabin() {
+        return flightCabin;
+    }
+
+    public void setFlightCabin(FlightCabin flightCabin) {
+        this.flightCabin = flightCabin;
+    }
+    
+    
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }

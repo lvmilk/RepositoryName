@@ -113,6 +113,7 @@ public class PricingBean implements PricingBeanLocal {
 
     public Double getCrewCost(Integer crewNo, Double crewUnitCost, Double blockHour, Integer annualDepartures) {
         calculateCrewCost(crewNo, crewUnitCost, blockHour, annualDepartures);
+        System.out.println("############################crew cost is "+crewCost);
         return crewCost;
     }
 

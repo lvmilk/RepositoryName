@@ -143,6 +143,7 @@ public class PricingManagedBean implements Serializable {
             //System.out.println("MB:Load factor for " + cabin + " read: " + loadfactorMap.get(cabin));
             //System.out.println(loadfactorMap.get(cabin) instanceof Double);
             //  System.out.println("MB:Data is of " + (loadfactorMap.get(cabin).getClass().getName()));
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  "+expectedRev+" "+loadfactorMap.get(cabin)+" "+annualDepartures+" "+cabin);
 
             pb.calculateFare(expectedRev, totalSeatNo, loadfactorMap.get(cabin), annualDepartures, cabin);
             fareMap.put(cabin, pb.getFare());
@@ -277,7 +278,7 @@ public class PricingManagedBean implements Serializable {
     public void retrieveAircraftTypeInfo(AircraftType aircraftType) {
 
         System.out.println("MB: Enter retrieveAircraftTypeInfo");
-        ownershipCost = aircraftType.getPurchaseCost() * 12;
+        ownershipCost = aircraftType.getPurchaseCost();
         if (aircraftType.getSuiteNo() > 0) {
             cabinInfo.put("Suite", aircraftType.getSuiteNo());
             loadfactorMap.put("Suite", 0.0);

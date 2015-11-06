@@ -5,11 +5,12 @@
  */
 package ADSmanagedbean;
 
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.MsgSender;
-import SessionBean.ADS.MemberBeanLocal;
+import SessionBean.ADS.BookerBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -33,7 +34,7 @@ public class MemberGuestManagedBean implements Serializable {
     @EJB
     private PassengerBeanLocal psgSBlocal;
     @EJB
-    private MemberBeanLocal msblocal;
+    private BookerBeanLocal msblocal;
 
     private String title = "Mr";
 
@@ -42,7 +43,7 @@ public class MemberGuestManagedBean implements Serializable {
     private String ffpProgram;
     private String ffpNo;
 
-    private Long memberId;
+    private Long bookerId;
     private String address;
     private String email;
     private String existEmail;
@@ -55,6 +56,7 @@ public class MemberGuestManagedBean implements Serializable {
 
     private ArrayList<Passenger> passengerList = new ArrayList<>();
     private Passenger person = new Passenger();
+    private Booker booker=new Booker();
 
     private Integer repeat;
 
@@ -98,38 +100,41 @@ public class MemberGuestManagedBean implements Serializable {
         Long temp;
 
         if (visiMember == true) {
-            if (psgSBlocal.checkMemberExist(memberId, existEmail)) {
-                passengerList = psgSBlocal.makeReservation(passengerList, existEmail, memberId);
+            booker=psgSBlocal.checkMemberExist(bookerId, existEmail);
+            if (booker!=null) {
+//                passengerList = psgSBlocal.makeReservation(passengerList, existEmail, bookerId);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", memberId);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
+                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("visiMember", visiMember);
 
                 System.out.println("#########This is in makeReserver and the id of passenger is:" + passengerList.get(0).getId());
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
-
+             
+                
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
             }
         } else if (visiNonMember == true) {
-            if (msblocal.checkEmailExists(email)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "This email address is already been used ", ""));
-            } else {
-                passengerList = psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
-                temp = msblocal.retrieveMemberID(email);
-                if (temp.equals(0)) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member ID does not found ", ""));
-                } else {
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("RsvMemberId", temp);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
+            
+            booker=psgSBlocal.createTempBooker( title, firstName, lastName, address, email, contactNo);
 
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
-                }
+//                passengerList = psgSBlocal.makeRsvGuest(passengerList, title, firstName, lastName, address, email, contactNo);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Information filled successfully."));
+//            temp = msblocal.retrieveBookerID(email);
+//            if (temp.equals(0)) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member ID does not found ", ""));
+            
+//            } else {
+            
+              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("visiMember", visiMember);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
 
-            }
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
         }
     }
 
@@ -276,17 +281,6 @@ public class MemberGuestManagedBean implements Serializable {
     /**
      * @return the memberId
      */
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    /**
-     * @param memberId the memberId to set
-     */
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
     /**
      * @return the visiMember
      */
@@ -381,4 +375,14 @@ public class MemberGuestManagedBean implements Serializable {
         this.totalPrice = totalPrice;
     }
 
+    public Long getBookerId() {
+        return bookerId;
+    }
+
+    public void setBookerId(Long bookerId) {
+        this.bookerId = bookerId;
+    }
+
+    
+    
 }

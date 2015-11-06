@@ -323,7 +323,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         cpCrew.setCpName(username);
         cpCrew.setStfType(stfType);
         cpCrew.setEmail(emailEdited);
-        cpCrew.setName(name);
+        cpCrew.setSurName(name);
         cpCrew.setStfLevel(stfLevel);
         cpCrew.setSalary(salary);
         cpCrew.setHourPay(hourPay);
@@ -496,7 +496,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             cbCrew.setCbName(username);
             cbCrew.setStfType(stfType);
             cbCrew.setEmail(emailEdited);
-            cbCrew.setName(name);
+            cbCrew.setSurName(name);
             cbCrew.setStfLevel(stfLevel);
             cbCrew.setSalary(salary);
             cbCrew.setHourPay(hourPay);

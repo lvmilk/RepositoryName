@@ -34,7 +34,7 @@ public class PassengerNameRecord implements Serializable {
     @OneToOne(cascade={CascadeType.ALL})
     private AirAlliances alliance;
     private String contact;
-    private Member member;
+    private Booker member;
     
 
     public Long getId() {
@@ -115,14 +115,14 @@ public class PassengerNameRecord implements Serializable {
     /**
      * @return the member
      */
-    public Member getMember() {
+    public Booker getMember() {
         return member;
     }
 
     /**
      * @param member the member to set
      */
-    public void setMember(Member member) {
+    public void setMember(Booker member) {
         this.member = member;
     }
 
