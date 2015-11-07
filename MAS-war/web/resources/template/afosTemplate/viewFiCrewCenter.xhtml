@@ -44,28 +44,43 @@
                     </p:column>
 
                     <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
+                        <h:outputText value="#{VFCSMB.captainMap[fi]}" />
                     </p:column>
 
-                     <p:column headerText="Pilot">
-                        <h:outputText value="#{fi.cockpitList}" />
+                    <p:column headerText="Stand-by Captain">
+                        <h:outputText value="#{VFCSMB.captainSBMap[fi]}" />
                     </p:column>
 
-                     <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
+                    <p:column headerText="Pilot">
+                        <h:outputText value="#{VFCSMB.pilotMap[fi]}" />
                     </p:column>
-                    
-                     <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
+
+                    <p:column headerText="Stand-by Pilot">
+                        <h:outputText value="#{VFCSMB.pilotSBMap[fi]}" />
                     </p:column>
-                    
-                    <p:column headerText="View Maintenance">
-                        <p:commandButton value="View Maintenance" action="#{VMSAMB.viewMaintenanceList(aircraft)}" />
+
+                    <p:column headerText="Cabin Crew">
+                        <h:outputText value="#{VFCSMB.cabinMap[fi]}" />
+                    </p:column>
+
+                    <p:column headerText="Stand-by Cabin Crew">
+                        <h:outputText value="#{VFCSMB.cabinSBMap[fi]}" />
+                    </p:column>
+
+                    <p:column headerText="Cabin Leader">
+                        <h:outputText value="#{VFCSMB.cabinLeaderMap[fi]}" />
+                    </p:column>
+
+                    <p:column headerText="Stand-by Cabin Leader">
+                        <h:outputText value="#{VFCSMB.cabinLeaderSBMap[fi]}" />
+                    </p:column>
+
+                    <p:column headerText="View Flight Crew">
+                        <p:commandButton value="View Crew Detail" action="#{VFCSMB.viewFlightCrew(fi)}" />
                     </p:column>
 
                 </p:dataTable>
             </p:panel>
-            <p:draggable for="panel" /><p:resizable for="panel" />
         </h:form>
     </h:body>
 </html>
