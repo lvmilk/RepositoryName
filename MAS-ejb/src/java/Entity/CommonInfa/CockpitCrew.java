@@ -35,8 +35,8 @@ public class CockpitCrew implements Serializable {
     private Integer attempt;
     private Integer locked;
     private String stfLevel;
-    private String surName;
-    private String givenName;
+    private String firstName;
+    private String lastName;
     private Double salary;
     private Double hourPay;
     private long yearAccumMin = 0;
@@ -56,13 +56,14 @@ public class CockpitCrew implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private FlightCrewTeam flightTeam;
 
-    public void create(String strCpName, String strCpPassword, String email, String strStfType, String name, String stfLevel, Double salary, String licence) {
+    public void create(String strCpName, String strCpPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         this.setCpName(strCpName);
         this.setCpPassword(strCpPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
         this.setLicence(licence);
-        this.setSurName(name);
+        this.setFirstName(firstName);
+        this.setLastName(lastName);
         this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
@@ -175,20 +176,20 @@ public class CockpitCrew implements Serializable {
         this.stfLevel = stfLevel;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getGivenName() {
-        return givenName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Double getSalary() {

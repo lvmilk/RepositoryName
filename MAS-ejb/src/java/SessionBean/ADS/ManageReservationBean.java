@@ -5,9 +5,10 @@
  */
 package SessionBean.ADS;
 
-import Entity.ADS.Member;
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
+import Entity.ADS.Ticket;
 import static Entity.ADS.Ticket_.rsv;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
@@ -28,16 +29,20 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     @PersistenceContext
     EntityManager em;
 
+    
+    
     public List<Passenger> getPassengerList(Reservation rsv) {
-        Member member = rsv.getTickets().get(0).getPassenger().getMember();
-        Query query = em.createQuery("SELECT DISTINCT p FROM Passenger p WHERE p.member=:member");
-        query.setParameter("member", member);
-
-        List<Passenger> resultList = query.getResultList();
-
-        return resultList;
-
+        List<Ticket> tickets = rsv.getTickets();
+        List<Passenger> psgList = new ArrayList<>();
+        for (int i = 0; i < tickets.size(); i++) {
+            if (!psgList.contains(tickets.get(i).getPassenger())) {
+                psgList.add(tickets.get(i).getPassenger());
+            }
+        }
+        return psgList;
     }
+    
+    
 
     public List<FlightInstance> getFlightPackage(List<FlightInstance> flights, String origin, String dest, int index) {
         List<FlightInstance> departed = new ArrayList<>();

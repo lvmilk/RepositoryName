@@ -119,6 +119,7 @@ public class ReserveFlightManagedBean implements Serializable {
     private Date departDate = new Date();
     private Date returnDate = new Date();
 
+    private String stfType;
     private List<CabinClass> cabinList = new ArrayList<>();
 
     public ReserveFlightManagedBean() {
@@ -131,6 +132,7 @@ public class ReserveFlightManagedBean implements Serializable {
         returnDefault = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDefault");
         origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
         dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
+        stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
 
         initialFrequency = rf.getAllFlightFrequency();
 
@@ -353,7 +355,7 @@ public class ReserveFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departsByDay", departsByDay);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayToCheck", departDayToCheck);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDayOfWeek", departDayOfWeek);
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDefault", departDefault);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDefault", departDefault);
 
     }
 
@@ -534,7 +536,11 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                    if (stfType.equals("agency")) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                    } else {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                    }
 
                 } else {
                     if (returnIndexes.isEmpty()) {
@@ -582,7 +588,11 @@ public class ReserveFlightManagedBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                        if (stfType.equals("agency")) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                        } else {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                        }
 
                     }
                 }
@@ -653,7 +663,11 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                            if (stfType.equals("agency")) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                            } else {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                            }
 
                         }
                     }
@@ -749,7 +763,11 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                if (stfType.equals("agency")) {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                                } else {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                }
                             }
                         } else {
                             for (Map.Entry<String, Boolean> entry : departDayToCheck.entrySet()) {
@@ -868,13 +886,21 @@ public class ReserveFlightManagedBean implements Serializable {
                         if (!returnSpecificList.isEmpty()) {
                             System.out.println("in findFlightInstance(): returnSpecificList size is " + returnSpecificList.size());
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSpecificList", returnSpecificList);
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                            if (stfType.equals("agency")) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                            } else {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                            }
                         } else {
                             System.out.println("in findFlightInstance(): returnSpecificList is empty");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for Returned date specified ", ""));
                         }
                     } else {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                        if (stfType.equals("agency")) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                        } else {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                        }
                     }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No flight found for departure date specified ", ""));
@@ -884,7 +910,6 @@ public class ReserveFlightManagedBean implements Serializable {
                 Calendar c = Calendar.getInstance();
                 c.setTime(departDate);
                 SimpleDateFormat f = new SimpleDateFormat("dd MMM yyyy");
-             
 
                 // Set the calendar to monday of the current week
                 c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -917,8 +942,8 @@ public class ReserveFlightManagedBean implements Serializable {
                     c.add(Calendar.DATE, 1);
 
                 }
-                
-                departDefault=dateOfWeek.indexOf(f.format(departDate));
+
+                departDefault = dateOfWeek.indexOf(f.format(departDate));
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departMap", departMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek", dateOfWeek);
@@ -928,11 +953,14 @@ public class ReserveFlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departDefault", departDefault);
 
                 if (!returnTrip) {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                    if (stfType.equals("agency")) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                    } else {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                    }
                 } else {
                     c = Calendar.getInstance();
                     c.setTime(returnDate);
-               
 
                     // Set the calendar to monday of the current week
                     c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
@@ -963,8 +991,8 @@ public class ReserveFlightManagedBean implements Serializable {
                         }
                         c.add(Calendar.DATE, 1);
                     }
-                    
-                    returnDefault=dateOfWeek2.indexOf(f.format(returnDate));
+
+                    returnDefault = dateOfWeek2.indexOf(f.format(returnDate));
 
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnsByDay", returnsByDay);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateOfWeek2", dateOfWeek2);
@@ -973,7 +1001,11 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDayOfWeek", returnDayOfWeek);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDefault", returnDefault);
 
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                    if (stfType.equals("agency")) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                    } else {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ReserveFlight2.xhtml");
+                    }
                 }
 
             }
@@ -1418,6 +1450,18 @@ public class ReserveFlightManagedBean implements Serializable {
         this.returnDefault = returnDefault;
     }
 
-    
-    
+    /**
+     * @return the stfType
+     */
+    public String getStfType() {
+        return stfType;
+    }
+
+    /**
+     * @param stfType the stfType to set
+     */
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
+    }
+
 }

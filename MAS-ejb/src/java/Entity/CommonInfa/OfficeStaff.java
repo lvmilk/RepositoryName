@@ -30,19 +30,21 @@ public class OfficeStaff implements Serializable {
     private Integer attempt;
     private Integer locked;
     private String stfLevel;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Double salary;
     private Double hourPay;
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType, String name, String stfLevel, Double salary) {
+    public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setOffName(strOffName);
         this.setOffPassword(strOffPassword);
         this.setEmail(strOffEmail);
         this.setStfType(strStfType);
-        this.setName(name);
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.setStfLevel(stfLevel);
         this.setAttempt(0);
         this.setLocked(0);
@@ -188,17 +190,17 @@ public class OfficeStaff implements Serializable {
     }
 
     /**
-     * @return the name
+     * @return the firstName
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * @param name the name to set
+     * @param firstName the firstName to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -227,6 +229,20 @@ public class OfficeStaff implements Serializable {
      */
     public void setHourPay(Double hourPay) {
         this.hourPay = hourPay;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

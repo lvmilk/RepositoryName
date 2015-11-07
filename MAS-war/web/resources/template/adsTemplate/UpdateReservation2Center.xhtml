@@ -12,81 +12,98 @@
     </h:head>
     <h:body>
         <h:form id="updateRsv">
+
+
             <p:panel id="detail" header="Reservation Detail" toggleable="true">
                 <p:panel header="Departure Trip " >  
-                    <h:panelGrid columns="2" cellpadding="15">
-                        <p:commandButton value="update"/>
-                        <ui:repeat value="#{updateReservation.departed}" var="instance" varStatus="myStatus">
 
-                            <h:panelGrid columns="8" cellpadding="15" >
+                    <ui:repeat value="#{updateReservation.departed}" var="instance" varStatus="myStatus">
 
-                                <p:outputLabel  value="FlightNo: " />
-                                <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+                        <h:panelGrid columns="8" cellpadding="15" >
 
-                                <p:outputLabel  value="Departure Time " />
-                                <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
 
-                                <p:outputLabel  value="Depart From: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+                            <p:outputLabel  value="Departure Time " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                                <p:outputLabel  value="Aircraft Type: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
 
-                                <p:outputLabel  value="Cabin Class: " />
-                                <p:outputLabel value="#{updateReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
-                                <p:outputLabel  value="Arrival Time Time: " />
-                                <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
-                                <p:outputLabel  value="Arrive At: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
-                            </h:panelGrid>
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                            <p:separator />
-                        </ui:repeat>
-                    </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+
                 </p:panel>
 
                 <br/>
                 <p:panel header="Return Trip " rendered="#{updateReservation.returned.size()>0}">    
-                    <h:panelGrid columns="2" cellpadding="15">
-                        <p:commandButton value="update"/>
-                        <ui:repeat value="#{updateReservation.returned}" var="instance">
 
-                            <h:panelGrid columns="8" cellpadding="15" >
+                    <ui:repeat value="#{updateReservation.returned}" var="instance">
 
-                                <p:outputLabel  value="FlightNo: " />
-                                <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+                        <h:panelGrid columns="8" cellpadding="15" >
 
-                                <p:outputLabel  value="Departure Time " />
-                                <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
 
-                                <p:outputLabel  value="Depart From: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+                            <p:outputLabel  value="Departure Time " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                                <p:outputLabel  value="Aircraft Type: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
 
-                                <p:outputLabel  value="Cabin Class: " />
-                                <p:outputLabel value="#{updateReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
-                                <p:outputLabel  value="Arrival Time Time: " />
-                                <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
-                                <p:outputLabel  value="Arrive At: " />
-                                <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                            </h:panelGrid>
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
 
-                            <p:separator />
-                        </ui:repeat>
-                    </h:panelGrid>
                 </p:panel>
 
 
                 <br/>
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="4" cellpadding="10" >
+                        <p:outputLabel  value="Title" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
+
+                        <p:outputLabel  value="Name" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.firstName} #{updateReservation.selectedRsv.booker.lastName}" />
+
+                        <p:outputLabel  value="Email" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.email}" />
+
+                        <p:outputLabel  value="Address" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.address}" />
+
+                        <p:outputLabel  value="Contact No" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.contact}" />
+                    </h:panelGrid>
+
+                </p:panel>
+
                 <p:panel id="passenger" header="Passenger"   toggleable="true" style="width:70%">
                     <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
 

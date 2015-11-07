@@ -5,7 +5,7 @@
  */
 package SessionBean.ADS;
 
-import Entity.ADS.Member;
+import Entity.ADS.Booker;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -14,12 +14,15 @@ import javax.ejb.Local;
  * @author LI HAO
  */
 @Local
-public interface MemberBeanLocal {
-    public List<Member> getAllMember();
+public interface BookerBeanLocal {
+    public List<Booker> getAllBooker();
     public boolean checkEmailDuplicate(String email, String emailEdited);
-    public void editMember(Long memberId,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus);
+    public void editBooker(Long Id,String title,String firstName,String lastName,String address,String email,String contactNo,String dob,Double miles,String passport,boolean memberStatus);
     public boolean checkEmailExists(String email);
     public boolean checkPassportExists(String passport);
-    public Long retrieveMemberID(String email);
-    public Member retrieveMember(Long mermberId);
+    public Long retrieveBookerID(String email);
+    public Booker retrieveBooker(Long Id);
+
+    public void editThisBooker(Booker bookPerson);
 }
+
