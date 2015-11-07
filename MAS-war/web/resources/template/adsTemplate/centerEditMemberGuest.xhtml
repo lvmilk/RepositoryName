@@ -12,8 +12,8 @@
             <p:panel id="memberGuestPanel"  header="Edit Member or Guest"  style="width:100%">
                 <p:dataTable var="memberGuest" value="#{etMemberGuestMB.memberList}" paginator="true" rows="10" emptyMessage="No such Member/Guest">
 
-                    <p:column headerText="ID" sortBy="#{memberGuest.memberID}">
-                        <h:outputText value="#{memberGuest.memberID}" />
+                    <p:column headerText="ID" sortBy="#{memberGuest.id}">
+                        <h:outputText value="#{memberGuest.id}" />
                     </p:column>
 
                     <p:column headerText="Title" >

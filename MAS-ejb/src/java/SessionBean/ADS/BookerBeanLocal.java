@@ -22,5 +22,7 @@ public interface BookerBeanLocal {
     public boolean checkPassportExists(String passport);
     public Long retrieveBookerID(String email);
     public Booker retrieveBooker(Long Id);
+
+    public void editThisBooker(Booker bookPerson);
 }
 
