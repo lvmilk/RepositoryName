@@ -5,11 +5,14 @@
  */
 package AFOSmanagedbean;
 
+import Entity.APS.FlightInstance;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -36,6 +39,7 @@ public class FlightCrewSchedulingManagedBean implements Serializable {
     private Date endViewDate;
     private Date startViewScheduleDate;
     private Date endViewScheduleDate;
+
 
     public FlightCrewSchedulingManagedBean() {
     }
