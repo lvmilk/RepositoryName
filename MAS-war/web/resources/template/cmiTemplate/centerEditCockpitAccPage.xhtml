@@ -30,11 +30,17 @@
                     </p:inputText>
                     <p:message for="cpEmail" display="icon" />
 
-                    <p:outputLabel for="cpName" value="Name: " />
-                    <p:inputText id="cpName" value="#{etManagedBean.name}" validatorMessage="Please enter the name" required="true" label="name" size="10">
+                    <p:outputLabel for="cpFirstName" value="First Name: " />
+                    <p:inputText id="cpFirstName" value="#{etManagedBean.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
 
                     </p:inputText>
-                    <p:message for="cpName" display="icon" />
+                    <p:message for="cpFirstName" display="icon" />
+
+                    <p:outputLabel for="cpLastName" value="Last Name: " />
+                    <p:inputText id="cpLastName" value="#{etManagedBean.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+
+                    </p:inputText>
+                    <p:message for="cpLastName" display="icon" />
 
                     <p:outputLabel for="cpStfLevel" value="Role/Level: " />
                     <p:inputText id="cpStfLevel" value="#{etManagedBean.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">

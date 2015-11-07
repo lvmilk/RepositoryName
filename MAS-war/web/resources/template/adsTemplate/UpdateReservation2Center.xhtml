@@ -87,6 +87,26 @@
 
 
                 <br/>
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="4" cellpadding="10" >
+                        <p:outputLabel  value="Title" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
+
+                        <p:outputLabel  value="Name" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.firstName} #{updateReservation.selectedRsv.booker.lastName}" />
+
+                        <p:outputLabel  value="Email" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.email}" />
+
+                        <p:outputLabel  value="Address" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.address}" />
+
+                        <p:outputLabel  value="Contact No" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.contact}" />
+                    </h:panelGrid>
+
+                </p:panel>
+
                 <p:panel id="passenger" header="Passenger"   toggleable="true" style="width:70%">
                     <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
 

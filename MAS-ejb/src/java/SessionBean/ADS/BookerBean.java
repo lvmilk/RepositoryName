@@ -5,7 +5,7 @@
  */
 package SessionBean.ADS;
 
-import Entity.ADS.Member;
+import Entity.ADS.Booker;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,15 +18,15 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class MemberBean implements MemberBeanLocal {
+public class BookerBean implements BookerBeanLocal {
 
     @PersistenceContext
     EntityManager em;
 
     @Override
-    public List<Member> getAllMember() {
-        Query query = em.createQuery("SELECT a FROM Member a ");
-        List<Member> resultList = (List) query.getResultList();
+    public List<Booker> getAllBooker() {
+        Query query = em.createQuery("SELECT a FROM Booker a ");
+        List<Booker> resultList = (List) query.getResultList();
 
         return resultList;
     }
@@ -46,7 +46,7 @@ public class MemberBean implements MemberBeanLocal {
     public boolean checkEmailExists(String email) {
         Query query = null;
 
-        query = em.createQuery("SELECT u FROM Member u WHERE u.email = :inUserEmail");
+        query = em.createQuery("SELECT u FROM Booker u WHERE u.email = :inUserEmail");
         query.setParameter("inUserEmail", email);
         return checkList(query);
 
@@ -56,27 +56,27 @@ public class MemberBean implements MemberBeanLocal {
     public boolean checkPassportExists(String passport) {
         Query query = null;
 
-        query = em.createQuery("SELECT u FROM Member u WHERE u.passport = :inUserPassport");
+        query = em.createQuery("SELECT u FROM Booker u WHERE u.passport = :inUserPassport");
         query.setParameter("inUserPassport", passport);
         return checkList(query);
 
     }
 
     @Override
-    public void editMember(Long memberId, String title, String firstName, String lastName, String address, String email, String contactNo, String dob, Double miles, String passport, boolean memberStatus) {
-        Member member = em.find(Member.class, memberId);
-        member.setTitle(title);
-        member.setFirstName(firstName);
-        member.setLastName(lastName);
-        member.setAddress(address);
-        member.setEmail(email);
-        member.setContact(contactNo);
-        member.setDob(dob);
-        member.setMiles(miles);
-        member.setPassport(passport);
-        member.setMemberStatus(memberStatus);
+    public void editBooker(Long Id, String title, String firstName, String lastName, String address, String email, String contactNo, String dob, Double miles, String passport, boolean memberStatus) {
+        Booker booker = em.find(Booker.class, Id);
+        booker.setTitle(title);
+        booker.setFirstName(firstName);
+        booker.setLastName(lastName);
+        booker.setAddress(address);
+        booker.setEmail(email);
+        booker.setContact(contactNo);
+        booker.setDob(dob);
+        booker.setMiles(miles);
+        booker.setPassport(passport);
+        booker.setMemberStatus(memberStatus);
 
-        em.merge(member);
+        em.merge(booker);
         em.flush();
 
     }
@@ -93,23 +93,23 @@ public class MemberBean implements MemberBeanLocal {
     }
 
     @Override
-    public Long retrieveMemberID(String email) {
+    public Long retrieveBookerID(String email) {
         Query query = null;
         Long temp=new Long(0);
 
-        query = em.createQuery("SELECT u FROM Member u WHERE u.email = :inUserEmail");
+        query = em.createQuery("SELECT u FROM Booker u WHERE u.email = :inUserEmail");
         query.setParameter("inUserEmail", email);
-        List<Member> resultList= query.getResultList();
+        List<Booker> resultList= query.getResultList();
         if(!resultList.isEmpty())
         {
-            return resultList.get(0).getMemberID();
+            return resultList.get(0).getId();
         }
         return temp;
     }
 
     @Override
-    public Member retrieveMember(Long mermberId) {
-        Member member=em.find(Member.class, mermberId);
-        return member;
+    public Booker retrieveBooker(Long Id) {
+        Booker booker=em.find(Booker.class, Id);
+        return booker;
     }
 }
