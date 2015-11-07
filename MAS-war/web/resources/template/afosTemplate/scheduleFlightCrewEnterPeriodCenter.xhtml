@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Flight Crew Scheduling"  style="width:100%">
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+                    <p:outputLabel for="startPlanDate" />
+                    <p:calendar id="startPlanDate" value="#{FCSMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew start scheduling date" size="30"> 
+                    </p:calendar>
+                    
+                    <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />
+                    <p:calendar id="endPlanDate" value="#{FCSMB.endDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew end scheduling date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{FCSMB.startDate}" />
+                        <f:validator validatorId="DateRangeValidator" />
+                    </p:calendar>
+                </h:panelGrid>
+                <p:commandButton value="Schedule Flight Crew" action="#{FCSMB.flightCrewSchdulingForPeriod}"  icon="ui-icon-check" />
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>

@@ -230,7 +230,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void addAccount(String username, String password, String email, String stfType, String name, String stfLevel, Double salary) {
+    public void addAccount(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary) {
 //        newUser = new FFPMember();
         System.out.println("Currently in addAccount");
         hPwd = this.encrypt(username, password);
@@ -242,7 +242,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         } else if (stfType.equals("officeStaff")) {
             offStaff = new OfficeStaff();
             userEntity = new UserEntity();
-            offStaff.create(username, hPwd, email, stfType, name, stfLevel, salary);
+            offStaff.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
             userEntity.create(username, email);
             offStaff.setUser(userEntity);
             userEntity.setOffStaff(offStaff);
@@ -250,7 +250,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
             userEntity = new UserEntity();
-            grdStaff.create(username, hPwd, email, stfType, name, stfLevel, salary);
+            grdStaff.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
             userEntity.create(username, email);
             grdStaff.setUser(userEntity);
             userEntity.setGrdStaff(grdStaff);
@@ -259,7 +259,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             System.out.println(stfType);
             cbCrew = new CabinCrew();
             userEntity = new UserEntity();
-            cbCrew.create(username, hPwd, email, stfType, name, stfLevel, salary);
+            cbCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
             userEntity.create(username, email);
             cbCrew.setUser(userEntity);
             userEntity.setCbCrew(cbCrew);
@@ -269,11 +269,11 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void addCocpitAcc(String username, String password, String email, String stfType, String name, String stfLevel, Double salary, String licence) {
+    public void addCocpitAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         cpCrew = new CockpitCrew();
         userEntity = new UserEntity();
         hPwd = this.encrypt(username, password);
-        cpCrew.create(username, hPwd, email, stfType, name, stfLevel, salary, licence);
+        cpCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary, licence);
         userEntity.create(username, email);
         cpCrew.setUser(userEntity);
         userEntity.setCpCrew(cpCrew);
@@ -307,6 +307,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         }
     }
 
+    @Override
     public boolean checkEmailDuplicate(String email, String emailEdited) {
         if (email.equals(emailEdited)) {
             return false;
@@ -316,13 +317,14 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel, Double salary, Double hourPay, String licence, Integer attempt, Integer locked) {
+    public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String firstName, String lastName, String stfLevel, Double salary, Double hourPay, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
 
         cpCrew.setCpName(username);
         cpCrew.setStfType(stfType);
         cpCrew.setEmail(emailEdited);
-        cpCrew.setName(name);
+        cpCrew.setFirstName(firstName);
+        cpCrew.setLastName(lastName);
         cpCrew.setStfLevel(stfLevel);
         cpCrew.setSalary(salary);
         cpCrew.setHourPay(hourPay);
@@ -438,14 +440,15 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
     }
 
     @Override
-    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String name, String stfLevel, Double salary, Double hourPay, Integer attempt, Integer locked) {
+    public void editStaff(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String firstName,String lastName, String stfLevel, Double salary, Double hourPay, Integer attempt, Integer locked) {
 
         if (stfType.equals("officeStaff")) {
             OfficeStaff officeStaff = em.find(OfficeStaff.class, username);
             UserEntity userEntity = em.find(UserEntity.class, email);
             officeStaff.setOffName(username);
             officeStaff.setStfType(stfType);
-            officeStaff.setName(name);
+            officeStaff.setFirstName(firstName);
+            officeStaff.setLastName(lastName);
             officeStaff.setStfLevel(stfLevel);
             officeStaff.setSalary(salary);
             officeStaff.setHourPay(hourPay);
@@ -471,7 +474,8 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             grdStaff.setGrdName(username);
             grdStaff.setEmail(emailEdited);
             grdStaff.setStfType(stfType);
-            grdStaff.setName(name);
+            grdStaff.setFirstName(firstName);
+            grdStaff.setLastName(lastName);
             grdStaff.setStfLevel(stfLevel);
             grdStaff.setSalary(salary);
             grdStaff.setHourPay(hourPay);
@@ -495,7 +499,8 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             cbCrew.setCbName(username);
             cbCrew.setStfType(stfType);
             cbCrew.setEmail(emailEdited);
-            cbCrew.setName(name);
+            cbCrew.setFirstName(firstName);
+            cbCrew.setLastName(lastName);
             cbCrew.setStfLevel(stfLevel);
             cbCrew.setSalary(salary);
             cbCrew.setHourPay(hourPay);

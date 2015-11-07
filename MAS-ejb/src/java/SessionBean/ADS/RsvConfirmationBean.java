@@ -5,10 +5,11 @@
  */
 package SessionBean.ADS;
 
-import Entity.ADS.Member;
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
 import Entity.ADS.Ticket;
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,7 +31,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     EntityManager em;
 
     @EJB
-    MemberBeanLocal msblocal;
+    BookerBeanLocal msblocal;
 
     private Ticket ticket;
     private Passenger psg;
@@ -44,7 +45,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     private String bookSystem = "ARS";
 
     @Override
-    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Long memberId) {
+    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Long memberId, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -111,16 +112,16 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
 
         }
 
-        setupTicket_Reservation(memberId, tkList);
+        setupTicket_Reservation(memberId, tkList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
 
     }
 
-    private void setupTicket_Reservation(Long memberId, ArrayList<Ticket> tkList) {
-        Member member = new Member();
-        member = msblocal.retrieveMember(memberId);
+    private void setupTicket_Reservation(Long memberId, ArrayList<Ticket> tkList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
+        Booker booker = new Booker();
+        booker = msblocal.retrieveBooker(memberId);
 
         Reservation rsv = new Reservation();
-        rsv.createReservation(member.getFirstName(), member.getLastName(), member.getEmail());
+        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
         rsv.setTickets(tkList);
         em.persist(rsv);
         em.flush();
@@ -131,9 +132,34 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
             em.merge(tkList.get(i));
             em.flush();
         }
+        setupBookingClassInstace_Reservation(rsv,BookClassInstanceList, psgCount);
+ 
+    }
+    
+    
+    private void setupBookingClassInstace_Reservation( Reservation reservation, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount){
+       Reservation rsv=em.find(Reservation.class, reservation.getId());
+       BookingClassInstance instance=new BookingClassInstance();
+       if(rsv!=null){
+        for(int i=0; i<BookClassInstanceList.size(); i++){ 
+        instance=em.find(BookingClassInstance.class,BookClassInstanceList.get(i).getId());
+//        instance.setBookedSeatNo(instance.getBookedSeatNo()+psgCount);
+        instance.getReservation().add(rsv);
+        rsv.getBkcInstance().add(instance);
+        }
+        em.merge(rsv);
+        em.flush();
         
+        for(int i=0; i<rsv.getBkcInstance().size(); i++){
+         System.out.println("i="+i+" flightInstance is "+rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
+        
+      
+        }
+        
+       }
 
     }
+    
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

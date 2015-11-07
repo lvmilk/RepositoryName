@@ -5,8 +5,15 @@
  */
 package SessionBean.ADS;
 
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Payment;
+import Entity.ADS.Reservation;
+import Entity.ADS.Ticket;
+import Entity.AIS.BookingClassInstance;
+import Entity.APS.FlightInstance;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -15,6 +22,19 @@ import javax.ejb.Local;
  */
 @Local
 public interface PassengerBeanLocal {
-    public ArrayList<Passenger> makeReservation(ArrayList<Passenger> passengerList,String email, Long memberId);
-    public ArrayList<Passenger> makeRsvGuest(ArrayList<Passenger> passengerList,String title,String firstName,String lastName,String address,String email,String contactNo);
-    public boolean checkMemberExist(Long memberId, String email);}
+
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip);
+
+    public boolean checkPassportExist(String passport);
+
+    public boolean checkPassengerExist(Passenger passenger);
+
+    public Booker checkMemberExist(Long memberId, String email);
+
+    public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo);
+
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount);
+
+
+
+}

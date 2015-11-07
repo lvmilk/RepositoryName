@@ -34,32 +34,35 @@ public class CabinCrew implements Serializable {
     private Integer attempt;
     private Integer locked;
     private String stfLevel;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Double salary;
     private Double hourPay;
-    
-      ////
     private String secondLang;
-    private long yearAccumMin;
-    private long monthAccumMin;
-    private long weekAccumMin;
-    private List<FlightInstance> fiList;
-    private List<FlightInstance> fiStandByList;
-    private Integer firstSB;
-    private Integer secondSB; 
-    
-    @OneToOne(cascade={CascadeType.ALL})
+    private long yearAccumMin = 0;
+    private long monthAccumMin = 0;
+    private long weekAccumMin = 0;
+    private Integer firstSB = 0;    // monthly stand-by counter
+    private Integer secondSB = 0;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinList")
+    private List<FlightInstance> fiList = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinStandByList")
+    private List<FlightInstance> fiStandByList = new ArrayList<>();
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private FlightCrewTeam flightTeam;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType, String name, String stfLevel, Double salary) {
+    public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
         this.setStfType(strStfType);
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.stfLevel = stfLevel;
         this.setAttempt(0);
         this.setLocked(0);
@@ -92,100 +95,58 @@ public class CabinCrew implements Serializable {
         return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
     }
 
-    /**
-     * @return the cbName
-     */
     public String getCbName() {
         return cbName;
     }
 
-    /**
-     * @param cbName the cbName to set
-     */
     public void setCbName(String cbName) {
         this.cbName = cbName;
     }
 
-    /**
-     * @return the cbPassword
-     */
     public String getCbPassword() {
         return cbPassword;
     }
 
-    /**
-     * @param cbPassword the cbPassword to set
-     */
     public void setCbPassword(String cbPassword) {
         this.cbPassword = cbPassword;
     }
 
-    /**
-     * @return the stfType
-     */
     public String getStfType() {
         return stfType;
     }
 
-    /**
-     * @param stfType the stfType to set
-     */
     public void setStfType(String stfType) {
         this.stfType = stfType;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    /**
-     * @return the attempt
-     */
     public Integer getAttempt() {
         return attempt;
     }
 
-    /**
-     * @param attempt the attempt to set
-     */
     public void setAttempt(Integer attempt) {
         this.attempt = attempt;
     }
 
-    /**
-     * @return the locked
-     */
     public Integer getLocked() {
         return locked;
     }
 
-    /**
-     * @param locked the locked to set
-     */
     public void setLocked(Integer locked) {
         this.locked = locked;
     }
 
-    /**
-     * @return the user
-     */
     public UserEntity getUser() {
         return user;
     }
 
-    /**
-     * @param user the user to set
-     */
     public void setUser(UserEntity user) {
         this.user = user;
     }
@@ -202,55 +163,42 @@ public class CabinCrew implements Serializable {
         return stfLevel;
     }
 
-    /**
-     * @param stfLevel the stfLevel to set
-     */
     public void setStfLevel(String stfLevel) {
         this.stfLevel = stfLevel;
     }
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    /**
-     * @return the salary
-     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public Double getSalary() {
         return salary;
     }
 
-    /**
-     * @param salary the salary to set
-     */
     public void setSalary(Double salary) {
         this.salary = salary;
     }
 
-    /**
-     * @return the hourPay
-     */
     public Double getHourPay() {
         return hourPay;
     }
 
-    /**
-     * @param hourPay the hourPay to set
-     */
     public void setHourPay(Double hourPay) {
         this.hourPay = hourPay;
     }
-    
+
     public String getSecondLang() {
         return secondLang;
     }

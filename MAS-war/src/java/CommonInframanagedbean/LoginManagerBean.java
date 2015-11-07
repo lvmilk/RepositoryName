@@ -34,7 +34,8 @@ public class LoginManagerBean implements Serializable {
     private String email;
 
     private String licence;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String stfLevel;
     private Double salary;
 
@@ -105,7 +106,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
-            mal.addAccount(username, password, email, stfType, name, stfLevel, salary);
+            mal.addAccount(username, password, email, stfType, firstName,lastName, stfLevel, salary);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -132,7 +133,7 @@ public class LoginManagerBean implements Serializable {
         System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
-            mal.addCocpitAcc(username, password, email, stfType, name, stfLevel, salary, licence);
+            mal.addCocpitAcc(username, password, email, stfType, firstName,lastName, stfLevel, salary, licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
         } else if (!blCreateEmail && blCreateAcc) {
@@ -222,17 +223,17 @@ public class LoginManagerBean implements Serializable {
     }
 
     /**
-     * @return the name
+     * @return the firstName
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * @param name the name to set
+     * @param firstName the firstName to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -261,5 +262,19 @@ public class LoginManagerBean implements Serializable {
      */
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

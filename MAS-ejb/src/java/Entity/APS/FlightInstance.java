@@ -68,8 +68,6 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     @ManyToOne
     private FlightFrequency flightFrequency = new FlightFrequency();
 
-//    @ManyToOne
-//    private FlightPackage flightPackage;
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
 

@@ -30,10 +30,9 @@
                 <p:submenu label="Home" icon="ui-icon-home" style="margin-right: 30px!important;" >
                     <p:menuitem value="My Profile" icon="ui-icon-gear" url="/CMIpages/staffProfile.xhtml"/>
                     <p:menuitem value="My Workspace" icon="ui-icon-bookmark" action="#{wsMB.direction}"/>
-                    <p:menuitem value="Contact HR" icon="ui-icon-contact" url="#" />
                     <p:menuitem value= "Internal Messaging" icon="ui-icon-comment" url = "/CMIpages/message.xhtml"/>
                     <p:separator />
-                    <p:menuitem value="Quit" url="#" />
+                    <p:menuitem value="Quit" actionListener="#{SslManagedBean.endSsl}"/>
                 </p:submenu>
 
                 <p:menuitem value="APS"  style="margin-right: 30px !important;" url="/APSpages/APSworkspace.xhtml" icon="ui-icon-clock"/>

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Super Administrator Left panel</title>
+    </h:head>
+    <h:body>
+
+        <h:form> 
+            <p:panel id="panel" header="DDS left fragment list" >
+                <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
+                    <p:menu id="ddsWorkspace"  style="width:250px" toggleable="true">
+                        <p:submenu label="DDS function list">
+                            <p:menuitem value="Book Flight" url="ddsBooking.xhtml" icon="ui-icon-disk" />
+                            <p:menuitem value="Rebook Flight" url="ddsRebooking.xhtml" icon="ui-icon-disk" />
+                            <p:menuitem value="Cancel Flight" url="ddsCancelation.xhtml" icon="ui-icon-disk" />
+                        </p:submenu>
+
+
+                    </p:menu>
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

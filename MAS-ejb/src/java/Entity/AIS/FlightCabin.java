@@ -5,11 +5,12 @@
  */
 package Entity.AIS;
 
+import Entity.ADS.Seat;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,6 +40,18 @@ public class FlightCabin implements Serializable {
     @OneToMany(mappedBy="flightCabin")
     private List<BookingClassInstance> bookingClassInstances=new ArrayList<BookingClassInstance>();
 
+    @OneToMany(cascade={CascadeType.PERSIST},mappedBy="flightCabin")
+    private List<Seat> seats =new ArrayList<Seat>();
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+    
+    
     
     public List <BookingClassInstance> getBookingClassInstances() {
         return bookingClassInstances;

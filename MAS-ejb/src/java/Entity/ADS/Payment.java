@@ -6,6 +6,7 @@
 package Entity.ADS;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,10 +22,11 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Payment implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentID;
-    
+
     private String pyMethod;
     private String pyName;
     private String cardNo;
@@ -34,21 +36,27 @@ public class Payment implements Serializable {
     private String billAddress;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentDate;
-    
-    @OneToOne(cascade={CascadeType.ALL})
+
+    @OneToOne(cascade = {CascadeType.ALL})
     private Reservation reservation;
-    
-    public Payment()
-    {
-        
+
+    private Double totalPrice;
+
+    public Payment() {
+
     }
-    
+
     public Long getPaymentID() {
         return paymentID;
     }
 
     public void setPaymentID(Long paymentID) {
         this.paymentID = paymentID;
+    }
+
+    public void createPayment(Double totalPrice) {
+        this.paymentDate = Calendar.getInstance().getTime();
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -195,5 +203,13 @@ public class Payment implements Serializable {
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
-    
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
 }

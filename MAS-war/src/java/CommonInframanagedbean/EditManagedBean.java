@@ -48,7 +48,8 @@ public class EditManagedBean implements Serializable {
     private Integer attempt;
     private Integer locked;
 
-    private String name;
+    private String firstName;
+    private String lastName;
     private String stfLevel;
     private Double salary;
     private Double hourPay;
@@ -74,7 +75,8 @@ public class EditManagedBean implements Serializable {
         setStfType(officeStaff.getStfType());
         setPassword(officeStaff.getOffPassword());
         setPswEdited(officeStaff.getOffPassword());
-        setName(officeStaff.getName());
+        setFirstName(officeStaff.getFirstName());
+        setLastName(officeStaff.getLastName());
         setStfLevel(officeStaff.getStfLevel());
         setSalary(officeStaff.getSalary());
         setHourPay(officeStaff.getHourPay());
@@ -91,7 +93,8 @@ public class EditManagedBean implements Serializable {
         setStfType(grdStaff.getStfType());
         setPassword(grdStaff.getGrdPassword());
         setPswEdited(grdStaff.getGrdPassword());
-        setName(grdStaff.getName());
+        setFirstName(grdStaff.getFirstName());
+        setLastName(grdStaff.getLastName());
         setStfLevel(grdStaff.getStfLevel());
         setSalary(grdStaff.getSalary());
         setHourPay(grdStaff.getHourPay());
@@ -107,7 +110,8 @@ public class EditManagedBean implements Serializable {
         setStfType(cbCrew.getStfType());
         setPassword(cbCrew.getCbPassword());
         setPswEdited(cbCrew.getCbPassword());
-        setName(cbCrew.getName());
+        setFirstName(cbCrew.getFirstName());
+        setLastName(cbCrew.getLastName());
         setStfLevel(cbCrew.getStfLevel());
         setSalary(cbCrew.getSalary());
         setHourPay(cbCrew.getHourPay());
@@ -123,7 +127,8 @@ public class EditManagedBean implements Serializable {
         setStfType(cpCrew.getStfType());
         setPassword(cpCrew.getCpPassword());
         setPswEdited(cpCrew.getCpPassword());
-        setName(cpCrew.getName());
+        setFirstName(cpCrew.getFirstName());
+        setLastName(cpCrew.getLastName());
         setStfLevel(cpCrew.getStfLevel());
         setLicence(cpCrew.getLicence());
         setSalary(cpCrew.getSalary());
@@ -136,7 +141,7 @@ public class EditManagedBean implements Serializable {
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, hourPay, attempt, locked);
+            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, firstName,lastName, stfLevel, salary, hourPay, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -147,7 +152,7 @@ public class EditManagedBean implements Serializable {
 
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, name, stfLevel, salary, hourPay, licence, attempt, locked);
+            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, firstName,lastName, stfLevel, salary, hourPay, licence, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -362,17 +367,17 @@ public class EditManagedBean implements Serializable {
     }
 
     /**
-     * @return the name
+     * @return the firstName
      */
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * @param name the name to set
+     * @param firstName the firstName to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
@@ -415,6 +420,20 @@ public class EditManagedBean implements Serializable {
      */
     public void setHourPay(Double hourPay) {
         this.hourPay = hourPay;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }
