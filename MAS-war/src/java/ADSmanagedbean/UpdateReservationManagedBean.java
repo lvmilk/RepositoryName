@@ -5,9 +5,11 @@
  */
 package ADSmanagedbean;
 
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
 import Entity.APS.FlightInstance;
+import SessionBean.ADS.BookerBeanLocal;
 import SessionBean.ADS.ManageReservationBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -16,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -30,6 +33,9 @@ public class UpdateReservationManagedBean implements Serializable {
 
     @EJB
     ManageReservationBeanLocal mr;
+    @EJB
+    private BookerBeanLocal mbsbl;
+
     List<Reservation> rsvList = new ArrayList<>();
     List<Reservation> resultRsvList = new ArrayList<>();
 
@@ -40,6 +46,9 @@ public class UpdateReservationManagedBean implements Serializable {
     List<FlightInstance> flights = new ArrayList<>();
     String origin;
     String dest;
+    Booker booker;
+
+    String emailOrigin;
 
     public UpdateReservationManagedBean() {
     }
@@ -54,6 +63,30 @@ public class UpdateReservationManagedBean implements Serializable {
         departed = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
         returned = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
         psgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("psgList");
+        emailOrigin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emailOrigin");
+        booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
+    }
+
+    public void onSelectBooker() throws IOException {
+
+        booker = selectedRsv.getBooker();
+        
+        System.out.println("booker selected is "+booker);
+        emailOrigin = booker.getEmail();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emailOrigin", emailOrigin);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+
+    }
+
+    public void editBookerAccount() throws IOException {
+        if (!mbsbl.checkEmailDuplicate(booker.getEmail(), emailOrigin)) {
+            mbsbl.editThisBooker(booker);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
+        }
     }
 
     public void onSelectRsv(Reservation rsv) throws IOException {
@@ -76,7 +109,7 @@ public class UpdateReservationManagedBean implements Serializable {
         if (rsv.getReturnTrip()) {
             returned = mr.getFlightPackage(flights, dest, origin, departed.size());
         }
-        System.out.println("booker found is "+selectedRsv.getBooker());
+        System.out.println("booker found is " + selectedRsv.getBooker());
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flights", flights);
@@ -85,9 +118,8 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", departed);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", returned);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
-        
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updateReservation2.xhtml");
 
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./updateReservation2.xhtml");
     }
 
     public List<Reservation> getRsvList() {
@@ -152,6 +184,14 @@ public class UpdateReservationManagedBean implements Serializable {
 
     public void setDest(String dest) {
         this.dest = dest;
+    }
+
+    public Booker getBooker() {
+        return booker;
+    }
+
+    public void setBooker(Booker booker) {
+        this.booker = booker;
     }
 
 }
