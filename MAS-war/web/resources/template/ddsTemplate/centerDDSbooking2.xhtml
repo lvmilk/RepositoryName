@@ -1,0 +1,302 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:head>
+        <title>Flight Search  Result</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form id="chooseFlight">
+            <c:choose>
+                <c:when test="${reserveFlightManagedBean.dateSpecific}">
+
+                    <p:panel id="departSpecific" header="Departure Flight Searching Result" toggleable="true" style="width: 75%">
+
+
+                        <ui:repeat var="package" value="#{reserveFlightManagedBean.departSpecificList}"   varStatus="myStatus">
+
+                            <p:panel header="Option #{myStatus.index+1}">
+
+
+                                <h:panelGrid columns="2"  cellpadding="15"> 
+                                    <p:selectManyCheckbox>
+                                        <f:selectItem itemLabel="select this" itemValue="#{myStatus.index}"/>
+                                        <p:ajax listener="#{reserveFlightManagedBean.onDepartOptionChange(myStatus.index,day)}"   immediate="true" />                                        
+                                    </p:selectManyCheckbox>
+
+                                    <ui:repeat var="instance" value="#{package}">
+
+                                        <h:panelGrid columns="8"   cellpadding="10">
+
+                                            <p:outputLabel  value="FlightNo: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                            <p:outputLabel  value="Depart From: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                            <p:outputLabel  value="Arrive At: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                            <p:outputLabel  value="Aircraft Type: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                            <p:outputLabel  value="Cabin Class: " />
+                                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                        </h:panelGrid>
+                                        <p:separator />
+                                    </ui:repeat>
+                                </h:panelGrid>
+
+                            </p:panel>
+
+                        </ui:repeat>
+                    </p:panel>
+
+
+
+                    <p:panel id="returnSpecific" rendered="#{reserveFlightManagedBean.returnTrip}" header="Return Flight Searching Result" toggleable="true" style="width:100%">
+
+
+                        <ui:repeat var="package" value="#{reserveFlightManagedBean.returnSpecificList}" varStatus="myStatus">
+
+                            <p:panel header="Option #{myStatus.index+1}">
+
+                                <h:panelGrid columns="2"  cellpadding="15"> 
+                                    <p:selectManyCheckbox >
+                                        <f:selectItem itemLabel="select this" itemValue="#{myStatus.index}"/>
+                                        <f:ajax listener="#{reserveFlightManagedBean.onReturnOptionChange(myStatus.index,day)}"   immediate="true" />                                        
+                                    </p:selectManyCheckbox>
+
+                                    <ui:repeat var="instance" value="#{package}">
+
+                                        <h:panelGrid columns="8"   cellpadding="10">
+
+                                            <p:outputLabel  value="FlightNo: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                            <p:outputLabel  value="Depart From: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                            <p:outputLabel  value="Arrive At: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                            <p:outputLabel  value="Aircraft Type: " />
+                                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                            <p:outputLabel  value="Cabin Class: " />
+                                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                        </h:panelGrid>
+                                        <p:separator />
+                                    </ui:repeat>
+                                </h:panelGrid>
+
+                            </p:panel>
+
+                        </ui:repeat>
+                    </p:panel>
+
+
+
+                </c:when>
+
+
+                <c:otherwise>
+                    <p:panel header="Departure Flight" toggleable="true"  >
+                        <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
+                        <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
+                        <br/>
+                        <br/>
+
+                        <p:tabView value="#{reserveFlightManagedBean.dateOfWeek}" dynamic="true" activeIndex="#{reserveFlightManagedBean.departDefault}"  var="day">
+                            <p:tab title="#{reserveFlightManagedBean.departDayOfWeek[day]}- #{day}">
+
+                                <h:outputText  rendered="#{empty reserveFlightManagedBean.departMap.get(day)}"  value="No Flights on this day  " />                         
+
+                                <br/>
+
+                                <h:outputText rendered="#{not empty reserveFlightManagedBean.departMap.get(day)}" value="Select this day: " />
+                                <p:selectBooleanCheckbox rendered="#{not empty reserveFlightManagedBean.departMap.get(day) }" value="#{reserveFlightManagedBean.departDayToCheck[day]}">
+                                    <p:ajax update="toResultPanel" event="change"  />
+                                </p:selectBooleanCheckbox>
+                                <br />
+
+                                <p:panel id="toResultPanel" >
+
+
+                                    <ui:repeat var="package" value="#{reserveFlightManagedBean.departMap[day]}" varStatus="myStatus">
+
+                                        <p:panel header="Option #{myStatus.index+1}">
+
+                                            <h:panelGrid columns="2"  cellpadding="15"> 
+                                                <p:selectManyCheckbox rendered="#{reserveFlightManagedBean.departDayToCheck[day]}" >
+                                                    <f:selectItem itemLabel="select this" itemValue="#{myStatus.index}"/>
+                                                    <p:ajax listener="#{reserveFlightManagedBean.onDepartOptionChange(myStatus.index,day)}"   immediate="true" />                                        
+                                                </p:selectManyCheckbox>
+
+                                                <ui:repeat var="instance" value="#{package}">
+
+                                                    <h:panelGrid columns="8"   cellpadding="10">
+
+                                                        <p:outputLabel  value="FlightNo: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                                        <p:outputLabel  value="Depart From: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                                        <p:outputLabel  value="Arrive At: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                                        <p:outputLabel  value="Departure Time: " />
+                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                                        <p:outputLabel  value="Arrival Time Time: " />
+                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                                        <p:outputLabel  value="Aircraft Type: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                                        <p:outputLabel  value="Cabin Class: " />
+                                                        <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                                    </h:panelGrid>
+                                                    <p:separator />
+                                                </ui:repeat>
+                                            </h:panelGrid>
+
+                                        </p:panel>
+                                        <br />
+                                    </ui:repeat>
+                                </p:panel>
+                            </p:tab>
+                        </p:tabView>
+                    </p:panel>
+
+
+                    <p:panel header="Return Flight" rendered="#{reserveFlightManagedBean.returnTrip}" toggleable="true" >
+                        <p:commandButton value="previous week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onPrevious2()}" styleClass="buttonBack" icon="ui-icon-carat-1-w"/>
+                        <p:commandButton value="next week" update="chooseFlight" actionListener="#{reserveFlightManagedBean.onNext2()}" styleClass="buttonForward" icon="ui-icon-carat-1-e"/>
+                        <br/>
+                        <br/>
+                        <p:tabView  rendered="#{reserveFlightManagedBean.returnTrip}" dynamic="true" activeIndex="#{reserveFlightManagedBean.returnDefault}" value="#{reserveFlightManagedBean.dateOfWeek2}" var="day">
+                            <p:tab title="#{reserveFlightManagedBean.returnDayOfWeek[day]}- #{day}">
+
+                                <h:outputText  rendered="#{empty reserveFlightManagedBean.returnMap.get(day)}"  value="No Flights on this day  " />                         
+
+                                <br/>
+                                <br/>
+                                <h:outputText rendered="#{not empty reserveFlightManagedBean.returnMap.get(day) }" value="Select this day: " />
+                                <p:selectBooleanCheckbox rendered="#{not empty reserveFlightManagedBean.returnMap.get(day)}" value="#{reserveFlightManagedBean.returnDayToCheck[day]}">
+                                    <p:ajax update="backResultPanel" event="change"  />
+                                </p:selectBooleanCheckbox>
+                                <br />
+
+                                <p:panel id="backResultPanel" >
+
+
+                                    <ui:repeat var="package" value="#{reserveFlightManagedBean.returnMap[day]}" varStatus="myStatus">
+
+                                        <p:panel header="Option #{myStatus.index+1}">
+
+                                            <h:panelGrid columns="2"  cellpadding="15"> 
+                                                <p:selectManyCheckbox rendered="#{reserveFlightManagedBean.returnDayToCheck[day]}" >
+                                                    <f:selectItem itemLabel="select this" itemValue="#{myStatus.index}"/>
+                                                    <p:ajax listener="#{reserveFlightManagedBean.onReturnOptionChange(myStatus.index,day)}"   immediate="true" />                                        
+                                                </p:selectManyCheckbox>
+
+                                                <ui:repeat var="instance" value="#{package}">
+
+                                                    <h:panelGrid columns="8"   cellpadding="10">
+
+                                                        <p:outputLabel  value="FlightNo: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                                        <p:outputLabel  value="Depart From: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                                        <p:outputLabel  value="Arrive At: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                                        <p:outputLabel  value="Departure Time: " />
+                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                                        <p:outputLabel  value="Arrival Time Time: " />
+                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                                                        <p:outputLabel  value="Aircraft Type: " />
+                                                        <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                                        <p:outputLabel  value="Cabin Class: " />
+                                                        <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                                                    </h:panelGrid>
+                                                    <p:separator />
+                                                </ui:repeat>
+                                            </h:panelGrid>
+
+                                        </p:panel>
+                                        <br/>
+                                    </ui:repeat>
+
+                                </p:panel>
+
+                            </p:tab>
+                        </p:tabView>
+                    </p:panel>
+
+                </c:otherwise>
+            </c:choose>
+
+            <br />
+            <p:separator />
+            <p:commandButton update="chooseFlight" value="Next" action="#{reserveFlightManagedBean.onSelectOption()}" />
+        </h:form>
+
+    </h:body>
+
+    <style>
+        .buttonBack.ui-button{
+            position: absolute;
+            left: 20px;
+        }
+
+
+        .buttonForward.ui-button{
+            position: absolute;
+            right:20px;
+        }
+
+        .buttonForward.ui-button-text {
+            padding: 0.4em 2.1em 0.4em 1em;
+        }
+
+        .buttonForward.ui-button-icon-primary {
+            left: auto;
+            right: 0.5em;
+        }
+    </style>
+
+</html>
+
