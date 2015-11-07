@@ -36,6 +36,7 @@ public class UpdateReservationManagedBean implements Serializable {
     @EJB
     private BookerBeanLocal mbsbl;
 
+    List<Passenger> selectedPsgList = new ArrayList<>();
     List<Reservation> rsvList = new ArrayList<>();
     List<Reservation> resultRsvList = new ArrayList<>();
 
@@ -55,6 +56,8 @@ public class UpdateReservationManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+
+        selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsgList");
         rsvList = mr.getAllReservations();
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
         flights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flights");
@@ -67,11 +70,54 @@ public class UpdateReservationManagedBean implements Serializable {
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
     }
 
+    public void onSelectPsg() throws IOException {
+
+        System.out.println("Selected passenger list is " + selectedPsgList.size());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsgList", selectedPsgList);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight3.xhtml");
+
+    }
+    
+    public void onSelectRescheduleRsv(Reservation rsv) throws IOException{
+            int index = 0;
+        selectedRsv = rsv;
+        flights = new ArrayList<>();
+        origin = rsv.getOrigin();
+        dest = rsv.getDest();
+
+        for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
+            System.out.println("i=" + i + " flightInstance is " + rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
+            flights.add(rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance());
+
+        }
+        Collections.sort(flights);
+
+        psgList = mr.getPassengerList(rsv);
+
+        departed = mr.getFlightPackage(flights, origin, dest, index);
+        if (rsv.getReturnTrip()) {
+            returned = mr.getFlightPackage(flights, dest, origin, departed.size());
+        }
+        System.out.println("booker found is " + selectedRsv.getBooker());
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flights", flights);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", origin);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", departed);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", returned);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
+
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight2.xhtml");
+    
+    
+    }
+
     public void onSelectBooker() throws IOException {
 
         booker = selectedRsv.getBooker();
-        
-        System.out.println("booker selected is "+booker);
+
+        System.out.println("booker selected is " + booker);
         emailOrigin = booker.getEmail();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emailOrigin", emailOrigin);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
@@ -192,6 +238,14 @@ public class UpdateReservationManagedBean implements Serializable {
 
     public void setBooker(Booker booker) {
         this.booker = booker;
+    }
+
+    public List<Passenger> getSelectedPsgList() {
+        return selectedPsgList;
+    }
+
+    public void setSelectedPsgList(List<Passenger> selectedPsgList) {
+        this.selectedPsgList = selectedPsgList;
     }
 
 }

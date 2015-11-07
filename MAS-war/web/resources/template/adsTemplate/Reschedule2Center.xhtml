@@ -13,7 +13,6 @@
     <h:body>
         <h:form id="updateRsv">
 
-
             <p:panel id="detail" header="Reservation Detail" toggleable="true">
                 <p:panel header="Departure Trip " >  
 
@@ -84,7 +83,7 @@
 
 
                 <br/>
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:50%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
                         <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
@@ -104,8 +103,10 @@
 
                 </p:panel>
 
-                <p:panel id="passenger" header="Passenger"   toggleable="true" style="width:70%">
-                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{updateReservation.selectedPsgList}" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+
+                        <p:column selectionMode="multiple" headerText="Select all" style="width:60px" /> 
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -123,6 +124,8 @@
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
                     </p:dataTable>
+                    
+                    <p:commandButton value="Reschedule Flight" actionListener="#{updateReservation.onSelectPsg()}"/>
 
                 </p:panel>
 
@@ -132,4 +135,3 @@
         </h:form>
     </h:body>
 </html>
-
