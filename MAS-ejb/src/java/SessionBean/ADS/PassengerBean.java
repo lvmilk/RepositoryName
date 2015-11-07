@@ -259,7 +259,7 @@ public class PassengerBean implements PassengerBeanLocal {
     public Booker checkMemberExist(Long memberId, String email) {
         Query query = null;
         List<Booker> resultList = new ArrayList<Booker>();
-        query = em.createQuery("SELECT u FROM Booker u WHERE u.id = :inMemberId and u.memberStatus=true u.email = :inEmail");
+        query = em.createQuery("SELECT u FROM Booker u WHERE u.id = :inMemberId and u.memberStatus=true and u.email = :inEmail");
         query.setParameter("inMemberId", memberId);
         query.setParameter("inEmail", email);
 
