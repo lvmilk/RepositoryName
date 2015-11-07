@@ -5,6 +5,7 @@
  */
 package SessionBean.AIS;
 
+import Entity.ADS.Seat;
 import Entity.AIS.CabinClass;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
@@ -106,7 +107,15 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
             fi.setFlightCabins(flightCabins);
             em.merge(fi);
             em.flush();
-            
+            //  generate seat entity instsance
+            int seatNo= temp.getSeatCount();
+            for (int i=0;i<seatNo;i++){
+                Seat seat =new Seat();
+                seat.setFlightCabin(flightCabin);
+                seat.setStatus("Unoccupied");
+                em.persist(seat);
+            }
+           
             List<BookingClass> bookingClassList = new ArrayList<BookingClass>();
             List<BookingClassInstance> biList=new ArrayList<BookingClassInstance>();
             Query queryBclass = em.createQuery("SELECT b FROM BookingClass b WHERE b.cabinName=:fcabinName");
