@@ -12,7 +12,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
-
 /**
  *
  * @author LI HAO
@@ -21,9 +20,7 @@ import javax.faces.context.FacesContext;
 public class SessionOutManagedBean {
 
     public void sessionOutListener() {
-        
-    }
-    public void init(){
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Session TimeOut", "Your session has timed out. Please login again."));
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
@@ -31,15 +28,12 @@ public class SessionOutManagedBean {
         try {
             String url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
             FacesContext.getCurrentInstance().getExternalContext().redirect(url + "/login.xhtml");
-        } 
-        catch(IOException ex)  
-        {
+        } catch (IOException ex) {
             Logger.getLogger(SessionOutManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void backListener()
-    {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Continue","Continue working"));
+
+    public void backListener() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Continue", "Continue working"));
     }
 }
