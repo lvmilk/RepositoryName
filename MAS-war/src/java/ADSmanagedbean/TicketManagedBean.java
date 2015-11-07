@@ -62,7 +62,7 @@ public class TicketManagedBean implements Serializable {
         try {
 
             booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
-            booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
+
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
 
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
@@ -89,7 +89,7 @@ public class TicketManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-       psgSBlocal.makeReservation(booker,passengerList,departSelected,returnSelected, BookClassInstanceList,psgCount, origin, dest, returnTrip);
+        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./payment.xhtml");
 
@@ -216,7 +216,5 @@ public class TicketManagedBean implements Serializable {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
-
-
 
 }

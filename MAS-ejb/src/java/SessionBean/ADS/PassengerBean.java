@@ -63,7 +63,13 @@ public class PassengerBean implements PassengerBeanLocal {
 
     @Override
     public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip) {
-        em.persist(booker);
+        Booker tempBk = new Booker();
+        tempBk = em.find(Booker.class, booker.getId());
+        if (tempBk != null) {
+
+        } else {
+            em.persist(booker);
+        }
         booker = em.find(Booker.class, booker.getId());
         Reservation rsv = new Reservation();
         rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
