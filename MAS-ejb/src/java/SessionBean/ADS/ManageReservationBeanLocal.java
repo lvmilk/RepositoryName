@@ -8,6 +8,7 @@ package SessionBean.ADS;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
 import Entity.APS.FlightInstance;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -24,6 +25,6 @@ public interface ManageReservationBeanLocal {
 
     public List<FlightInstance> getFlightPackage(List<FlightInstance> flights, String origin, String dest, int index);
 
-    public List<Passenger> getPassengerList(Reservation rsv);
+    public ArrayList<Passenger> getPassengerList(Reservation rsv);
     
 }

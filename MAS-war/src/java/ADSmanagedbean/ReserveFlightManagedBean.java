@@ -5,6 +5,9 @@
  */
 package ADSmanagedbean;
 
+import Entity.ADS.Booker;
+import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
 import SessionBean.ADS.ReserveFlightBeanLocal;
 import Entity.APS.Airport;
 import Entity.AIS.CabinClass;
@@ -121,12 +124,38 @@ public class ReserveFlightManagedBean implements Serializable {
 
     private String stfType;
     private List<CabinClass> cabinList = new ArrayList<>();
+    private String manageStatus;
+
+    private List<FlightInstance> bookedFlights = new ArrayList<>();
+
+    private Booker booker;
+    private ArrayList<Passenger> psgList;
+    private Reservation selectedRsv;
+
+    private ArrayList<FlightInstance> departed;
+    private ArrayList<FlightInstance> returned;
 
     public ReserveFlightManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        
+         departed = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
+         returned = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
+
+        booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
+        selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
+
+        manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
+        if (manageStatus != null) {
+            System.out.println("in ReserveFlightManagedBean: manageStatus is " + manageStatus);
+        } else {
+            manageStatus = "book";
+             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~````in ReserveFlightManagedBean: manageStatus Now is " + manageStatus);
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
+        }
+        bookedFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookedFlights");
 
         departDefault = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departDefault");
         returnDefault = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnDefault");
@@ -165,6 +194,11 @@ public class ReserveFlightManagedBean implements Serializable {
 //        cabinList = (List<FlightCabin>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
         selectedCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedCabin");
 
+        psgList = (ArrayList<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
+        if (psgList != null) {
+            countPerson = psgList.size();
+        }
+
     }
 
     public void onPrevious2() throws ParseException {
@@ -189,7 +223,11 @@ public class ReserveFlightManagedBean implements Serializable {
             Date firstDate = formatter.parse(f);
             System.out.println("firstDate is " + f);
 
-            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson);
+            if (manageStatus.equals("book")) {
+                bookedFlights = new ArrayList<>();
+            }
+
+            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson, manageStatus, bookedFlights);
             formatter = new SimpleDateFormat("dd MMM yyyy");
             f = formatter.format(c.getTime());
 
@@ -236,7 +274,11 @@ public class ReserveFlightManagedBean implements Serializable {
             Date firstDate = formatter.parse(f);
             System.out.println("firstDate is " + f);
 
-            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson);
+            if (manageStatus.equals("book")) {
+                bookedFlights = new ArrayList<>();
+            }
+
+            returnsByDay = rf.findResultInstanceList(dest, origin, firstDate, selectedCabin, countPerson, manageStatus, bookedFlights);
             formatter = new SimpleDateFormat("dd MMM yyyy");
             f = formatter.format(c.getTime());
 
@@ -284,7 +326,11 @@ public class ReserveFlightManagedBean implements Serializable {
             Date firstDate = formatter.parse(f);
             System.out.println("firstDate is " + f);
 
-            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson);
+            if (manageStatus.equals("book")) {
+                bookedFlights = new ArrayList<>();
+            }
+
+            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson, manageStatus, bookedFlights);
             formatter = new SimpleDateFormat("dd MMM yyyy");
             f = formatter.format(c.getTime());
 
@@ -334,7 +380,11 @@ public class ReserveFlightManagedBean implements Serializable {
             System.out.println("origin is " + origin);
             System.out.println("dest is " + dest);
 
-            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson);
+            if (manageStatus.equals("book")) {
+                bookedFlights = new ArrayList<>();
+            }
+
+            departsByDay = rf.findResultInstanceList(origin, dest, firstDate, selectedCabin, countPerson, manageStatus, bookedFlights);
             formatter = new SimpleDateFormat("dd MMM yyyy");
             f = formatter.format(c.getTime());
 
@@ -504,8 +554,8 @@ public class ReserveFlightManagedBean implements Serializable {
             } else {
                 if (!returnTrip) {
 
-                    ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
-                    ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+                  ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
+                  ArrayList<FlightInstance>  returnSelected = new ArrayList<>();
                     System.out.println("selection for departure trip is correct");
                     System.out.println("departure package chosen is " + departSelected);
                     ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
@@ -539,7 +589,12 @@ public class ReserveFlightManagedBean implements Serializable {
                     if (stfType.equals("agency")) {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
                     } else {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                        if (manageStatus.equals("book")) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                        } else {
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                        }
                     }
 
                 } else {
@@ -591,7 +646,12 @@ public class ReserveFlightManagedBean implements Serializable {
                         if (stfType.equals("agency")) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
                         } else {
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                            if (manageStatus.equals("book")) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                            } else {
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                            }
                         }
 
                     }
@@ -666,7 +726,13 @@ public class ReserveFlightManagedBean implements Serializable {
                             if (stfType.equals("agency")) {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
                             } else {
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                System.out.println("in onSelectOption(): manageStatus is "+manageStatus);
+                                if (manageStatus.equals("book")) {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                } else {
+                                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                                }
                             }
 
                         }
@@ -766,7 +832,13 @@ public class ReserveFlightManagedBean implements Serializable {
                                 if (stfType.equals("agency")) {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
                                 } else {
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                    System.out.println("in onSelectOption(): manageStatus is "+manageStatus);
+                                    if (manageStatus.equals("book")) {
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
+                                    } else {
+                                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                                    }
                                 }
                             }
                         } else {
@@ -874,14 +946,20 @@ public class ReserveFlightManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", countPerson);
 
             if (dateSpecific) {
+                if (manageStatus.equals("book")) {
+                    bookedFlights = new ArrayList<>();
+                }
 
-                departSpecificList = rf.findResultInstanceList(origin, dest, departDate, selectedCabin, countPerson);
+                departSpecificList = rf.findResultInstanceList(origin, dest, departDate, selectedCabin, countPerson, manageStatus, bookedFlights);
 
                 if (!departSpecificList.isEmpty()) {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departSpecificList", departSpecificList);
 
                     if (returnTrip) {
-                        returnSpecificList = rf.findResultInstanceList(dest, origin, returnDate, selectedCabin, countPerson);
+                        if (manageStatus.equals("book")) {
+                            bookedFlights = new ArrayList<>();
+                        }
+                        returnSpecificList = rf.findResultInstanceList(dest, origin, returnDate, selectedCabin, countPerson, manageStatus, bookedFlights);
 
                         if (!returnSpecificList.isEmpty()) {
                             System.out.println("in findFlightInstance(): returnSpecificList size is " + returnSpecificList.size());
@@ -925,7 +1003,12 @@ public class ReserveFlightManagedBean implements Serializable {
                 for (int i = 0; i < 7; i++) {
                     departsByDay = new ArrayList<>();
 
-                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime(), selectedCabin, countPerson);
+                    if (manageStatus.equals("book")) {
+                        bookedFlights = new ArrayList<>();
+                    }
+                    System.out.println("in findResultInstances(): manageStatus is "+manageStatus);
+                           System.out.println("in findResultInstances(): bookedFlights is "+bookedFlights);
+                    departsByDay = rf.findResultInstanceList(origin, dest, c.getTime(), selectedCabin, countPerson, manageStatus, bookedFlights);
 
                     df = new SimpleDateFormat("dd MMM yyyy");
                     String oneDate = df.format(c.getTime());
@@ -975,7 +1058,11 @@ public class ReserveFlightManagedBean implements Serializable {
 
                     for (int i = 0; i < 7; i++) {
                         returnsByDay = new ArrayList<>();
-                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime(), selectedCabin, countPerson);
+
+                        if (manageStatus.equals("book")) {
+                            bookedFlights = new ArrayList<>();
+                        }
+                        returnsByDay = rf.findResultInstanceList(dest, origin, c.getTime(), selectedCabin, countPerson, manageStatus, bookedFlights);
 
                         df = new SimpleDateFormat("dd MMM yyyy");
                         String oneDate = df.format(c.getTime());
@@ -1055,6 +1142,7 @@ public class ReserveFlightManagedBean implements Serializable {
 
         }
 
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
     }
 
     public void onRowEdit(RowEditEvent event) {
@@ -1462,6 +1550,14 @@ public class ReserveFlightManagedBean implements Serializable {
      */
     public void setStfType(String stfType) {
         this.stfType = stfType;
+    }
+
+    public String getManageStatus() {
+        return manageStatus;
+    }
+
+    public void setManageStatus(String manageStatus) {
+        this.manageStatus = manageStatus;
     }
 
 }

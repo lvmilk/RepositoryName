@@ -31,7 +31,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     
     
-    public List<Passenger> getPassengerList(Reservation rsv) {
+    public ArrayList<Passenger> getPassengerList(Reservation rsv) {
         List<Ticket> tickets = rsv.getTickets();
         List<Passenger> psgList = new ArrayList<>();
         for (int i = 0; i < tickets.size(); i++) {
@@ -39,7 +39,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 psgList.add(tickets.get(i).getPassenger());
             }
         }
-        return psgList;
+        ArrayList<Passenger> psgs=new ArrayList<>();
+        for(int i=0; i<psgList.size(); i++){
+        psgs.add(psgList.get(i));
+        }
+        return psgs;
     }
     
     

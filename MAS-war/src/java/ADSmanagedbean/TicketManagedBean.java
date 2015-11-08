@@ -57,7 +57,8 @@ public class TicketManagedBean implements Serializable {
     private String dest;
     private Boolean returnTrip;
     private Boolean visiMember;
-    private String stfType;
+    
+    private ArrayList<Passenger> psgList;
 
     @PostConstruct
     public void init() {
