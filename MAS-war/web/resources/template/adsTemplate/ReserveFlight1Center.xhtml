@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:pm="http://primefaces.org/mobile">
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -70,8 +71,9 @@
                         <f:selectItem itemLabel="Economy Class" itemValue="Economy Class" />
                     </p:selectOneMenu>
 
+
                     <p:outputLabel for="countPerson" value="No. of people: " />
-                    <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
+                     <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
                         <f:validateLongRange minimum="1"/>
                     </p:inputText>
 
