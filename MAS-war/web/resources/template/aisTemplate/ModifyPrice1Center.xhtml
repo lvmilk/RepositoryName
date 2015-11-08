@@ -19,10 +19,10 @@
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />
                     <!--<p:inputMask id="date" value="#{modifyPriceManagedBean.date}" mask="9999-99-99"/>-->
-                    <p:calendar id="date" value="#{modifyPriceManagedBean.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
+                    <p:calendar id="date" value="#{modifyPriceManagedBean.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
                   
 
-                    <p:commandButton value="Get flight list on that date" partialSubmit="true" update='flight' process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
+                    <p:commandButton value="Get flight list on that date" partialSubmit="true" update="flight" process="date" style="margin-right:0" actionListener="#{modifyPriceManagedBean.onDateChange()}"  icon="ui-icon-check" />
 
                     <p:outputLabel for="flight" value="Flight :" />
                     <p:selectOneMenu id="flight" value="#{modifyPriceManagedBean.flightNo}" style="width:250px">
