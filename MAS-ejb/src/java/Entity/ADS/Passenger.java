@@ -38,7 +38,7 @@ public class Passenger implements Serializable {
     private String ffpNo;
     
     
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="passenger")
+    @OneToMany(cascade={CascadeType.PERSIST},mappedBy="passenger")
     private List<Ticket> tickets;
     
     public Passenger()

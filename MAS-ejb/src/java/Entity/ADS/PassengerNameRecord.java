@@ -31,7 +31,7 @@ public class PassengerNameRecord implements Serializable {
     private Collection<Passenger> psgList=new ArrayList<Passenger>();
     private Collection<Ticket> tkList=new ArrayList<Ticket>();
     
-    @OneToOne(cascade={CascadeType.ALL})
+    @OneToOne(cascade={CascadeType.PERSIST})
     private AirAlliances alliance;
     private String contact;
     private Booker member;

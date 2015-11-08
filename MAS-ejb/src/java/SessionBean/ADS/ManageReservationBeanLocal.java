@@ -7,6 +7,7 @@ package SessionBean.ADS;
 
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,14 @@ import javax.ejb.Local;
  */
 @Local
 public interface ManageReservationBeanLocal {
+    
+    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance>departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip);
+
+    public Double getChangeDatePenalty(ArrayList<FlightInstance> oldDepart, ArrayList<FlightInstance> oldReturn, ArrayList<FlightInstance> newDepart, ArrayList<FlightInstance> newReturn, List<BookingClassInstance> oldInstance);
+
+    public Double getChangeRoutePenalty(ArrayList<FlightInstance> oldDepart, ArrayList<FlightInstance> oldReturn, ArrayList<FlightInstance> newDepart, ArrayList<FlightInstance> newReturn, List<BookingClassInstance> oldInstance, ArrayList<BookingClassInstance> newInstance);
+
+    public Double computePriceDiff(Double newPrice, Double oldPrice);
 
     public List<Reservation> findReservation(Long code, String email);
 
@@ -26,5 +35,5 @@ public interface ManageReservationBeanLocal {
     public List<FlightInstance> getFlightPackage(List<FlightInstance> flights, String origin, String dest, int index);
 
     public ArrayList<Passenger> getPassengerList(Reservation rsv);
-    
+
 }

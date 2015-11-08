@@ -47,7 +47,7 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Reservation rsv;
     
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.PERSIST})
     private Seat seat;
 
     public Ticket() {
@@ -95,7 +95,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Itinerary[ id=" + ticketID + " ]";
+        return "Entity.ADS.Ticket[ id=" + ticketID + " ]";
     }
 
     /**
