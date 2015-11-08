@@ -47,10 +47,10 @@ public class Reservation implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date rsvDate;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rsv")
     private List<Ticket> tickets;
 
-    @ManyToMany(cascade={CascadeType.ALL})
+    @ManyToMany(cascade={CascadeType.PERSIST})
     @JoinTable(name="RESERVATION_BKCINSTANCE")
     private List<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
 

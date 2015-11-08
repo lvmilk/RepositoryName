@@ -110,6 +110,7 @@ public class ModifyPriceManagedBean implements Serializable {
         }
     }
 
+    
     public void checkFlight() throws IOException {
 
         System.out.println("MPMB: any flight selected?  ");

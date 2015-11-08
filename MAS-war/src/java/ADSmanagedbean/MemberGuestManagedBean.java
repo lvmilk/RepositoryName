@@ -7,6 +7,7 @@ package ADSmanagedbean;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.MsgSender;
@@ -59,20 +60,26 @@ public class MemberGuestManagedBean implements Serializable {
     private Booker booker = new Booker();
 
     private Integer repeat;
+    private String stfType;
 
     private ArrayList<FlightInstance> departSelected = new ArrayList<>();
     private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
     private Double totalPrice;
     private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+    
+   private Reservation selectedRsv;
+   private ArrayList<Passenger> psgList;
 
     @PostConstruct
     public void init() {
         try {
+            
             BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
             departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
             returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");
             totalPrice = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalPrice");
             repeat = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
 
             for (int i = 0; i < repeat; i++) {
                 passengerList.add(person);
@@ -111,7 +118,11 @@ public class MemberGuestManagedBean implements Serializable {
                 System.out.println("#########This is in makeReserver and the id of passenger is:" + passengerList.get(0).getId());
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
 
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                if (stfType.equals("agency")) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmReservation.xhtml");
+                } else {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                }
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Member Account or email is not correct ", ""));
@@ -132,7 +143,11 @@ public class MemberGuestManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", passengerList);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("countPerson", repeat);
 
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+            if (stfType.equals("agency")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmReservation.xhtml");
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+            }
         }
     }
 
@@ -379,6 +394,20 @@ public class MemberGuestManagedBean implements Serializable {
 
     public void setBookerId(Long bookerId) {
         this.bookerId = bookerId;
+    }
+
+    /**
+     * @return the stfType
+     */
+    public String getStfType() {
+        return stfType;
+    }
+
+    /**
+     * @param stfType the stfType to set
+     */
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
     }
 
 }

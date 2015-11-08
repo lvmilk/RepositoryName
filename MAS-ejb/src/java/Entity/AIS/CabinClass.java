@@ -37,6 +37,8 @@ public class CabinClass implements Serializable {
     private Integer rowSeatCount; //no. of seat counts per row
     private String rowConfig; //e.g for 7 seats/row, 2-3-2
     
+    private String[][] seatChart;
+    
     
     @ManyToOne
     private AircraftType aircraftType=new AircraftType();
@@ -120,6 +122,14 @@ public class CabinClass implements Serializable {
 
     public void setRowConfig(String rowConfig) {
         this.rowConfig = rowConfig;
+    }
+
+    public String[][] getSeatChart() {
+        return seatChart;
+    }
+
+    public void setSeatChart(String[][] seatChart) {
+        this.seatChart = seatChart;
     }
 
     

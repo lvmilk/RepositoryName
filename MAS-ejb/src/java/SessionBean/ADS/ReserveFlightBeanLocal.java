@@ -36,9 +36,8 @@ public interface ReserveFlightBeanLocal {
 
     public Double computeTotalPrice(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, CabinClass cabin, Integer countPerson);
 
-    public Boolean whetherAvailable(FlightInstance flight, CabinClass cabin, int countPerson);
 
-    public ArrayList<ArrayList<FlightInstance>> findResultInstanceList(String origin, String dest, Date departDate, CabinClass selectedCabin, int countPerson);
+    public ArrayList<ArrayList<FlightInstance>> findResultInstanceList(String origin, String dest, Date departDate, CabinClass selectedCabin, int countPerson, String manageStatus, List<FlightInstance> bookedFlights);
 
     public Double getLowestPrice(ArrayList<FlightInstance> option, CabinClass cabin, int countPerson);
 
