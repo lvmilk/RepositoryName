@@ -5,12 +5,14 @@
  */
 package Entity.CommonInfa;
 
+import Entity.ADS.Booker;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -27,6 +29,9 @@ public class Agency implements Serializable {
     private String email;
     
     private String pType;
+    
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="agency")
+    private List<Booker> bkList;
     
     public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String strAgEmail, String strpType)
     {
@@ -109,6 +114,20 @@ public class Agency implements Serializable {
      */
     public void setpType(String pType) {
         this.pType = pType;
+    }
+
+    /**
+     * @return the bkList
+     */
+    public List<Booker> getBkList() {
+        return bkList;
+    }
+
+    /**
+     * @param bkList the bkList to set
+     */
+    public void setBkList(List<Booker> bkList) {
+        this.bkList = bkList;
     }
 
 }
