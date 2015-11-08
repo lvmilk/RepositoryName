@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -24,18 +25,19 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     private Boolean isCheckedin;
     private Boolean canUseEpass;
+    @PersistenceContext
     EntityManager em;
 
     public List<Ticket> getAllTicket(String passportID, String firstName, String lastName) throws Exception {
 
         List<Ticket> ticketList = new ArrayList<Ticket>();
         Passenger passenger = new Passenger();
-        Query query1 = em.createQuery("SELECT p  FROM Passenger p where p.passport=:ppassport AND p.firstName=:pfirstname AND p.lastName=:plastname");
+        Query query1 = em.createQuery("SELECT p FROM Passenger p where p.passport=:ppassport AND p.firstName=:pfirstname AND p.lastName=:plastname");
         query1.setParameter("ppassport", passportID);
         query1.setParameter("pfirstname", firstName);
         query1.setParameter("plastname", lastName);
-        passenger = (Passenger) query1.getSingleResult();
-        if (passenger != null) {
+        if (!query1.getResultList().isEmpty()) {
+            passenger = (Passenger) query1.getSingleResult();
             Query query2 = em.createQuery("SELECT t  FROM Ticket t where t.passenger.id:pid");
             query1.setParameter("pid", passenger.getId());
             ticketList = query2.getResultList();
@@ -46,13 +48,12 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             }
 
         } else {
-            throw new Exception("Passenger Not Found!");
+            throw new Exception("Passenger Not Found");
         }
-
     }
 
     @Override
-       public List<FlightFrequency> getFlightList(String dateString) throws Exception {
+    public List<FlightFrequency> getFlightList(String dateString) throws Exception {
         List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
         System.out.println("MPB: getFlightList(): date is " + dateString);
 
@@ -92,11 +93,11 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     public FlightInstance getRequestFlight(String flightNo, String dateString) throws Exception {
         FlightInstance fi = new FlightInstance();
-//        Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
-        Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
+        Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        //   Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
 
         query.setParameter("fdate", dateString);
-        query.setParameter("fflightBo", flightNo);
+        query.setParameter("flightNo", flightNo);
         fi = (FlightInstance) query.getSingleResult();
         if (fi != null) {
             return fi;

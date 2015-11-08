@@ -38,8 +38,7 @@
                     <p:calendar id="date" value="#{cmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
 
                     <br></br>
-                    <!--<p:commandButton id="ondatechange"  value="Get flight list on that date" update="flight" process="date" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />-->
-                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight" process="date" style="margin-right:0" actionListener="#{cmb.onDateChange()}"  icon="ui-icon-check" />
+                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />
 
                     <p:outputLabel for="flight" value="Flight :" />
                     <p:selectOneMenu id="flight" value="#{cmb.flightNo}" style="width:250px">
@@ -49,6 +48,22 @@
 
 
                 </h:panelGrid>
+                <!--                <h:panelGrid>
+                                <p:calendar id="date" value="#{cmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
+                
+                                    <p:commandButton id="ondatechange" partialSubmit="true" process="date" update="flight" value="Get flight list on that date" style="margin-right:0" actionListener="#{cmb.onDateChange}"  icon="ui-icon-check" />
+                
+                                   <p:selectOneMenu id="flight" value="#{cmb.flightNo}" style="width:250px">
+                                                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                                                        <f:selectItems value="#{cmb.ffList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                                                    </p:selectOneMenu>
+                                    
+                                    
+                                    
+                                </h:panelGrid>-->
+
+
+
                 <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
             </p:panel>
 

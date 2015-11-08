@@ -53,27 +53,8 @@ public class CheckInManagedBean implements Serializable {
 
     }
 
-//      public void onDateChange() {
-//        System.out.println("MBPB:OnDateChange run");
-//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-//        dateString = df1.format(date);
-//
-//        if (dateString != null && !dateString.equals("")) {
-//            try {
-//                ffList = dcb.getFlightList(dateString);
-//                System.out.println("MB:OnDateChange run result: " + flightList.toString());
-//            } catch (Exception ex) {
-//                Logger.getLogger(CheckInManagedBean.class.getName()).log(Level.SEVERE, null, ex);
-//                 
-//            }
-//        } else {
-//            ffList = new ArrayList<FlightFrequency>();
-//        }
-//    }
 
-    
-    
-    public void onDateChange(ActionEvent e) throws Exception {
+    public void onDateChange() throws Exception {
         System.out.println("CMB:OnDateChange run");
         try {
             System.out.println("CMB:OnDateChange run");
