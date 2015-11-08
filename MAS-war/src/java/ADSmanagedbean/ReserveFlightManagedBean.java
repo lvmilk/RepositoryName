@@ -593,7 +593,7 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                         } else {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
                         }
                     }
 
@@ -650,7 +650,7 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                             } else {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
                             }
                         }
 
@@ -731,7 +731,7 @@ public class ReserveFlightManagedBean implements Serializable {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                                 } else {
                                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
                                 }
                             }
 
@@ -837,7 +837,7 @@ public class ReserveFlightManagedBean implements Serializable {
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                                     } else {
                                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmReservation.xhtml");
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
                                     }
                                 }
                             }

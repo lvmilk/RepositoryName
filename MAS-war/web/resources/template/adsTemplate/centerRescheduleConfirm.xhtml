@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Reservation Confirmation</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel id="rsvConfirm"  style="margin-bottom:20px">
+                <h:panelGrid  columns="2"   cellpadding="10">
+
+                    <p:outputLabel  value="Reserved by: " />
+                    <p:outputLabel value="#{rescheduleConfirm.selectedRsv.booker.firstName} #{rescheduleConfirm.selectedRsv.booker.lastName}" />
+
+                    <p:outputLabel  value="No. of Passenger: " />
+                    <p:outputLabel value="#{rescheduleConfirm.psgCount}" />
+
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="penalty"  header="Rescheduling penalty" style="margin-bottom:20px; width:35%">
+                <h:panelGrid  columns="2"   cellpadding="10">
+
+                    <p:outputLabel  value="Price increase: " />
+                    <p:outputLabel value="#{rescheduleConfirm.priceDiff}" />
+
+
+                    <p:outputLabel  value="Change Route Penalty: " />
+                    <p:outputLabel value="#{rescheduleConfirm.changeRoutePenalty}" />
+
+                    <p:outputLabel  value="Change Date Penalty " />
+                    <p:outputLabel value="#{rescheduleConfirm.changeDatePenalty}" />
+
+                    <p:separator />    <p:separator />
+                    <p:outputLabel  value="No. of passengers involved " />
+                    <p:outputLabel value="#{rescheduleConfirm.psgCount}" />
+                    <p:separator />    <p:separator />
+                    <p:outputLabel  value="Total Penalty " />
+                    <p:outputLabel value="#{rescheduleConfirm.totalPenalty}" />
+
+
+
+                </h:panelGrid>
+            </p:panel>
+
+
+
+
+            <p:panel header="Original flights" >
+                <p:dataGrid value="Departure trip " >             
+                    <ui:repeat value="#{rescheduleConfirm.departed}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+                </p:dataGrid>
+                <br/>
+
+                <p:dataGrid value="return trip " rendered="#{rescheduleConfirm.returned.size()>0}">             
+                    <ui:repeat value="#{rescheduleConfirm.returned}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+
+                </p:dataGrid>
+            </p:panel>
+
+            <br/><br/><br/>
+
+
+
+
+            <p:panel header="Updated Flights"   >
+                <p:dataGrid value="Departure trip " >             
+                    <ui:repeat value="#{rescheduleConfirm.departSelected}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+                </p:dataGrid>
+
+                <br/>
+                <p:dataGrid value="return trip " rendered="#{rescheduleConfirm.returnSelected.size()>0}">             
+                    <ui:repeat value="#{rescheduleConfirm.returnSelected}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+                </p:dataGrid>
+            </p:panel>
+
+            <p:commandButton value="Confirm" actionListener="#{rescheduleConfirm.onChooseConfirm}" icon="ui-icon-check" />
+        </h:form>
+
+        <h:form id="dlgGrd">
+            <p:dialog id="dlgGrd" header="Confirm change the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
+                <p:outputLabel value="A total penalty of $#{rescheduleConfirm.totalPenalty} will be charged on you after you confirm this change of schedule "/>
+
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:commandButton value="Confirm"  oncomplete="PF('dlgGrd').hide()" action="#{rescheduleConfirm.rsvConfirm()}" />
+                    <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>

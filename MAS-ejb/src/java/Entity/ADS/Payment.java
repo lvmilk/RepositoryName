@@ -37,7 +37,7 @@ public class Payment implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentDate;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.PERSIST})
     private Reservation reservation;
 
     private Double totalPrice;

@@ -235,3 +235,5 @@ INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)value
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,3000.0,"2015-10-12")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",2222,2200.0,"2015-05-10")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,2500.0,"2015-01-10")
+
+
