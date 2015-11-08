@@ -5,6 +5,7 @@
  */
 package SessionBean.ADS;
 
+import Entity.ADS.Booker;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface DDSBookingBeanLocal {
-    
+    public boolean setAgency_Booker(String username,Booker booker);
 }

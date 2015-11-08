@@ -279,7 +279,7 @@ public class PassengerBean implements PassengerBeanLocal {
             return resultList.get(0);
 
         } else {
-            return new Booker();
+            return null;
         }
 
     }
