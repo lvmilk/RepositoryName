@@ -56,6 +56,12 @@ public class LoginManagerBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
+            } else if (stfType.equals("groundStaff")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/grdStaffWorkspace.xhtml");
+            } else if (stfType.equals("cabin")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/cbCrewWorkspace.xhtml");
+            } else if (stfType.equals("cockpit")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/cpCrewWorkspace.xhtml");
             } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("staffWorkspace.xhtml");
             }
@@ -106,7 +112,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
-            mal.addAccount(username, password, email, stfType, firstName,lastName, stfLevel, salary);
+            mal.addAccount(username, password, email, stfType, firstName, lastName, stfLevel, salary);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -133,7 +139,7 @@ public class LoginManagerBean implements Serializable {
         System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
-            mal.addCocpitAcc(username, password, email, stfType, firstName,lastName, stfLevel, salary, licence);
+            mal.addCocpitAcc(username, password, email, stfType, firstName, lastName, stfLevel, salary, licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
         } else if (!blCreateEmail && blCreateAcc) {

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -66,7 +67,7 @@ public class TicketManagedBean implements Serializable {
             booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
-
+            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
             dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
             returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
@@ -93,7 +94,15 @@ public class TicketManagedBean implements Serializable {
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
         psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./payment.xhtml");
+        if (stfType.equals("agency")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
+            
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
+            
+        }
 
     }
 
@@ -217,6 +226,20 @@ public class TicketManagedBean implements Serializable {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    /**
+     * @return the stfType
+     */
+    public String getStfType() {
+        return stfType;
+    }
+
+    /**
+     * @param stfType the stfType to set
+     */
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
     }
 
 }
