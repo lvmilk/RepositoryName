@@ -9,7 +9,7 @@ import Entity.ADS.Ticket;
 import Entity.APS.FlightFrequency;
 import static Entity.APS.FlightFrequency_.flightList;
 import Entity.APS.FlightInstance;
-import Session.DCS.DepartureControlBeanLocal;
+import SessionBean.DCS.DepartureControlBeanLocal;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

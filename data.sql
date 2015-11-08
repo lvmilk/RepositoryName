@@ -196,12 +196,12 @@ INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,member
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(999,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","li","hao",true,0,"G87654321","Mr")
 
 
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li",TFP","A123")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu",TFP","A456")
+INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
+INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
 
 
 
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888, 1500.00,"ARS","2015-08-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888,1500.00,"ARS","2015-08-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(222222,9999, 6000.00,"ARS","2015-09-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(333333,8888, 3000.00,"ARS","2015-10-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(444444,9999, 4000.00,"ARS","2015-11-10")
