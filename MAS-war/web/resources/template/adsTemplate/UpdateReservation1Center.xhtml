@@ -12,8 +12,8 @@
     </h:head>
     <h:body>
 
-    
-     <h:form id="viewReserve" >
+
+        <h:form id="viewReserve" >
             <p:panel id="panel" header="View All Reservation"  style="width:100%">
                 <p:dataTable var="rsv" value="#{updateReservation.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
@@ -45,13 +45,81 @@
 
 
                     <p:column headerText="View ">
-                        <p:commandButton value="View Detail" actionListener="#{updateReservation.onSelectRsv(rsv)}" />
+                        <p:commandButton value="View Detail" actionListener="#{updateReservation.onSelectRsv(rsv)}" partialSubmit="true" update=":viewReserve"/>
 
                     </p:column>
                 </p:dataTable>
             </p:panel>
-     </h:form>
-        
+
+
+            <p:panel id="reservation" header="Reservation Information" rendered="#{updateReservation.departed.size()>0}" toggleable="true">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="2" cellpadding="10" >
+                        <h:panelGrid columns="4" cellpadding="10" >
+                            <p:outputLabel  value="Title" />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
+
+                            <p:outputLabel  value="Name" />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.firstName} #{updateReservation.selectedRsv.booker.lastName}" />
+
+                            <p:outputLabel  value="Email" />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.email}" />
+
+                            <p:outputLabel  value="Address" />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.address}" />
+
+                            <p:outputLabel  value="Contact No" />
+                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.contact}" />
+                        </h:panelGrid>
+                        <p:commandButton value="Edit" actionListener="#{updateReservation.onSelectBooker()}"/>
+                    </h:panelGrid>
+
+                </p:panel>
+
+
+                <br/>
+                <p:panel id="passenger" header="Passenger"  rendered="#{updateReservation.departed.size()>0}" toggleable="true" style="width:45%">
+                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{passenger.title}" />
+                        </p:column>
+
+                        <p:column headerText="Given Name" >
+                            <h:outputText value="#{passenger.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                            <h:outputText value="#{passenger.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Passport No.">
+                            <h:outputText value="#{passenger.passport}" />
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+
+                <br/>
+                <p:panel id="payment" header="Payment"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="4" cellpadding="10" >
+
+                        <p:outputLabel  value="Payment ID: " />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.paymentID}" />
+
+                        <p:outputLabel  value="Date of Payment: " />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.paymentDate.toString()}" />
+
+                        <p:outputLabel  value="Amount of Payment" />
+                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.totalPrice}" />
+                    </h:panelGrid>
+
+                </p:panel> 
+
+            </p:panel>
+
+        </h:form>
+
     </h:body>
 </html>
 

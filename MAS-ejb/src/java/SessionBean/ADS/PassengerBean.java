@@ -40,7 +40,6 @@ public class PassengerBean implements PassengerBeanLocal {
     private String arrTime;
     private String flightNo;
 
-    private String bookSystem = "ARS";
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo) {
         booker = new Booker();
@@ -62,9 +61,16 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip) {
-        em.persist(booker);
-        booker = em.find(Booker.class, booker.getId());
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip,String bkSystem) {
+        Booker tempBk;
+        String bookerEmail = booker.getEmail();
+        Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
+        if (query.getResultList().isEmpty()) {
+            em.persist(booker);
+        } else {
+            booker=(Booker) query.getResultList().get(0);
+        }
+
         Reservation rsv = new Reservation();
         rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
         rsv = makeRsvBooker(rsv, booker);
@@ -74,7 +80,7 @@ public class PassengerBean implements PassengerBeanLocal {
         ArrayList<Ticket> tickets = new ArrayList<>();
         createPsgList(passengerList);
 
-        tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip,bkSystem);
 
         setupTicket_Reservation(rsv, tickets);
 
@@ -112,7 +118,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
     }
 
-    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
+    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip,String bkSystem) {
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -133,7 +139,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
-                depTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
+                depTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
                 System.out.println("*************Passenger Id is :" + psg.getId());
                 Passenger psgl = em.find(Passenger.class, psg.getId());
@@ -163,7 +169,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
             for (int j = 0; j < passengerList.size(); j++) {
                 arrTicket = new Ticket();
-                arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bookSystem);
+                arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
                 Passenger psgl = em.find(Passenger.class, psg.getId());
                 if (psgl != null) {
@@ -259,7 +265,7 @@ public class PassengerBean implements PassengerBeanLocal {
     public Booker checkMemberExist(Long memberId, String email) {
         Query query = null;
         List<Booker> resultList = new ArrayList<Booker>();
-        query = em.createQuery("SELECT u FROM Booker u WHERE u.id = :inMemberId and u.memberStatus=true u.email = :inEmail");
+        query = em.createQuery("SELECT u FROM Booker u WHERE u.id = :inMemberId and u.memberStatus=true and u.email = :inEmail");
         query.setParameter("inMemberId", memberId);
         query.setParameter("inEmail", email);
 
@@ -272,7 +278,7 @@ public class PassengerBean implements PassengerBeanLocal {
             return resultList.get(0);
 
         } else {
-            return new Booker();
+            return null;
         }
 
     }

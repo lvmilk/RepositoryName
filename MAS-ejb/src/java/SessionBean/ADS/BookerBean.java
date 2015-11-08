@@ -22,6 +22,25 @@ public class BookerBean implements BookerBeanLocal {
 
     @PersistenceContext
     EntityManager em;
+    
+    public void editThisBooker(Booker bookPerson){
+        Booker booker = em.find(Booker.class, bookPerson.getId());
+        booker.setTitle(bookPerson.getTitle());
+        booker.setFirstName(bookPerson.getFirstName());
+        booker.setLastName(bookPerson.getLastName());
+        booker.setAddress(bookPerson.getAddress());
+        booker.setEmail(bookPerson.getEmail());
+        booker.setContact(bookPerson.getContact());
+        booker.setDob(bookPerson.getDob());
+        booker.setMiles(bookPerson.getMiles());
+        booker.setPassport(bookPerson.getPassport());
+        booker.setMemberStatus(bookPerson.isMemberStatus());
+
+        em.merge(booker);
+        em.flush();
+    
+    
+    }
 
     @Override
     public List<Booker> getAllBooker() {

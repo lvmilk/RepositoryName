@@ -12,6 +12,12 @@
     <h:body>
 
         <h:form id="formMain">
+            <p:breadCrumb homeDisplay="text">
+                <p:menuitem value="Check Route Profitability" url="https://localhost:8181/MAS-war/APSpages/checkRouteProfitability.xhtml"></p:menuitem>
+                <p:menuitem value="Select Route" url="https://localhost:8181/MAS-war/APSpages/checkRouteProfitability.xhtml"></p:menuitem>
+                <p:menuitem value="Enter Route Information" url="https://localhost:8181/MAS-war/APSpages/checkRouteProfitabilityEntry.xhtml"></p:menuitem>
+                <p:menuitem value="View Profitability Result" url="https://localhost:8181/MAS-war/APSpages/checkRouteProfitabilityResult.xhtml"></p:menuitem>
+            </p:breadCrumb>
             <p:panel id="panel" header="Check Route Profitability Result"  style="width:100%">
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:40%" cellpadding="10">
 
@@ -77,7 +83,7 @@
 
                 <br/>
 
-                <p:commandButton value="Back" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-carat-1-w" />
+                <p:commandButton value="Back to route list" actionListener="#{CRPMB.checkProfitabilityBack}"  icon="ui-icon-carat-1-w" />
                 <p:commandButton value="Assign Aircraft Type to Route" actionListener="#{CRPMB.assignAcToRoute}" rendered="#{CRPMB.acToAssign}" icon="ui-icon-check" />
 
             </p:panel>

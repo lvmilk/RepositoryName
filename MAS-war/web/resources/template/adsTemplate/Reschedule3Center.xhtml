@@ -72,10 +72,18 @@
                     </p:selectOneMenu>
 
 
-                    <p:outputLabel for="countPerson" value="No. of people: " />
-                     <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
-                        <f:validateLongRange minimum="1"/>
-                    </p:inputText>
+                    <c:choose>
+                        <c:when test="${reserveFlightManagedBean.manageStatus=='book'}">
+                            <p:outputLabel for="countPerson" value="No. of people: " />
+                            <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
+                                <f:validateLongRange minimum="1"/>
+                            </p:inputText>
+                        </c:when>
+                        <c:otherwise>
+                            <p:outputLabel  value="No. of people: " />
+                            <p:outputLabel  value="#{reserveFlightManagedBean.countPerson} " />
+                        </c:otherwise>
+                    </c:choose>
 
                 </h:panelGrid>
 
@@ -86,6 +94,4 @@
         </h:form>
     </h:body>
 </html>
-
-
 

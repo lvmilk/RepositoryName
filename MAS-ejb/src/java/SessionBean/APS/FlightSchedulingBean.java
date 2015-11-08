@@ -193,11 +193,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     @Override
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
             String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception {
-        Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date =:date");
-        q.setParameter("date", date);
-        if (!q.getResultList().isEmpty()) {
-            throw new Exception("add flight instance: Fight Instance has already existed!");
-        }
+//        Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date =:date");
+//        q.setParameter("date", date);
+//        if (!q.getResultList().isEmpty()) {
+//            throw new Exception("add flight instance: Fight Instance has already existed!");
+//        }
         flightInst = new FlightInstance();
         Aircraft ac = em.find(Aircraft.class, "9V-000");    //default testing 
         flightInst.setAircraft(ac);

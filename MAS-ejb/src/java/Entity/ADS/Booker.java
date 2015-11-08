@@ -5,6 +5,7 @@
  */
 package Entity.ADS;
 
+import Entity.CommonInfa.Agency;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 
@@ -48,6 +50,8 @@ public class Booker implements Serializable {
     @OneToMany(cascade={CascadeType.ALL},mappedBy="booker")
     private List<Reservation> rsvList;
     
+    @ManyToOne
+    private Agency agency;
     
     
     public Booker()
@@ -247,6 +251,20 @@ public class Booker implements Serializable {
 
     public void setRsvList(List<Reservation> rsvList) {
         this.rsvList = rsvList;
+    }
+
+    /**
+     * @return the agency
+     */
+    public Agency getAgency() {
+        return agency;
+    }
+
+    /**
+     * @param agency the agency to set
+     */
+    public void setAgency(Agency agency) {
+        this.agency = agency;
     }
 
 
