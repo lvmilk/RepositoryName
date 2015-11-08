@@ -40,7 +40,6 @@ public class TicketManagedBean implements Serializable {
     private RsvConfirmationBeanLocal rsvCflocal;
     @EJB
     private DDSBookingBeanLocal ddsBkblocal;
-    
 
     private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
     private Long bookerId;
@@ -61,12 +60,12 @@ public class TicketManagedBean implements Serializable {
     private String dest;
     private Boolean returnTrip;
     private Boolean visiMember;
-    
+
     private ArrayList<Passenger> psgList;
     private String stfType;
     private String username;
-    
-    
+    private String bkSystem;
+
     @PostConstruct
     public void init() {
         try {
@@ -75,8 +74,8 @@ public class TicketManagedBean implements Serializable {
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
             stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
-            username=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
-            
+            username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
             dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
             returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
@@ -101,17 +100,22 @@ public class TicketManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        if (stfType.equals("agency")) {
+            this.bkSystem = "DDS";
+        } else {
+            this.bkSystem = "ARS";
+        }
+        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem);
 
         if (stfType.equals("agency")) {
-            ddsBkblocal.setAgency_Booker(username,booker);
+            ddsBkblocal.setAgency_Booker(username, booker);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
-            
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
             FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
-            
+
         }
 
     }
@@ -264,6 +268,20 @@ public class TicketManagedBean implements Serializable {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * @return the bkSystem
+     */
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    /**
+     * @param bkSystem the bkSystem to set
+     */
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
     }
 
 }
