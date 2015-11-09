@@ -14,7 +14,7 @@
 
         <h:form id="display">
             <p:panel id="panel" header="Check in"  style="width:100%">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false"/>
 
                 <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel for="name" value="Passenger Name" />
@@ -29,7 +29,9 @@
                             <h:outputText value="#{tkt.flightNo}" style="center" />
                         </p:column>
                         <p:column headerText="Date">
-                            <h:outputText value="#{tkt.depTime}" style="center"/>
+                            <h:outputText value="#{tkt.depTime}" style="center">
+                                <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Ticekt Status">
                             <h:outputText value="#{tkt.ticketStatus}" style="center"/>
@@ -40,7 +42,7 @@
                                 <f:attribute name="fi" value="#{fi}"/>
                             </p:commandButton>   
                         </p:column>
-                         <p:column headerText="Standby">
+                        <p:column headerText="Standby">
                             <p:commandButton value="Generate" actionListener="#{assignPriceManagedBean.generateBookingClass}">
                                 <f:attribute name="fi" value="#{fi}"/>
                             </p:commandButton>   

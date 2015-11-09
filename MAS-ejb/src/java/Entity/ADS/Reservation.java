@@ -40,8 +40,8 @@ public class Reservation implements Serializable {
     private String bkLastName;
     private String bkEmail;
     
-    private String origin;
-    private String dest;
+    private String origin;   // airport code
+    private String dest;     //airport code
     private Boolean returnTrip;
 
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -57,9 +57,9 @@ public class Reservation implements Serializable {
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
     
-   @ManyToOne
-   private Booker booker;
-    
+    @ManyToOne
+    private Booker booker;
+     
 
     public Reservation() {
 

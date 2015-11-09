@@ -209,22 +209,25 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(99,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","hao","li",true,0,"G12345678","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(999,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","li","hao",true,0,"G87654321","Mr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(99,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","Hao","Li",true,0,"G12345678","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(999,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","Li","Hao",true,0,"G87654321","Mr")
 
 
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
+
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True)
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (222222,"Li","Hao","hahaha@gmail.com","DXB","SIN",True)
 
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888, 1500.00,"ARS","2015-08-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(222222,9999, 6000.00,"ARS","2015-09-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(333333,8888, 3000.00,"ARS","2015-10-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(444444,9999, 4000.00,"ARS","2015-11-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(555555,8888, 2200.00,"ARS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(666666,8888, 1700.00,"ADS","2015-08-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(777777,9999, 1900.00,"ADS","2015-09-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(888888,8888, 6000.00,"ADS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(999999,9999, 2500.00,"ADS","2015-11-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(666666,8888, 1700.00,"DDS","2015-08-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(777777,9999, 1900.00,"DDS","2015-09-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(888888,8888, 6000.00,"DDS","2015-11-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(999999,9999, 2500.00,"DDS","2015-11-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(1111,8888, 1500.00,"GDS","2015-03-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(2222,9999, 6000.00,"GDS","2015-04-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(3333,8888, 3000.00,"GDS","2015-08-10")
@@ -234,7 +237,7 @@ INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) value
 INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
 INSERT IGNORE INTO Hotel(hotelName)values("Hilton")
 
-INSERT IGNORE INTO CarRental(companyName)values("Grab Taxi")
+INSERT IGNORE INTO CarRental(companyName)values("GrabCar")
 
 INSERT IGNORE INTO Railway(railwayName)values("Japan Railway")
 
@@ -243,10 +246,41 @@ INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("M
 INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",2222,1500.0,"2015-05-10")
 INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Hilton",1111,2000.0,"2015-01-10")
 
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",1111,1200.0,"2015-10-12")
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",2222,1800.0,"2015-05-10")
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",1111,1000.0,"2015-01-10")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1200.0,"2015-10-12")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",2222,1800.0,"2015-05-10")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1000.0,"2015-01-10")
 
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,3000.0,"2015-10-12")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",2222,2200.0,"2015-05-10")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,2500.0,"2015-01-10")
+
+
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(111111,"ARS",1500.00,"Ticket Sale","Li Hao","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(222222,"ARS",6000.00,"Ticket Sale","Li Hao","2015-09-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(333333,"ARS",3000.00,"Ticket Sale","Huang Xiaoming","2015-10-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(444444,"ARS",4000.00,"Ticket Sale","Yang Ying","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(555555,"ARS",2200.00,"Ticket Sale","Fu Erkang","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(666666,"DDS",1700.00,"Ticket Sale","Xia Ziwei","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(777777,"DDS",1900.00,"Ticket Sale","Wang Junkai","2015-09-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(888888,"DDS",6000.00,"Ticket Sale","Wang Xueqin","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(999999,"DDS",2500.00,"Ticket Sale","Fu Erkang","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(1111,"GDS",1500.00,"Ticket Sale","MR","2015-03-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(2222,"GDS",6000.00,"Ticket Sale","MR","2015-04-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(3333,"GDS",3000.00,"Ticket Sale","MR","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",4000.00,"Ticket Sale","MR","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",2200.00,"Ticket Sale","MR","2015-11-10")
+
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(1111,"GDS",150.00,"Commission","DL","2015-03-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(2222,"GDS",600.00,"Commission","KE","2015-04-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(3333,"GDS",300.00,"Commission","KE","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",400.00,"Commission","AF","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",220.00,"Commission","DL","2015-11-10")

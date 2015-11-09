@@ -29,7 +29,9 @@
                             <h:outputText value="#{tkt.flightNo}" style="center" />
                         </p:column>
                         <p:column headerText="Date">
-                            <h:outputText value="#{tkt.depTime}" style="center"/>
+                            <h:outputText value="#{tkt.depTime}" style="center">
+                                <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                            </h:outputText>
                         </p:column>
                         <p:column headerText="Ticekt Status">
                             <h:outputText value="#{tkt.ticketStatus}" style="center"/>
@@ -40,8 +42,8 @@
                                 <f:attribute name="tkt" value="#{tkt}"/>
                             </p:commandButton>   
                         </p:column>
-                         <p:column headerText="Standby">
-                             <p:commandButton value="Standby" actionListener="#{cmb.onStandbyChange}">
+                        <p:column headerText="Standby">
+                            <p:commandButton value="Standby" actionListener="#{cmb.onStandbyChange}">
                                 <f:attribute name="tkt" value="#{tkt}"/>
                             </p:commandButton>   
                         </p:column>

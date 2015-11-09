@@ -16,9 +16,10 @@
         <h:form> 
             <p:panel id="panel" header="Departure Control Tool List" >
                 <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
-                    <p:menu id='AIS'  style="width:250px" toggleable="true">
+                    <p:menu id="DCS"  style="width:250px" toggleable="true">
                         <p:submenu label="Counter Check-in Management">
                             <p:menuitem value="Passenger Check-in" url="./checkIn.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Luggage Checkin for Online Checkedin Passengers" url="./onlineCheckIn.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="View Checked-in Passenger List" url="./viewCheckedIn.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="View Unchecked-in Passenger List" url="./viewUncheckedIn.xhtml"  icon="ui-icon-disk" />
                             <p:menuitem value="Check Seat Availability" url="./checkSeatAvailability.xhtml"  icon="ui-icon-disk" />
