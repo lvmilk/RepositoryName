@@ -10,7 +10,6 @@ import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
 import Entity.ADS.Ticket;
-import static Entity.ADS.Ticket_.rsv;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;

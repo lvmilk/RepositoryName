@@ -24,7 +24,7 @@ public class Railway implements Serializable {
     @Id
     private String railwayName;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "railway")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "railway")
     private List<RailwayPayment> railwayPayment = new ArrayList<>();
 
     public void create(String name) {

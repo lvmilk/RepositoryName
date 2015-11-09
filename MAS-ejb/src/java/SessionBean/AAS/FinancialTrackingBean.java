@@ -86,32 +86,32 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
             ticketYear = cal.get(Calendar.YEAR);
             switch (quarter) {
                 case "1": {
-                    startCal.set((int) year, 1, 1);
-                    endCal.set((int) year, 3, 31);
+                    startCal.set((int) year, 0, 1);
+                    endCal.set((int) year, 2, 31);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
                     inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                     break;
                 }
                 case "2": {
-                    startCal.set((int) year, 4, 1);
-                    endCal.set((int) year, 6, 30);
+                    startCal.set((int) year, 3, 1);
+                    endCal.set((int) year, 5, 30);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
                     inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                     break;
                 }
                 case "3": {
-                    startCal.set((int) year, 7, 1);
-                    endCal.set((int) year, 9, 30);
+                    startCal.set((int) year, 6, 1);
+                    endCal.set((int) year, 8, 30);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
                     inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                     break;
                 }
                 case "4": {
-                    startCal.set((int) year, 10, 1);
-                    endCal.set((int) year, 12, 31);
+                    startCal.set((int) year, 9, 1);
+                    endCal.set((int) year, 11, 31);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
                     inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
@@ -135,7 +135,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         int commissionYear;
         Date startDate = new Date(); //set default 
         Date endDate = new Date();//set default
-        Boolean inPeriod = false;//set default
+        Boolean inPeriod = true;//set default
         Calendar cal = Calendar.getInstance();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
@@ -149,39 +149,39 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
             } else {
                 System.out.println("AAS:FTB:Hotel Payment data exists");
             }
-            System.out.println(list);
+
             for (int i = 0; i < list.size(); i++) {
                 Date paymentDate = list.get(i).getPaymentDate();
                 cal.setTime(paymentDate);
                 commissionYear = cal.get(Calendar.YEAR);
                 switch (quarter) {
                     case "1": {
-                        startCal.set((int) year, 1, 1);
-                        endCal.set((int) year, 3, 31);
+                        startCal.set((int) year, 0, 1);
+                        endCal.set((int) year, 2, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "2": {
-                        startCal.set((int) year, 4, 1);
-                        endCal.set((int) year, 6, 30);
+                        startCal.set((int) year, 3, 1);
+                        endCal.set((int) year, 5, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "3": {
-                        startCal.set((int) year, 7, 1);
-                        endCal.set((int) year, 9, 30);
+                        startCal.set((int) year, 6, 1);
+                        endCal.set((int) year, 8, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "4": {
-                        startCal.set((int) year, 10, 1);
-                        endCal.set((int) year, 12, 31);
+                        startCal.set((int) year, 9, 1);
+                        endCal.set((int) year, 11, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
@@ -193,10 +193,10 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 }
                 if (commissionYear == year && inPeriod) {
                     total = total + list.get(i).getPayment();
+                    System.out.println(total);
                 }
             }
-        }
-        if (channel.equals("CAR RENTAL")) {
+        } else if (channel.equals("CAR RENTAL")) {
             Query q2 = em.createQuery("SELECT cp FROM CarPayment cp");
             List<CarPayment> list = (List) q2.getResultList();
             if (list.isEmpty()) {
@@ -211,32 +211,32 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 commissionYear = cal.get(Calendar.YEAR);
                 switch (quarter) {
                     case "1": {
-                        startCal.set((int) year, 1, 1);
-                        endCal.set((int) year, 3, 31);
+                        startCal.set((int) year, 0, 1);
+                        endCal.set((int) year, 2, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "2": {
-                        startCal.set((int) year, 4, 1);
-                        endCal.set((int) year, 6, 30);
+                        startCal.set((int) year, 3, 1);
+                        endCal.set((int) year, 5, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "3": {
-                        startCal.set((int) year, 7, 1);
-                        endCal.set((int) year, 9, 30);
+                        startCal.set((int) year, 6, 1);
+                        endCal.set((int) year, 8, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "4": {
-                        startCal.set((int) year, 10, 1);
-                        endCal.set((int) year, 12, 31);
+                        startCal.set((int) year, 9, 1);
+                        endCal.set((int) year, 11, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
@@ -248,10 +248,10 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 }
                 if (commissionYear == year && inPeriod) {
                     total = total + list.get(i).getPayment();
+                    System.out.println(total);
                 }
             }
-        }
-        if (channel.equals("HIGH-SPEED RAILWAY")) {
+        } else if (channel.equals("HIGH-SPEED RAILWAY")) {
             Query q3 = em.createQuery("SELECT rp FROM RailwayPayment rp");
             List<RailwayPayment> list = (List) q3.getResultList();
             if (list.isEmpty()) {
@@ -266,32 +266,32 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 commissionYear = cal.get(Calendar.YEAR);
                 switch (quarter) {
                     case "1": {
-                        startCal.set((int) year, 1, 1);
-                        endCal.set((int) year, 3, 31);
+                        startCal.set((int) year, 0, 1);
+                        endCal.set((int) year, 2, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "2": {
-                        startCal.set((int) year, 4, 1);
-                        endCal.set((int) year, 6, 30);
+                        startCal.set((int) year, 3, 1);
+                        endCal.set((int) year, 5, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "3": {
-                        startCal.set((int) year, 7, 1);
-                        endCal.set((int) year, 9, 30);
+                        startCal.set((int) year, 6, 1);
+                        endCal.set((int) year, 8, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                         break;
                     }
                     case "4": {
-                        startCal.set((int) year, 10, 1);
-                        endCal.set((int) year, 12, 31);
+                        startCal.set((int) year, 9, 1);
+                        endCal.set((int) year, 11, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
@@ -303,10 +303,10 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 }
                 if (commissionYear == year && inPeriod) {
                     total = total + list.get(i).getPayment();
+                    System.out.println(total);
                 }
             }
-        }
-        if (channel.equals("GDS")) {
+        } else if (channel.equals("GDS")) {
             Query q4 = em.createQuery("SELECT t FROM Ticket t where t.bookSystem =:channel");
             q4.setParameter("channel", channel);
             List<Ticket> list = (List) q4.getResultList();
@@ -316,38 +316,39 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
             } else {
                 System.out.println("AAS:FTB: Available ticket found for " + channel);
             }
+
             for (int i = 0; i < list.size(); i++) {
                 Date bookDate = list.get(i).getBookDate();
                 cal.setTime(bookDate);
                 commissionYear = cal.get(Calendar.YEAR);
                 switch (quarter) {
                     case "1": {
-                        startCal.set((int) year, 1, 1);
-                        endCal.set((int) year, 3, 31);
+                        startCal.set((int) year, 0, 1);
+                        endCal.set((int) year, 2, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                         break;
                     }
                     case "2": {
-                        startCal.set((int) year, 4, 1);
-                        endCal.set((int) year, 6, 30);
+                        startCal.set((int) year, 3, 1);
+                        endCal.set((int) year, 5, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                         break;
                     }
                     case "3": {
-                        startCal.set((int) year, 7, 1);
-                        endCal.set((int) year, 9, 30);
+                        startCal.set((int) year, 6, 1);
+                        endCal.set((int) year, 8, 30);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
                         break;
                     }
                     case "4": {
-                        startCal.set((int) year, 10, 1);
-                        endCal.set((int) year, 12, 31);
+                        startCal.set((int) year, 9, 1);
+                        endCal.set((int) year, 11, 31);
                         startDate = startCal.getTime();
                         endDate = endCal.getTime();
                         inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
@@ -364,7 +365,6 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         } else {
             return 0.0;
         }
-        System.out.println("AAS:FTB: chargedCommission(): total commissions for " + channel + " is: " + total);
         return total;
     }
 
