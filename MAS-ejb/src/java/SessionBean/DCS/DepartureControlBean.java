@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Session.DCS;
+package SessionBean.DCS;
 
 import Entity.ADS.Passenger;
 import Entity.ADS.Ticket;
@@ -38,8 +38,8 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
         query1.setParameter("plastname", lastName);
         if (!query1.getResultList().isEmpty()) {
             passenger = (Passenger) query1.getSingleResult();
-            Query query2 = em.createQuery("SELECT t  FROM Ticket t where t.passenger.id:pid");
-            query1.setParameter("pid", passenger.getId());
+            Query query2 = em.createQuery("SELECT t FROM Ticket t where t.passenger.id=:pid");
+            query2.setParameter("pid", passenger.getId());
             ticketList = query2.getResultList();
             if (ticketList.isEmpty()) {
                 return ticketList;
@@ -72,29 +72,11 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             return flightList;
         }
     }
-//    @Override
-//    public List<FlightFrequency> getFlightList(String dateString) {
-//        List<FlightFrequency> flightList = new ArrayList<FlightFrequency>();
-//
-//        flightList = new ArrayList<FlightFrequency>();
-//        System.out.println("MPB: getFlightList(): date is " + dateString);
-//
-//        Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
-//        query.setParameter("fdate", dateString);
-//        System.out.println("MPB: getFlightList(): flights are " + query.getResultList().toString());
-//        List<FlightInstance> resultList = query.getResultList();
-//        for (FlightInstance temp : resultList) {
-//            if (!flightList.contains(temp.getFlightFrequency())) {
-//                flightList.add(temp.getFlightFrequency());
-//            }
-//        }
-//        return flightList;
-//    }
+
 
     public FlightInstance getRequestFlight(String flightNo, String dateString) throws Exception {
         FlightInstance fi = new FlightInstance();
         Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
-        //   Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate");
 
         query.setParameter("fdate", dateString);
         query.setParameter("flightNo", flightNo);
@@ -105,6 +87,9 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("Cannot find request flight!");
         }
     }
+   
+    
+    
 
     private List<Ticket> getAllStandbyTickets(String flightNo, String date) {
         List<Ticket> ticketList = new ArrayList<Ticket>();

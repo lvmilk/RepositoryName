@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Session.DCS;
+package SessionBean.DCS;
 
 import Entity.ADS.Ticket;
 import Entity.APS.FlightFrequency;
