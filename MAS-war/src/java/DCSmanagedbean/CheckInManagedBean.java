@@ -41,18 +41,21 @@ public class CheckInManagedBean implements Serializable {
     private String lastName;
     private String flightNo;
     private List<FlightFrequency> ffList = new ArrayList<FlightFrequency>();
-    ;
     private Date date;
     private String dateString = new String();
     private List<Ticket> tickets = new ArrayList<Ticket>();
+    private Ticket ticket = new Ticket();
 
-    
     @PostConstruct
     public void init() {
-        tickets = (List<Ticket>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
+        tickets = (List<Ticket>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tickets");
+        ticket = (Ticket) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("ticket");
+        dateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dateString");
+        firstName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstName");
+        lastName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lastName");
+        passportNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("passportNo");
 
     }
-
 
     public void onDateChange() throws Exception {
         System.out.println("CMB:OnDateChange run");
@@ -68,12 +71,11 @@ public class CheckInManagedBean implements Serializable {
 
         } catch (Exception ex) {
             System.out.println("CMB:OnDateChange error");
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    
-     //choose tickets within 24 hours
+
+    //choose tickets within 24 hours
     public void getUnusedTicket() {
 
         try {
@@ -94,8 +96,34 @@ public class CheckInManagedBean implements Serializable {
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tickets", tickets);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn2.xhtml");
             }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
+    public void onCheckinChange(ActionEvent event) throws Exception {
+        try {
+            ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
+            dcb.changeCheckinStatus(ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn3.xhtml");
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
+    public void onStandbyChange(ActionEvent event) {
+        try {
+            ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
+            dcb.changeStandbyStatus(ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./standBy.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -132,13 +160,6 @@ public class CheckInManagedBean implements Serializable {
     public void setDate(Date date) {
         System.out.println("Date: " + date);
         this.date = date;
-//         System.out.println("----------------check1");
-//
-//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-//                 System.out.println("----------------check2");
-//         System.out.println("----------------check3"+df1.format(date));
-//
-//        this.setDateString(df1.format(date));
     }
 
     public String getPassportNo() {
@@ -172,7 +193,7 @@ public class CheckInManagedBean implements Serializable {
     }
 
     public void setDateString(String dateString) {
-        System.out.println("DateString: "+dateString);
+        System.out.println("DateString: " + dateString);
         this.dateString = dateString;
     }
 
