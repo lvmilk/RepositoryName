@@ -22,6 +22,15 @@ public interface DepartureControlBeanLocal {
 
     public List<Ticket> getAllTicket(String passportID, String firstName, String lastName) throws Exception;
 
+
     public List<FlightFrequency> getFlightList(String dateString) throws Exception;
+
+    public boolean changeStandbyStatus(Ticket tkt) throws Exception;
+
+    public boolean changeCheckinStatus(Ticket tkt) throws Exception;
+
+    public List<Ticket> getAllStandbyTickets(String flightNo, String dateString) throws Exception;
+
+    
     
 }
