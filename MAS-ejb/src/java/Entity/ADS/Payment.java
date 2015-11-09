@@ -212,4 +212,6 @@ public class Payment implements Serializable {
         this.totalPrice = totalPrice;
     }
 
+    
+    
 }
