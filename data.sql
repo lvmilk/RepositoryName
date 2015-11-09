@@ -2,11 +2,11 @@ INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, purchaseCost, 
 INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, purchaseCost, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, cabinCrew, cabinLeader, captain, pilot, acInH, acInC, acDu, acMH, bcInH, bcInC, bcDu, bcMH, ccInH, ccInC, ccDu, ccMH, dcInH, dcInC, dcDu, dcMH) values("777-300","BOEING",11400,150000000,10000,70,67,1500,"4F",3,20,50,100,200,0.02,0.005,1,2, 300,36,20,200,1800,360,40,500,7500,1500,240,2500,30000,6000,1200,45000)
 INSERT IGNORE INTO AircraftType (type, manufacturer, maxDistance, purchaseCost, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo,bcSeatNo,pecSeatNo,ecSeatNo, cabinCrew, cabinLeader, captain, pilot) values("A330-200","AIRBUS",10800,50000000,6000,60,55,800,"4F",2,10,50,80,200,0.02,0.005,2,2)
 
-INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("SIN","Singapore Changi Airport","Singapore","Singapore","Changi Intl","UTC+08:00","Normal","Hub","4F", 1.364420, 103.991531)
-INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("XIA","Xi'an Xianyang International Airport","Xi'an","China","Xianyang","UTC+08:00","Normal","Normal","4F", 34.441983, 108.771426)
-INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("LHR","Heathrow Airport","London","United Kingdom","Heathrow","UTC+00:00","Normal","Normal","4F", 51.470022, -0.454295)
-INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("DXB","Dubai International Airport","Dubai","United Arab Emirates","Dubai Intl","UTC+04:00","Normal","Hub","4F", 25.253175, 55.365673)
-INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName,spec, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("LAX","Los Angeles International Airport","Los Angeles","United States","Los Angeles Intl","UTC-08:00","Normal","Normal","4F", 33.941589, -118.408530)
+INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName, spec, lang, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("SIN","Singapore Changi Airport","Singapore","Singapore","Changi Intl", "English", "UTC+08:00","Normal","Hub","4F", 1.364420, 103.991531)
+INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName, spec, lang, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("XIA","Xi'an Xianyang International Airport","Xi'an","China","Xianyang", "Mandarin", "UTC+08:00","Normal","Normal","4F", 34.441983, 108.771426)
+INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName, spec, lang, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("LHR","Heathrow Airport","London","United Kingdom","Heathrow", "English", "UTC+00:00","Normal","Normal","4F", 51.470022, -0.454295)
+INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName, spec, lang, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("DXB","Dubai International Airport","Dubai","United Arab Emirates","Dubai Intl", "Arabic", "UTC+04:00","Normal","Hub","4F", 25.253175, 55.365673)
+INSERT IGNORE INTO Airport (IATA, airportName,cityName, countryName, spec, lang, timeZone,opStatus,strategicLevel, airspace, lat, lon) values("LAX","Los Angeles International Airport","Los Angeles","United States","Los Angeles Intl", "English", "UTC-08:00","Normal","Normal","4F", 33.941589, -118.408530)
 
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(10000,"Suite",6,"A380")
 INSERT IGNORE INTO CabinClass(cabinID,cabinName,seatCount,aircraftType_type) values(20000,"First Class",10,"A380")
@@ -53,17 +53,34 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP888888","666@666.com")
 
 INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","ag777@777.com","agency")
 
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","777@777.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",5000,0)
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O888888","888@888.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",5000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",5000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("0888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",5000,0)
 
-INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G777777","111@111.com","de581c8f145c1fb4114c34405b17a479","groundStaff",0,0,"G777777","HAO","LI","Normal",5000,0)
-INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G888888","222@222.com","d3e68babfccc6540105b8a6e8c2f017a","groundStaff",0,0,"G888888","LI","HAO","Normal",5000,0)
+INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G777777","g777777@mas.com","de581c8f145c1fb4114c34405b17a479","groundStaff",0,0,"G777777","HAO","LI","Normal",5000,0)
+INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G888888","g888888@mas.com","d3e68babfccc6540105b8a6e8c2f017a","groundStaff",0,0,"G888888","LI","HAO","Normal",5000,0)
 
-INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB777777","a9e82ba9d07b46fb5ae7ad1bb15bcc26","333@333.com","cabin",0,0,"CB777777","HAO","LI","Cabin Leader",10000,0)
-INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888888","d77c897797e7edf03bf5cd8509493314","444@444.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888881","a9e82ba9d07b46fb5ae7ad1bb15bcc26","cb888881@mas.com","cabin",0,0,"CB777777","HAO","LI","Cabin Leader",10000,20)
+INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888882","d77c897797e7edf03bf5cd8509493314","cb888882@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin Crew",8000,15)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888883","d77c897797e7edf03bf5cd8509493314","CB888883@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888884","d77c897797e7edf03bf5cd8509493314","CB888884@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888885","d77c897797e7edf03bf5cd8509493314","CB888885@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888886","d77c897797e7edf03bf5cd8509493314","CB888886@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888887","d77c897797e7edf03bf5cd8509493314","CB888887@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888888","d77c897797e7edf03bf5cd8509493314","CB888888@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888889","d77c897797e7edf03bf5cd8509493314","CB888889@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
+-- INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CB888890","d77c897797e7edf03bf5cd8509493314","CB888889@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,0)
 
-INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777777","829d214cbc0fd94b7e16a52e526d3a56","555@555.com","cockpit","L12345",0,0,"CP777777","HAO","LI","Captain",20000,0)
-INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP888888","91da5b4c6cb97677b5b66f0f07ef993b","666@666.com","cockpit","L12345",0,0,"CP888888","LI","HAO","Pilot",15000,0)
+
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777771","829d214cbc0fd94b7e16a52e526d3a56","cp777771@mas.com","cockpit","L12345",0,0,"CP777777","HAO","LI","Captain",20000,35)
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777772","91da5b4c6cb97677b5b66f0f07ef993b","cp777772@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,30)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777773","91da5b4c6cb97677b5b66f0f07ef993b","CP777773@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777774","91da5b4c6cb97677b5b66f0f07ef993b","CP777774@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777775","91da5b4c6cb97677b5b66f0f07ef993b","CP777775@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777776","91da5b4c6cb97677b5b66f0f07ef993b","CP777776@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777777","91da5b4c6cb97677b5b66f0f07ef993b","CP777777@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777778","91da5b4c6cb97677b5b66f0f07ef993b","CP777778@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777779","91da5b4c6cb97677b5b66f0f07ef993b","CP777779@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
+-- INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("CP777780","91da5b4c6cb97677b5b66f0f07ef993b","CP777780@mas.com","cockpit","L12345",0,0,"CP888888","XIAOMING","HUANG","Pilot",15000,0)
 
 
 INSERT IGNORE INTO FlightFrequency(id,route_id, flightNo, startDate,endDate,scheduleDepTime,scheduleArrTime, dateAdjust, onMon,  onTue, onWed, onThu,  onFri, onSat, onSun) values (10000,10000,'MR001',"2015-01-01","2025-01-01","10:00","15:00",0,True,False,True,False,True,False,True)
@@ -79,16 +96,16 @@ INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,es
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(60000,60000,"2015-12-23","16:00","22:00","16:00","22:00","Testing",0,0,"2015-12-23 16:00","2015-12-23 22:00","9V-000",'2015-12-23 16:00','2015-12-23 22:00')
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(40000,40000,"2015-12-24","03:00","07:00","03:00","07:00","Testing",0,0,"2015-12-24 03:00","2015-12-24 07:00","9V-000",'2015-12-24 03:00','2015-12-24 07:00')
 
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000000,10000,"2015-10-13","10:00","15:00","10:00","15:00","Testing",0,0,"2015-10-13 10:00","2015-10-13 15:00","9V-000",'2015-10-13 10:00','2015-10-13 15:00')
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000001,20000,"2015-10-13","18:00","23:00","18:00","23:00","Testing",0,0,"2015-10-13 18:00","2015-10-13 23:00","9V-000",'2015-10-13 18:00','2015-10-13 23:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000000,10000,"2015-10-13","10:00","15:00","10:00","15:00","Testing",0,0,"2015-10-13 10:00","2015-10-13 15:00","9V-000",'2015-10-13 10:00','2015-10-13 15:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000001,20000,"2015-10-13","18:00","23:00","18:00","23:00","Testing",0,0,"2015-10-13 18:00","2015-10-13 23:00","9V-000",'2015-10-13 18:00','2015-10-13 23:00')
 
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(10000,10000,"2015-11-01","10:00","15:00","10:00","15:00","Testing",0,0,"2015-11-01 10:00","2015-11-01 15:00","9V-000",'2015-11-01 10:00','2015-11-01 15:00')
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(20000,20000,"2015-11-03","10:00","15:00","10:00","15:00","Testing",0,0,"2015-11-03 10:00","2015-11-03 15:00","9V-000",'2015-11-03 10:00','2015-11-03 15:00')
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(70000,30000,"2015-12-19","10:00","15:00","10:00","15:00","Testing",0,0,"2015-12-19 10:00","2015-12-19 15:00","9V-000",'2015-12-19 10:00','2015-12-19 15:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(10000,10000,"2015-11-01","10:00","15:00","10:00","15:00","Testing",0,0,"2015-11-01 10:00","2015-11-01 15:00","9V-000",'2015-11-01 10:00','2015-11-01 15:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(20000,20000,"2015-11-03","10:00","15:00","10:00","15:00","Testing",0,0,"2015-11-03 10:00","2015-11-03 15:00","9V-000",'2015-11-03 10:00','2015-11-03 15:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(70000,30000,"2015-12-19","10:00","15:00","10:00","15:00","Testing",0,0,"2015-12-19 10:00","2015-12-19 15:00","9V-000",'2015-12-19 10:00','2015-12-19 15:00')
 
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(80000,50000,"2015-12-15","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-15 17:00","2015-12-15 20:00","9V-000",'2015-12-15 17:00','2015-12-15 20:00')
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(90000,50000,"2015-12-17","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-17 17:00","2015-12-17 20:00","9V-000",'2015-12-17 17:00','2015-12-17 20:00')
-INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(100000,50000,"2015-12-19","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-19 17:00","2015-12-19 20:00","9V-000",'2015-12-19 17:00','2015-12-19 20:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(80000,50000,"2015-12-15","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-15 17:00","2015-12-15 20:00","9V-000",'2015-12-15 17:00','2015-12-15 20:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(90000,50000,"2015-12-17","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-17 17:00","2015-12-17 20:00","9V-000",'2015-12-17 17:00','2015-12-17 20:00')
+-- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(100000,50000,"2015-12-19","17:00","20:00","17:00","20:00","Testing",0,0,"2015-12-19 17:00","2015-12-19 20:00","9V-000",'2015-12-19 17:00','2015-12-19 20:00')
 
 
 
@@ -200,16 +217,15 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
 
 
-
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888,1500.00,"ARS","2015-08-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888, 1500.00,"ARS","2015-08-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(222222,9999, 6000.00,"ARS","2015-09-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(333333,8888, 3000.00,"ARS","2015-10-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(444444,9999, 4000.00,"ARS","2015-11-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(555555,8888, 2200.00,"ARS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(666666,8888, 1700.00,"ADS","2015-08-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(777777,9999, 1900.00,"ADS","2015-09-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(888888,8888, 6000.00,"ADS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(999999,9999, 2500.00,"ADS","2015-11-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(666666,8888, 1700.00,"DDS","2015-08-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(777777,9999, 1900.00,"DDS","2015-09-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(888888,8888, 6000.00,"DDS","2015-11-10")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(999999,9999, 2500.00,"DDS","2015-11-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(1111,8888, 1500.00,"GDS","2015-03-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(2222,9999, 6000.00,"GDS","2015-04-10")
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(3333,8888, 3000.00,"GDS","2015-08-10")
@@ -219,7 +235,7 @@ INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) value
 INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
 INSERT IGNORE INTO Hotel(hotelName)values("Hilton")
 
-INSERT IGNORE INTO CarRental(companyName)values("Grab Taxi")
+INSERT IGNORE INTO CarRental(companyName)values("GrabCar")
 
 INSERT IGNORE INTO Railway(railwayName)values("Japan Railway")
 
@@ -228,12 +244,41 @@ INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("M
 INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",2222,1500.0,"2015-05-10")
 INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Hilton",1111,2000.0,"2015-01-10")
 
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",1111,1200.0,"2015-10-12")
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",2222,1800.0,"2015-05-10")
-INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("Grab Taxi",1111,1000.0,"2015-01-10")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1200.0,"2015-10-12")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",2222,1800.0,"2015-05-10")
+INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1000.0,"2015-01-10")
 
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,3000.0,"2015-10-12")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",2222,2200.0,"2015-05-10")
 INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,2500.0,"2015-01-10")
 
 
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(111111,"ARS",1500.00,"Ticket Sale","Li Hao","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(222222,"ARS",6000.00,"Ticket Sale","Li Hao","2015-09-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(333333,"ARS",3000.00,"Ticket Sale","Huang Xiaoming","2015-10-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(444444,"ARS",4000.00,"Ticket Sale","Yang Ying","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(555555,"ARS",2200.00,"Ticket Sale","Fu Erkang","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(666666,"DDS",1700.00,"Ticket Sale","Xia Ziwei","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(777777,"DDS",1900.00,"Ticket Sale","Wang Junkai","2015-09-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(888888,"DDS",6000.00,"Ticket Sale","Wang Xueqin","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(999999,"DDS",2500.00,"Ticket Sale","Fu Erkang","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(1111,"GDS",1500.00,"Ticket Sale","MR","2015-03-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(2222,"GDS",6000.00,"Ticket Sale","MR","2015-04-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(3333,"GDS",3000.00,"Ticket Sale","MR","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",4000.00,"Ticket Sale","MR","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",2200.00,"Ticket Sale","MR","2015-11-10")
+
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(1111,"GDS",150.00,"Commission","DL","2015-03-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(2222,"GDS",600.00,"Commission","KE","2015-04-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(3333,"GDS",300.00,"Commission","KE","2015-08-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",400.00,"Commission","AF","2015-11-10")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",220.00,"Commission","DL","2015-11-10")
