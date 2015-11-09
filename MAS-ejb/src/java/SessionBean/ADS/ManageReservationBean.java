@@ -186,6 +186,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     public Double computeTotalPrice(ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, Double penalty) {
         Double totalPrice = 0.0;
+        System.out.println("psgCount "+psgCount+" penalty "+penalty+" bookList.size() "+BookClassInstanceList.size());
         for (int i = 0; i < BookClassInstanceList.size(); i++) {
             totalPrice += BookClassInstanceList.get(i).getPrice();
         }
@@ -200,7 +201,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         Payment payment = em.find(Payment.class, rsv.getPayment().getPaymentID());
         rsv.setPayment(null);
-        em.merge(rsv);
+        payment.setReservation(null);
+//        em.merge(rsv);
         em.remove(payment);
         em.flush();
 
@@ -348,7 +350,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 System.out.println("change of route for flight " + oldReturn.get(i).toString());
             }
         }
-
+        
+        
+        System.out.println("changeList is "+changeList);
+           System.out.println("oldInstance is "+oldInstance);
+        
         for (int i = 0; i < changeList.size(); i++) {
             for (int j = 0; j < oldInstance.size(); j++) {
                 if (oldInstance.get(j).getFlightCabin().getFlightInstance().equals(changeList.get(i))) {
