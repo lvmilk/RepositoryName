@@ -77,6 +77,8 @@ public class rescheduleConfirmManagedBean implements Serializable {
 
     private Reservation selectedRsv;
     private String manageStatus;
+    
+    private String bkSystem;
 
     @PostConstruct
     public void init() {
@@ -112,7 +114,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
 
             changeDatePenalty = mrLocal.getChangeDatePenalty(departed, returned, departSelected, returnSelected, selectedRsv.getBkcInstance());
 
-            totalPenalty =psgCount*( priceDiff + changeRoutePenalty + changeDatePenalty);
+            totalPenalty = psgCount * (priceDiff + changeRoutePenalty + changeDatePenalty);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -128,11 +130,15 @@ public class rescheduleConfirmManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        
-        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip);
-        
-//        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        if (stfType.equals("agency")) {
+            this.bkSystem = "DDS";
+        } else {
+            this.bkSystem = "ARS";
+        }
 
+        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem);
+
+//        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");

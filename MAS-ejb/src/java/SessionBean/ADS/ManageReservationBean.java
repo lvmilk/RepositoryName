@@ -10,7 +10,6 @@ import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
 import Entity.ADS.Ticket;
-import static Entity.ADS.Ticket_.rsv;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,14 +33,76 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     @PersistenceContext
     EntityManager em;
 
-    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip) {
+    @EJB
+    PassengerBeanLocal psgLocal;
+
+    public void cancelFlight(Reservation selectedRsv, List<Passenger> selectedPsgList, List<FlightInstance> departed, List<FlightInstance> returned, List<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double penalty, String bkSystem) {
+  Booker booker = selectedRsv.getBooker();
+        System.out.println("in rescheduleRsv()");
+
+        System.out.println("origin is " + origin);
+        System.out.println("dest is " + dest);
+        System.out.println("returnTrip is " + returnTrip);
+
+        for (int i = 0; i < departed.size(); i++) {
+            System.out.println(departed.get(i));
+        }
+
+        for (int i = 0; i < returned.size(); i++) {
+            System.out.println(returned.get(i));
+        }
+        for (int i = 0; i < BookClassInstanceList.size(); i++) {
+            System.out.println(BookClassInstanceList.get(i));
+        }
+
+        ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
+        if (oldPsgList != null && oldPsgList.size() == selectedPsgList.size()) {
+            removeOldRsv(selectedRsv, oldPsgList);
+        }
+
+        em.flush();
+        
+        
+        
+    }
+
+    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem) {
         Booker booker = selectedRsv.getBooker();
+        System.out.println("in rescheduleRsv()");
+
+        System.out.println("origin is " + origin);
+        System.out.println("dest is " + dest);
+        System.out.println("returnTrip is " + returnTrip);
+
+        for (int i = 0; i < departSelected.size(); i++) {
+            System.out.println(departSelected.get(i));
+        }
+
+        for (int i = 0; i < returnSelected.size(); i++) {
+            System.out.println(returnSelected.get(i));
+        }
+        for (int i = 0; i < BookClassInstanceList.size(); i++) {
+            System.out.println(BookClassInstanceList.get(i));
+        }
+
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         if (oldPsgList != null && oldPsgList.size() == passengerList.size()) {
             removeOldRsv(selectedRsv, oldPsgList);
-
         }
+        Double totalPrice = computeTotalPrice(BookClassInstanceList, passengerList.size(), totalPenalty);
+        em.flush();
+        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem);
 
+    }
+
+    public Double computeTotalPrice(ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, Double penalty) {
+        Double totalPrice = 0.0;
+        for (int i = 0; i < BookClassInstanceList.size(); i++) {
+            totalPrice += BookClassInstanceList.get(i).getPrice();
+        }
+        totalPrice *= psgCount;
+        totalPrice += penalty;
+        return totalPrice;
     }
 
     public void removeOldRsv(Reservation rsv, ArrayList<Passenger> psgList) {
@@ -59,23 +121,25 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             Passenger psg = em.find(Passenger.class, psgList.get(i).getId());
             Query query = em.createQuery("SELECT t FROM Ticket t WHERE t.passenger=:psg").setParameter("psg", psg);
             tickets = query.getResultList();
-            System.out.println("ticket size is "+tickets.size());
+            System.out.println("ticket size is " + tickets.size());
             List<Ticket> ticketsCopy = query.getResultList();
-            
-             System.out.println("ticket size for copy is "+ticketsCopy.size());
+
+            System.out.println("ticket size for copy is " + ticketsCopy.size());
             for (int j = 0; j < ticketsCopy.size(); j++) {
                 Ticket ticket = em.find(Ticket.class, ticketsCopy.get(j).getTicketID());
-                
-                if(ticket!=null){
-                System.out.println(ticket);
+
+                if (ticket != null) {
+                    System.out.println(ticket);
+                } else {
+                    System.out.println(" ticket is null ");
                 }
-                else{
-               System.out.println(" ticket is null ");
-                }
-                
+                ticket.setPassenger(null);
+                ticket.setRsv(null);
+
                 List<Ticket> psgTickets = psg.getTickets();
                 psgTickets.remove(ticket);
                 psg.setTickets(psgTickets);
+
                 List<Ticket> rsvTickets = rsv.getTickets();
                 rsvTickets.remove(ticket);
                 rsv.setTickets(rsvTickets);
@@ -86,32 +150,33 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             }
             em.flush();
         }
-        
-        for(int i=0; i<psgList.size(); i++){
-        Passenger psg=em.find(Passenger.class, psgList.get(i).getId());
-        em.remove(psg);
-        em.flush();      
+
+        for (int i = 0; i < psgList.size(); i++) {
+            Passenger psg = em.find(Passenger.class, psgList.get(i).getId());
+            em.remove(psg);
+            em.flush();
         }
-        
 
         rsv = em.find(Reservation.class, rsv.getId());
         List<BookingClassInstance> bookList = rsv.getBkcInstance();
         for (int i = 0; i < bookList.size(); i++) {
             BookingClassInstance bookInstance = em.find(BookingClassInstance.class, bookList.get(i).getId());
-            
-            List<BookingClassInstance> bkList=rsv.getBkcInstance();
+
+            List<BookingClassInstance> bkList = rsv.getBkcInstance();
             bkList.remove(bookInstance);
             rsv.setBkcInstance(bkList);
-            
-            Collection<Reservation> rsvList=bookInstance.getReservation();
+
+            Collection<Reservation> rsvList = bookInstance.getReservation();
             rsvList.remove(rsv);
             bookInstance.setReservation(rsvList);
-            
+
             em.merge(bookInstance);
             em.flush();
 
         }
+
         em.remove(rsv);
+        em.flush();
 //
 //        em.remove(rsv);
 //        em.flush();

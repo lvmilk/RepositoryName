@@ -24,7 +24,7 @@ public class CarRental implements Serializable {
     @Id
     private String companyName;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "carRental")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "carRental")
     private List<CarPayment> carPayment = new ArrayList<>();
     
     public void create(String companyName){

@@ -24,6 +24,7 @@ public class Agency implements Serializable {
     @Id
     private String agencyID;
     private String agenPwd;
+    private String name;
     
     @Column(unique=true)
     private String email;
@@ -47,6 +48,14 @@ public class Agency implements Serializable {
 
     public void setAgencyID(String agencyID) {
         this.agencyID = agencyID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

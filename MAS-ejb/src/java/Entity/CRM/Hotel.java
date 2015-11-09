@@ -24,7 +24,7 @@ public class Hotel implements Serializable {
     @Id
     private String hotelName;
     
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "hotel")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "hotel")
     private List<HotelPayment> hotelPayment = new ArrayList<>();
     
     public void create(String name){

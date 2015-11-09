@@ -23,7 +23,7 @@
                     <p:row>
                         <p:column headerText="Product Sale" />
                         <p:column headerText="Commission" />
-                        <p:column headerText="Total Revenue" />
+                        <p:column headerText="Total Revenue in This Channel" />
                     </p:row>
                 </p:columnGroup>
 
@@ -36,11 +36,21 @@
                 <p:column>
                     <h:outputText value="$#{RMB.commissionMap[key]}"/>
                 </p:column>
+                <p:column>
+                    <h:outputText value="$#{RMB.sumMap[key]}"/>
+                </p:column>
 
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="Total Revenue: " style="text-align:right"/>
+                        <p:column colspan="3" style="text-align:left" footerText="$#{RMB.total}" />
+                    </p:row>
+                    <p:row>
+                        <p:column footerText="Currency: " style="text-align:right"/>
+                        <p:column colspan="3" style="text-align:left" footerText="SGD" />
+                    </p:row>
+                </p:columnGroup>
 
-                <f:facet name="footer">
-                    Currency in SGD
-                </f:facet>
             </p:dataTable>
 
             <!--            <h3>Export Report in PDF or Excel</h3>
