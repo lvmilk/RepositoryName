@@ -28,17 +28,17 @@ public class PassengerBean implements PassengerBeanLocal {
     @PersistenceContext
     private EntityManager em;
 
-    private Passenger passenger=new Passenger();
-    private Booker booker=new Booker();
+    private Passenger passenger = new Passenger();
+    private Booker booker = new Booker();
 
-    private Ticket ticket=new Ticket();
-    private Passenger psg=new Passenger();
+    private Ticket ticket = new Ticket();
+    private Passenger psg = new Passenger();
 
-    private String depCity=null;
-    private String arrCity=null;
-    private String depTime=null;
-    private String arrTime=null;
-    private String flightNo=null;
+    private String depCity = null;
+    private String arrCity = null;
+    private String depTime = null;
+    private String arrTime = null;
+    private String flightNo = null;
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo) {
         booker = new Booker();
@@ -74,7 +74,7 @@ public class PassengerBean implements PassengerBeanLocal {
         rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
         rsv = makeRsvBooker(rsv, booker);
 
-        rsv = makeRsvBookInstance(rsv, BookClassInstanceList);
+        rsv = makeRsvBookInstance(rsv, BookClassInstanceList, psgCount);
 
         ArrayList<Ticket> tickets = new ArrayList<>();
         createPsgList(passengerList);
@@ -126,7 +126,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
         System.out.println("After setting ticket list");
         em.merge(rsv);
- 
+
     }
 
     public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
@@ -199,13 +199,13 @@ public class PassengerBean implements PassengerBeanLocal {
         return tkList;
     }
 
-    public Reservation makeRsvBookInstance(Reservation rsv, ArrayList<BookingClassInstance> BookClassInstanceList) {
+    public Reservation makeRsvBookInstance(Reservation rsv, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount) {
         rsv = em.find(Reservation.class, rsv.getId());
         BookingClassInstance instance = new BookingClassInstance();
         if (rsv != null) {
             for (int i = 0; i < BookClassInstanceList.size(); i++) {
                 instance = em.find(BookingClassInstance.class, BookClassInstanceList.get(i).getId());
-//        instance.setBookedSeatNo(instance.getBookedSeatNo()+psgCount);
+                instance.setBookedSeatNo(instance.getBookedSeatNo() + psgCount);
                 instance.getReservation().add(rsv);
                 em.merge(instance);
                 rsv.getBkcInstance().add(instance);
