@@ -27,6 +27,7 @@ public class AirAlliances implements Serializable {
     @Column(unique=true)
     private String email;
     private String pType;
+    private String name;
     
     @OneToOne(mappedBy="alliance")
     private PassengerNameRecord pnr;
@@ -125,6 +126,14 @@ public class AirAlliances implements Serializable {
      */
     public void setPnr(PassengerNameRecord pnr) {
         this.pnr = pnr;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
