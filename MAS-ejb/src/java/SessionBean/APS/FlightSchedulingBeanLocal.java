@@ -53,8 +53,6 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
-    public boolean addAcToFi(Aircraft ac, FlightInstance fi) throws ParseException;
-
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
 
     public String getFirstInstDate();
@@ -82,4 +80,6 @@ public interface FlightSchedulingBeanLocal {
     public FlightInstance getDummyFi(String outOrIn);
 
     public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate);
+
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId);
 }

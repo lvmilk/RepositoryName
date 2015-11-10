@@ -39,11 +39,11 @@ public class CabinCrew implements Serializable {
     private Double salary;
     private Double hourPay;
     private String secondLang;
-    private long yearAccumMin = 0;
-    private long monthAccumMin = 0;
-    private long weekAccumMin = 0;
-    private Integer firstSB = 0;    // monthly stand-by counter
-    private Integer secondSB = 0;
+    private long yearAccumMin;
+    private long monthAccumMin;
+    private long weekAccumMin;
+    private Integer firstSB;    // monthly stand-by counter
+    private Integer secondSB;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinList")
     private List<FlightInstance> fiList = new ArrayList<>();
@@ -56,7 +56,7 @@ public class CabinCrew implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private FlightCrewTeam flightTeam;
 
-    public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary) {
+    public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
         this.setEmail(email);
@@ -68,6 +68,13 @@ public class CabinCrew implements Serializable {
         this.setLocked(0);
         this.setSalary(salary);
         this.setHourPay(0.0);
+        this.setSecondLang(secondLang);
+        
+        this.setWeekAccumMin(0);
+        this.setMonthAccumMin(0);
+        this.setYearAccumMin(0);
+        this.setFirstSB(0);
+        this.setSecondSB(0);
     }
 
     @Override
@@ -262,5 +269,6 @@ public class CabinCrew implements Serializable {
     public void setSecondSB(Integer secondSB) {
         this.secondSB = secondSB;
     }
+
 
 }

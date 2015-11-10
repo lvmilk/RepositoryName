@@ -39,11 +39,11 @@ public class CockpitCrew implements Serializable {
     private String lastName;
     private Double salary;
     private Double hourPay;
-    private long yearAccumMin = 0;
-    private long monthAccumMin = 0;
-    private long weekAccumMin = 0;
-    private Integer firstSB = 0;    // monthly stand-by counter
-    private Integer secondSB = 0;
+    private long yearAccumMin;
+    private long monthAccumMin;
+    private long weekAccumMin;
+    private Integer firstSB;    // monthly stand-by counter
+    private Integer secondSB;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitList")
     private List<FlightInstance> fiList = new ArrayList<>();
@@ -69,6 +69,12 @@ public class CockpitCrew implements Serializable {
         this.setLocked(0);
         this.setSalary(salary);
         this.setHourPay(0.0);
+
+        this.setWeekAccumMin(0);
+        this.setMonthAccumMin(0);
+        this.setYearAccumMin(0);
+        this.setFirstSB(0);
+        this.setSecondSB(0);
     }
 
     @Override

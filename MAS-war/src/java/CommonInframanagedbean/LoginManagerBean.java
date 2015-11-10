@@ -38,6 +38,7 @@ public class LoginManagerBean implements Serializable {
     private String lastName;
     private String stfLevel;
     private Double salary;
+    private String secondLang;
 
     public void logIn() throws IOException {
 
@@ -106,7 +107,7 @@ public class LoginManagerBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in createAcc managed bean");
-            mal.addAccount(username, password, email, stfType, firstName,lastName, stfLevel, salary);
+            mal.addAccount(username, password, email, stfType, firstName, lastName, stfLevel, salary);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -126,6 +127,37 @@ public class LoginManagerBean implements Serializable {
 
     }
 
+    public void createCabinAcc() {
+        boolean blCreateAcc, blCreateEmail;
+
+        blCreateAcc = mal.checkAccDuplicate(username, stfType);
+        blCreateEmail = mal.checkEmailExists(email);
+        System.out.println("!!! Create Acc email: " + blCreateEmail);
+        if (!blCreateAcc && !blCreateEmail) {
+            System.out.println(username);
+            System.out.println(password);
+            System.out.println(email);
+            System.out.println(stfType);
+            System.out.println("We are in createAcc managed bean");
+            mal.addCabinAcc(username, password, email, stfType, firstName, lastName, stfLevel, salary, secondLang);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Created Successfully"));
+
+        } else if (!blCreateEmail && blCreateAcc) {
+            System.out.println("Account exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account exists"));
+        } else if (!blCreateAcc && blCreateEmail) {
+            System.out.println("Email exists");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email exists"));
+        } else {
+            System.out.println("Email & Account exist");
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Email & Account exist"));
+        }
+    }
+
     public void createCockpitAcc() {
         boolean blCreateAcc, blCreateEmail;
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
@@ -133,7 +165,7 @@ public class LoginManagerBean implements Serializable {
         System.out.println("!!!Create Cockpit email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println("We are in createCockpitAcc managed bean");
-            mal.addCocpitAcc(username, password, email, stfType, firstName,lastName, stfLevel, salary, licence);
+            mal.addCocpitAcc(username, password, email, stfType, firstName, lastName, stfLevel, salary, licence);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
         } else if (!blCreateEmail && blCreateAcc) {
@@ -277,4 +309,13 @@ public class LoginManagerBean implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String getSecondLang() {
+        return secondLang;
+    }
+
+    public void setSecondLang(String secondLang) {
+        this.secondLang = secondLang;
+    }
+
 }

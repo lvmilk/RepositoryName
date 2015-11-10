@@ -5,14 +5,12 @@
  */
 package AFOSmanagedbean;
 
-import Entity.APS.FlightInstance;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -40,22 +38,30 @@ public class FlightCrewSchedulingManagedBean implements Serializable {
     private Date startViewScheduleDate;
     private Date endViewScheduleDate;
 
-
     public FlightCrewSchedulingManagedBean() {
     }
 
-    public void flightCrewSchdulingForPeriod() throws Exception {
+    @PostConstruct
+    public void init() {
+        startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
+        endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDate");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         startDateString = df.format(startDate);
         endDateString = df.format(endDate);
-        csb.scheduleFlightCrew(startDate, endDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./scheduleFlightCrewSuccess.xhtml");
     }
 
+//    public void flightCrewSchdulingForPeriod() throws Exception {
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+//        startDateString = df.format(startDate);
+//        endDateString = df.format(endDate);
+//        csb.scheduleFlightCrew(startDate, endDate);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./scheduleFlightCrewSuccess.xhtml");
+//    }
+    
     public void viewFiCrewArrangement() throws Exception {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewDate", startDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endViewDate", endDate);
@@ -74,11 +80,11 @@ public class FlightCrewSchedulingManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewSchedule.xhtml");
     }
 
-    public void viewFlightCrewScheduleEnterPeriod() throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewScheduleDate", startViewScheduleDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endViewScheduleDate", endViewScheduleDate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewSchedule.xhtml");
-    }
+//    public void viewFlightCrewScheduleEnterPeriod() throws Exception {
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewScheduleDate", startViewScheduleDate);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endViewScheduleDate", endViewScheduleDate);
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewSchedule.xhtml");
+//    }
 
     public Date getStartDate() {
         return startDate;

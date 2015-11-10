@@ -57,4 +57,6 @@ public interface ManageAccountBeanLocal {
     public int getLockedOutStatus(String username, String stfType);
     
     public boolean validateDDSLogin(String username, String password);
+
+    public void addCabinAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang);
 }
