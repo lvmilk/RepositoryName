@@ -53,6 +53,8 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP888888","666@666.com")
 
 INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","ag777@777.com","agency")
 
+INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,EMAIL,PTYPE)values("AL777777","dd4960a35453b6d2098e4e75af873fd8","al777777@mas.com","alliance")
+
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",5000,0)
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("0888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",5000,0)
 
@@ -96,6 +98,11 @@ INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,es
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(60000,60000,"2015-12-23","16:00","22:00","16:00","22:00","Testing",0,0,"2015-12-23 16:00","2015-12-23 22:00","9V-000",'2015-12-23 16:00','2015-12-23 22:00')
 INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(40000,40000,"2015-12-24","03:00","07:00","03:00","07:00","Testing",0,0,"2015-12-24 03:00","2015-12-24 07:00","9V-000",'2015-12-24 03:00','2015-12-24 07:00')
 
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(110000,30000,"2015-12-15","08:00","12:00","08:00","12:00","Testing",0,0,"2015-12-15 08:00","2015-12-15 12:00","9V-000",'2015-12-15 08:00','2015-12-15 12:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(120000,50000,"2015-12-15","15:00","21:00","15:00","21:00","Testing",0,0,"2015-12-15 15:00","2015-12-15 21:00","9V-000",'2015-12-15 15:00','2015-12-15 21:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(160000,60000,"2015-12-30","16:00","22:00","16:00","22:00","Testing",0,0,"2015-12-30 16:00","2015-12-30 22:00","9V-000",'2015-12-30 16:00','2015-12-30 22:00')
+INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(140000,40000,"2015-12-31","03:00","07:00","03:00","07:00","Testing",0,0,"2015-12-31 03:00","2015-12-31 07:00","9V-000",'2015-12-31 03:00','2015-12-31 07:00')
+
 -- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000000,10000,"2015-10-13","10:00","15:00","10:00","15:00","Testing",0,0,"2015-10-13 10:00","2015-10-13 15:00","9V-000",'2015-10-13 10:00','2015-10-13 15:00')
 -- INSERT IGNORE INTO FlightInstance(id,flightFrequency_id,date,estimatedDepTime,estimatedArrTime,actualDepTime,actualArrTime,flightStatus,estimatedDateAdjust,actualDateAdjust,standardDepTime,standardArrTime,aircraft_registrationNo,standardDepTimeDateType,standardArrTimeDateType) values(1000001,20000,"2015-10-13","18:00","23:00","18:00","23:00","Testing",0,0,"2015-10-13 18:00","2015-10-13 23:00","9V-000",'2015-10-13 18:00','2015-10-13 23:00')
 
@@ -134,21 +141,49 @@ INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSea
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (190000,60000,40000,0)
 INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (200000,60000,50000,0)
 
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (210000,110000,10000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (220000,110000,20000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (230000,110000,30000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (240000,110000,40000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (250000,110000,50000,0)
+
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (260000,120000,10000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (270000,120000,20000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (280000,120000,30000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (290000,120000,40000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (300000,120000,50000,0)
+
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (310000,160000,10000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (320000,160000,20000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (330000,160000,30000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (340000,160000,40000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (350000,160000,50000,0)
+
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (360000,140000,10000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (370000,140000,20000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (380000,140000,30000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (390000,140000,40000,0)
+INSERT IGNORE INTO FlightCabin(id,flightInstance_id,cabinClass_cabinID,bookedSeat) values (400000,140000,50000,0)
 
 
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(10000,'S','Suite',1)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(20000,'F','First Class',1)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(30000,'J','Business Class',1.111)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(40000,'C','Business Class',1)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(50000,'D','Premium Economy Class',1.25)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(60000,'P','Premium Economy Class',1.125)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(70000,'Z','Premium Economy Class',1)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(80000,'Y','Economy Class',2)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(90000,'B','Economy Class',1.8)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(100000,'M','Economy Class',1.6)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(110000,'H','Economy Class',1.4)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(120000,'Q','Economy Class',1.2)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage) values(130000,'N','Economy Class',1)
+
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(10000,'S','Suite',1,1,0,0,0,0,2,0,180,0,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(20000,'F','First Class',1,1,0,0,0,0,1.5,0,180,0,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(30000,'J','Business Class',1.111,1,0,0,0,0,1.3,0,120,0,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)values(40000,'C','Business Class',1,0.95,0,0,0,0,1.2,0,120,0,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(50000,'D','Premium Economy Class',1.25, 1,0,0,0,0,1.1,0,90,1,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(60000,'P','Premium Economy Class',1.125,0.95,0.01,0.01,0,0.01,1,0,90,1,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(70000,'Z','Premium Economy Class',1,0.90,0.01,0.01,0,0.01,1,0,90,1,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(80000,'Y','Economy Class',2, 1,0,0,0,0,1,0,90,0,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(90000,'B','Economy Class',1.8,0.9,0.05,0.05,0,0.05,0.8,1,90,1,0,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(100000,'M','Economy Class',1.6,0.7,0.1,0.1,0.05,0.1,0.6,3,60,3,1,True,True,True)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(110000,'H','Economy Class',1.4,0.5,0.1,0.1,0.05,0.1,0.4,3,60,7,3,False,True,False)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(120000,'Q','Economy Class',1.2,0,0.15,0.15,0.1,0.15,0.2,3,30,14,7,False,False,False)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(130000,'N','Economy Class',1, 0,0.2,0.2,0.1,0.2,0,3,30,21,14,False,False,False)
+
+
+
+
 
 
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(10000,10000,10000,3000,6,0)
@@ -207,6 +242,64 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(520000,120000,200000,720,45,0)
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(530000,130000,200000,600,55,0)
 
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(540000,10000,210000,3000,3,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(550000,20000,220000,2000,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(560000,30000,230000,1777,15,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(570000,40000,230000,1600,35,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(580000,50000,240000,1500,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(590000,60000,240000,1350,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(600000,70000,240000,1200,50,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(610000,80000,250000,1000,10,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(620000,90000,250000,900,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(630000,100000,250000,800,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(640000,110000,250000,700,40,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(650000,120000,250000,600,45,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(660000,130000,250000,500,55,0)
+
+
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(670000,10000,260000,3000,3,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(680000,20000,270000,2000,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(690000,30000,280000,1777,15,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(700000,40000,280000,1600,35,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(710000,50000,290000,1500,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(720000,60000,290000,1350,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(730000,70000,290000,1200,50,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(740000,80000,300000,1000,10,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(750000,90000,300000,900,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(760000,100000,300000,800,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(770000,110000,300000,700,40,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(780000,120000,300000,600,45,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(790000,130000,300000,500,55,0)
+
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(800000,10000,310000,3000,3,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(810000,20000,320000,2500,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(820000,30000,330000,1999,15,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(830000,40000,330000,1800,35,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(840000,50000,340000,1750,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(850000,60000,340000,1575,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(860000,70000,340000,1400,50,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(870000,80000,350000,1200,10,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(880000,90000,350000,1080,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(890000,100000,350000,960,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(900000,110000,350000,840,40,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(910000,120000,350000,720,45,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(920000,130000,350000,600,55,0)
+
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(930000,10000,360000,3000,3,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(940000,20000,370000,2500,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(950000,30000,380000,1999,15,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(960000,40000,380000,1800,35,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(970000,50000,390000,1750,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(980000,60000,390000,1575,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(990000,70000,390000,1400,50,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1000000,80000,400000,1200,10,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1010000,90000,400000,1080,20,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1020000,100000,400000,960,30,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1030000,110000,400000,840,40,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1040000,120000,400000,720,45,0)
+INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,600,55,0)
+
+
 
 
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(99,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","hao","li",true,0,"G12345678","Dr")
@@ -215,22 +308,37 @@ INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,member
 
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
+INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(7777,"G2345678","Xi","Lu","TFP","A123")
+INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(6666,"G3456789","Bohan","Xu","TFP","A123")
 
 
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(111111,8888, 1500.00,"ARS","2015-08-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(222222,9999, 6000.00,"ARS","2015-09-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(333333,8888, 3000.00,"ARS","2015-10-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(444444,9999, 4000.00,"ARS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(555555,8888, 2200.00,"ARS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(666666,8888, 1700.00,"DDS","2015-08-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(777777,9999, 1900.00,"DDS","2015-09-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(888888,8888, 6000.00,"DDS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(999999,9999, 2500.00,"DDS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(1111,8888, 1500.00,"GDS","2015-03-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(2222,9999, 6000.00,"GDS","2015-04-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(3333,8888, 3000.00,"GDS","2015-08-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(4444,9999, 4000.00,"GDS","2015-11-10")
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate) values(5555,8888, 2200.00,"GDS","2015-11-10")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True)
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True)
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True)
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True)
+
+
+INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(111111,10000)
+INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(222222,20000)
+INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(333333,140000)
+INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(444444,150000)
+
+-- rsv_id added
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(111111,8888, 1500.00,"ARS","2015-08-10",111111,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(222222,9999, 6000.00,"ARS","2015-09-10",111111,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(333333,8888, 3000.00,"ARS","2015-10-10",222222,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(444444,7777, 4000.00,"ARS","2015-11-10",111111,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(555555,8888, 2200.00,"ARS","2015-11-10",333333,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(666666,8888, 1700.00,"DDS","2015-08-10",444444,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(777777,6666, 1900.00,"DDS","2015-09-10",111111,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(888888,7777, 6000.00,"DDS","2015-11-10",222222,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(999999,9999, 2500.00,"DDS","2015-11-10",222222,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(1111,6666, 1500.00,"GDS","2015-03-10",333333,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(2222,9999, 6000.00,"GDS","2015-04-10",444444,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(3333,7777, 3000.00,"GDS","2015-08-10",333333,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(4444,7777, 4000.00,"GDS","2015-11-10",444444,"Unused")
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus) values(5555,6666, 2200.00,"GDS","2015-11-10",444444,"Unused")
+
 
 INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
 INSERT IGNORE INTO Hotel(hotelName)values("Hilton")

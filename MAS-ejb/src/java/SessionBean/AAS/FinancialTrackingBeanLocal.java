@@ -16,11 +16,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface FinancialTrackingBeanLocal {
-
-    public List<Ticket> getAllTicket();
-
-    public Double totalTicketSale(String bookSystem, long year, String quarter);
-
-    public Double chargedCommission(String channel, long year, String quarter);
+    public Double calculateRevenue(String channel, long year, String quarter);
     
 }
