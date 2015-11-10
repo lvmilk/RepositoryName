@@ -90,16 +90,16 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         }
     }
 
-    public void addPartnerAcc(String pid, String pPwd, String email, String stfType) {
+    public void addPartnerAcc(String pid, String pPwd,String companyName,String email, String stfType) {
         System.out.println("Currently in create partner account");
         hPwd = this.encrypt(pid, pPwd);
         if (stfType.equals("agency")) {
             agency = new Agency();
-            agency.createAgencyAcc(pid, hPwd, email, stfType);
+            agency.createAgencyAcc(pid, hPwd, companyName, email, stfType);
             em.persist(agency);
         } else if (stfType.equals("alliance")) {
             alliance = new AirAlliances();
-            alliance.createAllianceAcc(pid, hPwd, email, stfType);
+            alliance.createAllianceAcc(pid, hPwd,companyName, email, stfType);
             em.persist(alliance);
         }
     }
