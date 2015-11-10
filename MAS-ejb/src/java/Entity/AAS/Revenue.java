@@ -29,7 +29,6 @@ public class Revenue implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentDate;
     
-
     public Long getId() {
         return id;
     }

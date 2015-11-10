@@ -50,7 +50,7 @@ public class Reservation implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rsv")
     private List<Ticket> tickets=new ArrayList<>();
 
-    @ManyToMany(cascade={CascadeType.PERSIST})
+    @ManyToMany
     @JoinTable(name="RESERVATION_BKCINSTANCE")
     private List<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
 

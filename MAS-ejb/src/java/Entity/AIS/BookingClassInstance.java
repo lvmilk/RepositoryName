@@ -45,7 +45,7 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     private BookingClass bookingClass;
 
     
-    @ManyToMany(cascade={CascadeType.ALL},mappedBy="bkcInstance")
+    @ManyToMany(mappedBy="bkcInstance")
     private Collection<Reservation> reservation=new ArrayList<Reservation>();
 
     @OneToMany(cascade={CascadeType.PERSIST},mappedBy="bkInstance")
