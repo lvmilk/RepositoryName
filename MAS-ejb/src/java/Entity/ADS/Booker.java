@@ -47,7 +47,7 @@ public class Booker implements Serializable {
     private Double miles;
     
     
-    @OneToMany(cascade={CascadeType.ALL},mappedBy="booker")
+    @OneToMany(cascade={CascadeType.PERSIST},mappedBy="booker")
     private List<Reservation> rsvList;
     
     @ManyToOne

@@ -28,18 +28,17 @@ public class PassengerBean implements PassengerBeanLocal {
     @PersistenceContext
     private EntityManager em;
 
-    private Passenger passenger;
-    private Booker booker;
+    private Passenger passenger = new Passenger();
+    private Booker booker = new Booker();
 
-    private Ticket ticket;
-    private Passenger psg;
+    private Ticket ticket = new Ticket();
+    private Passenger psg = new Passenger();
 
-    private String depCity;
-    private String arrCity;
-    private String depTime;
-    private String arrTime;
-    private String flightNo;
-
+    private String depCity = null;
+    private String arrCity = null;
+    private String depTime = null;
+    private String arrTime = null;
+    private String flightNo = null;
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo) {
         booker = new Booker();
@@ -57,30 +56,34 @@ public class PassengerBean implements PassengerBeanLocal {
             passengerList.set(i, em.find(Passenger.class, psg.getId()));
 
         }
+        em.flush();
+        
+        System.out.println("LEAVING createPsgList");
+        
         return passengerList;
     }
 
     @Override
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip,String bkSystem) {
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
         if (query.getResultList().isEmpty()) {
             em.persist(booker);
         } else {
-            booker=(Booker) query.getResultList().get(0);
+            booker = (Booker) query.getResultList().get(0);
         }
 
         Reservation rsv = new Reservation();
         rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
         rsv = makeRsvBooker(rsv, booker);
 
-        rsv = makeRsvBookInstance(rsv, BookClassInstanceList);
+        rsv = makeRsvBookInstance(rsv, BookClassInstanceList, psgCount);
 
         ArrayList<Ticket> tickets = new ArrayList<>();
         createPsgList(passengerList);
 
-        tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip,bkSystem);
+        tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem);
 
         setupTicket_Reservation(rsv, tickets);
 
@@ -100,25 +103,40 @@ public class PassengerBean implements PassengerBeanLocal {
         payment.setReservation(rsv);
         rsv.setPayment(payment);
         em.persist(payment);
+        em.merge(rsv);
         return payment;
     }
 
     public void setupTicket_Reservation(Reservation rsv, ArrayList<Ticket> tickets) {
 
-        rsv.setTickets(tickets);
-        em.persist(rsv);
-        em.flush();
+        rsv = em.find(Reservation.class, rsv.getId());
+//        rsv.setTickets(tickets);
+//        em.merge(rsv);
+        System.out.println("in ricketRsv(): rsv found is " + rsv);
+
+//        List<Ticket> ticketList = new ArrayList<>();
+//        List<Ticket> t1 = rsv.getTickets();
+//        rsv.setTickets(ticketList);
 
         for (int i = 0; i < tickets.size(); i++) {
             System.out.println("@@@@@@This is in setupTicket_Reservation:" + tickets.get(i));
-            tickets.get(i).setRsv(rsv);
-            em.merge(tickets.get(i));
-            em.flush();
+            Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());
+            ticket.setRsv(rsv);
+//            em.merge(ticket);
+
+            rsv.getTickets().add(ticket);
+
         }
+
+        
+//        em.merge(rsv);
+        
+        em.flush();
+        System.out.println("After setting ticket list");
 
     }
 
-    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip,String bkSystem) {
+    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -143,13 +161,14 @@ public class PassengerBean implements PassengerBeanLocal {
                 psg = passengerList.get(j);
                 System.out.println("*************Passenger Id is :" + psg.getId());
                 Passenger psgl = em.find(Passenger.class, psg.getId());
+                em.refresh(psgl);
                 if (psgl != null) {
                     depTicket.setPassenger(psgl);
                     em.persist(depTicket);
-//                    em.flush();
+
                     psgl.getTickets().add(depTicket);
                     em.merge(psgl);
-                    em.flush();
+
                     tkList.add(depTicket);
                     passengerList.set(j, em.find(Passenger.class, psgl.getId()));
                 }
@@ -175,29 +194,36 @@ public class PassengerBean implements PassengerBeanLocal {
                 if (psgl != null) {
                     arrTicket.setPassenger(psgl);
                     em.persist(arrTicket);
-//                    em.flush();
 
                     psgl.getTickets().add(arrTicket);
                     em.merge(psgl);
-                    em.flush();
+
                     tkList.add(arrTicket);
                     passengerList.set(j, em.find(Passenger.class, psgl.getId()));
                 }
             }
 
         }
+        
+        em.flush();
+        System.out.println("LEAVING setupPsg_Ticket");
+        
         return tkList;
     }
 
-    public Reservation makeRsvBookInstance(Reservation rsv, ArrayList<BookingClassInstance> BookClassInstanceList) {
+    public Reservation makeRsvBookInstance(Reservation rsv, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount) {
         rsv = em.find(Reservation.class, rsv.getId());
+        em.refresh(rsv);
         BookingClassInstance instance = new BookingClassInstance();
         if (rsv != null) {
             for (int i = 0; i < BookClassInstanceList.size(); i++) {
                 instance = em.find(BookingClassInstance.class, BookClassInstanceList.get(i).getId());
-//        instance.setBookedSeatNo(instance.getBookedSeatNo()+psgCount);
+                em.refresh(instance);
+                instance.setBookedSeatNo(instance.getBookedSeatNo() + psgCount);
                 instance.getReservation().add(rsv);
+                em.merge(instance);
                 rsv.getBkcInstance().add(instance);
+
             }
             em.merge(rsv);
             em.flush();
@@ -208,20 +234,30 @@ public class PassengerBean implements PassengerBeanLocal {
             }
 
         }
+        
+        em.flush();
+        
+        System.out.println("LEAVING makeRsvBookInstance");
 
         return rsv;
     }
 
     public Reservation makeRsvBooker(Reservation rsv, Booker booker) {
-        rsv.setBooker(booker);
+        
         em.persist(rsv);
-        List<Reservation> rsvList = new ArrayList<>();
-
-        booker.setRsvList(rsvList);
+        booker = em.find(Booker.class, booker.getId());
+        rsv.setBooker(booker);
+        
+//        List<Reservation> rsvList = new ArrayList<>();
+//
+//        booker.setRsvList(rsvList);
         booker.getRsvList().add(rsv);
-        em.merge(booker);
+//        em.merge(booker);
         rsv = em.find(Reservation.class, rsv.getId());
-
+        
+        em.flush();
+        
+        System.out.println("rsv found in makeRsvBooker is " + rsv);
         return rsv;
     }
 
