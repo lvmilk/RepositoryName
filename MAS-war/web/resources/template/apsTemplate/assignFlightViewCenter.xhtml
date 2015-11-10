@@ -32,7 +32,7 @@
 
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
 
-                <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="true"/>
+                <p:growl id="growl" showSummary="true" showDetail="false" autoUpdate="false"/>
 
                 <pe:timeline id="timeline" value="#{FAMB.model}" var="flighttask" varGroup="group" timeZone="#{FAMB.timeZone}" zoomMax="#{FAMB.zoomMax}" 
                              groupMinHeight="50" start="#{FAMB.start}" end="#{FAMB.end}" editable="true" axisOnTop="true" timeChangeable="true" minHeight="200" widgetVar="timelineWdgt">
@@ -178,7 +178,7 @@
             <p:dialog id="addTaskDlg" header="Add Flight Task" widgetVar="addTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <!--<h:panelGroup id="addTaskInner" layout="block" style="margin:15px;">-->
                 <h:panelGroup layout="block" style="margin:15px;">
-                    <p:messages id="msgs2" autoUpdate="true" />
+                    <p:messages id="msgs2" autoUpdate="false" />
                     <p:panelGrid columns="2" columnClasses="">
 
                         <h:outputLabel for="aircraft" value="Choose an aircraft"/>
@@ -187,11 +187,15 @@
                             <f:selectItems value="#{FAMB.aircraftList}" var="aircraft" itemValue="#{aircraft.registrationNo}" itemLabel="#{aircraft.registrationNo} / #{aircraft.aircraftType.type}"/>
                         </p:selectOneMenu>
 
-                        <h:outputLabel for="flight" value="Choose a flight to assign" />
-                        <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px" >
+                        <h:outputLabel for="flight" value="Choose flight(s) to assign" />
+<!--                        <p:selectOneMenu id="flight" value="#{FAMB.taskId}" required="true" requiredMessage="Please select a flight to assign" style="width:250px" >
                             <f:selectItem itemLabel="-Select Flight-" itemValue="" />
                             <f:selectItems value="#{FAMB.unassignedFlight}" var="flight" itemValue="#{flight.id}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.date} #{flight.flightFrequency.route.toString()}"/>
-                        </p:selectOneMenu>
+                        </p:selectOneMenu>-->
+
+                        <p:selectCheckboxMenu id="flight" value="#{FAMB.selectedTaskId}" label="-Select Flight(s)-" filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                            <f:selectItems value="#{FAMB.unassignedFlight}" var="flight" itemValue="#{flight.id}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.date} #{flight.flightFrequency.route.toString()}"/>
+                        </p:selectCheckboxMenu>
 
                     </p:panelGrid>
                 </h:panelGroup>
@@ -207,7 +211,7 @@
 
             <p:dialog id="addMtTaskDlg" header="Add Maintenance" widgetVar="addMtTaskWdgt" showEffect="clip" hideEffect="clip" dynamic="true">  
                 <h:panelGroup layout="block" style="margin:15px;">
-                    <p:messages id="msgs" autoUpdate="true" />
+                    <p:messages id="msgs" autoUpdate="false" />
                     <p:panelGrid columns="2">
 
                         <h:outputLabel for="aircraftMt" value="Choose an aircraft" />

@@ -49,7 +49,11 @@ public class Ticket implements Serializable {
     
     @OneToOne(cascade = {CascadeType.PERSIST})
     private Seat seat;
-
+     
+    @ManyToOne
+    private BookingClassInstance bkInstance;
+    
+    
     public Ticket() {
     }
     
@@ -240,4 +244,14 @@ public class Ticket implements Serializable {
         this.price = price;
     }
 
+    public BookingClassInstance getBkInstance() {
+        return bkInstance;
+    }
+
+    public void setBkInstance(BookingClassInstance bkInstance) {
+        this.bkInstance = bkInstance;
+    }
+    
+    
+    
 }

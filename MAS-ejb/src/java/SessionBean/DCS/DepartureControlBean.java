@@ -6,7 +6,9 @@
 package SessionBean.DCS;
 
 import Entity.ADS.Passenger;
+import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
+import Entity.AIS.FlightCabin;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
@@ -129,7 +131,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("No such ticket exist!");
         }
     }
-    
+
     @Override
     public boolean changeStandbyStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
@@ -140,7 +142,35 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("No such ticket exist!");
         }
     }
-    
-    
-    
+
+    @Override
+    public List<Seat> getAllUnOccupiedSeats(Ticket tkt) throws Exception {
+        List<Seat> unOccupiedList = new ArrayList<Seat>();
+        FlightCabin fc = tkt.getBkInstance().getFlightCabin();
+        if (fc == null) {
+            throw new Exception("No flight cabin found!");
+        } else {
+            unOccupiedList = fc.getSeats();
+            if (unOccupiedList.isEmpty()) {
+                throw new Exception("No unoccupied seat available!");
+            } else {
+                return unOccupiedList;
+            }
+
+        }
+
+    }
+
+    public void selectSeat(Seat seat) throws Exception {
+        Seat newSeat =em.find(Seat.class, seat.getId());
+        if (newSeat!=null&& newSeat.getStatus().equals("Unoccupied")) {
+            newSeat.setStatus("Occupied");
+            em.merge(newSeat);
+        }
+        else{
+         throw new Exception("Cannot select this seat!");
+        }
+              
+    }
+
 }

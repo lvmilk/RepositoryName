@@ -18,16 +18,16 @@
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
                     <p:outputLabel for="startPlanDate" value="Start Date (yyyy-MM-dd): " />
-                    <p:calendar id="startPlanDate" value="#{FCSMB.startViewScheduleDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
+                    <p:calendar id="startPlanDate" value="#{VFCSEPMB.startViewScheduleDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
                     </p:calendar>
 
                     <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />
-                    <p:calendar id="endPlanDate" value="#{FCSMB.endViewScheduleDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew arragement end viewing date" size="30"> 
-                        <f:attribute name="startPlanDate" value="#{FCSMB.startViewScheduleDate}" />
+                    <p:calendar id="endPlanDate" value="#{VFCSEPMB.endViewScheduleDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew arragement end viewing date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{VFCSEPMB.startViewScheduleDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
                 </h:panelGrid>
-                <p:commandButton value="View Flight Crew Schedule" action="#{FCSMB.viewFlightCrewScheduleEnterPeriod}"  icon="ui-icon-check" />
+                <p:commandButton value="View Flight Crew Schedule" action="#{VFCSEPMB.viewFlightCrewScheduleEnterPeriod}"  icon="ui-icon-check" />
 
             </p:panel>
 

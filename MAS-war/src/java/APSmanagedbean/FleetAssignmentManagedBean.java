@@ -51,7 +51,7 @@ public class FleetAssignmentManagedBean implements Serializable {
     private TimelineEvent event; // current event to be changed, edited, deleted or added  
 
     private List<Aircraft> aircraftList;
-    
+
     private Aircraft aircraft;
     private FlightInstance flightInstance;
     private FlightInstance fi;
@@ -73,6 +73,9 @@ public class FleetAssignmentManagedBean implements Serializable {
     private Long taskId;
     private String taskAircraftSerial;
     private String taskMtAircraftSerial;
+
+    private List<Long> selectedTaskId = new ArrayList<>();
+    private List<FlightInstance> selectedTask = new ArrayList<>();
 
     private String taskType;
     private String mtObj;
@@ -229,25 +232,27 @@ public class FleetAssignmentManagedBean implements Serializable {
         System.out.println("FAMB: ------------------------ahhahahha");
         try {
             aircraft = fsb.findAircraft(taskAircraftSerial);
-            fi = fsb.findFlight(taskId);
-            System.out.println("TaskID: " + taskId);
-            System.out.println("AircraftID: " + taskAircraftSerial);
-
-            if (taskId != null && taskAircraftSerial != null && fsb.addAcToFi(aircraft, fi)) {
-                //System.out.println("CHECK 1");
-                event = new TimelineEvent(fi, fi.getStandardDepTimeDateType(), fi.getStandardArrTimeDateType(), true, taskAircraftSerial);
-                //System.out.println("event created!!");
-                model.add(event);
-                //System.out.println("event added!!");
-                TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
-                //System.out.println("HERE?!?!");
-                model.update(event, timelineUpdater);
-                //System.out.println("HERE ?!?!?!");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success: Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
+            if (selectedTaskId.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select flight(s) to assign.", ""));
             } else {
-                System.out.println("cannot add task!!!!");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Aircraft " + taskAircraftSerial + " cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
-                System.out.println("Error meesage " + "addTaskError");
+                System.out.println("AircraftID: " + taskAircraftSerial);
+                boolean canAssign = fsb.addAcToFi(aircraft, selectedTaskId);
+                if (canAssign) {
+//                    List<FlightInstance> selectedFi = new ArrayList<>();
+                    for (Long id : selectedTaskId) {
+                        FlightInstance f1 = fsb.findFlight(id);
+                        event = new TimelineEvent(f1, f1.getStandardDepTimeDateType(), f1.getStandardArrTimeDateType(), true, taskAircraftSerial);
+                        model.add(event);
+                        TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
+                        model.update(event, timelineUpdater);
+                    }
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully add selected tasks to " + taskAircraftSerial, ""));
+//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success: Flight " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " has been assigned to " + taskAircraftSerial, ""));
+                } else {
+                    System.out.println("cannot add task!!!!");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Aircraft " + taskAircraftSerial + " cannot fly " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate(), ""));
+                    System.out.println("Error meesage " + "addTaskError");
+                }
             }
         } catch (Exception ex) {
             System.out.println("Error meesage: " + ex.getMessage());
@@ -361,7 +366,6 @@ public class FleetAssignmentManagedBean implements Serializable {
     public void setFlightDate(Date flightDate) {
         this.flightDate = flightDate;
     }
-   
 
     public List<FlightInstance> getUnassignedFlight() {
         return fsb.getUnplannedFiWithinPeriod(start, end);
@@ -400,7 +404,6 @@ public class FleetAssignmentManagedBean implements Serializable {
     }
 
     public void setTaskAircraftSerial(String taskAircraftSerial) {
-        System.out.println("aircradt serial read ? " + taskAircraftSerial);
         this.taskAircraftSerial = taskAircraftSerial;
     }
 
@@ -505,6 +508,22 @@ public class FleetAssignmentManagedBean implements Serializable {
 
     public void setEndPl(String endPl) {
         this.endPl = endPl;
+    }
+
+    public List<Long> getSelectedTaskId() {
+        return selectedTaskId;
+    }
+
+    public void setSelectedTaskId(List<Long> selectedTaskId) {
+        this.selectedTaskId = selectedTaskId;
+    }
+
+    public List<FlightInstance> getSelectedTask() {
+        return selectedTask;
+    }
+
+    public void setSelectedTask(List<FlightInstance> selectedTask) {
+        this.selectedTask = selectedTask;
     }
 
 }
