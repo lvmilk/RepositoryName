@@ -10,6 +10,7 @@ import Entity.ADS.Reservation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,14 +40,18 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
     private Integer bookedSeatNo = 0; //set default value =0
     private Integer avgDemand;
     private Integer std;
-
+     
     @ManyToOne
     private BookingClass bookingClass;
 
     
-    @ManyToMany(cascade={CascadeType.ALL},mappedBy="bkcInstance")
+    @ManyToMany(mappedBy="bkcInstance")
     private Collection<Reservation> reservation=new ArrayList<Reservation>();
 
+    @OneToMany(cascade={CascadeType.PERSIST},mappedBy="bkInstance")
+    private List<Ticket> tickets=new ArrayList<Ticket>();
+    
+    
     public Integer getBookedSeatNo() {
         return bookedSeatNo;
     }
@@ -165,6 +170,14 @@ public class BookingClassInstance implements Serializable, Comparable<BookingCla
      */
     public void setReservation(Collection<Reservation> reservation) {
         this.reservation = reservation;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
 }

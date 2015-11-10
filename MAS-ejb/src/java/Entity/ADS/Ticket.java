@@ -34,7 +34,7 @@ public class Ticket implements Serializable {
     private String arrTime;
     private String flightNo;
     
-    private boolean checkinStatus;
+    private String ticketStatus;
     private Double price;
     private String bookSystem;
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -47,9 +47,13 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Reservation rsv;
     
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.PERSIST})
     private Seat seat;
-
+     
+    @ManyToOne
+    private BookingClassInstance bkInstance;
+    
+    
     public Ticket() {
     }
     
@@ -62,7 +66,7 @@ public class Ticket implements Serializable {
         this.flightNo=flightNo;
         this.bookSystem=bookSystem;
         this.setBookDate(Calendar.getInstance().getTime());
-        this.checkinStatus=false;
+        this.ticketStatus="Unused";
     }
 
     public Long getTicketID() {
@@ -95,7 +99,7 @@ public class Ticket implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.ADS.Itinerary[ id=" + ticketID + " ]";
+        return "Entity.ADS.Ticket[ id=" + ticketID + " ]";
     }
 
     /**
@@ -223,19 +227,14 @@ public class Ticket implements Serializable {
         this.bookSystem = bookSystem;
     }
 
-    /**
-     * @return the checkinStatus
-     */
-    public boolean isCheckinStatus() {
-        return checkinStatus;
+    public String getTicketStatus() {
+        return ticketStatus;
     }
 
-    /**
-     * @param checkinStatus the checkinStatus to set
-     */
-    public void setCheckinStatus(boolean checkinStatus) {
-        this.checkinStatus = checkinStatus;
+    public void setTicketStatus(String ticketStatus) {
+        this.ticketStatus = ticketStatus;
     }
+
 
     public Double getPrice() {
         return price;
@@ -245,4 +244,14 @@ public class Ticket implements Serializable {
         this.price = price;
     }
 
+    public BookingClassInstance getBkInstance() {
+        return bkInstance;
+    }
+
+    public void setBkInstance(BookingClassInstance bkInstance) {
+        this.bkInstance = bkInstance;
+    }
+    
+    
+    
 }

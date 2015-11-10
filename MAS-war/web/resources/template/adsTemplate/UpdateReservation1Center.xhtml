@@ -54,7 +54,7 @@
 
             <p:panel id="reservation" header="Reservation Information" rendered="#{updateReservation.departed.size()>0}" toggleable="true">
                 <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
-                     <h:panelGrid columns="2" cellpadding="10" >
+                    <h:panelGrid columns="2" cellpadding="10" >
                         <h:panelGrid columns="4" cellpadding="10" >
                             <p:outputLabel  value="Title" />
                             <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
@@ -96,7 +96,6 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
-
 
                     </p:dataTable>
                 </p:panel>

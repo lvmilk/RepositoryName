@@ -5,12 +5,14 @@
  */
 package Entity.CommonInfa;
 
+import Entity.ADS.Booker;
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,16 +24,21 @@ public class Agency implements Serializable {
     @Id
     private String agencyID;
     private String agenPwd;
+    private String companyName;
     
     @Column(unique=true)
     private String email;
     
     private String pType;
     
-    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String strAgEmail, String strpType)
+    @OneToMany(cascade={CascadeType.ALL},mappedBy="agency")
+    private List<Booker> bkList;
+    
+    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String name,String strAgEmail, String strpType)
     {
         this.setAgencyID(strAgencyId);
         this.setAgenPwd(strAgencyPwd);
+        this.setCompanyName(name);
         this.setEmail(strAgEmail);
         this.setpType(strpType);
     }
@@ -42,6 +49,14 @@ public class Agency implements Serializable {
 
     public void setAgencyID(String agencyID) {
         this.agencyID = agencyID;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     @Override
@@ -109,6 +124,20 @@ public class Agency implements Serializable {
      */
     public void setpType(String pType) {
         this.pType = pType;
+    }
+
+    /**
+     * @return the bkList
+     */
+    public List<Booker> getBkList() {
+        return bkList;
+    }
+
+    /**
+     * @param bkList the bkList to set
+     */
+    public void setBkList(List<Booker> bkList) {
+        this.bkList = bkList;
     }
 
 }

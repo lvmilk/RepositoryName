@@ -21,20 +21,21 @@ import javax.persistence.OneToOne;
 @Entity
 public class AirAlliances implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     private String allianceID;
     private String allPwd;
     @Column(unique=true)
     private String email;
     private String pType;
+    private String companyName;
     
     @OneToOne(mappedBy="alliance")
     private PassengerNameRecord pnr;
 
-    public void createAllianceAcc(String strAlId, String strAlPwd, String strAlEmail, String strpType) {
+    public void createAllianceAcc(String strAlId, String strAlPwd, String companyName, String strAlEmail, String strpType) {
         this.setAllianceID(strAlId);
         this.setAllPwd(strAlPwd);
+        this.setCompanyName(companyName);
         this.setEmail(strAlEmail);
         this.setpType(strpType);
     }
@@ -126,6 +127,20 @@ public class AirAlliances implements Serializable {
      */
     public void setPnr(PassengerNameRecord pnr) {
         this.pnr = pnr;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

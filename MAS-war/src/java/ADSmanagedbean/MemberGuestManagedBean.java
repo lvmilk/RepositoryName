@@ -7,6 +7,7 @@ package ADSmanagedbean;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.MsgSender;
@@ -65,10 +66,14 @@ public class MemberGuestManagedBean implements Serializable {
     private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
     private Double totalPrice;
     private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+    
+   private Reservation selectedRsv;
+   private ArrayList<Passenger> psgList;
 
     @PostConstruct
     public void init() {
         try {
+            
             BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
             departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
             returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");

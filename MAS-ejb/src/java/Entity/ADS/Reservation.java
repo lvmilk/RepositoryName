@@ -40,26 +40,26 @@ public class Reservation implements Serializable {
     private String bkLastName;
     private String bkEmail;
     
-    private String origin;
-    private String dest;
+    private String origin;   // airport code
+    private String dest;     //airport code
     private Boolean returnTrip;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date rsvDate;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "rsv")
-    private List<Ticket> tickets;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rsv")
+    private List<Ticket> tickets=new ArrayList<>();
 
-    @ManyToMany(cascade={CascadeType.ALL})
+    @ManyToMany
     @JoinTable(name="RESERVATION_BKCINSTANCE")
     private List<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
     
-   @ManyToOne
-   private Booker booker;
-    
+    @ManyToOne
+    private Booker booker;
+     
 
     public Reservation() {
 

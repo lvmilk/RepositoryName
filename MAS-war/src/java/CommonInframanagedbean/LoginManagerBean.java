@@ -57,6 +57,12 @@ public class LoginManagerBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
+            } else if (stfType.equals("groundStaff")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/grdStaffWorkspace.xhtml");
+            } else if (stfType.equals("cabin")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/cbCrewWorkspace.xhtml");
+            } else if (stfType.equals("cockpit")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("CMIpages/cpCrewWorkspace.xhtml");
             } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("staffWorkspace.xhtml");
             }

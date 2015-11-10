@@ -11,13 +11,12 @@
         <title>Update Reservation</title>
     </h:head>
     <h:body>
-        <h:form id="updateRsv">
-
+        <h:form id="cancelRsv">
 
             <p:panel id="detail" header="Reservation Detail" toggleable="true">
                 <p:panel header="Departure Trip " >  
 
-                    <ui:repeat value="#{updateReservation.departed}" var="instance" varStatus="myStatus">
+                    <ui:repeat value="#{cancelFlight.departed}" var="instance" varStatus="myStatus">
 
                         <h:panelGrid columns="8" cellpadding="15" >
 
@@ -49,9 +48,9 @@
                 </p:panel>
 
                 <br/>
-                <p:panel header="Return Trip " rendered="#{updateReservation.returned.size()>0}">    
+                <p:panel header="Return Trip " rendered="#{cancelFlight.returned.size()>0}">    
 
-                    <ui:repeat value="#{updateReservation.returned}" var="instance">
+                    <ui:repeat value="#{cancelFlight.returned}" var="instance">
 
                         <h:panelGrid columns="8" cellpadding="15" >
 
@@ -84,28 +83,30 @@
 
 
                 <br/>
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:50%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
+                        <p:outputLabel value="#{cancelFlight.selectedRsv.booker.title}" />
 
                         <p:outputLabel  value="Name" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.firstName} #{updateReservation.selectedRsv.booker.lastName}" />
+                        <p:outputLabel value="#{cancelFlight.selectedRsv.booker.firstName} #{cancelFlight.selectedRsv.booker.lastName}" />
 
                         <p:outputLabel  value="Email" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.email}" />
+                        <p:outputLabel value="#{cancelFlight.selectedRsv.booker.email}" />
 
                         <p:outputLabel  value="Address" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.address}" />
+                        <p:outputLabel value="#{cancelFlight.selectedRsv.booker.address}" />
 
                         <p:outputLabel  value="Contact No" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.booker.contact}" />
+                        <p:outputLabel value="#{cancelFlight.selectedRsv.booker.contact}" />
                     </h:panelGrid>
 
                 </p:panel>
 
-                <p:panel id="passenger" header="Passenger"   toggleable="true" style="width:70%">
-                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{cancelFlight.selectedPsgList}" value="#{cancelFlight.psgList}" style="text-align: center" rows="10"  emptyMessage="No Reservations" >
+
+                        <p:column selectionMode="multiple" headerText="Select all" style="width:60px; text-align: center" /> 
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -123,6 +124,8 @@
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
                     </p:dataTable>
+                    
+                    <p:commandButton value="Cancel Flight" actionListener="#{cancelFlight.onSelectPsg()}"/>
 
                 </p:panel>
 
