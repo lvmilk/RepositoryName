@@ -28,6 +28,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     @PersistenceContext
     EntityManager em;
 
+    @Override
     public List<Ticket> getAllTicket(String passportID, String firstName, String lastName) throws Exception {
 
         List<Ticket> ticketList = new ArrayList<Ticket>();
@@ -73,7 +74,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
         }
     }
 
-
+    @Override
     public FlightInstance getRequestFlight(String flightNo, String dateString) throws Exception {
         FlightInstance fi = new FlightInstance();
         Query query = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
@@ -87,14 +88,59 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("Cannot find request flight!");
         }
     }
-   
-    
-    
 
-    private List<Ticket> getAllStandbyTickets(String flightNo, String date) {
+    @Override
+    public List<Ticket> getAllStandbyTickets(String flightNo, String dateString) throws Exception {
         List<Ticket> ticketList = new ArrayList<Ticket>();
+        List<Ticket> allTickets = new ArrayList<Ticket>();
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus:=tstatus");
+        query.setParameter("tstatus", "Standby");
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+
+            if (!query.getResultList().isEmpty()) {
+                for (Ticket temp : (List<Ticket>) query.getResultList()) {
+                    if (temp.getDepCity().equals(fi.getFlightFrequency().getRoute().getOrigin().getCityName()) && temp.getArrCity().equals(fi.getFlightFrequency().getRoute().getDest().getCityName())) {
+                        ticketList.add(temp);
+                    }
+                }
+            } else {
+                throw new Exception("No Standby ticket found");
+            }
+
+        } else {
+            throw new Exception("No flight instance found");
+        }
 
         return ticketList;
     }
 
+    @Override
+    public boolean changeCheckinStatus(Ticket tkt) throws Exception {
+        if (em.find(Ticket.class, tkt.getTicketID()) != null) {
+            tkt.setTicketStatus("Checkedin");
+            em.merge(tkt);
+            return true;
+        } else {
+            throw new Exception("No such ticket exist!");
+        }
+    }
+    
+    @Override
+    public boolean changeStandbyStatus(Ticket tkt) throws Exception {
+        if (em.find(Ticket.class, tkt.getTicketID()) != null) {
+            tkt.setTicketStatus("Standby");
+            em.merge(tkt);
+            return true;
+        } else {
+            throw new Exception("No such ticket exist!");
+        }
+    }
+    
+    
+    
 }

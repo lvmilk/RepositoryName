@@ -14,7 +14,7 @@
 
         <h:form id="display">
             <p:panel id="panel" header="Check in"  style="width:100%">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false"/>
 
                 <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel for="name" value="Passenger Name" />
@@ -38,16 +38,25 @@
                         </p:column>
 
                         <p:column headerText="Check in">
-                            <p:commandButton value="Check in" actionListener="#{cmb.onCheckinChange}">
-                                <f:attribute name="tkt" value="#{tkt}"/>
+                            <p:commandButton value="Check in" actionListener="#{cmb.generateBookingClass}">
+                                <f:attribute name="fi" value="#{fi}"/>
                             </p:commandButton>   
                         </p:column>
                         <p:column headerText="Standby">
-                            <p:commandButton value="Standby" actionListener="#{cmb.onStandbyChange}">
-                                <f:attribute name="tkt" value="#{tkt}"/>
+                            <p:commandButton value="Generate" actionListener="#{assignPriceManagedBean.generateBookingClass}">
+                                <f:attribute name="fi" value="#{fi}"/>
                             </p:commandButton>   
                         </p:column>
                     </p:dataTable>
+
+                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />
+
+                    <p:outputLabel for="flight" value="Flight :" />
+                    <p:selectOneMenu id="flight" value="#{cmb.flightNo}" style="width:250px">
+                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{cmb.ffList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                    </p:selectOneMenu>
+
 
                 </h:panelGrid>
                 <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
