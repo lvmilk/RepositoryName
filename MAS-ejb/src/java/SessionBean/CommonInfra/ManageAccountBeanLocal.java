@@ -23,7 +23,7 @@ public interface ManageAccountBeanLocal {
     public boolean validateLogin (String username, String password, String staffType);
     public void addAdmin(String username,String password, String stfType);
     public void addAccount(String username, String password,String email, String stfType, String firstName,String lastName, String stfLevel, Double salary);
-    public void addPartnerAcc(String pid, String pPwd, String email, String stfType);
+    public void addPartnerAcc(String pid, String pPwd,String companyName, String email, String stfType);
     
     public void addCocpitAcc(String username, String password, String email ,String stfType, String firstName,String lastName, String stfLevel, Double salary,String licence );
     public boolean checkAccDuplicate(String username,String stfType);
@@ -57,4 +57,6 @@ public interface ManageAccountBeanLocal {
     public int getLockedOutStatus(String username, String stfType);
     
     public boolean validateDDSLogin(String username, String password);
+
+    public void addCabinAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang);
 }

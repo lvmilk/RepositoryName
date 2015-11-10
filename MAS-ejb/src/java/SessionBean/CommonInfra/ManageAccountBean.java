@@ -90,16 +90,16 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
         }
     }
 
-    public void addPartnerAcc(String pid, String pPwd, String email, String stfType) {
+    public void addPartnerAcc(String pid, String pPwd,String companyName,String email, String stfType) {
         System.out.println("Currently in create partner account");
         hPwd = this.encrypt(pid, pPwd);
         if (stfType.equals("agency")) {
             agency = new Agency();
-            agency.createAgencyAcc(pid, hPwd, email, stfType);
+            agency.createAgencyAcc(pid, hPwd, companyName, email, stfType);
             em.persist(agency);
         } else if (stfType.equals("alliance")) {
             alliance = new AirAlliances();
-            alliance.createAllianceAcc(pid, hPwd, email, stfType);
+            alliance.createAllianceAcc(pid, hPwd,companyName, email, stfType);
             em.persist(alliance);
         }
     }
@@ -255,19 +255,32 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             grdStaff.setUser(userEntity);
             userEntity.setGrdStaff(grdStaff);
             em.persist(grdStaff);
-        } else if (stfType.equals("cabin")) {
-            System.out.println(stfType);
-            cbCrew = new CabinCrew();
-            userEntity = new UserEntity();
-            cbCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
-            userEntity.create(username, email);
-            cbCrew.setUser(userEntity);
-            userEntity.setCbCrew(cbCrew);
-            em.persist(cbCrew);
-        }
+        } 
+//        else if (stfType.equals("cabin")) {
+//            System.out.println(stfType);
+//            cbCrew = new CabinCrew();
+//            userEntity = new UserEntity();
+//            cbCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
+//            userEntity.create(username, email);
+//            cbCrew.setUser(userEntity);
+//            userEntity.setCbCrew(cbCrew);
+//            em.persist(cbCrew);
+//        }
 
     }
 
+     @Override
+    public void addCabinAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
+        cbCrew = new CabinCrew();
+        userEntity = new UserEntity();
+        hPwd = this.encrypt(username, password);
+        cpCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary, secondLang);
+        userEntity.create(username, email);
+        cbCrew.setUser(userEntity);
+        userEntity.setCbCrew(cbCrew);
+        em.persist(cbCrew);
+    }
+    
     @Override
     public void addCocpitAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         cpCrew = new CockpitCrew();

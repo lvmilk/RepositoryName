@@ -31,7 +31,9 @@ public class Seat implements Serializable {
     private int colNo;
     private int width;
     private String status;
-
+    private int luggageCount=2;
+    
+    
     @OneToOne(mappedBy="seat")
     private Ticket ticket;
     @ManyToOne
@@ -52,6 +54,14 @@ public class Seat implements Serializable {
     
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getLuggageCount() {
+        return luggageCount;
+    }
+
+    public void setLuggageCount(int luggageCount) {
+        this.luggageCount = luggageCount;
     }
 
     @Override

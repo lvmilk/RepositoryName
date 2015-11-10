@@ -32,9 +32,10 @@ public class AirAlliances implements Serializable {
     @OneToOne(mappedBy="alliance")
     private PassengerNameRecord pnr;
 
-    public void createAllianceAcc(String strAlId, String strAlPwd, String strAlEmail, String strpType) {
+    public void createAllianceAcc(String strAlId, String strAlPwd, String companyName, String strAlEmail, String strpType) {
         this.setAllianceID(strAlId);
         this.setAllPwd(strAlPwd);
+        this.setCompanyName(companyName);
         this.setEmail(strAlEmail);
         this.setpType(strpType);
     }

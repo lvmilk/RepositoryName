@@ -10,6 +10,7 @@ import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -17,6 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -52,14 +54,22 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     private Date standardDepTimeDateType;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date localDepTime;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date localArrTime;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name="flightinstance_cabincrew")
     private List<CabinCrew> cabinList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name="flightinstance_cockpitcrew")
     private List<CockpitCrew> cockpitList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name="flightinstance_cabincrewstandby")
     private List<CabinCrew> cabinStandByList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name="flightinstance_cockpitcrewstandby")
     private List<CockpitCrew> cockpitStandByList;
 
     @ManyToOne
@@ -236,6 +246,71 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 
     public void setStandardArrTimeDateType(Date standardArrTimeDateType) {
         this.standardArrTimeDateType = standardArrTimeDateType;
+    }
+
+    public Date getLocalDepTime() {
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String depTZ = this.getFlightFrequency().getRoute().getOrigin().getTimeZone();
+        Date depLocal = new Date();
+        Integer depOffset = 0;
+        switch (depTZ.charAt(3)) {
+            case '-': {
+                String offset = depTZ.substring(4, 6);
+//                if (offset.charAt(0) == '0') {
+                depOffset = Integer.valueOf(offset);
+//                }
+                Calendar c = Calendar.getInstance();
+                c.setTime(this.getStandardDepTimeDateType());
+                c.add(Calendar.HOUR, depOffset);
+                depLocal = c.getTime();
+                break;
+            }
+            case '+': {
+                String offset = depTZ.substring(4, 6);
+                depOffset = 0 - Integer.valueOf(offset);
+                Calendar c = Calendar.getInstance();
+                c.setTime(this.getStandardDepTimeDateType());
+                c.add(Calendar.HOUR, depOffset);
+                depLocal = c.getTime();
+                break;
+            }
+        }
+        return depLocal;
+    }
+
+    public void setLocalDepTime(Date localDepTime) {
+        this.localDepTime = localDepTime;
+    }
+
+    public Date getLocalArrTime() {
+//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String depTZ = this.getFlightFrequency().getRoute().getDest().getTimeZone();
+        String offset = depTZ.substring(4, 6);
+        Date arrLocal = new Date();
+        Integer depOffset = 0;
+        switch (depTZ.charAt(3)) {
+            case '-': {
+                depOffset = Integer.valueOf(offset);
+                Calendar c = Calendar.getInstance();
+                c.setTime(this.getStandardArrTimeDateType());
+                c.add(Calendar.HOUR, depOffset);
+                arrLocal = c.getTime();
+                break;
+            }
+            case '+': {
+                depOffset = 0 - Integer.valueOf(offset);
+                Calendar c = Calendar.getInstance();
+                c.setTime(this.getStandardArrTimeDateType());
+                c.add(Calendar.HOUR, depOffset);
+                arrLocal = c.getTime();
+                break;
+            }
+        }
+        return arrLocal;
+    }
+
+    public void setLocalArrTime(Date localArrTime) {
+        this.localArrTime = localArrTime;
     }
 
     public List<CabinCrew> getCabinList() {

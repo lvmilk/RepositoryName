@@ -17,17 +17,17 @@
             <p:panel id="panel" header="Flight Crew Scheduling"  style="width:100%">
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
-                    <p:outputLabel for="startPlanDate" />
-                    <p:calendar id="startPlanDate" value="#{FCSMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew start scheduling date" size="30"> 
+                    <p:outputLabel for="startPlanDate" value="Start Date (yyyy-MM-dd): " />
+                    <p:calendar id="startPlanDate" value="#{FCSEPMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew start scheduling date" size="30"> 
                     </p:calendar>
                     
                     <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />
-                    <p:calendar id="endPlanDate" value="#{FCSMB.endDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew end scheduling date" size="30"> 
-                        <f:attribute name="startPlanDate" value="#{FCSMB.startDate}" />
+                    <p:calendar id="endPlanDate" value="#{FCSEPMB.endDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew end scheduling date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{FCSEPMB.startDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
                 </h:panelGrid>
-                <p:commandButton value="Schedule Flight Crew" action="#{FCSMB.flightCrewSchdulingForPeriod}"  icon="ui-icon-check" />
+                <p:commandButton value="Schedule Flight Crew" action="#{FCSEPMB.flightCrewSchdulingForPeriod}"  icon="ui-icon-check" />
 
             </p:panel>
 
