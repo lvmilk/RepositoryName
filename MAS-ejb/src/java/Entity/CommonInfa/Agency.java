@@ -24,7 +24,7 @@ public class Agency implements Serializable {
     @Id
     private String agencyID;
     private String agenPwd;
-    private String companyName;
+    private String name;
     
     @Column(unique=true)
     private String email;
@@ -34,11 +34,11 @@ public class Agency implements Serializable {
     @OneToMany(cascade={CascadeType.ALL},mappedBy="agency")
     private List<Booker> bkList;
     
-    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String name,String strAgEmail, String strpType)
+    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String companyName,String strAgEmail, String strpType)
     {
         this.setAgencyID(strAgencyId);
         this.setAgenPwd(strAgencyPwd);
-        this.setCompanyName(name);
+        this.setName(companyName);
         this.setEmail(strAgEmail);
         this.setpType(strpType);
     }
@@ -51,12 +51,12 @@ public class Agency implements Serializable {
         this.agencyID = agencyID;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getName() {
+        return name;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
