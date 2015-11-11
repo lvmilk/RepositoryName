@@ -8,7 +8,6 @@ package DCSmanagedbean;
 import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
 import Entity.APS.FlightFrequency;
-import static Entity.APS.FlightFrequency_.flightList;
 import Entity.APS.FlightInstance;
 import SessionBean.DCS.DepartureControlBeanLocal;
 import java.io.Serializable;
@@ -69,7 +68,7 @@ public class CheckInManagedBean implements Serializable {
 
             if (dateString != null && !dateString.equals("")) {
                 ffList = dcb.getFlightList(dateString);
-                System.out.println("CMB:OnDateChange run result: " + flightList.toString());
+                System.out.println("CMB:OnDateChange run result: " + ffList.toString());
             }
 
         } catch (Exception ex) {

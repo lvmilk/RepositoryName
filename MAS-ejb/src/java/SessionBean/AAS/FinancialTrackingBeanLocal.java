@@ -5,6 +5,8 @@
  */
 package SessionBean.AAS;
 
+import Entity.AAS.Expense;
+import Entity.AAS.Revenue;
 import Entity.ADS.Ticket;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +18,15 @@ import javax.ejb.Local;
  */
 @Local
 public interface FinancialTrackingBeanLocal {
+
     public Double calculateRevenue(String channel, long year, String quarter);
+
+    public List<Revenue> getRevenueList(long year, String quarter);
+
+    public List<Expense> getExpenseList(long year, String quarter);
+
+    public Double calculateExpense(String type, String category, long year, String quarter);
+
+    public List<Expense> getAllExpense(String type);
     
 }
