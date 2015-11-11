@@ -1,5 +1,6 @@
 package SessionBean.APS;
 
+import Entity.AAS.Expense;
 import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
@@ -27,6 +28,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     EntityManager em;
     AircraftType aircraftType;
     Aircraft aircraft;
+    Expense expense;
 
     @EJB
     SeatPlanBeanLocal sp;
@@ -149,7 +151,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         System.out.println("get in addAircraftType");
         aircraftType = em.find(AircraftType.class, type);
@@ -163,15 +165,30 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             throw new Exception("Total number of crews exceeds the max capacity (25)!");
         }
         aircraftType = new AircraftType();
-        aircraftType.create(type, manufacturer, maxDistance, purchaseCost, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
+        aircraftType.create(type, manufacturer, maxDistance, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
         em.persist(aircraftType);
         em.flush();
+        ////////////
+        expense = new Expense();
+        expense.setCategory("Fuel Cost");
+        expense.setPayable(fuelCost);
+        expense.setCostSource(type);
+        em.persist(expense);
+        em.flush();
+        expense = new Expense();
+        expense.setCategory("Maintenance Cost");
+        expense.setPayable(mtCost);
+        expense.setCostSource(type);
+        em.persist(expense);
+        em.flush();
+        System.out.println("FPB: add aircraft type: Expense setting");
+        ////////////
         System.out.println("Aircrat Type is added!");
         addCabin(aircraftType, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo);
     }
 
     @Override
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception {
         aircraftType = em.find(AircraftType.class, type);
         if (aircraftType == null) {
@@ -185,7 +202,6 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         }
         aircraftType.setManufacturer(manufacturer);
         aircraftType.setMaxDistance(maxDistance);
-        aircraftType.setPurchaseCost(purchaseCost);
         aircraftType.setFuelCost(fuelCost);
         aircraftType.setMtCost(mtCost);
         aircraftType.setAircraftLength(aircraftLength);
@@ -331,7 +347,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
+    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Double purchaseCost) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft != null) {
             throw new Exception("Aircraft has already existed.");
@@ -341,7 +357,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
             throw new Exception("AircraftType does not exist.");
         }
         aircraft = new Aircraft();
-        aircraft.create(registrationNo, status, firstFlyDate, deliveryDate, retireDate);
+        aircraft.create(registrationNo, status, firstFlyDate, deliveryDate, retireDate, purchaseCost);
         aircraft.setAircraftType(aircraftType);
         aircraft.setCurrentAirport("SIN");
         em.persist(aircraft);
@@ -349,10 +365,26 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.getAircraft().add(aircraft);
         em.merge(aircraftType);
         em.flush();
+        ////////////
+        expense = new Expense();
+        expense.setCategory("Purchase Aircraft");
+        expense.setPayable(purchaseCost);
+        expense.setCostSource(registrationNo);
+        em.persist(expense);
+        em.flush();
+        expense = new Expense();
+        expense.setCategory("Depreciation");
+        Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+        expense.setPayable(depreciation);
+        expense.setCostSource(registrationNo);
+        em.persist(expense);
+        em.flush();
+        System.out.println("FPB: add aircraft type: Expense setting");
+        ////////////
     }
 
     @Override
-    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception {
+    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Double purchaseCost) throws Exception {
         aircraft = em.find(Aircraft.class, registrationNo);
         if (aircraft == null) {
             throw new Exception("Aircraft does not exist.");
@@ -367,16 +399,33 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         }
         System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! " + aircraft.getStatus() + aircraft.getFlightInstance());
         System.out.println("Fleet Planning Bean is editing Aircraft...");
-//        aircraft.setSerialNo(serialNo);
         aircraft.setStatus(status);
-        //       aircraft.setFirstFlyDate(firstFlyDate);
-//        aircraft.setDeliveryDate(deliveryDate);
         aircraft.setRetireDate(retireDate);
-//        aircraft.setFlightLogId(flightLogId);
-//        aircraft.setMaintenanceLogId(maintenanceLogId);
+        aircraft.setPurchaseCost(purchaseCost);
         aircraft.setAircraftType(aircraftType);
         em.merge(aircraft);
         em.flush();
+        Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:registrationNo");
+        q.setParameter("registrationNo", registrationNo);
+        if (q.getResultList().isEmpty()) {
+            throw new Exception("No aircraft related to this expense.");
+        } else {
+            for (int i = 0; i < q.getResultList().size(); i++) {
+                expense = (Expense) q.getResultList().get(i);
+                if (expense.getCategory().equals("Purchase Aircraft")) {
+                    expense.setPayable(purchaseCost);
+                    expense.setCostSource(registrationNo);
+                } else if (expense.getCategory().equals("Depreciation")) {
+                    Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+                    expense.setPayable(depreciation);
+                    expense.setCostSource(registrationNo);
+                }else{
+                    throw new Exception("Wrong expense category found for expense.");
+                }
+                em.merge(expense);
+                em.flush();
+            }
+        }
     }
 
     @Override
@@ -434,7 +483,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         return q.getResultList();
     }
 
- @Override
+    @Override
     public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH) {
         AircraftType act = em.find(AircraftType.class, acType.getType());
 //        act.setDailycDu(dailycDu);
@@ -463,4 +512,3 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
 }
-

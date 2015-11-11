@@ -38,6 +38,12 @@
                                         <p:outputLabel for="maintenanceLogId" value="Maintenance ID:" />
                                         <p:inputText id="maintenanceLogId" value="#{AMB.maintenanceLogId}" label="maintenanceLogId" required="true" validatorMessage="Maintenance ID: Please enter a valid ID number"  requiredMessage="Please enter maintenance ID" size="50">
                                         </p:inputText>-->
+                    
+                    
+                    <p:outputLabel for="purchaseCost" value="Purchase Cost (Million SGD) [50,200]:" />
+                    <p:inputText id="purchaseCost" value="#{AMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft" size="50">
+                        <f:validateDoubleRange minimum="50.0" maximum="200.0"/>
+                    </p:inputText>
 
                     <p:outputLabel for="type" value="Aircraft Type:" />
                     <p:selectOneMenu id="type" value="#{AMB.type}">
