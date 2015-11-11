@@ -1,5 +1,6 @@
 package Entity.APS;
 
+import Entity.AAS.Expense;
 import Entity.AFOS.FlightCrewTeam;
 import Entity.AIS.CabinClass;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class AircraftType implements Serializable {
     private String type;
     private String manufacturer;
     private Double maxDistance;
-    private Double purchaseCost;
+   
     private Double fuelCost;
    
     private Double aircraftLength;
@@ -72,7 +73,7 @@ public class AircraftType implements Serializable {
     
     //---------------------------------------------------------------------------
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraftType")
     private List<Aircraft> aircraft = new ArrayList<>();
 //    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
 //    private List<FlightFrequency> flightMatchList = new ArrayList<> ();
@@ -82,13 +83,13 @@ public class AircraftType implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "aircraftType")
     private List<CabinClass> cabinList = new ArrayList<CabinClass>();
 
-    public void create(String type, String manufacturer, Double maxDistance, Double leaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
+
+    public void create(String type, String manufacturer, Double maxDistance, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace,
             Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) {
 
         this.setType(type);
         this.setManufacturer(manufacturer);
         this.setMaxDistance(maxDistance);
-        this.setPurchaseCost(leaseCost);
         this.setFuelCost(fuelCost);
         this.setMtCost(mtCost);
         this.setAircraftLength(aircraftLength);
@@ -106,6 +107,7 @@ public class AircraftType implements Serializable {
         totalSeatNum=suiteNo+fcSeatNo+bcSeatNo+pecSeatNo+ecSeatNo;
         this.setTotalSeatNum(totalSeatNum);
     }
+
 
     public List<Aircraft> getAircraft() {
         return aircraft;
@@ -137,14 +139,6 @@ public class AircraftType implements Serializable {
 
     public void setMaxDistance(Double maxDistance) {
         this.maxDistance = maxDistance;
-    }
-
-    public Double getPurchaseCost() {
-        return purchaseCost;
-    }
-
-    public void setPurchaseCost(Double purchaseCost) {
-        this.purchaseCost = purchaseCost;
     }
 
     public Double getFuelCost() {

@@ -67,11 +67,10 @@ public class RevenueManagedBean implements Serializable {
     private List<Long> yearList = new ArrayList<>();
     long currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-    
-    public RevenueManagedBean(){
-        
+    public RevenueManagedBean() {
+
     }
-    
+
     @PostConstruct
     public void init() {
         for (int i = 0; i < 10; i++) {
@@ -89,12 +88,19 @@ public class RevenueManagedBean implements Serializable {
         sumMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("sumMap");
         total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
         revenueList = (List<Revenue>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("revenueList");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("quarter") != null) {
+            year = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year");
+            quarter = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("quarter");
+        } else {
+            year = 0;
+            quarter = "0";
+        }
     }
 
     public void calculateRevenue() throws IOException {
         System.out.println("AAS:RMB:TESTING 1 Year and Quarter: " + year + " " + quarter);
         if (quarter.equals("0") || year == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please select year and quarter ! "));   
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please select year and quarter ! "));
         } else {
             saleMap = new HashMap<String, Double>();
             commissionMap = new HashMap<String, Double>();
@@ -144,19 +150,15 @@ public class RevenueManagedBean implements Serializable {
     }
 
     public void exporterSummary() {
-        year = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year");
-        quarter = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("quarter");
+
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("resizable", false);
         options.put("draggable", false);
         options.put("modal", true);
-
         RequestContext.getCurrentInstance().openDialog("dialogRevenueSummary", options, null);
     }
 
     public void exporterDetail() {
-        year = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year");
-        quarter = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("quarter");
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("resizable", true);
         options.put("draggable", false);

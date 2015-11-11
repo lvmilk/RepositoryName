@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
@@ -83,8 +84,13 @@ public class CheckRouteProfitabilityManagedBean implements Serializable {
             System.out.println("CRFMB.checkRouteCost(): annual total flight hours " + flightHr);
             Double fuel = flightHr * a.getFuelCost() / 1000.0;
             System.out.println("CRFMB.checkRouteCost(): fuel cost thousand SGD " + fuel);
-            Double acCost = 12 * a.getPurchaseCost() / 1000.0; // leaseCost is monthly
-            Double crew = ((a.getCabinCrew()*seatNo * 20 + a.getCabinLeader()*seatNo * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
+            Double acCost = 0.0;
+            if (a.getAircraft().get(0) != null) {
+                 acCost = a.getAircraft().get(0).getPurchaseCost();
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Aircraft Type", "Aircraft type " + a + " does not have aircraft linked!"));
+            }
+            Double crew = ((a.getCabinCrew() * seatNo * 20 + a.getCabinLeader() * seatNo * 30 + a.getPilot() * 100 + a.getCaptain() * 200) * flightHr) / 1000.0;
             Double mtCost = 3640.0;
             Double totalCost = fuel + acCost + crew + mtCost;
             Double profit = revenue - totalCost;
