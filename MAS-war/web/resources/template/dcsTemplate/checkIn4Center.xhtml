@@ -13,34 +13,54 @@
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Check in:Luggage Information"  style="width:100%">
+            <p:panel id="panel" header="Check in:Preview Boarding Pass"  style="width:100%">
                 <p:messages id="msgs" autoUpdate="false"/>
 
                 <h:panelGrid columns="2" cellpadding="5">
-                    <p:outputLabel for="name" value="Passenger Name" />
-                    <h:outputText id="name" value="#{cmb.firstName} #{cmb.lastName}" />
+                   
+                    <p:dataTable id="luggagetag1"   rendered="#{cmb.luggageCount==1||cmb.luggageCount==2}" style="margin-bottom:20px">
+                        <p:column headerText="PASSENGER NAME">
+                            <h:outputText value="#{cmb.firstName} #{cmb.lastName}" style="center" />
+                        </p:column>
+                        <p:column headerText="PASSPORT NUMBER">
+                            <h:outputText value="#{cmb.passportNo}" style="center"/>
+                        </p:column>
+                        <p:column headerText="FLIGHT NUMBER">
+                            <h:outputText value="#{cmb.flightNo}" style="center"/>
+                        </p:column>
+                        <p:column headerText="SEAT NUMBER">
+                            <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="center"/>
+                        </p:column>
+                    </p:dataTable>
 
-                    <p:outputLabel for="passportno" value="Passport Number" />
-                    <h:outputText id="passportno" value="#{cmb.passportNo}" />
+                    <p:dataTable id="luggagetag2" rendered="#{cmb.luggageCount==2}" style="margin-bottom:20px">
+                        <p:column headerText="PASSENGER NAME">
+                            <h:outputText value="#{cmb.firstName} #{cmb.lastName}" style="center" />
+                        </p:column>
+                        <p:column headerText="PASSPORT NUMBER">
+                            <h:outputText value="#{cmb.passportNo}" style="center"/>
+                        </p:column>
+                        <p:column headerText="FLIGHT NUMBER">
+                            <h:outputText value="#{cmb.flightNo}" style="center"/>
+                        </p:column>
+                        <p:column headerText="SEAT NUMBER">
+                            <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="center"/>
+                        </p:column>
+                    </p:dataTable>
 
-                 
-                    <p:outputLabel for="luggageCount" value="No of checkin luggage :" />
-                    <p:selectOneMenu id="flight" value="#{cmb.luggageCount}" style="width:250px">
-                        <f:selectItem itemLabel="Select One Flight" itemValue="#{0}" noSelectionOption="true"/>
-                        <f:selectItem itemLabel="1" itemValue="#{1}" noSelectionOption="true"/>
-                        <f:selectItem itemLabel="2" itemValue="#{2}" noSelectionOption="true"/>  
-                    </p:selectOneMenu>
-
+                    <p:commandButton value="Print Luggage Tag 1" type="button" rendered="#{cmb.luggageCount==1||cmb.luggageCount==2}" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="luggagetag1" />
+                    </p:commandButton>
+                    
+                    <p:commandButton value="Print Luggage Tag 2" type="button" rendered="#{cmb.luggageCount==2}" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                        <p:printer target="luggagetag2" />
+                    </p:commandButton>
 
                 </h:panelGrid>
-                <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
+                <p:commandButton value="Preview Boarding Pass" update="panel" style="margin-right:0" action="#{cmb.previewBoardingPass}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
-
-
-
-
 
 
 
