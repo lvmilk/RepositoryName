@@ -17,7 +17,10 @@
                 <p:tabView>
                     <p:tab title="Cockpit Crew">
                         <p:dataTable var="cp" value="#{VFCSMB.cockpitList}" paginator="true" rows="40" emptyMessage="No Cockpit Crews">
-                            <p:column headerText="Staff Number" sortBy="#{cp.cpName}" filterBy="#{cp.cpName}" >
+                            <p:column headerText="Staff Id" sortBy="#{cp.cpName}" filterBy="#{cp.cpName}" >
+                                <h:outputText value="#{cp.cpName}" />
+                            </p:column>
+                             <p:column headerText="Staff Name" sortBy="#{cp.firstName}" filterBy="#{cp.cpName}" >
                                 <h:outputText value="#{cp.cpName}" />
                             </p:column>
                             <p:column headerText="Staff Level" sortBy="#{cp.stfLevel}" filterBy="#{cp.stfLevel}" >

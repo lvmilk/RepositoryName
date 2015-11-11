@@ -29,7 +29,7 @@ import util.CryptoHelper;
  * @author LIU YUQI & LI HAO'
  */
 @Stateless
-public class ManageAccountBean implements ManageAccountBeanLocal {
+public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountBeanRemote {
 
     @PersistenceContext
     EntityManager em;
@@ -255,19 +255,32 @@ public class ManageAccountBean implements ManageAccountBeanLocal {
             grdStaff.setUser(userEntity);
             userEntity.setGrdStaff(grdStaff);
             em.persist(grdStaff);
-        } else if (stfType.equals("cabin")) {
-            System.out.println(stfType);
-            cbCrew = new CabinCrew();
-            userEntity = new UserEntity();
-            cbCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
-            userEntity.create(username, email);
-            cbCrew.setUser(userEntity);
-            userEntity.setCbCrew(cbCrew);
-            em.persist(cbCrew);
-        }
+        } 
+//        else if (stfType.equals("cabin")) {
+//            System.out.println(stfType);
+//            cbCrew = new CabinCrew();
+//            userEntity = new UserEntity();
+//            cbCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary);
+//            userEntity.create(username, email);
+//            cbCrew.setUser(userEntity);
+//            userEntity.setCbCrew(cbCrew);
+//            em.persist(cbCrew);
+//        }
 
     }
 
+     @Override
+    public void addCabinAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
+        cbCrew = new CabinCrew();
+        userEntity = new UserEntity();
+        hPwd = this.encrypt(username, password);
+        cpCrew.create(username, hPwd, email, stfType, firstName,lastName, stfLevel, salary, secondLang);
+        userEntity.create(username, email);
+        cbCrew.setUser(userEntity);
+        userEntity.setCbCrew(cbCrew);
+        em.persist(cbCrew);
+    }
+    
     @Override
     public void addCocpitAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         cpCrew = new CockpitCrew();

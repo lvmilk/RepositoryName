@@ -278,7 +278,7 @@ public class PricingManagedBean implements Serializable {
     public void retrieveAircraftTypeInfo(AircraftType aircraftType) {
 
         System.out.println("MB: Enter retrieveAircraftTypeInfo");
-        ownershipCost = aircraftType.getPurchaseCost();
+        ownershipCost = aircraftType.getAircraft().get(0).getPurchaseCost(); ////////////should be changed later
         if (aircraftType.getSuiteNo() > 0) {
             cabinInfo.put("Suite", aircraftType.getSuiteNo());
             loadfactorMap.put("Suite", 0.0);

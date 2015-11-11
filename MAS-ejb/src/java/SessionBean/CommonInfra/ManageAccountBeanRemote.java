@@ -10,14 +10,14 @@ import Entity.CommonInfa.OfficeStaff;
 import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.CockpitCrew;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author LIU YUQI & LI HAO'
  */
-@Local
-public interface ManageAccountBeanLocal {
+@Remote
+public interface ManageAccountBeanRemote {
     
     
     public boolean validateLogin (String username, String password, String staffType);

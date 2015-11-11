@@ -1,5 +1,6 @@
 package Entity.APS;
 
+import Entity.AAS.Expense;
 import Entity.AFOS.Maintenance;
 import java.io.Serializable;
 import java.time.temporal.ChronoUnit;
@@ -30,6 +31,7 @@ public class Aircraft implements Serializable {
     private String currentAirport;
 
     //----------------------After 1st release
+     private Double purchaseCost;
     private Integer yearDiff; 
     private long acycleFM = 0;
     private long acycleFC = 0;
@@ -49,9 +51,9 @@ public class Aircraft implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "aircraft")
     private List<FlightInstance> flightInstance = new ArrayList<>();
 
-    public void create(String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) {
+    
+    public void create(String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Double purchaseCost) {
         this.setRegistrationNo(registrationNo);
-//        this.setSerialNo(serialNo);
         this.setStatus(status);
         this.setFirstFlyDate(firstFlyDate);
         this.setDeliveryDate(deliveryDate);
@@ -60,9 +62,17 @@ public class Aircraft implements Serializable {
         Integer end = Integer.parseInt(retireDate.substring(0, 4));
         yearDiff = end - start;
         this.setYearDiff(yearDiff);
-//        this.setFlightLogId(flightLogId);
-//        this.setMaintenanceLogId(maintenanceLogId);
+        this.setPurchaseCost(purchaseCost);
     }
+
+    public Double getPurchaseCost() {
+        return purchaseCost;
+    }
+
+    public void setPurchaseCost(Double purchaseCost) {
+        this.purchaseCost = purchaseCost;
+    }
+    
 
     public String getRegistrationNo() {
         return registrationNo;

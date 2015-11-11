@@ -54,17 +54,17 @@ public interface FleetPlanningBeanLocal {
 
     public List<Aircraft> getThisTypeAircraft(String type);
 
-    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
-
-    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate) throws Exception;
-
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
 
     public void editMtStandard(AircraftType acType, Integer acInH, Integer acInD, Integer acDu, Integer acMH, Integer bcInH, Integer bcInD, Integer bcDu, Integer bcMH, Integer ccInH, Integer ccInD, Integer ccDu, Integer ccMH, Integer dcInH, Integer dcInD, Integer dcDu, Integer dcMH);
 
-    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception;
+    public void editAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Double purchaseCost) throws Exception;
 
-    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double purchaseCost, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception;
+    public void addAircraft(String type, String registrationNo, String status, String firstFlyDate, String deliveryDate, String retireDate, Double purchaseCost) throws Exception;
+
+    public void editAircraftType(String type, String manufacturer, Double maxDistance, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception;
+
+    public void addAircraftType(String type, String manufacturer, Double maxDistance, Double fuelCost, Double mtCost, Double aircraftLength, Double wingspan, String minAirspace, Integer suiteNo, Integer fcSeatNo, Integer bcSeatNo, Integer pecSeatNo, Integer ecSeatNo, Double cabinCrew, Double purser, Integer captain, Integer pilot) throws Exception;
 
     
 }

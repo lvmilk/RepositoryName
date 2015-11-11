@@ -48,15 +48,11 @@
                     <p:column headerText="Retire Date">
                         <h:outputText value="#{Aircraft.retireDate}" />
                     </p:column>
-                    <!--                    <p:column headerText="Flight Log ID">
-                                            <h:outputText value="#{Aircraft.flightLogId}" />
-                                        </p:column>
-                                        <p:column headerText="Maintenance Log ID">
-                                            <h:outputText value="#{Aircraft.maintenanceLogId}" />
-                                        </p:column>-->
-
+                    <p:column headerText="Purchase Cost (SGD)">
+                        <h:outputText value="#{Aircraft.purchaseCost/1000000}" />
+                    </p:column>
                 </p:dataTable>
-                  <br/>
+                <br/>
                 <p:commandButton value="Delete" action="#{AMB.checkSelect()}"  icon="ui-icon-check"/>
             </p:panel>
 

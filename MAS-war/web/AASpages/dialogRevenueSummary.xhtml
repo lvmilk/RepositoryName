@@ -12,7 +12,7 @@
     </h:head>
     <h:body>
         <h:form id="form">
-            <p:dataTable id="tbl" var="key" value="#{RMB.channelList}" style="margin-top:40px" >
+            <p:dataTable id="tbl" var="key" value="#{RMB.channelList}" style="margin-top:40px" emptyMessage="No Record Found in this Period!">
                 <f:facet name="header">
                     <h:outputText value="Revenue Report (quarter #{RMB.quarter} in #{RMB.year})"/>
                 </f:facet>

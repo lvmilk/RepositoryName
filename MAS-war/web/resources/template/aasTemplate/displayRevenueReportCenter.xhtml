@@ -51,18 +51,19 @@
                         <p:column footerText="Currency: " style="text-align:right"/>
                         <p:column colspan="3" style="text-align:left" footerText="SGD" />
                     </p:row>
+                    <p:row>
+                        <p:column footerText="Period:  " style="text-align:right"/>
+                        <p:column colspan="3" style="text-align:left" footerText="Year #{RMB.year} Quarter #{RMB.quarter}" />
+                    </p:row>
+
                 </p:columnGroup>
-
             </p:dataTable>
-       
-            
-            <br/>
-        
-            <p:growl id="growl" showDetail="true" />
 
-            <p:commandButton value="Export" icon="ui-icon-extlink" actionListener="#{RMB.exporter()}">
-                <p:ajax event="dialogReturn" listener="#{dfView.onCarChosen}" update="growl" />
-            </p:commandButton>
+            <br/>
+            <p:growl id="growl" showDetail="true" />
+            <p:commandButton value="Back" icon="ui-icon-cancel" actionListener="#{RMB.back()}"/>
+            <p:commandButton value="Export Revenue Summary" icon="ui-icon-extlink" actionListener="#{RMB.exporterSummary()}"/>
+             <p:commandButton value="Export Revenue Details" icon="ui-icon-extlink" actionListener="#{RMB.exporterDetail()}"/>
 
         </h:form>
     </h:body>

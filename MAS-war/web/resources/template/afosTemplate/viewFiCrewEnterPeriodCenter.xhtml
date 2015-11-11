@@ -18,16 +18,16 @@
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
                     <p:outputLabel for="startPlanDate" value="Start Date (yyyy-MM-dd): " />
-                    <p:calendar id="startPlanDate" value="#{FCSMB.startViewDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
+                    <p:calendar id="startPlanDate" value="#{VFCAEPMB.startViewDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
                     </p:calendar>
 
                     <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />
-                    <p:calendar id="endPlanDate" value="#{FCSMB.endViewDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew arragement end viewing date" size="30"> 
-                        <f:attribute name="startPlanDate" value="#{FCSMB.startViewDate}" />
+                    <p:calendar id="endPlanDate" value="#{VFCAEPMB.endViewDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter flight crew arragement end viewing date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{VFCAEPMB.startViewDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
                 </h:panelGrid>
-                <p:commandButton value="Schedule Flight Crew" action="#{FCSMB.viewFiCrewArrangementEnterPeriod}"  icon="ui-icon-check" />
+                <p:commandButton value="Schedule Flight Crew" action="#{VFCAEPMB.viewFiCrewArrangementEnterPeriod}"  icon="ui-icon-check" />
 
             </p:panel>
 
