@@ -58,14 +58,15 @@ public class ViewFlightCrewScheduleManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
-        endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDate");
+        startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startViewDate");
+        endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endViewDate");
         fiList = fsb.getSortedFiWithinPeriod(startDate, endDate);
         initFCMap(fiList);
     }
 
     public void initFCMap(List<FlightInstance> fiList) {
         for (FlightInstance fi : fiList) {
+            System.out.println(" &&&&&&&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]");
             List<CockpitCrew> cc1 = fi.getCockpitList();
             List<CockpitCrew> cc3 = fi.getCockpitStandByList();
             String captainString = "";
@@ -79,33 +80,45 @@ public class ViewFlightCrewScheduleManagedBean implements Serializable {
             String cabinLeaderString = "";
             String cabinLeaderSBString = "";
             for (CockpitCrew cc : cc1) {
-                if (cc.getStfLevel().equals("captain")) {
-                    captainString += captainString + cc.getCpName() + " ";
-                } else if (cc.getStfLevel().equals("pilot")) {
-                    pilotString += pilotString + cc.getCpName() + " ";
+                if (cc.getStfLevel().equals("Captain")) {
+                    captainString = captainString + cc.getCpName() + " ";
+                } else if (cc.getStfLevel().equals("Pilot")) {
+                    pilotString = pilotString + cc.getCpName() + " ";
                 }
             }
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainString is " + captainString);
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotString is " + pilotString);
+
             for (CockpitCrew cc : cc3) {
-                if (cc.getStfLevel().equals("captain")) {
-                    captainSBString += captainSBString + cc.getCpName() + " ";
-                } else if (cc.getStfLevel().equals("pilot")) {
-                    pilotSBString += pilotSBString + cc.getCpName() + " ";
+                if (cc.getStfLevel().equals("Captain")) {
+                    captainSBString = captainSBString + cc.getCpName() + " ";
+                } else if (cc.getStfLevel().equals("Pilot")) {
+                    pilotSBString = pilotSBString + cc.getCpName() + " ";
                 }
             }
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainSBString is " + captainSBString);
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotSBString is " + pilotSBString);
+
             for (CabinCrew cc : cc2) {
-                if (cc.getStfLevel().equals("cabinCrew")) {
-                    cabinString += cabinString + cc.getCbName() + " ";
-                } else if (cc.getStfLevel().equals("cabinLeader")) {
-                    cabinLeaderString += cabinLeaderString + cc.getCbName() + " ";
+                if (cc.getStfLevel().equals("Cabin Crew")) {
+                    cabinString = cabinString + cc.getCbName() + " ";
+                } else if (cc.getStfLevel().equals("Cabin Leader")) {
+                    cabinLeaderString = cabinLeaderString + cc.getCbName() + " ";
                 }
             }
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinString is " + cabinString);
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderString is " + cabinLeaderString);
+
             for (CabinCrew cc : cc4) {
-                if (cc.getStfLevel().equals("cabinCrew")) {
-                    cabinSBString += cabinSBString + cc.getCbName() + " ";
-                } else if (cc.getStfLevel().equals("cabinLeader")) {
-                    cabinLeaderSBString += cabinLeaderSBString + cc.getCbName() + " ";
+                if (cc.getStfLevel().equals("Cabin Crew")) {
+                    cabinSBString = cabinSBString + cc.getCbName() + " ";
+                } else if (cc.getStfLevel().equals("Cabin Leader")) {
+                    cabinLeaderSBString = cabinLeaderSBString + cc.getCbName() + " ";
                 }
             }
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinSBString is " + cabinSBString);
+            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderSBString is " + cabinLeaderSBString);
+
             captainMap.put(fi, captainString);
             pilotMap.put(fi, pilotString);
             cabinMap.put(fi, cabinString);

@@ -67,7 +67,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         Calendar cal = Calendar.getInstance();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
-        
+
         for (int i = 0; i < resultList.size(); i++) {
             Date paymentDate = resultList.get(i).getPaymentDate();
             cal.setTime(paymentDate);
@@ -186,9 +186,22 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         System.out.println("AAS:FTB: totalTicketSale: " + total);
         return total;
     }
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-     
+    @Override
+    public List<Expense> getAllExpense(String type) {
+        Query q = em.createQuery("SELECT e FROM Expense e where e.type=:type ");
+        q.setParameter("type", type);
+        List<Expense> list = (List) q.getResultList();
+        if (list.isEmpty()) {
+            System.out.println("AAS:FTB:Expense List is empty");
+        } else {
+            System.out.println("AAS:FTB:Expense List data exists");
+        }
+        return list;
+    }
+
+    @Override
     public List<Expense> getExpenseList(long year, String quarter) {
         Query query = em.createQuery("SELECT e FROM Expense e ");
         List<Expense> resultList = (List) query.getResultList();
@@ -205,7 +218,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         Calendar cal = Calendar.getInstance();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
-        
+
         for (int i = 0; i < resultList.size(); i++) {
             Date paymentDate = resultList.get(i).getPaymentDate();
             cal.setTime(paymentDate);
@@ -253,7 +266,8 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         }
         return list;
     }
-    
+
+    @Override
     public Double calculateExpense(String type, String category, long year, String quarter) {
         Double total = 0.0;
         Query q = em.createQuery("SELECT e FROM Expense e where e.type=:type");
@@ -266,8 +280,10 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         }
         List<Expense> list = (List) q.getResultList();
         List<Expense> resultList = new ArrayList<>();
-        for(int i=0; i<list.size();i++){
-            resultList.add(list.get(i));
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getCategory().equals(category)) {
+                resultList.add(list.get(i));
+            }
         }
 
         int expenseYear;

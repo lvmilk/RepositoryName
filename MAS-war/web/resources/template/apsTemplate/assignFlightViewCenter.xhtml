@@ -236,6 +236,10 @@
                         <p:outputLabel for="mtEndTime" value="Maintenance End Time: " />
                         <p:calendar id="mtEndTime" value="#{FAMB.mtEndTime}" pattern="yyyy-MM-dd HH:mm" mask="true" navigator="true" required="true" requiredMessage="Please enter maintenance end time" size="30"/>
 
+                        <p:outputLabel for="manhour" value="Total Man Hour (Expected #{FAMB.mtdu} hrs)" rendered="#{mtdu!=0}"/>
+                        <p:outputLabel for="manhour" value="Total Man Hour " rendered="#{mtdu==0}"/>
+                        <p:inputText id="manhour" value="#{FAMB.manhour}" label="manhour" required="true"  requiredMessage="Please enter total man hour for the maintenance" size="30"/>
+
                     </p:panelGrid>
                 </h:panelGroup>
 

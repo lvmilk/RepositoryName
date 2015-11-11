@@ -35,6 +35,7 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
 //    private Integer expectedHour;
     private String objective;       // A Check/ B Check/ C Check/ D Check/ Special
     private String status;
+    private Integer manhour;
     
     @OneToOne(cascade = {CascadeType.PERSIST})
     private MaintenanceLog log;
@@ -42,9 +43,10 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private Aircraft aircraft;
 
-    public Maintenance create(Date startTime, Date endTime, String objective) {
+    public Maintenance create(Date startTime, Date endTime, Integer manhour, String objective) {
         this.startTime = startTime;
         this.endTime = endTime;
+        this.manhour = manhour;
         this.objective = objective;
         this.status = "Scheduled";
         return this;
@@ -112,6 +114,14 @@ public class Maintenance implements Serializable, Comparable<Maintenance> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getManhour() {
+        return manhour;
+    }
+
+    public void setManhour(Integer manhour) {
+        this.manhour = manhour;
     }
 
     @Override
