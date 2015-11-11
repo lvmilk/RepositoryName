@@ -6,6 +6,7 @@
 package testSessionBean.CommonInfra;
 
 import SessionBean.CommonInfra.ManageAccountBeanLocal;
+import SessionBean.CommonInfra.ManageAccountBeanRemote;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -27,7 +28,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ManageAccountBeanLocalTest {
 
-    ManageAccountBeanLocal mabl= lookupManageAccountBeanLocal();
+    ManageAccountBeanRemote mabl= lookupManageAccountBeanLocal();
 
     public ManageAccountBeanLocalTest() {
     }
@@ -65,10 +66,10 @@ public class ManageAccountBeanLocalTest {
         assertTrue(flag);
     }
 
-    private ManageAccountBeanLocal lookupManageAccountBeanLocal() {
+    private ManageAccountBeanRemote lookupManageAccountBeanLocal() {
         try {
             Context c = new InitialContext();
-            return (ManageAccountBeanLocal) c.lookup("java:global/MAS/MAS-ejb/ManageAccountBean!SessionBean.CommonInfra.ManageAccountBeanLocal");
+            return (ManageAccountBeanRemote) c.lookup("java:global/MAS/MAS-ejb/ManageAccountBean!SessionBean.CommonInfra.ManageAccountBeanRemote");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
