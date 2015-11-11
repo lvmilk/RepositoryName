@@ -16,7 +16,7 @@
             <p:panel id="panel" header="View Flight Crew Schedule"  style="width:100%">
                 <p:dataTable var="fi" value="#{VFCSMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instances for the period">
                     <f:facet name="header">
-                        Flight Crew Scheduling for Period #{startDateString} - #{endDateString}
+                        Flight Crew Scheduling for Period #{startDateString} till #{endDateString}
                     </f:facet>
 
                     <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
@@ -24,23 +24,28 @@
                     </p:column>
 
                     <p:column headerText="Assigned Aircraft" sortBy="#{fi.aircraft.registrationNo}" filterBy="#{fi.aircraft.registrationNo}" >
-                        <h:outputText value="#{fi.aircraft.registrationNo}" />
+                        <h:outputText value="#{fi.aircraft.registrationNo}" rendered="#{fi.aircraft.registrationNo != '9V-000'}"/>
+                        <h:outputText value="Not assigned" rendered="#{fi.aircraft.registrationNo == '9V-000'}"/>
                     </p:column>
 
                     <p:column headerText="Origin" sortBy="#{fi.flightFrequency.route.origin.IATA}" filterBy="#{fi.flightFrequency.route.origin.IATA}" >
-                        <h:outputText value=#{fi.flightFrequency.route.origin.IATA} />
+                        <h:outputText value="#{fi.flightFrequency.route.origin.IATA}" />
                     </p:column>
 
                     <p:column headerText="Destination" sortBy="#{fi.flightFrequency.route.dest.IATA}" filterBy="#{fi.flightFrequency.route.dest.IATA}" >
-                        <h:outputText value=#{fi.flightFrequency.route.dest.IATA} />
+                        <h:outputText value="#{fi.flightFrequency.route.dest.IATA}" />
                     </p:column>
 
                     <p:column headerText="Departure Time" sortBy="#{fi.standardDepTimeDateType}" filterBy="#{fi.standardDepTimeDateType}" >
-                        <h:outputText value="#{fi.standardDepTimeDateType}" />
+                        <h:outputText value="#{fi.standardDepTimeDateType}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Arrival Time" sortBy="#{fi.standardArrTimeDateType}" filterBy="#{fi.standardArrTimeDateType}" >
-                        <h:outputText value="#{fi.standardArrTimeDateType}" />
+                        <h:outputText value="#{fi.standardArrTimeDateType}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Captain">

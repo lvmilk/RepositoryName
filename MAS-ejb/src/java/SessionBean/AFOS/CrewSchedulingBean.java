@@ -180,8 +180,10 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
         // arrange normal flight crew
         for (FlightInstance fi : fiList) {
-            
-            // check if reset year flying hour counter
+
+            System.out.println(" (A-A)^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** schedule crew for flight instance " + fi);
+
+            // check if reset YEAR flying hour counter
             Date startPlanning = fi.getStandardDepTimeDateType();
             Calendar cal = Calendar.getInstance();
             cal.setTime(startPlanning);
@@ -196,7 +198,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                     cp1.setYearAccumMin(0);
                 }
             }
-            
+
             AircraftType act = fi.getFlightFrequency().getRoute().getAcType();
             Integer captainNo = act.getCaptain();
             Integer pilotNo = act.getPilot();
@@ -214,10 +216,10 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             String lang1 = fi.getFlightFrequency().getRoute().getOrigin().getLang();
             String lang2 = fi.getFlightFrequency().getRoute().getDest().getLang();
 
-            Integer fiCaptain = 0;
-            Integer fiPilot = 0;
-            Integer fiCabin = 0;
-            Integer fiCabinLeader = 0;
+            Integer fiCaptain = getFiCaptain(fi).size();
+            Integer fiPilot = getFiPilot(fi).size();
+            Integer fiCabin = getFiCabinCrew(fi).size();
+            Integer fiCabinLeader = getFiCabinLeader(fi).size();
 
             // Reset weekly accum date count
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -240,13 +242,13 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                 if ((cp.getWeekAccumMin() + fiMin) / 60 < 36) {
                                     if (checkAvailable(cp, fi)) {
                                         FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
-                                        System.out.println("************* CockpitCrew cp: captain: fiInDB is " + fi);
+//                                        System.out.println("************* CockpitCrew cp: captain: fiInDB is " + fi);
                                         CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
-                                        System.out.println("************* CockpitCrew cp: captain: cpInDB is " + cpInDB);
+//                                        System.out.println("************* CockpitCrew cp: captain: cpInDB is " + cpInDB);
                                         List<CockpitCrew> cps = fiInDB.getCockpitList();
-                                        System.out.println("************* CockpitCrew cp: captain: cps is " + cps);
+//                                        System.out.println("************* CockpitCrew cp: captain: cps is " + cps);
                                         List<FlightInstance> fiTasks = cpInDB.getFiList();
-                                        System.out.println("************* CockpitCrew cp: captain: fiTasks is " + fiTasks);
+//                                        System.out.println("************* CockpitCrew cp: captain: fiTasks is " + fiTasks);
                                         cps.add(cpInDB);
                                         fiTasks.add(fiInDB);
                                         fiInDB.setCockpitList(cps);
@@ -416,13 +418,13 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 sortCabinByLang(idleCabinLeader, lang1);
             }
 
-            Integer fiCaptain = 0;
-            Integer fiPilot = 0;
-            Integer fiCabin = 0;
-            Integer fiCabinLeader = 0;
+            Integer fiCaptain = getFiCaptainSB(fi).size();
+            Integer fiPilot = getFiPilotSB(fi).size();
+            Integer fiCabin = getFiCabinCrewSB(fi).size();
+            Integer fiCabinLeader = getFiCabinLeaderSB(fi).size();
 
             for (CockpitCrew cp : idleCaptain) {
-                if (fiCaptain == 2) {
+                if (fiCaptain >= 2) {
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cp " + cp.getCpName());
@@ -481,7 +483,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
 
             for (CockpitCrew cp : idlePilot) {
-                if (fiPilot == 2) {
+                if (fiPilot >= 2) {
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cp " + cp.getCpName());
@@ -539,7 +541,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
 
             for (CabinCrew cc : idleCabinLeader) {
-                if (fiCabinLeader == 2) {
+                if (fiCabinLeader >= 2) {
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
@@ -556,7 +558,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                         List<CabinCrew> ccs = fiInDB.getCabinStandByList();
                                         List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
 
-                                        // get number of pilot in the fi standby list
+                                        // get number of cabin leader in the fi standby list
                                         Integer clSBNum = 0;
                                         for (CabinCrew cc1 : ccs) {
                                             if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
@@ -595,7 +597,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
 
             for (CabinCrew cc : idleCabin) {
-                if (fiCabin == 2) {
+                if (fiCabin >= 2) {
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
@@ -824,40 +826,225 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return flightTemp;
     }
 
+    @Override
     public List<CabinCrew> getAllCabinCrew() {
         Query q1 = em.createQuery("SELECT a FROM CabinCrew a");
         List<CabinCrew> allCabin = (List<CabinCrew>) q1.getResultList();
         return allCabin;
     }
 
+    @Override
     public List<CabinCrew> getAllCabin() {
         Query q1 = em.createQuery("SELECT a FROM CabinCrew a where a.stfLevel=:level").setParameter("level", "Cabin Crew");
         List<CabinCrew> cabinList = (List<CabinCrew>) q1.getResultList();
         return cabinList;
     }
 
+    @Override
     public List<CabinCrew> getAllCabinLeader() {
         Query q1 = em.createQuery("SELECT a FROM CabinCrew a where a.stfLevel=:level").setParameter("level", "Cabin Leader");
         List<CabinCrew> leaderList = (List<CabinCrew>) q1.getResultList();
         return leaderList;
     }
 
+    @Override
     public List<CockpitCrew> getAllCockpitCrew() {
         Query q1 = em.createQuery("SELECT a FROM CockpitCrew a");
         List<CockpitCrew> allCockpit = (List<CockpitCrew>) q1.getResultList();
         return allCockpit;
     }
 
+    @Override
     public List<CockpitCrew> getAllCaptain() {
         Query q1 = em.createQuery("SELECT a FROM CockpitCrew a where a.stfLevel=:level").setParameter("level", "Captain");
         List<CockpitCrew> captainList = (List<CockpitCrew>) q1.getResultList();
         return captainList;
     }
 
+    @Override
     public List<CockpitCrew> getAllPilot() {
         Query q1 = em.createQuery("SELECT a FROM CockpitCrew a where a.stfLevel=:level").setParameter("level", "Pilot");
         List<CockpitCrew> pilotList = (List<CockpitCrew>) q1.getResultList();
         return pilotList;
     }
 
+    public List<CockpitCrew> getFiCaptain(FlightInstance fi) {
+        List<CockpitCrew> cpList = fi.getCockpitList();
+        List<CockpitCrew> cpCap = new ArrayList<>();
+        for (CockpitCrew cp1 : cpList) {
+            if (cp1.getStfLevel().equalsIgnoreCase("Captain")) {
+                cpCap.add(cp1);
+            }
+        }
+        return cpCap;
+    }
+
+    public List<CockpitCrew> getFiPilot(FlightInstance fi) {
+        List<CockpitCrew> cpList = fi.getCockpitList();
+        List<CockpitCrew> cpCap = new ArrayList<>();
+        for (CockpitCrew cp1 : cpList) {
+            if (cp1.getStfLevel().equalsIgnoreCase("Pilot")) {
+                cpCap.add(cp1);
+            }
+        }
+        return cpCap;
+    }
+
+    public List<CabinCrew> getFiCabinCrew(FlightInstance fi) {
+        List<CabinCrew> ccList = fi.getCabinList();
+        List<CabinCrew> ccCabin = new ArrayList<>();
+        for (CabinCrew cc1 : ccList) {
+            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Crew")) {
+                ccCabin.add(cc1);
+            }
+        }
+        return ccCabin;
+    }
+
+    public List<CabinCrew> getFiCabinLeader(FlightInstance fi) {
+        List<CabinCrew> ccList = fi.getCabinList();
+        List<CabinCrew> ccCabin = new ArrayList<>();
+        for (CabinCrew cc1 : ccList) {
+            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
+                ccCabin.add(cc1);
+            }
+        }
+        return ccCabin;
+    }
+
+    public List<CockpitCrew> getFiCaptainSB(FlightInstance fi) {
+        List<CockpitCrew> cpList = fi.getCockpitStandByList();
+        List<CockpitCrew> cpCap = new ArrayList<>();
+        for (CockpitCrew cp1 : cpList) {
+            if (cp1.getStfLevel().equalsIgnoreCase("Captain")) {
+                cpCap.add(cp1);
+            }
+        }
+        return cpCap;
+    }
+
+    public List<CockpitCrew> getFiPilotSB(FlightInstance fi) {
+        List<CockpitCrew> cpList = fi.getCockpitStandByList();
+        List<CockpitCrew> cpCap = new ArrayList<>();
+        for (CockpitCrew cp1 : cpList) {
+            if (cp1.getStfLevel().equalsIgnoreCase("Pilot")) {
+                cpCap.add(cp1);
+            }
+        }
+        return cpCap;
+    }
+
+    public List<CabinCrew> getFiCabinCrewSB(FlightInstance fi) {
+        List<CabinCrew> ccList = fi.getCabinStandByList();
+        List<CabinCrew> ccCabin = new ArrayList<>();
+        for (CabinCrew cc1 : ccList) {
+            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Crew")) {
+                ccCabin.add(cc1);
+            }
+        }
+        return ccCabin;
+    }
+
+    public List<CabinCrew> getFiCabinLeaderSB(FlightInstance fi) {
+        List<CabinCrew> ccList = fi.getCabinStandByList();
+        List<CabinCrew> ccCabin = new ArrayList<>();
+        for (CabinCrew cc1 : ccList) {
+            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
+                ccCabin.add(cc1);
+            }
+        }
+        return ccCabin;
+    }
+
+    @Override
+    public long calCockpitTotalFlightHour(CockpitCrew cp, Date startDate, Date endDate) {
+        int totalMin = 0;
+        for (FlightInstance f1 : cp.getFiList()) {
+            if (f1.getStandardDepTimeDateType().after(startDate) && f1.getStandardDepTimeDateType().before(endDate)) {
+                totalMin += fsb.getFlightAccumMinute(f1.getFlightFrequency());
+            }
+        }
+        return totalMin / 60;
+    }
+
+    @Override
+    public long calCabinTotalFlightHour(CabinCrew cc, Date startDate, Date endDate) {
+        int totalMin = 0;
+        for (FlightInstance f1 : cc.getFiList()) {
+            if (f1.getStandardDepTimeDateType().after(startDate) && f1.getStandardDepTimeDateType().before(endDate)) {
+                totalMin += fsb.getFlightAccumMinute(f1.getFlightFrequency());
+            }
+        }
+        return totalMin / 60;
+    }
+
+    @Override
+    public Double calCaptainTotalHourPay(Date startDate, Date endDate) {
+        Double totalHr = 0.0;
+        for (CockpitCrew cp : getAllCaptain()) {
+            totalHr += cp.getHourPay() * calCockpitTotalFlightHour(cp, startDate, endDate);
+        }
+        return totalHr;
+    }
+
+    @Override
+    public Double calPilotTotalHourPay(Date startDate, Date endDate) {
+        Double totalHr = 0.0;
+        for (CockpitCrew cp : getAllPilot()) {
+            totalHr += cp.getHourPay() * calCockpitTotalFlightHour(cp, startDate, endDate);
+        }
+        return totalHr;
+    }
+
+    @Override
+    public Double calCabinCrewTotalHourPay(Date startDate, Date endDate) {
+        Double totalHr = 0.0;
+        for (CabinCrew cc : getAllCabin()) {
+            totalHr += cc.getHourPay() * calCabinTotalFlightHour(cc, startDate, endDate);
+        }
+        return totalHr;
+    }
+
+    @Override
+    public Double calCabinLeaderTotalHourPay(Date startDate, Date endDate) {
+        Double totalHr = 0.0;
+        for (CabinCrew cc : getAllCabinLeader()) {
+            totalHr += cc.getHourPay() * calCabinTotalFlightHour(cc, startDate, endDate);
+        }
+        return totalHr;
+    }
+
+//    public long calCaptainTotalFHForPeriod(Date startDate, Date endDate) {
+//        long totalHr = 0;
+//        for (CockpitCrew cp : csb.getAllCaptain()) {
+//            totalHr += calCockpitTotalFlightHour(cp, startDate, endDate);
+//        }
+//        return totalHr;
+//    }
+//
+//
+//    public long calPilotTotalFHForPeriod(Date startDate, Date endDate) {
+//        long totalHr = 0;
+//        for (CockpitCrew cp : csb.getAllPilot()) {
+//            totalHr += calCockpitTotalFlightHour(cp, startDate, endDate);
+//        }
+//        return totalHr;
+//    }
+//
+//    public long calCabinCrewTotalFHForPeriod(Date startDate, Date endDate) {
+//        long totalHr = 0;
+//        for (CabinCrew cc : csb.getAllCabin()) {
+//            totalHr += calCabinTotalFlightHour(cc, startDate, endDate);
+//        }
+//        return totalHr;
+//    }
+//
+//    public long calCabinLeaderTotalFHForPeriod(Date startDate, Date endDate) {
+//        long totalHr = 0;
+//        for (CabinCrew cc : csb.getAllCabinLeader()) {
+//            totalHr += calCabinTotalFlightHour(cc, startDate, endDate);
+//        }
+//        return totalHr;
+//    }
+    
 }
