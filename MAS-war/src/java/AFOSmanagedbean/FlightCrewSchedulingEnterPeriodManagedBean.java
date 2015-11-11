@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -36,15 +37,21 @@ public class FlightCrewSchedulingEnterPeriodManagedBean implements Serializable 
     }
 
     public void flightCrewSchdulingForPeriod() throws Exception {
-        csb.scheduleFlightCrew(startDate, endDate);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        startDateString = df.format(startDate);
-        endDateString = df.format(endDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./scheduleFlightCrewSuccess.xhtml");
+        if (endDate.before(new Date())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Crew scheduling start date should be after today.", ""));
+        } else if (endDate.before(startDate)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Crew scheduling end date should be after start date.", ""));
+        } else {
+            csb.scheduleFlightCrew(startDate, endDate);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            startDateString = df.format(startDate);
+            endDateString = df.format(endDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./scheduleFlightCrewSuccess.xhtml");
+        }
     }
 
     public Date getStartDate() {

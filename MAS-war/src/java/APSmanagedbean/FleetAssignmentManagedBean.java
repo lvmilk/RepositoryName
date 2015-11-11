@@ -81,7 +81,8 @@ public class FleetAssignmentManagedBean implements Serializable {
     private String mtObj;
     private Date mtStartTime;
     private Date mtEndTime;
-//    private String mtType;
+    private Integer manhour;
+    private Integer mtdu;
 
 //    private boolean selectTypeAlr = false;
     public FleetAssignmentManagedBean() {
@@ -267,7 +268,7 @@ public class FleetAssignmentManagedBean implements Serializable {
             System.out.println("FAMB.addMtTask(): (-_-)maintenance detail is " + mtObj + " from " + mtStartTime + " to " + mtEndTime);
             if (mtStartTime.after(mtEndTime)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : Maintenance start time should be before end time.", ""));
-            } else if (fsb.addMtToAc(aircraft, mtObj, mtStartTime, mtEndTime)) {
+            } else if (fsb.addMtToAc(aircraft, mtObj, mtStartTime, mtEndTime, manhour)) {
                 event = new TimelineEvent(fi, mtStartTime, mtEndTime, true, taskAircraftSerial);
                 model.add(event);
                 TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
@@ -524,6 +525,40 @@ public class FleetAssignmentManagedBean implements Serializable {
 
     public void setSelectedTask(List<FlightInstance> selectedTask) {
         this.selectedTask = selectedTask;
+    }
+
+    public Integer getManhour() {
+        return manhour;
+    }
+
+    public void setManhour(Integer manhour) {
+        this.manhour = manhour;
+    }
+
+    public Integer getMtdu() {
+        Aircraft ac = fsb.findAircraft(taskMtAircraftSerial);
+          switch (mtObj.charAt(0)) {
+            case 'A':
+                mtdu = ac.getAircraftType().getAcMH();
+                break;
+            case 'B':
+                mtdu = ac.getAircraftType().getBcMH();
+                break;
+            case 'C':
+                mtdu = ac.getAircraftType().getCcMH();
+                break;
+            case 'D':
+                mtdu = ac.getAircraftType().getDcMH();
+                break;
+            default:
+                mtdu = 0;
+                break;
+        }
+        return mtdu;
+    }
+
+    public void setMtdu(Integer mtdu) {
+        this.mtdu = mtdu;
     }
 
 }

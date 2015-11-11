@@ -83,7 +83,7 @@ public class AddMaintenanceLogManagedBean implements Serializable {
                 break;
         }
         if (actEnd.before(actStart)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error: Maintenance end time should be after start time.", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Maintenance end time should be after start time.", ""));
         } else if (startDiffHour > 10) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check maintenance start time. Scheduled start time is " + schStart.getTime(), ""));
         } else if (endDiffHour > 10) {

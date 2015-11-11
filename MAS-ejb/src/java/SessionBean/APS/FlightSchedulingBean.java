@@ -12,6 +12,9 @@ import Entity.APS.Airport;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.CockpitCrew;
+import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +48,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
 
     @EJB
     RoutePlanningBeanLocal rpb;
+
+    @EJB
+    CrewSchedulingBeanLocal csb;
 
     FlightFrequency flightFreq;
     FlightInstance flightInst;
@@ -580,7 +586,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         c1.add(Calendar.HOUR, acDu);
                         Date thisMtEnd = c1.getTime();
                         Maintenance mta = new Maintenance();
-                        mta.create(nextFree, thisMtEnd, "A Check");
+                        Integer acMH = acTemp.getAircraftType().getAcMH();
+                        mta.create(nextFree, thisMtEnd, acMH, "A Check");
                         mta.setAircraft(acTemp);
                         System.out.println("FSB.scheduleAcToFi(): create A check === " + mta);
                         mtList.add(mta);
@@ -603,7 +610,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             c1.add(Calendar.HOUR, bcDu);
                             Date thisMtEnd = c1.getTime();
                             Maintenance mtb = new Maintenance();
-                            mtb.create(nextFree, thisMtEnd, "B Check");
+                            Integer bcMH = acTemp.getAircraftType().getBcMH();
+                            mtb.create(nextFree, thisMtEnd, bcMH, "B Check");
                             mtb.setAircraft(acTemp);
                             System.out.println("FSB.scheduleAcToFi(): create B check === " + mtb);
                             mtList.add(mtb);
@@ -627,7 +635,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             c1.add(Calendar.HOUR, ccDu);
                             Date thisMtEnd = c1.getTime();
                             Maintenance mtc = new Maintenance();
-                            mtc.create(nextFree, thisMtEnd, "C Check");
+                            Integer ccMH = acTemp.getAircraftType().getCcMH();
+                            mtc.create(nextFree, thisMtEnd, ccMH, "C Check");
                             mtc.setAircraft(acTemp);
                             System.out.println("FSB.scheduleAcToFi(): create C check === " + mtc);
                             mtList.add(mtc);
@@ -651,7 +660,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             c1.add(Calendar.HOUR, dcDu);
                             Date thisMtEnd = c1.getTime();
                             Maintenance mtd = new Maintenance();
-                            mtd.create(nextFree, thisMtEnd, "D Check");
+                            Integer dcMH = acTemp.getAircraftType().getDcMH();
+                            mtd.create(nextFree, thisMtEnd, dcMH, "D Check");
                             mtd.setAircraft(acTemp);
                             System.out.println("FSB.scheduleAcToFi(): create D check === " + mtd);
                             mtList.add(mtd);
@@ -733,7 +743,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd) throws Exception {
+    public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd, Integer manhour) throws Exception {
         Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", act.getRegistrationNo());
         Aircraft ac = (Aircraft) q1.getResultList().get(0);
         boolean flag1 = canAssignMt(ac, obj, mtStart, mtEnd);
@@ -742,7 +752,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("FSB: addMtToAc " + flag1);
         if (flag1) {
             Maintenance newMt = new Maintenance();
-            newMt.create(mtStart, mtEnd, obj);
+            newMt.create(mtStart, mtEnd, manhour, obj);
             newMt.setAircraft(ac);
             System.err.println("FSB: addMtToAc " + "finish creating mt " + newMt.toString());
 
@@ -1728,12 +1738,58 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
         for (FlightInstance temp : this.getAllFlightInstance()) {
             if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
-                if (!temp.getAircraft().getStatus().equals("Cancelled")) {
+                if (!temp.getFlightStatus().equals("Cancelled")) {
                     newFlightInstList.add(temp);
                 }
             }
         }
         return sortFiList(newFlightInstList);
+    }
+
+    public List<FlightInstance> getAllFiWithinPeriod(Date startDate, Date endDate) {
+        List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
+        for (FlightInstance temp : this.getAllFlightInstance()) {
+            if (temp.getStandardDepTimeDateType().after(startDate) && temp.getStandardArrTimeDateType().before(endDate)) {
+                if (!temp.getFlightStatus().equals("Cancelled")) {
+                    newFlightInstList.add(temp);
+                }
+            }
+        }
+        return newFlightInstList;
+    }
+
+    public List<Maintenance> getAllMtWithinPeriod(Date startDate, Date endDate) {
+        List<Maintenance> newMtList = new ArrayList<Maintenance>();
+        Query q1 = em.createQuery("SELECT a FROM Maintenance a");
+        List<Maintenance> mtList = q1.getResultList();
+        for (Maintenance temp : mtList) {
+            if (temp.getStartTime().after(startDate) && temp.getStartTime().before(endDate)) {
+//                if (!temp.getFlightStatus().equals("Cancelled")) {
+                newMtList.add(temp);
+//                }
+            }
+        }
+        return newMtList;
+    }
+
+    @Override
+    public long calPeriodTotalFlightHour(Date startDate, Date endDate) {
+        long totalMin = 0;
+        for (FlightInstance f1 : getAllFiWithinPeriod(startDate, endDate)) {
+            totalMin += getFlightAccumMinute(f1.getFlightFrequency());
+        }
+        System.out.println("FSB.calPeriodTotalFlightHour() : total flight hour from " + startDate + " to " + endDate + " is " + totalMin / 60);
+        return totalMin / 60;
+    }
+
+    @Override
+    public long calPeriodTotalMtManHour(Date startDate, Date endDate) {
+        long totalHr = 0;
+        for (Maintenance m1 : getAllMtWithinPeriod(startDate, endDate)) {
+            totalHr += m1.getManhour();
+        }
+        System.out.println("FSB.calPeriodTotalMtHour() : total maintenance hour from " + startDate + " to " + endDate + " is " + totalHr);
+        return totalHr;
     }
 
 }

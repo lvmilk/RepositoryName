@@ -15,7 +15,7 @@ import javax.faces.view.ViewScoped;
  *
  * @author Xu
  */
-@Named(value = "viewFiCrewArrangementEnterPeriodManagedBean")
+@Named(value = "VFCAEPMB")
 @ViewScoped
 public class ViewFiCrewArrangementEnterPeriodManagedBean implements Serializable {
 
