@@ -108,7 +108,7 @@ public class AircraftTypeManagedBean implements Serializable {
 
     public void confirmDeleteAircraftType() throws Exception {
         try {
-            System.out.println("get the selected list!");
+            System.out.println("ATMB:confirm delete aircraft type: get the selected list!");
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("deletedAircraftType", selectedList);
             fpb.deleteAircraftTypeList(selectedList);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./DeleteAircraftTypeDone.xhtml");

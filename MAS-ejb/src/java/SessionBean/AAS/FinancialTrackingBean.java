@@ -267,24 +267,19 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         return list;
     }
 
+    ///with payment date --> Purchase Aircraft
     @Override
-    public Double calculateExpense(String type, String category, long year, String quarter) {
+    public Double calculateExpense(String category, long year, String quarter) {
         Double total = 0.0;
-        Query q = em.createQuery("SELECT e FROM Expense e where e.type=:type");
-        q.setParameter("type", type);
+        Query q = em.createQuery("SELECT e FROM Expense e where e.category=:category");
+        q.setParameter("category", category);
         if (q.getResultList().isEmpty()) {
-            System.out.println("AAS:FTB: No available type for " + type);
+            System.out.println("AAS:FTB: No available expense category for " + category);
             return 0.0;
         } else {
-            System.out.println("AAS:FTB: Available type found for " + type);
+            System.out.println("AAS:FTB: Available expense category found for " + category);
         }
-        List<Expense> list = (List) q.getResultList();
-        List<Expense> resultList = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getCategory().equals(category)) {
-                resultList.add(list.get(i));
-            }
-        }
+        List<Expense> resultList = (List) q.getResultList();
 
         int expenseYear;
         Date startDate = new Date(); //set default 
@@ -341,5 +336,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         }
         return total;
     }
+    
+    // Without payment date --> Fuel Cost, Depreciation, Maintenance Cost, Other Cost
 
 }
