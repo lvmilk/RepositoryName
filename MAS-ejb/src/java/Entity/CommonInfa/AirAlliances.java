@@ -35,7 +35,7 @@ public class AirAlliances implements Serializable {
     public void createAllianceAcc(String strAlId, String strAlPwd, String companyName, String strAlEmail, String strpType) {
         this.setAllianceID(strAlId);
         this.setAllPwd(strAlPwd);
-        this.setName(name);
+        this.setName(companyName);
         this.setEmail(strAlEmail);
         this.setpType(strpType);
     }
