@@ -31,7 +31,7 @@ public class Seat implements Serializable {
     private int colNo;
     private int width;
     private String status;
-    private int luggageCount=2;
+    private int luggageCount=0;
     
     
     @OneToOne(mappedBy="seat")
