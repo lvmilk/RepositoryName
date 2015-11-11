@@ -137,7 +137,7 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP777799","cp777799@mas.
 INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP777800","cp777800@mas.com")
 
 
-INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,companyName,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","travel agency","ag777@777.com","agency")
+INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,NAME,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","travel agency","ag777@777.com","agency")
 INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777777","dd4960a35453b6d2098e4e75af873fd8","Korean Airline","al777777@mas.com","alliance")
 
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",5000,0)
@@ -539,3 +539,7 @@ INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(3333,"GDS",300.00,"Commission","KE","2015-08-10")
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",400.00,"Commission","AF","2015-11-10")
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",220.00,"Commission","DL","2015-11-10")
+
+
+-- To be added EXPENSE
+-- INSERT IGNORE INTO Expense(id,type,category,payable,paymentDate) values(111,"Fixed Operation","Other",300.00,"2015-08-10")
