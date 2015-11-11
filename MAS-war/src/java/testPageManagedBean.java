@@ -24,6 +24,9 @@ private List<Integer> testMap=new ArrayList< Integer>();
 private Integer flag=0;
 private String inputString;
 private Boolean test;
+private String testStr = new String("asdfasdfasdf");
+private String testStr2 = new String("qwerqwerqwe");
+
 @PostConstruct
 
 public void init(){
@@ -31,6 +34,22 @@ public void init(){
     testMap.add(1);
     
 }
+
+    public String getTestStr() {
+        return testStr;
+    }
+
+    public void setTestStr(String testStr) {
+        this.testStr = testStr;
+    }
+
+    public String getTestStr2() {
+        return testStr2;
+    }
+
+    public void setTestStr2(String testStr2) {
+        this.testStr2 = testStr2;
+    }
 
     public String getInputString() {
         return inputString;

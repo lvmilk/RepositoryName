@@ -37,6 +37,8 @@ public interface DepartureControlBeanLocal {
 
     public void selectSeat(Seat seat) throws Exception;
 
+    public boolean checkLoungeEligibility(Ticket tkt) throws Exception;
+
     
     
 }

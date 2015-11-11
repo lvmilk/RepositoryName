@@ -6,23 +6,29 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:pm="http://primefaces.org/mobile">
+    
     <h:head>
         <title>TEST</title>
     </h:head>
 
     <h:body>
         <h:form>
+            <panelgrid>
             <p:selectOneMenu id="test" onchange="submit()" value="#{testPageManagedBean.flag}" style="width:250px">
                 <f:selectItem itemLabel="-Select-" itemValue="" />
                 <f:selectItems value="#{testPageManagedBean.testMap}" />
                 <p:ajax update="test2" listener="#{testPageManagedBean.onSelect}" />   
             </p:selectOneMenu>
             <br></br>
-                    <p:outputLabel for="test2" rendered="#{testPageManagedBean.test}" value="Appears?:"   />
-                    <p:inputText id="test2"  value="#{testPageManagedBean.inputString}"  rendered="#{testPageManagedBean.test}" size="10">
-                    </p:inputText>
+            <p:outputLabel for="test2" rendered="#{testPageManagedBean.test}" value="Appears?:"   />
+            <p:inputText id="test2"  value="#{testPageManagedBean.inputString}"  rendered="#{testPageManagedBean.test}" size="10">
+            </p:inputText>
+            <br></br>
+      
+            <h:outputText value="pdf417" />
+            <p:barcode value="#{testPageManagedBean.testStr} #{testPageManagedBean.testStr2}" type="pdf417" />
+        </panelgrid>
         </h:form>
     </h:body>
 
 </html>
-
