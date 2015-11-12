@@ -98,7 +98,7 @@ public class RevenueManagedBean implements Serializable {
     }
 
     public void calculateRevenue() throws IOException {
-        System.out.println("AAS:RMB:TESTING 1 Year and Quarter: " + year + " " + quarter);
+        System.out.println("AAS:RMB:Input testing 1 Year: " + year + " Quarter: " + quarter);
         if (quarter.equals("0") || year == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please select year and quarter ! "));
         } else {
