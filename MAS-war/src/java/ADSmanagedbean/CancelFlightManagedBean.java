@@ -121,7 +121,11 @@ public class CancelFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmCancelFlight.xhtml");
+        if (stfType.equals("agency")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmCancelFlight.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmCancelFlight.xhtml");
+        }
     }
 
     public void onSelectCancelRsv(Reservation rsv) throws IOException {
@@ -155,7 +159,11 @@ public class CancelFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
+        if (stfType.equals("agency")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCancelation2.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
+        }
 
     }
 
