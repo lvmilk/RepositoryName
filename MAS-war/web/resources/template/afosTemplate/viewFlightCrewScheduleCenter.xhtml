@@ -13,84 +13,53 @@
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="View Flight Crew Schedule"  style="width:100%">
+            <p:panel id="panel" header="View Flight Crew Schedule for Period #{VFCSMB.startDateString} -  #{VFCSMB.endDateString} "  style="width:100%">
                 <p:tabView>
                     <p:tab title="Cockpit Crew">
                         <p:dataTable var="cp" value="#{VFCSMB.cockpitList}" paginator="true" rows="40" emptyMessage="No Cockpit Crews">
-                            <p:column headerText="Staff Number" sortBy="#{cp.cpName}" filterBy="#{cp.cpName}" >
+                            <p:column headerText="Staff Id" sortBy="#{cp.cpName}" filterBy="#{cp.cpName}" >
                                 <h:outputText value="#{cp.cpName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{cp.firstName} #{cp.lastName}" />
                             </p:column>
                             <p:column headerText="Staff Level" sortBy="#{cp.stfLevel}" filterBy="#{cp.stfLevel}" >
                                 <h:outputText value="#{cp.stfLevel}" />
                             </p:column>
-                            <p:column headerText="" sortBy="#{cp.cpName}" filterBy="#{cp.cpName}" >
-                                <h:outputText value="#{cp.cpName}" />
+                            <p:column headerText="Total Flight Hour" >
+                                <h:outputText value="#{VFCSMB.cockpitFHMap[cp]}" />
+                            </p:column>
+                            <p:column headerText="View Schedule">
+                                <p:commandButton value="View Schedule" action="#{VFCSMB.viewCockpitCrewSchedule(cp)}" />
                             </p:column>
                         </p:dataTable>
                     </p:tab>
 
                     <p:tab title="Cabin Crew">
                         <p:dataTable var="cc" value="#{VFCSMB.cabinList}" paginator="true" rows="40" emptyMessage="No Cabin Crews">
-                            <p:column headerText="Crew Number" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
-                                <h:outputText value="#{fi.flightFrequency.flightNo}" />
+                            <p:column headerText="Staff Id" sortBy="#{cc.cbName}" filterBy="#{cc.cbName}" >
+                                <h:outputText value="#{cc.cbName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{cc.firstName} #{cc.lastName}" />
+                            </p:column>
+                            <p:column headerText="Staff Level" sortBy="#{cc.stfLevel}" filterBy="#{cc.stfLevel}" >
+                                <h:outputText value="#{cc.stfLevel}" />
+                            </p:column>
+                            <p:column headerText="Total Flight Hour" >
+                                <h:outputText value="#{VFCSMB.cabinFHMap[cc]}" />
+                            </p:column>
+                            <p:column headerText="View Schedule">
+                                <p:commandButton value="View Schedule" action="#{VFCSMB.viewCabinCrewSchedule(cc)}" />
                             </p:column>
                         </p:dataTable>
                     </p:tab>
                 </p:tabView>
 
-
-                <p:dataTable var="fi" value="#{VFCSMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instances for the period">
-                    <f:facet name="header">
-                        Flight Crew Scheduling for Period #{startDateString} - #{endDateString}
-                    </f:facet>
-
-                    <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
-                        <h:outputText value="#{fi.flightFrequency.flightNo}" />
-                    </p:column>
-
-                    <p:column headerText="Assigned Aircraft" sortBy="#{fi.aircraft.registrationNo}" filterBy="#{fi.aircraft.registrationNo}" >
-                        <h:outputText value="#{fi.aircraft.registrationNo}" />
-                    </p:column>
-
-                    <p:column headerText="Origin" sortBy="#{fi.flightFrequency.route.origin.IATA}" filterBy="#{fi.flightFrequency.route.origin.IATA}" >
-                        <h:outputText value=#{fi.flightFrequency.route.origin.IATA} />
-                    </p:column>
-
-                    <p:column headerText="Destination" sortBy="#{fi.flightFrequency.route.dest.IATA}" filterBy="#{fi.flightFrequency.route.dest.IATA}" >
-                        <h:outputText value=#{fi.flightFrequency.route.dest.IATA} />
-                    </p:column>
-
-                    <p:column headerText="Departure Time" sortBy="#{fi.standardDepTimeDateType}" filterBy="#{fi.standardDepTimeDateType}" >
-                        <h:outputText value="#{fi.standardDepTimeDateType}" />
-                    </p:column>
-
-                    <p:column headerText="Arrival Time" sortBy="#{fi.standardArrTimeDateType}" filterBy="#{fi.standardArrTimeDateType}" >
-                        <h:outputText value="#{fi.standardArrTimeDateType}" />
-                    </p:column>
-
-                    <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
-                    </p:column>
-
-                    <p:column headerText="Pilot">
-                        <h:outputText value="#{fi.cockpitList}" />
-                    </p:column>
-
-                    <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
-                    </p:column>
-
-                    <p:column headerText="Captain">
-                        <h:outputText value="#{fi.cockpitList}" />
-                    </p:column>
-
-                    <p:column headerText="View Maintenance">
-                        <p:commandButton value="View Maintenance" action="#{VMSAMB.viewMaintenanceList(aircraft)}" />
-                    </p:column>
-
-                </p:dataTable>
             </p:panel>
-            <p:draggable for="panel" /><p:resizable for="panel" />
+
         </h:form>
+
     </h:body>
+
 </html>

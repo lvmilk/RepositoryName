@@ -34,10 +34,11 @@ public class Agency implements Serializable {
     @OneToMany(cascade={CascadeType.ALL},mappedBy="agency")
     private List<Booker> bkList;
     
-    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String strAgEmail, String strpType)
+    public void createAgencyAcc(String strAgencyId, String strAgencyPwd, String companyName,String strAgEmail, String strpType)
     {
         this.setAgencyID(strAgencyId);
         this.setAgenPwd(strAgencyPwd);
+        this.setName(companyName);
         this.setEmail(strAgEmail);
         this.setpType(strpType);
     }

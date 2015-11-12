@@ -16,7 +16,7 @@
 
                     <p:outputLabel for="year" value="Year : " />
                     <p:selectOneMenu id="year" value="#{RMB.year}" style="width:200px">
-                        <f:selectItem itemLabel="Select Year" itemValue="#{0}" noSelectionOption="true" />
+                        <f:selectItem itemLabel="Select Year" itemValue="" noSelectionOption="true" />
                         <f:selectItems value="#{RMB.yearList}" />
                     </p:selectOneMenu>
 
@@ -30,7 +30,7 @@
                     </p:selectOneMenu>
                 </h:panelGrid>
                 <p:separator />
-                <p:commandButton value="View Revenue" update="msgs" action="#{RMB.calculateRevenue}" icon="ui-icon-check" />
+                <p:commandButton value="View Revenue" update="msgs" action="#{RMB.calculateRevenue()}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>

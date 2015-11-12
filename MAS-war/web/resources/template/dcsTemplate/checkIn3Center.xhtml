@@ -8,12 +8,12 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Check in </title>
+        <title>Check in: Select Sea </title>
     </h:head>
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Check in"  style="width:100%">
+            <p:panel id="panel" header="Check in: Select Seat"  style="width:100%">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="2" cellpadding="5">
@@ -24,49 +24,23 @@
                     <h:outputText id="passportno" value="#{cmb.passportNo}" />
 
 
-                    <p:dataTable id="ticketList" var="tkt" value="#{cmb.tickets}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
-                        <p:column headerText="Flight Number">
-                            <h:outputText value="#{tkt.flightNo}" style="center" />
+                    <p:dataTable id="seatList" var="seat" value="#{cmb.unOccupiedSeats}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
+                        <p:column headerText="Seat Number">
+                            <h:outputText value="#{seat.seatNumberToPassenger}" style="center" />
                         </p:column>
-                        <p:column headerText="Date">
-                            <h:outputText value="#{tkt.depTime}" style="center"/>
+                        <p:column headerText="Seat Status">
+                            <h:outputText value="#{seat.status}" style="center"/>
                         </p:column>
-                        <p:column headerText="Ticekt Status">
-                            <h:outputText value="#{tkt.ticketStatus}" style="center"/>
-                        </p:column>
-
-                        <p:column headerText="Check in">
-                            <p:commandButton value="Check in" actionListener="#{cmb.generateBookingClass}">
-                                <f:attribute name="fi" value="#{fi}"/>
+   
+                        <p:column headerText="Select Seat">
+                            <p:commandButton value="Select" update="panel" actionListener="#{cmb.onSelectSeat}">
+                                <f:attribute name="seat" value="#{seat}"/>
                             </p:commandButton>   
                         </p:column>
-                         <p:column headerText="Standby">
-                            <p:commandButton value="Generate" actionListener="#{assignPriceManagedBean.generateBookingClass}">
-                                <f:attribute name="fi" value="#{fi}"/>
-                            </p:commandButton>   
-                        </p:column>
+                 
                     </p:dataTable>
 
-
-
-
-
-
-
-
-
-
-                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />
-
-                    <p:outputLabel for="flight" value="Flight :" />
-                    <p:selectOneMenu id="flight" value="#{cmb.flightNo}" style="width:250px">
-                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
-                        <f:selectItems value="#{cmb.ffList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
-                    </p:selectOneMenu>
-
-
                 </h:panelGrid>
-                <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>

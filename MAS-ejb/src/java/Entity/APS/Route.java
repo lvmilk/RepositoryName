@@ -5,6 +5,7 @@
  */
 package Entity.APS;
 
+import Entity.AAS.Expense;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ public class Route implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="route")
     private List<FlightFrequency> flightFreqList = new ArrayList<>();
 
+
     public void create(Airport origin, Airport dest, Double distance, Double blockhour) {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         this.status = "Pending";
@@ -60,6 +62,7 @@ public class Route implements Serializable {
 //        this.blockhour = distance/900.0;
         this.blockhour = blockhour;
     }
+    
 
     public Long getId() {
         return id;

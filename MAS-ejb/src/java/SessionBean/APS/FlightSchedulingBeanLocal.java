@@ -11,6 +11,8 @@ import Entity.APS.Aircraft;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import Entity.APS.Route;
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.CockpitCrew;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -53,8 +55,6 @@ public interface FlightSchedulingBeanLocal {
 
     public void addFlightInstance(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
 
-    public boolean addAcToFi(Aircraft ac, FlightInstance fi) throws ParseException;
-
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi);
 
     public String getFirstInstDate();
@@ -73,7 +73,7 @@ public interface FlightSchedulingBeanLocal {
 
     public long getFlightAccumMinute(FlightFrequency ff);
 
-    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd) throws Exception;
+    public boolean addMtToAc(Aircraft ac, String obj, Date mtStart, Date mtEnd, Integer manhour) throws Exception;
 
     public List<FlightInstance> getAllUnplannedFi();
 
@@ -82,4 +82,12 @@ public interface FlightSchedulingBeanLocal {
     public FlightInstance getDummyFi(String outOrIn);
 
     public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate);
+
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId) throws Exception;
+
+    public long calPeriodTotalFlightHour(Date startDate, Date endDate);
+
+    public long calPeriodTotalMtManHour(Date startDate, Date endDate);
+
+
 }

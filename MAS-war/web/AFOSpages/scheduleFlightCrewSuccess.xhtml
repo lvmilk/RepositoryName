@@ -22,8 +22,10 @@
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
                 <!--<div style="width:60%; p {font-size: 500vmax !important;} margin-right:40%;margin-top:10%; margin-bottom:auto;margin-left:40%; border:0px ;">-->
-                Flight crew scheduling successfully from #{FCSMB.startDateString} - #{FCSMB.endDateString}
+                Flight crew scheduling successfully from #{FCSMB.startDateString} to #{FCSMB.endDateString}
+                <br/><br/>
                 <p:commandButton value="View Flight Instance Crew Arrangment"  action="#{FCSMB.viewFiCrewArrangement}" icon="" />
+                <br/><br/>
                 <p:commandButton value="View Flight Crew Schedule"  action="#{FCSMB.viewFlightCrewSchedule}" icon="" />
 
                 <!--</div>-->

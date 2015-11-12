@@ -5,6 +5,8 @@
  */
 package SessionBean.AAS;
 
+import Entity.AAS.Expense;
+import Entity.AAS.Revenue;
 import Entity.ADS.Ticket;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
@@ -18,6 +20,7 @@ import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.OfficeStaff;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,41 +41,95 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
     AircraftType aircraftType;
     Aircraft aircraft;
     Route route;
-    Ticket ticket;
     OfficeStaff staff;
     GroundStaff gdStaff;
     CabinCrew cbCrew;
     CockpitCrew cpCrew;
+    Revenue revenue;
 
     public FinancialTrackingBean() {
     }
 
     @Override
-    public List<Ticket> getAllTicket() {
-        Query query = em.createQuery("SELECT t FROM Ticket t ");
-        List<Ticket> resultList = (List) query.getResultList();
+    public List<Revenue> getRevenueList(long year, String quarter) {
+        Query query = em.createQuery("SELECT r FROM Revenue r ");
+        List<Revenue> resultList = (List) query.getResultList();
         if (resultList.isEmpty()) {
-            System.out.println("AAS:FTB:Ticket List is empty");
+            System.out.println("AAS:FTB:Revenue List is empty");
         } else {
-            System.out.println("AAS:FTB:Ticket List data exists");
+            System.out.println("AAS:FTB:Revenue List data exists");
         }
-        return resultList;
+        List<Revenue> list = new ArrayList<>();
+        int revenueYear;
+        Date startDate = new Date(); //set default 
+        Date endDate = new Date();//set default
+        Boolean inPeriod = false;//set default
+        Calendar cal = Calendar.getInstance();
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+
+        for (int i = 0; i < resultList.size(); i++) {
+            Date paymentDate = resultList.get(i).getPaymentDate();
+            cal.setTime(paymentDate);
+            revenueYear = cal.get(Calendar.YEAR);
+            switch (quarter) {
+                case "1": {
+                    startCal.set((int) year, 0, 1);
+                    endCal.set((int) year, 2, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "2": {
+                    startCal.set((int) year, 3, 1);
+                    endCal.set((int) year, 5, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "3": {
+                    startCal.set((int) year, 6, 1);
+                    endCal.set((int) year, 8, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "4": {
+                    startCal.set((int) year, 9, 1);
+                    endCal.set((int) year, 11, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                default:
+                    System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
+                    break;
+            }
+            if (revenueYear == year && inPeriod) {
+                list.add(resultList.get(i));
+            }
+        }
+        return list;
     }
 
     @Override
-    public Double totalTicketSale(String bookSystem, long year, String quarter) {
+    public Double calculateRevenue(String channel, long year, String quarter) {
         Double total = 0.0;
-        Query q1 = em.createQuery("SELECT t FROM Ticket t where t.bookSystem =:bookSystem");
-        q1.setParameter("bookSystem", bookSystem);
-        if (q1.getResultList().isEmpty()) {
-            System.out.println("AAS:FTB: No available ticket for " + bookSystem);
+        Query q = em.createQuery("SELECT r FROM Revenue r where r.channel =:channel");
+        q.setParameter("channel", channel);
+        if (q.getResultList().isEmpty()) {
+            System.out.println("AAS:FTB: No available channel for " + channel);
             return 0.0;
         } else {
-            System.out.println("AAS:FTB: Available ticket found for " + bookSystem);
+            System.out.println("AAS:FTB: Available channel found for " + channel);
         }
-        List<Ticket> list = (List) q1.getResultList();
+        List<Revenue> list = (List) q.getResultList();
 
-        int ticketYear;
+        int revenueYear;
         Date startDate = new Date(); //set default 
         Date endDate = new Date();//set default
         Boolean inPeriod = false;//set default
@@ -81,16 +138,16 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         Calendar endCal = Calendar.getInstance();
 
         for (int i = 0; i < list.size(); i++) {
-            Date bookDate = list.get(i).getBookDate();
-            cal.setTime(bookDate);
-            ticketYear = cal.get(Calendar.YEAR);
+            Date paymentDate = list.get(i).getPaymentDate();
+            cal.setTime(paymentDate);
+            revenueYear = cal.get(Calendar.YEAR);
             switch (quarter) {
                 case "1": {
                     startCal.set((int) year, 0, 1);
                     endCal.set((int) year, 2, 31);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
-                    inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                     break;
                 }
                 case "2": {
@@ -98,7 +155,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                     endCal.set((int) year, 5, 30);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
-                    inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                     break;
                 }
                 case "3": {
@@ -106,7 +163,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                     endCal.set((int) year, 8, 30);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
-                    inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                     break;
                 }
                 case "4": {
@@ -114,256 +171,173 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                     endCal.set((int) year, 11, 31);
                     startDate = startCal.getTime();
                     endDate = endCal.getTime();
-                    inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
                     break;
                 }
                 default:
                     System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
                     break;
             }
-            if (ticketYear == year && inPeriod) {
-                total = total + list.get(i).getPrice();
+            if (revenueYear == year && inPeriod) {
+                total = total + list.get(i).getReceivable();
             }
         }
+
         System.out.println("AAS:FTB: totalTicketSale: " + total);
         return total;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public Double chargedCommission(String channel, long year, String quarter) {
-        Double total = 0.0;
-        int commissionYear;
+    public List<Expense> getAllExpense(String type) {
+        Query q = em.createQuery("SELECT e FROM Expense e where e.type=:type ");
+        q.setParameter("type", type);
+        List<Expense> list = (List) q.getResultList();
+        if (list.isEmpty()) {
+            System.out.println("AAS:FTB:Expense List is empty");
+        } else {
+            System.out.println("AAS:FTB:Expense List data exists");
+        }
+        return list;
+    }
+
+    @Override
+    public List<Expense> getExpenseList(long year, String quarter) {
+        Query query = em.createQuery("SELECT e FROM Expense e ");
+        List<Expense> resultList = (List) query.getResultList();
+        if (resultList.isEmpty()) {
+            System.out.println("AAS:FTB:Expense List is empty");
+        } else {
+            System.out.println("AAS:FTB:Expense List data exists");
+        }
+        List<Expense> list = new ArrayList<>();
+        int expenseYear;
         Date startDate = new Date(); //set default 
         Date endDate = new Date();//set default
-        Boolean inPeriod = true;//set default
+        Boolean inPeriod = false;//set default
         Calendar cal = Calendar.getInstance();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
 
-        if (channel.equals("HOTEL")) {
-            Query q1 = em.createQuery("SELECT hp FROM HotelPayment hp");
-            List<HotelPayment> list = (List) q1.getResultList();
-            if (list.isEmpty()) {
-                System.out.println("AAS:FTB:Hotel Payment List is empty");
-                return 0.0;
-            } else {
-                System.out.println("AAS:FTB:Hotel Payment data exists");
+        for (int i = 0; i < resultList.size(); i++) {
+            Date paymentDate = resultList.get(i).getPaymentDate();
+            cal.setTime(paymentDate);
+            expenseYear = cal.get(Calendar.YEAR);
+            switch (quarter) {
+                case "1": {
+                    startCal.set((int) year, 0, 1);
+                    endCal.set((int) year, 2, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "2": {
+                    startCal.set((int) year, 3, 1);
+                    endCal.set((int) year, 5, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "3": {
+                    startCal.set((int) year, 6, 1);
+                    endCal.set((int) year, 8, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "4": {
+                    startCal.set((int) year, 9, 1);
+                    endCal.set((int) year, 11, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                default:
+                    System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
+                    break;
             }
+            if (expenseYear == year && inPeriod) {
+                list.add(resultList.get(i));
+            }
+        }
+        return list;
+    }
 
-            for (int i = 0; i < list.size(); i++) {
-                Date paymentDate = list.get(i).getPaymentDate();
-                cal.setTime(paymentDate);
-                commissionYear = cal.get(Calendar.YEAR);
-                switch (quarter) {
-                    case "1": {
-                        startCal.set((int) year, 0, 1);
-                        endCal.set((int) year, 2, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "2": {
-                        startCal.set((int) year, 3, 1);
-                        endCal.set((int) year, 5, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "3": {
-                        startCal.set((int) year, 6, 1);
-                        endCal.set((int) year, 8, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "4": {
-                        startCal.set((int) year, 9, 1);
-                        endCal.set((int) year, 11, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    default:
-                        System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
-                        break;
-                }
-                if (commissionYear == year && inPeriod) {
-                    total = total + list.get(i).getPayment();
-                    System.out.println(total);
-                }
-            }
-        } else if (channel.equals("CAR RENTAL")) {
-            Query q2 = em.createQuery("SELECT cp FROM CarPayment cp");
-            List<CarPayment> list = (List) q2.getResultList();
-            if (list.isEmpty()) {
-                System.out.println("AAS:FTB:Car Payment List is empty");
-                return 0.0;
-            } else {
-                System.out.println("AAS:FTB:Car Payment data exists");
-            }
-            for (int i = 0; i < list.size(); i++) {
-                Date paymentDate = list.get(i).getPaymentDate();
-                cal.setTime(paymentDate);
-                commissionYear = cal.get(Calendar.YEAR);
-                switch (quarter) {
-                    case "1": {
-                        startCal.set((int) year, 0, 1);
-                        endCal.set((int) year, 2, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "2": {
-                        startCal.set((int) year, 3, 1);
-                        endCal.set((int) year, 5, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "3": {
-                        startCal.set((int) year, 6, 1);
-                        endCal.set((int) year, 8, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "4": {
-                        startCal.set((int) year, 9, 1);
-                        endCal.set((int) year, 11, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    default:
-                        System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
-                        break;
-                }
-                if (commissionYear == year && inPeriod) {
-                    total = total + list.get(i).getPayment();
-                    System.out.println(total);
-                }
-            }
-        } else if (channel.equals("HIGH-SPEED RAILWAY")) {
-            Query q3 = em.createQuery("SELECT rp FROM RailwayPayment rp");
-            List<RailwayPayment> list = (List) q3.getResultList();
-            if (list.isEmpty()) {
-                System.out.println("AAS:FTB:Railway Payment List is empty");
-                return 0.0;
-            } else {
-                System.out.println("AAS:FTB:Railway Payment data exists");
-            }
-            for (int i = 0; i < list.size(); i++) {
-                Date paymentDate = list.get(i).getPaymentDate();
-                cal.setTime(paymentDate);
-                commissionYear = cal.get(Calendar.YEAR);
-                switch (quarter) {
-                    case "1": {
-                        startCal.set((int) year, 0, 1);
-                        endCal.set((int) year, 2, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "2": {
-                        startCal.set((int) year, 3, 1);
-                        endCal.set((int) year, 5, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "3": {
-                        startCal.set((int) year, 6, 1);
-                        endCal.set((int) year, 8, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    case "4": {
-                        startCal.set((int) year, 9, 1);
-                        endCal.set((int) year, 11, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
-                        break;
-                    }
-                    default:
-                        System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
-                        break;
-                }
-                if (commissionYear == year && inPeriod) {
-                    total = total + list.get(i).getPayment();
-                    System.out.println(total);
-                }
-            }
-        } else if (channel.equals("GDS")) {
-            Query q4 = em.createQuery("SELECT t FROM Ticket t where t.bookSystem =:channel");
-            q4.setParameter("channel", channel);
-            List<Ticket> list = (List) q4.getResultList();
-            if (list.isEmpty()) {
-                System.out.println("AAS:FTB: No available ticket for " + channel);
-                return 0.0;
-            } else {
-                System.out.println("AAS:FTB: Available ticket found for " + channel);
-            }
-
-            for (int i = 0; i < list.size(); i++) {
-                Date bookDate = list.get(i).getBookDate();
-                cal.setTime(bookDate);
-                commissionYear = cal.get(Calendar.YEAR);
-                switch (quarter) {
-                    case "1": {
-                        startCal.set((int) year, 0, 1);
-                        endCal.set((int) year, 2, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
-                        break;
-                    }
-                    case "2": {
-                        startCal.set((int) year, 3, 1);
-                        endCal.set((int) year, 5, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
-                        break;
-                    }
-                    case "3": {
-                        startCal.set((int) year, 6, 1);
-                        endCal.set((int) year, 8, 30);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
-                        break;
-                    }
-                    case "4": {
-                        startCal.set((int) year, 9, 1);
-                        endCal.set((int) year, 11, 31);
-                        startDate = startCal.getTime();
-                        endDate = endCal.getTime();
-                        inPeriod = !(bookDate.before(startDate) || bookDate.after(endDate));
-                        break;
-                    }
-                    default:
-                        System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
-                        break;
-                }
-                if (commissionYear == year && inPeriod) {
-                    total = total + list.get(i).getPrice();
-                }
-            }
-        } else {
+    @Override
+    public Double calculateExpense(String type, String category, long year, String quarter) {
+        Double total = 0.0;
+        Query q = em.createQuery("SELECT e FROM Expense e where e.type=:type");
+        q.setParameter("type", type);
+        if (q.getResultList().isEmpty()) {
+            System.out.println("AAS:FTB: No available type for " + type);
             return 0.0;
+        } else {
+            System.out.println("AAS:FTB: Available type found for " + type);
+        }
+        List<Expense> list = (List) q.getResultList();
+        List<Expense> resultList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getCategory().equals(category)) {
+                resultList.add(list.get(i));
+            }
+        }
+
+        int expenseYear;
+        Date startDate = new Date(); //set default 
+        Date endDate = new Date();//set default
+        Boolean inPeriod = false;//set default
+        Calendar cal = Calendar.getInstance();
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+
+        for (int i = 0; i < resultList.size(); i++) {
+            Date paymentDate = resultList.get(i).getPaymentDate();
+            cal.setTime(paymentDate);
+            expenseYear = cal.get(Calendar.YEAR);
+            switch (quarter) {
+                case "1": {
+                    startCal.set((int) year, 0, 1);
+                    endCal.set((int) year, 2, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "2": {
+                    startCal.set((int) year, 3, 1);
+                    endCal.set((int) year, 5, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "3": {
+                    startCal.set((int) year, 6, 1);
+                    endCal.set((int) year, 8, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "4": {
+                    startCal.set((int) year, 9, 1);
+                    endCal.set((int) year, 11, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                default:
+                    System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
+                    break;
+            }
+            if (expenseYear == year && inPeriod) {
+                total = total + resultList.get(i).getPayable();
+            }
         }
         return total;
     }

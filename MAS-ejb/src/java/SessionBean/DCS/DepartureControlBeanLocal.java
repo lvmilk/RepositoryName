@@ -5,6 +5,7 @@
  */
 package SessionBean.DCS;
 
+import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
@@ -30,6 +31,13 @@ public interface DepartureControlBeanLocal {
     public boolean changeCheckinStatus(Ticket tkt) throws Exception;
 
     public List<Ticket> getAllStandbyTickets(String flightNo, String dateString) throws Exception;
+
+
+    public List<Seat> getAllUnOccupiedSeats(Ticket tkt) throws Exception;
+
+    public void selectSeat(Seat seat) throws Exception;
+
+    public boolean checkLoungeEligibility(Ticket tkt) throws Exception;
 
     
     

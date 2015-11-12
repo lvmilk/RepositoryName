@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -8,12 +9,12 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Check in </title>
+        <title>Check in:Select Ticket</title>
     </h:head>
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Check in"  style="width:100%">
+            <p:panel id="panel" header="Check in:Select Ticket"  style="width:100%">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="2" cellpadding="5">
@@ -38,19 +39,19 @@
                         </p:column>
 
                         <p:column headerText="Check in">
-                            <p:commandButton value="Check in" actionListener="#{cmb.onCheckinChange}">
+                            <p:commandButton value="Check in" update="panel" actionListener="#{cmb.onCheckinChange}">
                                 <f:attribute name="tkt" value="#{tkt}"/>
                             </p:commandButton>   
                         </p:column>
                         <p:column headerText="Standby">
-                            <p:commandButton value="Standby" actionListener="#{cmb.onStandbyChange}">
+                            <p:commandButton value="Standby" update="panel" actionListener="#{cmb.onStandbyChange}">
                                 <f:attribute name="tkt" value="#{tkt}"/>
                             </p:commandButton>   
                         </p:column>
                     </p:dataTable>
 
                 </h:panelGrid>
-                <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
+                <!--<p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />-->
             </p:panel>
 
         </h:form>

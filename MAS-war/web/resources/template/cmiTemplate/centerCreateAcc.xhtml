@@ -31,47 +31,49 @@
 
         <h:form id="offStaff">
             <p:panel id="addOffStaff"  visible="#{ctl.visibility}" style="margin-bottom:20px">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false" />
                 <h:panelGrid columns="3" cellpadding="10">
 
-                    <p:outputLabel for="offUsername" value="User Name: " />
-                    <p:inputText id="offUsername" value="#{login.username}" validatorMessage="Please start with letter 'O' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                    <p:outputLabel for="offUsername" value="Staff Id: " />
+                    <p:inputText id="offUsername" value="#{login.username}" validatorMessage="Please enter staff id starting with 'O' and length of 7-9 digits" required="true"  requiredMessage="Please enter staff id" label="Username" size="10">
                         <f:validateRegex pattern="O((?=.*\d).{6,8})" />
                     </p:inputText>
                     <p:message for="offUsername" display="icon" />
 
                     <p:outputLabel for="offPassword" value="Password: " />
-                    <p:inputText id="offPassword" value="#{login.password}" type="password" required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                    <p:inputText id="offPassword" value="#{login.password}" type="password" required="true" requiredMessage="Please enter account password"  label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
                         <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})" />
                     </p:inputText>
                     <p:message for="offPassword" display="icon" />
 
                     <p:outputLabel for="offEmail" value="Email: " />
-                    <p:inputText id="offEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                    <p:inputText id="offEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" requiredMessage="Please enter staff email" label="Email" size="10">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="offEmail" display="icon" />
 
                     <p:outputLabel for="offFirstName" value="First Name: " />
-                    <p:inputText id="offFirstName" value="#{login.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
+                    <p:inputText id="offFirstName" value="#{login.firstName}" requiredMessage="Please enter first name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="offFirstName" display="icon" />
 
                     <p:outputLabel for="offLastName" value="Last Name: " />
-                    <p:inputText id="offLastName" value="#{login.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+                    <p:inputText id="offLastName" value="#{login.lastName}" requiredMessage="Please enter last name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="offLastName" display="icon" />
 
                     <p:outputLabel for="offStfLevel" value="Role/Level: " />
-                    <p:inputText id="offStfLevel" value="#{login.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="offStfLevel" value="#{login.stfLevel}" requiredMessage="Please enter staff level" required="true" label="StaffLevel" size="10">
 
                     </p:inputText>
+
+
                     <p:message for="offStfLevel" display="icon" />
 
                     <p:outputLabel for="offSalary" value="Salary: " />
-                    <p:inputText id="offSalary" value="#{login.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="offSalary" value="#{login.salary}" requiredMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
 
                     </p:inputText>
                     <p:message for="offSalary" display="icon" />
@@ -89,53 +91,53 @@
 
         <h:form id="grdStaff">
             <p:panel id="addGrdStaff"  visible="#{ctl.visiGround}" style="margin-bottom:20px">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false"/>
                 <h:panelGrid columns="3" cellpadding="10">
 
-                    <p:outputLabel for="grdUsername" value="User Name: " />
-                    <p:inputText id="grdUsername" value="#{login.username}" validatorMessage="Please start with letter 'G' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                    <p:outputLabel for="grdUsername" value="Staff Id: " />
+                    <p:inputText id="grdUsername" value="#{login.username}" validatorMessage="Please enter staff id starting with 'G' and length of 7-9 digits " required="true" requiredMessage="Please enter staff id" label="Username" size="10">
                         <f:validateRegex pattern="G((?=.*\d).{6,8})" />
                     </p:inputText>
                     <p:message for="grdUsername" display="icon" />
 
                     <p:outputLabel for="grdPassword" value="Password: " />
-                    <p:inputText id="grdPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10"  validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                    <p:inputText id="grdPassword" value="#{login.password}" type="password"  required="true" requiredMessage="Please enter account password" label="Password" size="10"  validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol" >
                         <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})" />
                     </p:inputText>
                     <p:message for="grdPassword" display="icon" />
 
                     <p:outputLabel for="grdEmail" value="Email: " />
-                    <p:inputText id="grdEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                    <p:inputText id="grdEmail" value="#{login.email}" validatorMessage="Invalid email format" requiredMessage="Please enter staff email" required="true" label="Email" size="10">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="grdEmail" display="icon" />
 
                     <p:outputLabel for="grdFirstName" value="First Name: " />
-                    <p:inputText id="grdFirstName" value="#{login.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
+                    <p:inputText id="grdFirstName" value="#{login.firstName}" requiredMessage="Please enter first name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="grdFirstName" display="icon" />
 
                     <p:outputLabel for="grdLastName" value="Last Name: " />
-                    <p:inputText id="grdLastName" value="#{login.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+                    <p:inputText id="grdLastName" value="#{login.lastName}" requiredMessage="Please enter last name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="grdLastName" display="icon" />
 
                     <p:outputLabel for="grdStfLevel" value="Role/Level: " />
-                    <p:inputText id="grdStfLevel" value="#{login.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="grdStfLevel" value="#{login.stfLevel}" requiredMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
 
                     </p:inputText>
                     <p:message for="grdStfLevel" display="icon" />
 
                     <p:outputLabel for="grdSalary" value="Salary: " />
-                    <p:inputText id="grdSalary" value="#{login.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="grdSalary" value="#{login.salary}" requiredMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
 
                     </p:inputText>
                     <p:message for="grdSalary" display="icon" />
 
 
-                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="Staff Type: "/>
                     <p:outputLabel value="#{login.stfType}"/>
 
 
@@ -148,57 +150,71 @@
 
         <h:form id="cabin">
             <p:panel id="addCbCrew"  visible="#{ctl.visiCabin}" style="margin-bottom:20px">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false" />
                 <h:panelGrid columns="3" cellpadding="10">
 
-                    <p:outputLabel for="cbUsername" value="User Name: " />
-                    <p:inputText id="cbUsername" value="#{login.username}" validatorMessage="Please start with letter 'CB' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                    <p:outputLabel for="cbUsername" value="Staff Id: " />
+                    <p:inputText id="cbUsername" value="#{login.username}" validatorMessage="Please enter staff id starting with 'CB' and length of 7-9 digits " required="true" requiredMessage="Please enter staff id" label="Username" size="10">
                         <f:validateRegex pattern="CB((?=.*\d).{5,7})" />
                     </p:inputText>
                     <p:message for="cbUsername" display="icon" />
 
                     <p:outputLabel for="cbPassword" value="Password: " />
-                    <p:inputText id="cbPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                    <p:inputText id="cbPassword" value="#{login.password}" type="password"  required="true" requiredMessage="Please enter account password" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
                         <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})" />
                     </p:inputText>
                     <p:message for="cbPassword" display="icon" />
 
                     <p:outputLabel for="cbEmail" value="Email: " />
-                    <p:inputText id="cbEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                    <p:inputText id="cbEmail" value="#{login.email}" validatorMessage="Invalid email format" requiredMessage="Please enter staff email" required="true" label="Email" size="10">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="cbEmail" display="icon" />
 
                     <p:outputLabel for="cbFirstName" value="First Name: " />
-                    <p:inputText id="cbFirstName" value="#{login.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
+                    <p:inputText id="cbFirstName" value="#{login.firstName}" requiredMessage="Please enter first name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="cbFirstName" display="icon" />
 
                     <p:outputLabel for="cbLastName" value="Last Name: " />
-                    <p:inputText id="cbLastName" value="#{login.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+                    <p:inputText id="cbLastName" value="#{login.lastName}" requiredMessage="Please enter last name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="cbLastName" display="icon" />
 
-                    <p:outputLabel for="cbStfLevel" value="Role/Level: " />
-                    <p:inputText id="cbStfLevel" value="#{login.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
-
-                    </p:inputText>
+                    <p:outputLabel for="cbStfLevel" value="Cabin Crew Level: " />
+                    <!--<p:inputText id="cbStfLevel" value="#{login.stfLevel}" requiredMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10" />-->
+                    <p:selectOneRadio id="cbStfLevel" value="#{login.stfLevel}" required="true" requiredMessage="Please select staff level">
+                        <f:selectItem itemLabel="Cabin Crew" itemValue="Cabin Crew" />
+                        <f:selectItem itemLabel="Cabin Leader" itemValue="Cabin Leader" />
+                    </p:selectOneRadio>
                     <p:message for="cbStfLevel" display="icon" />
 
                     <p:outputLabel for="cbSalary" value="Salary: " />
-                    <p:inputText id="cbSalary" value="#{login.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="cbSalary" value="#{login.salary}" requiredMessage="Please enter staff salary" required="true" label="cbSalary" size="10">
 
                     </p:inputText>
                     <p:message for="cbSalary" display="icon" />
 
-                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel for="cbSecLang" value="Second Language (select English if none): " />
+                    <!--<p:inputText id="cbSecLang" value="#{login.secondLang}" requiredMessage="Please enter second language for the staff" required="true" label="cbSecLang" size="10" />-->
+                    <p:selectOneRadio id="cbSecLang" value="#{login.secondLang}" required="true" requiredMessage="Please enter second language for the staff" label="cbSecLang" >
+                        <f:selectItem itemLabel="Arabic" itemValue="Arabic" />
+                        <f:selectItem itemLabel="French" itemValue="French" />
+                        <f:selectItem itemLabel="Germany" itemValue="Germany" />
+                        <f:selectItem itemLabel="Japanese" itemValue="Japanese" />
+                        <f:selectItem itemLabel="Mandarin" itemValue="Mandarin" />
+                        <f:selectItem itemLabel="English(and if other languages)" itemValue="English" />
+                    </p:selectOneRadio>
+                   <p:message for="cbSecLang" display="icon" />
+
+                    <p:outputLabel value="Staff Type: "/>
                     <p:outputLabel value="#{login.stfType}"/>
 
 
                 </h:panelGrid>
-                <p:commandButton value="Confirm" update="addCbCrew" actionListener="#{login.createAcc()}" icon="ui-icon-check" />
+                <p:commandButton value="Confirm" update="addCbCrew" actionListener="#{login.createCabinAcc()}" icon="ui-icon-check" />
             </p:panel>
 
         </h:form>
@@ -206,58 +222,60 @@
 
         <h:form id="cockpit">
             <p:panel id="addCockpit"  visible="#{ctl.visiCockpit}" style="margin-bottom:20px">
-                <p:messages id="msgs" />
+                <p:messages id="msgs" autoUpdate="false"/>
                 <h:panelGrid columns="3" cellpadding="10">
 
-                    <p:outputLabel for="cpUsername" value="User Name: " />
-                    <p:inputText id="cpUsername" value="#{login.username}" validatorMessage="Please start with letter 'CP' and the Length of username should be 7-9" required="true" label="Username" size="10">
+                    <p:outputLabel for="cpUsername" value="Staff Id: " />
+                    <p:inputText id="cpUsername" value="#{login.username}" validatorMessage="Please enter staff id starting with 'CP' and length of 7-9 digits " required="true" requiredMessage="Please enter staff id" label="Username" size="10">
                         <f:validateRegex pattern="CP((?=.*\d).{5,7})" />
                     </p:inputText>
                     <p:message for="cpUsername" display="icon" />
 
                     <p:outputLabel for="cpPassword" value="Password: " />
-                    <p:inputText id="cpPassword" value="#{login.password}" type="password"  required="true" label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
+                    <p:inputText id="cpPassword" value="#{login.password}" type="password"  required="true" requiredMessage="Please enter account password"  label="Password" size="10" validatorMessage="Password should contain 6 to 20 characters string with at least one digit, one upper case letter, one lower case letter and one special symbol ">
                         <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20})" />
                     </p:inputText>
                     <p:message for="cpPassword" display="icon" />
 
                     <p:outputLabel for="cpEmail" value="Email: " />
-                    <p:inputText id="cpEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                    <p:inputText id="cpEmail" value="#{login.email}" validatorMessage="Invalid email format" required="true" requiredMessage="Please enter staff email" label="Email" size="10">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                     </p:inputText>
                     <p:message for="cpEmail" display="icon" />
 
                     <p:outputLabel for="cpFirstName" value="First Name: " />
-                    <p:inputText id="cpFirstName" value="#{login.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
+                    <p:inputText id="cpFirstName" value="#{login.firstName}" requiredMessage="Please enter first name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="cpFirstName" display="icon" />
 
                     <p:outputLabel for="cpLastName" value="Last Name: " />
-                    <p:inputText id="cpLastName" value="#{login.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+                    <p:inputText id="cpLastName" value="#{login.lastName}" requiredMessage="Please enter last name" required="true" label="name" size="10">
 
                     </p:inputText>
                     <p:message for="cpLastName" display="icon" />
 
-                    <p:outputLabel for="cpStfLevel" value="Role/Level: " />
-                    <p:inputText id="cpStfLevel" value="#{login.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
-
-                    </p:inputText>
+                    <p:outputLabel for="cpStfLevel" value="Cockpit Crew Level: " />
+                    <!--<p:inputText id="cpStfLevel" value="#{login.stfLevel}" requiredMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10" />-->
+                    <p:selectOneRadio id="cpStfLevel" value="#{login.stfLevel}" required="true" requiredMessage="Please select staff level">
+                        <f:selectItem itemLabel="Pilot" itemValue="Pilot" />
+                        <f:selectItem itemLabel="Captain" itemValue="Captain" />
+                    </p:selectOneRadio>
                     <p:message for="cpStfLevel" display="icon" />
 
                     <p:outputLabel for="cpSalary" value="Salary: " />
-                    <p:inputText id="cpSalary" value="#{login.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+                    <p:inputText id="cpSalary" value="#{login.salary}" requiredMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
 
                     </p:inputText>
                     <p:message for="cpSalary" display="icon" />
 
-                    <p:outputLabel for="cpLicence" value="Licence: " />
-                    <p:inputText id="cpLicence" value="#{login.licence}" required="true" label="Licence" size="10">
+                    <p:outputLabel for="cpLicence" value="Pilot Licence: " />
+                    <p:inputText id="cpLicence" value="#{login.licence}" required="true" requiredMessage="Please enter pilot license" label="Licence" size="10">
                         <f:validateLength minimum="2" />
                     </p:inputText>
                     <p:message for="cpLicence" display="icon" />
 
-                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="Staff Type: "/>
                     <p:outputLabel value="#{login.stfType}"/>
 
 

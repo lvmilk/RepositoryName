@@ -29,6 +29,7 @@ public class CreatePartnerManagedBean implements Serializable {
     private String stfType="agency";
     private String email;
     private String cmsLvl;
+    private String companyName;
     
     private Boolean visiAg = true;
     private Boolean visiAl;
@@ -60,7 +61,7 @@ public class CreatePartnerManagedBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in create partner account managed bean");
-            mal.addPartnerAcc(partnerID, password, email, stfType);
+            mal.addPartnerAcc(partnerID, password, companyName,email, stfType);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -175,5 +176,19 @@ public class CreatePartnerManagedBean implements Serializable {
      */
     public void setVisiAl(Boolean visiAl) {
         this.visiAl = visiAl;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

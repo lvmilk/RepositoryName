@@ -40,7 +40,7 @@
         <param-value>true</param-value>
     </context-param>
 
-<!--        <context-param>
+    <!--        <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>aristo</param-value>
     </context-param>-->
@@ -55,7 +55,7 @@
         <web-resource-collection>
             <web-resource-name>Default Secure Pages</web-resource-name>
             <description>Default Secure Pages</description>
-            <url-pattern>/login.xhtml</url-pattern>
+            <url-pattern>/login.xhtml</url-pattern>            
         </web-resource-collection>
         <user-data-constraint>
             <description/>

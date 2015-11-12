@@ -9,7 +9,7 @@
 
 
     <h:head>
-       <title>Edit Aircraft</title>
+        <title>Edit Aircraft</title>
     </h:head>
     <h:body>
         <h:form>
@@ -25,9 +25,9 @@
                     <p:column headerText="Aircraft Type" sortBy="#{Aircraft.aircraftType.type}">
                         <h:outputText value="#{Aircraft.aircraftType.type}" />
                     </p:column>
-<!--                    <p:column headerText="Serial No.">
-                        <h:outputText value="#{Aircraft.serialNo}" />
-                    </p:column>-->
+                    <!--                    <p:column headerText="Serial No.">
+                                            <h:outputText value="#{Aircraft.serialNo}" />
+                                        </p:column>-->
                     <p:column headerText="Status">
                         <h:outputText value="#{Aircraft.status}" />
                     </p:column>
@@ -40,12 +40,9 @@
                     <p:column headerText="Retire Date">
                         <h:outputText value="#{Aircraft.retireDate}" />
                     </p:column>
-<!--                    <p:column headerText="Flight Log ID">
-                        <h:outputText value="#{Aircraft.flightLogId}" />
+                    <p:column headerText="Purchase Cost">
+                        <h:outputText value="#{Aircraft.purchaseCost/1000000}" />
                     </p:column>
-                    <p:column headerText="Maintenance Log ID">
-                        <h:outputText value="#{Aircraft.maintenanceLogId}" />
-                    </p:column>-->
 
                     <p:column headerText="Edit">
                         <p:commandButton value="Edit" action="#{AMB.editAircraft(Aircraft)}"  />

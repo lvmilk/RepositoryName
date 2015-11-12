@@ -17,10 +17,10 @@
                     <p:outputLabel value="Registration No.: " />
                     <p:outputLabel value="#{editAMB.registrationNo}" />
 
-<!--                    <p:outputLabel for="serialNo" value="Serial No.: " />
-                    <p:inputText id="serialNo"  value="#{editAMB.serialNo}" label="serialNo" required="true" validatorMessage="Serial No.: please enter a valid serial number"  requiredMessage="Please enter serial number" size="50">
-                        <f:validateRegex pattern="((?=.*\d).{1,20})"/>
-                    </p:inputText>-->
+                    <!--                    <p:outputLabel for="serialNo" value="Serial No.: " />
+                                        <p:inputText id="serialNo"  value="#{editAMB.serialNo}" label="serialNo" required="true" validatorMessage="Serial No.: please enter a valid serial number"  requiredMessage="Please enter serial number" size="50">
+                                            <f:validateRegex pattern="((?=.*\d).{1,20})"/>
+                                        </p:inputText>-->
 
                     <p:outputLabel for="status" value="Status: " />                    
                     <p:selectOneRadio id="status" value="#{editAMB.status}" required="true" validatorMessage="Status: please enter a valid status"  requiredMessage="Please enter status of the aircraft">
@@ -37,15 +37,11 @@
 
                     <p:outputLabel for="retireDate" value="Retire Date :" />
                     <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
-
-
-                    <!--                    <p:outputLabel for="flightLogId" value="Flight Log ID:" />
-                                        <p:inputText id="flightLogId" value="#{editAMB.flightLogId}" label="flightLogId" required="true" validatorMessage="Flight Log ID: Please enter a valid ID number"  requiredMessage="Please enter flight Log ID" size="50">
-                                                </p:inputText>
-                                        
-                                        <p:outputLabel for="maintenanceLogId" value="Maintenance ID:" />
-                                        <p:inputText id="maintenanceLogId" value="#{editAMB.maintenanceLogId}" label="maintenanceLogId" required="true" validatorMessage="Maintenance ID: Please enter a valid ID number"  requiredMessage="Please enter maintenance ID" size="50">
-                                        </p:inputText>-->
+                    
+                    <p:outputLabel for="purchaseCost" value="Purchase Cost (Million SGD) [50,200]:" />
+                    <p:inputText id="purchaseCost" value="#{editAMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft type" size="50">
+                        <f:validateDoubleRange minimum="50.0" maximum="200.0"/>
+                    </p:inputText>
 
                     <p:outputLabel for="type" value="Aircraft Type:" />
                     <p:selectOneMenu id="type" value="#{editAMB.type}">

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Flight Crew Schedule for Period #{VCCCSDMB.startDateString} -  #{VCCCSDMB.endDateString} "  style="width:100%">
+
+                <p:tabView>
+                    <p:tab title="List View">
+                        <p:dataTable var="fi" value="#{VCCCSDMB.fiList}" paginator="true" rows="40" emptyMessage="No flight instances for this cabin crew">
+                            <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
+                                <h:outputText value="#{fi.flightFrequency.flightNo}" />
+                            </p:column>
+                            <p:column headerText="Departure Time">
+                                <h:outputText value="#{fi.standardDepTime}" />
+                            </p:column>
+                            <p:column headerText="Arrival Time">
+                                <h:outputText value="#{fi.standardArrTime}" />
+                            </p:column>
+                            <p:column headerText="Origin">
+                                <h:outputText value="#{fi.flightFrequency.route.origin.IATA}" />
+                            </p:column>
+                            <p:column headerText="Destination">
+                                <h:outputText value="#{fi.flightFrequency.route.dest.IATA}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Calendar View">
+                        <p:schedule id="schedule" value="#{VCCCSDMB.eventModel}" widgetVar="cpschedule" timeZone="Asia/Singapore">
+
+                        </p:schedule>
+
+                    </p:tab>
+                </p:tabView>
+
+                <p:commandButton value="Back to list" update="@form" actionListener="#{VCCCSDMB.viewCabinCrewScheduleBack()}"  icon="ui-icon-carat-1-w" />
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+
+</html>
