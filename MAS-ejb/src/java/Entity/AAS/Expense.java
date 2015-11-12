@@ -5,12 +5,20 @@
  */
 package Entity.AAS;
 
+import Entity.APS.Aircraft;
+import Entity.APS.AircraftType;
+import Entity.APS.Route;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -27,7 +35,16 @@ public class Expense implements Serializable {
     private Date paymentDate;
     private String type;
     private String category;
+    private String costSource;
 
+    public String getCostSource() {
+        return costSource;
+    }
+
+    public void setCostSource(String costSource) {
+        this.costSource = costSource;
+    }
+    
     public Long getId() {
         return id;
     }

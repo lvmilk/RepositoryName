@@ -28,12 +28,11 @@ public class FlightFrequency implements Serializable {
     private Long id;
     @ManyToOne
     private Route route = new Route();
-
+   
     private String flightNo;
 
 //    @ManyToOne
 //    private AircraftType aircraftType = new AircraftType();
-    
 //    private LocalTime scheduleDepTime;
 //    private LocalTime scheduleArrTime;
     private Integer dateAdjust;
@@ -61,14 +60,15 @@ public class FlightFrequency implements Serializable {
     //new added by lucy --> when generate flight instance, check the available date interval of this fligh schedule
     private String sDate;
     private String fDate;
+    private String depTerminal;
+    private String arrTerminal;
+    private String depGate;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
 
 //    @ManyToOne
 //    private FlightPackage flightPackage = new FlightPackage();
-
-
     public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun,
             String startDate, String endDate, String sDate, String fDate) {
@@ -95,7 +95,6 @@ public class FlightFrequency implements Serializable {
         durationMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
         return this;
     }
-
 
     public Long getId() {
         return id;
@@ -142,7 +141,6 @@ public class FlightFrequency implements Serializable {
 //    public void setStatus(String status) {
 //        this.status = status;
 //    }
-    
     public Route getRoute() {
         return route;
     }
@@ -189,6 +187,14 @@ public class FlightFrequency implements Serializable {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getDepGate() {
+        return depGate;
+    }
+
+    public void setDepGate(String depGate) {
+        this.depGate = depGate;
     }
 
 //
@@ -349,7 +355,6 @@ public class FlightFrequency implements Serializable {
 //    public void setFlightPackage(FlightPackage flightPackage) {
 //        this.flightPackage = flightPackage;
 //    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -368,6 +373,22 @@ public class FlightFrequency implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public String getDepTerminal() {
+        return depTerminal;
+    }
+
+    public void setDepTerminal(String depTerminal) {
+        this.depTerminal = depTerminal;
+    }
+
+    public String getArrTerminal() {
+        return arrTerminal;
+    }
+
+    public void setArrTerminal(String arrTerminal) {
+        this.arrTerminal = arrTerminal;
     }
 
     @Override

@@ -48,6 +48,9 @@ public class CheckInManagedBean implements Serializable {
     private List<Seat> unOccupiedSeats = new ArrayList<Seat>();
     private Seat seatSelected;
     private Integer luggageCount;
+    private Boolean loungeEligibility;
+    private Date boardingTime;
+
     @PostConstruct
     public void init() {
         tickets = (List<Ticket>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tickets");
@@ -56,7 +59,13 @@ public class CheckInManagedBean implements Serializable {
         firstName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstName");
         lastName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lastName");
         passportNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("passportNo");
-        seatSelected= (Seat)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seat");
+        seatSelected = (Seat) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("seat");
+        flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
+        luggageCount = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("luggageCount");
+        loungeEligibility = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoungeEligibility");
+        date = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+        boardingTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("boardingTime");
+
     }
 
     public void onDateChange() {
@@ -113,11 +122,15 @@ public class CheckInManagedBean implements Serializable {
     public void onGetTicketChange() throws Exception {
         try {
             this.getUnusedTicket();
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tickets", tickets);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn2.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -130,11 +143,14 @@ public class CheckInManagedBean implements Serializable {
             ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
             dcb.changeCheckinStatus(ticket);
             this.getUnoccupiedSeat(ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn3.xhtml");
 
         } catch (Exception ex) {
@@ -145,37 +161,74 @@ public class CheckInManagedBean implements Serializable {
     public void onStandbyChange(ActionEvent event) {
         try {
             ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
-            
+
             dcb.changeStandbyStatus(ticket);
             this.getUnoccupiedSeat(ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./standBy.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
 
-    public void onSelectSeat(ActionEvent event){
-       try{ 
-           this.seatSelected=(Seat) event.getComponent().getAttributes().get("seat");
-          dcb.selectSeat(seatSelected);
-          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
+    public void onSelectSeat(ActionEvent event) {
+        try {
+            this.seatSelected = (Seat) event.getComponent().getAttributes().get("seat");
+            dcb.selectSeat(seatSelected);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat",seatSelected);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", seatSelected);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn4.xhtml");
-       }catch(Exception ex){
-           
-       }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+
+        }
+    }
+
+    public void calculateBoardingTime(Date date){
+            Calendar c1 = Calendar.getInstance();
+                c1.setTime(date);
+                c1.add(Calendar.MINUTE, -30);
+            this.setBoardingTime(c1.getTime());
+        
     }
     
-    
+    public void previewBoardingPass() {
+        try {
+            this.calculateBoardingTime(ticket.getBkInstance().getFlightCabin().getFlightInstance().getStandardDepTimeDateType());
+            this.loungeEligibility = dcb.checkLoungeEligibility(ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", seatSelected);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("luggageCount", luggageCount);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loungeEligibility", loungeEligibility);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("boardingTime", boardingTime);
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn5.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
     public boolean isOnlineCheckedIn(Ticket tkt) {
         return tkt.getTicketStatus().equals("OnlineCheckedin");
     }
@@ -278,6 +331,22 @@ public class CheckInManagedBean implements Serializable {
 
     public void setLuggageCount(Integer luggageCount) {
         this.luggageCount = luggageCount;
+    }
+
+    public Boolean getLoungeEligibility() {
+        return loungeEligibility;
+    }
+
+    public void setLoungeEligibility(Boolean loungeEligibility) {
+        this.loungeEligibility = loungeEligibility;
+    }
+
+    public Date getBoardingTime() {
+        return boardingTime;
+    }
+
+    public void setBoardingTime(Date boardingTime) {
+        this.boardingTime = boardingTime;
     }
 
     /**

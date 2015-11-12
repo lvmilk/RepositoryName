@@ -42,6 +42,7 @@ public class EditAircraftManagedBean implements Serializable {
     private Date deliveryDate;
     private Date retireDate;  //Lease Expiration Date
     private Date oldRetireDate;
+     private Double purchaseCost;
     String ffd;
     String dd;
     String rd;
@@ -71,6 +72,7 @@ public class EditAircraftManagedBean implements Serializable {
         firstFlyDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstFlyDate");
         deliveryDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("deliveryDate");
         retireDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("retireDate");
+        purchaseCost = ((Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purchaseCost"));
         ffd = df.format(firstFlyDate);
         dd = df.format(deliveryDate);
         rd = df.format(retireDate);
@@ -91,11 +93,11 @@ public class EditAircraftManagedBean implements Serializable {
             System.out.println("editAircraftManagedBean: editAircraft: oldRetireDate is " + oldRetireDate);
             if (!retireDate.before(oldRetireDate)) {
                 if (firstFlyDate.before(deliveryDate) && retireDate.after(deliveryDate)) {
-
+                    purchaseCost=purchaseCost*1000000;
                     ffd = df.format(firstFlyDate);
                     dd = df.format(deliveryDate);
                     rd = df.format(retireDate);
-                    fpb.editAircraft(type, registrationNo, status, ffd, dd, rd);
+                    fpb.editAircraft(type, registrationNo, status, ffd, dd, rd,purchaseCost);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftDone.xhtml");
 
                 } else {
@@ -175,22 +177,15 @@ public class EditAircraftManagedBean implements Serializable {
     public void setRetireDate(Date retireDate) {
         this.retireDate = retireDate;
     }
-//
-//    public Long getFlightLogId() {
-//        return flightLogId;
-//    }
-//
-//    public void setFlightLogId(Long flightLogId) {
-//        this.flightLogId = flightLogId;
-//    }
-//
-//    public Long getMaintenanceLogId() {
-//        return maintenanceLogId;
-//    }
-//
-//    public void setMaintenanceLogId(Long maintenanceLogId) {
-//        this.maintenanceLogId = maintenanceLogId;
-//    }
+
+    public Double getPurchaseCost() {
+        return purchaseCost;
+    }
+
+    public void setPurchaseCost(Double purchaseCost) {
+        this.purchaseCost = purchaseCost;
+    }
+
 
     public List<AircraftType> getTypeList() {
         return typeList;

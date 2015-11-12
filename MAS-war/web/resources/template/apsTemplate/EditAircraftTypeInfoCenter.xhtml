@@ -28,11 +28,6 @@
                         <f:validateDoubleRange minimum="4000.0" maximum="15000.0" />
                     </p:inputText>
 
-                    <p:outputLabel for="purchaseCost" value="Purchase Cost (Million SGD) [50,200]:" />
-                    <p:inputText id="purchaseCost" value="#{editATMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft type" size="50">
-                        <f:validateDoubleRange minimum="50.0" maximum="200.0"/>
-                    </p:inputText>
-
                     <p:outputLabel for="fuelCost" value="Fuel Cost (SGD [5000,15000] per hour):" />
                     <p:inputText id="fuelCost" value="#{editATMB.fuelCost}" label="Fuel Cost (per hour)" required="true" validatorMessage="Fuel Cost (per hour) should be between 5,000 to 15,000 SGD"  requiredMessage="Please enter fuel cost of the aircraft type" size="50">
                         <f:validateDoubleRange minimum="5000.0" maximum="15000.0"/>

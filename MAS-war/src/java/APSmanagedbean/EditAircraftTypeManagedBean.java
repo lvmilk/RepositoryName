@@ -25,7 +25,7 @@ public class EditAircraftTypeManagedBean implements Serializable {
     private String manufacturer;
     private Double maxDistance;
     private Double aircraftLength;
-    private Double purchaseCost;
+   
     private Double fuelCost;
     private Double wingspan;
     private String minAirspace;
@@ -54,7 +54,6 @@ public class EditAircraftTypeManagedBean implements Serializable {
         manufacturer = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manufacturer");
         maxDistance = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("maxDistance");
         aircraftLength = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("aircraftLength");
-        purchaseCost = ((Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("purchaseCost"))/1000000;
         fuelCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fuelCost");
         mtCost = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("mtCost");
         wingspan = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("wingspan");
@@ -74,8 +73,7 @@ public class EditAircraftTypeManagedBean implements Serializable {
         try {
             String typeUpper = type.toUpperCase();
             String manufacturerUpper = manufacturer.toUpperCase();
-            Double purchaseCostM=purchaseCost*1000000;
-            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, purchaseCostM, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
+            fpb.editAircraftType(typeUpper, manufacturerUpper, maxDistance, fuelCost, mtCost, aircraftLength, wingspan, minAirspace, suiteNo, fcSeatNo, bcSeatNo, pecSeatNo, ecSeatNo, cabinCrew, purser, captain, pilot);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./EditAircraftTypeDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -125,14 +123,6 @@ public class EditAircraftTypeManagedBean implements Serializable {
 
     public void setAircraftLength(Double aircraftLength) {
         this.aircraftLength = aircraftLength;
-    }
-
-    public Double getPurchaseCost() {
-        return purchaseCost;
-    }
-
-    public void setPurchaseCost(Double purchaseCost) {
-        this.purchaseCost = purchaseCost;
     }
 
     public Double getFuelCost() {
