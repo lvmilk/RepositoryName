@@ -38,6 +38,7 @@ public interface ManageAccountBeanLocal {
     //used when editing email
     public boolean checkEmailDuplicate(String email, String emailEdited);
     public void editStaff(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String firstName, String lastName, String stfLevel,Double salary, Double hourPay,Integer attempt, Integer locked);
+    public void editCbCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String firstName, String lastName, String stfLevel,Double salary, Double hourPay,String secondLang, Integer attempt, Integer locked);
     public void editCpCrew(String username, String stfType, String password,String pswEdited,String email, String emailEdited, String firstName, String lastName, String stfLevel,Double salary, Double hourPay,String licence, Integer attempt, Integer locked);
     public void editProfile(String username, String stfType, String pswEdited,String email, String emailEdited);
     public boolean delAcc(List<OfficeStaff> selectedOffStf);

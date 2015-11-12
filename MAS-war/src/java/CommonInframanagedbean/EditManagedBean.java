@@ -60,6 +60,8 @@ public class EditManagedBean implements Serializable {
     private List<CabinCrew> cbCrewList;
     private List<CockpitCrew> cpCrewList;
 
+    private String secondLang;
+
     public EditManagedBean() {
         selectedOffStf = new ArrayList();
     }
@@ -115,9 +117,10 @@ public class EditManagedBean implements Serializable {
         setStfLevel(cbCrew.getStfLevel());
         setSalary(cbCrew.getSalary());
         setHourPay(cbCrew.getHourPay());
+        setSecondLang(cbCrew.getSecondLang());
         setAttempt(cbCrew.getAttempt());
         setLocked(cbCrew.getLocked());
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditStaffPage.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./EditCabinPage.xhtml");
     }
 
     public void SelectedEditCockpitCrew(CockpitCrew cpCrew) throws IOException {
@@ -141,7 +144,7 @@ public class EditManagedBean implements Serializable {
     public void editOfStaffAcc() throws IOException {
 
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, firstName,lastName, stfLevel, salary, hourPay, attempt, locked);
+            mal.editStaff(username, stfType, password, pswEdited, email, emailEdited, firstName, lastName, stfLevel, salary, hourPay, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -150,9 +153,19 @@ public class EditManagedBean implements Serializable {
 
     }
 
+    public void editCbCrewAcc() throws IOException {
+        if (!mal.checkEmailDuplicate(email, emailEdited)) {
+            mal.editCbCrew(username, stfType, password, pswEdited, email, emailEdited, firstName, lastName, stfLevel, salary, hourPay, secondLang, attempt, locked);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
+        }
+    }
+
     public void editCpStaffAcc() throws IOException {
         if (!mal.checkEmailDuplicate(email, emailEdited)) {
-            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, firstName,lastName, stfLevel, salary, hourPay, licence, attempt, locked);
+            mal.editCpCrew(username, stfType, password, pswEdited, email, emailEdited, firstName, lastName, stfLevel, salary, hourPay, licence, attempt, locked);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
         } else {
@@ -434,6 +447,20 @@ public class EditManagedBean implements Serializable {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    /**
+     * @return the secondLang
+     */
+    public String getSecondLang() {
+        return secondLang;
+    }
+
+    /**
+     * @param secondLang the secondLang to set
+     */
+    public void setSecondLang(String secondLang) {
+        this.secondLang = secondLang;
     }
 
 }
