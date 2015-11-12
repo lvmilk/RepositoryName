@@ -74,7 +74,8 @@ public class CancelFlightManagedBean implements Serializable {
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
         stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
-        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+//        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+//        System.out.println("CancelFlightManagedBean:ini: print booking system"+bkSystem);
 
     }
 
