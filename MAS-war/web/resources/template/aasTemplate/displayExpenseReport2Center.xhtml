@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+        <title>Generate Variable Cost Report</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:dataTable id="tbl" var="key" value="#{EMB2.categoryList}" style="margin-top:40px">
+                <f:facet name="header">
+                    Merlion Airlines Seasonal Variable Cost
+                </f:facet>
+
+                <p:columnGroup type="header">
+                    <p:row>
+                        <p:column rowspan="2" headerText="Cost Category" sortBy="#{key}" filterBy="#{key}"/>
+                        <p:column colspan="2" headerText="Expense" />
+                    </p:row>
+                    <p:row>
+                        <p:column headerText="Cost Type" />
+                        <p:column headerText="Total Expense under this Category" />
+                    </p:row>
+                </p:columnGroup>
+
+                <p:column >
+                    <h:outputText value="#{key}" />
+                </p:column>
+                <p:column>
+                    <h:outputText value="#{EMB2.typeMap[key]}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="$#{EMB2.payableMap[key]}">
+                    <f:convertNumber pattern="0.0"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:columnGroup type="footer">
+                    <p:row>
+                        <p:column footerText="Total Variable Cost: " style="text-align:right"/>
+                        <p:column colspan="2" style="text-align:left" footerText="$#{EMB2.totalString}" />
+                    </p:row>
+                    <p:row>
+                        <p:column footerText="Currency: " style="text-align:right"/>
+                        <p:column colspan="2" style="text-align:left" footerText="SGD" />
+                    </p:row>
+                    <p:row>
+                        <p:column footerText="Period:  " style="text-align:right"/>
+                        <p:column colspan="2" style="text-align:left" footerText="Year #{EMB2.expenseYear} Quarter #{EMB2.expenseQuarter}" />
+                    </p:row>
+
+                </p:columnGroup>
+            </p:dataTable>
+
+            <br/>
+            <p:growl id="growl" showDetail="true" />
+            <p:commandButton value="Back" icon="ui-icon-cancel" actionListener="#{EMB2.back()}"/>
+            <p:commandButton value="Export Revenue Summary" icon="ui-icon-extlink" actionListener="#{EMB2.exporterSummary()}"/>
+
+        </h:form>
+    </h:body>
+</html>
+
+
+

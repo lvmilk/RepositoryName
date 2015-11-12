@@ -132,6 +132,7 @@ public class EditFlightInstanceManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDepTime", df2.parse(flightInst.getActualDepTime()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualArrTime", df2.parse(flightInst.getActualArrTime()));
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actualDateAdjust", flightInst.getActualDateAdjust());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("depGate", flightInst.getDepGate());
         System.out.println("Edit flight instance with Flight No.: " + flightInst.getFlightFrequency().getFlightNo() + " on " + flightInst.getDate());
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceInfo.xhtml");
     }

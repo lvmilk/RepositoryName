@@ -57,6 +57,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
     private Integer actualDateAdjust;
 
     private String flightNo;
+    private String depGate;
 
     DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat df2 = new SimpleDateFormat("HH:mm");
@@ -83,6 +84,8 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
         estimatedDateAdjust = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("estimatedDateAdjust");
         actualDepTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDepTime");
         actualArrTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualArrTime");
+        depGate = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("depGate");
+
         actualDateAdjust = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("actualDateAdjust");
         flightInst = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInst");
         flightInstList = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightInstList");
@@ -135,7 +138,7 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
             }
 
             ///////////////////////////////////////////////////////////////////////
-            fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust);
+            fsb.editFlightInstance(flightFreq, flightDateString, flightStatus, ed, ea, estimatedDateAdjust, ad, aa, actualDateAdjust, depGate);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightInstanceDone.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -259,6 +262,14 @@ public class EditFlightInstanceInfoManagedBean implements Serializable {
 
     public void setActualDateAdjust(Integer actualDateAdjust) {
         this.actualDateAdjust = actualDateAdjust;
+    }
+
+    public String getDepGate() {
+        return depGate;
+    }
+
+    public void setDepGate(String depGate) {
+        this.depGate = depGate;
     }
 
 }

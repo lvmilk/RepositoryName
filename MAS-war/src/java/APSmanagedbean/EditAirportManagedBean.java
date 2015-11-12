@@ -9,6 +9,9 @@ import Entity.APS.Airport;
 import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -42,7 +45,7 @@ public class EditAirportManagedBean implements Serializable {
     private Double latitude;
     private Double longitude;
     private boolean isHub;
-
+    private List<String>  timezoneList= (List<String>)Arrays.asList(TimeZone.getAvailableIDs());
     public EditAirportManagedBean() {
     }
 
@@ -208,5 +211,11 @@ public class EditAirportManagedBean implements Serializable {
     public void setLang(String lang) {
         this.lang = lang;
     }
+   public List<String> getTimezoneList() {
+        return timezoneList;
+    }
 
+    public void setTimezoneList(List<String> timezoneList) {
+        this.timezoneList = timezoneList;
+    }
 }
