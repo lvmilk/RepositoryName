@@ -37,7 +37,7 @@ public class FlightCrewSchedulingEnterPeriodManagedBean implements Serializable 
     }
 
     public void flightCrewSchdulingForPeriod() throws Exception {
-        if (endDate.before(new Date())) {
+        if (startDate.before(new Date())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Crew scheduling start date should be after today.", ""));
         } else if (endDate.before(startDate)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Crew scheduling end date should be after start date.", ""));

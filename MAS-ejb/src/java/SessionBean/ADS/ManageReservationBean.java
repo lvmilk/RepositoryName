@@ -65,7 +65,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         if (oldPsgList != null && oldPsgList.size() == selectedPsgList.size()) {
-            removeOldRsv(selectedRsv, oldPsgList);
+            removeOldFlt(selectedRsv, oldPsgList);
         } else {
             removePartialPsgs(selectedRsv, selectedPsgList);
         }
@@ -176,11 +176,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         if (oldPsgList != null && oldPsgList.size() == passengerList.size()) {
-            removeOldRsv(selectedRsv, oldPsgList);
+            removeOldFlt(selectedRsv, oldPsgList);
         }
         Double totalPrice = computeTotalPrice(BookClassInstanceList, passengerList.size(), totalPenalty);
         em.flush();
-        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem);
+        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem,  totalPrice);
 
     }
 
@@ -191,11 +191,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             totalPrice += BookClassInstanceList.get(i).getPrice();
         }
         totalPrice *= psgCount;
+        System.out.println("Total price without penalty is "+totalPrice);
         totalPrice += penalty;
+         System.out.println("Total price plus penalty is "+totalPrice);
         return totalPrice;
     }
 
-    public void removeOldRsv(Reservation rsv, ArrayList<Passenger> psgList) {
+    public void removeOldFlt(Reservation rsv, ArrayList<Passenger> psgList) {
         Booker booker = em.find(Booker.class, rsv.getBooker().getId());
         rsv = em.find(Reservation.class, rsv.getId());
 
@@ -205,6 +207,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 //        em.merge(rsv);
         em.remove(payment);
         em.flush();
+        
+         List<BookingClassInstance>bkInstanceList= rsv.getBkcInstance();
 
         List<Ticket> tickets = new ArrayList<>();
 
@@ -217,6 +221,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
             System.out.println("ticket size for copy is " + ticketsCopy.size());
             for (int j = 0; j < ticketsCopy.size(); j++) {
+                BookingClassInstance bcInstance=em.find(BookingClassInstance.class, ticketsCopy.get(j).getBkInstance().getId());
                 Ticket ticket = em.find(Ticket.class, ticketsCopy.get(j).getTicketID());
 
                 if (ticket != null) {
@@ -226,6 +231,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 }
                 ticket.setPassenger(null);
                 ticket.setRsv(null);
+                ticket.setBkInstance(null);
 
                 List<Ticket> psgTickets = psg.getTickets();
                 psgTickets.remove(ticket);
@@ -234,9 +240,15 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 List<Ticket> rsvTickets = rsv.getTickets();
                 rsvTickets.remove(ticket);
                 rsv.setTickets(rsvTickets);
+                
+                List<Ticket> bcTickets=bcInstance.getTickets();
+                bcTickets.remove(ticket);
+                bcInstance.setTickets(bcTickets);
+                
 
                 em.merge(psg);
                 em.merge(rsv);
+                em.merge(bcInstance);
                 em.remove(ticket);
             }
             em.flush();
@@ -266,7 +278,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         }
 
-        em.remove(rsv);
+//        em.remove(rsv);
+        rsv.setRsvStatus("Cancelled");
         em.flush();
 //
 //        em.remove(rsv);
@@ -407,7 +420,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     public List<Reservation> getAllReservations() {
         List<Reservation> rsvList = new ArrayList<>();
-        Query query = em.createQuery("SELECT r FROM Reservation r ");
+        String status="Reserved";
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.rsvStatus=:status").setParameter("status", status);
         List<Reservation> resultList = query.getResultList();
         if (!resultList.isEmpty()) {
             return resultList;

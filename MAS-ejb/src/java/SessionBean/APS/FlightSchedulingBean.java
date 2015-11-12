@@ -367,12 +367,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
 //            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
-//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
-//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (ac.getAircraftType()));
+
             if ((temp.getAircraft().getRegistrationNo().equals("9V-000")) && (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
                 System.out.println("FSB： getUnplannedFlightInstance(): ADDED " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
                 flightInstListCopy.add(temp);
-
             }
         }
         System.out.println("FSB: getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
@@ -919,14 +923,17 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
     }
 
     @Override
-    public boolean addAcToFi(Aircraft ac, List<Long> fiId) {
-        boolean flag = canAssign(ac, fiId);
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId) throws Exception{
+        System.out.println(" IMPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTING " + fiId.get(0).getClass().getSimpleName());
+        String flag = canAssign(ac, fiId);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         System.out.println("FSB: addAcToFi ");
         System.out.println("FSB: addAcToFi " + flag);
-        if (flag) {
+
+        if (flag.equalsIgnoreCase("canAssign")) {
             List<FlightInstance> fiToAdd = new ArrayList<>();
             for (Long id : fiId) {
+
                 FlightInstance f1 = em.find(FlightInstance.class, id);
                 fiToAdd.add(f1);
                 flightTemp.add(f1);
@@ -1052,8 +1059,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             em.merge(ac);
             System.out.print("FSB: addToFi finished!");
             em.flush();
+        } else {
+        throw new Exception(flag);
         }
-        return flag;
+        return true;
     }
 
     public boolean canAssignMt(Aircraft ac, String obj, Date startTime, Date endTime) throws Exception {
@@ -1154,13 +1163,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         return (canAssign && canAssignMt);
     }
 
-    public boolean canAssign(Aircraft ac, List<Long> fiId) {
+    public String canAssign(Aircraft ac, List<Long> fiId) {
 //        boolean canAssign = false;
 //        boolean canAssign2 = false;
 //        boolean canAssignMt = false;
 
         List<FlightInstance> fiTempBeforeSort = ac.getFlightInstance();
         List<FlightInstance> flightTemp = this.sortFiList(fiTempBeforeSort);
+        System.out.println(flightTemp);
         List<Maintenance> mtTempBeforeSort = ac.getMaintenanceList();
         List<Maintenance> mtTemp = this.sortMtList(mtTempBeforeSort);
 
@@ -1198,12 +1208,15 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (depCheck.after(depCheck2) && depCheck.before(arrCheck2) || depCheck2.after(depCheck) && depCheck2.before(arrCheck)) {
                 System.out.println("FIRST CHECK ***********************************");
                 System.out.println("Cannot assign 01: overlapping time of selected tasks");
-                return false;
+                return "Cannot assign : overlapping time of selected tasks";
             }
         }
 
         // check 2: if these flights has existing tasks in between
-        List<FlightInstance> fiListAdd = flightTemp;
+        List<FlightInstance> fiListAdd = new ArrayList<>();
+        for (FlightInstance f : flightTemp) {
+            fiListAdd.add(f);
+        }
         for (FlightInstance f1 : fiToAdd) {
             fiListAdd.add(f1);
         }
@@ -1213,7 +1226,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if ((findLast - findFirst) != (fiToAdd.size() - 1)) {
             System.out.println("FIRST CHECK ***********************************");
             System.out.println("Cannot assign 02: selected flights are not consecutive (have existing flights inbetween).");
-            return false;
+            return "Cannot assign : selected flights are not consecutive (have existing flights inbetween).";
         }
 
         // by location
@@ -1227,7 +1240,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (!arr1.equals(dep2)) {
                 System.out.println("FIRST CHECK ***********************************");
                 System.out.println("Cannot assign 03: non-connecting location of selected tasks");
-                return false;
+                return "Cannot assign : non-connecting location of selected tasks";
             }
         }
 
@@ -1248,6 +1261,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         cal.setTime(arrCheck2);
         cal.add(Calendar.HOUR, 1);
         arrCheck2 = cal.getTime();
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: depCheck " + depCheck);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: arrCheck " + arrCheck);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: depCheck2 " + depCheck2);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: arrCheck2 " + arrCheck2);
 
         // check maintenance
         List<Maintenance> checkMt = new ArrayList<>();
@@ -1264,7 +1281,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             for (int i = 0; i < checkMt.size(); i++) {
                 Date st = checkMt.get(i).getStartTime();
                 Date nd = checkMt.get(i).getEndTime();
-                for (int j = 0; i < fiToAdd.size(); j++) {
+                for (int j = 0; j < fiToAdd.size(); j++) {
                     Date fiSt = fiToAdd.get(j).getStandardDepTimeDateType();
                     Date fiNd = fiToAdd.get(j).getStandardArrTimeDateType();
                     cal.setTime(fiSt);
@@ -1279,7 +1296,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     if (st.after(fiSt) && st.before(fiNd) || nd.after(fiSt) && nd.before(fiNd)) {
                         System.out.println("SECOND CHECK ***********************************");
                         System.out.println("Cannot assign 04: has maintenance inbetween these flights");
-                        return false;
+                        return "Cannot assign : has maintenance during these flights";
+
                     }
                 }
             }
@@ -1301,8 +1319,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         fiBefMt = this.sortFiList(fiBefMt);
                         if (!fiBefMt.get(fiBefMt.size() - 1).getFlightFrequency().getRoute().getDest().getIATA().equalsIgnoreCase("SIN")) {
                             System.out.println("SECOND CHECK ***********************************");
-                            System.out.println("Cannot assign 05: flight instance change the location of existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime());
-                            return false;
+                            System.out.println("Cannot assign 05: flight instance change the location of an existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime());
+                            return "Cannot assign : flight instance change the location of an existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime();
+
                         }
                     }
                 }
@@ -1314,19 +1333,27 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         for (FlightInstance f1 : fiToAdd) {
             if (!f1.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())) {
                 System.out.println("THIRD CHECK ***********************************");
-                System.out.println("Cannot assign 06: aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type flight task " + f1.getFlightFrequency().getFlightNo());
-                return false;
+                System.out.println("Cannot assign 06: aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type for flight task " + f1.getFlightFrequency().getFlightNo());
+                return "Cannot assign : aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type for flight task " + f1.getFlightFrequency().getFlightNo();
             }
         }
 
         // check time
+        System.out.println("AAAAAAAAA  --  " + flightTemp);
         for (FlightInstance f1 : flightTemp) {
             Date dep1 = f1.getStandardDepTimeDateType();
             Date arr1 = f1.getStandardArrTimeDateType();
-            if (dep1.after(depCheck2) && arr1.before(arrCheck2) || arr1.before(arrCheck) && arr1.after(depCheck)) {
+
+            if ((dep1.after(depCheck) && dep1.before(arrCheck2)) || (arr1.before(arrCheck2) && arr1.after(depCheck))) {
                 System.out.println("THIRD CHECK ***********************************");
-                System.out.println("Cannot assign 07: selected tasks have time conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                System.out.println("THIRD CHECK *********************************** dep 1 " + f1.getStandardDepTimeDateType());
+                System.out.println("THIRD CHECK *********************************** arr 1 " + f1.getStandardArrTimeDateType());
+
+                System.out.println("THIRD CHECK *********************************** boolean 1 " + (dep1.after(depCheck) && dep1.before(arrCheck2)));
+                System.out.println("THIRD CHECK *********************************** boolean 2 " + (arr1.before(arrCheck2) && arr1.after(depCheck)));
+
+                System.out.println("Cannot assign 07: selected tasks have time conflict with existing flight " + f1 + " for " + ac.getRegistrationNo());
+                return "Cannot assign : selected tasks have time conflict with existing flight " + f1 + " for " + ac.getRegistrationNo();
             }
         }
 
@@ -1347,7 +1374,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (!fiBefore.get(fiBefore.size() - 1).getFlightFrequency().getRoute().getDest().equals(fiToAdd.get(0).getFlightFrequency().getRoute().getOrigin())) {
                 System.out.println("THIRD CHECK ***********************************");
                 System.out.println("Cannot assign 08: selected tasks have location conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                return "Cannot assign : selected tasks have location conflict with existing flights for " + ac.getRegistrationNo();
             }
         }
 
@@ -1355,10 +1382,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (!fiAfter.get(0).getFlightFrequency().getRoute().getOrigin().equals(fiToAdd.get(fiToAdd.size() - 1).getFlightFrequency().getRoute().getDest())) {
                 System.out.println("THIRD CHECK ***********************************");
                 System.out.println("Cannot assign 09: selected tasks have location conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                return "Cannot assign : selected tasks have location conflict with existing flights for " + ac.getRegistrationNo();
             }
         }
-        return true;
+        return "canAssign";
     }
 
     public boolean canAssign(Aircraft ac, FlightInstance fi, FlightInstance fiSec) {

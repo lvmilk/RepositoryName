@@ -7,6 +7,7 @@ package AFOSmanagedbean;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -21,14 +22,20 @@ public class ViewFlightCrewScheduleEnterPeriodManagedBean implements Serializabl
 
     private Date startViewScheduleDate;
     private Date endViewScheduleDate;
-    
+
     public ViewFlightCrewScheduleEnterPeriodManagedBean() {
     }
-      
+
     public void viewFlightCrewScheduleEnterPeriod() throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewScheduleDate", startViewScheduleDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endViewScheduleDate", endViewScheduleDate);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewSchedule.xhtml");
+        if (startViewScheduleDate.before(new Date())) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Start date should be after today.", ""));
+        } else if (endViewScheduleDate.before(startViewScheduleDate)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : End date should be after start date.", ""));
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewScheduleDate", startViewScheduleDate);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endViewScheduleDate", endViewScheduleDate);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewSchedule.xhtml");
+        }
     }
 
     public Date getStartViewScheduleDate() {
@@ -47,5 +54,4 @@ public class ViewFlightCrewScheduleEnterPeriodManagedBean implements Serializabl
         this.endViewScheduleDate = endViewScheduleDate;
     }
 
-    
 }

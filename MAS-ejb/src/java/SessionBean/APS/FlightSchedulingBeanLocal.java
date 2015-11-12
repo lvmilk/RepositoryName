@@ -83,7 +83,7 @@ public interface FlightSchedulingBeanLocal {
 
     public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate);
 
-    public boolean addAcToFi(Aircraft ac, List<Long> fiId);
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId) throws Exception;
 
     public long calPeriodTotalFlightHour(Date startDate, Date endDate);
 

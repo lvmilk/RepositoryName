@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form id="cbCrew">
+            <p:panel id="addCbStaff"  style="margin-bottom:20px">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="10">
+
+                    <p:outputLabel for="cbUsername" value="User Name: " />
+                    <p:outputLabel id="cbUsername" value="#{etManagedBean.username}"  />
+                    <p:message for="cbUsername" display="icon" />
+
+                    <p:outputLabel for="cbPassword" value="Password: " />
+                    <p:inputText id="cbPassword" value="#{etManagedBean.pswEdited}" type="password" required="true" label="Password" size="10" >
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="cbPassword" display="icon" />
+
+                    <p:outputLabel for="cbEmail" value="Email: " />
+                    <p:inputText id="cbEmail" value="#{etManagedBean.emailEdited}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="cbEmail" display="icon" />
+
+                    <p:outputLabel for="cbFirstName" value="First Name: " />
+                    <p:inputText id="cbFirstName" value="#{etManagedBean.firstName}" validatorMessage="Please enter the first name" required="true" label="name" size="10">
+
+                    </p:inputText>
+                    <p:message for="cbFirstName" display="icon" />
+
+                    <p:outputLabel for="cbLastName" value="Last Name: " />
+                    <p:inputText id="cbLastName" value="#{etManagedBean.lastName}" validatorMessage="Please enter the last name" required="true" label="name" size="10">
+
+                    </p:inputText>
+                    <p:message for="cbLastName" display="icon" />
+
+                    <p:outputLabel for="cbStfLevel" value="Cabin Crew Level: " />
+                    
+                    <p:selectOneRadio id="cbStfLevel" value="#{etManagedBean.stfLevel}" required="true" requiredMessage="Please select staff level">
+                        <f:selectItem itemLabel="Cabin Crew" itemValue="Cabin Crew" />
+                        <f:selectItem itemLabel="Cabin Leader" itemValue="Cabin Leader" />
+                    </p:selectOneRadio>
+                    <p:message for="cbStfLevel" display="icon" />
+
+                    <p:outputLabel for="cbSalary" value="Salary: " />
+                    <p:inputText id="cbSalary" value="#{etManagedBean.salary}" validatorMessage="Please enter staff salary" required="true" label="StaffLevel" size="10">
+
+                    </p:inputText>
+                    <p:message for="cbSalary" display="icon" />
+
+                    <p:outputLabel for="cbHourPay" value="Hour Pay: " />
+                    <p:inputText id="cbHourPay" value="#{etManagedBean.hourPay}" validatorMessage="Please enter staff hour pay" required="true" label="StaffLevel" size="10">
+
+                    </p:inputText>
+                    <p:message for="cbHourPay" display="icon" />
+
+                    <p:outputLabel for="cbSecLang" value="Second Language (select English if none): " />
+
+                    <p:selectOneRadio id="cbSecLang" value="#{etManagedBean.secondLang}" required="true" requiredMessage="Please enter second language for the staff" label="cbSecLang" >
+                        <f:selectItem itemLabel="Arabic" itemValue="Arabic" />
+                        <f:selectItem itemLabel="French" itemValue="French" />
+                        <f:selectItem itemLabel="Germany" itemValue="Germany" />
+                        <f:selectItem itemLabel="Japanese" itemValue="Japanese" />
+                        <f:selectItem itemLabel="Mandarin" itemValue="Mandarin" />
+                        <f:selectItem itemLabel="English(and if other languages)" itemValue="English" />
+                    </p:selectOneRadio>
+                    <p:message for="cbSecLang" display="icon" />
+
+                    <p:outputLabel value="staff type: "/>
+                    <p:outputLabel value="#{etManagedBean.stfType}"/>
+
+
+                </h:panelGrid>
+                <p:commandButton value="Edit" update="addCbStaff" actionListener="#{etManagedBean.editCbCrewAcc}" icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
+

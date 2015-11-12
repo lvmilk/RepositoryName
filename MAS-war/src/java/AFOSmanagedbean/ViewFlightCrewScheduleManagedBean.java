@@ -10,6 +10,7 @@ import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,112 +45,44 @@ public class ViewFlightCrewScheduleManagedBean implements Serializable {
     private List<CabinCrew> cabinList;
     private List<CockpitCrew> cockpitList;
 
-    private Map<FlightInstance, String> captainMap = new HashMap<>();
-    private Map<FlightInstance, String> captainSBMap = new HashMap<>();
-    private Map<FlightInstance, String> pilotMap = new HashMap<>();
-    private Map<FlightInstance, String> pilotSBMap = new HashMap<>();
-    private Map<FlightInstance, String> cabinMap = new HashMap<>();
-    private Map<FlightInstance, String> cabinSBMap = new HashMap<>();
-    private Map<FlightInstance, String> cabinLeaderMap = new HashMap<>();
-    private Map<FlightInstance, String> cabinLeaderSBMap = new HashMap<>();
+    private Map<CockpitCrew, Long> cockpitFHMap = new HashMap<>();
+    private Map<CabinCrew, Long> cabinFHMap = new HashMap<>();
 
     public ViewFlightCrewScheduleManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startViewDate");
-        endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endViewDate");
-        fiList = fsb.getSortedFiWithinPeriod(startDate, endDate);
-        initFCMap(fiList);
-    }
-
-    public void initFCMap(List<FlightInstance> fiList) {
-        for (FlightInstance fi : fiList) {
-            System.out.println(" &&&&&&&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]");
-            List<CockpitCrew> cc1 = fi.getCockpitList();
-            List<CockpitCrew> cc3 = fi.getCockpitStandByList();
-            String captainString = "";
-            String captainSBString = "";
-            String pilotString = "";
-            String pilotSBString = "";
-            List<CabinCrew> cc2 = fi.getCabinList();
-            List<CabinCrew> cc4 = fi.getCabinStandByList();
-            String cabinString = "";
-            String cabinSBString = "";
-            String cabinLeaderString = "";
-            String cabinLeaderSBString = "";
-            for (CockpitCrew cc : cc1) {
-                if (cc.getStfLevel().equals("Captain")) {
-                    captainString = captainString + cc.getCpName() + " ";
-                } else if (cc.getStfLevel().equals("Pilot")) {
-                    pilotString = pilotString + cc.getCpName() + " ";
-                }
-            }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainString is " + captainString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotString is " + pilotString);
-
-            for (CockpitCrew cc : cc3) {
-                if (cc.getStfLevel().equals("Captain")) {
-                    captainSBString = captainSBString + cc.getCpName() + " ";
-                } else if (cc.getStfLevel().equals("Pilot")) {
-                    pilotSBString = pilotSBString + cc.getCpName() + " ";
-                }
-            }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainSBString is " + captainSBString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotSBString is " + pilotSBString);
-
-            for (CabinCrew cc : cc2) {
-                if (cc.getStfLevel().equals("Cabin Crew")) {
-                    cabinString = cabinString + cc.getCbName() + " ";
-                } else if (cc.getStfLevel().equals("Cabin Leader")) {
-                    cabinLeaderString = cabinLeaderString + cc.getCbName() + " ";
-                }
-            }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinString is " + cabinString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderString is " + cabinLeaderString);
-
-            for (CabinCrew cc : cc4) {
-                if (cc.getStfLevel().equals("Cabin Crew")) {
-                    cabinSBString = cabinSBString + cc.getCbName() + " ";
-                } else if (cc.getStfLevel().equals("Cabin Leader")) {
-                    cabinLeaderSBString = cabinLeaderSBString + cc.getCbName() + " ";
-                }
-            }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinSBString is " + cabinSBString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderSBString is " + cabinLeaderSBString);
-
-            captainMap.put(fi, captainString);
-            pilotMap.put(fi, pilotString);
-            cabinMap.put(fi, cabinString);
-            cabinLeaderMap.put(fi, cabinLeaderString);
-            captainSBMap.put(fi, captainSBString);
-            pilotSBMap.put(fi, pilotSBString);
-            cabinSBMap.put(fi, cabinSBString);
-            cabinLeaderSBMap.put(fi, cabinLeaderSBString);
-        }
-    }
-
-    public void flightCrewSchdulingForPeriod() throws Exception {
+        startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startViewScheduleDate");
+        endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endViewScheduleDate");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         startDateString = df.format(startDate);
         endDateString = df.format(endDate);
-        csb.scheduleFlightCrew(startDate, endDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+        cockpitList = csb.getAllCockpitCrew();
+        cabinList = csb.getAllCabinCrew();
+        initFHMap();
     }
 
-    public void viewFlightCrew(FlightInstance fi) throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fi", fi);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrew.xhtml");
+    public void initFHMap() {
+        Long totalhour;
+        for (CockpitCrew cp : cockpitList) {
+            totalhour = csb.calCockpitTotalFlightHour(cp, startDate, endDate);
+            cockpitFHMap.put(cp, totalhour);
+        }
+        for (CabinCrew cc : cabinList) {
+            totalhour = csb.calCabinTotalFlightHour(cc, startDate, endDate);
+            cabinFHMap.put(cc, totalhour);
+        }
     }
 
-    public void viewCabinCrewSchedule() {
-
+    public void viewCockpitCrewSchedule(CockpitCrew cp) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewScheduleCP", cp);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrewScheduleDetail.xhtml");
     }
 
-    public void viewCockpitCrewSchedule() {
-
+    public void viewCabinCrewSchedule(CabinCrew cc) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("viewScheduleCC", cc);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewCabinCrewScheduleDetail.xhtml");
     }
 
     public Date getStartDate() {
@@ -208,68 +141,20 @@ public class ViewFlightCrewScheduleManagedBean implements Serializable {
         this.cockpitList = cockpitList;
     }
 
-    public Map<FlightInstance, String> getCaptainMap() {
-        return captainMap;
+    public Map<CockpitCrew, Long> getCockpitFHMap() {
+        return cockpitFHMap;
     }
 
-    public void setCaptainMap(Map<FlightInstance, String> captainMap) {
-        this.captainMap = captainMap;
+    public void setCockpitFHMap(Map<CockpitCrew, Long> cockpitFHMap) {
+        this.cockpitFHMap = cockpitFHMap;
     }
 
-    public Map<FlightInstance, String> getCaptainSBMap() {
-        return captainSBMap;
+    public Map<CabinCrew, Long> getCabinFHMap() {
+        return cabinFHMap;
     }
 
-    public void setCaptainSBMap(Map<FlightInstance, String> captainSBMap) {
-        this.captainSBMap = captainSBMap;
-    }
-
-    public Map<FlightInstance, String> getPilotMap() {
-        return pilotMap;
-    }
-
-    public void setPilotMap(Map<FlightInstance, String> pilotMap) {
-        this.pilotMap = pilotMap;
-    }
-
-    public Map<FlightInstance, String> getPilotSBMap() {
-        return pilotSBMap;
-    }
-
-    public void setPilotSBMap(Map<FlightInstance, String> pilotSBMap) {
-        this.pilotSBMap = pilotSBMap;
-    }
-
-    public Map<FlightInstance, String> getCabinMap() {
-        return cabinMap;
-    }
-
-    public void setCabinMap(Map<FlightInstance, String> cabinMap) {
-        this.cabinMap = cabinMap;
-    }
-
-    public Map<FlightInstance, String> getCabinSBMap() {
-        return cabinSBMap;
-    }
-
-    public void setCabinSBMap(Map<FlightInstance, String> cabinSBMap) {
-        this.cabinSBMap = cabinSBMap;
-    }
-
-    public Map<FlightInstance, String> getCabinLeaderMap() {
-        return cabinLeaderMap;
-    }
-
-    public void setCabinLeaderMap(Map<FlightInstance, String> cabinLeaderMap) {
-        this.cabinLeaderMap = cabinLeaderMap;
-    }
-
-    public Map<FlightInstance, String> getCabinLeaderSBMap() {
-        return cabinLeaderSBMap;
-    }
-
-    public void setCabinLeaderSBMap(Map<FlightInstance, String> cabinLeaderSBMap) {
-        this.cabinLeaderSBMap = cabinLeaderSBMap;
+    public void setCabinFHMap(Map<CabinCrew, Long> cabinFHMap) {
+        this.cabinFHMap = cabinFHMap;
     }
 
 }
