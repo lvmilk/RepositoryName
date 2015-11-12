@@ -105,7 +105,7 @@ public class TicketManagedBean implements Serializable {
         } else {
             this.bkSystem = "ARS";
         }
-        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem);
+        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book");
 
         if (stfType.equals("agency")) {
             ddsBkblocal.setAgency_Booker(username, booker);
@@ -114,7 +114,7 @@ public class TicketManagedBean implements Serializable {
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
         }
 

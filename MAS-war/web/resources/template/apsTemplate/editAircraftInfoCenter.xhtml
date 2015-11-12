@@ -36,7 +36,7 @@
                     <p:outputLabel value="#{editAMB.dd}"/>
 
                     <p:outputLabel for="retireDate" value="Retire Date :" />
-                    <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
+                    <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>
                     
                     <p:outputLabel for="purchaseCost" value="Purchase Cost (Million SGD) [50,200]:" />
                     <p:inputText id="purchaseCost" value="#{editAMB.purchaseCost}" label="Purchase Cost" required="true" validatorMessage="Purchase Cost (per year) should be between 50M to 400M SGD"  requiredMessage="Please enter purchase cost of the aircraft type" size="50">

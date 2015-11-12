@@ -23,7 +23,7 @@ import javax.ejb.Local;
 @Local
 public interface PassengerBeanLocal {
 
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem);
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action);
 
     public boolean checkPassportExist(String passport);
 
@@ -33,7 +33,7 @@ public interface PassengerBeanLocal {
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo);
 
-    public Payment makeRsvPayment(Reservation rsv, Integer psgCount);
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action);
 
 
 

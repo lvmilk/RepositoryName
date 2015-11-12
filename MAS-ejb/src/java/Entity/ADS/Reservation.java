@@ -39,7 +39,7 @@ public class Reservation implements Serializable {
     private String bkFirstName;
     private String bkLastName;
     private String bkEmail;
-    
+
     private String origin;   // airport code
     private String dest;     //airport code
     private Boolean returnTrip;
@@ -48,18 +48,19 @@ public class Reservation implements Serializable {
     private Date rsvDate;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rsv")
-    private List<Ticket> tickets=new ArrayList<>();
+    private List<Ticket> tickets = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name="RESERVATION_BKCINSTANCE")
-    private List<BookingClassInstance> bkcInstance=new ArrayList<BookingClassInstance>();
+    @JoinTable(name = "RESERVATION_BKCINSTANCE")
+    private List<BookingClassInstance> bkcInstance = new ArrayList<BookingClassInstance>();
 
     @OneToOne(mappedBy = "reservation")
     private Payment payment;
-    
+
     @ManyToOne
     private Booker booker;
-     
+
+    private String rsvStatus;
 
     public Reservation() {
 
@@ -70,9 +71,10 @@ public class Reservation implements Serializable {
         this.bkLastName = bkLastName;
         this.bkEmail = bkEmail;
         this.rsvDate = Calendar.getInstance().getTime();
-        this.origin=origin;
-        this.dest=dest;
-        this.returnTrip=returnTrip;
+        this.origin = origin;
+        this.dest = dest;
+        this.returnTrip = returnTrip;
+        this.rsvStatus="Reserved";
     }
 
     public Long getId() {
@@ -82,8 +84,6 @@ public class Reservation implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-
 
     @Override
     public int hashCode() {
@@ -123,8 +123,6 @@ public class Reservation implements Serializable {
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }
-
-
 
     /**
      * @return the payment
@@ -236,7 +234,15 @@ public class Reservation implements Serializable {
         this.booker = booker;
     }
 
+    public String getRsvStatus() {
+        return rsvStatus;
+    }
 
+    public void setRsvStatus(String rsvStatus) {
+        this.rsvStatus = rsvStatus;
+    }
 
-
+    
+    
+    
 }
