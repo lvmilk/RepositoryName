@@ -7,7 +7,10 @@ import Entity.APS.AircraftType;
 import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
 import SessionBean.AIS.SeatPlanBeanLocal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,12 +174,14 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         ////////////
         expense = new Expense();
         expense.setCategory("Fuel Cost");
+        expense.setType("Sunk Cost");
         expense.setPayable(fuelCost);
         expense.setCostSource(type);
         em.persist(expense);
         em.flush();
         expense = new Expense();
         expense.setCategory("Maintenance Cost");
+        expense.setType("Sunk Cost");
         expense.setPayable(mtCost);
         expense.setCostSource(type);
         em.persist(expense);
@@ -218,6 +223,25 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraftType.setPilot(pilot);
         em.merge(aircraftType);
         em.flush();
+        Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:type");
+        q.setParameter("type", type);
+        if (q.getResultList().isEmpty()) {
+            throw new Exception("No aircraft type related to this expense.");
+        } else {
+            for (int i = 0; i < q.getResultList().size(); i++) {
+                expense = (Expense) q.getResultList().get(i);
+                if (expense.getCategory().equals("Fuel Cost")) {
+                    expense.setPayable(fuelCost);
+                    expense.setCostSource(type);
+                }
+                if (expense.getCategory().equals("Maintenance Cost")) {
+                    expense.setPayable(mtCost);
+                    expense.setCostSource(type);
+                }
+                em.merge(expense);
+                em.flush();
+            }
+        }
         System.out.println("Aircrat Type is edited!");
 
     }
@@ -332,14 +356,18 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public AircraftType getAircraftType(String type) {
+    public AircraftType
+            getAircraftType(String type
+            ) {
         aircraftType = em.find(AircraftType.class, type);
-        System.out.println("getAircraftType: " + aircraftType.getType());
+        System.out.println(
+                "getAircraftType: " + aircraftType.getType());
         return aircraftType;
     }
 
     @Override
-    public List<Aircraft> getThisTypeAircraft(String type) {
+    public List<Aircraft> getThisTypeAircraft(String type
+    ) {
         aircraftType = em.find(AircraftType.class, type);
         List<Aircraft> aircraftList = aircraftType.getAircraft();
         return aircraftList;
@@ -366,15 +394,22 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         em.merge(aircraftType);
         em.flush();
         ////////////
+        String string = deliveryDate;
+        Integer yearDiff = aircraft.getYearDiff();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date purchaseDate = format.parse(string);
         expense = new Expense();
         expense.setCategory("Purchase Aircraft");
+        expense.setType("Sunk Cost");
+        expense.setPaymentDate(purchaseDate);
         expense.setPayable(purchaseCost);
         expense.setCostSource(registrationNo);
         em.persist(expense);
         em.flush();
         expense = new Expense();
         expense.setCategory("Depreciation");
-        Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+        expense.setType("Sunk Cost");
+        Double depreciation = 0.7 * purchaseCost / yearDiff;         //depreciation per annum... residual value=0.3*purchase cost
         expense.setPayable(depreciation);
         expense.setCostSource(registrationNo);
         em.persist(expense);
@@ -393,10 +428,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (aircraftType == null) {
             throw new Exception("AircraftType does not exist.");
         }
+
         if ((status.equals("Retired")) && (!aircraft.getFlightInstance().isEmpty())) {
             //     System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! "+aircraft.getStatus() + status + aircraft.getFlightInstance());
             throw new Exception("Aircraft Status cannot be retired. This aircraft " + aircraft.getRegistrationNo() + " has already linked with a flight instance.");
         }
+
         System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! " + aircraft.getStatus() + aircraft.getFlightInstance());
         System.out.println("Fleet Planning Bean is editing Aircraft...");
         aircraft.setStatus(status);
@@ -405,6 +442,9 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft.setAircraftType(aircraftType);
         em.merge(aircraft);
         em.flush();
+        Integer start = Integer.parseInt(deliveryDate.substring(0, 4));
+        Integer end = Integer.parseInt(retireDate.substring(0, 4));
+        Integer yearDiff = end - start;
         Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:registrationNo");
         q.setParameter("registrationNo", registrationNo);
         if (q.getResultList().isEmpty()) {
@@ -415,12 +455,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 if (expense.getCategory().equals("Purchase Aircraft")) {
                     expense.setPayable(purchaseCost);
                     expense.setCostSource(registrationNo);
-                } else if (expense.getCategory().equals("Depreciation")) {
-                    Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+                }
+                if (expense.getCategory().equals("Depreciation")) {
+                    Double depreciation = 0.7 * purchaseCost / yearDiff;         //depreciation per annum, residual value = 0.3*purchase cost
                     expense.setPayable(depreciation);
                     expense.setCostSource(registrationNo);
-                }else{
-                    throw new Exception("Wrong expense category found for expense.");
                 }
                 em.merge(expense);
                 em.flush();

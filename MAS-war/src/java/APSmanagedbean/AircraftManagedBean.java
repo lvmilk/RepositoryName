@@ -71,7 +71,7 @@ public class AircraftManagedBean implements Serializable {
             c.add(Calendar.DATE, 100);
             Date deliveryCheck = c.getTime();
             c.setTime(deliveryDate);
-            c.add(Calendar.YEAR, 3);
+            c.add(Calendar.YEAR, 5);
             Date retireCheck = c.getTime();
             if (firstFlyDate.before(new Date()) && retireDate.after(new Date())) {
                 if (deliveryDate.after(deliveryCheck) && retireDate.after(retireCheck)) {
@@ -87,7 +87,7 @@ public class AircraftManagedBean implements Serializable {
                     fpb.addAircraft(type, registrationNo, status, ffd, dd, rd,purchaseCost);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./addAircraftConfirm.xhtml");
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Date","Please check the Date! (deliveryDate is at least 100 days after firstFlyDate, and retireDate is at least 3 years after deliveryDate)"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Date","Please check the Date! (deliveryDate is at least 100 days after firstFlyDate, and retireDate is at least 5 years after deliveryDate)"));
                 }
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Date","Please check the Date! (first fly date < today < retire date)"));

@@ -40,9 +40,9 @@ import org.primefaces.context.RequestContext;
  *
  * @author Xi
  */
-@Named(value = "EMB")
+@Named(value = "EMB2")
 @ViewScoped
-public class ExpenseManagedBean implements Serializable {
+public class ExpenseManagedBean2 implements Serializable {
 
     /**
      * Creates a new instance of ExpenseManagedBean
@@ -58,13 +58,15 @@ public class ExpenseManagedBean implements Serializable {
     private List<String> categoryList = new ArrayList<>();
     private Map<String, String> typeMap;
     private Map<String, Double> payableMap;
+    private Map<String,Double> hourPayMap;
+    private Map<String,Double> sumMap;
     private String category;
     private String type;
     private Double payable;
     private Double total;
     private String totalString;
 
-    public ExpenseManagedBean() {
+    public ExpenseManagedBean2() {
     }
 
     @PostConstruct
@@ -73,11 +75,13 @@ public class ExpenseManagedBean implements Serializable {
             yearList.add(currentYear);
             currentYear--;
         }
-        categoryList.add("Fuel Cost");
-        categoryList.add("Purchase Aircraft");
-        categoryList.add("Depreciation");
-        categoryList.add("Maintenance Cost");
-        categoryList.add("Other Cost");
+        categoryList.add("DDS Commission");
+        categoryList.add("Cabin Crew");
+        categoryList.add("Cabin Leader");
+        categoryList.add("Captain");
+        categoryList.add("Pilot");
+        categoryList.add("Office Staff");
+        categoryList.add("Ground Staff");
         typeMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("typeMap");
         payableMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("payableMap");
         total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
