@@ -10,7 +10,6 @@ import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -54,10 +53,12 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     private Date standardDepTimeDateType;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date standardArrTimeDateType;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date localDepTime;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date localArrTime;
+//    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+//    private Date localDepTime;
+//    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+//    private Date localArrTime;
+
+    private String depGate;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "flightinstance_cabincrew")
@@ -95,8 +96,9 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.actualDepTime = actualDepTime;
         this.actualArrTime = actualArrTime;
         this.actualDateAdjust = actualDateAdjust;
-        this.setLocalDepTime(getLocalDepTime());
-        this.setLocalArrTime(getLocalArrTime());
+        this.depGate = "Not assigned";
+//        this.setLocalDepTime(getLocalDepTime());
+//        this.setLocalArrTime(getLocalArrTime());
     }
 
     public Long getId() {
@@ -250,71 +252,72 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.standardArrTimeDateType = standardArrTimeDateType;
     }
 
-    public Date getLocalDepTime() {
-//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String depTZ = this.getFlightFrequency().getRoute().getOrigin().getTimeZone();
-        Date depLocal = new Date();
-        Integer depOffset = 0;
-        switch (depTZ.charAt(3)) {
-            case '-': {
-                String offset = depTZ.substring(4, 6);
-//                if (offset.charAt(0) == '0') {
-                depOffset = Integer.valueOf(offset);
-//                }
-                Calendar c = Calendar.getInstance();
-                c.setTime(this.getStandardDepTimeDateType());
-                c.add(Calendar.HOUR, depOffset);
-                depLocal = c.getTime();
-                break;
-            }
-            case '+': {
-                String offset = depTZ.substring(4, 6);
-                depOffset = 0 - Integer.valueOf(offset);
-                Calendar c = Calendar.getInstance();
-                c.setTime(this.getStandardDepTimeDateType());
-                c.add(Calendar.HOUR, depOffset);
-                depLocal = c.getTime();
-                break;
-            }
-        }
-        return depLocal;
-    }
-
-    public void setLocalDepTime(Date localDepTime) {
-        this.localDepTime = localDepTime;
-    }
-
-    public Date getLocalArrTime() {
-//        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String depTZ = this.getFlightFrequency().getRoute().getDest().getTimeZone();
-        String offset = depTZ.substring(4, 6);
-        Date arrLocal = new Date();
-        Integer depOffset = 0;
-        switch (depTZ.charAt(3)) {
-            case '-': {
-                depOffset = Integer.valueOf(offset);
-                Calendar c = Calendar.getInstance();
-                c.setTime(this.getStandardArrTimeDateType());
-                c.add(Calendar.HOUR, depOffset);
-                arrLocal = c.getTime();
-                break;
-            }
-            case '+': {
-                depOffset = 0 - Integer.valueOf(offset);
-                Calendar c = Calendar.getInstance();
-                c.setTime(this.getStandardArrTimeDateType());
-                c.add(Calendar.HOUR, depOffset);
-                arrLocal = c.getTime();
-                break;
-            }
-        }
-        return arrLocal;
-    }
-
-    public void setLocalArrTime(Date localArrTime) {
-        this.localArrTime = localArrTime;
-    }
-
+//    public Date getLocalDepTime() {
+//        String depTZ = this.getFlightFrequency().getRoute().getOrigin().getTimeZone();
+//        System.out.println("############################ #########################   depTZ : " + depTZ);
+//        Date depLocal = new Date();
+//        Integer depOffset = 0;
+//        System.out.println("############################ #########################   depTZ.charAt(3) : " + depTZ.charAt(3));
+//        switch (depTZ.charAt(3)) {
+//            case '-': {
+//                String offset = depTZ.substring(4, 6);
+//                System.out.println("############################ #########################   offset : " + offset);
+//                depOffset = 0 - Integer.valueOf(offset);
+//                System.out.println("############################ #########################   depOffset : " + depOffset);
+//                Calendar c = Calendar.getInstance();
+//                c.setTime(this.getStandardDepTimeDateType());
+//                System.out.println("############################ #########################   this.getStandardDepTimeDateType() : " + this.getStandardDepTimeDateType());
+//                c.add(Calendar.HOUR, depOffset);
+//                depLocal = c.getTime();
+//                System.out.println("############################ #########################   depLocal : " + depLocal);
+//                break;
+//            }
+//            case '+': {
+//                String offset = depTZ.substring(4, 6);
+//                depOffset = Integer.valueOf(offset);
+//                Calendar c = Calendar.getInstance();
+//                c.setTime(this.getStandardDepTimeDateType());
+//                c.add(Calendar.HOUR, depOffset);
+//                depLocal = c.getTime();
+//                break;
+//            }
+//        }
+//        return depLocal;
+//    }
+//
+//    public void setLocalDepTime(Date localDepTime) {
+//        this.localDepTime = localDepTime;
+//    }
+//    public Date getLocalArrTime() {
+//        String arrTZ = this.getFlightFrequency().getRoute().getDest().getTimeZone();
+//        System.out.println("############################ #########################   arrTZ " + arrTZ);
+//        String offset = arrTZ.substring(4, 6);
+//        Date arrLocal = new Date();
+//        Integer arrOffset = 0;
+//        switch (arrTZ.charAt(3)) {
+//            case '-': {
+//                arrOffset = 0 - Integer.valueOf(offset);
+//                Calendar c = Calendar.getInstance();
+//                c.setTime(this.getStandardArrTimeDateType());
+//                c.add(Calendar.HOUR, arrOffset);
+//                arrLocal = c.getTime();
+//                break;
+//            }
+//            case '+': {
+//                arrOffset = Integer.valueOf(offset);
+//                Calendar c = Calendar.getInstance();
+//                c.setTime(this.getStandardArrTimeDateType());
+//                c.add(Calendar.HOUR, arrOffset);
+//                arrLocal = c.getTime();
+//                break;
+//            }
+//        }
+//        return arrLocal;
+//    }
+//
+//    public void setLocalArrTime(Date localArrTime) {
+//        this.localArrTime = localArrTime;
+//    }
     public List<CabinCrew> getCabinList() {
         return cabinList;
     }
@@ -345,6 +348,14 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 
     public void setCockpitStandByList(List<CockpitCrew> cockpitStandByList) {
         this.cockpitStandByList = cockpitStandByList;
+    }
+
+    public String getDepGate() {
+        return depGate;
+    }
+
+    public void setDepGate(String depGate) {
+        this.depGate = depGate;
     }
 
 //    @Override

@@ -59,6 +59,9 @@ public class AddReturnFlightManagedBean implements Serializable {
     private Route inRoute;
     private FlightFrequency inBound;
 
+    private String depTerminal;
+    private String arrTerminal;
+
     public AddReturnFlightManagedBean() {
     }
 
@@ -69,6 +72,8 @@ public class AddReturnFlightManagedBean implements Serializable {
         inStartDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
         inEndDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
         outRoute = (Route) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("outRoute");
+        arrTerminal = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("depTerminal");
+        depTerminal = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("arrTerminal");
     }
 
     public void addReturnFlightFrequency(ActionEvent e) throws Exception {
@@ -91,7 +96,7 @@ public class AddReturnFlightManagedBean implements Serializable {
                 inDepTimeString = formatter2.format(inDepTime);
                 inArrTimeString = formatter2.format(inArrTime);
 
-                inBound = fsb.addFlightFrequency(inRoute, inFlightNo, inDepTimeString, inArrTimeString, inDateAdjust, inOnMon, inOnTue, inOnWed, inOnThu, inOnFri, inOnSat, inOnSun, inStartDateString, inEndDateString, "", "");
+                inBound = fsb.addFlightFrequency(inRoute, inFlightNo, inDepTimeString, inArrTimeString, inDateAdjust, inOnMon, inOnTue, inOnWed, inOnThu, inOnFri, inOnSat, inOnSun, inStartDateString, inEndDateString, "", "", depTerminal, arrTerminal);
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successReturnFlightNo", inFlightNo);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencySuccess.xhtml");
@@ -283,6 +288,22 @@ public class AddReturnFlightManagedBean implements Serializable {
 
     public void setInBound(FlightFrequency inBound) {
         this.inBound = inBound;
+    }
+
+    public String getDepTerminal() {
+        return depTerminal;
+    }
+
+    public void setDepTerminal(String depTerminal) {
+        this.depTerminal = depTerminal;
+    }
+
+    public String getArrTerminal() {
+        return arrTerminal;
+    }
+
+    public void setArrTerminal(String arrTerminal) {
+        this.arrTerminal = arrTerminal;
     }
 
 }

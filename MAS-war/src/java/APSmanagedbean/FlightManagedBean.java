@@ -81,6 +81,10 @@ public class FlightManagedBean implements Serializable {
     private List<FlightFrequency> flightFreqList;
     private List<FlightFrequency> filteredFlightFreqList;
 
+    private String depTerminal;
+    private String arrTerminal;
+    private String depGate;
+
     public FlightManagedBean() {
     }
 
@@ -118,7 +122,7 @@ public class FlightManagedBean implements Serializable {
                     System.out.println("fmb.addFlightFrequency(): depTimeString: " + depTimeString);
                     arrTimeString = formatter2.format(arrTime);
                     System.out.println("fmb.addFlightFrequency(): arrTimeString: " + arrTimeString);
-                    fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd);
+                    fsb.addFlightFrequency(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sd, fd, depTerminal, arrTerminal);
 
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("successFlightNo", flightNo);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("oriAirportString", oriAirportString);
@@ -126,6 +130,8 @@ public class FlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("outRoute", route);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("depTerminal", depTerminal);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("arrTerminal", arrTerminal);
 
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./addFlightFrequencyReturn.xhtml");
                 } else {
@@ -153,6 +159,9 @@ public class FlightManagedBean implements Serializable {
         endDate = formatter2.parse(flightFreq.getEndDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightEndDate", endDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateAdjust", flightFreq.getDateAdjust().toString());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("depTerminal", depTerminal);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("arrTerminal", arrTerminal);
+
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightFrequencyDetail.xhtml");
     }
 
@@ -452,6 +461,30 @@ public class FlightManagedBean implements Serializable {
 
     public void setFirstGenerationDate(Date firstGenerationDate) {
         this.firstGenerationDate = firstGenerationDate;
+    }
+
+    public String getDepTerminal() {
+        return depTerminal;
+    }
+
+    public void setDepTerminal(String depTerminal) {
+        this.depTerminal = depTerminal;
+    }
+
+    public String getArrTerminal() {
+        return arrTerminal;
+    }
+
+    public void setArrTerminal(String arrTerminal) {
+        this.arrTerminal = arrTerminal;
+    }
+
+    public String getDepGate() {
+        return depGate;
+    }
+
+    public void setDepGate(String depGate) {
+        this.depGate = depGate;
     }
 
 }
