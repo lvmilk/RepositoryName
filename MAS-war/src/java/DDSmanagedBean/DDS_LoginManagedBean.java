@@ -10,6 +10,7 @@ import SessionBean.CommonInfra.ManageAccountBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -42,6 +43,10 @@ public class DDS_LoginManagedBean implements Serializable {
         if (validity) {
             System.out.println("~~~~~~~DDS_Login: Account exists");
             FacesContext.getCurrentInstance().getExternalContext().redirect("ddsWorkspace.xhtml");
+        }else{
+            System.out.println("Username or password incorrect");
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage("Username or password incorrect"));
         }
     }
 

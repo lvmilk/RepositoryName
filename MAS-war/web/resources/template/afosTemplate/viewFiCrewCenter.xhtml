@@ -14,7 +14,7 @@
 
         <h:form>
             <p:panel id="panel" header="View Flight Crew Schedule"  style="width:100%">
-                <p:dataTable var="fi" value="#{VFCSMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instances for the period">
+                <p:dataTable var="fi" value="#{VFCAMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instances for the period">
                     <f:facet name="header">
                         Flight Crew Scheduling for Period #{startDateString} till #{endDateString}
                     </f:facet>
@@ -48,40 +48,40 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Captain">
-                        <h:outputText value="#{VFCSMB.captainMap[fi]}" />
+                    <p:column headerText="Captain" filterBy="#{VFCAMB.captainMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.captainMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Stand-by Captain">
-                        <h:outputText value="#{VFCSMB.captainSBMap[fi]}" />
+                    <p:column headerText="Stand-by Captain" filterBy="#{VFCAMB.captainSBMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.captainSBMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Pilot">
-                        <h:outputText value="#{VFCSMB.pilotMap[fi]}" />
+                    <p:column headerText="Pilot" filterBy="#{VFCAMB.pilotMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.pilotMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Stand-by Pilot">
-                        <h:outputText value="#{VFCSMB.pilotSBMap[fi]}" />
+                    <p:column headerText="Stand-by Pilot" filterBy="#{VFCAMB.pilotSBMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.pilotSBMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Cabin Crew">
-                        <h:outputText value="#{VFCSMB.cabinMap[fi]}" />
+                    <p:column headerText="Cabin Crew" filterBy="#{VFCAMB.cabinMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.cabinMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Stand-by Cabin Crew">
-                        <h:outputText value="#{VFCSMB.cabinSBMap[fi]}" />
+                    <p:column headerText="Stand-by Cabin Crew" filterBy="#{VFCAMB.cabinSBMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.cabinSBMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Cabin Leader">
-                        <h:outputText value="#{VFCSMB.cabinLeaderMap[fi]}" />
+                    <p:column headerText="Cabin Leader" filterBy="#{VFCAMB.cabinLeaderMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.cabinLeaderMap[fi]}" />
                     </p:column>
 
-                    <p:column headerText="Stand-by Cabin Leader">
-                        <h:outputText value="#{VFCSMB.cabinLeaderSBMap[fi]}" />
+                    <p:column headerText="Stand-by Cabin Leader" filterBy="#{VFCAMB.cabinLeaderSBMap[fi]}" filterMatchMode="contains">
+                        <h:outputText value="#{VFCAMB.cabinLeaderSBMap[fi]}" />
                     </p:column>
 
                     <p:column headerText="View Flight Crew">
-                        <p:commandButton value="View Crew Detail" action="#{VFCSMB.viewFlightCrew(fi)}" />
+                        <p:commandButton value="View Crew Detail" action="#{VFCAMB.viewFlightCrew(fi)}" />
                     </p:column>
 
                 </p:dataTable>

@@ -25,13 +25,13 @@ import javax.ejb.Local;
 @Local
 public interface FlightSchedulingBeanLocal {
 
-    public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString, String sDate, String fDate) throws Exception;
+    public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString, String sDate, String fDate, String depTerminal, String arrTerminal) throws Exception;
 
     public void validateFlightNo(String flightNo) throws Exception;
 
     public List<FlightFrequency> getAllFlightFrequency();
 
-    public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) throws Exception;
+    public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String depTerminal, String arrTerminal) throws Exception;
 
     public List<FlightFrequency> canDeleteFlightFreqList();
 
@@ -42,8 +42,6 @@ public interface FlightSchedulingBeanLocal {
     public List<FlightFrequency> getFlightOfRoute(Route route);
 
     public Aircraft getAircraft(String registrationNo);
-
-    public void setCheckDate(Long id, String sDate, String fDate);
 
     public List<FlightInstance> getUnplannedFlightInstance(Aircraft ac);
 
@@ -61,7 +59,7 @@ public interface FlightSchedulingBeanLocal {
 
     public List<FlightInstance> getUnplannedFiWithinPeriod(Date startDate, Date endDate);
 
-    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception;
+    public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust, String actualDepTime, String actualArrTime, Integer actualDateAdjust, String depGate) throws Exception;
 
     public FlightInstance findFlight(Long flightId);
 
@@ -83,11 +81,12 @@ public interface FlightSchedulingBeanLocal {
 
     public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate);
 
-    public boolean addAcToFi(Aircraft ac, List<Long> fiId);
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId) throws Exception;
 
     public long calPeriodTotalFlightHour(Date startDate, Date endDate);
 
     public long calPeriodTotalMtManHour(Date startDate, Date endDate);
 
+    public void setCheckDate(Long id, String sDate, String fDate) throws Exception;
 
 }

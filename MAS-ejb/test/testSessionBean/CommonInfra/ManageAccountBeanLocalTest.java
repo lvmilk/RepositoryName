@@ -28,7 +28,7 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ManageAccountBeanLocalTest {
 
-    ManageAccountBeanRemote mabl= lookupManageAccountBeanLocal();
+    ManageAccountBeanRemote mabl = lookupManageAccountBeanRemote();
 
     public ManageAccountBeanLocalTest() {
     }
@@ -55,18 +55,42 @@ public class ManageAccountBeanLocalTest {
     @Test
     public void test01ValidateLogin() {
         System.out.println("validateLogin");
-        boolean flag=mabl.validateLogin("admin", "admin", "administrator");
+        boolean flag = mabl.validateLogin("admin", "admin", "administrator");
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test02ValidateLogin_invalid() {
+        System.out.println("validateLogin_invalid scenario");
+        boolean flag = mabl.validateLogin("admins", "admins", "administrator");
+        assertFalse(flag);
+    }
+
+    @Test
+    public void test03AddAdminAndValidateLogin() {
+        System.out.println("test03AddAdminAndValidateLogin");
+        mabl.addAdmin("admin1", "admin1", "administrator");
+        boolean flag = mabl.validateLogin("admin1", "admin1", "administrator");
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test04AddAccountAndValidateLogin() {
+        System.out.println("test04AddAccountAndValidateLogin");
+        mabl.addAccount("O999999","O999999","O999@999.com", "officeStaff","HAO","LI","normal",5000.0);
+        boolean flag = mabl.validateLogin("O999999", "O999999", "officeStaff");
         assertTrue(flag);
     }
     
     @Test
-    public void test02AddAccountAndValidateLogin() {
-        System.out.println("validateLogin");
-        boolean flag=mabl.validateLogin("admin", "admin", "administrator");
+    public void test05AddCocpitAccAndValidateLogin(){
+        System.out.println("test05AddCocpitAccAndValidateLogin");
+        mabl.addCocpitAcc("CP999999","CP999999","CP999@999.com","cockpit","HAO","LI","Captain",10000.0,"A380");
+        boolean flag = mabl.validateLogin("CP999999", "CP999999", "cockpit");
         assertTrue(flag);
     }
 
-    private ManageAccountBeanRemote lookupManageAccountBeanLocal() {
+    private ManageAccountBeanRemote lookupManageAccountBeanRemote() {
         try {
             Context c = new InitialContext();
             return (ManageAccountBeanRemote) c.lookup("java:global/MAS/MAS-ejb/ManageAccountBean!SessionBean.CommonInfra.ManageAccountBeanRemote");

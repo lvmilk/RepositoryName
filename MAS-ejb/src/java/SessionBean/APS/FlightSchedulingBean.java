@@ -42,38 +42,38 @@ import javax.persistence.Query;
  */
 @Stateful
 public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
-
+    
     @PersistenceContext
     EntityManager em;
-
+    
     @EJB
     RoutePlanningBeanLocal rpb;
-
+    
     @EJB
     CrewSchedulingBeanLocal csb;
-
+    
     FlightFrequency flightFreq;
     FlightInstance flightInst;
     Aircraft aircraft;
-
+    
     static String firstInstDate;
     static Boolean flag = true;
     private Calendar cal = new GregorianCalendar();
-
+    
     public FlightSchedulingBean() {
     }
-
+    
     @Override
     public FlightFrequency addFlightFrequency(Route route, String flightNo, String depTimeString, String arrTimeString, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDateString, String endDateString,
-            String sDate, String fDate) throws Exception {
+            String sDate, String fDate, String depTerminal, String arrTerminal) throws Exception {
 //        LocalDate startDate = startDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 //        LocalDate endDate = endDateString.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         checkScheduleTime(depTimeString, arrTimeString, dateAdjust);
         checkOperationDate(startDateString, endDateString);
-
+        
         flightFreq = new FlightFrequency();
-        flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sDate, fDate);
+        flightFreq.create(route, flightNo, depTimeString, arrTimeString, dateAdjust, onMon, onTue, onWed, onThu, onFri, onSat, onSun, startDateString, endDateString, sDate, fDate, depTerminal, arrTerminal);
         em.persist(flightFreq);
         em.flush();
         Route r = em.find(Route.class, route.getId());
@@ -85,9 +85,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.flush();
         return flightFreq;
     }
-
+    
     public void checkScheduleTime(String depTimeString, String arrTimeString, Integer dateAdjust) throws Exception {
-
+        
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         Date dep = formatter.parse(depTimeString);
         System.out.println("fsb.checkScheduleTime(): " + dep);
@@ -99,9 +99,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 throw new Exception("Departure time should before arrival time.");
             }
         }
-
+        
     }
-
+    
     public void checkOperationDate(String startDateString, String endDateString) throws Exception {
         LocalDate startDate = LocalDate.parse(startDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
         LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ofPattern("uuuu-MM-dd"));
@@ -115,9 +115,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if (startDate.isAfter(endDate)) {
             throw new Exception("Start operation date should be before end operation date.");
         }
-
+        
     }
-
+    
     @Override
     public void validateFlightNo(String flightNo) throws Exception {
         Query q1 = em.createQuery("select f from FlightFrequency f where f.flightNo =:flightNo").setParameter("flightNo", flightNo);
@@ -125,7 +125,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             throw new Exception("Flight Number: Flight number " + flightNo + " has already been used.");
         }
     }
-
+    
     @Override
     public List<FlightFrequency> getAllFlightFrequency() {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f");
@@ -137,10 +137,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return flightFreqList;
     }
-
+    
     @Override
     public void editFlightFrequency(String flightNo, String depTime, String arrTime, Integer dateAdjust, boolean onMon, boolean onTue,
-            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate) throws Exception {
+            boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun, String startDate, String endDate, String depTerminal, String arrTerminal) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo").setParameter("flightNo", flightNo);
         flightFreq = (FlightFrequency) q1.getSingleResult();
         checkScheduleTime(depTime, arrTime, dateAdjust);
@@ -157,12 +157,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         flightFreq.setOnSun(onSun);
         flightFreq.setStartDate(startDate);
         flightFreq.setEndDate(endDate);
-
+        flightFreq.setDepTerminal(depTerminal);
+        flightFreq.setArrTerminal(arrTerminal);
+        
         em.merge(flightFreq);
         em.flush();
         System.out.println("fsb.editFlightFrequency(): Flight frequency updated!");
     }
-
+    
     @Override
     public List<FlightFrequency> canDeleteFlightFreqList() {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f");
@@ -179,7 +181,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return fListCopy;
     }
-
+    
     @Override
     public void deleteFlightFreqList(List<FlightFrequency> flightFreqList) {
         for (FlightFrequency f : flightFreqList) {
@@ -188,7 +190,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         em.flush();
     }
-
+    
     @Override
     public List<FlightFrequency> getFlightOfRoute(Route route) {
         Query q2 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.route=:route").setParameter("route", route);
@@ -208,26 +210,26 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Aircraft ac = em.find(Aircraft.class, "9V-000");    //default testing 
         flightInst.setAircraft(ac);
         flightInst.create(flightFrequency, date, flightStatus, estimatedDepTime, estimatedArrTime, estimatedDateAdjust, actualDepTime, actualArrTime, actualDateAdjust);
-
+        
         String standardDepTime = flightFrequency.getScheduleDepTime();
         String standardArrTime = flightFrequency.getScheduleArrTime();
-
+        
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate stdDate = LocalDate.parse(date, dateFormat);
-
+        
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime depTime = LocalTime.parse(standardDepTime, timeFormat);
         LocalTime arrTime = LocalTime.parse(standardArrTime, timeFormat);
-
+        
         LocalDateTime depDateTime = LocalDateTime.of(stdDate, depTime);
         LocalDateTime arrDateTime = LocalDateTime.of(stdDate, arrTime);
-
+        
         DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
+        
         System.out.println("Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
-
+        
         System.out.println("flightSchedulingBean: add flight instance: String type: Combined departure time: " + depDateTime.format(sdf) + " and Combined arrival time: " + arrDateTime.format(sdf));
-
+        
         flightInst.setStandardDepTime(depDateTime.format(sdf));
         flightInst.setStandardArrTime(arrDateTime.format(sdf));
 
@@ -249,10 +251,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.merge(flightInst);
         em.flush();
     }
-
+    
     @Override
     public void editFlightInstance(FlightFrequency flightFrequency, String flightDate, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
-            String actualDepTime, String actualArrTime, Integer actualDateAdjust) throws Exception {
+            String actualDepTime, String actualArrTime, Integer actualDateAdjust, String depGate) throws Exception {
         Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.date =:flightDate");
         q.setParameter("flightDate", flightDate);
         if (q.getResultList().isEmpty()) {
@@ -280,6 +282,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     flightInst.setActualDepTime(actualDepTime);
                     flightInst.setActualArrTime(actualArrTime);
                     flightInst.setActualDateAdjust(actualDateAdjust);
+                    flightInst.setDepGate(depGate);
                     em.merge(flightInst);
                     em.flush();
                 } else {
@@ -292,13 +295,13 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             throw new Exception("Estimated Dates are not valid! Please adjust.");
         }
     }
-
+    
     @Override
     public Aircraft getAircraft(String registrationNo) {
         aircraft = em.find(Aircraft.class, registrationNo);
         return aircraft;
     }
-
+    
     @Override
     public List<FlightInstance> getAllFlightInstance() {
         Query q1 = em.createQuery("SELECT fi FROM FlightInstance fi");
@@ -310,7 +313,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return flightInstList;
     }
-
+    
     @Override
     public List<FlightInstance> getThisFlightInstance(String flightNo) {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
@@ -325,14 +328,20 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return q2.getResultList();
     }
-
+    
     @Override
-    public void setCheckDate(Long id, String sDate, String fDate) {
+    public void setCheckDate(Long id, String sDate, String fDate) throws Exception{
+        
         flightFreq = em.find(FlightFrequency.class, id);
+        if(flightFreq==null){
+            throw new Exception("!!!!!!!!!!!!!!!!!!!Check Date No Frequency");
+        }
+        else{
         flightFreq.setsDate(sDate);
         flightFreq.setfDate(fDate);
     }
-
+    }
+    
     @Override
     public FlightInstance findFlight(String flightNo, String flightDate) throws Exception {
         Query q1 = em.createQuery("SELECT f FROM FlightFrequency f WHERE f.flightNo =:flightNo");
@@ -349,12 +358,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return (FlightInstance) q2.getResultList().get(0);
     }
-
+    
     @Override
     public FlightInstance findFlight(Long flightId) {
         return em.find(FlightInstance.class, flightId);
     }
-
+    
     @Override
     public Aircraft findAircraft(String serialNo) {
         return em.find(Aircraft.class, serialNo);
@@ -367,12 +376,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> flightInstListCopy = new ArrayList<FlightInstance>();
         for (FlightInstance temp : flightInstList) {
 //            System.out.println("FSB: getUnplannedFlightInstance(): tempInfo: " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
-//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
-//            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 1 :" + temp.getAircraft().getRegistrationNo().equals("9V-000"));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (temp.getFlightFrequency().getRoute().getAcType()));
+            System.out.println("FSB: getUnplannedFlightInstance(): Check boolean 2 :" + (ac.getAircraftType()));
+            
             if ((temp.getAircraft().getRegistrationNo().equals("9V-000")) && (temp.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType()))) {
                 System.out.println("FSB： getUnplannedFlightInstance(): ADDED " + temp.getFlightFrequency().getFlightNo() + " " + temp.getDate());
                 flightInstListCopy.add(temp);
-
             }
         }
         System.out.println("FSB: getUnplannedFlightInstance(): return " + flightInstListCopy.toString());
@@ -407,7 +420,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return newFlightInstList;
     }
-
+    
     @Override
     public List<FlightInstance> getAllUnplannedFi() {
         List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
@@ -418,7 +431,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return newFlightInstList;
     }
-
+    
     @Override
     public List<Aircraft> getAllAircraft() {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
@@ -430,7 +443,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return aircraftList;
     }
-
+    
     public List<Aircraft> getAllAircraft(Date startDate, Date endDate) throws Exception {
         Query q1 = em.createQuery("SELECT ac FROM Aircraft ac");
         List<Aircraft> aircraftList = q1.getResultList();
@@ -453,16 +466,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return newList;
     }
-
+    
     public List<FlightInstance> sortFiList(List<FlightInstance> fi) {
         List<FlightInstance> flightTempBeforeSort = fi;
         List<Date> listDates = new ArrayList<>();
         for (FlightInstance fitest : flightTempBeforeSort) {
             listDates.add(fitest.getStandardDepTimeDateType());
         }
-
+        
         Collections.sort(listDates);
-
+        
         List<FlightInstance> flightTemp = new ArrayList();
         for (int k = 0; k < listDates.size(); k++) {
             for (int j = 0; j < flightTempBeforeSort.size(); j++) {
@@ -473,16 +486,16 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return flightTemp;
     }
-
+    
     public List<Maintenance> sortMtList(List<Maintenance> mt) {
         List<Maintenance> mtTempBeforeSort = mt;
         List<Date> listDates2 = new ArrayList<>();
         for (Maintenance mttest : mtTempBeforeSort) {
             listDates2.add(mttest.getStartTime());
         }
-
+        
         Collections.sort(listDates2);
-
+        
         List<Maintenance> mtTemp = new ArrayList();
         for (int k = 0; k < listDates2.size(); k++) {
             for (int j = 0; j < mtTempBeforeSort.size(); j++) {
@@ -493,7 +506,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return mtTemp;
     }
-
+    
     @Override
     public void scheduleAcToFi(Date startDate, Date endDate) throws ParseException, Exception {
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -505,11 +518,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             firstInstDate = df1.format(c.getTime());
             System.out.println("EDIT firstInstDate to " + firstInstDate);
         }
-
+        
         for (Aircraft acTemp : getAllAircraft()) {
             if (!acTemp.getRegistrationNo().equals("9V-000")) {
                 System.out.println("FSB: acTemp is " + acTemp.getRegistrationNo() + " " + acTemp.getAircraftType().getType());
-
+                
                 List<FlightInstance> fiList0 = acTemp.getFlightInstance();
                 fiList0 = sortFiList(fiList0);
                 List<Maintenance> mtList0 = acTemp.getMaintenanceList();
@@ -524,7 +537,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 List<FlightInstance> unplannedFi = getUnplannedFlightInstance(acTemp);
                 AircraftType acTempType = acTemp.getAircraftType();
                 Airport sgAirport = em.find(Airport.class, "SIN");
-
+                
                 unplannedFi = sortFiList(unplannedFi);
 
                 //check whether can add maintenance or not
@@ -546,7 +559,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 boolean scheduleB = true;
                 boolean scheduleC = true;
                 boolean scheduleD = true;
-
+                
                 System.out.println("FSB:Sorted unplannedFi : " + unplannedFi.toString());
                 for (FlightInstance fiTemp : unplannedFi) {
                     long acycleFM = acTemp.getAcycleFM();
@@ -557,7 +570,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     long ccycleFC = acTemp.getCcycleFC();
                     long dcycleFM = acTemp.getDcycleFM();
                     long dcycleFC = acTemp.getDcycleFC();
-
+                    
                     System.out.println("FSB: scheduleAcToFi(): currentTime is " + currentTime.toString());
                     System.out.println("FSB: scheduleAcToFi(): endTime is " + endDate.toString());
                     System.out.println("FSB: scheduleAcToFi(): flightInstance scheduled time is " + df1.parse(fiTemp.getStandardDepTime()).toString());
@@ -675,7 +688,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             System.out.println("FSB.scheduleAcToFi(): add maintenance D Check detail ===" + mtd);
                         }
                     }
-
+                    
                     if (currentTime.after(endDate) || df1.parse(fiTemp.getStandardDepTime()).after(endDate)) {
                         System.out.println("FSB: scheduleAcToFi(): Break! ");
                         break;
@@ -691,7 +704,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         System.out.println("FSB: scheduleAcToFi(): 1 hours later? " + temp.toString());
                         if (temp.before(df1.parse(fiTemp.getStandardDepTime())) && currentAirport.equals(fiTemp.getFlightFrequency().getRoute().getOrigin())) {
                             System.out.println("FSB: ----------> Enter assignment process " + fiTemp.getFlightFrequency().getFlightNo() + " " + fiTemp.getDate());
-
+                            
                             fiTemp.setAircraft(acTemp);
                             currentTime = df1.parse(fiTemp.getStandardArrTime());
                             currentAirport = fiTemp.getFlightFrequency().getRoute().getDest();
@@ -718,7 +731,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                             min += fiMin;
                             acTemp.setDcycleFM(min);
                             System.out.println("========== DCycleFM " + min);
-
+                            
                             long cycleCount = acTemp.getAcycleFC();
                             acTemp.setAcycleFC(++cycleCount);
                             cycleCount = acTemp.getBcycleFC();
@@ -741,7 +754,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             }
         }
     }
-
+    
     @Override
     public boolean addMtToAc(Aircraft act, String obj, Date mtStart, Date mtEnd, Integer manhour) throws Exception {
         Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", act.getRegistrationNo());
@@ -755,14 +768,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             newMt.create(mtStart, mtEnd, manhour, obj);
             newMt.setAircraft(ac);
             System.err.println("FSB: addMtToAc " + "finish creating mt " + newMt.toString());
-
+            
             em.persist(newMt);
             em.flush();
             System.err.println("FSB: addMtToAc " + "mt in database " + newMt.toString());
-
+            
             mtTemp.add(newMt);
             ac.setMaintenanceList(mtTemp);
-
+            
             switch (obj.charAt(0)) {
                 case 'A': {
                     if (!hasMtAfterThis(ac, newMt)) {
@@ -800,7 +813,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return flag1;
     }
-
+    
     public boolean hasMtAfterThis(Aircraft ac, Maintenance mt) {
         boolean has = false;
         List<Maintenance> mtTemp = ac.getMaintenanceList();
@@ -813,7 +826,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return has;
     }
-
+    
     public boolean addAcToFi(Aircraft ac, FlightInstance fi) {
 //        boolean flag = canAssign(ac, fi);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
@@ -829,7 +842,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             List<Maintenance> bmtList = new ArrayList();
             List<Maintenance> cmtList = new ArrayList();
             List<Maintenance> dmtList = new ArrayList();
-
+            
             for (Maintenance mt : mtList) {
                 switch (mt.getObjective().charAt(0)) {
                     case 'A':
@@ -895,7 +908,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 ac.setCcycleFM(min);
                 cycleCount = ac.getCcycleFC();
                 ac.setCcycleFC(++cycleCount);
-
+                
             }
             if (dmtList.isEmpty() || fi.getStandardDepTimeDateType().after(dmtLast)) {
                 min = ac.getDcycleFM();
@@ -904,11 +917,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 cycleCount = ac.getDcycleFC();
                 ac.setDcycleFC(++cycleCount);
             }
-
+            
             flightTemp = sortFiList(flightTemp);
             Date lastFiEnd = (flightTemp.size() > 0) ? flightTemp.get(flightTemp.size() - 1).getStandardArrTimeDateType() : Calendar.getInstance().getTime();
             Date lastLastFiEnd = (lastFiEnd.before(fi.getStandardArrTimeDateType())) ? fi.getStandardArrTimeDateType() : lastFiEnd;
-
+            
             fi.setAircraft(ac);
             em.merge(fi);
             em.merge(ac);
@@ -917,16 +930,19 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return flag;
     }
-
+    
     @Override
-    public boolean addAcToFi(Aircraft ac, List<Long> fiId) {
-        boolean flag = canAssign(ac, fiId);
+    public boolean addAcToFi(Aircraft ac, List<Long> fiId) throws Exception {
+        System.out.println(" IMPTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTESTING " + fiId.get(0).getClass().getSimpleName());
+        String flag = canAssign(ac, fiId);
         List<FlightInstance> flightTemp = ac.getFlightInstance();
         System.out.println("FSB: addAcToFi ");
         System.out.println("FSB: addAcToFi " + flag);
-        if (flag) {
+        
+        if (flag.equalsIgnoreCase("canAssign")) {
             List<FlightInstance> fiToAdd = new ArrayList<>();
             for (Long id : fiId) {
+                
                 FlightInstance f1 = em.find(FlightInstance.class, id);
                 fiToAdd.add(f1);
                 flightTemp.add(f1);
@@ -941,7 +957,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             List<Maintenance> bmtList = new ArrayList();
             List<Maintenance> cmtList = new ArrayList();
             List<Maintenance> dmtList = new ArrayList();
-
+            
             for (Maintenance mt : mtList) {
                 switch (mt.getObjective().charAt(0)) {
                     case 'A':
@@ -984,7 +1000,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (!dmtList.isEmpty()) {
                 dmtLast = mtList.get(dmtList.size() - 1).getStartTime();
             }
-
+            
             long fiMinA = 0;
             long fiMinB = 0;
             long fiMinC = 0;
@@ -993,7 +1009,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             long cyclePlusB = 0;
             long cyclePlusC = 0;
             long cyclePlusD = 0;
-
+            
             for (FlightInstance f1 : fiToAdd) {
                 FlightFrequency ff1 = f1.getFlightFrequency();
                 if (f1.getStandardDepTimeDateType().after(amtLast)) {
@@ -1013,38 +1029,38 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     ++cyclePlusD;
                 }
             }
-
+            
             long min = 0;
             long cycleCount = 0;
-
+            
             min = ac.getAcycleFM();
             min += fiMinA;
             ac.setAcycleFM(min);
             cycleCount = ac.getAcycleFC();
             cycleCount += cyclePlusA;
             ac.setAcycleFC(cycleCount);
-
+            
             min = ac.getBcycleFM();
             min += fiMinB;
             ac.setBcycleFM(min);
             cycleCount = ac.getBcycleFC();
             cycleCount += cyclePlusB;
             ac.setBcycleFC(cycleCount);
-
+            
             min = ac.getCcycleFM();
             min += fiMinC;
             ac.setCcycleFM(min);
             cycleCount = ac.getCcycleFC();
             cycleCount += cyclePlusC;
             ac.setCcycleFC(cycleCount);
-
+            
             min = ac.getDcycleFM();
             min += fiMinD;
             ac.setDcycleFM(min);
             cycleCount = ac.getDcycleFC();
             cycleCount += cyclePlusD;
             ac.setDcycleFC(cycleCount);
-
+            
             for (FlightInstance fi : fiToAdd) {
                 fi.setAircraft(ac);
                 em.merge(fi);
@@ -1052,10 +1068,12 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             em.merge(ac);
             System.out.print("FSB: addToFi finished!");
             em.flush();
+        } else {
+            throw new Exception(flag);
         }
-        return flag;
+        return true;
     }
-
+    
     public boolean canAssignMt(Aircraft ac, String obj, Date startTime, Date endTime) throws Exception {
         boolean canAssign = false;
         boolean canAssignMt = false;
@@ -1064,14 +1082,14 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Airport sgAirport = em.find(Airport.class, "SIN");
         List<FlightInstance> flightTemp = this.sortFiList(flightTempBeforeSort);
         List<Maintenance> mtTemp = this.sortMtList(mtTempBeforeSort);
-
+        
         for (FlightInstance f : flightTemp) {
             System.err.println("CHECK AFTER SORTING *************************************** " + f.getStandardDepTimeDateType() + " ~~~ " + f.getStandardArrTimeDateType());
         }
-
+        
         boolean isAC = (obj.charAt(0) == 'A');
         System.err.println("canAssignMt(): is A check ? " + isAC);
-
+        
         Date startCheck = startTime;
         Date endCheck = endTime;
         cal.setTime(startCheck);
@@ -1106,7 +1124,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (startCheck.after(mtTemp.get(mtTemp.size() - 1).getEndTime())) {
                 canAssignMt = true;
                 System.err.println("********************************* canAssignMt(): pass in CHECK 5");
-
+                
             }
         }
 
@@ -1115,20 +1133,20 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (isAC || ac.getCurrentAirport().equals("SIN")) {
                 canAssign = true;
                 System.err.println("********************************* canAssignMt(): pass in CHECK 6");
-
+                
             }
         } else if (flightTemp.size() == 1) {
             if (((isAC || flightTemp.get(0).getFlightFrequency().getRoute().getOrigin().getIATA().equals("SIN")) && endCheck.before(flightTemp.get(0).getStandardDepTimeDateType()))
                     || (isAC || flightTemp.get(0).getFlightFrequency().getRoute().getDest().getIATA().equals("SIN")) && startCheck.after(flightTemp.get(0).getStandardArrTimeDateType())) {
                 canAssign = true;
                 System.err.println("********************************* canAssignMt(): pass in CHECK 7");
-
+                
             }
         } else {
             if (endCheck.before(flightTemp.get(0).getStandardDepTimeDateType()) && (isAC || ac.getCurrentAirport().equals("SIN"))) {
                 canAssign = true;
                 System.err.println("********************************* canAssignMt(): pass in CHECK 8");
-
+                
             }
             for (int i = 0; i < flightTemp.size() - 2; i++) {
                 FlightInstance f1 = flightTemp.get(i);
@@ -1140,30 +1158,31 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         System.err.println("************ check next inst dep time " + f2.getStandardDepTimeDateType());
                         canAssign = true;
                         System.err.println("********************************* canAssignMt(): pass in CHECK 9");
-
+                        
                     }
                 }
             }
             if (startCheck.after(flightTemp.get(flightTemp.size() - 1).getStandardArrTimeDateType()) && (isAC || flightTemp.get(flightTemp.size() - 1).getFlightFrequency().getRoute().getDest().getIATA().equals("SIN"))) {
                 canAssignMt = true;
                 System.err.println("********************************* canAssignMt(): pass in CHECK 10");
-
+                
             }
         }
-
+        
         return (canAssign && canAssignMt);
     }
-
-    public boolean canAssign(Aircraft ac, List<Long> fiId) {
+    
+    public String canAssign(Aircraft ac, List<Long> fiId) {
 //        boolean canAssign = false;
 //        boolean canAssign2 = false;
 //        boolean canAssignMt = false;
 
         List<FlightInstance> fiTempBeforeSort = ac.getFlightInstance();
         List<FlightInstance> flightTemp = this.sortFiList(fiTempBeforeSort);
+        System.out.println(flightTemp);
         List<Maintenance> mtTempBeforeSort = ac.getMaintenanceList();
         List<Maintenance> mtTemp = this.sortMtList(mtTempBeforeSort);
-
+        
         List<FlightInstance> fiToAdd = new ArrayList<>();
         for (Long id : fiId) {
             FlightInstance f1 = em.find(FlightInstance.class, id);
@@ -1177,7 +1196,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         for (int i = 0; i < fiToAdd.size() - 1; i++) {
             FlightInstance f1 = fiToAdd.get(i);
             FlightInstance f2 = fiToAdd.get(i + 1);
-
+            
             Date depCheck = f1.getStandardDepTimeDateType();
             Date arrCheck = f1.getStandardArrTimeDateType();
             cal.setTime(depCheck);
@@ -1194,16 +1213,19 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             cal.setTime(arrCheck2);
             cal.add(Calendar.HOUR, 1);
             arrCheck2 = cal.getTime();
-
+            
             if (depCheck.after(depCheck2) && depCheck.before(arrCheck2) || depCheck2.after(depCheck) && depCheck2.before(arrCheck)) {
                 System.out.println("FIRST CHECK ***********************************");
                 System.out.println("Cannot assign 01: overlapping time of selected tasks");
-                return false;
+                return "Cannot assign : overlapping time of selected tasks";
             }
         }
 
         // check 2: if these flights has existing tasks in between
-        List<FlightInstance> fiListAdd = flightTemp;
+        List<FlightInstance> fiListAdd = new ArrayList<>();
+        for (FlightInstance f : flightTemp) {
+            fiListAdd.add(f);
+        }
         for (FlightInstance f1 : fiToAdd) {
             fiListAdd.add(f1);
         }
@@ -1213,7 +1235,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         if ((findLast - findFirst) != (fiToAdd.size() - 1)) {
             System.out.println("FIRST CHECK ***********************************");
             System.out.println("Cannot assign 02: selected flights are not consecutive (have existing flights inbetween).");
-            return false;
+            return "Cannot assign : selected flights are not consecutive (have existing flights inbetween).";
         }
 
         // by location
@@ -1227,7 +1249,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             if (!arr1.equals(dep2)) {
                 System.out.println("FIRST CHECK ***********************************");
                 System.out.println("Cannot assign 03: non-connecting location of selected tasks");
-                return false;
+                return "Cannot assign : non-connecting location of selected tasks";
             }
         }
 
@@ -1248,6 +1270,10 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         cal.setTime(arrCheck2);
         cal.add(Calendar.HOUR, 1);
         arrCheck2 = cal.getTime();
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: depCheck " + depCheck);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: arrCheck " + arrCheck);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: depCheck2 " + depCheck2);
+        System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: arrCheck2 " + arrCheck2);
 
         // check maintenance
         List<Maintenance> checkMt = new ArrayList<>();
@@ -1264,7 +1290,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             for (int i = 0; i < checkMt.size(); i++) {
                 Date st = checkMt.get(i).getStartTime();
                 Date nd = checkMt.get(i).getEndTime();
-                for (int j = 0; i < fiToAdd.size(); j++) {
+                for (int j = 0; j < fiToAdd.size(); j++) {
                     Date fiSt = fiToAdd.get(j).getStandardDepTimeDateType();
                     Date fiNd = fiToAdd.get(j).getStandardArrTimeDateType();
                     cal.setTime(fiSt);
@@ -1279,7 +1305,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                     if (st.after(fiSt) && st.before(fiNd) || nd.after(fiSt) && nd.before(fiNd)) {
                         System.out.println("SECOND CHECK ***********************************");
                         System.out.println("Cannot assign 04: has maintenance inbetween these flights");
-                        return false;
+                        return "Cannot assign : has maintenance during these flights";
+                        
                     }
                 }
             }
@@ -1301,8 +1328,9 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                         fiBefMt = this.sortFiList(fiBefMt);
                         if (!fiBefMt.get(fiBefMt.size() - 1).getFlightFrequency().getRoute().getDest().getIATA().equalsIgnoreCase("SIN")) {
                             System.out.println("SECOND CHECK ***********************************");
-                            System.out.println("Cannot assign 05: flight instance change the location of existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime());
-                            return false;
+                            System.out.println("Cannot assign 05: flight instance change the location of an existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime());
+                            return "Cannot assign : flight instance change the location of an existing maintenance " + checkMt.get(i).getObjective() + " from " + checkMt.get(i).getStartTime() + " to " + checkMt.get(i).getEndTime();
+                            
                         }
                     }
                 }
@@ -1314,19 +1342,27 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         for (FlightInstance f1 : fiToAdd) {
             if (!f1.getFlightFrequency().getRoute().getAcType().equals(ac.getAircraftType())) {
                 System.out.println("THIRD CHECK ***********************************");
-                System.out.println("Cannot assign 06: aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type flight task " + f1.getFlightFrequency().getFlightNo());
-                return false;
+                System.out.println("Cannot assign 06: aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type for flight task " + f1.getFlightFrequency().getFlightNo());
+                return "Cannot assign : aircraft " + ac.getRegistrationNo() + " / " + ac.getAircraftType().getType() + " does not have suitable aircraft type for flight task " + f1.getFlightFrequency().getFlightNo();
             }
         }
 
         // check time
+        System.out.println("AAAAAAAAA  --  " + flightTemp);
         for (FlightInstance f1 : flightTemp) {
             Date dep1 = f1.getStandardDepTimeDateType();
             Date arr1 = f1.getStandardArrTimeDateType();
-            if (dep1.after(depCheck2) && arr1.before(arrCheck2) || arr1.before(arrCheck) && arr1.after(depCheck)) {
+            
+            if ((dep1.after(depCheck) && dep1.before(arrCheck2)) || (arr1.before(arrCheck2) && arr1.after(depCheck))) {
                 System.out.println("THIRD CHECK ***********************************");
-                System.out.println("Cannot assign 07: selected tasks have time conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                System.out.println("THIRD CHECK *********************************** dep 1 " + f1.getStandardDepTimeDateType());
+                System.out.println("THIRD CHECK *********************************** arr 1 " + f1.getStandardArrTimeDateType());
+                
+                System.out.println("THIRD CHECK *********************************** boolean 1 " + (dep1.after(depCheck) && dep1.before(arrCheck2)));
+                System.out.println("THIRD CHECK *********************************** boolean 2 " + (arr1.before(arrCheck2) && arr1.after(depCheck)));
+                
+                System.out.println("Cannot assign 07: selected tasks have time conflict with existing flight " + f1 + " for " + ac.getRegistrationNo());
+                return "Cannot assign : selected tasks have time conflict with existing flight " + f1 + " for " + ac.getRegistrationNo();
             }
         }
 
@@ -1342,25 +1378,25 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         fiBefore = this.sortFiList(fiBefore);
         fiAfter = this.sortFiList(fiAfter);
-
+        
         if (!fiBefore.isEmpty()) {
             if (!fiBefore.get(fiBefore.size() - 1).getFlightFrequency().getRoute().getDest().equals(fiToAdd.get(0).getFlightFrequency().getRoute().getOrigin())) {
                 System.out.println("THIRD CHECK ***********************************");
                 System.out.println("Cannot assign 08: selected tasks have location conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                return "Cannot assign : selected tasks have location conflict with existing flights for " + ac.getRegistrationNo();
             }
         }
-
+        
         if (!fiAfter.isEmpty()) {
             if (!fiAfter.get(0).getFlightFrequency().getRoute().getOrigin().equals(fiToAdd.get(fiToAdd.size() - 1).getFlightFrequency().getRoute().getDest())) {
                 System.out.println("THIRD CHECK ***********************************");
                 System.out.println("Cannot assign 09: selected tasks have location conflict with existing flights for " + ac.getRegistrationNo());
-                return false;
+                return "Cannot assign : selected tasks have location conflict with existing flights for " + ac.getRegistrationNo();
             }
         }
-        return true;
+        return "canAssign";
     }
-
+    
     public boolean canAssign(Aircraft ac, FlightInstance fi, FlightInstance fiSec) {
         boolean canAssign = false;
         boolean canAssignMt = false;
@@ -1373,7 +1409,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("canAssign: CHECK 2 " + flightTemp.size());
         List<Maintenance> mtTempBeforeSort = ac.getMaintenanceList();
         List<Maintenance> mtTemp = this.sortMtList(mtTempBeforeSort);
-
+        
         Date depCheck = fi.getStandardDepTimeDateType();
         Date arrCheck = fi.getStandardArrTimeDateType();
         cal.setTime(depCheck);
@@ -1389,28 +1425,28 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         depCheck2 = cal.getTime();
         cal.setTime(arrCheck2);
         cal.add(Calendar.HOUR, 1);
-
+        
         if (depCheck.after(depCheck2) && depCheck.before(arrCheck2) || depCheck2.after(depCheck) && depCheck2.before(arrCheck)) {
             System.out.println("FIRST CHECK ***********************************");
             System.out.println("Cannot assign : overlapping time of selected tasks");
             return false;
         }
-
+        
         FlightInstance first = (depCheck.before(depCheck2)) ? fi : fiSec;
         FlightInstance sec = (depCheck.before(depCheck2)) ? fiSec : fi;
         fi = first;
         fiSec = sec;
-
+        
         String dep1 = fi.getFlightFrequency().getRoute().getOrigin().getIATA();
         String arr1 = fi.getFlightFrequency().getRoute().getDest().getIATA();
         String dep2 = fiSec.getFlightFrequency().getRoute().getOrigin().getIATA();
         String arr2 = fi.getFlightFrequency().getRoute().getDest().getIATA();
-
+        
         List<FlightInstance> fiListAdd = flightTemp;
         fiListAdd.add(fi);
         fiListAdd.add(fiSec);
         fiListAdd = this.sortFiList(fiListAdd);
-
+        
         if ((fiListAdd.indexOf(fiSec) - fiListAdd.indexOf(fi)) == 1) {
             if (!arr1.equalsIgnoreCase(dep2)) {
                 System.out.println("FIRST CHECK ***********************************");
@@ -1496,7 +1532,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 canAssignMt3 = true;
             }
         }
-
+        
         if (flightTemp.isEmpty()) {
             if (ac.getAircraftType().equals(fi.getFlightFrequency().getRoute().getAcType()) && ac.getCurrentAirport().equals(fi.getFlightFrequency().getRoute().getOrigin().getIATA())) {
                 canAssign = true;
@@ -1505,7 +1541,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         } else if (flightTemp.size() != 1) {
             System.out.println("canAssign: CHECK 3");
             List<FlightInstance> newList = this.sortFiList(flightTemp);
-
+            
             System.out.println("flightTemp after Sort:" + newList.toString());
             System.out.println("canAssign: CHECK 4");
             depCheck = new Date();
@@ -1557,11 +1593,11 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
                 canAssign = true;
                 System.out.println("canAssign: CHECK 6 >>>>>>>>>>>>Check Fi>>>>>>>>>>>>>>>>>>>>>>>Can assign!");
             }
-
+            
         }
         return (canAssign && canAssignMt);
     }
-
+    
     @Override
     public void deleteAcFromFi(Aircraft ac, FlightInstance fi) {
         List<FlightInstance> flightTemp = ac.getFlightInstance();
@@ -1571,7 +1607,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<Maintenance> bmtList = new ArrayList();
         List<Maintenance> cmtList = new ArrayList();
         List<Maintenance> dmtList = new ArrayList();
-
+        
         for (Maintenance mt : mtList) {
             switch (mt.getObjective().charAt(0)) {
                 case 'A':
@@ -1637,7 +1673,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             ac.setCcycleFM(min);
             cycleCount = ac.getCcycleFC();
             ac.setCcycleFC(--cycleCount);
-
+            
         }
         if (dmtList.isEmpty() || fi.getStandardDepTimeDateType().after(dmtLast)) {
             min = ac.getDcycleFM();
@@ -1646,7 +1682,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             cycleCount = ac.getDcycleFC();
             ac.setDcycleFC(--cycleCount);
         }
-
+        
         flightTemp.remove(fi);
         ac.setFlightInstance(flightTemp);
         Aircraft acTemp = em.find(Aircraft.class, "9V-000");
@@ -1655,7 +1691,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.merge(ac);
         em.flush();
     }
-
+    
     @Override
     public void deleteMtFromAc(Aircraft ac, Maintenance mt) {
         Query q1 = em.createQuery("SELECT a FROM Maintenance a where a.id=:id").setParameter("id", mt.getId());
@@ -1667,7 +1703,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         em.merge(ac);
         em.flush();
     }
-
+    
     @Override
     public List<FlightInstance> getUnassignedFlight() {
         Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:default").setParameter("default", "9V-000");
@@ -1675,7 +1711,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Query q2 = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft=:default").setParameter("default", a);
         return (List<FlightInstance>) q2.getResultList();
     }
-
+    
     public void setFirstInstDate() throws ParseException {
         System.out.println("FSB: setFirstInstDate for the first time!!!");
         List<FlightInstance> fiList = new ArrayList<FlightInstance>();
@@ -1690,7 +1726,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         firstInstDate = df1.format(c.getTime());
         System.out.println("FSB: firstInstDate: " + firstInstDate);
     }
-
+    
     @Override
     public String getFirstInstDate() {
         System.out.println("FSB: Flag: " + flag);
@@ -1706,7 +1742,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return firstInstDate;
     }
-
+    
     @Override
     public FlightInstance getDummyFi(String outOrIn) {
         if (outOrIn.equals("outbound")) {
@@ -1717,7 +1753,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
             return (FlightInstance) q1.getSingleResult();
         }
     }
-
+    
     @Override
     public long getFlightAccumMinute(FlightFrequency ff) {
         LocalTime depTime = LocalTime.parse(ff.getScheduleDepTime(), DateTimeFormatter.ofPattern("HH:mm"));
@@ -1732,7 +1768,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("fsb.getFlightAccumHour(): flight elapsed minute is : " + diffInMinutes);
         return diffInMinutes;
     }
-
+    
     @Override
     public List<FlightInstance> getSortedFiWithinPeriod(Date startDate, Date endDate) {
         List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
@@ -1745,7 +1781,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return sortFiList(newFlightInstList);
     }
-
+    
     public List<FlightInstance> getAllFiWithinPeriod(Date startDate, Date endDate) {
         List<FlightInstance> newFlightInstList = new ArrayList<FlightInstance>();
         for (FlightInstance temp : this.getAllFlightInstance()) {
@@ -1757,7 +1793,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return newFlightInstList;
     }
-
+    
     public List<Maintenance> getAllMtWithinPeriod(Date startDate, Date endDate) {
         List<Maintenance> newMtList = new ArrayList<Maintenance>();
         Query q1 = em.createQuery("SELECT a FROM Maintenance a");
@@ -1771,7 +1807,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         }
         return newMtList;
     }
-
+    
     @Override
     public long calPeriodTotalFlightHour(Date startDate, Date endDate) {
         long totalMin = 0;
@@ -1781,7 +1817,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("FSB.calPeriodTotalFlightHour() : total flight hour from " + startDate + " to " + endDate + " is " + totalMin / 60);
         return totalMin / 60;
     }
-
+    
     @Override
     public long calPeriodTotalMtManHour(Date startDate, Date endDate) {
         long totalHr = 0;
@@ -1791,5 +1827,5 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         System.out.println("FSB.calPeriodTotalMtHour() : total maintenance hour from " + startDate + " to " + endDate + " is " + totalHr);
         return totalHr;
     }
-
+    
 }

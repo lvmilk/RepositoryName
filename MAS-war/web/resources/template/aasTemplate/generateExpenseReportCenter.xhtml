@@ -15,13 +15,13 @@
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
 
                     <p:outputLabel for="year" value="Year : " />
-                    <p:selectOneMenu id="year" value="#{RMB.year}" style="width:200px">
+                    <p:selectOneMenu id="year" value="#{EMB.expenseYear}" style="width:200px">
                         <f:selectItem itemLabel="Select Year" itemValue="" noSelectionOption="true" />
-                        <f:selectItems value="#{RMB.yearList}" />
+                        <f:selectItems value="#{EMB.yearList}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="quarter" value="Quarter : " />
-                    <p:selectOneMenu id="quarter" value="#{RMB.quarter}" style="width:200px">
+                    <p:selectOneMenu id="quarter" value="#{EMB.expenseQuarter}" style="width:200px">
                         <f:selectItem itemLabel="Select Quarter" itemValue="0" noSelectionOption="true" />
                         <f:selectItem itemValue="1" itemLabel="Quarter 1 (Jan-Mar)" />
                         <f:selectItem itemValue="2" itemLabel="Quarter 2 (Apr-Jun)" />

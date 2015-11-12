@@ -42,10 +42,11 @@
                     </p:inputText>
                     <p:message for="cpLastName" display="icon" />
 
-                    <p:outputLabel for="cpStfLevel" value="Role/Level: " />
-                    <p:inputText id="cpStfLevel" value="#{etManagedBean.stfLevel}" validatorMessage="Please enter staff level or role" required="true" label="StaffLevel" size="10">
-
-                    </p:inputText>
+                    <p:outputLabel for="cpStfLevel" value="Cockpit Crew Level: " />
+                    <p:selectOneRadio id="cpStfLevel" value="#{etManagedBean.stfLevel}" required="true" requiredMessage="Please select staff level">
+                        <f:selectItem itemLabel="Pilot" itemValue="Pilot" />
+                        <f:selectItem itemLabel="Captain" itemValue="Captain" />
+                    </p:selectOneRadio>
                     <p:message for="cpStfLevel" display="icon" />
 
                     <p:outputLabel for="cpSalary" value="Salary: " />
