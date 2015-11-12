@@ -60,16 +60,16 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
     private Date localArrTime;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
-    @JoinTable(name="flightinstance_cabincrew")
+    @JoinTable(name = "flightinstance_cabincrew")
     private List<CabinCrew> cabinList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
-    @JoinTable(name="flightinstance_cockpitcrew")
+    @JoinTable(name = "flightinstance_cockpitcrew")
     private List<CockpitCrew> cockpitList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
-    @JoinTable(name="flightinstance_cabincrewstandby")
+    @JoinTable(name = "flightinstance_cabincrewstandby")
     private List<CabinCrew> cabinStandByList;
     @ManyToMany(cascade = {CascadeType.PERSIST})
-    @JoinTable(name="flightinstance_cockpitcrewstandby")
+    @JoinTable(name = "flightinstance_cockpitcrewstandby")
     private List<CockpitCrew> cockpitStandByList;
 
     @ManyToOne
@@ -95,6 +95,8 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
         this.actualDepTime = actualDepTime;
         this.actualArrTime = actualArrTime;
         this.actualDateAdjust = actualDateAdjust;
+        this.setLocalDepTime(getLocalDepTime());
+        this.setLocalArrTime(getLocalArrTime());
     }
 
     public Long getId() {

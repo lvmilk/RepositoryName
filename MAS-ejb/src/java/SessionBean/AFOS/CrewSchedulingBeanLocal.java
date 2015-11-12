@@ -5,6 +5,7 @@
  */
 package SessionBean.AFOS;
 
+import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
 import java.text.ParseException;
@@ -44,5 +45,9 @@ public interface CrewSchedulingBeanLocal {
     public Double calCabinCrewTotalHourPay(Date startDate, Date endDate);
 
     public Double calCabinLeaderTotalHourPay(Date startDate, Date endDate);
+
+    public List<FlightInstance> getCockpitCrewFlightForPeriod(CockpitCrew cp, Date startDate, Date endDate);
+
+    public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate);
 
 }
