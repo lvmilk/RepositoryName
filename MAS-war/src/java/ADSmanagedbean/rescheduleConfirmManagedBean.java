@@ -145,7 +145,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
         }
 

@@ -64,7 +64,7 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice) {
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
@@ -89,7 +89,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
         setupTicket_BookInstance(BookClassInstanceList, tickets);
 
-        Payment payment = makeRsvPayment(rsv, psgCount, totalPrice);
+        Payment payment = makeRsvPayment(rsv, psgCount, totalPrice, action);
 
     }
 
@@ -97,7 +97,7 @@ public class PassengerBean implements PassengerBeanLocal {
         for (int i = 0; i < BookClassInstanceList.size(); i++) {
             BookingClassInstance bcInstance = em.find(BookingClassInstance.class, BookClassInstanceList.get(i).getId());
             em.refresh(bcInstance);
-            for (int j = 0; j< tickets.size(); j++) {
+            for (int j = 0; j < tickets.size(); j++) {
                 if (tickets.get(j).getArrCity().equals(bcInstance.getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDest().getCityName())
                         && tickets.get(j).getDepCity().equals(bcInstance.getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getOrigin().getCityName())) {
                     Ticket ticket = em.find(Ticket.class, tickets.get(j).getTicketID());
@@ -111,23 +111,32 @@ public class PassengerBean implements PassengerBeanLocal {
         }
         em.flush();
     }
-    
-    
 
-    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice) {
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action) {
 
-        for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
-            totalPrice += rsv.getBkcInstance().get(i).getPrice();
+        if (action.equals("rebook")) {
+            Payment payment = new Payment();
+            payment.createPayment(totalPrice);
+            rsv = em.find(Reservation.class, rsv.getId());
+            payment.setReservation(rsv);
+            rsv.setPayment(payment);
+            em.persist(payment);
+            em.merge(rsv);
+            return payment;
+        } else {
+            for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
+                totalPrice += rsv.getBkcInstance().get(i).getPrice();
+            }
+            totalPrice *= psgCount;
+            Payment payment = new Payment();
+            payment.createPayment(totalPrice);
+            rsv = em.find(Reservation.class, rsv.getId());
+            payment.setReservation(rsv);
+            rsv.setPayment(payment);
+            em.persist(payment);
+            em.merge(rsv);
+            return payment;
         }
-        totalPrice *= psgCount;
-        Payment payment = new Payment();
-        payment.createPayment(totalPrice);
-        rsv = em.find(Reservation.class, rsv.getId());
-        payment.setReservation(rsv);
-        rsv.setPayment(payment);
-        em.persist(payment);
-        em.merge(rsv);
-        return payment;
     }
 
     public void setupTicket_Reservation(Reservation rsv, ArrayList<Ticket> tickets) {
