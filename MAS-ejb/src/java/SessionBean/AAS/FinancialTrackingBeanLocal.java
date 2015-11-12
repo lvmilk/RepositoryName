@@ -25,8 +25,8 @@ public interface FinancialTrackingBeanLocal {
 
     public List<Expense> getExpenseList(long year, String quarter);
 
-    public List<Expense> getAllExpense(String type);
-
     public Double calculateExpense(String category, long year, String quarter);
+
+    public Double calculateNoDateExpense(String category, long year, String quarter);
     
 }

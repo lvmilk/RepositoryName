@@ -395,6 +395,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         em.flush();
         ////////////
         String string = deliveryDate;
+        Integer yearDiff = aircraft.getYearDiff();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date purchaseDate = format.parse(string);
         expense = new Expense();
@@ -408,7 +409,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         expense = new Expense();
         expense.setCategory("Depreciation");
         expense.setType("Sunk Cost");
-        Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+        Double depreciation = 0.7 * purchaseCost / yearDiff;         //depreciation per annum... residual value=0.3*purchase cost
         expense.setPayable(depreciation);
         expense.setCostSource(registrationNo);
         em.persist(expense);
@@ -441,10 +442,12 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         aircraft.setAircraftType(aircraftType);
         em.merge(aircraft);
         em.flush();
+        Integer start = Integer.parseInt(deliveryDate.substring(0, 4));
+        Integer end = Integer.parseInt(retireDate.substring(0, 4));
+        Integer yearDiff = end - start;
         Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:registrationNo");
         q.setParameter("registrationNo", registrationNo);
-        if (q.getResultList()
-                .isEmpty()) {
+        if (q.getResultList().isEmpty()) {
             throw new Exception("No aircraft related to this expense.");
         } else {
             for (int i = 0; i < q.getResultList().size(); i++) {
@@ -454,7 +457,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                     expense.setCostSource(registrationNo);
                 }
                 if (expense.getCategory().equals("Depreciation")) {
-                    Double depreciation = 0.8 * purchaseCost / 25;         //depreciation per annum
+                    Double depreciation = 0.7 * purchaseCost / yearDiff;         //depreciation per annum, residual value = 0.3*purchase cost
                     expense.setPayable(depreciation);
                     expense.setCostSource(registrationNo);
                 }
