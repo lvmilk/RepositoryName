@@ -399,6 +399,8 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
         // arrange stand-by crew
         for (FlightInstance fi : fiList) {
+            System.out.println(" SBSBSBSB (A-A)^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** schedule crew for flight instance " + fi);
+
             AircraftType act = fi.getFlightFrequency().getRoute().getAcType();
             long fiMin = fsb.getFlightAccumMinute(fi.getFlightFrequency());
 
@@ -542,6 +544,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
             for (CabinCrew cc : idleCabinLeader) {
                 if (fiCabinLeader >= 2) {
+                    System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader " + fiCabinLeader);
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
@@ -588,6 +591,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                         em.merge(ccInDB);
                                         em.flush();
                                         fiCabinLeader++;
+                                        System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader " + fiCabinLeader);
                                     }
                                 }
                             }
@@ -598,10 +602,11 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
             for (CabinCrew cc : idleCabin) {
                 if (fiCabin >= 2) {
+                    System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabin " + fiCabin);
                     break;
                 } else {
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Leader"));
+                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Crew"));
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getFirstSB() " + cc.getFirstSB());
                     System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getSecondSB() " + cc.getSecondSB());
                     if (!fi.getCabinStandByList().contains(cc)) {
@@ -614,10 +619,10 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                         List<CabinCrew> ccs = fiInDB.getCabinStandByList();
                                         List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
 
-                                        // get number of pilot in the fi standby list
+                                        // get number of cabin leader in the fi standby list
                                         Integer ccSBNum = 0;
                                         for (CabinCrew cc1 : ccs) {
-                                            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
+                                            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Crew")) {
                                                 ++ccSBNum;
                                             }
                                         }
@@ -644,6 +649,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                         em.merge(ccInDB);
                                         em.flush();
                                         fiCabin++;
+                                        System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabin " + fiCabin);
                                     }
                                 }
                             }
@@ -655,14 +661,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
         // reset monthly counter
         for (CabinCrew cc : getAllCabinCrew()) {
-            cc.setFirstSB(0);
-            cc.setSecondSB(0);
+//            cc.setFirstSB(0);
+//            cc.setSecondSB(0);
             cc.setWeekAccumMin(0);
             cc.setMonthAccumMin(0);
         }
         for (CockpitCrew cc : getAllCockpitCrew()) {
-            cc.setFirstSB(0);
-            cc.setSecondSB(0);
+//            cc.setFirstSB(0);
+//            cc.setSecondSB(0);
             cc.setWeekAccumMin(0);
             cc.setMonthAccumMin(0);
         }
@@ -1014,37 +1020,28 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return totalHr;
     }
 
-//    public long calCaptainTotalFHForPeriod(Date startDate, Date endDate) {
-//        long totalHr = 0;
-//        for (CockpitCrew cp : csb.getAllCaptain()) {
-//            totalHr += calCockpitTotalFlightHour(cp, startDate, endDate);
-//        }
-//        return totalHr;
-//    }
-//
-//
-//    public long calPilotTotalFHForPeriod(Date startDate, Date endDate) {
-//        long totalHr = 0;
-//        for (CockpitCrew cp : csb.getAllPilot()) {
-//            totalHr += calCockpitTotalFlightHour(cp, startDate, endDate);
-//        }
-//        return totalHr;
-//    }
-//
-//    public long calCabinCrewTotalFHForPeriod(Date startDate, Date endDate) {
-//        long totalHr = 0;
-//        for (CabinCrew cc : csb.getAllCabin()) {
-//            totalHr += calCabinTotalFlightHour(cc, startDate, endDate);
-//        }
-//        return totalHr;
-//    }
-//
-//    public long calCabinLeaderTotalFHForPeriod(Date startDate, Date endDate) {
-//        long totalHr = 0;
-//        for (CabinCrew cc : csb.getAllCabinLeader()) {
-//            totalHr += calCabinTotalFlightHour(cc, startDate, endDate);
-//        }
-//        return totalHr;
-//    }
+    @Override
+    public List<FlightInstance> getCockpitCrewFlightForPeriod(CockpitCrew cp, Date startDate, Date endDate) {
+        List<FlightInstance> fiList = cp.getFiList();
+        List<FlightInstance> fiNew = new ArrayList<>();
+        for (FlightInstance f1 : fiList) {
+            if (f1.getStandardDepTimeDateType().after(startDate) && f1.getStandardDepTimeDateType().before(endDate)) {
+                fiNew.add(f1);
+            }
+        }
+        return fiNew;
+    }
     
+        @Override
+        public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate) {
+        List<FlightInstance> fiList = cc.getFiList();
+        List<FlightInstance> fiNew = new ArrayList<>();
+        for (FlightInstance f1 : fiList) {
+            if (f1.getStandardDepTimeDateType().after(startDate) && f1.getStandardDepTimeDateType().before(endDate)) {
+                fiNew.add(f1);
+            }
+        }
+        return fiNew;
+    }
+
 }
