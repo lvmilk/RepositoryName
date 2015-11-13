@@ -19,7 +19,8 @@
 
                 <p:columnGroup type="header">
                     <p:row>
-                        <p:column rowspan="2" headerText="Cost Category" sortBy="#{key}" filterBy="#{key}"/>
+                        <p:column id="track" rowspan="2" headerText="Cost Category" sortBy="#{key}" filterBy="#{key}"/>
+                        <p:tooltip id="toolTipTrack" for="track" value="Other Cost includes: Fees&Taxes; Government Imposed Aviation Levy; Airport Imposed Pax Security and Service Fee; Fuel Surcharge" trackMouse="true" />
                         <p:column colspan="2" headerText="Expense" />
                     </p:row>
                     <p:row>

@@ -21,6 +21,9 @@
                     <p:column headerText="Receivables" sortBy="#{revenue.receivable}" filterBy="#{revenue.receivable}">
                         <h:outputText value="#{revenue.receivable}" />
                     </p:column>
+                    <p:column headerText="Refund" sortBy="#{revenue.refund}" filterBy="#{revenue.refund}">
+                        <h:outputText value="#{revenue.refund}" />
+                    </p:column>
                     <p:column headerText="Payment Date" sortBy="#{revenue.paymentDate}" filterBy="#{revenue.paymentDate}">
                        
                         <h:outputText value="#{revenue.paymentDate}">

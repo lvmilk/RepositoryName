@@ -81,6 +81,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         Calendar endCal = Calendar.getInstance();
 
         for (int i = 0; i < resultList.size(); i++) {
+            
             Date paymentDate = resultList.get(i).getPaymentDate();
             cal.setTime(paymentDate);
             revenueYear = cal.get(Calendar.YEAR);
@@ -198,6 +199,77 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         return total;
     }
 
+     @Override
+    public Double calculateRefund(String channel, long year, String quarter) {
+        Double total = 0.0;
+        Query q = em.createQuery("SELECT r FROM Revenue r where r.channel =:channel");
+        q.setParameter("channel", channel);
+        if (q.getResultList().isEmpty()) {
+            System.out.println("AAS:FTB: No available channel for " + channel);
+            return 0.0;
+        } else {
+            System.out.println("AAS:FTB: Available channel found for " + channel);
+        }
+        List<Revenue> list = (List) q.getResultList();
+
+        int revenueYear;
+        Date startDate = new Date(); //set default 
+        Date endDate = new Date();//set default
+        Boolean inPeriod = false;//set default
+        Calendar cal = Calendar.getInstance();
+        Calendar startCal = Calendar.getInstance();
+        Calendar endCal = Calendar.getInstance();
+
+        for (int i = 0; i < list.size(); i++) {
+            Date paymentDate = list.get(i).getPaymentDate();
+            cal.setTime(paymentDate);
+            revenueYear = cal.get(Calendar.YEAR);
+            switch (quarter) {
+                case "1": {
+                    startCal.set((int) year, 0, 1);
+                    endCal.set((int) year, 2, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "2": {
+                    startCal.set((int) year, 3, 1);
+                    endCal.set((int) year, 5, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "3": {
+                    startCal.set((int) year, 6, 1);
+                    endCal.set((int) year, 8, 30);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                case "4": {
+                    startCal.set((int) year, 9, 1);
+                    endCal.set((int) year, 11, 31);
+                    startDate = startCal.getTime();
+                    endDate = endCal.getTime();
+                    inPeriod = !(paymentDate.before(startDate) || paymentDate.after(endDate));
+                    break;
+                }
+                default:
+                    System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
+                    break;
+            }
+            if (revenueYear == year && inPeriod) {
+                total = total + list.get(i).getRefund();
+            }
+        }
+        System.out.println("AAS:FTB: totalRefund: " + total);
+        return total;
+    }
+    
+    
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     public List<Expense> getExpenseList(long year, String quarter) {
@@ -443,7 +515,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:registrationNo").setParameter("registrationNo", registrationNo);
                 List<Aircraft> aircraftList = (List) q1.getResultList();
                 Date checkDate = new Date();
-                if (aircraftList.get(0) != null) {
+                if (!aircraftList.isEmpty()) {
                     try {
                         checkDate = format.parse(aircraftList.get(0).getDeliveryDate());
                     } catch (ParseException ex) {
@@ -456,26 +528,26 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                         System.out.println("FTB:calculateNoDateExpense: There is no depreciation during this period.");
                     }
                 } else {
-                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + aircraftList.get(0).getRegistrationNo() + " is deleted.");
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft is deleted.");
                 }
             } else if (category.equals("Fuel Cost")) {
                 String type = resultList.get(i).getCostSource();
                 Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
                 List<AircraftType> typeList = (List) q1.getResultList();
-                if (typeList.get(0) != null) {
+                if (!typeList.isEmpty()) {
                     total = total + (resultList.get(i).getPayable()) * (fsb.calPeriodTotalFlightHour(startDate, endDate));
                 } else {
-                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + typeList.get(0).getType() + " is deleted.");
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft type  is deleted.");
                 }
                 System.out.println("FTB:calculateNoDateExpense: Fuel Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
             } else if (category.equals("Maintenance Cost")) {
                 String type = resultList.get(i).getCostSource();
                 Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
                 List<AircraftType> typeList = (List) q1.getResultList();
-                if (typeList.get(0) != null) {
+                if (!typeList.isEmpty()) {
                     total = total + resultList.get(i).getPayable() * fsb.calPeriodTotalMtManHour(startDate, endDate);
                 } else {
-                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + typeList.get(0).getType() + " is deleted.");
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft type is deleted.");
                 }
                 System.out.println("FTB:calculateNoDateExpense: Maintenance Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
             } else if (category.equals("Other Cost")) {
