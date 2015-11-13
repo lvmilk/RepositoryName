@@ -140,9 +140,9 @@ public class ReserveFlightManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-          cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
-         departed = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
-         returned = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
+        cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
+        departed = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
+        returned = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
 
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
@@ -152,8 +152,8 @@ public class ReserveFlightManagedBean implements Serializable {
             System.out.println("in ReserveFlightManagedBean: manageStatus is " + manageStatus);
         } else {
             manageStatus = "book";
-             System.out.println("~~~~~~~~~~~~~~~~~~~~~~~````in ReserveFlightManagedBean: manageStatus Now is " + manageStatus);
-           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
+            System.out.println("~~~~~~~~~~~~~~~~~~~~~~~````in ReserveFlightManagedBean: manageStatus Now is " + manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
         }
         bookedFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookedFlights");
 
@@ -554,8 +554,8 @@ public class ReserveFlightManagedBean implements Serializable {
             } else {
                 if (!returnTrip) {
 
-                  ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
-                  ArrayList<FlightInstance>  returnSelected = new ArrayList<>();
+                    ArrayList<FlightInstance> departSelected = departSpecificList.get(departIndexes.get(0));
+                    ArrayList<FlightInstance> returnSelected = new ArrayList<>();
                     System.out.println("selection for departure trip is correct");
                     System.out.println("departure package chosen is " + departSelected);
                     ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
@@ -587,7 +587,12 @@ public class ReserveFlightManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
                     if (stfType.equals("agency")) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                        if (manageStatus.equals("book")) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                        } else {
+                            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsReBookConfirmPage.xhtml");
+                        }
                     } else {
                         if (manageStatus.equals("book")) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
@@ -644,7 +649,12 @@ public class ReserveFlightManagedBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
                         if (stfType.equals("agency")) {
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                            if (manageStatus.equals("book")) {
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                            } else {
+                                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsReBookConfirmPage.xhtml");
+                            }
                         } else {
                             if (manageStatus.equals("book")) {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
@@ -724,9 +734,14 @@ public class ReserveFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
                             if (stfType.equals("agency")) {
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                                if (manageStatus.equals("book")) {
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                                } else {
+                                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsReBookConfirmPage.xhtml");
+                                }
                             } else {
-                                System.out.println("in onSelectOption(): manageStatus is "+manageStatus);
+                                System.out.println("in onSelectOption(): manageStatus is " + manageStatus);
                                 if (manageStatus.equals("book")) {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                                 } else {
@@ -830,9 +845,14 @@ public class ReserveFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnTrip", returnTrip);
 
                                 if (stfType.equals("agency")) {
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                                    if (manageStatus.equals("book")) {
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCreateBookerGuest.xhtml");
+                                    } else {
+                                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsReBookConfirmPage.xhtml");
+                                    }
                                 } else {
-                                    System.out.println("in onSelectOption(): manageStatus is "+manageStatus);
+                                    System.out.println("in onSelectOption(): manageStatus is " + manageStatus);
                                     if (manageStatus.equals("book")) {
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("./createMemberGuest.xhtml");
                                     } else {
@@ -1006,8 +1026,8 @@ public class ReserveFlightManagedBean implements Serializable {
                     if (manageStatus.equals("book")) {
                         bookedFlights = new ArrayList<>();
                     }
-                    System.out.println("in findResultInstances(): manageStatus is "+manageStatus);
-                           System.out.println("in findResultInstances(): bookedFlights is "+bookedFlights);
+                    System.out.println("in findResultInstances(): manageStatus is " + manageStatus);
+                    System.out.println("in findResultInstances(): bookedFlights is " + bookedFlights);
                     departsByDay = rf.findResultInstanceList(origin, dest, c.getTime(), selectedCabin, countPerson, manageStatus, bookedFlights);
 
                     df = new SimpleDateFormat("dd MMM yyyy");
