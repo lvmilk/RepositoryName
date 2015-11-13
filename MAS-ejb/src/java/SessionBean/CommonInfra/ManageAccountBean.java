@@ -860,6 +860,20 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
     }
 
+    @Override
+    public String getDDSCompanyName(String userName) {
+        Agency tempAg=new Agency();
+        tempAg=em.find(Agency.class, userName);
+        
+        if(tempAg!=null)
+        {
+            return tempAg.getName();
+        }else{
+            return null;
+        }
+        
+    }
+
  
 
 }

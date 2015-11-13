@@ -41,6 +41,7 @@ public class Payment implements Serializable {
     private Reservation reservation;
 
     private Double totalPrice;
+    private Double refund=0.0;
 
     public Payment() {
 
@@ -210,6 +211,14 @@ public class Payment implements Serializable {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Double getRefund() {
+        return refund;
+    }
+
+    public void setRefund(Double refund) {
+        this.refund = refund;
     }
 
     

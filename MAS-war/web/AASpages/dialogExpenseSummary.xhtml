@@ -34,12 +34,12 @@
             <p:panel header="Export Excel or PDF">
                 <h:commandLink id="excel">
                     <p:graphicImage name="excel.png" library="images"  width="40" height="50"/>
-                    <p:dataExporter type="xls" target="tbl" fileName="Revenue Report (quarter #{RMB.quarter} in #{RMB.year})" postProcessor="#{RMB.postProcessXLS}" />
+                    <p:dataExporter type="xls" target="tbl" fileName="Fixed Cost and Sunk Cost Report (quarter #{EMB.expenseQuarter} in #{EMB.expenseYear})" postProcessor="#{EMB.postProcessXLS}" />
                 </h:commandLink>
 
                 <h:commandLink id="pdf">
                     <p:graphicImage name="pdf.png" library="images"  width="55" height="60"/>
-                    <p:dataExporter type="pdf" target="tbl" fileName="Revenue Report (quarter #{RMB.quarter} in #{RMB.year})" preProcessor="#{RMB.preProcessPDF}" />
+                    <p:dataExporter type="pdf" target="tbl" fileName="Fixed Cost and Sunk Cost Report (quarter #{EMB.expenseQuarter} in #{EMB.expenseYear})" preProcessor="#{EMB.preProcessPDF}" />
                 </h:commandLink>
 
             </p:panel>

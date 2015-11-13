@@ -64,7 +64,7 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action) {
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
@@ -75,7 +75,7 @@ public class PassengerBean implements PassengerBeanLocal {
         }
 
         Reservation rsv = new Reservation();
-        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
+        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip,bkSystem,companyName);
         rsv = makeRsvBooker(rsv, booker);
 
         rsv = makeRsvBookInstance(rsv, BookClassInstanceList, psgCount);
@@ -113,7 +113,8 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action) {
-
+System.out.println("------------------In makersvpayment(): action  is "+action);
+        
         if (action.equals("rebook")) {
             Payment payment = new Payment();
             payment.createPayment(totalPrice);

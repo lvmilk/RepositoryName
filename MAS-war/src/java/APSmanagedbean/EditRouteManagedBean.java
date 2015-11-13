@@ -42,6 +42,7 @@ public class EditRouteManagedBean implements Serializable {
 
     private UIComponent uIComponent;
 
+    private Double otherCost;
     private Route route;
     private Double distance;
     private Double blockhour;
@@ -83,6 +84,7 @@ public class EditRouteManagedBean implements Serializable {
         destIATA = route.getDest().getIATA();
         distance = route.getDistance();
         blockhour = route.getBlockhour();
+        otherCost = route.getOtherCost();
         if (route.getAcType() != null) {
             acTypeString = route.getAcType().getType();
         } else {
@@ -115,7 +117,7 @@ public class EditRouteManagedBean implements Serializable {
                     acType = fpb.getAircraftType(acTypeString);
                     System.out.println("ERMB.editRoute(): acType is " + acType);
                 }
-                rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour);
+                rpb.editRouteBasic(originIATA, destIATA, distance, acType, blockhour,otherCost);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./editRouteSuccess.xhtml");
             }
         } catch (Exception ex) {
@@ -147,6 +149,14 @@ public class EditRouteManagedBean implements Serializable {
             typeInfo.add(a.getType());
         }
         return typeInfo;
+    }
+
+    public Double getOtherCost() {
+        return otherCost;
+    }
+
+    public void setOtherCost(Double otherCost) {
+        this.otherCost = otherCost;
     }
 
     public void setAcTypeInfo(List<String> acTypeInfo) {

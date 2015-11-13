@@ -8,7 +8,7 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Check in:Luggage Information</title>
+        <title>Check in: Preview Boarding Pass</title>
     </h:head>
     <h:body>
 
@@ -28,28 +28,24 @@
                     right: 5px;
                 }
             </style>
-
-            <p:panel id="panel" header="Check in:Luggage Information"  styleClass="specialDialog">
+ 
+            <p:panel id="panel" header="Check in: Preview Boarding Pass"  styleClass="specialDialog">
                 <p:messages id="msgs" autoUpdate="false"/>
 
-                <p:panelGrid style="margin-top:20px">
-
+                <p:panelGrid id="boardingpass" style="margin-top:20px">
+                    <!--row 1-->
                     <p:row>
-                        <p:column colspan="3">
+                        <p:column colspan="3" style="font-weight: bold; font-size:x-large;text-align:left">
                             <h:outputText value="#{cmb.firstName} / #{cmb.lastName}" style="text-align:left" />
                         </p:column>
-                        <p:column colspan="2">
-                            <f:facet name="header">
-                                <h:graphicImage name="/images/logo.PNG"/>
-                            </f:facet>
+                        <p:column colspan="2" >
+                                <h:graphicImage value="/images/logoname.png"/>
                         </p:column>
                         <p:column colspan="2">
-                            <f:facet name="header">
-                                <h:graphicImage name="/images/logo.PNG"/>
-                            </f:facet>
+                                <h:graphicImage value="/images/logoname.png"/>
                         </p:column>
                     </p:row>
-
+                    <!--row2-->
                     <p:row>
                         <p:column colspan="1">Departure</p:column>
                         <p:column colspan="1">From</p:column>
@@ -57,70 +53,62 @@
                         <p:column colspan="1">To</p:column>
                         <p:column colspan="1">Landing</p:column>
                         <p:column colspan="1">Passenger Name</p:column>
-                        <p:column colspan="1">
-                            <h:outputText value="#{cmb.firstName} / #{cmb.lastName}" style="text-align:left" />
+                        <p:column colspan="1"  style="font-weight: bold; text-align:left">
+                            <h:outputText value="#{cmb.firstName} / #{cmb.lastName}"  />
                         </p:column>
                     </p:row>
-
+                    <!--row3-->
                     <p:row>
                         <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="HH:mm" />
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTimeDateType.time}" style="text-align:center">
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.timeZone}" />
+                            </h:outputText>
                         </p:column>
                         <p:column rowspan="2" style="font-weight: bold;" colspan="1">
-                            <h:outputText value="#{cmb.ticket.depCity}" style="text-align:center" >
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.IATA}" style="text-align:center" >
                             </h:outputText>
                         </p:column>
 
                         <p:column rowspan="2" style="font-weight: bold;" colspan="1">
-                            <h:outputText style="text-align:left"> ------------ </h:outputText>
+                            <h:outputText value="--------"   style="text-align:center"/> 
                         </p:column>
 
                         <p:column rowspan="2" style="font-weight: bold;" colspan="1">
-                            <h:outputText value="#{cmb.ticket.arrCity}" style="text-align:center" >
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.IATA}" style="text-align:center" >
                             </h:outputText>
                         </p:column>
 
                         <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardArrTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="HH:mm" />
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardArrTimeDateType.time}" style="text-align:center">
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.timeZone}" />
+                            </h:outputText>
                         </p:column>
+                      
                         <p:column colspan="1">Flight Number</p:column>
                         <p:column colspan="1">
                             <h:outputText value="#{cmb.flightNo}" style="text-align:left" />
                         </p:column>
                     </p:row>
 
+                    <!--row4-->                
+
                     <p:row>
                         <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTimeDateType}" style="text-align:center" >
+                                <f:convertDateTime type="date"  pattern="dd-MM-yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardArrTimeDateType}" style="text-align:center" >
+                                <f:convertDateTime type="date"  pattern="dd-MM-yyyy" />
+                            </h:outputText>
                         </p:column>
                         <p:column colspan="1">Flight Number</p:column>
                         <p:column colspan="1">
                             <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="text-align:center" />
                         </p:column>
                     </p:row>
-
-                    <p:row>
-                        <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </p:column>
-                        <p:column colspan="1"> 
-                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTime}" style="text-align:center" />
-                            <f:convertDateTime pattern="dd-MM-yyyy" />
-                        </p:column>
-                        <p:column colspan="1">Flight Number</p:column>
-                        <p:column colspan="1">
-                            <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="text-align:center" />
-                        </p:column>
-                    </p:row>
-
+                    <!--row5-->
                     <p:row>
                         <p:column colspan="1">             </p:column>
                         <p:column colspan="1"> 
@@ -137,7 +125,7 @@
                         </p:column>
 
                     </p:row>
-
+                    <!--row6-->
                     <p:row>
                         <p:column colspan="1"> Flight No. </p:column>
                         <p:column colspan="1"> Seat No. </p:column>                       
@@ -145,10 +133,10 @@
                         <p:column colspan="1"> Gate </p:column>
                         <p:column colspan="1"> Bar Code      </p:column>
                         <p:column  colspan="1">
-                            <h:outputText value="#{cmb.ticket.depCity}" style="text-align:center"/>
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.IATA}" style="text-align:center"/>
                         </p:column>
                         <p:column  colspan="1">
-                            <h:outputText value="#{cmb.ticket.depCity}" style="text-align:center"/>
+                            <h:outputText value="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.IATA}" style="text-align:center"/>
                         </p:column>
                     </p:row>
                     <!--last row-->
@@ -160,26 +148,32 @@
                         </p:column>   
                         <p:column colspan="1"> 
                             <h:outputText value="#{cmb.boardingTime}" style="text-align:center">
-                                <f:convertDateTime pattern="HH:mm" />
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{cmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.timeZone}" />
                             </h:outputText>
                         </p:column>  
 
-                        <p:column colspan="1"> Gate: TEST </p:column>
+                        <p:column colspan="1">
+                            <h:outputText value="#{cmb.seatSelected.flightCabin.flightInstance.depGate}" style="text-align:center"/>
+                        </p:column>
 
                         <p:column colspan="1">  
-                            <h:outputText value="PDF417" />
                             <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
                         </p:column>
-                        <p:column colspan="1">             </p:column>
-                        <p:column colspan="1">Date </p:column>
+
+                        <p:column colspan="1">Bar Code </p:column>
                         <p:column colspan="1">
-                            <h:outputText value="#{cmb.dateString}" style="text-align:center" />
-                        </p:column>
+                            <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                       </p:column>
 
                     </p:row>
 
                 </p:panelGrid>
-                <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.getUnusedTicket}"  icon="ui-icon-check" />
+                <br></br>
+                <p:commandButton value="Print Boarding Pass" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="boardingpass" />
+                </p:commandButton>
+
+                <p:commandButton value="Confirm check in" update="panel" style="margin-right:0" action="#{cmb.goLast}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>

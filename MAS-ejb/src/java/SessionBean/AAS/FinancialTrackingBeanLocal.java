@@ -28,5 +28,7 @@ public interface FinancialTrackingBeanLocal {
     public Double calculateExpense(String category, long year, String quarter);
 
     public Double calculateNoDateExpense(String category, long year, String quarter);
+
+    public Double calculateRefund(String channel, long year, String quarter);
     
 }

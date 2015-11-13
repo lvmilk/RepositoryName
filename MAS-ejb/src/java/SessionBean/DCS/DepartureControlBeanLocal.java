@@ -35,9 +35,20 @@ public interface DepartureControlBeanLocal {
 
     public List<Seat> getAllUnOccupiedSeats(Ticket tkt) throws Exception;
 
-    public void selectSeat(Seat seat) throws Exception;
 
     public boolean checkLoungeEligibility(Ticket tkt) throws Exception;
+
+    public void accumulateMiles(Ticket ticket) throws Exception;
+
+    public void updateLuggageCount(Seat seat, Integer luggageCount) throws Exception;
+
+    public Seat getSeat(Ticket tkt) throws Exception;
+
+    public boolean changeBoardingStatus(Ticket tkt) throws Exception;
+
+    public void selectSeat(Seat seat, Ticket ticket) throws Exception;
+
+    public boolean checkStandbyEligibility(Ticket tkt) throws Exception;
 
     
     

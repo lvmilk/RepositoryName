@@ -1133,6 +1133,20 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return pilotList;
     }
 
+    @Override
+    public List<OfficeStaff> getAllOfficeStaff() {
+        Query q = em.createQuery("SELECT o FROM OfficeStaff o");
+        List<OfficeStaff> officeStaff = (List<OfficeStaff>) q.getResultList();
+        return officeStaff;
+    }
+
+    @Override
+    public List<GroundStaff> getAllGroundStaff() {
+        Query q = em.createQuery("SELECT g FROM GroundStaff g");
+        List<GroundStaff> groundStaff = (List<GroundStaff>) q.getResultList();
+        return groundStaff;
+    }
+
     public List<CockpitCrew> getFiCaptain(FlightInstance fi) {
         List<CockpitCrew> cpList = fi.getCockpitList();
         List<CockpitCrew> cpCap = new ArrayList<>();

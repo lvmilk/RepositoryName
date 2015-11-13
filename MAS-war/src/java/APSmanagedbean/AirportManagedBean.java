@@ -6,7 +6,9 @@ import SessionBean.APS.RoutePlanningBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.TimeZone;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -53,7 +55,7 @@ public class AirportManagedBean implements Serializable {
     private List<Airport> deletedAirport = new ArrayList<>();
     private List<Airport> canDeleteAirport = new ArrayList<>();
     private List<Airport> cannotDeleteAirport = new ArrayList<>();
-
+    private List<String>  timezoneList= (List<String>)Arrays.asList(TimeZone.getAvailableIDs());
     public AirportManagedBean() {
     }
 
@@ -390,4 +392,11 @@ public class AirportManagedBean implements Serializable {
         this.lang = lang;
     }
 
+    public List<String> getTimezoneList() {
+        return timezoneList;
+    }
+
+    public void setTimezoneList(List<String> timezoneList) {
+        this.timezoneList = timezoneList;
+    }
 }

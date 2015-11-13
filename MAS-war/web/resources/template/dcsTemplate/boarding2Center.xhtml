@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Boarding:Select Ticket</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Boarding: Select Ticket"  style="width:100%">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="name" value="Passenger Name: " />
+                    <h:outputText id="name" value="#{bmb.firstName}/ #{bmb.lastName}" />
+
+                    <p:outputLabel for="passportno" value="Passport Number: " />
+                    <h:outputText id="passportno" value="#{bmb.passportNo}"  />
+
+
+                </h:panelGrid>
+                <p:dataTable id="ticketList" var="tkt" value="#{bmb.tickets}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
+                    <p:column headerText="Flight Number">
+                        <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.flightFrequency.flightNo}" style="center" />
+                    </p:column>
+                    <p:column headerText="Date">
+                        <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.date}" style="center">
+                            <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Ticekt Status">
+                        <h:outputText value="#{tkt.ticketStatus}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Seat Number">
+                        <h:outputText value="#{tkt.seat.seatNumberToPassenger}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Boarding">
+                        <p:commandButton value="Boarding"   update=":#{p:component('panel')}" actionListener="#{bmb.onBoardingChange}">
+                            <f:attribute name="tkt" value="#{tkt}"/>
+                        </p:commandButton>   
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <div style="width:50%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:10%; border:0px ;">
+                <p:commandButton value="Back"  action="#{bmb.goBack}" icon="ui-icon-carat-1-w"/>
+            </div>
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>

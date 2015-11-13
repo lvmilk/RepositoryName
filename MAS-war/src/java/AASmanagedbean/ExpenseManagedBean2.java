@@ -7,6 +7,7 @@ package AASmanagedbean;
 
 import Entity.AAS.Expense;
 import SessionBean.AAS.FinancialTrackingBeanLocal;
+import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -49,19 +50,20 @@ public class ExpenseManagedBean2 implements Serializable {
      */
     @EJB
     private FinancialTrackingBeanLocal ftb;
+    @EJB
+    private CrewSchedulingBeanLocal csb;
 
     private List<Long> yearList = new ArrayList<>();
     long currentYear = Calendar.getInstance().get(Calendar.YEAR);
-    private long expenseYear;
-    private String expenseQuarter;
-    private List<Expense> expenseList = new ArrayList<>();
+    private long expenseYear2;
+    private String expenseQuarter2;
     private List<String> categoryList = new ArrayList<>();
     private Map<String, String> typeMap;
+    private Map<String,Integer>amountMap;
     private Map<String, Double> payableMap;
-    private Map<String,Double> hourPayMap;
-    private Map<String,Double> sumMap;
     private String category;
     private String type;
+    private Integer amount;
     private Double payable;
     private Double total;
     private String totalString;
@@ -83,69 +85,88 @@ public class ExpenseManagedBean2 implements Serializable {
         categoryList.add("Office Staff");
         categoryList.add("Ground Staff");
         typeMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("typeMap");
+        amountMap = (Map<String, Integer>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("amountMap");
         payableMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("payableMap");
         total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
         totalString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString");
-        expenseList = (List<Expense>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseList");
-        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter") != null) {
-            expenseYear = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear");
-            expenseQuarter = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear2") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter2") != null) {
+            expenseYear2 = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear2");
+            expenseQuarter2 = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter2");
         } else {
-            expenseYear = 0;
-            expenseQuarter = "0";
+            expenseYear2 = 0;
+            expenseQuarter2 = "0";
         }
     }
 
     public void calculateFixedCost() throws IOException {
-        System.out.println("AAS:EMB:Input testing 1 Year: " + expenseYear + " Quarter: " + expenseQuarter);
-        if (expenseQuarter.equals("0") || expenseYear == 0) {
+        System.out.println("AAS:EMB2:Input testing Year: " + expenseYear2 + " Quarter: " + expenseQuarter2);
+        if (expenseQuarter2.equals("0") || expenseYear2 == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please select year and quarter ! "));
         } else {
             typeMap = new HashMap<String, String>();
             payableMap = new HashMap<String, Double>();
+            amountMap = new HashMap<String, Integer>();
             total = 0.0;
             for (int i = 0; i < categoryList.size(); i++) {
                 payable = 0.0;
                 category = categoryList.get(i);
-                if (category.equals("Purchase Aircraft")) {
-                    type = "Sunk Cost";
-                    typeMap.put(category, type);
-                    payable = ftb.calculateExpense(category, expenseYear, expenseQuarter);
+                type = "Variable Operation Cost";
+                typeMap.put(category, type);
+                if (category.equals("DDS Commission")) {
+                    payable = ftb.calculateExpense(category, expenseYear2, expenseQuarter2);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
-                } else {
-                    if (category.equals("Other Cost")) {
-                        type = "Fixed Operation Cost";
-                        typeMap.put(category, type);
-                    } else {
-                        type = "Sunk Cost";
-                        typeMap.put(category, type);
-                    }
-                    payable = ftb.calculateNoDateExpense(category, expenseYear, expenseQuarter);
+                } else if (category.equals("Cabin Crew")){
+                    amount = csb.getAllCabinCrew().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
+                }else if (category.equals("Cabin Leader")){
+                    amount = csb.getAllCabinLeader().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
+                    payableMap.put(category, payable);
+                }else if (category.equals("Captain")){
+                    amount = csb.getAllCaptain().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
+                    payableMap.put(category, payable);
+                }else if (category.equals("Pilot")){
+                    amount = csb.getAllPilot().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
+                    payableMap.put(category, payable);
+                }else if (category.equals("Ground Staff")){
+                    amount = csb.getAllGroundStaff().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
+                    payableMap.put(category, payable);
+                }else{
+                    //////for office staff
+                    amount = csb.getAllOfficeStaff().size();
+                    amountMap.put(category, amount);
+                    payable = ftb.calculateNoDateExpense(category, expenseYear2, expenseQuarter2);
+                    payableMap.put(category, payable);
                 }
                 total = total + payable;
                 totalString = BigDecimal.valueOf(total).toPlainString();
             }
             if (total == 0.0) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + expenseYear + " Quarter " + expenseQuarter + " ! ", ""));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + expenseYear2 + " Quarter " + expenseQuarter2 + " ! ", ""));
             } else {
-                expenseList = ftb.getExpenseList(expenseYear, expenseQuarter);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseYear", expenseYear);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseQuarter", expenseQuarter);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseYear2", expenseYear2);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseQuarter2", expenseQuarter2);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("typeMap", typeMap);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("amountMap", amountMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("payableMap", payableMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseList", expenseList);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./displayExpenseReport.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./displayExpenseReport2.xhtml");
             }
         }
     }
 
     public void back() throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./generateExpenseReport.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./generateExpenseReport2.xhtml");
     }
 
     public void exporterSummary() {
@@ -154,17 +175,7 @@ public class ExpenseManagedBean2 implements Serializable {
         options.put("resizable", false);
         options.put("draggable", false);
         options.put("modal", true);
-        RequestContext.getCurrentInstance().openDialog("dialogExpenseSummary", options, null);
-    }
-
-    public void exporterDetail() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("resizable", true);
-        options.put("draggable", false);
-        options.put("modal", true);
-        options.put("width", 700);
-        options.put("height", 500);
-        RequestContext.getCurrentInstance().openDialog("dialogExpenseDetail", options, null);
+        RequestContext.getCurrentInstance().openDialog("dialogExpenseSummary2", options, null);
     }
 
     public void postProcessXLS(Object document) {
@@ -194,20 +205,20 @@ public class ExpenseManagedBean2 implements Serializable {
         pdf.add(img);
     }
 
+    public Map<String, Integer> getAmountMap() {
+        return amountMap;
+    }
+
+    public void setAmountMap(Map<String, Integer> amountMap) {
+        this.amountMap = amountMap;
+    }
+
     public String getTotalString() {
         return totalString;
     }
 
     public void setTotalString(String totalString) {
         this.totalString = totalString;
-    }
-
-    public List<Expense> getExpenseList() {
-        return expenseList;
-    }
-
-    public void setExpenseList(List<Expense> expenseList) {
-        this.expenseList = expenseList;
     }
 
     public List<String> getCategoryList() {
@@ -266,20 +277,20 @@ public class ExpenseManagedBean2 implements Serializable {
         this.total = total;
     }
 
-    public long getExpenseYear() {
-        return expenseYear;
+    public long getExpenseYear2() {
+        return expenseYear2;
     }
 
-    public void setExpenseYear(long expenseYear) {
-        this.expenseYear = expenseYear;
+    public void setExpenseYear2(long expenseYear2) {
+        this.expenseYear2 = expenseYear2;
     }
 
-    public String getExpenseQuarter() {
-        return expenseQuarter;
+    public String getExpenseQuarter2() {
+        return expenseQuarter2;
     }
 
-    public void setExpenseQuarter(String expenseQuarter) {
-        this.expenseQuarter = expenseQuarter;
+    public void setExpenseQuarter2(String expenseQuarter2) {
+        this.expenseQuarter2 = expenseQuarter2;
     }
 
     public List<Long> getYearList() {
