@@ -43,6 +43,8 @@ public class Reservation implements Serializable {
     private String origin;   // airport code
     private String dest;     //airport code
     private Boolean returnTrip;
+    private String bkSystem;
+    private String companyName;
 
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date rsvDate;
@@ -66,7 +68,7 @@ public class Reservation implements Serializable {
 
     }
 
-    public void createReservation(String bkFirstName, String bkLastName, String bkEmail, String origin, String dest, Boolean returnTrip) {
+    public void createReservation(String bkFirstName, String bkLastName, String bkEmail, String origin, String dest, Boolean returnTrip, String bkSystem, String companyName) {
         this.bkFirstName = bkFirstName;
         this.bkLastName = bkLastName;
         this.bkEmail = bkEmail;
@@ -74,6 +76,8 @@ public class Reservation implements Serializable {
         this.origin = origin;
         this.dest = dest;
         this.returnTrip = returnTrip;
+        this.bkSystem=bkSystem;
+        this.companyName=companyName;
         this.rsvStatus="Reserved";
     }
 
@@ -240,6 +244,34 @@ public class Reservation implements Serializable {
 
     public void setRsvStatus(String rsvStatus) {
         this.rsvStatus = rsvStatus;
+    }
+
+    /**
+     * @return the bkSystem
+     */
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    /**
+     * @param bkSystem the bkSystem to set
+     */
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     

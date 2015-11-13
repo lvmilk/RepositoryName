@@ -45,7 +45,7 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
     private String bookSystem = "ARS";
 
     @Override
-    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Long memberId, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
+    public void setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Long memberId, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, String companyName) {
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -112,16 +112,16 @@ public class RsvConfirmationBean implements RsvConfirmationBeanLocal {
 
         }
 
-        setupTicket_Reservation(memberId, tkList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        setupTicket_Reservation(memberId, tkList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip,bkSystem,companyName);
 
     }
 
-    private void setupTicket_Reservation(Long memberId, ArrayList<Ticket> tkList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip) {
+    private void setupTicket_Reservation(Long memberId, ArrayList<Ticket> tkList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, String companyName) {
         Booker booker = new Booker();
         booker = msblocal.retrieveBooker(memberId);
 
         Reservation rsv = new Reservation();
-        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip);
+        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip,bkSystem,companyName);
         rsv.setTickets(tkList);
         em.persist(rsv);
         em.flush();

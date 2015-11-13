@@ -20,7 +20,7 @@ import javax.ejb.Local;
 @Local
 public interface ManageReservationBeanLocal {
     
-    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance>departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem);
+    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance>departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem, String companyName);
 
     public Double getChangeDatePenalty(ArrayList<FlightInstance> oldDepart, ArrayList<FlightInstance> oldReturn, ArrayList<FlightInstance> newDepart, ArrayList<FlightInstance> newReturn, List<BookingClassInstance> oldInstance);
 
@@ -31,6 +31,7 @@ public interface ManageReservationBeanLocal {
     public List<Reservation> findReservation(Long code, String email);
 
     public List<Reservation> getAllReservations();
+    public List<Reservation>getCompanyReservations(String companyName);
 
     public List<FlightInstance> getFlightPackage(List<FlightInstance> flights, String origin, String dest, int index);
 
