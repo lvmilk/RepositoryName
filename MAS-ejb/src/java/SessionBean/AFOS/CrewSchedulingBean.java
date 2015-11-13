@@ -13,6 +13,7 @@ import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.OfficeStaff;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.text.ParseException;
@@ -1315,12 +1316,6 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
         }
         return fiNew;
-    }
-
-    @Override
-    public List<GroundStaff> getAllGroundStaff() {
-        Query q1 = em.createQuery("SELECT a FROM GroundStaff a");
-        return (List<GroundStaff>) q1.getResultList();
     }
 
     @Override
