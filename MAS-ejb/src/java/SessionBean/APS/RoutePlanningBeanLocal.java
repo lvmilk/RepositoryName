@@ -30,10 +30,6 @@ public interface RoutePlanningBeanLocal {
 
     public List<Airport> viewAllAirport();
 
-    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception;
-
-    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception;
-
     public void editRouteFare(String originIATA, String destIATA, Double basicScFare, Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare) throws Exception;
 
     public void deleteRoute(String originIATA, String destIATA) throws Exception;
@@ -85,5 +81,9 @@ public interface RoutePlanningBeanLocal {
     public List<Route> canDeleteRoutePair();
 
     public boolean airportHasFlight(Airport airport);
+
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour, Double otherCost) throws Exception;
+
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour, Double otherCost) throws Exception;
 
 }

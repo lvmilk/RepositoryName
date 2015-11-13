@@ -194,7 +194,6 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 total = total + list.get(i).getReceivable();
             }
         }
-
         System.out.println("AAS:FTB: totalTicketSale: " + total);
         return total;
     }
@@ -438,6 +437,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                     System.out.println("AAS:FTB: Invalid quarter input: " + quarter);
                     break;
             }
+
             if (category.equals("Depreciation")) {
                 String registrationNo = resultList.get(i).getCostSource();
                 Query q1 = em.createQuery("SELECT a FROM Aircraft a where a.registrationNo=:registrationNo").setParameter("registrationNo", registrationNo);
@@ -456,27 +456,87 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                         System.out.println("FTB:calculateNoDateExpense: There is no depreciation during this period.");
                     }
                 } else {
-                    System.out.println("FTB:calculateNoDateExpense: expense is not related to any depreciation.");
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + aircraftList.get(0).getRegistrationNo() + " is deleted.");
                 }
             } else if (category.equals("Fuel Cost")) {
-                total = total + (resultList.get(i).getPayable()) * (fsb.calPeriodTotalFlightHour(startDate, endDate));
+                String type = resultList.get(i).getCostSource();
+                Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
+                List<AircraftType> typeList = (List) q1.getResultList();
+                if (typeList.get(0) != null) {
+                    total = total + (resultList.get(i).getPayable()) * (fsb.calPeriodTotalFlightHour(startDate, endDate));
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + typeList.get(0).getType() + " is deleted.");
+                }
                 System.out.println("FTB:calculateNoDateExpense: Fuel Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
             } else if (category.equals("Maintenance Cost")) {
-                total = total + resultList.get(i).getPayable() * fsb.calPeriodTotalMtManHour(startDate, endDate);
+                String type = resultList.get(i).getCostSource();
+                Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
+                List<AircraftType> typeList = (List) q1.getResultList();
+                if (typeList.get(0) != null) {
+                    total = total + resultList.get(i).getPayable() * fsb.calPeriodTotalMtManHour(startDate, endDate);
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this aircraft type " + typeList.get(0).getType() + " is deleted.");
+                }
                 System.out.println("FTB:calculateNoDateExpense: Maintenance Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
             } else if (category.equals("Other Cost")) {
-                total = total + resultList.get(i).getPayable() / 4;
+                String routeId = resultList.get(i).getCostSource();
+                Long id = Long.valueOf(routeId);
+                Route checkRoute = em.find(Route.class, id);
+                if (checkRoute != null) {
+                    total = total + resultList.get(i).getPayable() / 4;
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this route " + id + " is deleted.");
+                }
                 System.out.println("FTB:calculateNoDateExpense: Other Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
             } else if (category.equals("Cabin Leader")) {
-                total = total + resultList.get(i).getPayable() + csb.calCabinLeaderTotalHourPay(startDate, endDate);
+                String name = resultList.get(i).getCostSource();
+                CabinCrew cabinCrew = em.find(CabinCrew.class, name);
+                if (cabinCrew != null) {
+                    total = total + resultList.get(i).getPayable() * 4 + csb.calCabinLeaderTotalHourPay(startDate, endDate);
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this cabin crew " + name + " is deleted.");
+                }
             } else if (category.equals("Cabin Crew")) {
-                total = total + resultList.get(i).getPayable() + csb.calCabinCrewTotalHourPay(startDate, endDate);
+                String name = resultList.get(i).getCostSource();
+                CabinCrew cabinCrew = em.find(CabinCrew.class, name);
+                if (cabinCrew != null) {
+                    total = total + resultList.get(i).getPayable() * 4 + csb.calCabinCrewTotalHourPay(startDate, endDate);
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this cabin crew " + name + " is deleted.");
+                }
             } else if (category.equals("Captain")) {
-                total = total + resultList.get(i).getPayable() + csb.calCaptainTotalHourPay(startDate, endDate);
+                String name = resultList.get(i).getCostSource();
+                CockpitCrew cockpitCrew = em.find(CockpitCrew.class, name);
+                if (cockpitCrew != null) {
+                    total = total + resultList.get(i).getPayable() * 4 + csb.calCaptainTotalHourPay(startDate, endDate);
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this captain " + name + " is deleted.");
+                }
             } else if (category.equals("Pilot")) {
-                total = total + resultList.get(i).getPayable() + csb.calPilotTotalHourPay(startDate, endDate);
+                String name = resultList.get(i).getCostSource();
+                CockpitCrew cockpitCrew = em.find(CockpitCrew.class, name);
+                if (cockpitCrew != null) {
+                    total = total + resultList.get(i).getPayable() * 4 + csb.calPilotTotalHourPay(startDate, endDate);
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this pilot " + name + " is deleted.");
+                }
+            } else if (category.equals("Ground Staff")) {
+                String name = resultList.get(i).getCostSource();
+                GroundStaff groundStaff = em.find(GroundStaff.class, name);
+                if (groundStaff != null) {
+                    total = total + resultList.get(i).getPayable() * 4;
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this ground staff " + name + " is deleted.");
+                }
             } else {
-                total = total + resultList.get(i).getPayable() * 4;        // for ground staff and office staff
+                //office staff
+                String name = resultList.get(i).getCostSource();
+                OfficeStaff officeStaff = em.find(OfficeStaff.class, name);
+                if (officeStaff != null) {
+                    total = total + resultList.get(i).getPayable() * 4;
+                } else {
+                    System.out.println("FTB:calculateNoDateExpense: this office staff " + name + " is deleted.");
+                }
             }
         }
         return total;

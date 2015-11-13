@@ -43,6 +43,7 @@ public class RouteManagedBean implements Serializable {
 
     private UIComponent uIComponent;
 
+    private Double otherCost;
     private Double distance;
     private Double blockhour;
     private String originIATA = "";
@@ -102,11 +103,11 @@ public class RouteManagedBean implements Serializable {
                 if (addReturnRoute) {
                     rpb.checkRouteExist(destIATA, originIATA);
                 }
-                rpb.addRoute(originIATA, destIATA, distance, blockhour);
+                rpb.addRoute(originIATA, destIATA, distance, blockhour,otherCost);
                 String rt = originIATA + " - " + destIATA;
                 String rtNum = "Route ";
                 if (addReturnRoute) {
-                    rpb.addRoute(destIATA, originIATA, distance, blockhour);
+                    rpb.addRoute(destIATA, originIATA, distance, blockhour,otherCost);
                     rt += ", " + destIATA + " - " + originIATA;
                     rtNum = "Routes ";
                 }
@@ -206,6 +207,15 @@ public class RouteManagedBean implements Serializable {
         return airportInfo;
     }
 
+    public Double getOtherCost() {
+        return otherCost;
+    }
+
+    public void setOtherCost(Double otherCost) {
+        this.otherCost = otherCost;
+    }
+
+    
     public void setAirportInfo(Map<String, String> airportInfo) {
         this.airportInfo = airportInfo;
     }

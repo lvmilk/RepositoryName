@@ -36,6 +36,10 @@
                     <p:inputText id="blockhour" value="#{RouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="30">
                     </p:inputText>
 
+                    <p:outputLabel for="otherCost" value="Miscellaneous Cost (per year): " />
+                    <p:inputText id="otherCost" value="#{RouteManagedBean.otherCost}" label="otherCost" required="true" validatorMessage="Miscellaneous Cost should be within 2000000 SGD" requiredMessage="Please enter miscellaneous cost for this route" size="30">
+                        <f:validateDoubleRange minimum="500000.0" maximum="2000000.0"/>
+                    </p:inputText>
 
                 </h:panelGrid>
 

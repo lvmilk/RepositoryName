@@ -8,6 +8,8 @@ package SessionBean.AFOS;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.OfficeStaff;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -49,5 +51,9 @@ public interface CrewSchedulingBeanLocal {
     public List<FlightInstance> getCockpitCrewFlightForPeriod(CockpitCrew cp, Date startDate, Date endDate);
 
     public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate);
+
+    public List<OfficeStaff> getAllOfficeStaff();
+
+    public List<GroundStaff> getAllGroundStaff();
 
 }

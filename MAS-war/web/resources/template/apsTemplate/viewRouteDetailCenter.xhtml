@@ -30,6 +30,9 @@
                     <p:outputLabel value="Aircraft Blockhour: " />
                     <p:outputLabel value="#{viewRoute.blockhour}" />
 
+                     <p:outputLabel value="Miscellaneous Cost: " />
+                    <p:outputLabel value="#{viewRoute.otherCost}" />
+                    
                     <p:outputLabel value="Serving Aircraft Type " />
                     <p:outputLabel value="#{viewRoute.acType.type}" rendered="#{hasFlight}"/>
                     <p:outputLabel value="Not Assigned" rendered="#{not hasFlight}"/>
