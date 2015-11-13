@@ -55,35 +55,17 @@
 
                     <p:outputLabel for="destination" value="To: " />
                     <p:selectOneMenu id="destination" value="#{reserveFlightManagedBean.dest}" required="true" requiredMessage="Please select destination" style="width:100%;">    
-                        <p:ajax  listener="#{reserveFlightManagedBean.onDestChange}"  update="flightCabin" /> 
                         <f:selectItem itemLabel="Select Destination" itemValue="1" />
                         <f:selectItems value="#{reserveFlightManagedBean.otherPlaces}"  var="place" itemValue="#{place.airportName}" itemLabel="#{place.cityName} #{place.airportName} #{place.IATA}"/>
                     </p:selectOneMenu>
 
 
-                    <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
-                    <p:selectOneMenu id="flightCabin" value="#{reserveFlightManagedBean.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
-                        <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
-                        <f:selectItem itemLabel="Suite" itemValue="Suite" />
-                        <f:selectItem itemLabel="First Class" itemValue="First Class" />
-                        <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
-                        <f:selectItem itemLabel="Premium Economy Class" itemValue="Premium Economy Class" />
-                        <f:selectItem itemLabel="Economy Class" itemValue="Economy Class" />
-                    </p:selectOneMenu>
+                    <p:outputLabel  value="Cabin Class" />
+                    <p:outputLabel  value="#{reserveFlightManagedBean.cabinName} " />
 
 
-                    <c:choose>
-                        <c:when test="${reserveFlightManagedBean.manageStatus=='book'}">
-                            <p:outputLabel for="countPerson" value="No. of people: " />
-                            <p:inputText id="countPerson" value="#{reserveFlightManagedBean.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
-                                <f:validateLongRange minimum="1"/>
-                            </p:inputText>
-                        </c:when>
-                        <c:otherwise>
-                            <p:outputLabel  value="No. of people: " />
-                            <p:outputLabel  value="#{reserveFlightManagedBean.countPerson} " />
-                        </c:otherwise>
-                    </c:choose>
+                    <p:outputLabel  value="No. of people: " />
+                    <p:outputLabel  value="#{reserveFlightManagedBean.countPerson} " />
 
                 </h:panelGrid>
 

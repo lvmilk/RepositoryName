@@ -27,9 +27,9 @@ import javax.faces.view.ViewScoped;
  *
  * @author LIU YUQI'
  */
-@Named(value = "updateReservation")
+@Named(value = "updatePassenger")
 @ViewScoped
-public class UpdateReservationManagedBean implements Serializable {
+public class UpdatePassengerManagedBean implements Serializable {
 
     @EJB
     ManageReservationBeanLocal mr;
@@ -52,14 +52,13 @@ public class UpdateReservationManagedBean implements Serializable {
     String emailOrigin;
 
     String manageStatus;
-    Passenger selectedPsg;
 
-    public UpdateReservationManagedBean() {
+    public UpdatePassengerManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-       selectedPsg=(Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
+
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
         rsvList = mr.getAllReservations();
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
@@ -73,18 +72,6 @@ public class UpdateReservationManagedBean implements Serializable {
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
-    
-    public void onUpdatePsg(Passenger psg) throws IOException{
-     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
-           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsg", psg);
-        
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
-    
-    
-    }
-    
 
     public void onSelectPsg() throws IOException {
 
@@ -102,7 +89,7 @@ public class UpdateReservationManagedBean implements Serializable {
 
     }
 
-    public void onSelectRescheduleRsv(Reservation rsv) throws IOException {
+    public void onSelectUpdateRsv(Reservation rsv) throws IOException {
         int index = 0;
         selectedRsv = rsv;
         flights = new ArrayList<>();
@@ -136,7 +123,7 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight2.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger2.xhtml");
 
     }
 
@@ -280,14 +267,5 @@ public class UpdateReservationManagedBean implements Serializable {
         this.selectedPsgList = selectedPsgList;
     }
 
-    public Passenger getSelectedPsg() {
-        return selectedPsg;
-    }
-
-    public void setSelectedPsg(Passenger selectedPsg) {
-        this.selectedPsg = selectedPsg;
-    }
-
-    
-    
 }
+

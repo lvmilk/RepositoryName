@@ -79,10 +79,12 @@ public class rescheduleConfirmManagedBean implements Serializable {
     private String manageStatus;
     
     private String bkSystem;
+    private String cabinName;
 
     @PostConstruct
     public void init() {
         try {
+
 
             manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
             selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
