@@ -140,7 +140,7 @@ public class ReserveFlightManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        
+          cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
          departed = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
          returned = ( ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
 

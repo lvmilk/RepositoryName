@@ -78,8 +78,10 @@
 
 
                 <br/>
-                <p:panel id="passenger" header="Passenger"  rendered="#{updateReservation.departed.size()>0}" toggleable="true" style="width:45%">
-                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+         <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{updateReservation.selectedPsgList}" value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" >
+
+                        <p:column selectionMode="multiple" headerText="Select all" style="width:60px" /> 
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -96,8 +98,14 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
-
+                        
+                            <p:column headerText="Update Passenger Information">
+                            <p:commandButton value="Update" actionListener="#{updateReservation.onUpdatePsg(passenger)}"/>
+                        </p:column>
                     </p:dataTable>
+                    
+                    <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onSelectPsg()}"/>
+
                 </p:panel>
 
                 <br/>

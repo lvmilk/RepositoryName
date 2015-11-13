@@ -22,15 +22,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author LIU YUQI'
  */
-@Named(value = "cancelFlight")
+@Named(value = "updatePassenger")
 @ViewScoped
-public class CancelFlightManagedBean implements Serializable {
+public class UpdatePassengerManagedBean implements Serializable {
 
     @EJB
     ManageReservationBeanLocal mr;
@@ -50,24 +49,18 @@ public class CancelFlightManagedBean implements Serializable {
     String dest;
     Booker booker;
 
-    private String emailOrigin;
-    private String manageStatus;
-    private String stfType;
-    private String bkSystem;
-    private String companyName;
+    String emailOrigin;
 
-    public CancelFlightManagedBean() {
+    String manageStatus;
+
+    public UpdatePassengerManagedBean() {
     }
 
     @PostConstruct
     public void init() {
 
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
-        companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
-        bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-        
-//        rsvList = mr.getAllReservations();
-        rsvList = mr.getCompanyReservations(companyName);
+        rsvList = mr.getAllReservations();
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
         flights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flights");
         origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
@@ -78,39 +71,6 @@ public class CancelFlightManagedBean implements Serializable {
         emailOrigin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emailOrigin");
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
-        stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
-//        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-//        System.out.println("CancelFlightManagedBean:ini: print booking system"+bkSystem);
-
-    }
-
-    public void onChooseConfirm() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlgGrd').show()");
-    }
-
-    public void rsvConfirm() throws IOException {
-        System.out.println("in the rsvConfirmation passengerlist size is: " + selectedPsgList.size());
-        System.out.println("in the first rsvConfirmation passenge ID is: " + selectedPsgList.get(0).getId());
-//        if (stfType.equals("agency")) {
-//            this.bkSystem = "DDS";
-//        } else {
-//            this.bkSystem = "ARS";
-//        }
-
-        mr.cancelFlight(selectedRsv, selectedPsgList, departed, returned, selectedRsv.getBkcInstance(), origin, dest, selectedRsv.getReturnTrip(), 0.0, bkSystem);
-
-//        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
-
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
-
-        }
-
     }
 
     public void onSelectPsg() throws IOException {
@@ -119,26 +79,24 @@ public class CancelFlightManagedBean implements Serializable {
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookedFlights", flights);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", selectedPsgList);
-        manageStatus = "rebook";
+        manageStatus="rebook";
         System.out.println("onSelectPsg(): manageStatus is " + manageStatus);
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight3.xhtml");
 
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmCancelFlight.xhtml");
-        } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmCancelFlight.xhtml");
-        }
     }
 
-    public void onSelectCancelRsv(Reservation rsv) throws IOException {
+    public void onSelectUpdateRsv(Reservation rsv) throws IOException {
         int index = 0;
         selectedRsv = rsv;
         flights = new ArrayList<>();
         origin = rsv.getOrigin();
         dest = rsv.getDest();
+        
+
 
         for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
             System.out.println("i=" + i + " flightInstance is " + rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
@@ -156,6 +114,7 @@ public class CancelFlightManagedBean implements Serializable {
         System.out.println("booker found is " + selectedRsv.getBooker());
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", selectedRsv.getBkcInstance().get(0).getFlightCabin().getCabinClass().getCabinName());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flights", flights);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("origin", origin);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dest", dest);
@@ -164,12 +123,32 @@ public class CancelFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
 
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCancelation2.xhtml");
-        } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
-        }
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger2.xhtml");
 
+    }
+
+    public void onSelectBooker() throws IOException {
+
+        booker = selectedRsv.getBooker();
+        manageStatus="rebook";
+
+        System.out.println("booker selected is " + booker);
+        emailOrigin = booker.getEmail();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emailOrigin", emailOrigin);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+
+    }
+
+    public void editBookerAccount() throws IOException {
+        if (!mbsbl.checkEmailDuplicate(booker.getEmail(), emailOrigin)) {
+            mbsbl.editThisBooker(booker);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Account Edited Successfully"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
+        }
     }
 
     public void onSelectRsv(Reservation rsv) throws IOException {
@@ -178,9 +157,8 @@ public class CancelFlightManagedBean implements Serializable {
         flights = new ArrayList<>();
         origin = rsv.getOrigin();
         dest = rsv.getDest();
-        bkSystem = selectedRsv.getTickets().get(0).getBookSystem();
-
-        manageStatus = "rebook";
+        
+        manageStatus="rebook";
 
         for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
             System.out.println("i=" + i + " flightInstance is " + rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
@@ -205,7 +183,6 @@ public class CancelFlightManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", returned);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkSystem", bkSystem);
 
 //        FacesContext.getCurrentInstance().getExternalContext().redirect("./updateReservation2.xhtml");
     }
@@ -290,18 +267,5 @@ public class CancelFlightManagedBean implements Serializable {
         this.selectedPsgList = selectedPsgList;
     }
 
-    /**
-     * @return the companyName
-     */
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    /**
-     * @param companyName the companyName to set
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
 }
+

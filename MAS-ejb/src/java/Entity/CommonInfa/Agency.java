@@ -24,6 +24,8 @@ public class Agency implements Serializable {
     @Id
     private String agencyID;
     private String agenPwd;
+    
+    //Company Name
     private String name;
     
     @Column(unique=true)

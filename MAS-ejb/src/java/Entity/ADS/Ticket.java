@@ -39,7 +39,8 @@ public class Ticket implements Serializable {
     private String bookSystem;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date bookDate;
-
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date checkinTime;
     @ManyToOne
     private Passenger passenger;
     
@@ -250,6 +251,14 @@ public class Ticket implements Serializable {
 
     public void setBkInstance(BookingClassInstance bkInstance) {
         this.bkInstance = bkInstance;
+    }
+
+    public Date getCheckinTime() {
+        return checkinTime;
+    }
+
+    public void setCheckinTime(Date checkinTime) {
+        this.checkinTime = checkinTime;
     }
     
     
