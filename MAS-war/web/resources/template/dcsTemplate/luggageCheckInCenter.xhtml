@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Luggage Check in for Online Checked-in Passengers </title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Luggage Check In for Online Checked-in Passengers "  style="width:100%">
+                <p:messages id="msgs" />
+
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="firstname" value="First Name" />
+                    <p:inputText id="firstname"  value="#{cmb.firstName}" label="firstname" required="true" validatorMessage="Firstname: please enter valid alphabet"  requiredMessage="Please enter firstname of passenger" size="50">
+                        <f:validateRegex pattern="[a-zA-Z\\s]*"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="lastname" value="Last Name" />
+                    <p:inputText id="lastname"  value="#{cmb.lastName}" label="lastname"  required="true" validatorMessage="Lastname: please enter valid alphabet"  requiredMessage="Please enter lastname of passenger" size="50">
+                        <f:validateRegex pattern="[a-zA-Z\\s]*"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="passportno" value="Passport Number" />
+                    <p:inputText id="passportno"  value="#{cmb.passportNo}" label="passportno" required="true" validatorMessage="Passport Number: please enter valid alphabet"  requiredMessage="Please enter passport number of passenger" size="50">
+                        <f:validateRegex pattern="[a-zA-Z0-9]*"/>
+                    </p:inputText>
+
+
+                    <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />     
+                    <p:calendar id="date" value="#{cmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
+
+                    <br></br>
+                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />
+
+                    <p:outputLabel for="flight" value="Flight :" />
+                    <p:selectOneMenu id="flight" value="#{cmb.flightNo}" style="width:250px">
+                        <f:selectItem itemLabel="Select One Flight" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{cmb.ffList}"  var="flight" itemValue="#{flight.flightNo}" itemLabel="#{flight.flightNo} #{flight.route.toString()}"/>
+                    </p:selectOneMenu>
+
+
+                </h:panelGrid>
+             <p:commandButton value="Next" update="panel" style="margin-right:0" action="#{cmb.onGetOnlineCheckedinTicketChange}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>

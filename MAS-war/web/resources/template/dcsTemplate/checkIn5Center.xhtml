@@ -28,7 +28,7 @@
                     right: 5px;
                 }
             </style>
-
+ 
             <p:panel id="panel" header="Check in: Preview Boarding Pass"  styleClass="specialDialog">
                 <p:messages id="msgs" autoUpdate="false"/>
 
@@ -38,7 +38,7 @@
                         <p:column colspan="3" style="font-weight: bold; font-size:x-large;text-align:left">
                             <h:outputText value="#{cmb.firstName} / #{cmb.lastName}" style="text-align:left" />
                         </p:column>
-                        <p:column colspan="2">
+                        <p:column colspan="2" >
                                 <h:graphicImage value="/images/logoname.png"/>
                         </p:column>
                         <p:column colspan="2">
@@ -153,7 +153,7 @@
                         </p:column>  
 
                         <p:column colspan="1">
-                            <h:outputText value="#{cmb.seatSelected.flightCabin.flightInstance.flightFrequency.depGate}" style="text-align:center"/>
+                            <h:outputText value="#{cmb.seatSelected.flightCabin.flightInstance.depGate}" style="text-align:center"/>
                         </p:column>
 
                         <p:column colspan="1">  

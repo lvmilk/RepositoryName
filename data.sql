@@ -134,11 +134,11 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP777800","cp777800@mas.
 INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,NAME,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","travel agency","ag777@777.com","agency")
 INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777777","dd4960a35453b6d2098e4e75af873fd8","Korean Airline","al777777@mas.com","alliance")
 
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",5000,0)
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("0888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",5000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",3000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("0888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",3000,0)
 
-INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G777777","g777777@mas.com","de581c8f145c1fb4114c34405b17a479","groundStaff",0,0,"G777777","HAO","LI","Normal",5000,0)
-INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G888888","g888888@mas.com","d3e68babfccc6540105b8a6e8c2f017a","groundStaff",0,0,"G888888","LI","HAO","Normal",5000,0)
+INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G777777","g777777@mas.com","de581c8f145c1fb4114c34405b17a479","groundStaff",0,0,"G777777","HAO","LI","Normal",4000,0)
+INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G888888","g888888@mas.com","d3e68babfccc6540105b8a6e8c2f017a","groundStaff",0,0,"G888888","LI","HAO","Normal",4000,0)
 
 
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888851","1ab0be66ff011ea5104e261c193dc8b9","cb888851@mas.com","cabin",0,0,"CB888851","LI","SUN","Cabin Leader",5000,20,"Mandarin",0,0,0,0,0)
@@ -466,10 +466,10 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 
 
 
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars")
 
 
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(111111,10000)
@@ -478,13 +478,36 @@ INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(444444,150000)
 
 
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "21A",21,1,20,"Occupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "21B",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "21C",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(44444, "21D",21,1,20,"Unoccupied",0,20000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(55555, "21E",21,1,20,"Unoccupied",0,20000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(66666, "21F",21,1,20,"Unoccupied",0,20000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(77777, "21G",21,1,20,"Unoccupied",0,20000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(88888, "21H",21,1,20,"Unoccupied",0,20000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(99999, "21J",21,1,20,"Unoccupied",0,20000)
+
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "21A",21,1,20,"Unoccupied",0,60000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "21B",21,1,20,"Unoccupied",0,60000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "21B",21,1,20,"Unoccupied",0,60000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(44444, "21B",21,1,20,"Unoccupied",0,70000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(55555, "21B",21,1,20,"Unoccupied",0,70000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(66666, "21B",21,1,20,"Unoccupied",0,70000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(77777, "21B",21,1,20,"Unoccupied",0,70000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(88888, "21B",21,1,20,"Unoccupied",0,70000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(99999, "21B",21,1,20,"Unoccupied",0,70000)
+
+
+
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(111111,9999, 1500.00,"ARS","2015-08-10",111111,"Unused",10000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(111112,9999, 1500.00,"ARS","2015-08-10",111111,"Unused",270000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(222222,8888, 6000.00,"ARS","2015-09-10",111111,"Unused",10000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(333333,6666, 3000.00,"ARS","2015-10-10",222222,"Unused",20000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(444444,7777, 4000.00,"ARS","2015-11-10",111111,"Unused",10000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(555555,5555, 2200.00,"ARS","2015-11-10",333333,"Unused",140000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(666666,4444, 1700.00,"DDS","2015-08-10",444444,"Unused",150000)
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(777777,3333, 1900.00,"DDS","2015-09-10",111111,"Unused",10000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id,seat_id) values(777777,33333, 1900.00,"DDS","2015-09-10",111111,"OnlineCheckedIn",10000,11111)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(888888,77777, 6000.00,"DDS","2015-11-10",222222,"Unused",20000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(999999,66666, 2500.00,"DDS","2015-11-10",222222,"Unused",20000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(1111,55555, 1500.00,"GDS","2015-03-10",333333,"Unused",140000)
@@ -492,7 +515,6 @@ INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(3333,33333, 3000.00,"GDS","2015-08-10",333333,"Unused",140000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(4444,22222, 4000.00,"GDS","2015-11-10",444444,"Unused",150000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(5555,9999, 2200.00,"GDS","2015-11-10",444444,"Unused",150000)
-
 
 INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
 INSERT IGNORE INTO Hotel(hotelName)values("Hilton")
@@ -545,6 +567,12 @@ INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",400.00,"Commission","AF","2015-11-10")
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",220.00,"Commission","DL","2015-11-10")
 
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(101,"OTHER",60000000.00,"Sale","9V-ABC","2035-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(202,"OTHER",60000000.00,"Sale","9V-XYZ","2035-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(303,"OTHER",45000000.00,"Sale","9V-AAA","2032-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(404,"OTHER",45000000.00,"Sale","9V-BBB","2032-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(505,"OTHER",45000000.00,"Sale","9V-CCC","2032-01-03")
+
 
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(111,"Sunk Cost","Purchase Aircraft","2015-09-12",200000000.0,"9V-ABC")
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(222,"Sunk Cost","Purchase Aircraft","2015-09-12",200000000.0,"9V-XYZ")
@@ -575,29 +603,10 @@ INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) valu
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(222222,"Variable Operation Cost","DDS Commission","2015-09-10",190.0,"Wang Junkai")
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(333333,"Variable Operation Cost","DDS Commission","2015-11-10",600.0,"Xueqin")
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(444444,"Variable Operation Cost","DDS Commission","2015-11-10",250.0,"Erkang")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(10101,"Variable Operation Cost","Cabin Crew",20000.0,"CB888881")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(20202,"Variable Operation Cost","Cabin Leader",30000.0,"CB888851")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(30303,"Variable Operation Cost","Captain",50000.0,"CP777751")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(40404,"Variable Operation Cost","Pilot",40000.0,"CP777778")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(50505,"Variable Operation Cost","Office Staff",12000.0,"O777777")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",15000.0,"G777777")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(10101,"Variable Operation Cost","Cabin Crew",3000.0,"CB888881")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(20202,"Variable Operation Cost","Cabin Leader",5000.0,"CB888851")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(30303,"Variable Operation Cost","Captain",10000.0,"CP777751")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(40404,"Variable Operation Cost","Pilot",8000.0,"CP777778")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(50505,"Variable Operation Cost","Office Staff",3000.0,"O777777")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",4000.0,"G777777")
 
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "21A",21,1,20,"Unoccupied",0,10000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "21B",21,1,20,"Unoccupied",0,10000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "21C",21,1,20,"Unoccupied",0,10000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(44444, "21D",21,1,20,"Unoccupied",0,20000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(55555, "21E",21,1,20,"Unoccupied",0,20000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(66666, "21F",21,1,20,"Unoccupied",0,20000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(77777, "21G",21,1,20,"Unoccupied",0,20000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(88888, "21H",21,1,20,"Unoccupied",0,20000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(99999, "21J",21,1,20,"Unoccupied",0,20000)
-
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "21A",21,1,20,"Unoccupied",0,60000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "21B",21,1,20,"Unoccupied",0,60000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "21B",21,1,20,"Unoccupied",0,60000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(44444, "21B",21,1,20,"Unoccupied",0,70000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(55555, "21B",21,1,20,"Unoccupied",0,70000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(66666, "21B",21,1,20,"Unoccupied",0,70000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(77777, "21B",21,1,20,"Unoccupied",0,70000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(88888, "21B",21,1,20,"Unoccupied",0,70000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(99999, "21B",21,1,20,"Unoccupied",0,70000)

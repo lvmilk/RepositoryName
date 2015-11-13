@@ -9,24 +9,24 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Check in:Select Ticket</title>
+        <title>Boarding:Select Ticket</title>
     </h:head>
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Check in: Select Ticket"  style="width:100%">
+            <p:panel id="panel" header="Boarding: Select Ticket"  style="width:100%">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel for="name" value="Passenger Name: " />
-                    <h:outputText id="name" value="#{cmb.firstName} #{cmb.lastName}" />
+                    <h:outputText id="name" value="#{bmb.firstName}/ #{bmb.lastName}" />
 
                     <p:outputLabel for="passportno" value="Passport Number: " />
-                    <h:outputText id="passportno" value="#{cmb.passportNo}"  />
+                    <h:outputText id="passportno" value="#{bmb.passportNo}"  />
 
 
                 </h:panelGrid>
-                <p:dataTable id="ticketList" var="tkt" value="#{cmb.tickets}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
+                <p:dataTable id="ticketList" var="tkt" value="#{bmb.tickets}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
                     <p:column headerText="Flight Number">
                         <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.flightFrequency.flightNo}" style="center" />
                     </p:column>
@@ -38,22 +38,20 @@
                     <p:column headerText="Ticekt Status">
                         <h:outputText value="#{tkt.ticketStatus}" style="center"/>
                     </p:column>
+                    <p:column headerText="Seat Number">
+                        <h:outputText value="#{tkt.seat.seatNumberToPassenger}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Boarding">
+                        <p:commandButton value="Boarding"   update=":#{p:component('panel')}" actionListener="#{bmb.onBoardingChange}">
+                            <f:attribute name="tkt" value="#{tkt}"/>
+                        </p:commandButton>   
+                    </p:column>
 
-                    <p:column headerText="Check in">
-                        <p:commandButton value="Check in"   update=":#{p:component('panel')}" actionListener="#{cmb.onCheckinChange}">
-                            <f:attribute name="tkt" value="#{tkt}"/>
-                        </p:commandButton>   
-                    </p:column>
-                    <p:column headerText="Standby">
-                        <p:commandButton value="Standby"  update=":#{p:component('panel')}" actionListener="#{cmb.onStandbyChange}">
-                            <f:attribute name="tkt" value="#{tkt}"/>
-                        </p:commandButton>   
-                    </p:column>
                 </p:dataTable>
-               <p:commandButton value="Back"  action="#{cmb.goBack}" icon="ui-icon-carat-1-w"/>
-
             </p:panel>
-
+            <div style="width:50%; p {font-size: 500vmax !important;} margin-right:10%;margin-top:10%; margin-bottom:auto;margin-left:10%; border:0px ;">
+                <p:commandButton value="Back"  action="#{bmb.goBack}" icon="ui-icon-carat-1-w"/>
+            </div>
         </h:form>
 
 

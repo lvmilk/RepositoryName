@@ -13,6 +13,7 @@ import Entity.AIS.FlightCabin;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -127,6 +128,8 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     public boolean changeCheckinStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
             tkt.setTicketStatus("Checkedin");
+            Date date = new Date();
+            tkt.setCheckinTime(date);
             em.merge(tkt);
             return true;
         } else {
@@ -137,7 +140,26 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     @Override
     public boolean changeStandbyStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
-            tkt.setTicketStatus("Standby");
+
+            if (checkStandbyEligibility(tkt)) {
+                tkt.setTicketStatus("Standby");
+                Date date = new Date();
+                tkt.setCheckinTime(date);
+                em.merge(tkt);
+                return true;
+            } else {
+                throw new Exception("The passenger is not eligible for standby!");
+
+            }
+        } else {
+            throw new Exception("No such ticket exist!");
+        }
+    }
+
+    @Override
+    public boolean changeBoardingStatus(Ticket tkt) throws Exception {
+        if (em.find(Ticket.class, tkt.getTicketID()) != null) {
+            tkt.setTicketStatus("Boarded");
             em.merge(tkt);
             return true;
         } else {
@@ -169,11 +191,13 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
-    public void selectSeat(Seat seat) throws Exception {
+    public void selectSeat(Seat seat, Ticket ticket) throws Exception {
         Seat newSeat = em.find(Seat.class, seat.getId());
         if (newSeat != null && newSeat.getStatus().equals("Unoccupied")) {
             newSeat.setStatus("Occupied");
             em.merge(newSeat);
+            ticket.setSeat(seat);
+            em.merge(ticket);
         } else {
             throw new Exception("Cannot Select This Seat!");
         }
@@ -198,9 +222,26 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
+    public boolean checkStandbyEligibility(Ticket tkt) throws Exception {
+        String cabinName = tkt.getBkInstance().getBookingClass().getCabinName();
+        if (cabinName != null) {
+            switch (cabinName) {
+                case "Suite":
+                case "First Class":
+                case "Business Class":
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            throw new Exception("Cabin Does Not Exist!");
+        }
+
+    }
+
     public void accumulateMiles(Ticket ticket) throws Exception {
         if (ticket != null) {
-              if (ticket.getRsv().getBooker().isMemberStatus()) {
+            if (ticket.getRsv().getBooker().isMemberStatus()) {
                 Booker booker = ticket.getRsv().getBooker();
                 Double mileAdded = ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance();
                 Double mileOld = booker.getMiles();
@@ -209,6 +250,26 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             }
         } else {
             throw new Exception("Ticket Does Not Exist!");
+        }
+
+    }
+
+    public void updateLuggageCount(Seat seat, Integer luggageCount) throws Exception {
+        if (em.find(Seat.class, seat.getId()) != null) {
+            seat.setLuggageCount(luggageCount);
+            em.merge(seat);
+        } else {
+            throw new Exception("Seat Does Not Exist!");
+        }
+    }
+
+    public Seat getSeat(Ticket tkt) throws Exception {
+        Seat result = new Seat();
+        if (em.find(Seat.class, tkt.getSeat().getId()) != null) {
+            result = (Seat) em.find(Seat.class, tkt.getSeat().getId());
+            return result;
+        } else {
+            throw new Exception("No selected Seat!");
         }
 
     }
