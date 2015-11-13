@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <p:panel id="panel" header="View Ground Crew Group Schedule"  style="width:100%">
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+                    <p:outputLabel for="startPlanDate" value="Start Date (yyyy-MM-dd): " />
+                    <p:calendar id="startPlanDate" value="#{VGVGSEPMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter ground crew group schedule start viewing date" size="30"> 
+                    </p:calendar>
+
+                    <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />
+                    <p:calendar id="endPlanDate" value="#{VGVGSEPMB.endDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="endDate" required="true" requiredMessage="Please enter ground crew group schedule end viewing date" size="30"> 
+                        <f:attribute name="startPlanDate" value="#{VGVGSEPMB.startDate}" />
+                        <f:validator validatorId="DateRangeValidator" />
+                    </p:calendar>
+                </h:panelGrid>
+                <p:commandButton value="View Ground Crew Group Schedule" action="#{VGVGSEPMB.viewGroundCrewGroupScheduleForPeriod}"  icon="ui-icon-check" />
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
