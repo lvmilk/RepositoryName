@@ -54,7 +54,6 @@ public class ExpenseManagedBean implements Serializable {
     long currentYear = Calendar.getInstance().get(Calendar.YEAR);
     private long expenseYear;
     private String expenseQuarter;
-    private List<Expense> expenseList = new ArrayList<>();
     private List<String> categoryList = new ArrayList<>();
     private Map<String, String> typeMap;
     private Map<String, Double> payableMap;
@@ -82,7 +81,6 @@ public class ExpenseManagedBean implements Serializable {
         payableMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("payableMap");
         total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
         totalString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString");
-        expenseList = (List<Expense>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseList");
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter") != null) {
             expenseYear = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseYear");
             expenseQuarter = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("expenseQuarter");
@@ -127,14 +125,12 @@ public class ExpenseManagedBean implements Serializable {
             if (total == 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + expenseYear + " Quarter " + expenseQuarter + " ! ", ""));
             } else {
-                expenseList = ftb.getExpenseList(expenseYear, expenseQuarter);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseYear", expenseYear);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseQuarter", expenseQuarter);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("typeMap", typeMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("payableMap", payableMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseList", expenseList);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./displayExpenseReport.xhtml");
             }
         }
@@ -151,16 +147,6 @@ public class ExpenseManagedBean implements Serializable {
         options.put("draggable", false);
         options.put("modal", true);
         RequestContext.getCurrentInstance().openDialog("dialogExpenseSummary", options, null);
-    }
-
-    public void exporterDetail() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("resizable", true);
-        options.put("draggable", false);
-        options.put("modal", true);
-        options.put("width", 700);
-        options.put("height", 500);
-        RequestContext.getCurrentInstance().openDialog("dialogExpenseDetail", options, null);
     }
 
     public void postProcessXLS(Object document) {
@@ -196,14 +182,6 @@ public class ExpenseManagedBean implements Serializable {
 
     public void setTotalString(String totalString) {
         this.totalString = totalString;
-    }
-
-    public List<Expense> getExpenseList() {
-        return expenseList;
-    }
-
-    public void setExpenseList(List<Expense> expenseList) {
-        this.expenseList = expenseList;
     }
 
     public List<String> getCategoryList() {
