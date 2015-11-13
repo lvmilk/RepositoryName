@@ -12,19 +12,19 @@
     </h:head>
     <h:body>
         <h:form id="form">
-            <p:dataTable id="tbl" var="key" value="#{EMB.categoryList}" style="margin-top:40px" emptyMessage="No Record Found in this Period!">
+            <p:dataTable id="tbl" var="key" value="#{EMB2.categoryList}" style="margin-top:40px" emptyMessage="No Record Found in this Period!">
                 <f:facet name="header">
-                    <h:outputText value="Fixed Cost and Sunk Cost Report (quarter #{EMB.expenseQuarter} in #{EMB.expenseYear})"/>
+                    <h:outputText value="Fixed Cost and Sunk Cost Report (quarter #{EMB2.expenseQuarter} in #{EMB2.expenseYear})"/>
                 </f:facet>
            <div align="center">
                 <p:column headerText="Cost Category">
                     <h:outputText value="#{key}" />
                 </p:column>
                 <p:column headerText="Cost Type">
-                    <h:outputText value="#{EMB.typeMap[key]}"/>
+                    <h:outputText value="#{EMB2.typeMap[key]}"/>
                 </p:column>
                 <p:column headerText="Payable">
-                    <h:outputText value="$#{EMB.payableMap[key]}"/>
+                    <h:outputText value="$#{EMB2.payableMap[key]}"/>
                 </p:column>
                </div>
             </p:dataTable>
@@ -34,12 +34,12 @@
             <p:panel header="Export Excel or PDF">
                 <h:commandLink id="excel">
                     <p:graphicImage name="excel.png" library="images"  width="40" height="50"/>
-                    <p:dataExporter type="xls" target="tbl" fileName="Revenue Report (quarter #{EMB.expenseQuarter} in #{EMB.expenseYear})" postProcessor="#{EMB.postProcessXLS}" />
+                    <p:dataExporter type="xls" target="tbl" fileName="Expense Report (quarter #{EMB2.expenseQuarter} in #{EMB2.expenseYear})" postProcessor="#{EMB2.postProcessXLS}" />
                 </h:commandLink>
 
                 <h:commandLink id="pdf">
                     <p:graphicImage name="pdf.png" library="images"  width="55" height="60"/>
-                    <p:dataExporter type="pdf" target="tbl" fileName="Revenue Report (quarter #{EMB.expenseQuarter} in #{EMB.expenseYear})" preProcessor="#{EMB.preProcessPDF}" />
+                    <p:dataExporter type="pdf" target="tbl" fileName="Expense Report (quarter #{EMB2.expenseQuarter} in #{EMB2.expenseYear})" preProcessor="#{EMB2.preProcessPDF}" />
                 </h:commandLink>
 
             </p:panel>

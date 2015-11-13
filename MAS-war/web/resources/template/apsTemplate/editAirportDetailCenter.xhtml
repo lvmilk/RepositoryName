@@ -55,7 +55,7 @@
                     <p:outputLabel for="timeZone" value="Time Zone: " />
                     <p:selectOneMenu id="timeZone" value="#{editAirportManagedBean.timeZone}" required="true" requiredMessage="Please select timezone" style="width:200px" >
                         <f:selectItem itemLabel="-Select TimeZone-" itemValue="" />
-                        <f:selectItems value="#{AirportManagedBean.utcList}" />
+                        <f:selectItems value="#{AirportManagedBean.timezoneList}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel for="operationalStatus" value="Operational Status: " />

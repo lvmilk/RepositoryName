@@ -58,8 +58,6 @@ public class ExpenseManagedBean2 implements Serializable {
     private List<String> categoryList = new ArrayList<>();
     private Map<String, String> typeMap;
     private Map<String, Double> payableMap;
-    private Map<String,Double> hourPayMap;
-    private Map<String,Double> sumMap;
     private String category;
     private String type;
     private Double payable;
@@ -97,7 +95,7 @@ public class ExpenseManagedBean2 implements Serializable {
     }
 
     public void calculateFixedCost() throws IOException {
-        System.out.println("AAS:EMB:Input testing 1 Year: " + expenseYear + " Quarter: " + expenseQuarter);
+        System.out.println("AAS:EMB2:Input testing 1 Year: " + expenseYear + " Quarter: " + expenseQuarter);
         if (expenseQuarter.equals("0") || expenseYear == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please select year and quarter ! "));
         } else {
@@ -107,23 +105,14 @@ public class ExpenseManagedBean2 implements Serializable {
             for (int i = 0; i < categoryList.size(); i++) {
                 payable = 0.0;
                 category = categoryList.get(i);
-                if (category.equals("Purchase Aircraft")) {
-                    type = "Sunk Cost";
-                    typeMap.put(category, type);
+                type = "Variable Operation Cost";
+                typeMap.put(category, type);
+                if (category.equals("DDS Commission")) {
                     payable = ftb.calculateExpense(category, expenseYear, expenseQuarter);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
                 } else {
-                    if (category.equals("Other Cost")) {
-                        type = "Fixed Operation Cost";
-                        typeMap.put(category, type);
-                    } else {
-                        type = "Sunk Cost";
-                        typeMap.put(category, type);
-                    }
                     payable = ftb.calculateNoDateExpense(category, expenseYear, expenseQuarter);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
                 }
                 total = total + payable;
                 totalString = BigDecimal.valueOf(total).toPlainString();
@@ -139,13 +128,13 @@ public class ExpenseManagedBean2 implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("expenseList", expenseList);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("./displayExpenseReport.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./displayExpenseReport2.xhtml");
             }
         }
     }
 
     public void back() throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./generateExpenseReport.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./generateExpenseReport2.xhtml");
     }
 
     public void exporterSummary() {
@@ -154,17 +143,7 @@ public class ExpenseManagedBean2 implements Serializable {
         options.put("resizable", false);
         options.put("draggable", false);
         options.put("modal", true);
-        RequestContext.getCurrentInstance().openDialog("dialogExpenseSummary", options, null);
-    }
-
-    public void exporterDetail() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("resizable", true);
-        options.put("draggable", false);
-        options.put("modal", true);
-        options.put("width", 700);
-        options.put("height", 500);
-        RequestContext.getCurrentInstance().openDialog("dialogExpenseDetail", options, null);
+        RequestContext.getCurrentInstance().openDialog("dialogExpenseSummary2", options, null);
     }
 
     public void postProcessXLS(Object document) {

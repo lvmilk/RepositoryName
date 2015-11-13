@@ -313,7 +313,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         return list;
     }
 
-    ///with payment date --> Purchase Aircraft
+    ///with payment date --> Purchase Aircraft and DDS Commission
     @Override
     public Double calculateExpense(String category, long year, String quarter) {
         Double total = 0.0;
@@ -334,7 +334,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         Calendar cal = Calendar.getInstance();
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
-   
+
         for (int i = 0; i < resultList.size(); i++) {
             Date paymentDate = resultList.get(i).getPaymentDate();
             cal.setTime(paymentDate);
@@ -378,7 +378,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
             }
             if (expenseYear == year && inPeriod) {
                 total = total + resultList.get(i).getPayable();
-                System.out.println("FTB:calculateExpense: Aircraft Purchase Cost:" + total);
+                System.out.println("FTB:calculateExpense: " + resultList.get(i).getCategory() + " with total payable: " + total);
             }
         }
         return total;
@@ -464,9 +464,19 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
             } else if (category.equals("Maintenance Cost")) {
                 total = total + resultList.get(i).getPayable() * fsb.calPeriodTotalMtManHour(startDate, endDate);
                 System.out.println("FTB:calculateNoDateExpense: Maintenance Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
-            } else {
-                total = total + resultList.get(i).getPayable() / 4; //other cost per quarter
+            } else if (category.equals("Other Cost")) {
+                total = total + resultList.get(i).getPayable() / 4;
                 System.out.println("FTB:calculateNoDateExpense: Other Cost:" + total + " unit cost: " + resultList.get(i).getPayable());
+            } else if (category.equals("Cabin Leader")) {
+                total = total + resultList.get(i).getPayable() + csb.calCabinLeaderTotalHourPay(startDate, endDate);
+            } else if (category.equals("Cabin Crew")) {
+                total = total + resultList.get(i).getPayable() + csb.calCabinCrewTotalHourPay(startDate, endDate);
+            } else if (category.equals("Captain")) {
+                total = total + resultList.get(i).getPayable() + csb.calCaptainTotalHourPay(startDate, endDate);
+            } else if (category.equals("Pilot")) {
+                total = total + resultList.get(i).getPayable() + csb.calPilotTotalHourPay(startDate, endDate);
+            } else {
+                total = total + resultList.get(i).getPayable() * 4;        // for ground staff and office staff
             }
         }
         return total;

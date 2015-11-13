@@ -28,9 +28,6 @@
                     <p:calendar  id="scheduleArrTime" value="#{EFFMB.arrTime}" pattern="HH:mm" timeOnly="true" required="true" requiredMessage="Please enter flight arrival time" size="30"/>
 
                     <p:outputLabel for="dateAdjust" value="Date Adjust: " />
-<!--                    <p:inputText id="dateAdjust" value="#{EFFMB.dateAdjustString}" label="dateAdjust" required="true" validatorMessage="Please enter 0 or 1 for date adjust" requiredMessage="Please enter date adjust"  size="30">
-                        <f:validateRegex pattern="[0-1]" />
-                    </p:inputText>-->
                     <p:selectOneRadio id="dateAdjust" value="#{EFFMB.dateAdjustString}" required="true" requiredMessage="Please select flight date adjust">
                         <f:selectItem itemLabel="0" itemValue="0" />
                         <f:selectItem itemLabel="1" itemValue="1" />
@@ -97,6 +94,14 @@
                         </h:panelGrid>
 
                     </p:panel>
+
+                    <p:outputLabel value="Departure Terminal: "/>
+                    <h:outputText value="#{EFFMB.depTerminal}" rendered="#{EFFMB.hasInstance}"/>
+                    <h:inputText value="#{EFFMB.depTerminal}" rendered="#{not EFFMB.hasInstance}"/>
+
+                    <p:outputLabel value="Arrival Terminal: "/>
+                    <h:outputText value="#{EFFMB.arrTerminal}" rendered="#{EFFMB.hasInstance}"/>
+                    <h:inputText value="#{EFFMB.arrTerminal}" rendered="#{not EFFMB.hasInstance}"/>
 
                     <p:outputLabel value="Flight Start Operation Date (yyyy-MM-dd): "/>
                     <h:outputText value="#{EFFMB.startDateString}" rendered="#{EFFMB.hasInstance}"/>

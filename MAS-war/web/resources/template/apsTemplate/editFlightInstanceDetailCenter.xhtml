@@ -43,13 +43,15 @@
                     <p:column headerText="Actual Date Adjust">
                         <h:outputText value="#{flightInst.actualDateAdjust}" />
                     </p:column>
-
+                    <p:column headerText="Departure Gate">
+                        <h:outputText value="#{flightInst.depGate}" />
+                    </p:column>
                     <p:column headerText="Update This Flight Instance">
                         <p:commandButton value="Update This" actionListener="#{editFIMB.editThisFlightInstance(flightInst)}"/>
                     </p:column>
 
                 </p:dataTable>
-                 <p:commandButton value="Cancel" update="@form" actionListener="#{editFIMB.editFlightInstCancel()}"  icon="ui-icon-cancel" />
+                <p:commandButton value="Cancel" update="@form" actionListener="#{editFIMB.editFlightInstCancel()}"  icon="ui-icon-cancel" />
             </p:panel>
 
         </h:form>

@@ -5,6 +5,7 @@
  */
 package SessionBean.DCS;
 
+import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
@@ -41,13 +42,14 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
         query1.setParameter("plastname", lastName);
         if (!query1.getResultList().isEmpty()) {
             passenger = (Passenger) query1.getSingleResult();
+            System.out.println("DCB:getAllTicket: passenger id? " + passenger.getId());
             Query query2 = em.createQuery("SELECT t FROM Ticket t where t.passenger.id=:pid");
             query2.setParameter("pid", passenger.getId());
             ticketList = query2.getResultList();
-            if (ticketList.isEmpty()) {
+            if (!ticketList.isEmpty()) {
                 return ticketList;
             } else {
-                throw new Exception("No Ticket Not Found!");
+                throw new Exception("No Ticket Found!");
             }
 
         } else {
@@ -95,7 +97,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     public List<Ticket> getAllStandbyTickets(String flightNo, String dateString) throws Exception {
         List<Ticket> ticketList = new ArrayList<Ticket>();
         List<Ticket> allTickets = new ArrayList<Ticket>();
-        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus:=tstatus");
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus=:tstatus");
         query.setParameter("tstatus", "Standby");
         FlightInstance fi = new FlightInstance();
         Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
@@ -147,13 +149,19 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     public List<Seat> getAllUnOccupiedSeats(Ticket tkt) throws Exception {
         List<Seat> unOccupiedList = new ArrayList<Seat>();
         FlightCabin fc = tkt.getBkInstance().getFlightCabin();
+        System.out.println("DCB:getAllUnOccupiedSeats: " + fc.getCabinClass().getCabinName());
         if (fc == null) {
+            System.out.println("DCB:getAllUnOccupiedSeats:no such flight cabin");
+
             throw new Exception("No Flight Cabin Found!");
         } else {
-            unOccupiedList = fc.getSeats();
+            Query query = em.createQuery("SELECT s FROM Seat s where s.flightCabin.id=:fcid");
+            query.setParameter("fcid", fc.getId());
+            unOccupiedList = query.getResultList();
             if (unOccupiedList.isEmpty()) {
                 throw new Exception("No Unoccupied Seat Available!");
             } else {
+                System.out.println("DCB:getAllUnOccupiedSeats: resultList size  " + unOccupiedList.size());
                 return unOccupiedList;
             }
 
@@ -162,33 +170,47 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     }
 
     public void selectSeat(Seat seat) throws Exception {
-        Seat newSeat =em.find(Seat.class, seat.getId());
-        if (newSeat!=null&& newSeat.getStatus().equals("Unoccupied")) {
+        Seat newSeat = em.find(Seat.class, seat.getId());
+        if (newSeat != null && newSeat.getStatus().equals("Unoccupied")) {
             newSeat.setStatus("Occupied");
             em.merge(newSeat);
+        } else {
+            throw new Exception("Cannot Select This Seat!");
         }
-        else{
-         throw new Exception("Cannot Select This Seat!");
-        }
-              
+
     }
-    
-        
+
     @Override
-    public boolean checkLoungeEligibility(Ticket tkt) throws Exception{
-     String cabinName=tkt.getBkInstance().getBookingClass().getCabinName();
-     if(cabinName!=null){
-     switch(cabinName){
-         case "Suite":case "First Class" :case "Business Claass":
-             return true;
-         default:
-             return false;
-     }
-     }else{
-        throw new Exception("Cabin Does Not Exist");            
-     }
- 
+    public boolean checkLoungeEligibility(Ticket tkt) throws Exception {
+        String cabinName = tkt.getBkInstance().getBookingClass().getCabinName();
+        if (cabinName != null) {
+            switch (cabinName) {
+                case "Suite":
+                case "First Class":
+                case "Business Claass":
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            throw new Exception("Cabin Does Not Exist!");
+        }
+
     }
-    
+
+    public void accumulateMiles(Ticket ticket) throws Exception {
+        if (ticket != null) {
+              if (ticket.getRsv().getBooker().isMemberStatus()) {
+                Booker booker = ticket.getRsv().getBooker();
+                Double mileAdded = ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance();
+                Double mileOld = booker.getMiles();
+                booker.setMiles(mileOld + mileAdded);
+                em.merge(booker);
+            }
+        } else {
+            throw new Exception("Ticket Does Not Exist!");
+        }
+
+    }
 
 }

@@ -28,11 +28,9 @@ public class FlightFrequency implements Serializable {
     private Long id;
     @ManyToOne
     private Route route = new Route();
-   
+
     private String flightNo;
 
-//    @ManyToOne
-//    private AircraftType aircraftType = new AircraftType();
 //    private LocalTime scheduleDepTime;
 //    private LocalTime scheduleArrTime;
     private Integer dateAdjust;
@@ -41,8 +39,7 @@ public class FlightFrequency implements Serializable {
     private String startDate;
     private String endDate;
     private long durationMinutes;
-//    private LocalDate startDate;
-//    private LocalDate endDate;
+
     private boolean onMon;
     private boolean onTue;
     private boolean onWed;
@@ -62,16 +59,14 @@ public class FlightFrequency implements Serializable {
     private String fDate;
     private String depTerminal;
     private String arrTerminal;
-    private String depGate;
+//    private String depGate;
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightFrequency")
     private List<FlightInstance> flightList = new ArrayList<>();
 
-//    @ManyToOne
-//    private FlightPackage flightPackage = new FlightPackage();
     public FlightFrequency create(Route route, String flightNo, String depTime, String arrTime, Integer dateAdjust,
             boolean onMon, boolean onTue, boolean onWed, boolean onThu, boolean onFri, boolean onSat, boolean onSun,
-            String startDate, String endDate, String sDate, String fDate) {
+            String startDate, String endDate, String sDate, String fDate, String depTerminal, String arrTerminal) {
         this.flightNo = flightNo;
         this.route = route;
         this.scheduleDepTime = depTime;
@@ -93,6 +88,9 @@ public class FlightFrequency implements Serializable {
         LocalDateTime depDateTime = LocalDateTime.of(depDate, dep);
         LocalDateTime arrDateTime = LocalDateTime.of(arrDate, arr);
         durationMinutes = java.time.Duration.between(depDateTime, arrDateTime).toMinutes();
+        this.depTerminal = depTerminal;
+        this.arrTerminal = arrTerminal;
+
         return this;
     }
 
@@ -134,13 +132,6 @@ public class FlightFrequency implements Serializable {
         this.weekFreq = weekFreq;
     }
 
-//    public String getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(String status) {
-//        this.status = status;
-//    }
     public Route getRoute() {
         return route;
     }
@@ -189,53 +180,6 @@ public class FlightFrequency implements Serializable {
         this.endDate = endDate;
     }
 
-    public String getDepGate() {
-        return depGate;
-    }
-
-    public void setDepGate(String depGate) {
-        this.depGate = depGate;
-    }
-
-//
-//    public AircraftType getAircraftType() {
-//        return aircraftType;
-//    }
-//
-//    public void setAircraftType(AircraftType aircraftType) {
-//        this.aircraftType = aircraftType;
-//    }
-//    public LocalTime getScheduleDepTime() {
-//        return scheduleDepTime;
-//    }
-//
-//    public void setScheduleDepTime(LocalTime scheduleDepTime) {
-//        this.scheduleDepTime = scheduleDepTime;
-//    }
-//
-//    public LocalTime getScheduleArrTime() {
-//        return scheduleArrTime;
-//    }
-//
-//    public void setScheduleArrTime(LocalTime scheduleArrTime) {
-//        this.scheduleArrTime = scheduleArrTime;
-//    }
-//
-//    public LocalDate getStartDate() {
-//        return startDate;
-//    }
-//
-//    public void setStartDate(LocalDate startDate) {
-//        this.startDate = startDate;
-//    }
-//
-//    public LocalDate getEndDate() {
-//        return endDate;
-//    }
-//
-//    public void setEndDate(LocalDate endDate) {
-//        this.endDate = endDate;
-//    }
     public Integer getDateAdjust() {
         return dateAdjust;
     }
@@ -348,13 +292,6 @@ public class FlightFrequency implements Serializable {
         this.durationMinutes = durationMinutes;
     }
 
-//    public FlightPackage getFlightPackage() {
-//        return flightPackage;
-//    }
-//
-//    public void setFlightPackage(FlightPackage flightPackage) {
-//        this.flightPackage = flightPackage;
-//    }
     @Override
     public int hashCode() {
         int hash = 0;

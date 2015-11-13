@@ -22,9 +22,8 @@
 
                     <p:outputLabel for="passportno" value="Passport Number" />
                     <h:outputText id="passportno" value="#{cmb.passportNo}" />
-
-
-                    <p:dataTable id="seatList" var="seat" value="#{cmb.unOccupiedSeats}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
+                </h:panelGrid>
+                   <p:dataTable id="seatList" var="seat" value="#{cmb.unOccupiedSeats}" emptyMessage="No Available Seat!" style="margin-bottom:20px">
                         <p:column headerText="Seat Number">
                             <h:outputText value="#{seat.seatNumberToPassenger}" style="center" />
                         </p:column>
@@ -33,14 +32,12 @@
                         </p:column>
    
                         <p:column headerText="Select Seat">
-                            <p:commandButton value="Select" update="panel" actionListener="#{cmb.onSelectSeat}">
+                            <p:commandButton value="Select"  update=":#{p:component('panel')}" actionListener="#{cmb.onSelectSeat}">
                                 <f:attribute name="seat" value="#{seat}"/>
                             </p:commandButton>   
                         </p:column>
                  
                     </p:dataTable>
-
-                </h:panelGrid>
             </p:panel>
 
         </h:form>

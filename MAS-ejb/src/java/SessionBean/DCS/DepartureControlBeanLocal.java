@@ -39,6 +39,8 @@ public interface DepartureControlBeanLocal {
 
     public boolean checkLoungeEligibility(Ticket tkt) throws Exception;
 
+    public void accumulateMiles(Ticket ticket) throws Exception;
+
     
     
 }
