@@ -253,7 +253,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception {
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour, Double otherCost) throws Exception {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         System.out.println("rpb.addRoute(): Add route " + originIATA + "-" + destIATA);
         Airport origin = em.find(Airport.class, originIATA);
@@ -263,7 +263,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Route already exists.");
         }
         route = new Route();
-        route.create(origin, dest, distance, blockhour);
+        route.create(origin, dest, distance, blockhour,otherCost);
         em.persist(route);
         em.flush();
     }
@@ -310,7 +310,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception {
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour,Double otherCost) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
@@ -329,6 +329,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             route.setDistance(distance);
             route.setAcType(acType);
             route.setBlockhour(blockhour);
+            route.setOtherCost(otherCost);
             em.merge(route);
             em.flush();
         }

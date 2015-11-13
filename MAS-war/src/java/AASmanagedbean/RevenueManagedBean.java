@@ -83,6 +83,7 @@ public class RevenueManagedBean implements Serializable {
         channelList.add("HOTEL");
         channelList.add("CAR RENTAL");
         channelList.add("HIGH-SPEED RAILWAY");
+        channelList.add("OTHER");
         saleMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("saleMap");
         commissionMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("commissionMap");
         sumMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("sumMap");
@@ -112,16 +113,17 @@ public class RevenueManagedBean implements Serializable {
                 commission = 0.0;
                 channel = channelList.get(i);
 
-                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("GDS")) {
+                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("GDS") || channel.equals("OTHER")) {
                     revenue = ftb.calculateRevenue(channel, year, quarter);
                     saleMap.put(channel, revenue);
                 } else {
                     saleMap.put(channel, 0.0);
                 }
 
-                if (channel.equals("ARS") || channel.equals("DDS")) {
+                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("OTHER")) {
                     commissionMap.put(channel, 0.0);
                 } else {
+                    //for GDS, HOTEL, CAR & RAILWAY
                     commission = 0.1 * ftb.calculateRevenue(channel, year, quarter); //charge for 10% of sales
                     commissionMap.put(channel, commission);
                 }

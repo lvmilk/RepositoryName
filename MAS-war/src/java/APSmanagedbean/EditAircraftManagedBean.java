@@ -42,7 +42,7 @@ public class EditAircraftManagedBean implements Serializable {
     private Date deliveryDate;
     private Date retireDate;  //Lease Expiration Date
     private Date oldRetireDate;
-     private Double purchaseCost;
+    private Double purchaseCost;
     String ffd;
     String dd;
     String rd;
@@ -90,21 +90,30 @@ public class EditAircraftManagedBean implements Serializable {
 
     public void editAircraft() throws Exception {
         try {
-            System.out.println("editAircraftManagedBean: editAircraft: oldRetireDate is " + oldRetireDate);
-            if (!retireDate.before(oldRetireDate)) {
+            Calendar c = Calendar.getInstance();
+            c.setTime(firstFlyDate);
+            c.add(Calendar.DATE, 100);
+            Date deliveryCheck = c.getTime();
+            c.setTime(deliveryDate);
+            c.add(Calendar.YEAR, 5);
+            Date retireCheck = c.getTime();
+            if (deliveryDate.after(deliveryCheck) && retireDate.after(retireCheck)) {
                 if (firstFlyDate.before(deliveryDate) && retireDate.after(deliveryDate)) {
-                    purchaseCost=purchaseCost*1000000;
+                    purchaseCost = purchaseCost * 1000000;
+                    if(status.equals("Retired")){
+                        retireDate = new Date();
+                    }
                     ffd = df.format(firstFlyDate);
                     dd = df.format(deliveryDate);
                     rd = df.format(retireDate);
-                    fpb.editAircraft(type, registrationNo, status, ffd, dd, rd,purchaseCost);
+                    fpb.editAircraft(type, registrationNo, status, ffd, dd, rd, purchaseCost);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("./editAircraftDone.xhtml");
 
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < lease expiration date)"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please check the Date! (first fly date < delivery date < retire date)"));
                 }
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Lease Expiration Date can only be set as later than the previous one " + df.format(oldRetireDate)));
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Date","Please check the Date! (deliveryDate is at least 100 days after firstFlyDate, and retireDate is at least 5 years after deliveryDate)"));
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
@@ -185,7 +194,6 @@ public class EditAircraftManagedBean implements Serializable {
     public void setPurchaseCost(Double purchaseCost) {
         this.purchaseCost = purchaseCost;
     }
-
 
     public List<AircraftType> getTypeList() {
         return typeList;

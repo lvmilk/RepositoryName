@@ -30,6 +30,11 @@
                     <p:inputText id="blockhour" value="#{editRouteManagedBean.blockhour}" label="blockhour" required="true" requiredMessage="Please enter aircraft blockhour" size="20">
                     </p:inputText>
                     <!--<h:outputText value="#{editRouteManagedBean.route.blockhour}"/>-->
+                    
+                    <p:outputLabel for="otherCost" value="Miscellaneous Cost (per year): " />
+                    <p:inputText id="otherCost" value="#{editRouteManagedBean.otherCost}" label="otherCost" required="true" validatorMessage="Miscellaneous Cost should be within 2000000 SGD" requiredMessage="Please enter miscellaneous cost for this route" size="30">
+                        <f:validateDoubleRange minimum="500000.0" maximum="2000000.0"/>
+                    </p:inputText>
 
                     <p:outputLabel for="aircraftType" value="Serving Aircraft Type: " />
                     <p:selectOneMenu id="aircraftType" value="#{editRouteManagedBean.acTypeString}" required="true" requiredMessage="Please select aircraft type " style="width:150px" rendered="#{not editRouteManagedBean.hasFlight}">

@@ -567,11 +567,12 @@ INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(4444,"GDS",400.00,"Commission","AF","2015-11-10")
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(5555,"GDS",220.00,"Commission","DL","2015-11-10")
 
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(101,"OTHER",60000000.00,"Sale","9V-ABC","2035-01-03")
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(202,"OTHER",60000000.00,"Sale","9V-XYZ","2035-01-03")
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(303,"OTHER",45000000.00,"Sale","9V-AAA","2032-01-03")
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(404,"OTHER",45000000.00,"Sale","9V-BBB","2032-01-03")
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(505,"OTHER",45000000.00,"Sale","9V-CCC","2032-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(102,"OTHER",60000000.00,"Aircraft Sale","9V-LXX","2015-11-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(101,"OTHER",60000000.00,"Aircraft Sale","9V-ABC","2035-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(202,"OTHER",60000000.00,"Aircraft Sale","9V-XYZ","2035-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(303,"OTHER",45000000.00,"Aircraft Sale","9V-AAA","2032-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(404,"OTHER",45000000.00,"Aircraft Sale","9V-BBB","2032-01-03")
+INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate) values(505,"OTHER",45000000.00,"Aircraft Sale","9V-CCC","2032-01-03")
 
 
 INSERT IGNORE INTO Expense(id,type,category,paymentDate,payable,costSource) values(111,"Sunk Cost","Purchase Aircraft","2015-09-12",200000000.0,"9V-ABC")

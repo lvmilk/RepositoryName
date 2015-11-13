@@ -10,6 +10,8 @@ import Entity.APS.AircraftType;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.OfficeStaff;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.text.ParseException;
@@ -874,6 +876,20 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return pilotList;
     }
 
+    @Override
+    public List<OfficeStaff> getAllOfficeStaff() {
+        Query q = em.createQuery("SELECT o FROM OfficeStaff o");
+        List<OfficeStaff> officeStaff = (List<OfficeStaff>) q.getResultList();
+        return officeStaff;
+    }
+
+    @Override
+    public List<GroundStaff> getAllGroundStaff() {
+        Query q = em.createQuery("SELECT g FROM GroundStaff g");
+        List<GroundStaff> groundStaff = (List<GroundStaff>) q.getResultList();
+        return groundStaff;
+    }
+
     public List<CockpitCrew> getFiCaptain(FlightInstance fi) {
         List<CockpitCrew> cpList = fi.getCockpitList();
         List<CockpitCrew> cpCap = new ArrayList<>();
@@ -1031,9 +1047,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         }
         return fiNew;
     }
-    
-        @Override
-        public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate) {
+
+    @Override
+    public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate) {
         List<FlightInstance> fiList = cc.getFiList();
         List<FlightInstance> fiNew = new ArrayList<>();
         for (FlightInstance f1 : fiList) {
