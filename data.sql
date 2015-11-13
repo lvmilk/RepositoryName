@@ -458,7 +458,7 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(1111,"G1234111","Harry","Potter","TFP","")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(11111,"G1231111","Ron","Wesley","TFP","")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(22222,"G1232222","Hanqing","Wang","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(33333,"G1233333","Hanyu","Wang","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(33333,"G44125087","Hanyu","Wang","TFP","")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(44444,"G1234444","Hao","Jiang","TFP","")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(55555,"G1235555","Rensheng","Liu","TFP","")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(66666,"G1236666","Yueyi","Fan","TFP","")
