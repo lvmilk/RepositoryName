@@ -155,7 +155,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     }
 
-    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem) {
+    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem, String companyName) {
         Booker booker = selectedRsv.getBooker();
         System.out.println("in rescheduleRsv()");
 
@@ -176,8 +176,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         Double totalPrice = computeTotalPrice(BookClassInstanceList, passengerList.size(), totalPenalty);
 
         Double pricePax = pricePerPax(selectedRsv.getBkcInstance());
-        System.out.println("in reschedule rsv : pricePerPax is "+pricePax);
-        Double priceDecrease=pricePax*passengerList.size();
+        System.out.println("in reschedule rsv : pricePerPax is " + pricePax);
+        Double priceDecrease = pricePax * passengerList.size();
 
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         if (oldPsgList != null && oldPsgList.size() == passengerList.size()) {
@@ -185,13 +185,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         }
 
         em.flush();
-        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem, totalPrice, "rebook");
+        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem, totalPrice, "rebook", companyName);
 
     }
 
     public Double pricePerPax(List<BookingClassInstance> bookInstanceList) {
         Double price = 0.0;
-    
+
         for (int i = 0; i < bookInstanceList.size(); i++) {
             price += bookInstanceList.get(i).getPrice();
         }
@@ -201,11 +201,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     public Double computeTotalPrice(ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, Double penalty) {
         Double totalPrice = 0.0;
-        System.out.println("in computeTotalPrice(): list of bookingclassIntance is "+BookClassInstanceList);
+        System.out.println("in computeTotalPrice(): list of bookingclassIntance is " + BookClassInstanceList);
         System.out.println("psgCount " + psgCount + " penalty " + penalty + " bookList.size() " + BookClassInstanceList.size());
         for (int i = 0; i < BookClassInstanceList.size(); i++) {
-            System.out.println("in computeTotalPrice(): price of bookingclassIntance  "+BookClassInstanceList.get(i)+" is from flightFrequency of "+BookClassInstanceList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
-             System.out.println("in computeTotalPrice(): price of bookingclassIntance  "+BookClassInstanceList.get(i)+" is "+BookClassInstanceList.get(i).getPrice());
+            System.out.println("in computeTotalPrice(): price of bookingclassIntance  " + BookClassInstanceList.get(i) + " is from flightFrequency of " + BookClassInstanceList.get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
+            System.out.println("in computeTotalPrice(): price of bookingclassIntance  " + BookClassInstanceList.get(i) + " is " + BookClassInstanceList.get(i).getPrice());
             totalPrice += BookClassInstanceList.get(i).getPrice();
         }
         totalPrice *= psgCount;
@@ -220,11 +220,10 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         rsv = em.find(Reservation.class, rsv.getId());
 
         Payment payment = em.find(Payment.class, rsv.getPayment().getPaymentID());
-        System.out.println("original price is "+payment.getTotalPrice());
-        System.out.println(" price decrease is "+priceDecrease);
-        
-        
-        payment.setTotalPrice(payment.getTotalPrice()-priceDecrease);
+        System.out.println("original price is " + payment.getTotalPrice());
+        System.out.println(" price decrease is " + priceDecrease);
+
+        payment.setTotalPrice(payment.getTotalPrice() - priceDecrease);
         em.merge(payment);
         em.flush();
 //        rsv.setPayment(null);
@@ -453,6 +452,22 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         }
     }
 
+    @Override
+    public List<Reservation> getCompanyReservations(String companyName) {
+                List<Reservation> rsvList = new ArrayList<>();
+        String status = "Reserved";
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.rsvStatus=:status and r.companyName=:inCompanyName");
+        query.setParameter("inCompanyName", companyName);
+        query.setParameter("status", status);
+        List<Reservation> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList;
+        } else {
+            resultList = new ArrayList<>();
+            return resultList;
+        }
+    }
+
     public List<Reservation> findReservation(Long code, String email) {
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.id=:code AND r.bkEmail=:email");
         query.setParameter("code", code);
@@ -465,4 +480,5 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             return resultList;
         }
     }
+
 }

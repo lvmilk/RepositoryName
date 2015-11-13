@@ -466,10 +466,10 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 
 
 
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars")
 
 
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(111111,10000)

@@ -54,6 +54,7 @@ public class CancelFlightManagedBean implements Serializable {
     private String manageStatus;
     private String stfType;
     private String bkSystem;
+    private String companyName;
 
     public CancelFlightManagedBean() {
     }
@@ -62,7 +63,11 @@ public class CancelFlightManagedBean implements Serializable {
     public void init() {
 
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
-        rsvList = mr.getAllReservations();
+        companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+        bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+        
+//        rsvList = mr.getAllReservations();
+        rsvList = mr.getCompanyReservations(companyName);
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
         flights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flights");
         origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
@@ -87,11 +92,11 @@ public class CancelFlightManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + selectedPsgList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + selectedPsgList.get(0).getId());
-        if (stfType.equals("agency")) {
-            this.bkSystem = "DDS";
-        } else {
-            this.bkSystem = "ARS";
-        }
+//        if (stfType.equals("agency")) {
+//            this.bkSystem = "DDS";
+//        } else {
+//            this.bkSystem = "ARS";
+//        }
 
         mr.cancelFlight(selectedRsv, selectedPsgList, departed, returned, selectedRsv.getBkcInstance(), origin, dest, selectedRsv.getReturnTrip(), 0.0, bkSystem);
 
@@ -283,6 +288,20 @@ public class CancelFlightManagedBean implements Serializable {
 
     public void setSelectedPsgList(List<Passenger> selectedPsgList) {
         this.selectedPsgList = selectedPsgList;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }
