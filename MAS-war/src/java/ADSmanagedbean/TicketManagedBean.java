@@ -65,6 +65,7 @@ public class TicketManagedBean implements Serializable {
     private String stfType;
     private String username;
     private String bkSystem;
+    private String companyName;
 
     @PostConstruct
     public void init() {
@@ -88,7 +89,9 @@ public class TicketManagedBean implements Serializable {
             setPsgCount((Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson"));
 
             BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
-
+            bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+            companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+            
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
 
@@ -100,12 +103,12 @@ public class TicketManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        if (stfType.equals("agency")) {
-            this.bkSystem = "DDS";
-        } else {
-            this.bkSystem = "ARS";
-        }
-        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book");
+//        if (stfType.equals("agency")) {
+//            this.bkSystem = "DDS";
+//        } else {
+//            this.bkSystem = "ARS";
+//        }
+        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book", companyName);
 
         if (stfType.equals("agency")) {
             ddsBkblocal.setAgency_Booker(username, booker);
@@ -282,6 +285,20 @@ public class TicketManagedBean implements Serializable {
      */
     public void setBkSystem(String bkSystem) {
         this.bkSystem = bkSystem;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

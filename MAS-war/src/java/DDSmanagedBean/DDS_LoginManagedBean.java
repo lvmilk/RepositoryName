@@ -32,21 +32,29 @@ public class DDS_LoginManagedBean implements Serializable {
 
     public void logIn() throws IOException {
         Boolean validity;
-        HttpSession session = SessionUtil.getSession();
-        session.setAttribute("username", username);
-        session.setAttribute("stfType", stfType);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
+        String bkSystem = "DDS";
+        String companyName;
+
         validity = mal.validateDDSLogin(username, password);
 
         System.out.println(validity);
         if (validity) {
             System.out.println("~~~~~~~DDS_Login: Account exists");
+
+            HttpSession session = SessionUtil.getSession();
+            session.setAttribute("username", username);
+            session.setAttribute("stfType", stfType);
+            companyName = mal.getDDSCompanyName(username);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkSystem", bkSystem);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyName", companyName);
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("ddsWorkspace.xhtml");
-        }else{
+        } else {
             System.out.println("Username or password incorrect");
-                FacesContext.getCurrentInstance().addMessage(null,
-                        new FacesMessage("Username or password incorrect"));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Username or password incorrect"));
         }
     }
 

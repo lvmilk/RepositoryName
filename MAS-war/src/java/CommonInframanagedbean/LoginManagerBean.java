@@ -45,6 +45,8 @@ public class LoginManagerBean implements Serializable {
         Boolean validity;
         int status;
         validity = mal.validateLogin(username, password, stfType);
+        String bkSystem="ARS";
+        String companyName="MAS";
 
         System.out.println(stfType);
 
@@ -55,6 +57,8 @@ public class LoginManagerBean implements Serializable {
             session.setAttribute("stfType", stfType);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("UserId", username);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("StaffType", stfType);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkSystem", bkSystem);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("companyName", companyName);
             if (stfType.equals("administrator")) {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("sAdmWorkspace.xhtml");
             } else if (stfType.equals("groundStaff")) {

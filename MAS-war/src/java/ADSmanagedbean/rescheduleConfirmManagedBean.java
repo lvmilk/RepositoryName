@@ -79,13 +79,16 @@ public class rescheduleConfirmManagedBean implements Serializable {
     private String manageStatus;
     
     private String bkSystem;
+    private String companyName;
 
     @PostConstruct
     public void init() {
         try {
 
-            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
+            manageStatus=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
             selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
+            bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+            companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
             stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
@@ -131,12 +134,12 @@ public class rescheduleConfirmManagedBean implements Serializable {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
         if (stfType.equals("agency")) {
-            this.bkSystem = "DDS";
+            this.setBkSystem("DDS");
         } else {
-            this.bkSystem = "ARS";
+            this.setBkSystem("ARS");
         }
 
-        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem);
+        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem,companyName);
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
@@ -341,6 +344,48 @@ public class rescheduleConfirmManagedBean implements Serializable {
 
     public void setTotalPenalty(Double totalPenalty) {
         this.totalPenalty = totalPenalty;
+    }
+
+    /**
+     * @return the manageStatus
+     */
+    public String getManageStatus() {
+        return manageStatus;
+    }
+
+    /**
+     * @param manageStatus the manageStatus to set
+     */
+    public void setManageStatus(String manageStatus) {
+        this.manageStatus = manageStatus;
+    }
+
+    /**
+     * @return the bkSystem
+     */
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    /**
+     * @param bkSystem the bkSystem to set
+     */
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }
