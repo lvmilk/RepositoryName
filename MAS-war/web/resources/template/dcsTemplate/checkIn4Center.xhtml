@@ -76,7 +76,7 @@
                         <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="center"/>
                     </p:column>
                     <p:column colspan="1">
-                        <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                        <p:barcode value="#{cmb.flightNo}  #{cmb.dateString} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
                     </p:column>
                 </h:panelGrid>
                 <p:commandButton value="Print Luggage Tag 1" rendered="#{cmb.luggageCount==1||cmb.luggageCount==2}" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
@@ -116,7 +116,7 @@
                         <h:outputText value="#{cmb.seatSelected.seatNumberToPassenger}" style="center"/>
                     </p:column>
                     <p:column colspan="1">
-                        <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                        <p:barcode value="#{cmb.flightNo}  #{cmb.dateString} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
                     </p:column>
                 </h:panelGrid>
 

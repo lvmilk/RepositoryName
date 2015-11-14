@@ -157,12 +157,12 @@
                         </p:column>
 
                         <p:column colspan="1">  
-                            <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                            <p:barcode value="#{cmb.flightNo} #{cmb.dateString} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
                         </p:column>
 
                         <p:column colspan="1">Bar Code </p:column>
                         <p:column colspan="1">
-                            <p:barcode value="#{cmb.flightNo} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                            <p:barcode value="#{cmb.flightNo}  #{cmb.dateString} #{cmb.firstName} #{cmb.lastName} #{cmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
                        </p:column>
 
                     </p:row>

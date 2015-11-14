@@ -50,6 +50,16 @@ public interface DepartureControlBeanLocal {
 
     public boolean checkStandbyEligibility(Ticket tkt) throws Exception;
 
+    public List<Ticket> getAllBoardedTicket(String flightNo, String dateString) throws Exception;
+
+    public List<Ticket> getAllUnBoardedTicket(String flightNo, String dateString) throws Exception;
+
+    public List<Ticket> getAllCheckedInTicket(String flightNo, String dateString) throws Exception;
+
+    public List<Ticket> getAllUnchekedinTicket(String flightNo, String dateString) throws Exception;
+
+    public List<Seat> getAllSeats(String flightNo, String dateString) throws Exception;
+
     
     
 }
