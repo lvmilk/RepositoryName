@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>View Reservation</title>
+    </h:head>
+    <h:body>
+        <h:form id="viewReserve" >
+            <p:panel id="panel" header="View All Reservation"  style="width:100%">
+                <p:dataTable var="rsv" value="#{viewReservation.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
+
+
+                    <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
+                        <h:outputText value="#{rsv.id}" />
+                    </p:column>
+
+                    <p:column headerText="Reservation Date" sortBy="#{rsv.rsvDate}" >
+                        <h:outputText value="#{rsv.rsvDate}" />
+                    </p:column>
+
+                    <p:column headerText="Depart From" >
+                        <h:outputText value="#{rsv.origin}" />
+                    </p:column>
+                    <p:column headerText="Arrive At">
+                        <h:outputText value="#{rsv.dest}" />
+                    </p:column>
+                    <p:column headerText="Round Trip">
+                        <h:outputText value="#{rsv.returnTrip}" />
+                    </p:column>
+
+                    <p:column headerText="Booking Person">
+                        <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
+                    </p:column>
+                    <p:column headerText="Contact Email" sortBy="#{rsv.bkEmail}" filterBy="#{rsv.bkEmail}" filterMatchMode="contains">
+                        <h:outputText value="#{rsv.bkEmail}" />
+                    </p:column>
+
+
+                    <p:column headerText="View ">
+                        <p:commandButton value="View Detail" actionListener="#{viewReservation.onSelectRsv(rsv)}" process="@this :viewReserve:panel" partialSubmit="true" update=":viewReserve"/>
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:separator />
+            <br/>
+            <br/>
+
+            <p:panel id="detail" header="Reservation Detail" rendered="#{viewReservation.departed.size()>0}" toggleable="true">
+                <p:panel header="Departure Trip " >             
+                    <ui:repeat value="#{viewReservation.departed}" var="instance" varStatus="myStatus">
+                        <h:panelGrid columns="8" cellpadding="15" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Departure Time " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{viewReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+                </p:panel>
+
+                <br/>
+                <p:panel header="Return Trip " rendered="#{viewReservation.returned.size()>0}">             
+                    <ui:repeat value="#{viewReservation.returned}" var="instance">
+
+                        <h:panelGrid columns="8" cellpadding="15" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Departure Time " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{viewReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                        </h:panelGrid>
+
+                        <p:separator />
+                    </ui:repeat>
+                </p:panel>
+                <br />
+
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="4" cellpadding="10" >
+                        <p:outputLabel  value="Title" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.title}" />
+
+                        <p:outputLabel  value="Name" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.firstName} #{viewReservation.selectedRsv.booker.lastName}" />
+
+                        <p:outputLabel  value="Email" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.email}" />
+
+                        <p:outputLabel  value="Address" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.address}" />
+
+                        <p:outputLabel  value="Contact No" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.contact}" />
+                    </h:panelGrid>
+
+                </p:panel>
+
+
+                <br/>
+                <p:panel id="passenger" header="Passenger"  rendered="#{viewReservation.departed.size()>0}" toggleable="true" style="width:70%">
+                    <p:dataTable var="passenger" value="#{viewReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{passenger.title}" />
+                        </p:column>
+
+                        <p:column headerText="Given Name" >
+                            <h:outputText value="#{passenger.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                            <h:outputText value="#{passenger.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Passport No.">
+                            <h:outputText value="#{passenger.passport}" />
+                        </p:column>
+
+
+                    </p:dataTable>
+                </p:panel>
+                
+                <p:panel id="payment" header="Payment"   toggleable="true" style="width:45%">
+                    <h:panelGrid columns="4" cellpadding="10" >
+
+                        <p:outputLabel  value="Payment ID: " />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentID}" />
+
+                        <p:outputLabel  value="Date of Payment: " />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentDate.toString}" />
+
+                        <p:outputLabel  value="Amount of Payment" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.totalPrice}" />
+                    </h:panelGrid>
+
+                </p:panel>
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+
