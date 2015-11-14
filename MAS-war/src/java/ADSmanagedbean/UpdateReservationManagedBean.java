@@ -66,6 +66,9 @@ public class UpdateReservationManagedBean implements Serializable {
 
     private FlightInstance selectedFlight;
 
+    private String bkSystem;
+    private String companyName;
+
     public UpdateReservationManagedBean() {
     }
 
@@ -93,13 +96,25 @@ public class UpdateReservationManagedBean implements Serializable {
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
 
-    public void onChooseUpgradePsg() {
+    public void onChooseUpgradePsg() throws IOException {
         BookingClassInstance chosenBkInstance = flightToBkInstance.get(selectedFlight);
         CabinClass chosenCabin = chosenBkInstance.getFlightCabin().getCabinClass();
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsgList", selectedPsgList);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
+        if (selectedFlight != null) {
+            if (selectedPsgList != null && !selectedPsgList.isEmpty()) {
 
-              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsgList", selectedPsgList);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
+
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
+               
+                 FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one flight leg for for upgrade of cabin ", ""));
+        }
 
     }
 
@@ -413,6 +428,22 @@ public class UpdateReservationManagedBean implements Serializable {
 
     public void setSelectedFlight(FlightInstance selectedFlight) {
         this.selectedFlight = selectedFlight;
+    }
+
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }
