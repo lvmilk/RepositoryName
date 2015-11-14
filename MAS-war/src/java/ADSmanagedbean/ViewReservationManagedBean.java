@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -28,22 +29,26 @@ import javax.faces.view.ViewScoped;
 public class ViewReservationManagedBean implements Serializable {
 
     @EJB
-    ManageReservationBeanLocal mr;
-    List<Reservation> rsvList = new ArrayList<>();
-    List<Reservation> resultRsvList = new ArrayList<>();
+    private ManageReservationBeanLocal mr;
+    private List<Reservation> rsvList = new ArrayList<>();
+    private List<Reservation> resultRsvList = new ArrayList<>();
 
-    List<FlightInstance> departed = new ArrayList<>();
-    List<FlightInstance> returned = new ArrayList<>();
-    Reservation selectedRsv=new Reservation();
-    List<Passenger> psgList=new ArrayList<>();
+    private List<FlightInstance> departed = new ArrayList<>();
+    private List<FlightInstance> returned = new ArrayList<>();
+    private Reservation selectedRsv=new Reservation();
+    private List<Passenger> psgList=new ArrayList<>();
     
-
+    private String bkSystem;
+    private String companyName;
+    
     public ViewReservationManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        rsvList = mr.getAllReservations();
+        companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+        
+        rsvList = mr.getCompanyReservations(companyName);
 
     }
 
@@ -118,6 +123,34 @@ public class ViewReservationManagedBean implements Serializable {
 
     public void setPsgList(List<Passenger> psgList) {
         this.psgList = psgList;
+    }
+
+    /**
+     * @return the bkSystem
+     */
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    /**
+     * @param bkSystem the bkSystem to set
+     */
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     

@@ -113,7 +113,7 @@ public class TicketManagedBean implements Serializable {
         if (stfType.equals("agency")) {
             ddsBkblocal.setAgency_Booker(username, booker);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
