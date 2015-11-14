@@ -35,6 +35,12 @@
                             <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
                         </h:outputText>
                     </p:column>
+                    <p:column headerText="Origin">
+                        <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.IATA}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Destination">
+                        <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.IATA}" style="center"/>
+                    </p:column>
                     <p:column headerText="Ticekt Status">
                         <h:outputText value="#{tkt.ticketStatus}" style="center"/>
                     </p:column>

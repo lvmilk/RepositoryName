@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Checked In Passenger List</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="View Checked In Passenger List"  style="width:100%">
+                <p:messages id="msgs" />
+    <h:panelGrid columns="2" cellpadding="5" >
+                    <p:outputLabel for="flightno" value="Flight Number" />
+                    <h:outputText id="flightno" value="#{bmb.flightNo}" style="center" />
+
+                    <p:outputLabel for="dateString" value="Date" />
+                    <h:outputText id="dateString" value="#{bmb.dateString}" style="center"/>
+
+                </h:panelGrid>
+
+
+
+                <p:dataTable id="ticketList" var="tkt" value="#{bmb.tickets}" emptyMessage="No Checked in Ticket!" style="margin-bottom:20px">
+                    <p:column headerText="Passenger Name">
+                        <h:outputText value="#{tkt.passenger.firstName}/#{tkt.passenger.lastName}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Passport Number">
+                        <h:outputText value="#{tkt.passenger.passport}" style="center"/>
+                    </p:column>
+                     <p:column headerText="Seat Number">
+                         <h:outputText value="#{tkt.seat.seatNumberToPassenger}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Ticekt Status">
+                        <h:outputText value="#{tkt.ticketStatus}" style="center"/>
+                    </p:column>
+
+                </p:dataTable>
+                <p:commandButton value="Back"  action="#{bmb.goBackForViewPage}" icon="ui-icon-carat-1-w"/>
+
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>
+

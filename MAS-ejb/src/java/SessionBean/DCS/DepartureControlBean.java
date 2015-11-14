@@ -109,7 +109,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
             if (!query.getResultList().isEmpty()) {
                 for (Ticket temp : (List<Ticket>) query.getResultList()) {
-                    if (temp.getDepCity().equals(fi.getFlightFrequency().getRoute().getOrigin().getCityName()) && temp.getArrCity().equals(fi.getFlightFrequency().getRoute().getDest().getCityName())) {
+                    if (temp.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getOrigin().equals(fi.getFlightFrequency().getRoute().getOrigin()) && temp.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDest().equals(fi.getFlightFrequency().getRoute().getDest())) {
                         ticketList.add(temp);
                     }
                 }
@@ -170,6 +170,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     @Override
     public List<Seat> getAllUnOccupiedSeats(Ticket tkt) throws Exception {
         List<Seat> unOccupiedList = new ArrayList<Seat>();
+        List<Seat> newList = new ArrayList<Seat>();
         FlightCabin fc = tkt.getBkInstance().getFlightCabin();
         System.out.println("DCB:getAllUnOccupiedSeats: " + fc.getCabinClass().getCabinName());
         if (fc == null) {
@@ -179,10 +180,15 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
         } else {
             Query query = em.createQuery("SELECT s FROM Seat s where s.flightCabin.id=:fcid");
             query.setParameter("fcid", fc.getId());
-            unOccupiedList = query.getResultList();
-            if (unOccupiedList.isEmpty()) {
+            newList = query.getResultList();
+            if (newList.isEmpty()) {
                 throw new Exception("No Unoccupied Seat Available!");
             } else {
+                for (Seat st : newList) {
+                    if (st.getStatus().equals("Unoccupied")) {
+                        unOccupiedList.add(st);
+                    }
+                }
                 System.out.println("DCB:getAllUnOccupiedSeats: resultList size  " + unOccupiedList.size());
                 return unOccupiedList;
             }
@@ -222,6 +228,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
+    @Override
     public boolean checkStandbyEligibility(Ticket tkt) throws Exception {
         String cabinName = tkt.getBkInstance().getBookingClass().getCabinName();
         if (cabinName != null) {
@@ -239,6 +246,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
+    @Override
     public void accumulateMiles(Ticket ticket) throws Exception {
         if (ticket != null) {
             if (ticket.getRsv().getBooker().isMemberStatus()) {
@@ -254,6 +262,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
+    @Override
     public void updateLuggageCount(Seat seat, Integer luggageCount) throws Exception {
         if (em.find(Seat.class, seat.getId()) != null) {
             seat.setLuggageCount(luggageCount);
@@ -263,6 +272,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
         }
     }
 
+    @Override
     public Seat getSeat(Ticket tkt) throws Exception {
         Seat result = new Seat();
         if (em.find(Seat.class, tkt.getSeat().getId()) != null) {
@@ -272,6 +282,159 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("No selected Seat!");
         }
 
+    }
+
+    @Override
+    public List<Ticket> getAllBoardedTicket(String flightNo, String dateString) throws Exception {
+        List<Ticket> ticketList = new ArrayList<Ticket>();
+        List<Ticket> allTickets = new ArrayList<Ticket>();
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus=:tstatus");
+        query.setParameter("tstatus", "Boarded");
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+
+            if (!query.getResultList().isEmpty()) {
+                for (Ticket temp : (List<Ticket>) query.getResultList()) {
+                    if (temp.getBkInstance().getFlightCabin().getFlightInstance().getId().equals(fi.getId())) {
+                        ticketList.add(temp);
+                    }
+                }
+            } else {
+                throw new Exception("No Boarded Passenger Found");
+            }
+
+        } else {
+            throw new Exception("No Flight Instance Found");
+        }
+
+        return ticketList;
+    }
+
+    @Override
+    public List<Ticket> getAllUnBoardedTicket(String flightNo, String dateString) throws Exception {
+        List<Ticket> ticketList = new ArrayList<Ticket>();
+        List<Ticket> allTickets = new ArrayList<Ticket>();
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus=:tstatus1 or t.ticketStatus=:tstatus2");
+        query.setParameter("tstatus1", "Checkedin");
+        query.setParameter("tstatus2", "OnlineCheckedin");
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+
+            if (!query.getResultList().isEmpty()) {
+                for (Ticket temp : (List<Ticket>) query.getResultList()) {
+                    if (temp.getBkInstance().getFlightCabin().getFlightInstance().getId().equals(fi.getId())) {
+                        ticketList.add(temp);
+                    }
+                }
+            } else {
+                throw new Exception("No Unboarded Passenger Found");
+            }
+
+        } else {
+            throw new Exception("No Flight Instance Found");
+        }
+
+        return ticketList;
+    }
+
+    @Override
+    public List<Ticket> getAllCheckedInTicket(String flightNo, String dateString) throws Exception {
+        List<Ticket> ticketList = new ArrayList<Ticket>();
+        List<Ticket> allTickets = new ArrayList<Ticket>();
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus=:tstatus1 OR t.ticketStatus=:tstatus2 OR t.ticketStatus=:tstatus3");
+        query.setParameter("tstatus1", "Checkedin");
+        query.setParameter("tstatus2", "Boarded");
+        query.setParameter("tstatus3", "OnlineCheckedin");
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+
+            if (!query.getResultList().isEmpty()) {
+                for (Ticket temp : (List<Ticket>) query.getResultList()) {
+                    if (temp.getBkInstance().getFlightCabin().getFlightInstance().getId().equals(fi.getId())) {
+                        ticketList.add(temp);
+                    }
+                }
+            } else {
+                throw new Exception("No Checked in  Passenger Found");
+            }
+
+        } else {
+            throw new Exception("No Flight Instance Found");
+        }
+
+        return ticketList;
+    }
+
+    @Override
+    public List<Ticket> getAllUnchekedinTicket(String flightNo, String dateString) throws Exception {
+        List<Ticket> ticketList = new ArrayList<Ticket>();
+        List<Ticket> allTickets = new ArrayList<Ticket>();
+        Query query = em.createQuery("SELECT t FROM Ticket t where t.ticketStatus=:tstatus");
+        query.setParameter("tstatus", "Unused");
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+
+            if (!query.getResultList().isEmpty()) {
+                for (Ticket temp : (List<Ticket>) query.getResultList()) {
+                    if (temp.getBkInstance().getFlightCabin().getFlightInstance().getId().equals(fi.getId())) {
+                        ticketList.add(temp);
+                    }
+                }
+            } else {
+                throw new Exception("No Unchecked in Passenger Found");
+            }
+
+        } else {
+            throw new Exception("No Flight Instance Found");
+        }
+
+        return ticketList;
+    }
+
+    @Override
+    public List<Seat> getAllSeats(String flightNo, String dateString) throws Exception {
+        List<Seat> seatList = new ArrayList<Seat>();
+        List<Seat> allSeats = new ArrayList<Seat>();
+        FlightInstance fi = new FlightInstance();
+        Query query2 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate AND f.flightFrequency.flightNo=:flightNo");
+        query2.setParameter("fdate", dateString);
+        query2.setParameter("flightNo", flightNo);
+        if (!query2.getResultList().isEmpty()) {
+            fi = (FlightInstance) query2.getSingleResult();
+        } else {
+            throw new Exception("No Such Flight Instance Found");
+        }
+
+        Query query = em.createQuery("SELECT s FROM Seat s");
+
+        if (!query.getResultList().isEmpty()) {
+            allSeats = (List<Seat>) query.getResultList();
+            for (Seat temp : allSeats) {
+                if (temp.getFlightCabin().getFlightInstance().getId().equals(fi.getId())) {
+                    seatList.add(temp);
+                }
+            }
+        } else {
+            throw new Exception("No Seat Found");
+        }
+
+        return seatList;
     }
 
 }
