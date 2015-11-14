@@ -36,6 +36,56 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     @EJB
     PassengerBeanLocal psgLocal;
 
+    public void ChangePassenger(Passenger selectedPsg, Passenger newPsg) {
+
+        em.persist(newPsg);
+        em.flush();
+
+        em.refresh(newPsg);
+        newPsg = em.find(Passenger.class, newPsg.getId());
+
+        Passenger oldPsg = em.find(Passenger.class, selectedPsg.getId());
+        Reservation rsv = em.find(Reservation.class, selectedPsg.getTickets().get(0).getRsv().getId());
+        List<Ticket> tickets = rsv.getTickets();
+        for (int i = 0; i < tickets.size(); i++) {
+
+            Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());
+            List<Ticket> psgTickets = oldPsg.getTickets();
+            psgTickets.remove(ticket);
+
+            ticket.setPassenger(newPsg);
+            newPsg.getTickets().add(ticket);
+
+            em.merge(ticket);
+            em.flush();
+
+        }
+        em.remove(oldPsg);
+        em.flush();
+        em.merge(newPsg);
+
+        Payment payment = em.find(Payment.class, rsv.getPayment().getPaymentID());
+        Double penalty = computeChangePersonPenalty(rsv.getBkcInstance());
+        Double totalPayment = payment.getTotalPrice() + penalty;
+        payment.setTotalPrice(totalPayment);
+        em.merge(payment);
+        
+        em.merge(rsv);
+        
+        em.flush();
+
+    }
+
+    public Double computeChangePersonPenalty(List<BookingClassInstance> bookClassList) {
+        Double penalty = 0.0;
+        for (int i = 0; i < bookClassList.size(); i++) {
+            penalty += bookClassList.get(i).getPrice() * bookClassList.get(i).getBookingClass().getChange_passenger_percentage();
+        }
+        System.out.println("total change person penalty is " + penalty);
+        return penalty;
+
+    }
+
     public void cancelFlight(Reservation selectedRsv, List<Passenger> selectedPsgList, List<FlightInstance> departed, List<FlightInstance> returned, List<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double penalty, String bkSystem) {
         Booker booker = selectedRsv.getBooker();
         System.out.println("in rescheduleRsv()");
@@ -65,12 +115,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
 
-
         if (oldPsgList != null && oldPsgList.size() == selectedPsgList.size()) {
 
-            removeOldFlt(selectedRsv, oldPsgList,oldPsgList, "cancel", refund);
+            removeOldFlt(selectedRsv, oldPsgList, oldPsgList, "cancel", refund);
         } else {
-            ArrayList<Passenger> psgList=new ArrayList<>();
+            ArrayList<Passenger> psgList = new ArrayList<>();
             for (int i = 0; i < selectedPsgList.size(); i++) {
                 psgList.add(selectedPsgList.get(i));
             }
@@ -196,9 +245,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         if (oldPsgList != null && oldPsgList.size() == passengerList.size()) {
-            removeOldFlt(selectedRsv,oldPsgList, passengerList,"rebook",0.0);
+            removeOldFlt(selectedRsv, oldPsgList, passengerList, "rebook", 0.0);
         } else {
-            removeOldFlt(selectedRsv,oldPsgList, passengerList,"rebook",0.0);
+            removeOldFlt(selectedRsv, oldPsgList, passengerList, "rebook", 0.0);
         }
 
         em.flush();
@@ -225,7 +274,6 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         List<BookingClassInstance> oldBookInstances = new ArrayList<>();
 
         oldBookInstances = rsv.getBkcInstance();
-
 
         System.out.println("in computeTotalPrice(): list of bookingclassIntance is " + BookClassInstanceList);
         System.out.println("psgCount " + psgCount + " penalty " + penalty + " bookList.size() " + BookClassInstanceList.size());
@@ -254,19 +302,17 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         return priceDiff + penalty;
     }
 
-    public void removeOldFlt(Reservation rsv,ArrayList<Passenger>oldPsgList, ArrayList<Passenger> psgList, String action, Double refund) {
-       Booker booker = em.find(Booker.class, rsv.getBooker().getId());
+    public void removeOldFlt(Reservation rsv, ArrayList<Passenger> oldPsgList, ArrayList<Passenger> psgList, String action, Double refund) {
+        Booker booker = em.find(Booker.class, rsv.getBooker().getId());
         rsv = em.find(Reservation.class, rsv.getId());
 
-        if(action.equals("cancel")){
-        Payment payment=rsv.getPayment();
-        payment.setRefund(refund);
-        em.merge(payment);
-        em.flush();
+        if (action.equals("cancel")) {
+            Payment payment = rsv.getPayment();
+            payment.setRefund(refund);
+            em.merge(payment);
+            em.flush();
         }
 
-   
-        
         List<BookingClassInstance> bkInstanceList = rsv.getBkcInstance();
 
         List<Ticket> tickets = new ArrayList<>();
@@ -337,11 +383,10 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         }
 
 //        em.remove(rsv);
-        if(oldPsgList.size()==psgList.size()){
-        rsv.setRsvStatus("Cancelled");
+        if (oldPsgList.size() == psgList.size()) {
+            rsv.setRsvStatus("Cancelled");
         }
-        
-        
+
         em.flush();
 //
 //        em.remove(rsv);
@@ -494,7 +539,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     @Override
     public List<Reservation> getCompanyReservations(String companyName) {
-                List<Reservation> rsvList = new ArrayList<>();
+        List<Reservation> rsvList = new ArrayList<>();
         String status = "Reserved";
         Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.rsvStatus=:status and r.companyName=:inCompanyName");
         query.setParameter("inCompanyName", companyName);

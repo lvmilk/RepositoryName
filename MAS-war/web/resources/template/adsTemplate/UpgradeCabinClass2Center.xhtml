@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Update Reservation</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form id="viewReserve" >
+            <p:panel id="panel" header="View All Flight Legs"  style="width:100%">
+                <p:dataTable var="flight" rowKey="#{flight.id}" selection="#{updateReservation.selectedFlight}" value="#{updateReservation.allFlights}" paginator="true" rows="10" emptyMessage="No Reservations" >
+
+
+                    <p:column headerText="Departure time" sortBy="#{flight.standardDepTimeDateType}" filterBy="#{rsv.id}" >
+                        <h:outputText value="#{flight.standardDepTimeDateType}" />
+                    </p:column>
+
+                    <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTimeDateType}" >
+                        <h:outputText value="#{flight.standardArrTimeDateType}" />
+                    </p:column>
+
+                    <p:column headerText="Depart From" >
+                        <h:outputText value="#{flight.flightFrequency.route.origin.airportName}" />
+                    </p:column>
+                    <p:column headerText="Arrive At">
+                        <h:outputText value="#{flight.flightFrequency.route.origin.airportName}}" />
+                    </p:column>
+
+                    <p:column headerText="Cabin Class">
+                        <h:outputText value="#{updateReservation.flightToBkInstance[flight].flightCabin.cabinClass.cabinName}" />
+                    </p:column>
+
+
+
+                    <p:column headerText="Upgrade Cabin ">
+                        <p:commandButton value="Upgrade" actionListener="#{updateReservation.onSelectFlight(flight)}" partialSubmit="true" update=":viewReserve"/>
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+
+            <p:panel id="reservation" header="Reservation Information"  toggleable="true">
+
+                <br/>
+                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{updateReservation.selectedPsg}"value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" >
+
+                        <p:column headerText="Select one" selectionMode="single" />
+                          
+                        
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{passenger.title}" />
+                        </p:column>
+
+                        <p:column headerText="Given Name" >
+                            <h:outputText value="#{passenger.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                            <h:outputText value="#{passenger.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Passport No.">
+                            <h:outputText value="#{passenger.passport}" />
+                        </p:column>
+                        <p:column headerText="Change Passenger" >
+                            <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onChooseUpgradePsg(passenger)}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+                
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
+

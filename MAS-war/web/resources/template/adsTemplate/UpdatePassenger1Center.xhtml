@@ -10,13 +10,14 @@
     </h:head>
     <h:body>
         <h:form>
+            
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:outputLabel value="Passenger" style="font-weight: bold"/>
                 <h:panelGrid columns="2" cellpadding="15">
                
                     <p:outputLabel for="title" value="Title:" />
-                    <h:selectOneMenu id="title" value="#{psg.title}">
+                    <h:selectOneMenu id="title" value="#{updateReservation.newPsg.title}">
                         <f:selectItem itemValue="Mr" itemLabel="Dr" />
                         <f:selectItem itemValue="Dr" itemLabel="Dr" />
                         <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
@@ -28,29 +29,29 @@
                     </h:selectOneMenu>
 
                     <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{psg.firstName}" required="true" requiredMessage="please enter first name"/>
+                    <p:inputText value="#{updateReservation.newPsg.firstName}" required="true" requiredMessage="please enter first name"/>
 
                     <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{psg.lastName}" required="true" requiredMessage="please enter last name"/>            
+                    <p:inputText value="#{updateReservation.newPsg.lastName}" required="true" requiredMessage="please enter last name"/>            
 
                     <p:outputLabel  value="Passport: " />
-                    <p:inputText value="#{psg.passport}" required="true" requiredMessage="please enter passport"/>       
+                    <p:inputText value="#{updateReservation.newPsg.passport}" required="true" requiredMessage="please enter passport"/>       
 
 
                     <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
-                    <h:selectOneMenu id="ffpProgram" value="#{psg.ffpName}">
+                    <h:selectOneMenu id="ffpProgram" value="#{updateReservation.newPsg.ffpName}">
                         <f:selectItem itemValue="TFP" itemLabel="MAS - The Flying Program(TFP) " />
                     </h:selectOneMenu>
 
                     <p:outputLabel  value="Frequent flyer membership number: " />
-                    <p:inputText value="#{psg.ffpNo}"/>    
+                    <p:inputText value="#{updateReservation.newPsg.ffpNo}"/>    
 
                     <p:separator/>
                     <p:separator/>
                 </h:panelGrid>
 
 
-            <p:commandButton value="Confirm" actionListener="#{mgMB.makeReserve}" icon="ui-icon-check" />
+            <p:commandButton value="Confirm" actionListener="#{updateReservation.onSavePsgChange()}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>
