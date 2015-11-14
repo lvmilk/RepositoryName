@@ -424,6 +424,18 @@ public class CheckInManagedBean implements Serializable {
 
     public void goBack() {
         try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", new Ticket());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", new Seat());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("luggageCount", 0);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loungeEligibility", false);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("boardingTime", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("unOccupiedSeats", new ArrayList<Seat>());
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn.xhtml");
 
         } catch (Exception ex) {

@@ -42,7 +42,7 @@
                         <h:outputText value="#{tkt.seat.seatNumberToPassenger}" style="center"/>
                     </p:column>
                     <p:column headerText="Boarding">
-                        <p:commandButton value="Boarding"   update=":#{p:component('panel')}" actionListener="#{bmb.onStandbyBoardingChange}">
+                        <p:commandButton value="Boarding"   update=":#{p:component('panel')}" actionListener="#{bmb.onBoardingChange}">
                             <f:attribute name="tkt" value="#{tkt}"/>
                         </p:commandButton>   
                     </p:column>

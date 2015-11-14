@@ -265,6 +265,24 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
+       public void goBackforStandbyBoarding() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", new Ticket());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", new Seat());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seatNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("boardingTime", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./standbyBoarding.xhtml");
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
 
     public void goBackForViewPage() {
         try {
