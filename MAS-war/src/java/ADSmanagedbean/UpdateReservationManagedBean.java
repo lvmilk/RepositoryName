@@ -8,6 +8,8 @@ package ADSmanagedbean;
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
+import Entity.AIS.BookingClassInstance;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.BookerBeanLocal;
 import SessionBean.ADS.ManageReservationBeanLocal;
@@ -15,7 +17,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -53,15 +57,24 @@ public class UpdateReservationManagedBean implements Serializable {
 
     private String manageStatus;
     private Passenger selectedPsg;
+    private Passenger newPsg = new Passenger();
 
-    private String bkSystem;
-    private String companyName;
+    private List<BookingClassInstance> allBookClassList = selectedRsv.getBkcInstance();
+    private List<FlightInstance> allFlights = new ArrayList<>();
+
+    private Map<FlightInstance, BookingClassInstance> flightToBkInstance = new HashMap<>();
+
+    private FlightInstance selectedFlight;
 
     public UpdateReservationManagedBean() {
     }
 
     @PostConstruct
     public void init() {
+        allFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allFlights");
+        allBookClassList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allBookClassList");
+        flightToBkInstance = (Map<FlightInstance, BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightToBkInstance");
+
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
         bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
@@ -80,14 +93,69 @@ public class UpdateReservationManagedBean implements Serializable {
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
 
+    public void onChooseUpgradePsg() {
+        BookingClassInstance chosenBkInstance = flightToBkInstance.get(selectedFlight);
+        CabinClass chosenCabin = chosenBkInstance.getFlightCabin().getCabinClass();
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsgList", selectedPsgList);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
+
+              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
+
+    }
+
+    public void onSelectUpgradeRsv(Reservation rsv) throws IOException {
+        selectedRsv = rsv;
+        allBookClassList = selectedRsv.getBkcInstance();
+        allFlights = new ArrayList<>();
+
+        psgList = mr.getPassengerList(rsv);
+
+        System.out.println("size of psgList is " + psgList.size());
+
+        for (int i = 0; i < allBookClassList.size(); i++) {
+            FlightInstance flight = allBookClassList.get(i).getFlightCabin().getFlightInstance();
+            allFlights.add(flight);
+        }
+        Collections.sort(allFlights);
+        flightToBkInstance = new HashMap();
+
+        for (int i = 0; i < allBookClassList.size(); i++) {
+            BookingClassInstance bookInstance = allBookClassList.get(i);
+            FlightInstance flight = allBookClassList.get(i).getFlightCabin().getFlightInstance();
+            System.out.println("flight is " + flight);
+            System.out.println("BookInstance is " + allBookClassList.get(i));
+            flightToBkInstance.put(flight, allBookClassList.get(i));
+
+        }
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", allFlights);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allBookClassList", allBookClassList);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightToBkInstance", flightToBkInstance);
+
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
+    }
+
     public void onUpdatePsg(Passenger psg) throws IOException {
+        selectedPsg = psg;
+        System.out.println("onSavePsgChange(): selectedPsg is " + selectedPsg);
+
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsg", selectedPsg);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsg", psg);
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
 
+    }
+
+    public void onSavePsgChange() throws IOException {
+
+        System.out.println("onSavePsgChange(): selectedPsg is " + selectedPsg);
+        mr.ChangePassenger(selectedPsg, newPsg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
     }
 
     public void onSelectPsg() throws IOException {
@@ -299,32 +367,52 @@ public class UpdateReservationManagedBean implements Serializable {
         this.selectedPsg = selectedPsg;
     }
 
-    /**
-     * @return the bkSystem
-     */
-    public String getBkSystem() {
-        return bkSystem;
+    public Passenger getNewPsg() {
+        return newPsg;
     }
 
-    /**
-     * @param bkSystem the bkSystem to set
-     */
-    public void setBkSystem(String bkSystem) {
-        this.bkSystem = bkSystem;
+    public void setNewPsg(Passenger newPsg) {
+        this.newPsg = newPsg;
     }
 
-    /**
-     * @return the companyName
-     */
-    public String getCompanyName() {
-        return companyName;
+    public List<FlightInstance> getFlights() {
+        return flights;
     }
 
-    /**
-     * @param companyName the companyName to set
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setFlights(List<FlightInstance> flights) {
+        this.flights = flights;
+    }
+
+    public Map<FlightInstance, BookingClassInstance> getFlightToBkInstance() {
+        return flightToBkInstance;
+    }
+
+    public void setFlightToBkInstance(Map<FlightInstance, BookingClassInstance> flightToBkInstance) {
+        this.flightToBkInstance = flightToBkInstance;
+    }
+
+    public List<BookingClassInstance> getAllBookClassList() {
+        return allBookClassList;
+    }
+
+    public void setAllBookClassList(List<BookingClassInstance> allBookClassList) {
+        this.allBookClassList = allBookClassList;
+    }
+
+    public List<FlightInstance> getAllFlights() {
+        return allFlights;
+    }
+
+    public void setAllFlights(List<FlightInstance> allFlights) {
+        this.allFlights = allFlights;
+    }
+
+    public FlightInstance getSelectedFlight() {
+        return selectedFlight;
+    }
+
+    public void setSelectedFlight(FlightInstance selectedFlight) {
+        this.selectedFlight = selectedFlight;
     }
 
 }
