@@ -69,7 +69,7 @@
                             <h:outputText value="#{flight.flightFrequency.route.origin.airportName}" />
                         </p:column>
                         <p:column headerText="Arrive At">
-                            <h:outputText value="#{flight.flightFrequency.route.origin.airportName}}" />
+                            <h:outputText value="#{flight.flightFrequency.route.dest.airportName}}" />
                         </p:column>
 
                         <p:column headerText="Cabin Class">
@@ -103,11 +103,11 @@
 
                     </p:dataTable>       
 
-                    <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onChooseUpgradePsg()}"/>
-
                 </p:panel>
 
                 <br/>
+
+                <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onChooseUpgradePsg()}"/>
 
             </p:panel>
 

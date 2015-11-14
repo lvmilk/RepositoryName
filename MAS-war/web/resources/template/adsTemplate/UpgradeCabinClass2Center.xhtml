@@ -14,48 +14,14 @@
 
 
         <h:form id="viewReserve" >
-            <p:panel id="panel" header="View All Flight Legs"  style="width:100%">
-                <p:dataTable var="flight" rowKey="#{flight.id}" selection="#{updateReservation.selectedFlight}" value="#{updateReservation.allFlights}" paginator="true" rows="10" emptyMessage="No Reservations" >
-
-
-                    <p:column headerText="Departure time" sortBy="#{flight.standardDepTimeDateType}" filterBy="#{rsv.id}" >
-                        <h:outputText value="#{flight.standardDepTimeDateType}" />
-                    </p:column>
-
-                    <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTimeDateType}" >
-                        <h:outputText value="#{flight.standardArrTimeDateType}" />
-                    </p:column>
-
-                    <p:column headerText="Depart From" >
-                        <h:outputText value="#{flight.flightFrequency.route.origin.airportName}" />
-                    </p:column>
-                    <p:column headerText="Arrive At">
-                        <h:outputText value="#{flight.flightFrequency.route.origin.airportName}}" />
-                    </p:column>
-
-                    <p:column headerText="Cabin Class">
-                        <h:outputText value="#{updateReservation.flightToBkInstance[flight].flightCabin.cabinClass.cabinName}" />
-                    </p:column>
-
-
-
-                    <p:column headerText="Upgrade Cabin ">
-                        <p:commandButton value="Upgrade" actionListener="#{updateReservation.onSelectFlight(flight)}" partialSubmit="true" update=":viewReserve"/>
-
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
-
 
             <p:panel id="reservation" header="Reservation Information"  toggleable="true">
 
                 <br/>
                 <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
-                    <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{updateReservation.selectedPsg}"value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" >
+                    <p:dataTable var="passenger" value="#{updateReservation.selectedPsgList}" rows="10"  emptyMessage="No Reservations" >
 
-                        <p:column headerText="Select one" selectionMode="single" />
-                          
-                        
+
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
                         </p:column>
@@ -71,18 +37,54 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
-                        <p:column headerText="Change Passenger" >
-                            <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onChooseUpgradePsg(passenger)}"/>
-                        </p:column>
 
                     </p:dataTable>
 
                 </p:panel>
 
-                
+                <br />
+                <p:panel id="panel" header="Choose Upgraded Cabin for  Flight Legs"   style="width:50%">
+                    <h:panelGrid columns="2" cellpadding="15px" >
+
+
+                    <p:outputLabel value="Departure Time" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.standardDepTimeDateType}" />
+
+                    <p:outputLabel value="Arrival Time" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.standardArrTimeDateType}" />
+
+                    <p:outputLabel value="Departure from" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.flightFrequency.route.origin.airportName}" />
+
+                    <p:outputLabel value="Arrive at" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.flightFrequency.route.dest.airportName}" />
+
+                    <p:outputLabel for="cabin" value="Select upgraded Cabin Class " />
+                    <p:selectOneMenu id="cabin" value="#{updateReservation.cabinName}" required="true" requiredMessage="Please select one Cabin Class" style=" size:100px">    
+                        <f:selectItem itemLabel="Select Cabin Class" itemValue="#{null}" />
+                        <f:selectItems value="#{updateReservation.cabinList}"  var="cabinClass" itemValue="#{cabinClass.cabinName}" itemLabel="#{cabinClass.cabinName}"/>
+                    </p:selectOneMenu>
+                    
+                    </h:panelGrid>
+                    <p:commandButton value="Confirm Update" actionListener="#{updateReservation.onChooseUpgradeCabin()}" />
+
+                </p:panel>
+
+
 
             </p:panel>
 
+        </h:form>
+        
+         <h:form id="dlgGrd">
+            <p:dialog id="dlgGrd" header="Confirm upgrade the Cabin Class?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
+                <p:outputLabel value="A total price increase of $#{updateReservation.priceIncrease} will be charged on you after you confirm upgrade of cabin class "/>
+
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:commandButton value="Confirm"  oncomplete="PF('dlgGrd').hide()" action="#{updateReservation.confirmUpgradeCabin()}" />
+                    <p:commandButton value="Quit"  onclick="PF('dlgGrd').hide()" />
+                </h:panelGrid>
+            </p:dialog>
         </h:form>
 
     </h:body>

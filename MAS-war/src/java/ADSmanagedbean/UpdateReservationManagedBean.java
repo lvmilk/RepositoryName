@@ -26,6 +26,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -65,19 +66,35 @@ public class UpdateReservationManagedBean implements Serializable {
     private Map<FlightInstance, BookingClassInstance> flightToBkInstance = new HashMap<>();
 
     private FlightInstance selectedFlight;
+    private CabinClass cabin;
+    private String cabinName;
+    private CabinClass chosenCabin;
+    private List<CabinClass> cabinList;
 
     private String bkSystem;
     private String companyName;
 
+    private Double priceIncrease;
+    private BookingClassInstance chosenBkInstance;
+
     public UpdateReservationManagedBean() {
+
     }
 
     @PostConstruct
     public void init() {
+
+        chosenBkInstance = (BookingClassInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("chosenBkInstance");
+        cabinList = (List<CabinClass>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinList");
+
+//        chosenCabin = (CabinClass) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("chosenCabin");
+        cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
+
         allFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allFlights");
         allBookClassList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allBookClassList");
         flightToBkInstance = (Map<FlightInstance, BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightToBkInstance");
 
+        selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight");
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
         bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
@@ -96,16 +113,60 @@ public class UpdateReservationManagedBean implements Serializable {
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
 
+    public void onChooseUpgradeCabin() {
+        Double oldPrice = 0.0;
+        Double newPrice = 0.0;
+//        ArrayList<BookingClassInstance> bookList = new ArrayList<>();
+//        for (int i = 0; i < selectedRsv.getBkcInstance().size(); i++) {
+//            bookList.add(selectedRsv.getBkcInstance().get(i));
+//
+//        }
+        if (!cabinName.equals(chosenBkInstance.getFlightCabin().getCabinClass().getCabinName())) {
+
+            List<BookingClassInstance> bookList = new ArrayList<>();
+            for (int i = 0; i < selectedRsv.getBkcInstance().size(); i++) {
+                bookList.add(selectedRsv.getBkcInstance().get(i));
+
+            }
+            oldPrice = mr.computeAllFlightsPrice(bookList);
+
+            BookingClassInstance newInstance = mr.findLowestBkInstance(selectedFlight, cabinName, selectedPsgList.size());
+            bookList.set(bookList.indexOf(chosenBkInstance), newInstance);
+            newPrice = mr.computeAllFlightsPrice(bookList);
+
+            priceIncrease = mr.computePriceDiff(newPrice, oldPrice);
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dlgGrd').show()");
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No Change of Cabin Class!"));
+        }
+
+    }
+
     public void onChooseUpgradePsg() throws IOException {
-        BookingClassInstance chosenBkInstance = flightToBkInstance.get(selectedFlight);
-        CabinClass chosenCabin = chosenBkInstance.getFlightCabin().getCabinClass();
+        System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): flightToBkInstance map is " + flightToBkInstance);
+        System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): selectedRsv.bookClassInstanceList is " + selectedRsv.getBkcInstance());
+
         if (selectedFlight != null) {
             if (selectedPsgList != null && !selectedPsgList.isEmpty()) {
+                chosenBkInstance = flightToBkInstance.get(selectedFlight);
+                System.out.println("in onChooseUpgradePsg(): chosenBkInstance is " + chosenBkInstance);
 
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedPsgList", selectedPsgList);
+                cabin = chosenBkInstance.getFlightCabin().getCabinClass();
+                cabinList = mr.getUpgradeCabinList(chosenBkInstance, selectedPsgList.size());
+
+                System.out.println("in onChooseUpgradePsg(): cabinList is " + cabinList);
+                System.out.println("in onChooseUpgradePsg(): selectedPsgList is " + selectedPsgList);
+                System.out.println("in onChooseUpgradePsg(): selectedFlight is " + selectedFlight);
+
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenBkInstance", chosenBkInstance);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", selectedPsgList);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
 
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
+//                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
 
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
 
@@ -118,8 +179,28 @@ public class UpdateReservationManagedBean implements Serializable {
 
     }
 
+    public void confirmUpgradeCabin() {
+
+        System.out.println("in onChooseUpgradePsg(): chosenBkInstance is " + chosenBkInstance);
+        System.out.println("in onChooseUpgradePsg(): selectedRsv.bcInstanceList is " + selectedRsv.getBkcInstance());
+        if (selectedRsv.getBkcInstance().contains(chosenBkInstance)) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList contains chosen List");
+        } else {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
+        }
+        mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cabin Class Upgraded successfully!"));
+
+    }
+
     public void onSelectUpgradeRsv(Reservation rsv) throws IOException {
         selectedRsv = rsv;
+        List<BookingClassInstance> temp = new ArrayList<>();
+
+        for (int i = 0; i < selectedRsv.getBkcInstance().size(); i++) {
+            temp.add(selectedRsv.getBkcInstance().get(i));
+        }
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@in onSelectUpgradeRsv(): selectedRsv.bookClassInstanceList is " + temp);
         allBookClassList = selectedRsv.getBkcInstance();
         allFlights = new ArrayList<>();
 
@@ -470,6 +551,54 @@ public class UpdateReservationManagedBean implements Serializable {
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public CabinClass getChosenCabin() {
+        return chosenCabin;
+    }
+
+    public void setChosenCabin(CabinClass chosenCabin) {
+        this.chosenCabin = chosenCabin;
+    }
+
+    public CabinClass getCabin() {
+        return cabin;
+    }
+
+    public void setCabin(CabinClass cabin) {
+        this.cabin = cabin;
+    }
+
+    public List<CabinClass> getCabinList() {
+        return cabinList;
+    }
+
+    public void setCabinList(List<CabinClass> cabinList) {
+        this.cabinList = cabinList;
+    }
+
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
+    }
+
+    public Double getPriceIncrease() {
+        return priceIncrease;
+    }
+
+    public void setPriceIncrease(Double priceIncrease) {
+        this.priceIncrease = priceIncrease;
+    }
+
+    public BookingClassInstance getChosenBkInstance() {
+        return chosenBkInstance;
+    }
+
+    public void setChosenBkInstance(BookingClassInstance chosenBkInstance) {
+        this.chosenBkInstance = chosenBkInstance;
     }
 
 }

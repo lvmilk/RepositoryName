@@ -70,7 +70,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{viewReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel value="#{viewReservation.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
 
                             <p:outputLabel  value="Arrival Time Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
@@ -102,7 +102,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{viewReservation.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel value="#{viewReservation.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
 
                             <p:outputLabel  value="Arrival Time Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
@@ -169,15 +169,18 @@
                         <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentID}" />
 
                         <p:outputLabel  value="Date of Payment: " />
-                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentDate.toString}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentDate.toString()}" />
 
                         <p:outputLabel  value="Amount of Payment" />
                         <p:outputLabel value="#{viewReservation.selectedRsv.payment.totalPrice}" />
                     </h:panelGrid>
 
                 </p:panel>
-
+                
+                
             </p:panel>
+
+    
 
         </h:form>
     </h:body>
