@@ -69,8 +69,6 @@ public class UpdateReservationManagedBean implements Serializable {
     private String bkSystem;
     private String companyName;
 
-    private String bkSystem;
-    private String companyName;
 
     public UpdateReservationManagedBean() {
     }
