@@ -69,9 +69,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         Double totalPayment = payment.getTotalPrice() + penalty;
         payment.setTotalPrice(totalPayment);
         em.merge(payment);
-        
+
         em.merge(rsv);
-        
+
         em.flush();
 
     }
@@ -98,8 +98,10 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             System.out.println(departed.get(i));
         }
 
-        for (int i = 0; i < returned.size(); i++) {
-            System.out.println(returned.get(i));
+        if (returned != null && !returned.isEmpty()) {
+            for (int i = 0; i < returned.size(); i++) {
+                System.out.println(returned.get(i));
+            }
         }
         for (int i = 0; i < BookClassInstanceList.size(); i++) {
             System.out.println(BookClassInstanceList.get(i));
