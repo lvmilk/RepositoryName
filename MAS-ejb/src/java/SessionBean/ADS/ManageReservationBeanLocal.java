@@ -8,6 +8,7 @@ package SessionBean.ADS;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
 import Entity.AIS.BookingClassInstance;
+import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ import javax.ejb.Local;
  */
 @Local
 public interface ManageReservationBeanLocal {
+    
+   public void upgradeCabinClass(List<Passenger>selectedPsgList,Reservation selectedRsv,BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName); 
+   
+   public List<CabinClass> getUpgradeCabinList(BookingClassInstance BkInstance, Integer psgCount);
     
     public void ChangePassenger(Passenger selectedPsg,Passenger newPsg);
     
@@ -40,6 +45,10 @@ public interface ManageReservationBeanLocal {
     public ArrayList<Passenger> getPassengerList(Reservation rsv);
     
     public void cancelFlight(Reservation selectedRsv, List<Passenger> selectedPsgList, List<FlightInstance> departed, List<FlightInstance> returned, List<BookingClassInstance>BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double penalty, String bkSystem);
+
+    public Double computeAllFlightsPrice(List<BookingClassInstance> bookList);
+
+    public BookingClassInstance findLowestBkInstance(FlightInstance flight, String cabinName, Integer psgCount);
     
 
 }

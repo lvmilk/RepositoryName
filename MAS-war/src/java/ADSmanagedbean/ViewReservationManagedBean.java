@@ -7,13 +7,16 @@ package ADSmanagedbean;
 
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
+import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.ManageReservationBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -35,45 +38,65 @@ public class ViewReservationManagedBean implements Serializable {
 
     private List<FlightInstance> departed = new ArrayList<>();
     private List<FlightInstance> returned = new ArrayList<>();
-    private Reservation selectedRsv=new Reservation();
-    private List<Passenger> psgList=new ArrayList<>();
-    
+    private Reservation selectedRsv = new Reservation();
+    private List<Passenger> psgList = new ArrayList<>();
+
     private String bkSystem;
     private String companyName;
-    
+
+    private Map<FlightInstance, BookingClassInstance> flightToBkInstance = new HashMap<>();
+
     public ViewReservationManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
-        
+        companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+
         rsvList = mr.getCompanyReservations(companyName);
 
     }
 
-    public void onSelectRsv(Reservation rsv) {      
-        int index=0;
-        selectedRsv=rsv;
-        List<FlightInstance> flights=new ArrayList<>();
-        String origin=rsv.getOrigin();
-        String dest=rsv.getDest();
-        
-        for(int i=0; i<rsv.getBkcInstance().size(); i++){
-        System.out.println("i="+i+" flightInstance is "+rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
-        flights.add(rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance());
-        
+    public void onSelectRsv(Reservation rsv) {
+        int index = 0;
+        selectedRsv = rsv;
+        List<FlightInstance> flights = new ArrayList<>();
+        String origin = rsv.getOrigin();
+        String dest = rsv.getDest();
+        List<BookingClassInstance> bookList = rsv.getBkcInstance();
+
+        for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
+            System.out.println("i=" + i + " flightInstance is " + rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo());
+            flights.add(rsv.getBkcInstance().get(i).getFlightCabin().getFlightInstance());
+
         }
         Collections.sort(flights);
-        
-        psgList=mr.getPassengerList(rsv);
-        
-        departed=mr.getFlightPackage(flights, origin, dest, index);
-        if (rsv.getReturnTrip()) {
-         returned=mr.getFlightPackage(flights, dest, origin, departed.size());
+
+        psgList = mr.getPassengerList(rsv);
+
+        departed = mr.getFlightPackage(flights, origin, dest, index);
+
+        for (int i = 0; i < bookList.size(); i++) {
+            for (int j = 0; j < departed.size(); j++) {
+                if (bookList.get(i).getFlightCabin().getFlightInstance().equals(departed.get(j))) {
+                    flightToBkInstance.put(departed.get(j), bookList.get(i));
+                    break;
+                }
+            }
         }
-        
- 
+
+        if (rsv.getReturnTrip()) {
+            returned = mr.getFlightPackage(flights, dest, origin, departed.size());
+
+            for (int i = 0; i < bookList.size(); i++) {
+                for (int j = 0; j < returned.size(); j++) {
+                    if (bookList.get(i).getFlightCabin().getFlightInstance().equals(returned.get(j))) {
+                        flightToBkInstance.put(returned.get(j), bookList.get(i));
+                        break;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -153,6 +176,12 @@ public class ViewReservationManagedBean implements Serializable {
         this.companyName = companyName;
     }
 
-    
-    
+    public Map<FlightInstance, BookingClassInstance> getFlightToBkInstance() {
+        return flightToBkInstance;
+    }
+
+    public void setFlightToBkInstance(Map<FlightInstance, BookingClassInstance> flightToBkInstance) {
+        this.flightToBkInstance = flightToBkInstance;
+    }
+
 }
