@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Ground Crew Group"  style="width:100%">
+
+                <p:tabView>
+                    <p:tab title="All Ground Crew">
+                        <p:dataTable var="gs" value="#{VGCGMB.gst}" paginator="true" rows="40" emptyMessage="No ground crew exist">
+                            <f:facet name="header">
+                                All Ground Crew
+                            </f:facet>
+                            <p:column headerText="Staff Id" sortBy="#{gs.grdName}" filterBy="#{gs.grdName}">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name" filterBy="#{gs.lastName}">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Group No" sortBy="#{gs.groundStaffTeam.teamId}" filterBy="#{gs.groundStaffTeam.teamId}">
+                                <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Group 1">
+                        <p:dataTable var="gs" value="#{VGCGMB.gst1}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 1
+                            </f:facet>
+                            <p:column headerText="Staff Id" sortBy="#{gs.grdName}" filterBy="#{gs.grdName}">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name" filterBy="#{gs.lastName}">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Group No" sortBy="#{gs.groundStaffTeam.teamId}" filterBy="#{gs.groundStaffTeam.teamId}">
+                                <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Group 2">
+                        <p:dataTable var="gs" value="#{VGCGMB.gst2}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 2
+                            </f:facet>
+                            <p:column headerText="Staff Id" sortBy="#{gs.grdName}" filterBy="#{gs.grdName}">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name" filterBy="#{gs.lastName}">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Group No" sortBy="#{gs.groundStaffTeam.teamId}" filterBy="#{gs.groundStaffTeam.teamId}">
+                                <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Group 3">
+                        <p:dataTable var="gs" value="#{VGCGMB.gst3}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 3
+                            </f:facet>
+                            <p:column headerText="Staff Id" sortBy="#{gs.grdName}" filterBy="#{gs.grdName}">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name" filterBy="#{gs.lastName}">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Group No" sortBy="#{gs.groundStaffTeam.teamId}" filterBy="#{gs.groundStaffTeam.teamId}">
+                                <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+
+                    <p:tab title="Group 4">
+                        <p:dataTable var="gs" value="#{VGCGMB.gst4}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 4
+                            </f:facet>
+                            <p:column headerText="Staff Id" sortBy="#{gs.grdName}" filterBy="#{gs.grdName}">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name" filterBy="#{gs.lastName}">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Group No" sortBy="#{gs.groundStaffTeam.teamId}" filterBy="#{gs.groundStaffTeam.teamId}">
+                                <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+
+                </p:tabView>
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

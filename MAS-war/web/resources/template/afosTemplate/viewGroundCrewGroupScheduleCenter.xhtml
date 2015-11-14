@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Group Crew Schedule for Period #{VGCGSMB.startDateString} -  #{VGCGSMB.endDateString} "  style="width:100%">
+                <p:dataTable var="date" value="#{VGCGSMB.dateList}" paginator="true" rows="40" emptyMessage="No ground crew arrangement" >
+                    <f:facet name="header">
+                        Ground Crew Group Schedule for Period #{startDateString} - #{endDateString}
+                    </f:facet>
+                    <p:column headerText="Date" filterBy="#{date}" filterMatchMode="contains">
+                        <h:outputText value="#{date}" >
+                            <f:convertDateTime pattern="EEE yyyy-MM-dd " timeZone="Asia/Singapore"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Morning 7am-15pm" filterBy="#{VGCGSMB.morningMap[date]}" filterMatchMode="contains">
+                        <h:outputText value="Group #{VGCGSMB.morningMap[date]}" />
+                    </p:column>
+                    <p:column headerText="Afternoon 15pm-23pm" filterBy="#{VGCGSMB.afternoonMap[date]}" filterMatchMode="contains">
+                        <h:outputText value="Group #{VGCGSMB.afternoonMap[date]}" />
+                    </p:column>
+                    <p:column headerText="Night 23pm-7am" filterBy="#{VGCGSMB.nightMap[date]}" filterMatchMode="contains">
+                        <h:outputText value="Group #{VGCGSMB.nightMap[date]}" />
+                    </p:column>
+                    <p:column headerText="Standby" filterBy="#{VGCGSMB.standbyMap[date]}" filterMatchMode="contains">
+                        <h:outputText value="Group #{VGCGSMB.standbyMap[date]}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+
+</html>

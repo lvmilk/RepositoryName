@@ -5,13 +5,13 @@
  */
 package Entity.CommonInfa;
 
+import Entity.AFOS.GroundStaffTeam;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -38,6 +38,9 @@ public class GroundStaff implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    private GroundStaffTeam groundStaffTeam;
+    
     public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
         this.setGrdPassword(strGrdPassword);
@@ -242,6 +245,14 @@ public class GroundStaff implements Serializable {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public GroundStaffTeam getGroundStaffTeam() {
+        return groundStaffTeam;
+    }
+
+    public void setGroundStaffTeam(GroundStaffTeam groundStaffTeam) {
+        this.groundStaffTeam = groundStaffTeam;
     }
 
 }

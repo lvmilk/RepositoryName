@@ -20,11 +20,12 @@
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column rowspan="2" headerText="Channel" sortBy="#{key}" filterBy="#{key}"/>
-                        <p:column colspan="3" headerText="Revenue" />
+                        <p:column colspan="4" headerText="Revenue" />
                     </p:row>
                     <p:row>
                         <p:column headerText="Sale" />
                         <p:column headerText="Commission" />
+                        <p:column headerText="Refund" />
                         <p:column headerText="Total Revenue in This Channel" />
                     </p:row>
                 </p:columnGroup>
@@ -39,21 +40,26 @@
                     <h:outputText value="$#{RMB.commissionMap[key]}"/>
                 </p:column>
                 <p:column>
-                    <h:outputText value="$#{RMB.sumMap[key]}"/>
+                    <h:outputText value="$#{RMB.refundMap[key]}"/>
+                </p:column>
+                <p:column>
+                    <h:outputText value="$#{RMB.sumMap[key]}">
+                    <f:convertNumber pattern="0.0"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:columnGroup type="footer">
                     <p:row>
                         <p:column footerText="Total Revenue: " style="text-align:right"/>
-                        <p:column colspan="3" style="text-align:left" footerText="$#{RMB.total}" />
+                        <p:column colspan="4" style="text-align:left" footerText="$#{RMB.totalString}" />
                     </p:row>
                     <p:row>
                         <p:column footerText="Currency: " style="text-align:right"/>
-                        <p:column colspan="3" style="text-align:left" footerText="SGD" />
+                        <p:column colspan="4" style="text-align:left" footerText="SGD" />
                     </p:row>
                     <p:row>
                         <p:column footerText="Period:  " style="text-align:right"/>
-                        <p:column colspan="3" style="text-align:left" footerText="Year #{RMB.year} Quarter #{RMB.quarter}" />
+                        <p:column colspan="4" style="text-align:left" footerText="Year #{RMB.year} Quarter #{RMB.quarter}" />
                     </p:row>
 
                 </p:columnGroup>
