@@ -6,6 +6,7 @@
 package testSessionBean.CommonInfra;
 
 import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.OfficeStaff;
 import SessionBean.CommonInfra.ManageAccountBeanRemote;
@@ -153,6 +154,69 @@ public class ManageAccountBeanLocalTest {
         selectedCbCrew.add(cbCrew);
         boolean flag = mabl.delCabinAcc(selectedCbCrew);
         assertTrue(flag);
+    }
+
+    @Test
+    public void test13DeleteCockpitAcc() {
+        System.out.println("test13DeleteCockpitAcc");
+        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>();
+        CockpitCrew cpCrew = new CockpitCrew();
+        cpCrew.setCpName("CP777751");
+        selectedCpCrew.add(cpCrew);
+        boolean flag = mabl.delCockpitAcc(selectedCpCrew);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test14GetOfficeStaff() {
+        System.out.println("test14GetOfficeStaff");
+        OfficeStaff offStaff = new OfficeStaff();
+        offStaff = mabl.getOfficeStaff("O777777");
+        assertEquals("O777777", offStaff.getOffName());
+
+    }
+
+    @Test
+    public void test15GetOfficeStaff_NotFound() {
+        System.out.println("test15GetOfficeStaff_NotFound");
+        OfficeStaff offStaff = new OfficeStaff();
+        offStaff = mabl.getOfficeStaff("O999999");
+        assertNull(offStaff);
+
+    }
+
+    @Test
+    public void test16GetGroundStaff() {
+        System.out.println("test16GetGroundStaff");
+        GroundStaff grdStaff = new GroundStaff();
+        grdStaff = mabl.getGroundStaff("G666632");
+        assertEquals("G666632", grdStaff.getGrdName());
+    }
+
+    @Test
+    public void test17GetGroundStaff_NotFound() {
+        System.out.println("test17GetGroundStaff");
+        GroundStaff grdStaff = new GroundStaff();
+        grdStaff = mabl.getGroundStaff("G666631");
+        assertNull(grdStaff);
+    }
+
+    @Test
+    public void test18GetCabinCrew() {
+        System.out.println("test16GetCabinCrew");
+
+    }
+
+    @Test
+    public void test19GetCockpitCrew() {
+        System.out.println("test17GetCockpitCrew");
+
+    }
+
+    @Test
+    public void test20GetLockedOutStatus() {
+        System.out.println("test18GetLockedOutStatus");
+
     }
 
     private ManageAccountBeanRemote lookupManageAccountBeanRemote() {
