@@ -65,10 +65,9 @@ public class UpdateReservationManagedBean implements Serializable {
     private Map<FlightInstance, BookingClassInstance> flightToBkInstance = new HashMap<>();
 
     private FlightInstance selectedFlight;
-    
+
     private String bkSystem;
     private String companyName;
-
 
     public UpdateReservationManagedBean() {
     }
@@ -81,8 +80,8 @@ public class UpdateReservationManagedBean implements Serializable {
 
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
-        bkSystem=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-        companyName=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+        companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
         rsvList = mr.getCompanyReservations(companyName);
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
@@ -107,8 +106,8 @@ public class UpdateReservationManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenCabin", chosenCabin);
-               
-                 FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
+
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
@@ -163,7 +162,11 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
+        } else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsUpdatePsg.xhtml");
+        }
 
     }
 
@@ -171,8 +174,13 @@ public class UpdateReservationManagedBean implements Serializable {
 
         System.out.println("onSavePsgChange(): selectedPsg is " + selectedPsg);
         mr.ChangePassenger(selectedPsg, newPsg);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
+        }else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsUpdatePsgSuccess.xhtml");
+        }
     }
+    
 
     public void onSelectPsg() throws IOException {
 
@@ -245,7 +253,12 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emailOrigin", emailOrigin);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsEditBooker.xhtml");
+        }
 
     }
 
