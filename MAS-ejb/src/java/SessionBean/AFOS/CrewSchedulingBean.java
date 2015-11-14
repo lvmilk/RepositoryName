@@ -6,10 +6,14 @@
 package SessionBean.AFOS;
 
 import Entity.AFOS.FlightCrewTeam;
+import Entity.AFOS.GroundStaffTeam;
+import Entity.AFOS.Rotation;
 import Entity.APS.AircraftType;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.OfficeStaff;
 import SessionBean.APS.FleetPlanningBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.text.ParseException;
@@ -41,6 +45,8 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
     FleetPlanningBeanLocal fpb;
     @EJB
     FlightSchedulingBeanLocal fsb;
+
+    private Calendar cal = new GregorianCalendar();
 
     public void groupFlightCrew() throws Exception {
         List<AircraftType> acTypes = fpb.getAllAircraftType();
@@ -166,6 +172,260 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 }
             }
         }
+    }
+
+    @Override
+    public List<GroundStaff> getUngroupedGroundStaff() {
+        List<GroundStaff> gsList = getAllGroundStaff();
+        List<GroundStaff> gsNew = new ArrayList<>();
+        for (GroundStaff g1 : gsList) {
+            if (g1.getGroundStaffTeam() == null) {
+                gsNew.add(g1);
+            }
+            if (g1.getGroundStaffTeam() != null && g1.getGroundStaffTeam().getTeamId() == 5) {
+                gsNew.add(g1);
+            }
+        }
+        return gsNew;
+    }
+
+    @Override
+    public List<GroundStaff> getGroundStaffTeam(Integer id) {
+        GroundStaffTeam gst = em.find(GroundStaffTeam.class, id);
+        return gst.getGroundStaff();
+    }
+
+    @Override
+    public void groupGroundCrew() throws Exception {
+        List<GroundStaff> gsList = getAllGroundStaff();
+//        System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ getallgroundstaff number is " + gsList.size());
+        GroundStaffTeam gst1 = em.find(GroundStaffTeam.class, 1);
+//        System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ find gst1 " + gst1);
+        GroundStaffTeam gst2 = em.find(GroundStaffTeam.class, 2);
+//        System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ find gst2 " + gst2);
+        GroundStaffTeam gst3 = em.find(GroundStaffTeam.class, 3);
+//        System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ find gst3 " + gst3);
+        GroundStaffTeam gst4 = em.find(GroundStaffTeam.class, 4);
+//        System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ find gst4 " + gst4);
+
+//        GroundStaffTeam gst2 = new GroundStaffTeam();
+//        gst1.create(2);
+//        GroundStaffTeam gst3 = new GroundStaffTeam();
+//        gst1.create(3);
+//        GroundStaffTeam gst4 = new GroundStaffTeam();
+//        gst1.create(4);
+//        GroundStaffTeam gst5 = new GroundStaffTeam();
+//        gst1.create(5);
+        List<GroundStaff> g1 = gst1.getGroundStaff();
+        List<GroundStaff> g2 = gst2.getGroundStaff();
+        List<GroundStaff> g3 = gst3.getGroundStaff();
+        List<GroundStaff> g4 = gst4.getGroundStaff();
+
+        for (int i = 0; i < gsList.size(); i++) {
+            GroundStaff thisGS = em.find(GroundStaff.class, gsList.get(i).getGrdName());
+            System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ thisGS getGroundStaffTeam " + thisGS.getGroundStaffTeam());
+            if (thisGS.getGroundStaffTeam() == null) {
+                switch (i % 4) {
+                    case 0: {
+                        thisGS.setGroundStaffTeam(gst1);
+                        em.merge(thisGS);
+                        g1.add(thisGS);
+                        break;
+                    }
+                    case 1: {
+                        thisGS.setGroundStaffTeam(gst2);
+                        em.merge(thisGS);
+                        g2.add(thisGS);
+                        break;
+                    }
+                    case 2: {
+                        thisGS.setGroundStaffTeam(gst3);
+                        em.merge(thisGS);
+                        g3.add(thisGS);
+                        break;
+                    }
+                    case 3: {
+                        thisGS.setGroundStaffTeam(gst4);
+                        em.merge(thisGS);
+                        g4.add(thisGS);
+                        break;
+                    }
+                }
+            }
+//            System.err.println(" $$$$$$$$$$$$$ $$$$$$$$$$$$$ thisGS getGroundStaffTeam " + thisGS.getGroundStaffTeam());
+        }
+        gst1.setGroundStaff(g1);
+        gst2.setGroundStaff(g2);
+        gst3.setGroundStaff(g3);
+        gst4.setGroundStaff(g4);
+        em.merge(gst1);
+        em.merge(gst2);
+        em.merge(gst3);
+        em.merge(gst4);
+        em.flush();
+    }
+
+    @Override
+    public void scheduleGS(Date startDate, Date endDate) {
+        GroundStaffTeam gst1 = em.find(GroundStaffTeam.class, 1);
+        GroundStaffTeam gst2 = em.find(GroundStaffTeam.class, 2);
+        GroundStaffTeam gst3 = em.find(GroundStaffTeam.class, 3);
+        GroundStaffTeam gst4 = em.find(GroundStaffTeam.class, 4);
+
+        List<Rotation> roForGrp1 = gst1.getRotationList();
+        List<Rotation> roForGrp2 = gst2.getRotationList();
+        List<Rotation> roForGrp3 = gst3.getRotationList();
+        List<Rotation> roForGrp4 = gst4.getRotationList();
+
+        long diff = endDate.getTime() - startDate.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        System.err.println("TESTING: diffDays " + diffDays);
+        Date newDay = new Date();
+
+        for (int i = 0; i < diffDays; i++) {
+            cal.setTime(startDate);
+            cal.add(Calendar.DATE, i);
+            newDay = cal.getTime();
+
+            Rotation morning = new Rotation();
+            morning.create(newDay, "morning");
+            Rotation afternoon = new Rotation();
+            afternoon.create(newDay, "afternoon");
+            Rotation night = new Rotation();
+            night.create(newDay, "night");
+            Rotation standby = new Rotation();
+            standby.create(newDay, "standby");
+
+            em.persist(morning);
+            em.persist(afternoon);
+            em.persist(night);
+            em.persist(standby);
+            em.flush();
+
+            switch (i % 12) {
+                case 0: {
+                    roForGrp1.add(morning);
+                    roForGrp2.add(afternoon);
+                    roForGrp3.add(night);
+                    roForGrp4.add(standby);
+                    break;
+                }
+                case 1: {
+                    roForGrp1.add(morning);
+                    roForGrp2.add(afternoon);
+                    roForGrp3.add(standby);
+                    roForGrp4.add(night);
+                    break;
+                }
+                case 2: {
+                    roForGrp1.add(morning);
+                    roForGrp2.add(standby);
+                    roForGrp3.add(afternoon);
+                    roForGrp4.add(night);
+                    break;
+                }
+                case 3: {
+                    roForGrp1.add(standby);
+                    roForGrp2.add(morning);
+                    roForGrp3.add(afternoon);
+                    roForGrp4.add(night);
+                    break;
+                }
+                case 4: {
+                    roForGrp1.add(night);
+                    roForGrp2.add(morning);
+                    roForGrp3.add(afternoon);
+                    roForGrp4.add(standby);
+                    break;
+                }
+                case 5: {
+                    roForGrp1.add(night);
+                    roForGrp2.add(morning);
+                    roForGrp3.add(standby);
+                    roForGrp4.add(afternoon);
+                    break;
+                }
+                case 6: {
+                    roForGrp1.add(night);
+                    roForGrp2.add(standby);
+                    roForGrp3.add(morning);
+                    roForGrp4.add(afternoon);
+                    break;
+                }
+                case 7: {
+                    roForGrp1.add(standby);
+                    roForGrp2.add(night);
+                    roForGrp3.add(morning);
+                    roForGrp4.add(afternoon);
+                    break;
+                }
+                case 8: {
+                    roForGrp1.add(afternoon);
+                    roForGrp2.add(night);
+                    roForGrp3.add(morning);
+                    roForGrp4.add(standby);
+                    break;
+                }
+                case 9: {
+                    roForGrp1.add(afternoon);
+                    roForGrp2.add(night);
+                    roForGrp3.add(standby);
+                    roForGrp4.add(morning);
+                    break;
+                }
+                case 10: {
+                    roForGrp1.add(afternoon);
+                    roForGrp2.add(standby);
+                    roForGrp3.add(night);
+                    roForGrp4.add(morning);
+                    break;
+                }
+                case 11: {
+                    roForGrp1.add(standby);
+                    roForGrp2.add(afternoon);
+                    roForGrp3.add(night);
+                    roForGrp4.add(morning);
+                    break;
+                }
+            }
+
+            gst1.setRotationList(roForGrp1);
+            gst2.setRotationList(roForGrp2);
+            gst3.setRotationList(roForGrp3);
+            gst4.setRotationList(roForGrp4);
+            em.merge(gst1);
+            em.merge(gst2);
+            em.merge(gst3);
+            em.merge(gst4);
+            em.flush();
+        }
+    }
+
+    @Override
+    public void deleteGSFromGroup(GroundStaff gs1, Integer teamId) {
+        GroundStaff gs = em.find(GroundStaff.class, gs1.getGrdName());
+        GroundStaffTeam gst = em.find(GroundStaffTeam.class, teamId);
+        List<GroundStaff> g1 = gst.getGroundStaff();
+        g1.remove(gs);
+        gst.setGroundStaff(g1);
+        GroundStaffTeam defaultT = em.find(GroundStaffTeam.class, 5);
+        gs.setGroundStaffTeam(defaultT);
+        em.merge(gs);
+        em.merge(gst);
+        em.flush();
+    }
+
+    @Override
+    public void addGSToGroup(GroundStaff gs1, Integer teamId) {
+        GroundStaff gs = em.find(GroundStaff.class, gs1.getGrdName());
+        GroundStaffTeam gst = em.find(GroundStaffTeam.class, teamId);
+        List<GroundStaff> g1 = gst.getGroundStaff();
+        g1.add(gs);
+        gst.setGroundStaff(g1);
+        em.merge(gst);
+        gs.setGroundStaffTeam(gst);
+        em.merge(gs);
+        em.flush();
     }
 
 // pre-condition: startDate should be Monday of the first week, endDate should be Sunday of the fourth week
@@ -874,6 +1134,20 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return pilotList;
     }
 
+    @Override
+    public List<OfficeStaff> getAllOfficeStaff() {
+        Query q = em.createQuery("SELECT o FROM OfficeStaff o");
+        List<OfficeStaff> officeStaff = (List<OfficeStaff>) q.getResultList();
+        return officeStaff;
+    }
+
+    @Override
+    public List<GroundStaff> getAllGroundStaff() {
+        Query q = em.createQuery("SELECT g FROM GroundStaff g");
+        List<GroundStaff> groundStaff = (List<GroundStaff>) q.getResultList();
+        return groundStaff;
+    }
+
     public List<CockpitCrew> getFiCaptain(FlightInstance fi) {
         List<CockpitCrew> cpList = fi.getCockpitList();
         List<CockpitCrew> cpCap = new ArrayList<>();
@@ -1031,9 +1305,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         }
         return fiNew;
     }
-    
-        @Override
-        public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate) {
+
+    @Override
+    public List<FlightInstance> getCabinCrewFlightForPeriod(CabinCrew cc, Date startDate, Date endDate) {
         List<FlightInstance> fiList = cc.getFiList();
         List<FlightInstance> fiNew = new ArrayList<>();
         for (FlightInstance f1 : fiList) {
@@ -1042,6 +1316,51 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
         }
         return fiNew;
+    }
+
+    @Override
+    public GroundStaffTeam getGroundStaffTeamById(Integer id) {
+        GroundStaffTeam gst = em.find(GroundStaffTeam.class, id);
+        return gst;
+    }
+
+    @Override
+    public Rotation findRotOnDate(GroundStaffTeam gst, Date day) {
+        List<Rotation> rot1 = gst.getRotationList();
+        Rotation rot = new Rotation();
+        for (Rotation r1 : rot1) {
+            if (r1.getWorkDate().equals(day)) {
+                rot = r1;
+            }
+        }
+        return rot;
+    }
+
+    @Override
+    public boolean checkGroundCrewScheduled(Date startDate, Date endDate) {
+        Query q1 = em.createQuery("SELECT a FROM Rotation a");
+        List<Rotation> rot = q1.getResultList();
+
+        long diff = endDate.getTime() - startDate.getTime();
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        System.err.println("TESTING: diffDays " + diffDays);
+        Date newDay = new Date();
+        
+        for (int i = 0; i < diffDays; i++) {
+            cal.setTime(startDate);
+            cal.add(Calendar.DATE, i);
+            newDay = cal.getTime();
+            boolean flag1 = false;
+            for (Rotation r : rot) {
+                if (r.getWorkDate().equals(newDay)) {
+                    flag1 = true;
+                }
+            }
+            if (flag1 == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -24,6 +24,7 @@ import com.lowagie.text.PageSize;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -53,8 +54,10 @@ public class RevenueManagedBean implements Serializable {
     private String channel;
     private Double revenue;
     private Double commission;
+    private Double refund;
     private Double sum;
     private Double total;
+    private String totalString;
 
     private long year;
     private String quarter;
@@ -63,6 +66,7 @@ public class RevenueManagedBean implements Serializable {
     private List<String> channelList = new ArrayList<>();
     private Map<String, Double> saleMap;
     private Map<String, Double> commissionMap;
+    private Map<String, Double> refundMap;
     private Map<String, Double> sumMap;
     private List<Long> yearList = new ArrayList<>();
     long currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -83,10 +87,13 @@ public class RevenueManagedBean implements Serializable {
         channelList.add("HOTEL");
         channelList.add("CAR RENTAL");
         channelList.add("HIGH-SPEED RAILWAY");
+        channelList.add("OTHER");
         saleMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("saleMap");
         commissionMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("commissionMap");
+        refundMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("refundMap");
         sumMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("sumMap");
         total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
+        totalString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString");
         revenueList = (List<Revenue>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("revenueList");
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("quarter") != null) {
             year = (long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("year");
@@ -104,30 +111,43 @@ public class RevenueManagedBean implements Serializable {
         } else {
             saleMap = new HashMap<String, Double>();
             commissionMap = new HashMap<String, Double>();
+            refundMap = new HashMap<String, Double>();
             sumMap = new HashMap<String, Double>();
             total = 0.0;
             for (int i = 0; i < channelList.size(); i++) {
                 sum = 0.0;
                 revenue = 0.0;
                 commission = 0.0;
+                refund = 0.0;
                 channel = channelList.get(i);
 
-                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("GDS")) {
+                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("GDS") || channel.equals("OTHER")) {
                     revenue = ftb.calculateRevenue(channel, year, quarter);
                     saleMap.put(channel, revenue);
                 } else {
+                    ////////HOTEL, CAR & RAILWAY
                     saleMap.put(channel, 0.0);
                 }
 
-                if (channel.equals("ARS") || channel.equals("DDS")) {
+                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("OTHER")) {
                     commissionMap.put(channel, 0.0);
                 } else {
+                    //for GDS, HOTEL, CAR & RAILWAY
                     commission = 0.1 * ftb.calculateRevenue(channel, year, quarter); //charge for 10% of sales
                     commissionMap.put(channel, commission);
                 }
-                sum = revenue + commission;
+
+                if (channel.equals("ARS") || channel.equals("DDS") || channel.equals("GDS")) {
+                    refund = ftb.calculateRefund(channel, year, quarter);
+                    refundMap.put(channel, refund);
+                } else {
+                    refundMap.put(channel, 0.0);
+                }
+
+                sum = revenue + commission - refund;
                 total = total + sum;
                 sumMap.put(channel, sum);
+                totalString = BigDecimal.valueOf(total).toPlainString();
             }
             if (total == 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + year + " Quarter " + quarter + " ! ", ""));
@@ -137,8 +157,10 @@ public class RevenueManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("quarter", quarter);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("saleMap", saleMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("commissionMap", commissionMap);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("refundMap", refundMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sumMap", sumMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("revenueList", revenueList);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./displayRevenueReport.xhtml");
             }
@@ -193,6 +215,30 @@ public class RevenueManagedBean implements Serializable {
         Image img = Image.getInstance(logo);
         img.scaleAbsolute(100f, 50f);
         pdf.add(img);
+    }
+
+    public Double getRefund() {
+        return refund;
+    }
+
+    public void setRefund(Double refund) {
+        this.refund = refund;
+    }
+
+    public Map<String, Double> getRefundMap() {
+        return refundMap;
+    }
+
+    public void setRefundMap(Map<String, Double> refundMap) {
+        this.refundMap = refundMap;
+    }
+
+    public String getTotalString() {
+        return totalString;
+    }
+
+    public void setTotalString(String totalString) {
+        this.totalString = totalString;
     }
 
     public List<String> getChannelList() {

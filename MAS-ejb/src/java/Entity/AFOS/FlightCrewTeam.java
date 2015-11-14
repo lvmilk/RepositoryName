@@ -33,10 +33,10 @@ public class FlightCrewTeam implements Serializable {
     String teamId;
 //    @OneToOne(cascade = {CascadeType.PERSIST})
 //    private AircraftType act;
-        private String act;
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="flightTeam")
+    private String act;
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
     private List<CabinCrew> cabinCrew = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy="flightTeam")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
     private List<CockpitCrew> cockpitCrew = new ArrayList<>();
     //    private long accumFlyMin;
     private String currentAirprot;
@@ -53,7 +53,6 @@ public class FlightCrewTeam implements Serializable {
 //    public void setId(Long id) {
 //        this.id = id;
 //    }
-
     public String getAct() {
         return act;
     }

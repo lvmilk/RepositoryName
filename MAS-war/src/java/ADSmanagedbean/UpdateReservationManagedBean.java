@@ -36,7 +36,7 @@ import javax.faces.view.ViewScoped;
 public class UpdateReservationManagedBean implements Serializable {
 
     @EJB
-    ManageReservationBeanLocal mr;
+    private ManageReservationBeanLocal mr;
     @EJB
     private BookerBeanLocal mbsbl;
 
@@ -77,7 +77,10 @@ public class UpdateReservationManagedBean implements Serializable {
 
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
-        rsvList = mr.getAllReservations();
+        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+        companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+
+        rsvList = mr.getCompanyReservations(companyName);
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
         flights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flights");
         origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
@@ -167,7 +170,12 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight3.xhtml");
+
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight3.xhtml");
+        } else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling3.xhtml");
+        }
 
     }
 
@@ -203,7 +211,11 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight2.xhtml");
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight2.xhtml");
+        } else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling2.xhtml");
+        }
 
     }
 

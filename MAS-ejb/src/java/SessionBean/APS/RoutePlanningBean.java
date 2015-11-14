@@ -5,10 +5,14 @@
  */
 package SessionBean.APS;
 
+import Entity.AAS.Expense;
 import Entity.APS.AircraftType;
 import Entity.APS.Airport;
 import Entity.APS.Route;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,6 +31,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
 
     Airport airport;
     Route route;
+    Expense expense;
 
     public RoutePlanningBean() {
     }
@@ -253,7 +258,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour) throws Exception {
+    public void addRoute(String originIATA, String destIATA, Double distance, Double blockhour, Double otherCost) throws Exception {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         System.out.println("rpb.addRoute(): Add route " + originIATA + "-" + destIATA);
         Airport origin = em.find(Airport.class, originIATA);
@@ -263,8 +268,17 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             throw new Exception("Route already exists.");
         }
         route = new Route();
-        route.create(origin, dest, distance, blockhour);
+        route.create(origin, dest, distance, blockhour, otherCost);
         em.persist(route);
+        em.flush();
+        ////////////
+        String idString = route.getId().toString();
+        expense = new Expense();
+        expense.setCategory("Other Cost");
+        expense.setType("Fixed Operation Cost");
+        expense.setPayable(otherCost);
+        expense.setCostSource(idString);
+        em.persist(expense);
         em.flush();
     }
 
@@ -310,7 +324,7 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
     }
 
     @Override
-    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour) throws Exception {
+    public void editRouteBasic(String originIATA, String destIATA, Double distance, AircraftType acType, Double blockhour, Double otherCost) throws Exception {
         Airport origin = em.find(Airport.class, originIATA);
         Airport dest = em.find(Airport.class, destIATA);
         Query q1 = em.createQuery("SELECT r FROM Route r where r.origin =:origin and r.dest =:dest");
@@ -329,8 +343,22 @@ public class RoutePlanningBean implements RoutePlanningBeanLocal {
             route.setDistance(distance);
             route.setAcType(acType);
             route.setBlockhour(blockhour);
+            route.setOtherCost(otherCost);
             em.merge(route);
             em.flush();
+            ////////////////////////////////////////
+            String id = route.getId().toString();
+            Query q2 = em.createQuery("SELECT e FROM Expense e where e.costSource=:id");
+            q2.setParameter("id", id);
+            if (q2.getResultList().isEmpty()) {
+                System.out.println("There is no existing revenue related to this route " + id);
+            } else {
+                expense = (Expense) q2.getResultList().get(0);
+                expense.setPayable(otherCost);
+                expense.setCostSource(id);
+                em.merge(expense);
+                em.flush();
+            }
         }
     }
 

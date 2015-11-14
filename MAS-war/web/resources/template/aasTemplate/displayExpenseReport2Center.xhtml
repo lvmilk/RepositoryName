@@ -20,10 +20,11 @@
                 <p:columnGroup type="header">
                     <p:row>
                         <p:column rowspan="2" headerText="Cost Category" sortBy="#{key}" filterBy="#{key}"/>
-                        <p:column colspan="2" headerText="Expense" />
+                        <p:column colspan="3" headerText="Expense" />
                     </p:row>
                     <p:row>
                         <p:column headerText="Cost Type" />
+                         <p:column headerText="Amount" />
                         <p:column headerText="Total Expense under this Category" />
                     </p:row>
                 </p:columnGroup>
@@ -35,6 +36,11 @@
                     <h:outputText value="#{EMB2.typeMap[key]}"/>
                 </p:column>
                 <p:column>
+                    <h:outputText value="#{EMB2.amountMap[key]}">
+                    <f:convertNumber pattern="0"/>
+                    </h:outputText>
+                </p:column>
+                <p:column>
                     <h:outputText value="$#{EMB2.payableMap[key]}">
                     <f:convertNumber pattern="0.0"/>
                     </h:outputText>
@@ -43,15 +49,15 @@
                 <p:columnGroup type="footer">
                     <p:row>
                         <p:column footerText="Total Variable Cost: " style="text-align:right"/>
-                        <p:column colspan="2" style="text-align:left" footerText="$#{EMB2.totalString}" />
+                        <p:column colspan="3" style="text-align:left" footerText="$#{EMB2.totalString}" />
                     </p:row>
                     <p:row>
                         <p:column footerText="Currency: " style="text-align:right"/>
-                        <p:column colspan="2" style="text-align:left" footerText="SGD" />
+                        <p:column colspan="3" style="text-align:left" footerText="SGD" />
                     </p:row>
                     <p:row>
                         <p:column footerText="Period:  " style="text-align:right"/>
-                        <p:column colspan="2" style="text-align:left" footerText="Year #{EMB2.expenseYear} Quarter #{EMB2.expenseQuarter}" />
+                        <p:column colspan="3" style="text-align:left" footerText="Year #{EMB2.expenseYear2} Quarter #{EMB2.expenseQuarter2}" />
                     </p:row>
 
                 </p:columnGroup>
@@ -60,7 +66,7 @@
             <br/>
             <p:growl id="growl" showDetail="true" />
             <p:commandButton value="Back" icon="ui-icon-cancel" actionListener="#{EMB2.back()}"/>
-            <p:commandButton value="Export Revenue Summary" icon="ui-icon-extlink" actionListener="#{EMB2.exporterSummary()}"/>
+            <p:commandButton value="Export Variable Operation Cost Summary" icon="ui-icon-extlink" actionListener="#{EMB2.exporterSummary()}"/>
 
         </h:form>
     </h:body>
