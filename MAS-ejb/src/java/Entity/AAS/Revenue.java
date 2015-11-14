@@ -28,6 +28,15 @@ public class Revenue implements Serializable {
     private String payer;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentDate;
+    Double refund;
+
+    public Double getRefund() {
+        return refund;
+    }
+
+    public void setRefund(Double refund) {
+        this.refund = refund;
+    }
     
     public Long getId() {
         return id;

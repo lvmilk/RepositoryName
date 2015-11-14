@@ -78,8 +78,8 @@
 
 
                 <br/>
-                <p:panel id="passenger" header="Passenger"  rendered="#{updateReservation.departed.size()>0}" toggleable="true" style="width:45%">
-                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10" emptyMessage="No Reservations" >
+                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" >
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -96,8 +96,14 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
+                        <p:column headerText="Change Passenger" >
+                            <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onUpdatePsg(passenger)}"/>
+                        </p:column>
 
                     </p:dataTable>
+
+
+
                 </p:panel>
 
                 <br/>

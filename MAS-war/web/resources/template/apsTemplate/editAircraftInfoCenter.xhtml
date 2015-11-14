@@ -32,8 +32,9 @@
                     <p:outputLabel  value="First Fly Date :" />
                     <p:outputLabel value="#{editAMB.ffd}" />
 
-                    <p:outputLabel value="Delivery Date :" />
-                    <p:outputLabel value="#{editAMB.dd}"/>
+                    <p:outputLabel for="deliveryDate" value="Delivery Date :" />
+                    <p:calendar id="deliveryDate" value="#{editAMB.deliveryDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="deliveryDate" required="true" validatorMessage="Delivery Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the delivery date of the aircraft" size="50"/>
+
 
                     <p:outputLabel for="retireDate" value="Retire Date :" />
                     <p:calendar id="retireDate" value="#{editAMB.retireDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="retireDate" required="true" validatorMessage="Retire Date: Please enter a valid date in format yyyy-MM-dd"  requiredMessage="Please enter the retire date of the aircraft" size="50"/>

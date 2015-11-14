@@ -79,12 +79,14 @@ public class rescheduleConfirmManagedBean implements Serializable {
     private String manageStatus;
     
     private String bkSystem;
+    private String cabinName;
     private String companyName;
 
     @PostConstruct
     public void init() {
         try {
 
+             cabinName=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
             manageStatus=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
             selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
             bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
@@ -388,4 +390,14 @@ public class rescheduleConfirmManagedBean implements Serializable {
         this.companyName = companyName;
     }
 
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
+    }
+
+    
+    
 }

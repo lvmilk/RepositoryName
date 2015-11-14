@@ -113,7 +113,8 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action) {
-
+System.out.println("------------------In makersvpayment(): action  is "+action);
+        
         if (action.equals("rebook")) {
             Payment payment = new Payment();
             payment.createPayment(totalPrice);

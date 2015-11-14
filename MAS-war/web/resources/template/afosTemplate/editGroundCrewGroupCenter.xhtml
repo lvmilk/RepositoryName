@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form id="mainForm">
+            <style>
+                .specialDialog.ui-panel {
+                    border: none;
+                }
+
+                .specialDialog.ui-panel-content {
+                    border: none;
+                }
+
+                .buttonAdd.ui-button {
+                    color: #3c9fb4;   
+                    position: absolute;
+                    right: 20px;
+                }
+            </style>
+
+            <p:panel id="panel" header="Edit Ground Crew Group Member"  style="width:100%">
+                <p:growl id="growl1" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl2" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl3" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl4" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl5" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl6" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl7" showDetail="true" sticky="false" autoUpdate="false" />  
+                <p:growl id="growl8" showDetail="true" sticky="false" autoUpdate="false" />  
+
+                <p:tabView>
+                    <p:tab title="Group 1">
+                        <p:commandButton value="Add Ground Crew To Group 1" onclick="PF('dlg5').show();" immediate="true" styleClass="buttonAdd"/>
+                        <br/><br/>
+
+                        <p:dataTable var="gs" value="#{EGCGMB.gst1}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 1
+                            </f:facet>
+                            <p:column headerText="Staff Id">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <!--                            <p:column headerText="Group No">
+                                                            <h:outputText value="#{gs.groundStaffTeam.teamId}" />
+                                                        </p:column>-->
+                            <p:column headerText="Remove From Group">
+                                <p:commandButton value="Remove" type="button" onclick="PF('dlg1').show();" immediate="true" />
+                            </p:column>
+                        </p:dataTable>
+
+
+                        <p:dialog id="dlg1" header="Delete Ground Crew from Group" widgetVar="dlg1" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:outputText value="Do you want to delete selected ground crew from Group 1?"/>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Delete"  update=":mainForm:growl1" action="#{EGCGMB.removeCrewFromGroup(gs,1)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg1').hide()" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+
+
+                        <p:dialog id="dlg5" header="Add Ground Crew To Group" widgetVar="dlg5" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:panelGroup layout="block" style="margin:15px;">
+                                <p:panelGrid columns="2">  
+                                    <h:outputLabel for="gsToAdd1" value="Choose a ground crew"/>
+                                    <p:selectOneMenu id="gsToAdd1" value="#{EGCGMB.addgs}" required="true" requiredMessage="Please select a ground crew" style="width:250px" >
+                                        <f:selectItem itemLabel="-Select One-" itemValue="" />
+                                        <f:selectItems value="#{EGCGMB.unGroupedGS}" var="ugs" itemValue="#{ugs.grdName}" itemLabel="#{ugs.grdName} / #{ugs.firstName} #{ugs.lastName} "/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Add to Group"  update=":mainForm:growl5" action="#{EGCGMB.addCrewToGroup(gs,1)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg5').hide()" immediate="true" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+                    </p:tab>
+
+                    <p:tab title="Group 2">
+                        <p:commandButton value="Add Ground Crew To Group 2" onclick="PF('dlg6').show();" immediate="true" styleClass="buttonAdd" />
+                        <br/><br/>
+                        <p:dataTable var="gs" value="#{EGCGMB.gst2}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 2
+                            </f:facet>
+                            <p:column headerText="Staff Id">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>                           
+                            <p:column headerText="Remove From Group">
+                                <p:commandButton value="Remove" onclick="PF('dlg2').show();" immediate="true" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:dialog id="dlg2" header="Delete Ground Crew from Group" widgetVar="dlg2" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:outputText value="Do you want to delete selected ground crew from Group 2?"/>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Delete"  update=":mainForm:growl2" action="#{EGCGMB.removeCrewFromGroup(gs,2)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg2').hide()" />
+                                </h:panelGroup>
+                            </f:facet>
+                        </p:dialog>
+
+                        <p:dialog id="dlg6" header="Add Ground Crew To Group" widgetVar="dlg6" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:panelGroup layout="block" style="margin:15px;">
+                                <p:panelGrid columns="2">  
+                                    <h:outputLabel for="gsToAdd2" value="Choose a ground crew"/>
+                                    <p:selectOneMenu id="gsToAdd2" value="#{EGCGMB.addgs}" required="true" requiredMessage="Please select a ground crew" style="width:250px" >
+                                        <f:selectItem itemLabel="-Select One-" itemValue="" />
+                                        <f:selectItems value="#{EGCGMB.unGroupedGS}" var="ugs" itemValue="#{ugs.grdName}" itemLabel="#{ugs.grdName} / #{ugs.firstName} #{ugs.lastName} "/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Add to Group"  update=":mainForm:growl6" action="#{EGCGMB.addCrewToGroup(gs,1)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg6').hide()" immediate="true" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+
+                    </p:tab>
+
+                    <p:tab title="Group 3">
+                        <p:commandButton value="Add Ground Crew To Group 3" type="button" action="PF('dlg7').show()" immediate="true" styleClass="buttonAdd" />
+                        <br/><br/>
+                        <p:dataTable var="gs" value="#{EGCGMB.gst3}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 3
+                            </f:facet>
+                            <p:column headerText="Staff Id">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Remove From Group">
+                                <p:commandButton value="Remove" type="button" action="PF('dlg3').show()" immediate="true" />
+                            </p:column>
+                        </p:dataTable>
+
+
+                        <p:dialog id="dlg3" header="Delete Ground Crew from Group" widgetVar="dlg3" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:outputText value="Do you want to delete selected ground crew from Group 3?"/>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Delete"  update=":mainForm:growl3" action="#{EGCGMB.removeCrewFromGroup(gs,3)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg3').hide()" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+
+
+                        <p:dialog id="dlg7" header="Add Ground Crew To Group" widgetVar="dlg7" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:panelGroup layout="block" style="margin:15px;">
+                                <p:panelGrid columns="2">  
+                                    <h:outputLabel for="gsToAdd3" value="Choose a ground crew"/>
+                                    <p:selectOneMenu id="gsToAdd3" value="#{EGCGMB.addgs}" required="true" requiredMessage="Please select a ground crew" style="width:250px" >
+                                        <f:selectItem itemLabel="-Select One-" itemValue="" />
+                                        <f:selectItems value="#{EGCGMB.unGroupedGS}" var="ugs" itemValue="#{ugs.grdName}" itemLabel="#{ugs.grdName} / #{ugs.firstName} #{ugs.lastName} "/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Add to Group"  update=":mainForm:growl7" action="#{EGCGMB.addCrewToGroup(gs,1)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg7').hide()" immediate="true" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+
+                    </p:tab>
+
+
+                    <p:tab title="Group 4">
+                        <p:commandButton value="Add Ground Crew To Group 4" type="button" action="PF('dlg8').show()" immediate="true" styleClass="buttonAdd" />
+                        <br/><br/>
+                        <p:dataTable var="gs" value="#{EGCGMB.gst4}" paginator="true" rows="40" emptyMessage="No ground crew exist for this group">
+                            <f:facet name="header">
+                                Ground Crew Group 4
+                            </f:facet>
+                            <p:column headerText="Staff Id">
+                                <h:outputText value="#{gs.grdName}" />
+                            </p:column>
+                            <p:column headerText="Staff Name">
+                                <h:outputText value="#{gs.firstName} / #{gs.lastName}" />
+                            </p:column>
+                            <p:column headerText="Remove From Group">
+                                <p:commandButton value="Remove" type="button" action="PF('dlg4').show()" immediate="true" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <p:dialog id="dlg4" header="Delete Ground Crew from Group" widgetVar="dlg4" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:outputText value="Do you want to delete selected ground crew from Group 4?"/>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Delete"  update=":mainForm:growl4" action="#{EGCGMB.removeCrewFromGroup(gs,4)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg4').hide()" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog>
+
+                        <p:dialog id="dlg8" header="Add Ground Crew To Group" widgetVar="dlg8" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                            <h:panelGroup layout="block" style="margin:15px;">
+                                <p:panelGrid columns="2">  
+                                    <h:outputLabel for="gsToAdd4" value="Choose a ground crew"/>
+                                    <p:selectOneMenu id="gsToAdd4" value="#{EGCGMB.addgs}" required="true" requiredMessage="Please select a ground crew" style="width:250px" >
+                                        <f:selectItem itemLabel="-Select One-" itemValue="" />
+                                        <f:selectItems value="#{EGCGMB.unGroupedGS}" var="ugs" itemValue="#{ugs.grdName}" itemLabel="#{ugs.grdName} / #{ugs.firstName} #{ugs.lastName} "/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                            </h:panelGroup>
+                            <f:facet name="footer">
+                                <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                    <p:commandButton value="Add to Group"  update=":mainForm:growl8" action="#{EGCGMB.addCrewToGroup(gs,1)}" />
+                                    <p:commandButton value="Cancel"  onclick="PF('dlg8').hide()" immediate="true" />
+                                </h:panelGroup>
+                            </f:facet>  
+                        </p:dialog> 
+
+                    </p:tab>
+
+                </p:tabView>
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

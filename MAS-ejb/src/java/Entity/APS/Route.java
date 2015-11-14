@@ -53,7 +53,7 @@ public class Route implements Serializable {
     private List<FlightFrequency> flightFreqList = new ArrayList<>();
 
 
-    public void create(Airport origin, Airport dest, Double distance, Double blockhour) {
+    public void create(Airport origin, Airport dest, Double distance, Double blockhour, Double otherCost) {
         // Double basicFcFare, Double basicBcFare, Double basicPecFare, Double basicEcFare
         this.status = "Pending";
         this.origin = origin;
@@ -61,6 +61,7 @@ public class Route implements Serializable {
         this.distance = distance;
 //        this.blockhour = distance/900.0;
         this.blockhour = blockhour;
+        this.otherCost = otherCost;
     }
     
 

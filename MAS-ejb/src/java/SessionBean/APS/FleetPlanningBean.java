@@ -1,6 +1,7 @@
 package SessionBean.APS;
 
 import Entity.AAS.Expense;
+import Entity.AAS.Revenue;
 import Entity.AFOS.Maintenance;
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
@@ -32,6 +33,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     AircraftType aircraftType;
     Aircraft aircraft;
     Expense expense;
+    Revenue revenue;
 
     @EJB
     SeatPlanBeanLocal sp;
@@ -226,7 +228,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:type");
         q.setParameter("type", type);
         if (q.getResultList().isEmpty()) {
-            throw new Exception("No aircraft type related to this expense.");
+           System.out.println("No aircraft type related to this expense.");
         } else {
             for (int i = 0; i < q.getResultList().size(); i++) {
                 expense = (Expense) q.getResultList().get(i);
@@ -356,9 +358,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public AircraftType
-            getAircraftType(String type
-            ) {
+    public AircraftType getAircraftType(String type) {
         aircraftType = em.find(AircraftType.class, type);
         System.out.println(
                 "getAircraftType: " + aircraftType.getType());
@@ -366,8 +366,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     }
 
     @Override
-    public List<Aircraft> getThisTypeAircraft(String type
-    ) {
+    public List<Aircraft> getThisTypeAircraft(String type) {
         aircraftType = em.find(AircraftType.class, type);
         List<Aircraft> aircraftList = aircraftType.getAircraft();
         return aircraftList;
@@ -431,7 +430,10 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
 
         if ((status.equals("Retired")) && (!aircraft.getFlightInstance().isEmpty())) {
             //     System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! "+aircraft.getStatus() + status + aircraft.getFlightInstance());
-            throw new Exception("Aircraft Status cannot be retired. This aircraft " + aircraft.getRegistrationNo() + " has already linked with a flight instance.");
+            throw new Exception("Aircraft status cannot be Retired. This aircraft " + aircraft.getRegistrationNo() + " has already linked with a flight instance.");
+        }
+         if (aircraft.getStatus().equals("Retired") && !status.equals("Retired")) {
+            throw new Exception("Aircraft status cannot be changed. This aircraft " + aircraft.getRegistrationNo() + " has already been retired.");
         }
 
         System.out.println("fleetPlanningBean: editAircraft: reired with flight instance ??!! " + aircraft.getStatus() + aircraft.getFlightInstance());
@@ -444,7 +446,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         em.flush();
         Integer start = Integer.parseInt(deliveryDate.substring(0, 4));
         Integer end = Integer.parseInt(retireDate.substring(0, 4));
-        Integer yearDiff = end - start;
+        Integer yearDiff = Math.abs(end - start);
         Query q = em.createQuery("SELECT e FROM Expense e where e.costSource=:registrationNo");
         q.setParameter("registrationNo", registrationNo);
         if (q.getResultList().isEmpty()) {
@@ -465,6 +467,26 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
                 em.flush();
             }
         }
+        Query q2 = em.createQuery("SELECT r FROM Revenue r where r.payer=:registrationNo");
+        q2.setParameter("registrationNo", registrationNo);
+        if (!q2.getResultList().isEmpty()) {
+            System.out.println("There is an existing sale revenue related to this aircraft "+registrationNo);
+        } else {
+            if (status.equals("Retired")) {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                Date retire = format.parse(retireDate);
+                revenue = new Revenue();
+                revenue.setReceivable(0.3 * purchaseCost);
+                revenue.setChannel("OTHER");
+                revenue.setType("Aircraft Sale");
+                revenue.setPayer(registrationNo);
+                revenue.setPaymentDate(retire);
+                em.persist(expense);
+                em.flush();
+            } else {
+                System.out.println("This aircraft " + registrationNo + " is not retired");
+            }
+        }
     }
 
     @Override
@@ -472,6 +494,11 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
         if (selectedList.size() > 0) {
             for (int i = 0; i < selectedList.size(); i++) {
                 String registrationNo = selectedList.get(i).getRegistrationNo();
+                aircraft = em.find(Aircraft.class, registrationNo);
+                String status = aircraft.getStatus();
+                if (!status.equals("Retired")) {
+                    throw new Exception("Cannot delete! This aircraft is not retired");
+                }
                 Query q = em.createQuery("SELECT fi FROM FlightInstance fi where fi.aircraft.registrationNo =:registrationNo");
                 q.setParameter("registrationNo", registrationNo);
                 if (!q.getResultList().isEmpty()) {
