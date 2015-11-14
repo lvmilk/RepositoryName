@@ -243,7 +243,11 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
 
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePassenger1.xhtml");
+        } else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsUpdatePsg.xhtml");
+        }
 
     }
 
@@ -251,8 +255,13 @@ public class UpdateReservationManagedBean implements Serializable {
 
         System.out.println("onSavePsgChange(): selectedPsg is " + selectedPsg);
         mr.ChangePassenger(selectedPsg, newPsg);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
+        }else if (bkSystem.equals("DDS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsUpdatePsgSuccess.xhtml");
+        }
     }
+    
 
     public void onSelectPsg() throws IOException {
 
@@ -325,7 +334,12 @@ public class UpdateReservationManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emailOrigin", emailOrigin);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+
+        if (bkSystem.equals("ARS")) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./editBookerPage.xhtml");
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsEditBooker.xhtml");
+        }
 
     }
 
