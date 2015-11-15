@@ -105,6 +105,14 @@ public class CockpitCrew implements Serializable {
         return "Entity.CommonInfaEntity.CockpitCrew[ id=" + cpName + " ]";
     }
 
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
+    }
+
     public String getCpName() {
         return cpName;
     }
@@ -273,13 +281,7 @@ public class CockpitCrew implements Serializable {
 //        this.taskList = taskList;
 //    }
 
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
 
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
-    }
     
     
 }

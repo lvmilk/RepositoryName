@@ -37,6 +37,11 @@
                     <p:column headerText="Ticekt Status">
                         <h:outputText value="#{tkt.ticketStatus}" style="center"/>
                     </p:column>
+                    <p:column headerText="Checkin Time">
+                        <h:outputText value="#{tkt.checkinTime}" style="center"> 
+                         <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
                     <p:column headerText="Boarding">
                         <p:commandButton value="Boarding"   update=":#{p:component('panel')}" actionListener="#{bmb.onStandbyBoardingChange}">
                             <f:attribute name="tkt" value="#{tkt}"/>

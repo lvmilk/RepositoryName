@@ -84,6 +84,14 @@ public class OfficeStaff implements Serializable {
         return "Entity.CommonInfaEntity.OfficeStaff[ id=" + offName + " ]";
     }
 
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
+    }
+
     /**
      * @return the offName
      */
@@ -252,12 +260,6 @@ public class OfficeStaff implements Serializable {
         this.lastName = lastName;
     }
 
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
 
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
-    }
 
 }
