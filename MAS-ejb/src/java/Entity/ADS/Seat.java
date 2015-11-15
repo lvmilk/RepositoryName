@@ -34,7 +34,7 @@ public class Seat implements Serializable {
     private int luggageCount=0;
     
     
-    @OneToOne(mappedBy="seat")
+    @OneToOne
     private Ticket ticket;
     @ManyToOne
     private FlightCabin flightCabin;

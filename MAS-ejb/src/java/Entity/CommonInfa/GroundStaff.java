@@ -100,6 +100,14 @@ public class GroundStaff implements Serializable {
         this.grdName = grdName;
     }
 
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
+    }
+
     /**
      * @return the grdPassword
      */
