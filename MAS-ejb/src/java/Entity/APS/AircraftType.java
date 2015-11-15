@@ -1,7 +1,5 @@
 package Entity.APS;
 
-import Entity.AAS.Expense;
-import Entity.AFOS.FlightCrewTeam;
 import Entity.AIS.CabinClass;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
-import javax.persistence.OneToOne;
 
 /**
  *

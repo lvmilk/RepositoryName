@@ -12,28 +12,75 @@
     </h:head>
     <h:body>
 
+        <style>
+            ui-datatable.td.myTable1 {
+                color: #6ce26c;
+            }
+
+            ui-datatable.td.myTable2 {
+                color: #ff1493;
+            }
+
+            ui-datatable.td.myTable3 {
+                color: #97B0F8;
+            }
+
+            ui-datatable.td.myTable4 {
+                color: #e0e0e0;
+            }
+
+        </style>
+
         <h:form>
             <p:panel id="panel" header="View Group Crew Schedule for Period #{VGCGSMB.startDateString} -  #{VGCGSMB.endDateString} "  style="width:100%">
-                <p:dataTable var="date" value="#{VGCGSMB.dateList}" paginator="true" rows="40" emptyMessage="No ground crew arrangement" >
+                <p:dataTable var="date" value="#{VGCGSMB.dateList}" paginator="true" rows="40" widgetVar="timeTable" emptyMessage="No result found">
                     <f:facet name="header">
                         Ground Crew Group Schedule for Period #{startDateString} - #{endDateString}
+<!--                        <p:outputPanel>
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('timeTable').filter()" style="width:150px" placeholder="Enter group number"/>
+                        </p:outputPanel>-->
                     </f:facet>
                     <p:column headerText="Date" filterBy="#{date}" filterMatchMode="contains">
                         <h:outputText value="#{date}" >
                             <f:convertDateTime pattern="EEE yyyy-MM-dd " timeZone="Asia/Singapore"/>
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Morning 7am-15pm" filterBy="#{VGCGSMB.morningMap[date]}" filterMatchMode="contains">
-                        <h:outputText value="Group #{VGCGSMB.morningMap[date]}" />
+                    <p:column headerText="Morning 7am-15pm" filterBy="#{VGCGSMB.morningMap[date]}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('timeTable').filter()" >
+                                <f:selectItem itemLabel="-Select Group No-" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{VGCGSMB.groupNo}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="Group #{VGCGSMB.morningMap[date]}" style="font-weight:bold; color: #{VGCGSMB.morningMap[date] == '1' ? '#00b189' : VGCGSMB.morningMap[date] == '2' ? '#c318be' : VGCGSMB.morningMap[date] == '3' ?  '#ce8f1d' : '#5f5f5f'};" />
                     </p:column>
-                    <p:column headerText="Afternoon 15pm-23pm" filterBy="#{VGCGSMB.afternoonMap[date]}" filterMatchMode="contains">
-                        <h:outputText value="Group #{VGCGSMB.afternoonMap[date]}" />
+                    <p:column headerText="Afternoon 15pm-23pm" filterBy="#{VGCGSMB.afternoonMap[date]}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('timeTable').filter()" >
+                                <f:selectItem itemLabel="-Select Group No-" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{VGCGSMB.groupNo}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="Group #{VGCGSMB.afternoonMap[date]}" style="font-weight:bold; color: #{VGCGSMB.afternoonMap[date] == '1' ? '#00b189' : VGCGSMB.afternoonMap[date] == '2' ? '#c318be' : VGCGSMB.afternoonMap[date] == '3' ?  '#ce8f1d' : '#5f5f5f'};" />
                     </p:column>
                     <p:column headerText="Night 23pm-7am" filterBy="#{VGCGSMB.nightMap[date]}" filterMatchMode="contains">
-                        <h:outputText value="Group #{VGCGSMB.nightMap[date]}" />
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('timeTable').filter()" >
+                                <f:selectItem itemLabel="-Select Group No-" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{VGCGSMB.groupNo}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="Group #{VGCGSMB.nightMap[date]}" style="font-weight:bold; color: #{VGCGSMB.nightMap[date] == '1' ? '#00b189' : VGCGSMB.nightMap[date] == '2' ? '#c318be' : VGCGSMB.nightMap[date] == '3' ?  '#ce8f1d' : '#5f5f5f'};" />
                     </p:column>
-                    <p:column headerText="Standby" filterBy="#{VGCGSMB.standbyMap[date]}" filterMatchMode="contains">
-                        <h:outputText value="Group #{VGCGSMB.standbyMap[date]}" />
+                    <p:column headerText="Standby" filterBy="#{VGCGSMB.standbyMap[date]}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('timeTable').filter()" >
+                                <f:selectItem itemLabel="-Select Group No-" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{VGCGSMB.groupNo}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="Group #{VGCGSMB.standbyMap[date]}" style="font-weight:bold; color: #{VGCGSMB.standbyMap[date] == '1' ? '#00b189' : VGCGSMB.standbyMap[date] == '2' ? '#c318be' : VGCGSMB.standbyMap[date] == '3' ?  '#ce8f1d' : '#5f5f5f'};" />
                     </p:column>
                 </p:dataTable>
             </p:panel>

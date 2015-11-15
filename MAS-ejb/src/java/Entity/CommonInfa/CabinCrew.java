@@ -5,7 +5,7 @@
  */
 package Entity.CommonInfa;
 
-import Entity.AFOS.FlightCrewTeam;
+import Entity.AFOS.FlightTask;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -53,8 +53,8 @@ public class CabinCrew implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    private FlightCrewTeam flightTeam;
+ @OneToMany
+    private List<FlightTask> taskList = new ArrayList<>();
 
     public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
         this.setCbName(strCbName);
@@ -156,14 +156,6 @@ public class CabinCrew implements Serializable {
 
     public void setUser(UserEntity user) {
         this.user = user;
-    }
-
-    public FlightCrewTeam getFlightTeam() {
-        return flightTeam;
-    }
-
-    public void setFlightTeam(FlightCrewTeam flightTeam) {
-        this.flightTeam = flightTeam;
     }
 
     public String getStfLevel() {
@@ -270,5 +262,12 @@ public class CabinCrew implements Serializable {
         this.secondSB = secondSB;
     }
 
+    public List<FlightTask> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<FlightTask> taskList) {
+        this.taskList = taskList;
+    }
 
 }
