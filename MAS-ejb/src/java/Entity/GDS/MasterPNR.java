@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -17,10 +18,13 @@ import javax.persistence.Id;
  */
 @Entity
 public class MasterPNR implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @OneToOne
+    private GDSReservation GDSreservation;
 
     public Long getId() {
         return id;
@@ -28,6 +32,19 @@ public class MasterPNR implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public MasterPNR() {
+    }
+
+  
+
+    public GDSReservation getGDSreservation() {
+        return GDSreservation;
+    }
+
+    public void setGDSreservation(GDSReservation GDSreservation) {
+        this.GDSreservation = GDSreservation;
     }
 
     @Override
@@ -54,5 +71,5 @@ public class MasterPNR implements Serializable {
     public String toString() {
         return "Entity.GDS.MasterPNR[ id=" + id + " ]";
     }
-    
+
 }

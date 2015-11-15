@@ -366,7 +366,7 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", ticket);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tickets", tickets);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", new Seat());
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("luggageCount", 0);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allAvailableSeats", allAvailableSeats);
 
