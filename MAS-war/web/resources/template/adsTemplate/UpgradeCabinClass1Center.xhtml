@@ -45,41 +45,45 @@
 
 
                     <p:column headerText="View ">
-                        <p:commandButton value="View Detail" actionListener="#{updateReservation.onSelectRsv(rsv)}" partialSubmit="true" update=":viewReserve"/>
+                        <p:commandButton value="View Detail" actionListener="#{updateReservation.onSelectUpgradeRsv(rsv)}" partialSubmit="true" update=":viewReserve"/>
 
                     </p:column>
                 </p:dataTable>
             </p:panel>
 
+            <p:panel  header="Reservation Details" rendered="#{updateReservation.allFlights.size()>0}" >
+                <p:panel header="Flight Legs" toggleable="true" >
+                    <p:dataTable var="flight" rowKey="#{flight.id}" selection="#{updateReservation.selectedFlight}" value="#{updateReservation.allFlights}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
-            <p:panel id="reservation" header="Reservation Information" rendered="#{updateReservation.departed.size()>0}" toggleable="true">
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
-                    <h:panelGrid columns="2" cellpadding="10" >
-                        <h:panelGrid columns="4" cellpadding="10" >
-                            <p:outputLabel  value="Title" />
-                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.title}" />
+                        <p:column headerText="Select One" selectionMode="single" style="width: 50px"/>
 
-                            <p:outputLabel  value="Name" />
-                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.firstName} #{updateReservation.selectedRsv.booker.lastName}" />
+                        <p:column headerText="Departure time" sortBy="#{flight.standardDepTimeDateType}" filterBy="#{rsv.id}" >
+                            <h:outputText value="#{flight.standardDepTimeDateType}" />
+                        </p:column>
 
-                            <p:outputLabel  value="Email" />
-                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.email}" />
+                        <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTimeDateType}" >
+                            <h:outputText value="#{flight.standardArrTimeDateType}" />
+                        </p:column>
 
-                            <p:outputLabel  value="Address" />
-                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.address}" />
+                        <p:column headerText="Depart From" >
+                            <h:outputText value="#{flight.flightFrequency.route.origin.airportName}" />
+                        </p:column>
+                        <p:column headerText="Arrive At">
+                            <h:outputText value="#{flight.flightFrequency.route.dest.airportName}}" />
+                        </p:column>
 
-                            <p:outputLabel  value="Contact No" />
-                            <p:outputLabel value="#{updateReservation.selectedRsv.booker.contact}" />
-                        </h:panelGrid>
-                        <p:commandButton value="Edit" actionListener="#{updateReservation.onSelectBooker()}"/>
-                    </h:panelGrid>
+                        <p:column headerText="Cabin Class">
+                            <h:outputText value="#{updateReservation.flightToBkInstance[flight].flightCabin.cabinClass.cabinName}" />
+                        </p:column>
+                    </p:dataTable>
 
                 </p:panel>
 
-
                 <br/>
                 <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
-                    <p:dataTable var="passenger" value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" >
+                    <p:dataTable var="passenger" rowKey="#{passenger.id}" selection="#{updateReservation.selectedPsgList}" value="#{updateReservation.psgList}" rows="10"  emptyMessage="No Reservations" style="text-align: center">
+
+                        <p:column headerText="Select All" selectionMode="multiple" style="width: 50px"/>
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -96,31 +100,14 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
-                        <p:column headerText="Change Passenger" >
-                            <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onUpdatePsg(passenger)}"/>
-                        </p:column>
 
-                    </p:dataTable>
-
-
+                    </p:dataTable>       
 
                 </p:panel>
 
                 <br/>
-                <p:panel id="payment" header="Payment"   toggleable="true" style="width:45%">
-                    <h:panelGrid columns="4" cellpadding="10" >
 
-                        <p:outputLabel  value="Payment ID: " />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.paymentID}" />
-
-                        <p:outputLabel  value="Date of Payment: " />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.paymentDate.toString()}" />
-
-                        <p:outputLabel  value="Amount of Payment" />
-                        <p:outputLabel value="#{updateReservation.selectedRsv.payment.totalPrice}" />
-                    </h:panelGrid>
-
-                </p:panel> 
+                <p:commandButton value="Change Passenger" actionListener="#{updateReservation.onChooseUpgradePsg()}"/>
 
             </p:panel>
 
@@ -128,4 +115,5 @@
 
     </h:body>
 </html>
+
 
