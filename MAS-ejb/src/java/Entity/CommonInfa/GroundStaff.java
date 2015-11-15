@@ -270,12 +270,6 @@ public class GroundStaff implements Serializable {
         this.groundStaffTeam = groundStaffTeam;
     }
 
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
 
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
-    }
 
 }
