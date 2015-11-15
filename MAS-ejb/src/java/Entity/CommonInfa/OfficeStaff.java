@@ -260,12 +260,6 @@ public class OfficeStaff implements Serializable {
         this.lastName = lastName;
     }
 
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
 
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
-    }
 
 }
