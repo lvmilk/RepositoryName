@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+        <title>Financial Statement Report</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+
+            <p:panel id="panel" header="Financial Statement Report"  style="width:100%" >
+                <p:dataTable id="tbl" var="key" value="#{FSMB.keyList}" resizableColumns="true" style="margin-bottom:40px" >
+                    <f:facet name="header">
+                        Merlion Airlines Seasonal Financial Statement 
+                    </f:facet>
+                    <p:column headerText="Title" >
+                        <h:outputText value="#{key}" style="color: #{key.equals('EXPENSES:') ?  '#616161' : key.equals('REVENUES:') ?  '#616161' : key.equals('NET INCOME:') ? '#616161' : '#3A6DA0' }"/>
+                    </p:column>
+                    <p:column headerText="$Debit">
+                        <h:outputText value="#{FSMB.payableMap[key]}" style="background-color: #{FSMB.payableMap[key] == null  ?   '#616161'  : 'white'}; ">
+                            <f:convertNumber pattern="0.0"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="$Credit">
+                        <h:outputText value="#{FSMB.receivableMap[key]}" style="background-color: #{FSMB.receivableMap[key] == null  ?   '#616161'  : 'white'}; ">
+                            <f:convertNumber pattern="0.0"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:spacer height="20"/>
+
+            <p:panel header="Export Excel or PDF">
+                <h:commandLink id="excel">
+                    <p:graphicImage name="excel.png" library="images"  width="40" height="50"/>
+                    <p:dataExporter type="xls" target="tbl" fileName="Financial Statement Report (quarter #{FSMB.quarter} in #{FSMB.year})" postProcessor="#{FSMB.postProcessXLS}" />
+                </h:commandLink>
+                <h:commandLink id="pdf">
+                    <p:graphicImage name="pdf.png" library="images"  width="55" height="60"/>
+                    <p:dataExporter type="pdf" target="tbl" fileName="Financial Statement Report (quarter #{FSMB.quarter} in #{FSMB.year})" preProcessor="#{FSMB.preProcessPDF}" />
+                </h:commandLink>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
+
+
