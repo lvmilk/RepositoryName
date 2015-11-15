@@ -701,14 +701,20 @@ INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(20202,"Va
 INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(30303,"Variable Operation Cost","Captain",10000.0,"CP777751")
 INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(40404,"Variable Operation Cost","Pilot",8000.0,"CP777778")
 INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(50505,"Variable Operation Cost","Office Staff",3000.0,"O777777")
-INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",4000.0,"G777777")
+INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",4000.0,"G666631")
 
 
+INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType) values(111,"CB888881","2015-08-10","2015-08-20",11,"Approved","None","cabin")
+INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType) values(111,"CB888881","2015-07-10","2015-07-20",11,"Approved","None","cabin")
+INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType) values(333,"CP777751","2015-10-10","2015-10-20",11,"Approved","None","cockpit")
+INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType) values(444,"CP777778","2015-10-02","2015-10-14",13,"Approved","None","cockpit")
+INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType) values(555,"O777777","2015-11-01","2015-11-13",13,"Approved","None","officeStaff")
+INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType) values(666,"G666631","2015-09-10","2015-09-19",10,"Approved","None","groundStaff")
 
-
+ 
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(111,"CB888881",3000.0,15.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(222,"CB888851",5000.0,20.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777751",10000.0,150.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,80.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
-INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G777777",4000.0,0.0)
+INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)
