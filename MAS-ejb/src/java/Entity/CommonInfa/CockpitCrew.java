@@ -5,7 +5,7 @@
  */
 package Entity.CommonInfa;
 
-import Entity.AFOS.FlightCrewTeam;
+//import Entity.AFOS.FlightTask;
 import Entity.AFOS.StaffLeave;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
@@ -16,7 +16,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -55,12 +54,11 @@ public class CockpitCrew implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
-    private FlightCrewTeam flightTeam;
-    
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy="cockpitCrew")
-    private List<StaffLeave> leaves = new ArrayList<StaffLeave>();
-    
+//    @OneToMany
+//    private List<FlightTask> taskList = new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitCrew")
+    private List<StaffLeave> leaves = new ArrayList<>();
+
     public void create(String strCpName, String strCpPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         this.setCpName(strCpName);
         this.setCpPassword(strCpPassword);
@@ -179,14 +177,6 @@ public class CockpitCrew implements Serializable {
         this.user = user;
     }
 
-    public FlightCrewTeam getFlightTeam() {
-        return flightTeam;
-    }
-
-    public void setFlightTeam(FlightCrewTeam flightTeam) {
-        this.flightTeam = flightTeam;
-    }
-
     public String getStfLevel() {
         return stfLevel;
     }
@@ -283,4 +273,21 @@ public class CockpitCrew implements Serializable {
         this.secondSB = secondSB;
     }
 
+//    public List<FlightTask> getTaskList() {
+//        return taskList;
+//    }
+//
+//    public void setTaskList(List<FlightTask> taskList) {
+//        this.taskList = taskList;
+//    }
+
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
+    }
+    
+    
 }

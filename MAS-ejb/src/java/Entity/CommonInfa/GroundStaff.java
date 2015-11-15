@@ -45,8 +45,8 @@ public class GroundStaff implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private GroundStaffTeam groundStaffTeam;
     
-      @OneToMany(cascade = {CascadeType.PERSIST},mappedBy="groundStaff")
-    private List<StaffLeave> leaves = new ArrayList<StaffLeave>();
+       @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "groundStaff")
+    private List<StaffLeave> leaves = new ArrayList<>();
     
     public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
@@ -268,6 +268,14 @@ public class GroundStaff implements Serializable {
 
     public void setGroundStaffTeam(GroundStaffTeam groundStaffTeam) {
         this.groundStaffTeam = groundStaffTeam;
+    }
+
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
     }
 
 }

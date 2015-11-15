@@ -6,37 +6,24 @@
 package Entity.AAS;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
 
 /**
  *
  * @author Xi
  */
 @Entity
-public class Expense implements Serializable {
+public class Payroll implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Double payable;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date paymentDate;
-    private String type;
-    private String category;
-    private String costSource;
+    private String name;
+    private Double salary;
+    private Double bonus;
 
-    public String getCostSource() {
-        return costSource;
-    }
-
-    public void setCostSource(String costSource) {
-        this.costSource = costSource;
-    }
-    
     public Long getId() {
         return id;
     }
@@ -45,36 +32,28 @@ public class Expense implements Serializable {
         this.id = id;
     }
 
-    public Double getPayable() {
-        return payable;
+    public String getName() {
+        return name;
     }
 
-    public void setPayable(Double payable) {
-        this.payable = payable;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getPaymentDate() {
-        return paymentDate;
+    public Double getSalary() {
+        return salary;
     }
 
-    public void setPaymentDate(Date paymentDate) {
-        this.paymentDate = paymentDate;
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 
-    public String getType() {
-        return type;
+    public Double getBonus() {
+        return bonus;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+    public void setBonus(Double bonus) {
+        this.bonus = bonus;
     }
 
     @Override
@@ -87,10 +66,10 @@ public class Expense implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Expense)) {
+        if (!(object instanceof Payroll)) {
             return false;
         }
-        Expense other = (Expense) object;
+        Payroll other = (Payroll) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -99,7 +78,7 @@ public class Expense implements Serializable {
 
     @Override
     public String toString() {
-        return "Entity.AAS.Expense[ id=" + id + " ]";
+        return "Entity.AAS.Payroll[ id=" + id + " ]";
     }
     
 }

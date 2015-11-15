@@ -106,7 +106,7 @@ public class ExpenseManagedBean implements Serializable {
                     typeMap.put(category, type);
                     payable = ftb.calculateExpense(category, expenseYear, expenseQuarter);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
+              //      System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
                 } else {
                     if (category.equals("Other Cost")) {
                         type = "Fixed Operation Cost";
@@ -117,7 +117,7 @@ public class ExpenseManagedBean implements Serializable {
                     }
                     payable = ftb.calculateNoDateExpense(category, expenseYear, expenseQuarter);
                     payableMap.put(category, payable);
-                    System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
+            //        System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
                 }
                 total = total + payable;
                 totalString = BigDecimal.valueOf(total).toPlainString();

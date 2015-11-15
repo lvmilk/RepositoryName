@@ -6,26 +6,23 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        Delete Booking Class
+
     </h:head>
     <h:body>
-
-        <ui:decorate template="./../resources/template/adsTemplate/ars_skeleton.xhtml">
+        
+        <ui:decorate template="./../resources/template/ddsTemplate/ddsSkeleton.xhtml">
             <ui:define name="top">
-                <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
+                <ui:include src="./../resources/template/ddsTemplate/ddsTopFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
-                <ui:include src="./../resources/template/adsTemplate/LeftMenu.xhtml"></ui:include>
+                <ui:include src="./../resources/template/ddsTemplate/ddsLeftFragment.xhtml"></ui:include>
             </ui:define>
-            <!--            <ui:define name="right">
-                            <ui:include src="./template/cmiTemplate/rightFragment.xhtml"></ui:include>
-                        </ui:define>-->
-
+<!--            <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragWithImg.xhtml"></ui:include>
+            </ui:define>-->
             <ui:define name="center">
-                <ui:include src="./../resources/template/adsTemplate/UpgradeCabinClass2Center.xhtml"></ui:include>
+                <ui:include src="./../resources/template/ddsTemplate/centerDDSUpdateRsv.xhtml"></ui:include>
             </ui:define>
-
-
         </ui:decorate>
     </h:body>
 </html>

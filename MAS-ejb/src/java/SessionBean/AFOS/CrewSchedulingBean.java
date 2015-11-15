@@ -153,19 +153,19 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                     String teamId = act.getType() + "_" + i;
                     oneTeam.create(teamId);
                     oneTeam.setAct(act.getType());
-                    oneTeam.setCabinCrew(ccList);
-                    oneTeam.setCockpitCrew(cpList);
+//                    oneTeam.setCabinCrew(ccList);
+//                    oneTeam.setCockpitCrew(cpList);
                     em.persist(oneTeam);
                     em.flush();
 
                     for (CabinCrew cc : ccList) {
                         CabinCrew temp = em.find(CabinCrew.class, cc.getCbName());
-                        temp.setFlightTeam(oneTeam);
+//                        temp.setFlightTeam(oneTeam);
                         em.merge(temp);
                     }
                     for (CockpitCrew cp : cpList) {
                         CockpitCrew temp = em.find(CockpitCrew.class, cp.getCpName());
-                        temp.setFlightTeam(oneTeam);
+//                        temp.setFlightTeam(oneTeam);
                         em.merge(temp);
                     }
                     em.flush();

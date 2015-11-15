@@ -34,10 +34,10 @@ public class FlightCrewTeam implements Serializable {
 //    @OneToOne(cascade = {CascadeType.PERSIST})
 //    private AircraftType act;
     private String act;
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
-    private List<CabinCrew> cabinCrew = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
-    private List<CockpitCrew> cockpitCrew = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
+//    private List<CabinCrew> cabinCrew = new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "flightTeam")
+//    private List<CockpitCrew> cockpitCrew = new ArrayList<>();
     //    private long accumFlyMin;
     private String currentAirprot;
 
@@ -61,21 +61,21 @@ public class FlightCrewTeam implements Serializable {
         this.act = act;
     }
 
-    public List<CabinCrew> getCabinCrew() {
-        return cabinCrew;
-    }
-
-    public void setCabinCrew(List<CabinCrew> cabinCrew) {
-        this.cabinCrew = cabinCrew;
-    }
-
-    public List<CockpitCrew> getCockpitCrew() {
-        return cockpitCrew;
-    }
-
-    public void setCockpitCrew(List<CockpitCrew> cockpitCrew) {
-        this.cockpitCrew = cockpitCrew;
-    }
+//    public List<CabinCrew> getCabinCrew() {
+//        return cabinCrew;
+//    }
+//
+//    public void setCabinCrew(List<CabinCrew> cabinCrew) {
+//        this.cabinCrew = cabinCrew;
+//    }
+//
+//    public List<CockpitCrew> getCockpitCrew() {
+//        return cockpitCrew;
+//    }
+//
+//    public void setCockpitCrew(List<CockpitCrew> cockpitCrew) {
+//        this.cockpitCrew = cockpitCrew;
+//    }
 
     public String getCurrentAirprot() {
         return currentAirprot;
