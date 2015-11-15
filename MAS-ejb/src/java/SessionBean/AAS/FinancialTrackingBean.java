@@ -341,7 +341,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         return total;
     }
 
-    // Without payment date --> Fuel Cost, Depreciation, Maintenance Cost, Other Cost
+    // Without payment date --> Fuel Cost, Depreciation, Maintenance Cost, Other Cost and Staffs
     @Override
     public Double calculateNoDateExpense(String category, long year, String quarter) {
         Double total = 0.0;
@@ -555,7 +555,7 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
         List<Expense> list = new ArrayList<>();
 
         for (int i = 0; i < resultList.size(); i++) {
-            List<Expense> copyList = new ArrayList<>();
+            List<Expense> originalList = new ArrayList<>();
             String cate = resultList.get(i).getCategory();
             if (cate.equals("Purchase Aircraft") || cate.equals("DDS Commission")) {
                 Date paymentDate = resultList.get(i).getPaymentDate();
@@ -583,18 +583,25 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                         Logger.getLogger(FinancialTrackingBean.class.getName()).log(Level.SEVERE, "FTB:calculateNoDateExpense: Cannot get aircraft delivery date", ex);
                     }
                     if (!checkDate.after(endDate)) {
-                        copyList.add(e);
+                        originalList.add(e);
+                        originalList.set(0, e);
                         Double payable = e.getPayable();
+                        List<Expense> copyList = new ArrayList<Expense>(originalList);
                         copyList.get(0).setPayable(payable / 4);
                         list.add(copyList.get(0));
+                        list.set(list.size()-1, copyList.get(0));
+//                        System.out.println("@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!depreciation copylist: "+copyList.get(0).getPayable());
+//                        System.out.println("@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!depreciation list: "+list.get(list.size()-1).getPayable());
+//                        System.out.println("@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!depreciation result list: "+resultList.get(i).getPayable());
                         e.setPayable(copyData);
+//                        System.out.println("@@@@@@@@@@!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!depreciation copylist after setting back resultList: "+copyList.get(0).getPayable());
                     } else {
                         System.out.println("FTB:calculateNoDateExpense: There is no depreciation during this period.");
                     }
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this aircraft is deleted.");
                 }
-
+                
             } else if (cate.equals("Other Cost")) {
                 Expense e = new Expense();
                 e = resultList.get(i);
@@ -604,10 +611,10 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 Long id = Long.valueOf(routeId);
                 Route checkRoute = em.find(Route.class, id);
                 if (checkRoute != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = e.getPayable();
-                    copyList.get(0).setPayable(payable / 4);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable / 4);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this route is deleted.");
@@ -622,11 +629,11 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
                 List<AircraftType> typeList = (List) q1.getResultList();
                 if (!typeList.isEmpty()) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
-                    copyList.get(0).setPayable(payable * fsb.calPeriodTotalFlightHour(startDate, endDate));
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable * fsb.calPeriodTotalFlightHour(startDate, endDate));
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this aircraft type is deleted.");
@@ -641,12 +648,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 Query q1 = em.createQuery("SELECT a FROM AircraftType a where a.type=:type").setParameter("type", type);
                 List<AircraftType> typeList = (List) q1.getResultList();
                 if (!typeList.isEmpty()) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * fsb.calPeriodTotalMtManHour(startDate, endDate);
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this aircraft type is deleted.");
@@ -660,12 +667,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 CabinCrew cabinCrew = em.find(CabinCrew.class, name);
                 if (cabinCrew != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4 + csb.calCabinLeaderTotalHourPay(startDate, endDate);
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this cabin crew is deleted.");
@@ -678,12 +685,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 CabinCrew cabinCrew = em.find(CabinCrew.class, name);
                 if (cabinCrew != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4 + csb.calCabinCrewTotalHourPay(startDate, endDate);
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this cabin crew is deleted.");
@@ -696,12 +703,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 CockpitCrew cockpitCrew = em.find(CockpitCrew.class, name);
                 if (cockpitCrew != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4 + csb.calCaptainTotalHourPay(startDate, endDate);
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this captain is deleted.");
@@ -714,12 +721,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 CockpitCrew cockpitCrew = em.find(CockpitCrew.class, name);
                 if (cockpitCrew != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4 + csb.calPilotTotalHourPay(startDate, endDate);
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this pilot is deleted.");
@@ -732,12 +739,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 GroundStaff groundStaff = em.find(GroundStaff.class, name);
                 if (groundStaff != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4;
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this ground staff is deleted.");
@@ -751,12 +758,12 @@ public class FinancialTrackingBean implements FinancialTrackingBeanLocal {
                 String name = resultList.get(i).getCostSource();
                 OfficeStaff officeStaff = em.find(OfficeStaff.class, name);
                 if (officeStaff != null) {
-                    copyList.add(e);
+                    originalList.add(e);
                     Double payable = 0.0;
                     payable = e.getPayable();
                     payable = payable * 4;
-                    copyList.get(0).setPayable(payable);
-                    list.add(copyList.get(0));
+                    originalList.get(0).setPayable(payable);
+                    list.add(originalList.get(0));
                     e.setPayable(copyData);
                 } else {
                     System.out.println("FTB:calculateNoDateExpense: this office staff is deleted.");

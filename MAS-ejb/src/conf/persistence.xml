@@ -13,13 +13,13 @@
 <!--      <property name="javax.persistence.sql-load-script-source"
           value="file:///G:/NetBeanProject/MAS/data.sql" />
            -->
-          <property name="javax.persistence.sql-load-script-source"
-          value="file:///E:/MAS/data.sql" />
-<!--                
+<!--          <property name="javax.persistence.sql-load-script-source"
+          value="file:///E:/MAS/data.sql" />-->
+                
                         <property name="javax.persistence.sql-load-script-source"
             value="file:///C:/Users/Xi/Documents/NetBeansProjects/MAS/data.sql" />
-<!--          
-                       <property name="javax.persistence.sql-load-script-source"
+       
+<!--                     <property name="javax.persistence.sql-load-script-source"
             value="file:///D:/Learning%20Material/IS3102/MAS/data.sql" />-->
    
         </properties>
