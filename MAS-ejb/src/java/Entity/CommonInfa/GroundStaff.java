@@ -6,12 +6,16 @@
 package Entity.CommonInfa;
 
 import Entity.AFOS.GroundStaffTeam;
+import Entity.AFOS.StaffLeave;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -40,6 +44,9 @@ public class GroundStaff implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private GroundStaffTeam groundStaffTeam;
+    
+      @OneToMany(cascade = {CascadeType.PERSIST},mappedBy="groundStaff")
+    private List<StaffLeave> leaves = new ArrayList<StaffLeave>();
     
     public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
@@ -91,6 +98,14 @@ public class GroundStaff implements Serializable {
      */
     public void setGrdName(String grdName) {
         this.grdName = grdName;
+    }
+
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
     }
 
     /**

@@ -6,6 +6,7 @@
 package Entity.CommonInfa;
 
 import Entity.AFOS.FlightCrewTeam;
+import Entity.AFOS.StaffLeave;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -55,7 +57,9 @@ public class CabinCrew implements Serializable {
 
     @ManyToOne(cascade = {CascadeType.PERSIST})
     private FlightCrewTeam flightTeam;
-
+  @OneToMany(cascade = {CascadeType.PERSIST},mappedBy="cabinCrew")
+    private List<StaffLeave> leaves = new ArrayList<StaffLeave>();
+    
     public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
         this.setCbName(strCbName);
         this.setCbPassword(strCbPassword);
@@ -100,6 +104,14 @@ public class CabinCrew implements Serializable {
     @Override
     public String toString() {
         return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
+    }
+
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
     }
 
     public String getCbName() {

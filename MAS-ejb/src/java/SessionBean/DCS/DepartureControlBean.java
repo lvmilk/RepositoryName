@@ -13,6 +13,7 @@ import Entity.AIS.FlightCabin;
 import Entity.APS.FlightFrequency;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -121,17 +122,42 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("No flight instance found");
         }
 
-        return ticketList;
+        return this.sortStandby(ticketList);
+    }
+
+    public List<Ticket> sortStandby(List<Ticket> ticketList) throws Exception {
+        List<Date> dateList = new ArrayList<Date>();
+        List<Ticket> newtktList = new ArrayList<Ticket>();
+        if (ticketList.isEmpty()) {
+            throw new Exception("No standby ticket");
+        } else {
+            for (Ticket tkt : ticketList) {
+                dateList.add(tkt.getCheckinTime());
+            }
+            Collections.sort(dateList);
+            for (int i = 0; i < dateList.size(); i++) {
+                for (Ticket tkt : ticketList) {
+                    if (tkt.getCheckinTime().equals(dateList.get(i))) {
+                        newtktList.add(tkt);
+                    }
+                }
+            }
+          return newtktList;
+        }
     }
 
     @Override
     public boolean changeCheckinStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
-            tkt.setTicketStatus("Checkedin");
-            Date date = new Date();
-            tkt.setCheckinTime(date);
-            em.merge(tkt);
-            return true;
+            if (tkt.getTicketStatus().equals("Checkedin") || tkt.getTicketStatus().equals("OnlineCheckedin") || tkt.getTicketStatus().equals("Standby")) {
+                throw new Exception("Passenger already checked in!");
+            } else {
+                tkt.setTicketStatus("Checkedin");
+                Date date = new Date();
+                tkt.setCheckinTime(date);
+                em.merge(tkt);
+                return true;
+            }
         } else {
             throw new Exception("No such ticket exist!");
         }
@@ -140,13 +166,16 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     @Override
     public boolean changeStandbyStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
-
             if (checkStandbyEligibility(tkt)) {
-                tkt.setTicketStatus("Standby");
-                Date date = new Date();
-                tkt.setCheckinTime(date);
-                em.merge(tkt);
-                return true;
+                if (tkt.getTicketStatus().equals("Checkedin") || tkt.getTicketStatus().equals("OnlineCheckedin") || tkt.getTicketStatus().equals("Standby")) {
+                    throw new Exception("Passenger already checked in!");
+                } else {
+                    tkt.setTicketStatus("Standby");
+                    Date date = new Date();
+                    tkt.setCheckinTime(date);
+                    em.merge(tkt);
+                    return true;
+                }
             } else {
                 throw new Exception("The passenger is not eligible for standby!");
 
@@ -159,8 +188,12 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     @Override
     public boolean changeBoardingStatus(Ticket tkt) throws Exception {
         if (em.find(Ticket.class, tkt.getTicketID()) != null) {
-            tkt.setTicketStatus("Boarded");
-            em.merge(tkt);
+            if (tkt.getTicketStatus().equals("Boarded")) {
+                throw new Exception("Passenger already boarded!");
+            } else {
+                tkt.setTicketStatus("Boarded");
+                em.merge(tkt);
+            }
             return true;
         } else {
             throw new Exception("No such ticket exist!");
@@ -200,10 +233,14 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
     public void selectSeat(Seat seat, Ticket ticket) throws Exception {
         Seat newSeat = em.find(Seat.class, seat.getId());
         if (newSeat != null && newSeat.getStatus().equals("Unoccupied")) {
-            newSeat.setStatus("Occupied");
-            em.merge(newSeat);
-            ticket.setSeat(seat);
-            em.merge(ticket);
+            if (newSeat.getStatus().equals("Boarded")) {
+                throw new Exception("Seat already occupied!");
+            } else {
+                newSeat.setStatus("Occupied");
+                em.merge(newSeat);
+                ticket.setSeat(seat);
+                em.merge(ticket);
+            }
         } else {
             throw new Exception("Cannot Select This Seat!");
         }
