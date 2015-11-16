@@ -45,15 +45,15 @@ public class CabinCrew implements Serializable {
     private Integer firstSB;    // monthly stand-by counter
     private Integer secondSB;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinList")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cabinList")
     private List<FlightInstance> fiList = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinStandByList")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cabinStandByList")
     private List<FlightInstance> fiStandByList = new ArrayList<>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
- @OneToMany
+    @OneToMany
     private List<FlightTask> taskList = new ArrayList<>();
 
     public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
@@ -69,7 +69,7 @@ public class CabinCrew implements Serializable {
         this.setSalary(salary);
         this.setHourPay(0.0);
         this.setSecondLang(secondLang);
-        
+
         this.setWeekAccumMin(0);
         this.setMonthAccumMin(0);
         this.setYearAccumMin(0);

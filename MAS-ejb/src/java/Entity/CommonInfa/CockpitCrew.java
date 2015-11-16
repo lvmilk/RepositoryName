@@ -45,9 +45,9 @@ public class CockpitCrew implements Serializable {
     private Integer firstSB;    // monthly stand-by counter
     private Integer secondSB;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitList")
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, mappedBy = "cockpitList")
     private List<FlightInstance> fiList = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitStandByList")
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, mappedBy = "cockpitStandByList")
     private List<FlightInstance> fiStandByList = new ArrayList<>();
 
     @OneToOne(cascade = {CascadeType.ALL})
