@@ -1257,6 +1257,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date arrCheck = fiToAdd.get(0).getStandardArrTimeDateType();
         cal.setTime(depCheck);
         cal.add(Calendar.HOUR, -1);
+        cal.add(Calendar.SECOND, 1);
         depCheck = cal.getTime();
         cal.setTime(arrCheck);
         cal.add(Calendar.HOUR, 1);
@@ -1268,6 +1269,7 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         Date arrCheck2 = fiToAdd.get(fiToAdd.size() - 1).getStandardArrTimeDateType();
         cal.setTime(arrCheck2);
         cal.add(Calendar.HOUR, 1);
+        cal.add(Calendar.SECOND, -1);
         arrCheck2 = cal.getTime();
         System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: depCheck " + depCheck);
         System.out.println(" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>888888888888888888888888888888888888 BEFORE CHECK: arrCheck " + arrCheck);
@@ -1370,6 +1372,8 @@ public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
         List<FlightInstance> fiAfter = new ArrayList<>();
         for (FlightInstance f1 : flightTemp) {
             System.out.println("（）（）（）DEBUGING f1 dep time " + f1.getStandardDepTime());
+            System.out.println("（）（）（）DEBUGING f1 arr time " + f1.getStandardArrTime());
+//            if (f1.getStandardArrTimeDateType().before(depCheck) || f1.getStandardArrTimeDateType().equals(depCheck)) {
             if (f1.getStandardArrTimeDateType().before(depCheck)) {
                 fiBefore.add(f1);
             } else if (f1.getStandardDepTimeDateType().after(arrCheck2)) {

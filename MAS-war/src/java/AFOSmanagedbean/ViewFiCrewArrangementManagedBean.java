@@ -67,7 +67,7 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
 
     public void initFCMap(List<FlightInstance> fiList) {
         for (FlightInstance fi : fiList) {
-            System.out.println(" &&&&&&&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]");
+//            System.out.println(" &&&&&&&&&&&&&&&&&&&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]");
             List<CockpitCrew> cc1 = fi.getCockpitList();
             List<CockpitCrew> cc3 = fi.getCockpitStandByList();
             String captainString = "";
@@ -87,8 +87,8 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     pilotString = pilotString + cc.getCpName() + " ";
                 }
             }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainString is " + captainString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotString is " + pilotString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainString is " + captainString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotString is " + pilotString);
 
             for (CockpitCrew cc : cc3) {
                 if (cc.getStfLevel().equals("Captain")) {
@@ -97,8 +97,8 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     pilotSBString = pilotSBString + cc.getCpName() + " ";
                 }
             }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainSBString is " + captainSBString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotSBString is " + pilotSBString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainSBString is " + captainSBString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotSBString is " + pilotSBString);
 
             for (CabinCrew cc : cc2) {
                 if (cc.getStfLevel().equals("Cabin Crew")) {
@@ -107,8 +107,8 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     cabinLeaderString = cabinLeaderString + cc.getCbName() + " ";
                 }
             }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinString is " + cabinString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderString is " + cabinLeaderString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinString is " + cabinString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderString is " + cabinLeaderString);
 
             for (CabinCrew cc : cc4) {
                 if (cc.getStfLevel().equals("Cabin Crew")) {
@@ -117,8 +117,8 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     cabinLeaderSBString = cabinLeaderSBString + cc.getCbName() + " ";
                 }
             }
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinSBString is " + cabinSBString);
-            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderSBString is " + cabinLeaderSBString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinSBString is " + cabinSBString);
+//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderSBString is " + cabinLeaderSBString);
 
             captainMap.put(fi, captainString);
             pilotMap.put(fi, pilotString);

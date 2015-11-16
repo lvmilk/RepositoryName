@@ -16,7 +16,7 @@
             <p:panel id="panel" header="View Flight Crew Schedule"  style="width:100%">
                 <p:dataTable var="fi" value="#{VFCAMB.fiList}" paginator="true" rows="40" emptyMessage="No Flight Instances for the period">
                     <f:facet name="header">
-                        Flight Crew Schedulefor Period #{startDateString} till #{endDateString}
+                        Flight Crew Schedule for Period #{VFCAMB.startDateString} till #{VFCAMB.endDateString}
                     </f:facet>
 
                     <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >

@@ -113,7 +113,7 @@ public class UpdateReservationManagedBean implements Serializable {
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
 
-    public void onChooseUpgradeCabin() {
+       public void onChooseUpgradeCabin() {
         Double oldPrice = 0.0;
         Double newPrice = 0.0;
 //        ArrayList<BookingClassInstance> bookList = new ArrayList<>();
@@ -143,7 +143,8 @@ public class UpdateReservationManagedBean implements Serializable {
         }
 
     }
-
+       
+       
     public void onChooseUpgradePsg() throws IOException {
         System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): flightToBkInstance map is " + flightToBkInstance);
         System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): selectedRsv.bookClassInstanceList is " + selectedRsv.getBkcInstance());

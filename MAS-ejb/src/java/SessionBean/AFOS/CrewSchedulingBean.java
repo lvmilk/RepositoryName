@@ -161,7 +161,6 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             newDay = cal.getTime();
 
             // check if ground crew scheduled for this period
-            
             Rotation morning = new Rotation();
             morning.create(newDay, "morning");
             Rotation afternoon = new Rotation();
@@ -416,7 +415,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 }
             }
 
-            System.out.println("************* CockpitCrew cp: START assign >>>> pilot for " + fi);
+            System.out.println("\n************* CockpitCrew cp: START assign >>>> pilot for " + fi);
             for (CockpitCrew cp : pilot) {
                 if (cp.getLicence().equals(act.getType())) {
                     if (fiPilot < pilotNo) {
@@ -470,7 +469,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 cabinLeader = sortCabinByLang(cabinLeader, lang2);
             }
 
-            System.out.println("************* CabinCrew cc: START assign >>>> cabinLeader for " + fi);
+            System.out.println("\n************* CabinCrew cc: START assign >>>> cabinLeader for " + fi);
             for (CabinCrew cc : cabinLeader) {
                 if (fiCabinLeader < cabinLeaderNo) {
                     if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
@@ -520,7 +519,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 sortCabinByLang(cabin, lang2);
             }
 
-            System.out.println("************* CabinCrew cc: START assign >>>> cabin for " + fi);
+            System.out.println("\n************* CabinCrew cc: START assign >>>> cabin for " + fi);
             for (CabinCrew cc : cabin) {
                 if (fiCabin < cabinCrewNo) {
                     if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
@@ -874,14 +873,25 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
         fiArr = cal.getTime();
-
+        System.out.println("************************ CHECK AVAILABLE CAN FLY : CP == " + cp.getCpName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiArr.before(fiTasks.get(0).getStandardDepTimeDateType())
                 && fi.getFlightFrequency().getRoute().getDest().equals(fiTasks.get(0).getFlightFrequency().getRoute().getOrigin())) {   // fi is before the first of fiTasks
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiDep.after(fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType())
-                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(0).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(fiTasks.size() - 1).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+            System.out.println("\n\n CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println(" ****** fiDep " + fiDep);
+            System.out.println(" ****** fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType() " + fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType());
+            System.out.println(" ****** fi.getFlightFrequency().getRoute().getDest() " + fi.getFlightFrequency().getRoute().getDest());
+            System.out.println(" ****** fiTasks.get(0).getFlightFrequency().getRoute().getOrigin() " + fiTasks.get(0).getFlightFrequency().getRoute().getOrigin());
+            System.out.println("CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FINISH \n");
+//            System.out.println("CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else {
             for (int i = 0; i < fiTasks.size() - 1; i++) {
@@ -890,6 +900,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 if (fiDep.after(f1.getStandardArrTimeDateType()) && fiArr.before(f2.getStandardDepTimeDateType())
                         && fi.getFlightFrequency().getRoute().getOrigin().equals(f1.getFlightFrequency().getRoute().getDest())
                         && fi.getFlightFrequency().getRoute().getDest().equals(f2.getFlightFrequency().getRoute().getOrigin())) {
+                    System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                     canFly = true;
                 }
             }
@@ -909,7 +920,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
         fiArr = cal.getTime();
-
+        System.out.println("************************ CHECK AVAILABLE CAN FLY : CC == " + cc.getCbName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
             canFly = true;
         } else if (fiArr.before(fiTasks.get(0).getStandardDepTimeDateType())
