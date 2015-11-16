@@ -99,55 +99,55 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
 //            cal.setTime(startDate);
 //            cal.add(Calendar.DATE, i);
 //            newDay = cal.getTime();
-            if (csb.findRotOnDate(gst1, newDay).getPeriod().equals("morning")) {
+            if (csb.findRotOnDate(gst1, newDay).getWorkShift().equals("morning")) {
                 morningMap.put(newDay, 1);
             }
-            if (csb.findRotOnDate(gst2, newDay).getPeriod().equals("morning")) {
+            if (csb.findRotOnDate(gst2, newDay).getWorkShift().equals("morning")) {
                 morningMap.put(newDay, 2);
             }
-            if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("morning")) {
+            if (csb.findRotOnDate(gst3, newDay).getWorkShift().equals("morning")) {
                 morningMap.put(newDay, 3);
             }
-            if (csb.findRotOnDate(gst4, newDay).getPeriod().equals("morning")) {
+            if (csb.findRotOnDate(gst4, newDay).getWorkShift().equals("morning")) {
                 morningMap.put(newDay, 4);
             }
 
-            if (csb.findRotOnDate(gst1, newDay).getPeriod().equals("afternoon")) {
+            if (csb.findRotOnDate(gst1, newDay).getWorkShift().equals("afternoon")) {
                 afternoonMap.put(newDay, 1);
             }
-            if (csb.findRotOnDate(gst2, newDay).getPeriod().equals("afternoon")) {
+            if (csb.findRotOnDate(gst2, newDay).getWorkShift().equals("afternoon")) {
                 afternoonMap.put(newDay, 2);
             }
-            if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("afternoon")) {
+            if (csb.findRotOnDate(gst3, newDay).getWorkShift().equals("afternoon")) {
                 afternoonMap.put(newDay, 3);
             }
-            if (csb.findRotOnDate(gst4, newDay).getPeriod().equals("afternoon")) {
+            if (csb.findRotOnDate(gst4, newDay).getWorkShift().equals("afternoon")) {
                 afternoonMap.put(newDay, 4);
             }
 
-            if (csb.findRotOnDate(gst1, newDay).getPeriod().equals("night")) {
+            if (csb.findRotOnDate(gst1, newDay).getWorkShift().equals("night")) {
                 nightMap.put(newDay, 1);
             }
-            if (csb.findRotOnDate(gst2, newDay).getPeriod().equals("night")) {
+            if (csb.findRotOnDate(gst2, newDay).getWorkShift().equals("night")) {
                 nightMap.put(newDay, 2);
             }
-            if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("night")) {
+            if (csb.findRotOnDate(gst3, newDay).getWorkShift().equals("night")) {
                 nightMap.put(newDay, 3);
             }
-            if (csb.findRotOnDate(gst4, newDay).getPeriod().equals("night")) {
+            if (csb.findRotOnDate(gst4, newDay).getWorkShift().equals("night")) {
                 nightMap.put(newDay, 4);
             }
 
-            if (csb.findRotOnDate(gst1, newDay).getPeriod().equals("standby")) {
+            if (csb.findRotOnDate(gst1, newDay).getWorkShift().equals("standby")) {
                 standbyMap.put(newDay, 1);
             }
-            if (csb.findRotOnDate(gst2, newDay).getPeriod().equals("standby")) {
+            if (csb.findRotOnDate(gst2, newDay).getWorkShift().equals("standby")) {
                 standbyMap.put(newDay, 2);
             }
-            if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("standby")) {
+            if (csb.findRotOnDate(gst3, newDay).getWorkShift().equals("standby")) {
                 standbyMap.put(newDay, 3);
             }
-            if (csb.findRotOnDate(gst4, newDay).getPeriod().equals("standby")) {
+            if (csb.findRotOnDate(gst4, newDay).getWorkShift().equals("standby")) {
                 standbyMap.put(newDay, 4);
             }
 

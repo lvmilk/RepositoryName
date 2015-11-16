@@ -17,19 +17,27 @@
             <style>
                 .bottomMenu.ui-menubar{
                     background-color: #35bad6;   
+                    height: 50px;
+                    text-align: center;
                 }
 
                 .bottomMenu.ui-menuitem-text {
                     font-family: Verdana;
-                    font-size: 200%
+                    /*font-family: Times New Roman;*/
+                    font-size: 200%;
+                    text-align: center;
+                    font-weight: bold;
                 }
 
+                .bottomMenu.ui-menu-list{
+                    display: inline-block;
+                }
             </style>
 
 
             <p:menubar styleClass = "bottomMenu" style="text-align: center">
 
-                <p:submenu label="ONLINE HELP AND CONTACTS"  style="margin-right: 30px !important;" >
+                <p:submenu label="ONLINE HELP AND CONTACTS"  style="margin-right: 130px !important;" >
                     <p:menuitem value="Contact us" url="/CRMClient/contactus.xhtml"/>
                     <p:menuitem value="Baggage service and lost items" />
                     <p:menuitem value="Claims" />
@@ -37,13 +45,13 @@
                     <p:menuitem value="Our commitments" />
                 </p:submenu>
 
-                <p:menuitem value="ALL ABOUT ONLINE SHOPPING"  style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" />
+                <p:menuitem value="ALL ABOUT ONLINE SHOPPING"  style="margin-right: 130px !important;" url="/CRMClient/home.xhtml" />
 
-                <p:menuitem value="ABOUT MERLION AIRLINES" style="margin-right: 30px !important;" url="/CRMClient/booking.xhtml" />
+                <p:menuitem value="ABOUT MERLION AIRLINES" style="margin-right: 130px !important;" url="/CRMClient/booking.xhtml" />
 
-                <p:menuitem value="BUSINESS SERVICES"  style="margin-right: 30px !important;" url="/CRMClient/checkin.xhtml" />
+                <p:menuitem value="BUSINESS SERVICES"  style="margin-right: 130px !important;" url="/CRMClient/checkin.xhtml" />
 
-                <p:menuitem value="OTHER WEBSITES"  style="margin-right: 30px !important;" url="/CRMClient/viewReservation.xhtml" />
+                <p:menuitem value="OTHER WEBSITES"  style="margin-right: 130px !important;" url="/CRMClient/viewReservation.xhtml" />
 
 
             </p:menubar>
@@ -51,11 +59,14 @@
             <p:separator/>
 
             <div id="bottom">
-                <div id="content" class="center_content" >
-                    <div class="container" style="width:75%">
+                <div id="content">
+                    <div style="width:100%">
                         <ui:insert name="bottom"></ui:insert>
-                        <p style="margin-top:45px"><center><font color="black" size="1px">About Merlion Airlines | Corporate Social Responsibility | Partners | Press Room | Careers | Legal Information | Site Map | Contact Us | Feedback </font>
-                            </center></p>
+                        <p style="margin-top:45px">
+                            <center>
+                                <font color="black" size="1px">About Merlion Airlines | Corporate Social Responsibility | Partners | Press Room | Careers | Legal Information | Site Map | Contact Us | Feedback </font>
+                            </center>
+                        </p>
                         <p><center><font color="black" size="1px">&copy; 2015 NUS IS3102 - AY 2015/2016 Sem 1. All Rights Reserved.</font></center></p>
                     </div>
                 </div>

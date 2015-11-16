@@ -79,7 +79,7 @@
 
                         <p:outputLabel for="bcind" value="Interval By Flight Cycle: " />
                         <p:inputText id="bcind" value="#{EMSMB.bcInC}" label="bcind" required="true"  requiredMessage="Please enter B check interval by flight cycles" size="20">
-                            <f:validateLongRange minimum="120" maximum="240" />
+                            <f:validateLongRange minimum="240" maximum="480" />
                         </p:inputText>
                         <p:outputLabel for="bcinh" value="Interval By Flight Hour: " />
                         <p:inputText id="bcinh" value="#{EMSMB.bcInH}" label="bcinh" required="true"  requiredMessage="Please enter B check interval by flight hours" size="20">
@@ -101,7 +101,7 @@
 
                         <p:outputLabel for="ccind" value="Interval By Flight Cycle: " />
                         <p:inputText id="ccind" value="#{EMSMB.ccInC}" label="ccind" required="true"  requiredMessage="Please enter C check interval by flight cycles" size="20">
-                            <f:validateLongRange minimum="400" maximum="800" />
+                            <f:validateLongRange minimum="1200" maximum="1800" />
                         </p:inputText>
                         <p:outputLabel for="ccinh" value="Interval By Flight Hour: " />
                         <p:inputText id="ccinh" value="#{EMSMB.ccInH}" label="ccinh" required="true"  requiredMessage="Please enter C check interval by flight hours" size="20">
@@ -124,7 +124,7 @@
 
                         <p:outputLabel for="dcind" value="Interval By Flight Cycle: " />
                         <p:inputText id="dcind" value="#{EMSMB.dcInC}" label="dcind" required="true"  requiredMessage="Please enter D check interval by flight cycles" size="20">
-                            <f:validateLongRange minimum="2000" maximum="3600" />
+                            <f:validateLongRange minimum="4800" maximum="7200" />
                         </p:inputText>
                         <p:outputLabel for="dcinh" value="Interval By Flight Hour: " />
                         <p:inputText id="dcinh" value="#{EMSMB.dcInH}" label="dcinh" required="true"  requiredMessage="Please enter D check interval by flight hours " size="20">

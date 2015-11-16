@@ -26,12 +26,12 @@ public class Rotation implements Serializable {
     private Long id;
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    public Date workDate;
-    public String period;
+    private Date workDate;
+    private String workShift;
 
     public void create(Date workDate, String period) {
         this.workDate = workDate;
-        this.period = period;
+        this.workShift = period;
     }
 
     public Long getId() {
@@ -50,12 +50,12 @@ public class Rotation implements Serializable {
         this.workDate = workDate;
     }
 
-    public String getPeriod() {
-        return period;
+    public String getWorkShift() {
+        return workShift;
     }
 
-    public void setPeriod(String period) {
-        this.period = period;
+    public void setWorkShift(String workShift) {
+        this.workShift = workShift;
     }
 
     @Override
