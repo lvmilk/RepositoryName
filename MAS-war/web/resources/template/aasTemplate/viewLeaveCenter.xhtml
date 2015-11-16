@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>View Staff Leave</title>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <p:panel id="panel" header="View Staff Leave" style="width: 100%">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
+
+                    <p:outputLabel for="startDate" value="Start Date: " />
+                    <p:calendar id="startDate" value="#{LRMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true"  validatorMessage="Start Date: Please select a valid date"  requiredMessage="Please select a start date" size="50">
+                        <p:ajax event="dateSelect" update="finishDate" />
+                    </p:calendar>
+
+                    <p:outputLabel for="finishDate" value="Finish Date: " />
+                    <p:calendar id="finishDate" value="#{LRMB.endDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="finishDate" required="true" mindate="#{LRMB.startDate}" validatorMessage="End Date: Please select a valid date"  requiredMessage="Please select an end date" size="50">
+                        <f:attribute name="startDate" value="#{LRMB.startDate}" />
+                        <f:validator validatorId="DateRangeValidator" />
+                    </p:calendar>
+
+                </h:panelGrid>
+                <p:commandButton value="View All Leave" update="@form" actionListener="#{LRMB.getAllLeave()}"  icon="ui-icon-check" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
+
+
