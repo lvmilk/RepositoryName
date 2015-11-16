@@ -5,6 +5,7 @@
  */
 package Entity.APS;
 
+import Entity.AFOS.DebriefingReport;
 import Entity.AIS.FlightCabin;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.CockpitCrew;
@@ -21,6 +22,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -81,6 +83,9 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flightInstance")
     private List<FlightCabin> flightCabins = new ArrayList<>();
+    
+    @OneToOne(cascade = {CascadeType.PERSIST})
+    private DebriefingReport debrief;
 
     public void create(FlightFrequency flightFrequency, String date, String flightStatus, String estimatedDepTime, String estimatedArrTime, Integer estimatedDateAdjust,
             String actualDepTime, String actualArrTime, Integer actualDateAdjust) {
@@ -356,6 +361,14 @@ public class FlightInstance implements Serializable, Comparable<FlightInstance> 
 
     public void setDepGate(String depGate) {
         this.depGate = depGate;
+    }
+
+    public DebriefingReport getDebrief() {
+        return debrief;
+    }
+
+    public void setDebrief(DebriefingReport debrief) {
+        this.debrief = debrief;
     }
 
 //    @Override

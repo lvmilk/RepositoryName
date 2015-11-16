@@ -8,7 +8,7 @@
     </h:head>
     <h:body>
         <h:form id="msgPoll">
-            <p:growl id="msgs" showDetail="true"/>
+            <p:growl id="msgs" showDetail="true" autoUpdate="false"/>
             <p:poll interval="10" update="msgPoll" listener="#{msgPollMB.msgIncrement}" />
         </h:form>
     </h:body>

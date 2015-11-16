@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Debriefing Report List"   style="width:100%">
+                <p:dataTable var="dr" value="#{VDRMB.drList}" widgetVar="drTable" paginator="true" rows="40" emptyMessage="No debriefing reports.">
+
+                    <p:column headerText="Flight Date" sortBy="#{dr.fiDate}" filterBy="#{dr.fiDate}">
+                        <h:outputText value="#{dr.fiDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="Asia/Singapore"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Flight No" sortBy="#{dr.flightNo}" filterBy="#{dr.flightNo}">
+                        <h:outputText value="#{dr.flightNo}"/>
+                    </p:column>
+
+                    <p:column headerText="Origin Airport"  filterBy="#{dr.origin}">
+                        <h:outputText value="#{dr.origin}"/>
+                    </p:column>
+
+                     <p:column headerText="Destination Airport" filterBy="#{dr.dest}">
+                        <h:outputText value="#{dr.dest}"/>
+                    </p:column>
+
+                    <p:column headerText="Issue Category" filterBy="#{dr.issueCategory}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('drTable').filter()" >
+                                <f:selectItem itemLabel="-Select Group No-" itemValue="#{null}" noSelectionOption="true" />
+                                <f:selectItems value="#{VDRMB.issueCats}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{dr.issueCategory}"/>
+                    </p:column>
+
+                    <p:column headerText="View Detail">
+                        <p:commandButton value="View Detail" action="#{VDRMB.viewDRDetail(dr)}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

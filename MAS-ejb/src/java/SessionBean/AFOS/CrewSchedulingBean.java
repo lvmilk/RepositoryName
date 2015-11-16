@@ -5,7 +5,7 @@
  */
 package SessionBean.AFOS;
 
-import Entity.AFOS.FlightCrewTeam;
+import Entity.AFOS.FlightTask;
 import Entity.AFOS.GroundStaffTeam;
 import Entity.AFOS.Rotation;
 import Entity.APS.AircraftType;
@@ -23,7 +23,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,132 +46,6 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
     FlightSchedulingBeanLocal fsb;
 
     private Calendar cal = new GregorianCalendar();
-
-    public void groupFlightCrew() throws Exception {
-        List<AircraftType> acTypes = fpb.getAllAircraftType();
-        HashMap<String, Integer> groupNoMap = new HashMap<String, Integer>();
-
-        List<CabinCrew> cabin = getAllCabin();
-        List<CabinCrew> cabinLeader = getAllCabinLeader();
-        List<CockpitCrew> captain = getAllCaptain();
-        List<CockpitCrew> pilot = getAllPilot();
-
-        List<CabinCrew> cabinLeft = getAllCabin();
-        List<CabinCrew> cabinLeaderLeft = getAllCabinLeader();
-        List<CockpitCrew> captainLeft = getAllCaptain();
-        List<CockpitCrew> pilotLeft = getAllPilot();
-
-        for (AircraftType act : acTypes) {
-            groupNoMap.put(act.getType(), fpb.getThisTypeAircraft(act.getType()).size() * 3);
-        }
-
-        List<FlightCrewTeam> flightTeams = new ArrayList<>();
-        for (AircraftType act : acTypes) {
-
-            Integer captainNo = act.getCaptain();
-            Integer pilotNo = act.getPilot();
-            Double temp1 = act.getCabinLeader() * act.getTotalSeatNum();
-            Integer cabinLeaderNo = temp1.intValue();
-            temp1 = act.getCabinCrew() * act.getTotalSeatNum();
-            Integer cabinCrewNo = temp1.intValue();
-
-            for (int i = 0; i < groupNoMap.get(act.getType()); i++) {
-
-                System.out.println("CSB.groupFlightCrew(): Assign flight crew members to " + act.getType() + " === Group " + i);
-                System.out.println("Require captain --- " + captainNo + " pilot --- " + pilotNo + " cabinLeader --- " + cabinLeaderNo + " --- cabinCrew " + cabinCrewNo);
-
-                Integer cpNo = captainNo;
-                Integer plNo = pilotNo;
-                Integer clNo = cabinLeaderNo;
-                Integer ccNo = cabinCrewNo;
-
-                if (cabinLeft.isEmpty() || cabinLeaderLeft.isEmpty() || captainLeft.isEmpty() || pilotLeft.isEmpty()) {
-                    if (cabinLeft.isEmpty()) {
-                        System.out.println("CSB.groupFlightCrew(): not enough " + " cabin crew for grouping for " + act.getType() + " group number " + i);
-                    }
-                    if (cabinLeaderLeft.isEmpty()) {
-                        System.out.println("CSB.groupFlightCrew(): not enough " + " cabin leader for grouping for " + act.getType() + " group number " + i);
-                    }
-                    if (captainLeft.isEmpty()) {
-                        System.out.println("CSB.groupFlightCrew(): not enough " + " captain for grouping for " + act.getType() + " group number " + i);
-                    }
-                    if (pilotLeft.isEmpty()) {
-                        System.out.println("CSB.groupFlightCrew(): not enough " + " pilot for grouping for " + act.getType() + " group number " + i);
-                    }
-                    // throw new Exception("CSB.groupFlightCrew(): not enough " + " ? " + " crew for grouping.");
-                } else {
-                    List<CabinCrew> ccList = new ArrayList<>();
-                    List<CockpitCrew> cpList = new ArrayList<>();
-
-                    for (CabinCrew cc : cabin) {
-                        if (ccNo > 0) {
-                            ccList.add(cc);
-                            cabinLeft.remove(cc);
-                            ccNo--;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    for (CabinCrew cc : cabinLeader) {
-                        if (clNo > 0) {
-                            ccList.add(cc);
-                            cabinLeaderLeft.remove(cc);
-                            clNo--;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    for (CockpitCrew cp : captain) {
-                        if (cpNo > 0) {
-                            cpList.add(cp);
-                            captainLeft.remove(cp);
-                            cpNo--;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    for (CockpitCrew cp : pilot) {
-                        if (plNo > 0) {
-                            cpList.add(cp);
-                            captainLeft.remove(cp);
-                            plNo--;
-                        } else {
-                            break;
-                        }
-                    }
-
-                    cabin = cabinLeft;
-                    cabinLeader = cabinLeaderLeft;
-                    captain = captainLeft;
-                    pilot = pilotLeft;
-
-                    FlightCrewTeam oneTeam = new FlightCrewTeam();
-                    String teamId = act.getType() + "_" + i;
-                    oneTeam.create(teamId);
-                    oneTeam.setAct(act.getType());
-//                    oneTeam.setCabinCrew(ccList);
-//                    oneTeam.setCockpitCrew(cpList);
-                    em.persist(oneTeam);
-                    em.flush();
-
-                    for (CabinCrew cc : ccList) {
-                        CabinCrew temp = em.find(CabinCrew.class, cc.getCbName());
-//                        temp.setFlightTeam(oneTeam);
-                        em.merge(temp);
-                    }
-                    for (CockpitCrew cp : cpList) {
-                        CockpitCrew temp = em.find(CockpitCrew.class, cp.getCpName());
-//                        temp.setFlightTeam(oneTeam);
-                        em.merge(temp);
-                    }
-                    em.flush();
-                }
-            }
-        }
-    }
 
     @Override
     public List<GroundStaff> getUngroupedGroundStaff() {
@@ -287,6 +160,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             cal.add(Calendar.DATE, i);
             newDay = cal.getTime();
 
+            // check if ground crew scheduled for this period
             Rotation morning = new Rotation();
             morning.create(newDay, "morning");
             Rotation afternoon = new Rotation();
@@ -509,6 +383,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 //                                        System.out.println("************* CockpitCrew cp: captain: cps is " + cps);
                                         List<FlightInstance> fiTasks = cpInDB.getFiList();
 //                                        System.out.println("************* CockpitCrew cp: captain: fiTasks is " + fiTasks);
+
+                                        List<FlightTask> cpFiTasks = cpInDB.getTaskList();
+                                        FlightTask cpFiT = new FlightTask();
+                                        cpFiT.create(cpInDB.getCpName(), fiInDB.getFlightFrequency().getFlightNo(), fiInDB.getStandardDepTimeDateType(), "assigned");
+                                        em.persist(cpFiT);
+                                        cpFiTasks.add(cpFiT);
+                                        cpInDB.setTaskList(cpFiTasks);
+
                                         cps.add(cpInDB);
                                         fiTasks.add(fiInDB);
                                         fiInDB.setCockpitList(cps);
@@ -533,7 +415,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 }
             }
 
-            System.out.println("************* CockpitCrew cp: START assign >>>> pilot for " + fi);
+            System.out.println("\n************* CockpitCrew cp: START assign >>>> pilot for " + fi);
             for (CockpitCrew cp : pilot) {
                 if (cp.getLicence().equals(act.getType())) {
                     if (fiPilot < pilotNo) {
@@ -546,6 +428,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                         CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
                                         List<CockpitCrew> cps = fiInDB.getCockpitList();
                                         List<FlightInstance> fiTasks = cpInDB.getFiList();
+
+                                        List<FlightTask> cpFiTasks = cpInDB.getTaskList();
+                                        FlightTask cpFiT = new FlightTask();
+                                        cpFiT.create(cpInDB.getCpName(), fiInDB.getFlightFrequency().getFlightNo(), fiInDB.getStandardDepTimeDateType(), "assigned");
+                                        em.persist(cpFiT);
+                                        cpFiTasks.add(cpFiT);
+                                        cpInDB.setTaskList(cpFiTasks);
+
                                         cps.add(cpInDB);
                                         fiTasks.add(fiInDB);
                                         fiInDB.setCockpitList(cps);
@@ -579,7 +469,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 cabinLeader = sortCabinByLang(cabinLeader, lang2);
             }
 
-            System.out.println("************* CabinCrew cc: START assign >>>> cabinLeader for " + fi);
+            System.out.println("\n************* CabinCrew cc: START assign >>>> cabinLeader for " + fi);
             for (CabinCrew cc : cabinLeader) {
                 if (fiCabinLeader < cabinLeaderNo) {
                     if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
@@ -591,6 +481,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                     CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
                                     List<CabinCrew> ccs = fiInDB.getCabinList();
                                     List<FlightInstance> fiTasks = ccInDB.getFiList();
+
+                                    List<FlightTask> cpFiTasks = ccInDB.getTaskList();
+                                    FlightTask cpFiT = new FlightTask();
+                                    cpFiT.create(ccInDB.getCbName(), fiInDB.getFlightFrequency().getFlightNo(), fiInDB.getStandardDepTimeDateType(), "assigned");
+                                    em.persist(cpFiT);
+                                    cpFiTasks.add(cpFiT);
+                                    ccInDB.setTaskList(cpFiTasks);
+
                                     ccs.add(ccInDB);
                                     fiTasks.add(fiInDB);
                                     fiInDB.setCabinList(ccs);
@@ -621,7 +519,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 sortCabinByLang(cabin, lang2);
             }
 
-            System.out.println("************* CabinCrew cc: START assign >>>> cabin for " + fi);
+            System.out.println("\n************* CabinCrew cc: START assign >>>> cabin for " + fi);
             for (CabinCrew cc : cabin) {
                 if (fiCabin < cabinCrewNo) {
                     if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
@@ -633,6 +531,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                                     CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
                                     List<CabinCrew> ccs = fiInDB.getCabinList();
                                     List<FlightInstance> fiTasks = ccInDB.getFiList();
+
+                                    List<FlightTask> cpFiTasks = ccInDB.getTaskList();
+                                    FlightTask cpFiT = new FlightTask();
+                                    cpFiT.create(ccInDB.getCbName(), fiInDB.getFlightFrequency().getFlightNo(), fiInDB.getStandardDepTimeDateType(), "assigned");
+                                    em.persist(cpFiT);
+                                    cpFiTasks.add(cpFiT);
+                                    ccInDB.setTaskList(cpFiTasks);
+
                                     ccs.add(ccInDB);
                                     fiTasks.add(fiInDB);
                                     fiInDB.setCabinList(ccs);
@@ -967,14 +873,25 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
         fiArr = cal.getTime();
-
+        System.out.println("************************ CHECK AVAILABLE CAN FLY : CP == " + cp.getCpName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiArr.before(fiTasks.get(0).getStandardDepTimeDateType())
                 && fi.getFlightFrequency().getRoute().getDest().equals(fiTasks.get(0).getFlightFrequency().getRoute().getOrigin())) {   // fi is before the first of fiTasks
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiDep.after(fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType())
-                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(0).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(fiTasks.size() - 1).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+            System.out.println("\n\n CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+            System.out.println(" ****** fiDep " + fiDep);
+            System.out.println(" ****** fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType() " + fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType());
+            System.out.println(" ****** fi.getFlightFrequency().getRoute().getDest() " + fi.getFlightFrequency().getRoute().getDest());
+            System.out.println(" ****** fiTasks.get(0).getFlightFrequency().getRoute().getOrigin() " + fiTasks.get(0).getFlightFrequency().getRoute().getOrigin());
+            System.out.println("CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FINISH \n");
+//            System.out.println("CHECK COCKPIT CAN FLY : CHECK 3 DETAIL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
+            System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else {
             for (int i = 0; i < fiTasks.size() - 1; i++) {
@@ -983,6 +900,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 if (fiDep.after(f1.getStandardArrTimeDateType()) && fiArr.before(f2.getStandardDepTimeDateType())
                         && fi.getFlightFrequency().getRoute().getOrigin().equals(f1.getFlightFrequency().getRoute().getDest())
                         && fi.getFlightFrequency().getRoute().getDest().equals(f2.getFlightFrequency().getRoute().getOrigin())) {
+                    System.out.println("CHECK COCKPIT CAN FLY : PASS CHECK IN 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                     canFly = true;
                 }
             }
@@ -1002,7 +920,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
         fiArr = cal.getTime();
-
+        System.out.println("************************ CHECK AVAILABLE CAN FLY : CC == " + cc.getCbName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
             canFly = true;
         } else if (fiArr.before(fiTasks.get(0).getStandardDepTimeDateType())
@@ -1148,6 +1066,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return groundStaff;
     }
 
+    @Override
     public List<CockpitCrew> getFiCaptain(FlightInstance fi) {
         List<CockpitCrew> cpList = fi.getCockpitList();
         List<CockpitCrew> cpCap = new ArrayList<>();
@@ -1326,9 +1245,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
     @Override
     public Rotation findRotOnDate(GroundStaffTeam gst, Date day) {
-        List<Rotation> rot1 = gst.getRotationList();
+        List<Rotation> rotList = gst.getRotationList();
         Rotation rot = new Rotation();
-        for (Rotation r1 : rot1) {
+        for (Rotation r1 : rotList) {
             if (r1.getWorkDate().equals(day)) {
                 rot = r1;
             }
@@ -1345,7 +1264,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         long diffDays = diff / (24 * 60 * 60 * 1000);
         System.err.println("TESTING: diffDays " + diffDays);
         Date newDay = new Date();
-        
+
         for (int i = 0; i < diffDays; i++) {
             cal.setTime(startDate);
             cal.add(Calendar.DATE, i);
@@ -1361,6 +1280,51 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
         }
         return true;
+    }
+
+    @Override
+    public List<FlightInstance> getFlightOnDate(String date) {
+        Query q1 = em.createQuery("SELECT f FROM FlightInstance f where f.date=:fdate").setParameter("fdate", date);
+        List<FlightInstance> flightInst = q1.getResultList();
+        return flightInst;
+    }
+
+    @Override
+    public FlightTask findCpFlightTask(CockpitCrew cp, FlightInstance selectedFi) {
+        Query q1 = em.createQuery("SELECT f FROM FlightTask f where f.flightNo=:flightNo and f.flightDate=:flightDate and f.crewId=:crewId").setParameter("flightNo", selectedFi.getFlightFrequency().getFlightNo()).setParameter("flightDate", selectedFi.getStandardDepTimeDateType()).setParameter("crewId", cp.getCpName());
+        FlightTask ft1 = (FlightTask) q1.getResultList().get(0);
+//        if (ft1 == null) {
+//            throw new Exception("No flight task of cockpit crew " + cp.getCpName() + " for flight " + selectedFi.getFlightFrequency().getFlightNo() + " on " + selectedFi.getDate());
+//        }
+        return ft1;
+    }
+
+    @Override
+    public FlightTask findCbFlightTask(CabinCrew cb, FlightInstance selectedFi) {
+        Query q1 = em.createQuery("SELECT f FROM FlightTask f where f.flightNo=:flightNo and f.flightDate=:flightDate and f.crewId=:crewId").setParameter("flightNo", selectedFi.getFlightFrequency().getFlightNo()).setParameter("flightDate", selectedFi.getStandardDepTimeDateType()).setParameter("crewId", cb.getCbName());
+        FlightTask ft1 = (FlightTask) q1.getResultList().get(0);
+//        if (ft1 == null) {
+//            throw new Exception("No flight task of cabin crew " + cb.getCbName() + " for flight " + selectedFi.getFlightFrequency().getFlightNo() + " on " + selectedFi.getDate());
+//        }
+        return ft1;
+    }
+
+    @Override
+    public void cpSignIn(FlightInstance selectedFi, CockpitCrew cp) {
+        Query q1 = em.createQuery("SELECT f FROM FlightTask f where f.flightNo=:flightNo and f.flightDate=:flightDate and f.crewId=:crewId").setParameter("flightNo", selectedFi.getFlightFrequency().getFlightNo()).setParameter("flightDate", selectedFi.getStandardDepTimeDateType()).setParameter("crewId", cp.getCpName());
+        FlightTask ft1 = (FlightTask) q1.getResultList().get(0);
+        ft1.setStatus("signed-in");
+        em.merge(ft1);
+        em.flush();
+    }
+
+    @Override
+    public void cbSignIn(FlightInstance selectedFi, CabinCrew cb) {
+        Query q1 = em.createQuery("SELECT f FROM FlightTask f where f.flightNo=:flightNo and f.flightDate=:flightDate and f.crewId=:crewId").setParameter("flightNo", selectedFi.getFlightFrequency().getFlightNo()).setParameter("flightDate", selectedFi.getStandardDepTimeDateType()).setParameter("crewId", cb.getCbName());
+        FlightTask ft1 = (FlightTask) q1.getResultList().get(0);
+        ft1.setStatus("signed-in");
+        em.merge(ft1);
+        em.flush();
     }
 
 }

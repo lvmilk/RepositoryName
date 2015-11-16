@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:head>
+        <title>Generate Leave Report</title>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:panel id="panel" header="Staff Leave Report "  style="width:100%" >
+                <p:dataTable id="tbl" var="leave" value="#{LRMB.leaveList}" style="margin-top:10px; width: 100%">
+                    <p:column headerText="Leave ID">
+                        <h:outputText value="#{leave.id}" />
+                    </p:column>
+                    <p:column headerText="Leave Start Date" sortBy="#{leave.startDate}" filterBy="#{leave.startDate}">
+                        <h:outputText value="#{leave.startDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Leave End Date" sortBy="#{leave.endDate}" filterBy="#{leave.endDate}">
+                        <h:outputText value="#{leave.endDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Application Status" sortBy="#{leave.status}" filterBy="#{leave.status}">
+                        <h:outputText value="#{leave.status}" />
+                    </p:column>
+                    <p:column headerText="Applicant Type" sortBy="#{leave.staffType}" filterBy="#{leave.staffType}">
+                        <h:outputText value="#{leave.staffType}" />
+                    </p:column>
+                    <p:column headerText="Applicant" sortBy="#{leave.staffType}" filterBy="#{leave.staffType}">
+                        <h:outputText value="#{leave.cabinCrew.cbName}" rendered="#{leave.staffType == 'cabin'}" />
+                        <h:outputText value="#{leave.cockpitCrew.cpName}" rendered="#{leave.staffType == 'cockpit'}" />
+                        <h:outputText value="#{leave.groundStaff.grdName}" rendered="#{leave.staffType == 'groundStaff'}" />
+                        <h:outputText value="#{leave.officeStaff.offName}" rendered="#{leave.staffType == 'officeStaff'}" />
+                    </p:column>
+                    <p:column headerText="Leave Duration (days)" sortBy="#{leave.length}" filterBy="#{leave.length}">
+                        <h:outputText value="#{leave.length}" />
+                    </p:column>
+                    <p:column headerText="Remark">
+                        <h:outputText value="#{leave.remark}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        All approved staff leaves which are overlapped within this period will be displayed. 
+                    </f:facet>
+
+                </p:dataTable>
+            </p:panel>
+            <br/>
+            <p:growl id="growl" showDetail="true" />
+            <p:commandButton value="Back" icon="ui-icon-cancel" actionListener="#{LRMB.back()}"/>
+            <p:spacer height="20"/>
+            <p:panel header="Export Excel or PDF">
+                <h:commandLink id="excel">
+                    <p:graphicImage name="excel.png" library="images"  width="40" height="50"/>
+                    <p:dataExporter type="xls" target="tbl" fileName="Leave Report (from #{LRMB.startString} to #{LRMB.endString})" postProcessor="#{LRMB.postProcessXLS}" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"/>
+                    </p:dataExporter>
+                </h:commandLink>
+                <h:commandLink id="pdf">
+                    <p:graphicImage name="pdf.png" library="images"  width="55" height="60"/>
+                    <p:dataExporter type="pdf" target="tbl" fileName="Leave Report (from #{LRMB.startString} to #{LRMB.endString})" preProcessor="#{LRMB.preProcessPDF}" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8"/>
+                    </p:dataExporter>
+                </h:commandLink>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
+
+

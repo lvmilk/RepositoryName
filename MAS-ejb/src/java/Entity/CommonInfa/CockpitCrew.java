@@ -5,8 +5,7 @@
  */
 package Entity.CommonInfa;
 
-//import Entity.AFOS.FlightTask;
-import Entity.AFOS.StaffLeave;
+import Entity.AFOS.FlightTask;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,18 +45,16 @@ public class CockpitCrew implements Serializable {
     private Integer firstSB;    // monthly stand-by counter
     private Integer secondSB;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitList")
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, mappedBy = "cockpitList")
     private List<FlightInstance> fiList = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitStandByList")
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE}, mappedBy = "cockpitStandByList")
     private List<FlightInstance> fiStandByList = new ArrayList<>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-//    @OneToMany
-//    private List<FlightTask> taskList = new ArrayList<>();
-    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cockpitCrew")
-    private List<StaffLeave> leaves = new ArrayList<>();
+    @OneToMany
+    private List<FlightTask> taskList = new ArrayList<>();
 
     public void create(String strCpName, String strCpPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String licence) {
         this.setCpName(strCpName);
@@ -103,14 +100,6 @@ public class CockpitCrew implements Serializable {
     @Override
     public String toString() {
         return "Entity.CommonInfaEntity.CockpitCrew[ id=" + cpName + " ]";
-    }
-
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
-
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
     }
 
     public String getCpName() {
@@ -273,14 +262,12 @@ public class CockpitCrew implements Serializable {
         this.secondSB = secondSB;
     }
 
-//    public List<FlightTask> getTaskList() {
-//        return taskList;
-//    }
-//
-//    public void setTaskList(List<FlightTask> taskList) {
-//        this.taskList = taskList;
-//    }
+    public List<FlightTask> getTaskList() {
+        return taskList;
+    }
 
+    public void setTaskList(List<FlightTask> taskList) {
+        this.taskList = taskList;
+    }
 
-    
 }

@@ -55,10 +55,10 @@ public class GroundCrewSchedulingEnterPeriodManagedBean implements Serializable 
     }
 
     public void viewGroundCrewGroup() throws IOException {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
+//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewGroundCrewGroupSchedule.xhtml");
     }
 

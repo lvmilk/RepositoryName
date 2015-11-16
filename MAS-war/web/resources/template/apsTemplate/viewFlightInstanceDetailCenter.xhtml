@@ -13,7 +13,7 @@
     <h:body>
 
         <h:form>
-            <p:panel id="panel" header="List of Flight Instances"  footer="*Note: The default aircraft is 9V-000." style="width:100%" >
+            <p:panel id="panel" header="List of Flight Instances"  style="width:100%" >
                 <p:dataTable var="flightInst" value="#{editFIMB.flightInstList}" paginator="true" rows="40" emptyMessage="No Related flight Instance found.">
 
                     <p:column headerText="Flight No" sortBy="#{flightInst.flightFrequency.flightNo}" filterBy="#{flightInst.flightFrequency.flightNo}" filterMatchMode="contains">

@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:panel id="panel" header="View Debriefing Report"   style="width:100%">
+
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20" columnClasses="ui-grid-col-4, ui-grid-col-8" >
+
+                    <p:outputLabel value="Flight No.: " />
+                    <h:outputText value="#{VDRDMB.dr.flightNo}" />
+
+                    <p:outputLabel value="Serving Aircraft: " />
+                    <h:outputText value="#{VDRDMB.dr.acReg} / #{VDRDMB.dr.acType}" />
+
+                    <p:outputLabel value="Origin Airport: " />
+                    <h:outputText value="#{VDRDMB.dr.origin}" />
+
+                    <p:outputLabel value="Destination Airport: " />
+                    <h:outputText value="#{VDRDMB.dr.dest}" />
+
+                    <p:outputLabel value="Departure Time: " />
+                    <h:outputText value="#{VDRDMB.dr.depTimeString}" />
+
+                    <p:outputLabel value="Arrival Time: " />
+                    <h:outputText value="#{VDRDMB.dr.arrTimeString}" />
+
+                    <p:outputLabel value="Captain Staff Id: " />
+                    <h:outputText value="#{VDRDMB.dr.captainId}" />
+
+                    <p:outputLabel value="Issue Category: " />
+                    <h:outputText value="#{VDRDMB.dr.issueCategory}" />
+
+                    <p:outputLabel value="Issue Detail: " />
+                    <h:outputText value="#{VDRDMB.dr.issue}" />
+
+                    <p:outputLabel value="Remarks: " />
+                    <h:outputText value="#{VDRDMB.dr.remark}" />
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Back to list" update="panel" style="margin-right:0" action="#{VDRDMB.viewDRBack}"  icon="ui-icon-carat-1-w" ajax="true" />
+
+
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
