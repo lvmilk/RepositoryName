@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Top Fragment for Merlion Airlines Customer Website</title>
+    </h:head>
+    <h:body>
+        <h:form> 
+
+            <style>
+                .topMenu.ui-menubar{
+                    background-color: #35bad6;   
+                }
+                
+                .topMenu.ui-menuitem-text {
+                    font-family: Verdana;
+                    font-size: 200%
+                }
+                
+            </style>
+                
+            
+            <p:menubar styleClass = "topMenu" style="text-align: center">
+                <p:menuitem>
+                    <h:link outcome="/CRMClient/home.xhtml">
+                        <h:graphicImage name="/images/logoname.png" height="50" />
+                    </h:link>
+                </p:menuitem>
+
+                <p:menuitem value="Contact us" style="margin-right: 30px !important;" url="/CRMClient/contactus.xhtml" />
+
+                <p:menuitem value="Create my account"  style="margin-right: 30px !important;" url="/CRMClient/createMemberAccount.xhtml" />
+
+                <p:menuitem value="My account"  style="margin-right: 30px !important;" url="/CRMClient/memberLogin.xhtml" icon=""/>
+
+            </p:menubar>
+
+            <p:separator/>
+            
+            <p:menubar styleClass = "funcMenu" style="text-align: center">
+
+                <p:menuitem value="HOME"  style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" />
+
+                <p:menuitem value="MAKE A BOOKING" style="margin-right: 30px !important;" url="/CRMClient/booking.xhtml" />
+
+                <p:menuitem value="CHECK-IN"  style="margin-right: 30px !important;" url="/CRMClient/checkin.xhtml" />
+
+                <p:menuitem value="YOUR RESERVATIONS"  style="margin-right: 30px !important;" url="/CRMClient/viewReservation.xhtml" />
+
+                <p:submenu label="INFORMATION"  style="margin-right: 30px !important;" >
+                    <p:menuitem value="BAGGAGE" url="/CMIpages/staffProfile.xhtml"/>
+                    <p:menuitem value="FLIGHT AND AIRPORT INFO" />
+                    <p:menuitem value="CABIN AND IN-FLIGHT SERVICES" />
+                    <p:menuitem value="THE FLYING PROGRAM" />
+                    <p:menuitem value="BEST OFFERS AND PROMOTIONS" />
+                </p:submenu>
+
+            </p:menubar>
+
+        </h:form>
+
+    </h:body>
+</html>

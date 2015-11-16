@@ -33,7 +33,7 @@
 
         <h:form>
             <p:panel id="panel" header="View Group Crew Schedule for Period #{VGCGSMB.startDateString} -  #{VGCGSMB.endDateString} "  style="width:100%">
-                <p:dataTable var="date" value="#{VGCGSMB.dateList}" paginator="true" rows="40" widgetVar="timeTable" emptyMessage="No result found">
+                <p:dataTable var="date" value="#{VGCGSMB.dateList}" paginator="true" rows="28" widgetVar="timeTable" emptyMessage="No result found">
                     <f:facet name="header">
                         Ground Crew Group Schedule for Period #{startDateString} - #{endDateString}
 <!--                        <p:outputPanel>

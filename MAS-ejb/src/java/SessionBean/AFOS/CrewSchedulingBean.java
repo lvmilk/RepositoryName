@@ -160,6 +160,8 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             cal.add(Calendar.DATE, i);
             newDay = cal.getTime();
 
+            // check if ground crew scheduled for this period
+            
             Rotation morning = new Rotation();
             morning.create(newDay, "morning");
             Rotation afternoon = new Rotation();

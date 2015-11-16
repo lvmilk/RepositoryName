@@ -53,7 +53,10 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
+        System.out.println("VGCGSMB: init() startDate " + startDate);
         endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDate");
+                System.out.println("VGCGSMB: init() endDate " + endDate);
+
         startDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
         endDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
         initDateList(startDate, endDate);
