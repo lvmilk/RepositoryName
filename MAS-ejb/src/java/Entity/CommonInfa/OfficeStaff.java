@@ -41,8 +41,8 @@ public class OfficeStaff implements Serializable {
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
-    
-       @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "officeStaff")
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "officeStaff")
     private List<StaffLeave> leaves = new ArrayList<>();
 
     public void create(String strOffName, String strOffPassword, String strOffEmail, String strStfType, String firstName, String lastName, String stfLevel, Double salary) {
@@ -259,6 +259,5 @@ public class OfficeStaff implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
 
 }

@@ -9,6 +9,7 @@ import Entity.AFOS.GroundStaffTeam;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -43,17 +44,27 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
     private Map<Date, Integer> nightMap = new HashMap<>();
     private Map<Date, Integer> standbyMap = new HashMap<>();
 
+    private List<Date> filteredDateList = new ArrayList<>();
+    private List<Integer> groupNo = Arrays.asList(1,2,3,4);
+
     public ViewGroundCrewGroupScheduleManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDate");
+        System.out.println("VGCGSMB: init() startDate " + startDate);
         endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDate");
+                System.out.println("VGCGSMB: init() endDate " + endDate);
+
         startDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
         endDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
         initDateList(startDate, endDate);
         initGCMap(startDate, endDate);
+//        groupNo.add(1);
+//        groupNo.add(2);
+//        groupNo.add(3);
+//        groupNo.add(4);
     }
 
     public void initDateList(Date startDate, Date endDate) {
@@ -82,13 +93,12 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
         GroundStaffTeam gst3 = csb.getGroundStaffTeamById(3);
         GroundStaffTeam gst4 = csb.getGroundStaffTeamById(4);
 
-        for(Date newDay: dateList) {
-        
+        for (Date newDay : dateList) {
+
 //        for (int i = 0; i < diffDays; i++) {
 //            cal.setTime(startDate);
 //            cal.add(Calendar.DATE, i);
 //            newDay = cal.getTime();
-
             if (csb.findRotOnDate(gst1, newDay).getPeriod().equals("morning")) {
                 morningMap.put(newDay, 1);
             }
@@ -124,7 +134,7 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
             if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("night")) {
                 nightMap.put(newDay, 3);
             }
-            if (csb.findRotOnDate(gst3, newDay).getPeriod().equals("night")) {
+            if (csb.findRotOnDate(gst4, newDay).getPeriod().equals("night")) {
                 nightMap.put(newDay, 4);
             }
 
@@ -216,6 +226,20 @@ public class ViewGroundCrewGroupScheduleManagedBean implements Serializable {
         this.standbyMap = standbyMap;
     }
 
-    
+    public List<Date> getFilteredDateList() {
+        return filteredDateList;
+    }
+
+    public void setFilteredDateList(List<Date> filteredDateList) {
+        this.filteredDateList = filteredDateList;
+    }
+
+    public List<Integer> getGroupNo() {
+        return groupNo;
+    }
+
+    public void setGroupNo(List<Integer> groupNo) {
+        this.groupNo = groupNo;
+    }
 
 }

@@ -5,6 +5,7 @@
  */
 package SessionBean.AFOS;
 
+import Entity.AFOS.FlightTask;
 import Entity.AFOS.GroundStaffTeam;
 import Entity.AFOS.Rotation;
 import Entity.APS.FlightInstance;
@@ -75,5 +76,17 @@ public interface CrewSchedulingBeanLocal {
     public boolean checkGroundCrewScheduled(Date startDate, Date endDate);
 
     public List<OfficeStaff> getAllOfficeStaff();
+
+    public List<FlightInstance> getFlightOnDate(String date);
+
+    public FlightTask findCpFlightTask(CockpitCrew cp, FlightInstance selectedFi);
+
+    public FlightTask findCbFlightTask(CabinCrew cb, FlightInstance selectedFi);
+
+    public void cpSignIn(FlightInstance selectedFi, CockpitCrew cp);
+
+    public void cbSignIn(FlightInstance selectedFi, CabinCrew cb);
+
+    public List<CockpitCrew> getFiCaptain(FlightInstance fi);
 
 }

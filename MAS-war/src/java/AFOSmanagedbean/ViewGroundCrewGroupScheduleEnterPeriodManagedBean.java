@@ -25,7 +25,7 @@ public class ViewGroundCrewGroupScheduleEnterPeriodManagedBean implements Serial
 
     @EJB
     CrewSchedulingBeanLocal csb;
-    
+
     private Date startDate;
     private Date endDate;
     private String startDateString;
@@ -47,7 +47,11 @@ public class ViewGroundCrewGroupScheduleEnterPeriodManagedBean implements Serial
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDateString", startDateString);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startDate", startDate);
+                System.out.println("VGVGSEPMB: init() startDate " + startDate);
+
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDate", endDate);
+                System.out.println("VGVGSEPMB: init() endDate " + endDate);
+
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./viewGroundCrewGroupSchedule.xhtml");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Ground crew group are not scheduled for this period.", ""));

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Add Debriefing Report Select Date"  style="width:100%">
+                <p:messages id="msgs" for="dup" autoUpdate="false" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="date" value="Select Date of flight (YYYY-MM-DD): " />
+                    <p:calendar id="date" value="#{ADRSFMB.dateSelected}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="date" required="true" requiredMessage="Please select date of the flight to sign-in" size="30"> 
+                    </p:calendar>
+
+                    <br></br>
+                    <p:commandButton id="ondatechange" partialSubmit="true" value="Get flights on the date" update="flight" style="margin-right:0" action="#{ADRSFMB.onDateChange}"  icon="ui-icon-check" />
+
+                    <p:outputLabel for="flight" value="Select Flight :" />
+                    <p:selectOneMenu id="flight" value="#{ADRSFMB.flightNo}" style="width:250px">
+                        <f:selectItem itemLabel="-Select Flight-" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ADRSFMB.fiList}"  var="flight" itemValue="#{flight.flightFrequency.flightNo}" itemLabel="#{flight.flightFrequency.flightNo} #{flight.flightFrequency.route.toString()}"/>
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+
+                <p:commandButton value="Add Debriefing Report" update="panel" style="margin-right:0" action="#{ADRSFMB.enterDebrief}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>

@@ -159,7 +159,7 @@ public class ManageAccountBeanLocalTest {
     @Test
     public void test13DeleteCockpitAcc() {
         System.out.println("test13DeleteCockpitAcc");
-        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>();
+        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>(); 
         CockpitCrew cpCrew = new CockpitCrew();
         cpCrew.setCpName("CP777751");
         selectedCpCrew.add(cpCrew);

@@ -5,8 +5,7 @@
  */
 package Entity.CommonInfa;
 
-//import Entity.AFOS.FlightTask;
-import Entity.AFOS.StaffLeave;
+import Entity.AFOS.FlightTask;
 import Entity.APS.FlightInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,19 +45,16 @@ public class CabinCrew implements Serializable {
     private Integer firstSB;    // monthly stand-by counter
     private Integer secondSB;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinList")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cabinList")
     private List<FlightInstance> fiList = new ArrayList<>();
-    @ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinStandByList")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "cabinStandByList")
     private List<FlightInstance> fiStandByList = new ArrayList<>();
 
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-// @OneToMany
-//    private List<FlightTask> taskList = new ArrayList<>();
-    
-   @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "cabinCrew")
-    private List<StaffLeave> leaves = new ArrayList<>();
+    @OneToMany
+    private List<FlightTask> taskList = new ArrayList<>();
 
     public void create(String strCbName, String strCbPassword, String email, String strStfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang) {
         this.setCbName(strCbName);
@@ -73,7 +69,7 @@ public class CabinCrew implements Serializable {
         this.setSalary(salary);
         this.setHourPay(0.0);
         this.setSecondLang(secondLang);
-        
+
         this.setWeekAccumMin(0);
         this.setMonthAccumMin(0);
         this.setYearAccumMin(0);
@@ -104,14 +100,6 @@ public class CabinCrew implements Serializable {
     @Override
     public String toString() {
         return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
-    }
-
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
-
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
     }
 
     public String getCbName() {
@@ -274,14 +262,12 @@ public class CabinCrew implements Serializable {
         this.secondSB = secondSB;
     }
 
-//    public List<FlightTask> getTaskList() {
-//        return taskList;
-//    }
-//
-//    public void setTaskList(List<FlightTask> taskList) {
-//        this.taskList = taskList;
-//    }
+    public List<FlightTask> getTaskList() {
+        return taskList;
+    }
 
-
+    public void setTaskList(List<FlightTask> taskList) {
+        this.taskList = taskList;
+    }
 
 }
