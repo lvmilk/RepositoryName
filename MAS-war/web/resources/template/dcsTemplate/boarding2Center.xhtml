@@ -26,7 +26,7 @@
 
 
                 </h:panelGrid>
-                <p:dataTable id="ticketList" var="tkt" value="#{bmb.tickets}" emptyMessage="No Unused Ticket!" style="margin-bottom:20px">
+                <p:dataTable id="ticketList" var="tkt" value="#{bmb.tickets}" emptyMessage="No Unboared Ticket!" style="margin-bottom:20px">
                     <p:column headerText="Flight Number">
                         <h:outputText value="#{tkt.bkInstance.flightCabin.flightInstance.flightFrequency.flightNo}" style="center" />
                     </p:column>

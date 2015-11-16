@@ -77,7 +77,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
 
     private Reservation selectedRsv;
     private String manageStatus;
-    
+
     private String bkSystem;
     private String cabinName;
     private String companyName;
@@ -86,11 +86,11 @@ public class rescheduleConfirmManagedBean implements Serializable {
     public void init() {
         try {
 
-             cabinName=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
-            manageStatus=(String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
+            cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
+            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
             selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
-            bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-            companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+            bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+            companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
             stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
@@ -141,7 +141,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
             this.setBkSystem("ARS");
         }
 
-        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem,companyName);
+        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem, companyName);
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
@@ -398,6 +398,4 @@ public class rescheduleConfirmManagedBean implements Serializable {
         this.cabinName = cabinName;
     }
 
-    
-    
 }

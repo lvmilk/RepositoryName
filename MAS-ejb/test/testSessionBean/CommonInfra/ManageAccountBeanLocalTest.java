@@ -5,8 +5,13 @@
  */
 package testSessionBean.CommonInfra;
 
-import SessionBean.CommonInfra.ManageAccountBeanLocal;
+import Entity.CommonInfa.CabinCrew;
+import Entity.CommonInfa.CockpitCrew;
+import Entity.CommonInfa.GroundStaff;
+import Entity.CommonInfa.OfficeStaff;
 import SessionBean.CommonInfra.ManageAccountBeanRemote;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
@@ -77,17 +82,141 @@ public class ManageAccountBeanLocalTest {
     @Test
     public void test04AddAccountAndValidateLogin() {
         System.out.println("test04AddAccountAndValidateLogin");
-        mabl.addAccount("O999999","O999999","O999@999.com", "officeStaff","HAO","LI","normal",5000.0);
+        mabl.addAccount("O999999", "O999999", "O999@999.com", "officeStaff", "HAO", "LI", "normal", 5000.0);
         boolean flag = mabl.validateLogin("O999999", "O999999", "officeStaff");
         assertTrue(flag);
     }
-    
+
     @Test
-    public void test05AddCocpitAccAndValidateLogin(){
+    public void test05AddCocpitAccAndValidateLogin() {
         System.out.println("test05AddCocpitAccAndValidateLogin");
-        mabl.addCocpitAcc("CP999999","CP999999","CP999@999.com","cockpit","HAO","LI","Captain",10000.0,"A380");
+        mabl.addCocpitAcc("CP999999", "CP999999", "CP999@999.com", "cockpit", "HAO", "LI", "Captain", 10000.0, "A380");
         boolean flag = mabl.validateLogin("CP999999", "CP999999", "cockpit");
         assertTrue(flag);
+    }
+
+    @Test
+    public void test06AddCheckEmailExist() {
+        System.out.println("test06AddCheckEmailExist");
+        boolean flag = mabl.checkEmailExists("o777777@mas.com");
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test07AddCheckEmailExist_NotExist() {
+        System.out.println("test07AddCheckEmailExist_NotExist");
+        boolean flag = mabl.checkEmailExists("o777778@mas.com");
+        assertFalse(flag);
+    }
+
+    @Test
+    public void test08CheckEmailDuplicate() {
+        System.out.println("test08CheckEmailDuplicate");
+        boolean flag = mabl.checkEmailDuplicate("o777777@mas.com", "o777777@mas.com");
+        assertFalse(flag);
+    }
+
+    @Test
+    public void test09CheckEmailDuplicate_NotDuplicate() {
+        System.out.println("test08CheckEmailDuplicate");
+        boolean flag = mabl.checkEmailDuplicate("o777778@mas.com", "o777777@mas.com");
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test10DeleteAcc() {
+        System.out.println("test10DeleteDelAcc");
+        List<OfficeStaff> selectedOffStf = new ArrayList<OfficeStaff>();
+        OfficeStaff offStaff = new OfficeStaff();
+        offStaff.setOffName("O999999");
+        selectedOffStf.add(offStaff);
+        boolean flag = mabl.delAcc(selectedOffStf);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test11DeleteGrdAcc() {
+        System.out.println("test11DeleteGrdAcc");
+        List<GroundStaff> selectedGrdStf = new ArrayList<GroundStaff>();
+        GroundStaff grdStaff = new GroundStaff();
+        grdStaff.setGrdName("G666631");
+        selectedGrdStf.add(grdStaff);
+        boolean flag = mabl.delGrdAcc(selectedGrdStf);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test12DeleteCabinAcc() {
+        System.out.println("test12DeleteCabinAcc");
+        List<CabinCrew> selectedCbCrew = new ArrayList<CabinCrew>();
+        CabinCrew cbCrew = new CabinCrew();
+        cbCrew.setCbName("CB888851");
+        selectedCbCrew.add(cbCrew);
+        boolean flag = mabl.delCabinAcc(selectedCbCrew);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test13DeleteCockpitAcc() {
+        System.out.println("test13DeleteCockpitAcc");
+        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>(); 
+        CockpitCrew cpCrew = new CockpitCrew();
+        cpCrew.setCpName("CP777751");
+        selectedCpCrew.add(cpCrew);
+        boolean flag = mabl.delCockpitAcc(selectedCpCrew);
+        assertTrue(flag);
+    }
+
+    @Test
+    public void test14GetOfficeStaff() {
+        System.out.println("test14GetOfficeStaff");
+        OfficeStaff offStaff = new OfficeStaff();
+        offStaff = mabl.getOfficeStaff("O777777");
+        assertEquals("O777777", offStaff.getOffName());
+
+    }
+
+    @Test
+    public void test15GetOfficeStaff_NotFound() {
+        System.out.println("test15GetOfficeStaff_NotFound");
+        OfficeStaff offStaff = new OfficeStaff();
+        offStaff = mabl.getOfficeStaff("O999999");
+        assertNull(offStaff);
+
+    }
+
+    @Test
+    public void test16GetGroundStaff() {
+        System.out.println("test16GetGroundStaff");
+        GroundStaff grdStaff = new GroundStaff();
+        grdStaff = mabl.getGroundStaff("G666632");
+        assertEquals("G666632", grdStaff.getGrdName());
+    }
+
+    @Test
+    public void test17GetGroundStaff_NotFound() {
+        System.out.println("test17GetGroundStaff");
+        GroundStaff grdStaff = new GroundStaff();
+        grdStaff = mabl.getGroundStaff("G666631");
+        assertNull(grdStaff);
+    }
+
+    @Test
+    public void test18GetCabinCrew() {
+        System.out.println("test16GetCabinCrew");
+
+    }
+
+    @Test
+    public void test19GetCockpitCrew() {
+        System.out.println("test17GetCockpitCrew");
+
+    }
+
+    @Test
+    public void test20GetLockedOutStatus() {
+        System.out.println("test18GetLockedOutStatus");
+
     }
 
     private ManageAccountBeanRemote lookupManageAccountBeanRemote() {

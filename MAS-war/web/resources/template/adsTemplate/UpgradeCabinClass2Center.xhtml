@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Update Reservation</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form id="viewReserve" >
+
+            <p:panel id="reservation" header="Reservation Information"  toggleable="true">
+
+                <br/>
+                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" value="#{updateReservation.selectedPsgList}" rows="10"  emptyMessage="No Reservations" >
+
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{passenger.title}" />
+                        </p:column>
+
+                        <p:column headerText="Given Name" >
+                            <h:outputText value="#{passenger.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                            <h:outputText value="#{passenger.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Passport No.">
+                            <h:outputText value="#{passenger.passport}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+                <br />
+                <p:panel id="panel" header="Choose Upgraded Cabin for  Flight Legs"   style="width:50%">
+                    <h:panelGrid columns="2" cellpadding="15px" >
+
+
+                    <p:outputLabel value="Departure Time" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.standardDepTimeDateType}" />
+
+                    <p:outputLabel value="Arrival Time" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.standardArrTimeDateType}" />
+
+                    <p:outputLabel value="Departure from" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.flightFrequency.route.origin.airportName}" />
+
+                    <p:outputLabel value="Arrive at" />
+                    <p:outputLabel value="#{updateReservation.selectedFlight.flightFrequency.route.dest.airportName}" />
+
+                    <p:outputLabel for="cabin" value="Select upgraded Cabin Class " />
+                    <p:selectOneMenu id="cabin" value="#{updateReservation.cabinName}" required="true" requiredMessage="Please select one Cabin Class" style=" size:100px">    
+                        <f:selectItem itemLabel="Select Cabin Class" itemValue="#{null}" />
+                        <f:selectItems value="#{updateReservation.cabinList}"  var="cabinClass" itemValue="#{cabinClass.cabinName}" itemLabel="#{cabinClass.cabinName}"/>
+                    </p:selectOneMenu>
+                    
+                    </h:panelGrid>
+                    <p:commandButton value="Confirm Update" actionListener="#{updateReservation.onChooseUpgradeCabin()}" />
+
+                </p:panel>
+
+
+
+            </p:panel>
+
+        </h:form>
+        
+         <h:form id="dlgGrd">
+            <p:dialog id="dlgGrd" header="Confirm upgrade the Cabin Class?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
+                <p:outputLabel value="A total price increase of $#{updateReservation.priceIncrease} will be charged on you after you confirm upgrade of cabin class "/>
+
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:commandButton value="Confirm"  oncomplete="PF('dlgGrd').hide()" action="#{updateReservation.confirmUpgradeCabin()}" />
+                    <p:commandButton value="Quit"  onclick="PF('dlgGrd').hide()" />
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</html>
+
