@@ -25,7 +25,6 @@ import javax.persistence.Temporal;
 @Entity
 public class GDSFlight implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -43,6 +42,8 @@ public class GDSFlight implements Serializable {
     private String depAirport;
     private String arrAirport;
     private Integer bookedSeat;
+    private Integer availableSeat;
+    private Integer seatQuota;
     
     @ManyToOne
     private Airline airline;
@@ -169,6 +170,34 @@ public class GDSFlight implements Serializable {
     @Override
     public String toString() {
         return "Entity.GDS.GDSFlight[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the availableSeat
+     */
+    public Integer getAvailableSeat() {
+        return availableSeat;
+    }
+
+    /**
+     * @param availableSeat the availableSeat to set
+     */
+    public void setAvailableSeat(Integer availableSeat) {
+        this.availableSeat = availableSeat;
+    }
+
+    /**
+     * @return the seatQuota
+     */
+    public Integer getSeatQuota() {
+        return seatQuota;
+    }
+
+    /**
+     * @param seatQuota the seatQuota to set
+     */
+    public void setSeatQuota(Integer seatQuota) {
+        this.seatQuota = seatQuota;
     }
 
 }
