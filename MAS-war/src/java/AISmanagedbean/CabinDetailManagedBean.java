@@ -72,19 +72,18 @@ public class CabinDetailManagedBean implements Serializable {
         }
 
     }
-    
-    public void goBack() throws IOException{
+
+    public void goBack() throws IOException {
 //     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinClass", cabinSelected);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("aircraftType", acType);
-     FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseCabin.xhtml");
-    
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseCabin.xhtml");
+
     }
-    
-    public void onCancel() throws IOException{
-        acType=null;
-    FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseAircraftType.xhtml");
-    
-    
+
+    public void onCancel() throws IOException {
+        acType = null;
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./ChooseAircraftType.xhtml");
+
     }
 
     public void saveUpdate() throws IOException {
@@ -100,28 +99,30 @@ public class CabinDetailManagedBean implements Serializable {
             Integer left = Integer.parseInt(part1);
             Integer middle = Integer.parseInt(part2);
             Integer right = Integer.parseInt(part3);
-            System.out.println("left is "+left);
-            System.out.println("middle is "+middle);
-            System.out.println("right is "+right);
+            System.out.println("left is " + left);
+            System.out.println("middle is " + middle);
+            System.out.println("right is " + right);
 
             if (left == 0 || right == 0) {
                 System.out.println("Left or right is 0");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "left and right segment cannot be 0 ", ""));
 
             } else {
-                
+
                 if ((left + middle + right) != rowSeatCount) {
                     System.out.println("Exceed row seat count");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "seats in row config not equal to No. seats per row", ""));
-                
+
                 } else {
 
+                  
                     mcl.updateCabin(cabinSelected, seatWidth, rowCount, rowSeatCount, rowConfig);
+       
 
 //                     FacesMessage msg = new FacesMessage("Cabin configuration edited successfully!");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cabin configuration edited successfully!"));
-                    }
-                               
+                }
+
             }
         }
     }

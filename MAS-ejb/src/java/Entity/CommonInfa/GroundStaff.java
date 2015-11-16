@@ -42,12 +42,12 @@ public class GroundStaff implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL})
     private UserEntity user;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private GroundStaffTeam groundStaffTeam;
-    
-       @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "groundStaff")
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "groundStaff")
     private List<StaffLeave> leaves = new ArrayList<>();
-    
+
     public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {
         this.setGrdName(strGrdName);
         this.setGrdPassword(strGrdPassword);
@@ -269,6 +269,5 @@ public class GroundStaff implements Serializable {
     public void setGroundStaffTeam(GroundStaffTeam groundStaffTeam) {
         this.groundStaffTeam = groundStaffTeam;
     }
-
 
 }
