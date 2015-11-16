@@ -282,12 +282,5 @@ public class CabinCrew implements Serializable {
 //        this.taskList = taskList;
 //    }
 
-    public List<StaffLeave> getLeaves() {
-        return leaves;
-    }
-
-    public void setLeaves(List<StaffLeave> leaves) {
-        this.leaves = leaves;
-    }
 
 }
