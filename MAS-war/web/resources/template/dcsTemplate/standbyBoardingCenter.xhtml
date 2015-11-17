@@ -20,7 +20,8 @@
                 <h:panelGrid columns="2" cellpadding="5">
 
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date" value="#{bmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight start date" />
+                    <!--<p:calendar id="date" value="#{bmb.date}" pattern="yyyy-MM-dd" mask="true" navigator="true" mindate="#{bmb.minDate}" maxdate="#{bmb.maxDate}" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight date" />-->
+                    <p:calendar id="date" value="#{bmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight date" />
 
                     <br></br>
                     <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{bmb.onDateChange}"  icon="ui-icon-check" />

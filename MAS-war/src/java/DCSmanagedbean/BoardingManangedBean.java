@@ -48,6 +48,8 @@ public class BoardingManangedBean implements Serializable {
     private Date boardingTime;
     private String seatNo;
     private List<Seat> allAvailableSeats = new ArrayList<Seat>();
+    private Date minDate = new Date();
+    private Date maxDate = new Date();
 
     @PostConstruct
     public void init() {
@@ -63,9 +65,10 @@ public class BoardingManangedBean implements Serializable {
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
         date = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
         allAvailableSeats = (List<Seat>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allAvailableSeats");
-
         boardingTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("boardingTime");
+        minDate = new Date();
 
+        maxDate = new Date();
     }
 
     public void onDateChange() {
@@ -224,8 +227,8 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-    
-        public void onStandbyBoardingChange(ActionEvent event) throws Exception {
+
+    public void onStandbyBoardingChange(ActionEvent event) throws Exception {
         try {
             ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
             if (!dcb.changeBoardingStatus(ticket)) {
@@ -265,7 +268,8 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-       public void goBackforStandbyBoarding() {
+
+    public void goBackforStandbyBoarding() {
         try {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
@@ -282,7 +286,6 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-
 
     public void goBackForViewPage() {
         try {
@@ -337,7 +340,7 @@ public class BoardingManangedBean implements Serializable {
     public void onSelectSeat(ActionEvent event) {
         try {
             this.setSeatSelected((Seat) event.getComponent().getAttributes().get("seat"));
-            this.setTickets((List<Ticket>)dcb.getAllStandbyTickets(flightNo, dateString));
+            this.setTickets((List<Ticket>) dcb.getAllStandbyTickets(flightNo, dateString));
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
 
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
@@ -355,6 +358,7 @@ public class BoardingManangedBean implements Serializable {
 
         }
     }
+
     public void goBacktocheckin2() {
         try {
             this.getAvailableSeatList();
@@ -376,6 +380,23 @@ public class BoardingManangedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
+
+    public Date getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(Date minDate) {
+        this.minDate = minDate;
+    }
+
+    public Date getMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(Date maxDate) {
+        this.maxDate = maxDate;
+    }
+
     public List<Seat> getAllAvailableSeats() {
         return allAvailableSeats;
     }

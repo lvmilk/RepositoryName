@@ -71,7 +71,6 @@ public class PricingManagedBean implements Serializable {
     //private Double pEconFactor; 
     private Map<String, Double> loadfactorMap = new HashMap<String, Double>();
 
-            
     private Integer ecSeatNo;
     private Integer bcSeatNo;
     private Integer suiteNo;
@@ -106,8 +105,6 @@ public class PricingManagedBean implements Serializable {
         return profitMargin;
     }
 
- 
-
     //test init()
 //     @PostConstruct
 //     public void init() {
@@ -140,22 +137,12 @@ public class PricingManagedBean implements Serializable {
         //set every fare in Route database
         for (int i = 0; i < loadfactorMap.size(); i++) {
             String cabin = new String(keyList.get(i));
-            //System.out.println("MB:Load factor for " + cabin + " read: " + loadfactorMap.get(cabin));
-            //System.out.println(loadfactorMap.get(cabin) instanceof Double);
-            //  System.out.println("MB:Data is of " + (loadfactorMap.get(cabin).getClass().getName()));
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  "+expectedRev+" "+loadfactorMap.get(cabin)+" "+annualDepartures+" "+cabin);
-
             pb.calculateFare(expectedRev, totalSeatNo, loadfactorMap.get(cabin), annualDepartures, cabin);
             fareMap.put(cabin, pb.getFare());
             System.out.println("MB:Add in fare map!");
             count++;
         }
-        //crewCost:pb.getCrewCost(Integer crewNo,Double crewUnitCost,Double blockHour,Integer annualDepartures)
-        //maintenance:getMaintenance(); (annual cost already) 
-        //ownershipCost:getOwnershipCost(); (annual cost already) 
-        //FuelCost:getFuelCost(); (annual cost already) 
-        //admin Cost getAdminCost()*blockHour*annualDepartures
-        //other cost: getOtherCost()*blockHour*annualDepartures
+  
         if (count == loadfactorMap.size()) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./PricingSuccess.xhtml");
         } else {
@@ -276,47 +263,51 @@ public class PricingManagedBean implements Serializable {
     }
 
     public void retrieveAircraftTypeInfo(AircraftType aircraftType) {
-
         System.out.println("MB: Enter retrieveAircraftTypeInfo");
-        ownershipCost = aircraftType.getAircraft().get(0).getPurchaseCost(); ////////////should be changed later
-        if (aircraftType.getSuiteNo() > 0) {
-            cabinInfo.put("Suite", aircraftType.getSuiteNo());
-            loadfactorMap.put("Suite", 0.0);
-            suiteNo = aircraftType.getSuiteNo();
-        }
-        if (aircraftType.getFcSeatNo() > 0) {
-            cabinInfo.put("First Class", aircraftType.getFcSeatNo());
-            loadfactorMap.put("First Class", 0.0);
-            fcSeatNo = aircraftType.getFcSeatNo();
-        }
-        if (aircraftType.getBcSeatNo() > 0) {
-            cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
-            loadfactorMap.put("Business Class", 0.0);
-            bcSeatNo = aircraftType.getBcSeatNo();
-        }
-        if (aircraftType.getPecSeatNo() > 0) {
-            cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
-            loadfactorMap.put("Premier Economy Class", 0.0);
-            pecSeatNo = aircraftType.getPecSeatNo();
-        }
+        if (aircraftType.getAircraft().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + "No aircraft under the aircraft type associated with the route", ""));
+        } else {
+            ownershipCost = aircraftType.getAircraft().get(0).getPurchaseCost(); ////////////should be changed later
+            if (aircraftType.getSuiteNo() > 0) {
+                cabinInfo.put("Suite", aircraftType.getSuiteNo());
+                loadfactorMap.put("Suite", 0.0);
+                suiteNo = aircraftType.getSuiteNo();
+            }
+            if (aircraftType.getFcSeatNo() > 0) {
+                cabinInfo.put("First Class", aircraftType.getFcSeatNo());
+                loadfactorMap.put("First Class", 0.0);
+                fcSeatNo = aircraftType.getFcSeatNo();
+            }
+            if (aircraftType.getBcSeatNo() > 0) {
+                cabinInfo.put("Business Class", aircraftType.getBcSeatNo());
+                loadfactorMap.put("Business Class", 0.0);
+                bcSeatNo = aircraftType.getBcSeatNo();
+            }
+            if (aircraftType.getPecSeatNo() > 0) {
+                cabinInfo.put("Premier Economy Class", aircraftType.getPecSeatNo());
+                loadfactorMap.put("Premier Economy Class", 0.0);
+                pecSeatNo = aircraftType.getPecSeatNo();
+            }
 
-        if (aircraftType.getEcSeatNo() > 0) {
-            cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
-            loadfactorMap.put("Economy Class", 0.0);
-            ecSeatNo = aircraftType.getEcSeatNo();
+            if (aircraftType.getEcSeatNo() > 0) {
+                cabinInfo.put("Economy Class", aircraftType.getEcSeatNo());
+                loadfactorMap.put("Economy Class", 0.0);
+                ecSeatNo = aircraftType.getEcSeatNo();
+            }
+
+            totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
+            System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
+            
+            //crewNum and purserNo is porpotional to the totol number of seats
+            Double crewNum = aircraftType.getCabinCrew() * totalSeatNo;
+            Double purserNum = aircraftType.getCabinLeader() * totalSeatNo;
+            crewNo = aircraftType.getCaptain() + aircraftType.getPilot() + purserNum.intValue() + crewNum.intValue();
+            System.out.println("MB: AircraftType Crew No: " + crewNo);
+            keyList = new ArrayList<String>(cabinInfo.keySet());
+            System.out.println("MB: AircraftType key List Size: " + keyList.size());
+            System.out.println("AircraftInfo Retrieved!");
+
         }
-
-        totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
-        System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
-        //  crewNo = pb.calculateCrewNo(totalSeatNo);
-        Double crewNum = aircraftType.getCabinCrew()*totalSeatNo;
-        Double purserNum = aircraftType.getCabinLeader()*totalSeatNo;
-        crewNo = aircraftType.getCaptain()+aircraftType.getPilot() + purserNum.intValue() + crewNum.intValue();
-        System.out.println("MB: AircraftType Crew No: " + crewNo);
-        keyList = new ArrayList<String>(cabinInfo.keySet());
-        System.out.println("MB: AircraftType key List Size: " + keyList.size());
-        System.out.println("AircraftInfo Retrieved!");
-
     }
 
     public List<String> getKeyList() {
