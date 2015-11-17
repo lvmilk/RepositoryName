@@ -51,6 +51,8 @@ public class CheckInManagedBean implements Serializable {
     private Boolean loungeEligibility;
     private Date boardingTime;
     private List<Seat> allSeats = new ArrayList<Seat>();
+    private Date minDate = new Date();
+    private Date maxDate=new Date();
 
     @PostConstruct
     public void init() {
@@ -69,7 +71,11 @@ public class CheckInManagedBean implements Serializable {
         unOccupiedSeats = (List<Seat>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unOccupiedSeats");
         boardingTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("boardingTime");
         allSeats = (List<Seat>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allSeats");
-
+        minDate = new Date();
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(minDate);
+        c1.add(Calendar.DATE, 1);
+        maxDate = c1.getTime();
     }
 
     public void onDateChange() {
@@ -605,6 +611,14 @@ public class CheckInManagedBean implements Serializable {
         this.allSeats = allSeats;
     }
 
+    public Date getMaxDate() {
+        return maxDate;
+    }
+
+    public void setMaxDate(Date maxDate) {
+        this.maxDate = maxDate;
+    }
+
     public void getSeatList() throws Exception {
         List<Seat> newList = new ArrayList<Seat>();
         newList = dcb.getAllSeats(flightNo, dateString);
@@ -612,6 +626,14 @@ public class CheckInManagedBean implements Serializable {
             this.setAllSeats(newList);
         }
 
+    }
+
+    public Date getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(Date minDate) {
+        this.minDate = minDate;
     }
 
     public void onGetSeatList() {

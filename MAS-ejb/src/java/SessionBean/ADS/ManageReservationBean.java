@@ -140,7 +140,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
             System.out.println("in getUpgradeCabinList(): index is " + index);
 
-            for (int i = 0; i < index; i++) {
+            for (int i = 0; i <= index; i++) {
                 if ((bkInstanceList.get(i).getSeatNo() - bkInstanceList.get(i).getBookedSeatNo()) >= psgCount) {
                     if (!cabinList.contains(bkInstanceList.get(i).getFlightCabin().getCabinClass())) {
                         cabinList.add(bkInstanceList.get(i).getFlightCabin().getCabinClass());

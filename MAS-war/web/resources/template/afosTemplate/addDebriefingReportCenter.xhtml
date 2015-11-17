@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Add Debriefing Report" style="width: 100%">
+
+                <p:messages id="msgs" autoUpdate="true" />
+                <h:panelGrid columns="2"  style="margin-bottom:50px; width: 60%" cellpadding="20" columnClasses="ui-grid-col-4, ui-grid-col-8" >
+
+                    <p:outputLabel value="Flight No.: " />
+                    <h:outputText value="#{ADRMB.flightNo}" />
+
+                    <p:outputLabel value="Serving Aircraft: " />
+                    <h:outputText value="#{ADRMB.acReg} / #{ADRMB.acType}" />
+
+                    <p:outputLabel value="Origin Airport: " />
+                    <h:outputText value="#{ADRMB.origin}" />
+
+                    <p:outputLabel value="Destination Airport: " />
+                    <h:outputText value="#{ADRMB.dest}" />
+
+                    <p:outputLabel value="Departure Time: " />
+                    <h:outputText value="#{ADRMB.depTimeString}" />
+
+                    <p:outputLabel value="Arrival Time: " />
+                    <h:outputText value="#{ADRMB.arrTimeString}" />
+
+                    <p:outputLabel value="Captain Staff Id: " />
+                    <h:outputText value="#{ADRMB.captainId}" />
+
+                    <p:outputLabel for="isscat" value="Select Issue Category :" />
+                    <p:selectOneMenu id="isscat" value="#{ADRMB.issueCategory}" style="width:250px" required="true" requiredMessage="Please select issue category">
+                        <f:selectItem itemLabel="-Select Flight-" itemValue="" noSelectionOption="true"/>
+                        <f:selectItems value="#{ADRMB.issueCats}"  var="iss" itemValue="#{iss}" itemLabel="#{iss}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="issue" value="Work Performed: " />
+                    <p:inputTextarea rows="6" cols="33"  id="issue" value="#{ADRMB.issue}" required="true"  requiredMessage="Please enter issue detail"/>
+
+                    <p:outputLabel for="remark" value="Remarks: " />
+                    <p:inputTextarea id="remark" value="#{ADRMB.remark}" label="remark" rows="4" cols="33" />
+
+                </h:panelGrid>
+
+                <p:commandButton id="btn" value="Add Debriefing Report" update="panel" style="margin-right:0" action="#{ADRMB.addDebriefingReport}"  icon="ui-icon-check" ajax="true" />
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+
+</html>
+

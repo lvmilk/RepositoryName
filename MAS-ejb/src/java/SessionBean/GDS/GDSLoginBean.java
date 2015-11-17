@@ -6,7 +6,10 @@
 package SessionBean.GDS;
 
 import Entity.CommonInfa.AirAlliances;
+import Entity.GDS.Airline;
+import Entity.GDS.GDSFlight;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -56,6 +59,23 @@ public class GDSLoginBean {
         }
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "retrieveAccInfo")
+    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId) throws Exception {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName ");
+        query.setParameter("inUserName", gdsUserId);
+
+        AirAlliances al = new AirAlliances();
+        al = (AirAlliances) query.getSingleResult();
+
+        return al;
+
+    }
+
     private String encrypt(String username, String password) {
         String temp;
         if (!username.isEmpty() && !password.isEmpty()) {
@@ -65,5 +85,23 @@ public class GDSLoginBean {
         }
         return password;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "publishFlight")
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "flightDate") Date flightDate, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota) {
+        //TODO write your implementation code here:
+        GDSFlight gdsFlight=new GDSFlight();
+        Airline al=new Airline();
+        
+        gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
+        al.getFlightInstances().add(gdsFlight);
+        
+        em.persist(gdsFlight);
+        
+        return false;
+    }
+
 
 }

@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title></title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Flight Crew Sign-in"  style="width:100%">
+                <!--                <p:messages id="msgs" />-->
+                <p:growl id="growl" showDetail="true" sticky="false" />  
+
+                <h:panelGrid columns="2" cellpadding="5"  style="width:20%">
+                    <p:outputLabel value="Flight No: " style="font-weight: bold"/>
+                    <p:outputLabel value="#{FCSIMB.selectedFi.flightFrequency.flightNo}" />
+
+                    <p:outputLabel value="Flight Date: "  style="font-weight: bold"/>
+                    <p:outputLabel value=" #{FCSIMB.selectedFi.date}"  />
+                </h:panelGrid>
+
+
+                <p:dataTable var="cp" value="#{FCSIMB.cpList}" emptyMessage="No cockpit crew assigned to this flight">
+                    <f:facet name="header">
+                        Cockpit Crew for #{FCSIMB.selectedFi.flightFrequency.flightNo} on #{FCSIMB.selectedFi.date}
+                    </f:facet>
+                    <p:column headerText="Staff Id">
+                        <h:outputText value="#{cp.cpName}" />
+                    </p:column>
+                    <p:column headerText="Staff Name">
+                        <h:outputText value="#{cp.firstName} / #{cp.lastName}" />
+                    </p:column>
+                    <p:column headerText="Staff Level">
+                        <h:outputText value="#{cp.stfLevel}" />
+                    </p:column>
+                    <p:column headerText="Sign-in Status">
+                         <h:outputText value="Signed-in" style="color: #3A6DA0" rendered="#{FCSIMB.flightTaskMap[cp.cpName] == 'signed-in'}" />
+                        <h:outputText value="Not sign-in" style="color: #dc143c" rendered="#{FCSIMB.flightTaskMap[cp.cpName] == 'assigned'}" />
+                    </p:column>
+                    <p:column headerText="Sign In">
+                        <p:commandButton rendered="#{FCSIMB.flightTaskMap[cp.cpName] == 'assigned'}" value="Sign In" update=":display:panel" style="margin-right:0" action="#{FCSIMB.cpSignIn(cp)}" >
+                            <p:confirm header="Cockpit Crew Sign-in" message="Do you want to sign in for cockpit crew #{cp.cpName}?"  icon="ui-icon-alert"/>  
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+
+                <!--                <p:dialog id="dlg1" header="Flight Crew Sign-in" widgetVar="dlg1" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                                    <h:panelGroup layout="block" style="margin:15px;">
+                                        <p:panelGrid columns="2">  
+                                            <h:outputText value="Sign in for cockpit crew {}" />
+                                        </p:panelGrid>
+                                    </h:panelGroup>
+                                    <f:facet name="footer">
+                                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                                            <p:commandButton value="Add to Group"  update=":mainForm:growl5" action="#{EGCGMB.addCrewToGroup(gs,1)}" />
+                                            <p:commandButton value="Cancel"  onclick="PF('dlg5').hide()" immediate="true" />
+                                        </h:panelGroup>
+                                    </f:facet>  
+                                </p:dialog>-->
+
+                <p:dataTable var="cb" value="#{FCSIMB.cbList}" emptyMessage="No cabin crew assigned to this flight">
+                    <f:facet name="header">
+                        Cabin Crew for #{FCSIMB.selectedFi.flightFrequency.flightNo} on #{FCSIMB.selectedFi.date}
+                    </f:facet>
+                    <p:column headerText="Staff Id">
+                        <h:outputText value="#{cb.cbName}" />
+                    </p:column>
+                    <p:column headerText="Staff Name">
+                        <h:outputText value="#{cb.firstName} / #{cb.lastName}" />
+                    </p:column>
+                    <p:column headerText="Staff Level">
+                        <h:outputText value="#{cb.stfLevel}" />
+                    </p:column>
+                    <p:column headerText="Sign-in Status">
+                        <h:outputText value="Signed-in" style="color: #3A6DA0" rendered="#{FCSIMB.flightTaskMap[cb.cbName] == 'signed-in'}" />
+                        <h:outputText value="Not sign-in" style="color: #dc143c" rendered="#{FCSIMB.flightTaskMap[cb.cbName] == 'assigned'}" />
+                    </p:column>
+                    <p:column headerText="Sign In">
+                        <p:commandButton  rendered="#{FCSIMB.flightTaskMap[cb.cbName] == 'assigned'}" value="Sign In" update=":display:panel" style="margin-right:0" action="#{FCSIMB.cbSignIn(cb)}" >
+                            <p:confirm header="Cabin Crew Sign-in" message="Do you want to sign in for cabin crew #{cb.cbName}?" icon="ui-icon-alert" />  
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="clip" hideEffect="clip" >
+                    <p:commandButton value="Confirm" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":display:growl" />
+                    <p:commandButton value="Cancel" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+                <br/><br/>
+                <p:commandButton value="Back to select flight" action="#{FCSIMB.signInBack}" immediate="true" icon="ui-icon-carat-1-w" />
+
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>

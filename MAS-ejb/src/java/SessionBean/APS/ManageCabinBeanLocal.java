@@ -7,6 +7,7 @@ package SessionBean.APS;
 
 import Entity.APS.AircraftType;
 import Entity.AIS.CabinClass;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -25,6 +26,10 @@ public interface ManageCabinBeanLocal {
     public boolean rowConfig(AircraftType type, String cabin);
 
     public void updateCabin(CabinClass cabinSelected, Double seatWidth, Integer rowCount, Integer rowSeatCount, String rowConfig);
+
+    public boolean checkAllConfigComplete(AircraftType airType);
+
+    public void generateAllCharts(List<CabinClass> cabinList);
 
     
     

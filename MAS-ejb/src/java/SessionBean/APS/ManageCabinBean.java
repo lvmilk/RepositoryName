@@ -41,10 +41,11 @@ public class ManageCabinBean implements ManageCabinBeanLocal {
         em.merge(cabinSelected);
         if (this.checkAllConfigComplete(airType)) {
          generateAllCharts(airType.getCabinList());
-        }
-        cabinSelected=em.find(CabinClass.class, cabinSelected.getCabinID());
+            cabinSelected=em.find(CabinClass.class, cabinSelected.getCabinID());
         
         System.out.println(cabinSelected.getSeatChart());
+        }
+     
 
     }
 

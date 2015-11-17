@@ -25,31 +25,28 @@ import javax.persistence.Temporal;
 @Entity
 public class GDSFlight implements Serializable {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String flightNo;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date flightDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date startDate;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date finishDate;
+
     private String flightStatus;
+
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date estimatedDepTime;
+    private Date depTime;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date estimatedArrTime;
-    private Integer estimatedDateAdjust;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date actualDepTime;
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date actualArrTime;
-    private Integer actualDateAdjust;
+    private Date arrTime;
+
     private String depAirport;
     private String arrAirport;
-    private Long bookedSeat;
+    private String depIATA;
+    private String arrIATA;
+    
+    private Integer bookedSeat;
+    private Integer availableSeat;
+    private Integer seatQuota;
     
     @ManyToOne
     private Airline airline;
@@ -60,7 +57,21 @@ public class GDSFlight implements Serializable {
     public GDSFlight() {
     }
 
-   
+
+    public void createGDSFlight(String flightNo,Date flightDate,Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota)
+    {
+        this.flightNo=flightNo;
+        this.flightDate=flightDate;
+        this.depTime=depTime;
+        this.arrTime=arrTime;
+        this.depAirport=depAirport;
+        this.arrAirport=arrAirport;
+        this.depIATA=depIATA;
+        this.arrIATA=arrIATA;
+        this.seatQuota=seatQuota;
+        this.bookedSeat=0;
+        this.availableSeat=seatQuota-bookedSeat;
+    }
 
     public String getFlightNo() {
         return flightNo;
@@ -78,21 +89,6 @@ public class GDSFlight implements Serializable {
         this.flightDate = flightDate;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getFinishDate() {
-        return finishDate;
-    }
-
-    public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
-    }
 
     public String getFlightStatus() {
         return flightStatus;
@@ -102,53 +98,23 @@ public class GDSFlight implements Serializable {
         this.flightStatus = flightStatus;
     }
 
-    public Date getEstimatedDepTime() {
-        return estimatedDepTime;
+
+    public Date getDepTime() {
+        return depTime;
     }
 
-    public void setEstimatedDepTime(Date estimatedDepTime) {
-        this.estimatedDepTime = estimatedDepTime;
+    public void setDepTime(Date depTime) {
+        this.depTime = depTime;
     }
 
-    public Date getEstimatedArrTime() {
-        return estimatedArrTime;
+    public Date getArrTime() {
+        return arrTime;
     }
 
-    public void setEstimatedArrTime(Date estimatedArrTime) {
-        this.estimatedArrTime = estimatedArrTime;
+    public void setArrTime(Date arrTime) {
+        this.arrTime = arrTime;
     }
 
-    public Integer getEstimatedDateAdjust() {
-        return estimatedDateAdjust;
-    }
-
-    public void setEstimatedDateAdjust(Integer estimatedDateAdjust) {
-        this.estimatedDateAdjust = estimatedDateAdjust;
-    }
-
-    public Date getActualDepTime() {
-        return actualDepTime;
-    }
-
-    public void setActualDepTime(Date actualDepTime) {
-        this.actualDepTime = actualDepTime;
-    }
-
-    public Date getActualArrTime() {
-        return actualArrTime;
-    }
-
-    public void setActualArrTime(Date actualArrTime) {
-        this.actualArrTime = actualArrTime;
-    }
-
-    public Integer getActualDateAdjust() {
-        return actualDateAdjust;
-    }
-
-    public void setActualDateAdjust(Integer actualDateAdjust) {
-        this.actualDateAdjust = actualDateAdjust;
-    }
 
     public String getDepAirport() {
         return depAirport;
@@ -166,11 +132,11 @@ public class GDSFlight implements Serializable {
         this.arrAirport = arrAirport;
     }
 
-    public Long getBookedSeat() {
+    public Integer getBookedSeat() {
         return bookedSeat;
     }
 
-    public void setBookedSeat(Long bookedSeat) {
+    public void setBookedSeat(Integer bookedSeat) {
         this.bookedSeat = bookedSeat;
     }
 
@@ -221,6 +187,62 @@ public class GDSFlight implements Serializable {
     @Override
     public String toString() {
         return "Entity.GDS.GDSFlight[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the availableSeat
+     */
+    public Integer getAvailableSeat() {
+        return availableSeat;
+    }
+
+    /**
+     * @param availableSeat the availableSeat to set
+     */
+    public void setAvailableSeat(Integer availableSeat) {
+        this.availableSeat = availableSeat;
+    }
+
+    /**
+     * @return the seatQuota
+     */
+    public Integer getSeatQuota() {
+        return seatQuota;
+    }
+
+    /**
+     * @param seatQuota the seatQuota to set
+     */
+    public void setSeatQuota(Integer seatQuota) {
+        this.seatQuota = seatQuota;
+    }
+
+    /**
+     * @return the depIATA
+     */
+    public String getDepIATA() {
+        return depIATA;
+    }
+
+    /**
+     * @param depIATA the depIATA to set
+     */
+    public void setDepIATA(String depIATA) {
+        this.depIATA = depIATA;
+    }
+
+    /**
+     * @return the arrIATA
+     */
+    public String getArrIATA() {
+        return arrIATA;
+    }
+
+    /**
+     * @param arrIATA the arrIATA to set
+     */
+    public void setArrIATA(String arrIATA) {
+        this.arrIATA = arrIATA;
     }
 
 }
