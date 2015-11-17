@@ -88,6 +88,13 @@
                     </p:inputText>
                     <p:message for="pCname" display="icon" />
 
+                    <p:outputLabel for="pIATA" value="IATA: " />
+                    <p:inputText id="pIATA" value="#{cPartnerMB.IATA}" requiredMessage="Please enter IATA" required="true" label="pIATA" size="10">
+
+                    </p:inputText>
+                    <p:message for="pIATA" display="icon" />
+
+
                     <p:outputLabel for="pEmail" value="Email: " />
                     <p:inputText id="pEmail" value="#{cPartnerMB.email}" validatorMessage="Invalid email format" required="true" label="Email" size="10">
                         <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />

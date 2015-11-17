@@ -16,6 +16,7 @@ import Entity.CommonInfa.CockpitCrew;
 import javax.ejb.Stateless;
 import java.util.*;
 import Entity.*;
+import Entity.GDS.Airline;
 import static java.time.Clock.system;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -47,6 +48,8 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
     private String hPwd = new String();
     private Integer temp;
     private Integer locked;
+    
+    private Airline al;
 
     public ManageAccountBean() {
 
@@ -89,8 +92,10 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             return false;
         }
     }
+    
 
-    public void addPartnerAcc(String pid, String pPwd, String companyName, String email, String stfType) {
+    @Override
+    public void addPartnerAcc(String pid, String pPwd, String companyName, String email, String stfType, String iata) {
         System.out.println("Currently in create partner account");
         hPwd = this.encrypt(pid, pPwd);
         if (stfType.equals("agency")) {
@@ -101,6 +106,12 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             alliance = new AirAlliances();
             alliance.createAllianceAcc(pid, hPwd, companyName, email, stfType);
             em.persist(alliance);
+            
+            al=new Airline();
+            al.createAirline(companyName,iata, email);
+            em.persist(al);
+            em.flush();
+            
         }
     }
 
@@ -873,6 +884,11 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
         }
         
     }
+
+
+
+
+
 
  
 
