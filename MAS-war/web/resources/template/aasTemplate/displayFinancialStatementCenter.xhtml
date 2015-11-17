@@ -13,7 +13,7 @@
     <h:body>
         <h:form id="form">
 
-            <p:panel id="panel" header="Financial Statement Report"  style="width:100%" >
+            <p:panel id="panel" header="Financial Statement Report Quarter #{FSMB.quarter} in #{FSMB.year} (up-to-date)"  style="width:100%" >
                 <p:dataTable id="tbl" var="key" value="#{FSMB.keyList}" resizableColumns="true" style="margin-bottom:40px" >
                     <f:facet name="header">
                         Merlion Airlines Seasonal Financial Statement 

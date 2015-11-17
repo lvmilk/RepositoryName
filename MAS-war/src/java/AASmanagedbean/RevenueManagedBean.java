@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
@@ -147,7 +149,8 @@ public class RevenueManagedBean implements Serializable {
                 sum = revenue + commission - refund;
                 total = total + sum;
                 sumMap.put(channel, sum);
-                totalString = BigDecimal.valueOf(total).toPlainString();
+                NumberFormat formatter = new DecimalFormat("#0.00");
+                totalString = formatter.format(total);
             }
             if (total == 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + year + " Quarter " + quarter + " ! ", ""));

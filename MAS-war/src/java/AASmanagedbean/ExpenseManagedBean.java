@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -120,7 +122,8 @@ public class ExpenseManagedBean implements Serializable {
             //        System.out.println("!!!!!!!!!!!!!!!!!!AAS:EMB:PAYABLE: " + category + "  " + payable);
                 }
                 total = total + payable;
-                totalString = BigDecimal.valueOf(total).toPlainString();
+                NumberFormat f = new DecimalFormat("#0.00");  
+                totalString = f.format(total);
             }
             if (total == 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + expenseYear + " Quarter " + expenseQuarter + " ! ", ""));
