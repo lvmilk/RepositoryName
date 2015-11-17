@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -147,7 +148,8 @@ public class FinancialStatementManagedBean implements Serializable {
 
                 } else if (key.equals("NET INCOME:")) {
                     sum = revenue - total;
-                    sumString = new BigDecimal(Double.toString(sum)).toPlainString();
+                    NumberFormat formatter = new DecimalFormat("#0.00");
+                    sumString = formatter.format(sum);
                     receivableMap.put(key, sumString);
                 } else if (key.equals("TOTAL EXPENSES:")) {
                     String totalString = new BigDecimal(Double.toString(total)).toPlainString();
@@ -167,11 +169,8 @@ public class FinancialStatementManagedBean implements Serializable {
                         total = total + cost1;
                     } else if (key.equals("Depreciation")) {
                         Double cost2 = 0.0;
-                        for (int e = 0; e < expenseList.size(); e++) {
-                            if (expenseList.get(e).getCategory().equals("Depreciation")) {
-                                cost2 = cost2 + expenseList.get(e).getPayable() / 4;
-                            }
-                        }
+                        String cate = "Depreciation";
+                        cost2 = cost2 + ftb.calculateNoDateExpense(cate, year, quarter);
                         payableMap.put(key, cost2);
                         total = total + cost2;
                     } else if (key.equals("Fuel Cost")) {

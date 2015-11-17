@@ -19,7 +19,8 @@
 
                 <p:columnGroup type="header">
                     <p:row>
-                        <p:column rowspan="2" headerText="Channel" sortBy="#{key}" filterBy="#{key}"/>
+                        <p:column  id="track" rowspan="2" headerText="Channel" sortBy="#{key}" filterBy="#{key}"/>
+                        <p:tooltip id="toolTipTrack" for="track" value="OTHER Revenue includes: Aircraft Sales" trackMouse="true" />
                         <p:column colspan="4" headerText="Revenue" />
                     </p:row>
                     <p:row>
@@ -58,7 +59,7 @@
                         <p:column colspan="4" style="text-align:left" footerText="SGD" />
                     </p:row>
                     <p:row>
-                        <p:column footerText="Period:  " style="text-align:right"/>
+                        <p:column footerText="Period (up-to-date):  " style="text-align:right"/>
                         <p:column colspan="4" style="text-align:left" footerText="Year #{RMB.year} Quarter #{RMB.quarter}" />
                     </p:row>
 
