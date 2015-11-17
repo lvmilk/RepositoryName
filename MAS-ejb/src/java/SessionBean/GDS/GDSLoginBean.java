@@ -55,12 +55,12 @@ public class GDSLoginBean {
             return true;
         }
     }
-    
-        /**
+
+    /**
      * Web service operation
      */
     @WebMethod(operationName = "retrieveAccInfo")
-    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId, @WebParam(name = "gdsPwd") String gdsPwd) {
+    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId, @WebParam(name = "gdsPwd") String gdsPwd) throws Exception {
         Query query = null;
 
         hPwd = this.encrypt(gdsUserId, gdsPwd);
@@ -70,10 +70,12 @@ public class GDSLoginBean {
         query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName and u.allPwd= :inPassWord ");
         query.setParameter("inPassWord", hPwd);
         query.setParameter("inUserName", gdsUserId);
-        
-        AirAlliances al=new AirAlliances();
-        al=(AirAlliances)query.getSingleResult();
+
+        AirAlliances al = new AirAlliances();
+        al = (AirAlliances) query.getSingleResult();
+
         return al;
+
     }
 
     private String encrypt(String username, String password) {
@@ -85,7 +87,5 @@ public class GDSLoginBean {
         }
         return password;
     }
-
-
 
 }
