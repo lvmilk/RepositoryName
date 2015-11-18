@@ -33,7 +33,23 @@ public class ViewAllLeaveManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
+        this.checkAccessRight();
         this.displayAllLeaves();
+    }
+
+    public void checkAccessRight() {
+        try {
+            String username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+            System.out.println("StaffLevel: " + username);
+            String staffLevel = lb.getStaffLevel(username);
+            System.out.println("StaffLevel: " + staffLevel);
+            if (!staffLevel.equals("HR")) {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./errorPage.xhtml");
+            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+
+        }
     }
 
     public void displayAllLeaves() {
@@ -78,11 +94,18 @@ public class ViewAllLeaveManagedBean implements Serializable {
         }
 
     }
+
     public void goBack() throws IOException {
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./viewAllLeave.xhtml");
 
     }
+
+//    public void goBack2() throws IOException {
+//
+//        FacesContext.getCurrentInstance().getExternalContext().redirect("./AFOSworkspace.xhtml");
+//
+//    }
 
     /**
      * Creates a new instance of ViewAllLeaveManagedBean
