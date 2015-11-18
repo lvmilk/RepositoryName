@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+    <h:head>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js"></script>
+        <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/base/jquery-ui.css"></link>
+        <script type="text/javascript"> //<![CDATA[
+            $(function () {
+                var startDate;
+                var endDate;
+
+                var selectCurrentWeek = function () {
+                    window.setTimeout(function () {
+                        $(".week-picker").find('.ui-datepicker-current-day a').addClass('ui-state-active')
+                    }, 1);
+                }
+
+                $(".week-picker").datepicker({
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    onSelect: function (dateText, inst) {
+                        var date = $(this).datepicker('getDate');
+                        startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
+                        endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
+                        document.getElementById('startDate').value = startDate;
+                        document.getElementById('endDate').value = endDate;
+                        var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
+                        $('#startDate').text($.datepicker.formatDate(dateFormat, startDate, inst.settings));
+                        $('#endDate').text($.datepicker.formatDate(dateFormat, endDate, inst.settings));
+//                        var start=document.getElementById('#startDate').value;
+//                        var end=document.getElementById('#startDate').value;
+                        selectCurrentWeek();
+                    },
+                    beforeShowDay: function (date) {
+                        var cssClass = '';
+
+                        if ((date >= startDate) && (date <= endDate))
+                            cssClass = 'ui-datepicker-current-day';
+                        return [true, cssClass];
+                    },
+                    onChangeMonthYear: function (year, month, inst) {
+                        selectCurrentWeek();
+                    }
+                });
+
+                $('.week-picker .ui-datepicker-calendar tr').live('mousemove', function () {
+                    $(this).find('td a').addClass('ui-state-hover');
+                });
+                $('.week-picker .ui-datepicker-calendar tr').live('mouseleave', function () {
+                    $(this).find('td a').removeClass('ui-state-hover');
+                });
+            }
+            );//]]>
+        </script>
+        <script>
+            function test() {
+                $('#command').click();
+            }
+
+
+        </script>
+    </h:head>
+    <form>
+        <h:body id="display">
+            <p:messages id="msgs" />
+
+            <div class="week-picker"></div>
+            <br /><br />
+
+            <label>Week :</label> <h:outputText id="startDate"></h:outputText> - <h:outputText id="endDate" ></h:outputText>
+           　<input type="hidden" name="startDate" value=""></input>
+　　          　<input type="hidden" name="endDate" value=""></input>
+            <input type="button" value="Test" onclick="test()" />
+
+
+
+
+
+<!--            <p:commandButton actionListener="#{almb.goBack}" update="display" >
+    <f:param name="startDate" value="#{startDate}" />
+    <f:param name="endDate" value="#{endDate}" />
+</p:commandButton>-->
+
+
+            <!--<p:commandButton value="Back"  action="#{almb.goBack}" icon="ui-icon-carat-1-w"/>-->
+
+
+        </h:body>
+    </form>
+</html>
+
+

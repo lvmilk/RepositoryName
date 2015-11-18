@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,22 +27,30 @@ public class Airline implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String pwd;
+
+    @Column(unique=true)
     private String email;
+    @Column(unique=true)
     private String name;
-    private String nameCode;
+    @Column(unique=true)
+    private String IATA;
 
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSFlight> flightInstances=new ArrayList<>();
-
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSReservation> reservations=new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSFlight> flightInstances=new ArrayList<>();
+//
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSReservation> reservations=new ArrayList<>();
 
     public Airline() {
     }
 
   
-    
+    public void createAirline(String name, String IATA, String email)
+    {
+        this.name=name;
+        this.IATA=IATA;
+        this.email=email;
+    }
     
     public Long getId() {
         return id;
@@ -51,13 +60,6 @@ public class Airline implements Serializable {
         this.id = id;
     }
 
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
 
     public String getEmail() {
         return email;
@@ -75,29 +77,29 @@ public class Airline implements Serializable {
         this.name = name;
     }
 
-    public String getNameCode() {
-        return nameCode;
+    public String getIATA() {
+        return IATA;
     }
 
-    public void setNameCode(String nameCode) {
-        this.nameCode = nameCode;
+    public void setIATA(String IATA) {
+        this.IATA = IATA;
     }
 
-    public List<GDSFlight> getFlightInstances() {
-        return flightInstances;
-    }
-
-    public void setFlightInstances(List<GDSFlight> flightInstances) {
-        this.flightInstances = flightInstances;
-    }
-
-    public List<GDSReservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<GDSReservation> reservations) {
-        this.reservations = reservations;
-    }
+//    public List<GDSFlight> getFlightInstances() {
+//        return flightInstances;
+//    }
+//
+//    public void setFlightInstances(List<GDSFlight> flightInstances) {
+//        this.flightInstances = flightInstances;
+//    }
+//
+//    public List<GDSReservation> getReservations() {
+//        return reservations;
+//    }
+//
+//    public void setReservations(List<GDSReservation> reservations) {
+//        this.reservations = reservations;
+//    }
 
     @Override
     public int hashCode() {

@@ -45,7 +45,7 @@ public class GroundStaff implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL})
     private GroundStaffTeam groundStaffTeam;
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "groundStaff")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},mappedBy = "groundStaff")
     private List<StaffLeave> leaves = new ArrayList<>();
 
     public void create(String strGrdName, String strGrdPassword, String email, String strType, String firstName, String lastName, String stfLevel, Double salary) {

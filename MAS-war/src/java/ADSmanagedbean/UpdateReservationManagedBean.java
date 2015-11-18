@@ -93,8 +93,10 @@ public class UpdateReservationManagedBean implements Serializable {
         allFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allFlights");
         allBookClassList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allBookClassList");
         flightToBkInstance = (Map<FlightInstance, BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightToBkInstance");
-
+        
+        if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight")!=null){
         selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight");
+        }
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
         bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
@@ -306,6 +308,7 @@ public class UpdateReservationManagedBean implements Serializable {
             returned = mr.getFlightPackage(flights, dest, origin, departed.size());
         }
         System.out.println("booker found is " + selectedRsv.getBooker());
+        System.out.println("selectedRsv.getBkcInstance() is "+selectedRsv.getBkcInstance());
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", selectedRsv.getBkcInstance().get(0).getFlightCabin().getCabinClass().getCabinName());

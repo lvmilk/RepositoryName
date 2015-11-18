@@ -17,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 /**
  *
@@ -35,15 +37,37 @@ public class StaffLeave implements Serializable {
     private String status;
     private String remark;
     private String staffType;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date applyDate = new Date();
+    private  String userName;
+    
 
     @ManyToOne
-    private CockpitCrew cockpitCrew = new CockpitCrew();
+    private CockpitCrew cockpitCrew ;
     @ManyToOne
-    private OfficeStaff officeStaff = new OfficeStaff();
+    private OfficeStaff officeStaff;
     @ManyToOne
-    private GroundStaff groundStaff = new GroundStaff();
+    private GroundStaff groundStaff;
     @ManyToOne
-    private CabinCrew cabinCrew = new CabinCrew();
+    private CabinCrew cabinCrew;
+
+    
+  
+    public Date getApplyDate() {
+        return applyDate;
+    }
+
+    public void setApplyDate(Date applyDate) {
+        this.applyDate = applyDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Long getId() {
         return id;

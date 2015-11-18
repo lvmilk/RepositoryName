@@ -17,6 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,8 +53,6 @@ public class ViewCostManagedBean implements Serializable {
      */
     @EJB
     private FinancialTrackingBeanLocal ftb;
-    @EJB
-    private CrewSchedulingBeanLocal csb;
 
     private long costYear;
     private String costQuarter;
@@ -118,7 +118,7 @@ public class ViewCostManagedBean implements Serializable {
         } else {
             expenseList = ftb.getExpenseList(costYear, costQuarter);
             keyList = new ArrayList<>();
-            for (int i=0;i<expenseList.size();i++){
+            for (int i = 0; i < expenseList.size(); i++) {
                 key = expenseList.get(i).getId();
                 keyList.add(key);
             }
@@ -150,25 +150,26 @@ public class ViewCostManagedBean implements Serializable {
                     if (category.equals("Purchase Aircraft")) {
                         payDate = expenseList.get(i).getPaymentDate();
                         amount = 1.0;
-                        total = payable * amount;
+                        total = payable*amount;
                         dateMap.put(key, payDate);
                         amountMap.put(key, amount);
                         totalMap.put(key, total);
-                    } else if (category.equals("Depreciation")) {
-                        amount = 0.25;
-                        total = payable * amount;
+                    } else if(category.equals("Depreciation")){
+                        ///////for depreciation
+                        amount = ftb.getUnitOfYear(costYear, costQuarter);
+                        total = ftb.getUnitExpense(key,category, costYear, costQuarter);
                         amountMap.put(key, amount);
                         totalMap.put(key, total);
-                    } else {
+                    }  else {
                         ///////for maintenance cost & fuel cost
-                        total = ftb.calculateNoDateExpense(category, costYear, costQuarter);
+                        total = ftb.getUnitExpense(key,category, costYear, costQuarter);
                         amount = total / payable;
                         amountMap.put(key, amount);
                         totalMap.put(key, total);
                     }
                 } else if (type.equals("Fixed Operation Cost")) {
-                    total = ftb.calculateNoDateExpense(category, costYear, costQuarter);
-                    amount = 4.0;
+                    total = ftb.getUnitExpense(key, category,costYear, costQuarter);
+                    amount = ftb.getUnitOfYear(costYear, costQuarter);
                     amountMap.put(key, amount);
                     totalMap.put(key, total);
                 } else {
@@ -182,17 +183,18 @@ public class ViewCostManagedBean implements Serializable {
                         totalMap.put(key, total);
                     } else {
                         ///////////for 6 kinds of staff
-                        total = ftb.calculateNoDateExpense(category, costYear, costQuarter);
-                        amount = 4.0;
+                        total = ftb.getUnitExpense(key, category,costYear, costQuarter);
+                        amount = ftb.getUnitOfMonth(costYear, costQuarter);
                         amountMap.put(key, amount);
                         totalMap.put(key, total);
                     }
                 }
                 sum = sum + total;
-                sumString = BigDecimal.valueOf(sum).toPlainString();
-                System.out.println("VCMB:viewCost:expenseList: "+expenseList.get(i));
-                System.out.println("VCMB:viewCost:keyList: "+keyList);
-                System.out.println("VCMB:viewCost:paymentDate: "+payDate);
+                NumberFormat formatter = new DecimalFormat("#0.00");
+                sumString = formatter.format(sum);
+                System.out.println("VCMB:viewCost:expenseList: " + expenseList.get(i));
+                System.out.println("VCMB:viewCost:keyList: " + keyList);
+                System.out.println("VCMB:viewCost:paymentDate: " + payDate);
             }
             if (total == 0.0) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "There is no record found in Year " + costYear + " Quarter " + costQuarter + " ! ", ""));
@@ -200,7 +202,7 @@ public class ViewCostManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("typeMap", typeMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("payableMap", payableMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cateMap", cateMap);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateMap",dateMap);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateMap", dateMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("amountMap", amountMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalMap", totalMap);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("sourceMap", sourceMap);

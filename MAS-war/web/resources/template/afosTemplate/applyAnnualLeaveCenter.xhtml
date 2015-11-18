@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Leave Application: Annual Leave Preference Exercise</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Annual Leave Preference Exercise"  style="width:100%">
+                <p:messages id="msgs" />
+                <h:outputText value="Please select the first day of the weeks you intend to take annual leave"></h:outputText>
+                <br></br> <br></br>
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <p:outputLabel for="date1" value="First preference date:(YYYY-MM-DD) " />     
+                    <p:calendar id="date1" value="#{almb.firstDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="First Preference: Please enter a valid date"  requiredMessage="Please enter first preference date" />
+                    <p:outputLabel for="date2" value="Second preference date:(YYYY-MM-DD) " />     
+                    <p:calendar id="date2" value="#{almb.secondDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Second Preference: Please enter a valid date"  requiredMessage="Please enter second preference date" />
+                    <p:outputLabel for="date3" value="Third preference date:(YYYY-MM-DD) (Optional)  " />     
+                    <p:calendar id="date3" value="#{almb.thirdDate}" pattern="yyyy-MM-dd" mask="true" navigator="true" label="date"  validatorMessage="Third Preference: Please enter a valid date"  />
+
+                </h:panelGrid>
+                <p:commandButton value="Sumbit Preference" update="panel" style="margin-right:0" action="#{almb.onSubmitPreference}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+
+    </h:body>
+</html>

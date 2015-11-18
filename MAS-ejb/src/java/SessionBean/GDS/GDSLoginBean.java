@@ -6,7 +6,10 @@
 package SessionBean.GDS;
 
 import Entity.CommonInfa.AirAlliances;
+import Entity.GDS.Airline;
+import Entity.GDS.GDSFlight;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -56,6 +59,23 @@ public class GDSLoginBean {
         }
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "retrieveAccInfo")
+    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId) throws Exception {
+        Query query = null;
+
+        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName ");
+        query.setParameter("inUserName", gdsUserId);
+
+        AirAlliances al = new AirAlliances();
+        al = (AirAlliances) query.getSingleResult();
+
+        return al;
+
+    }
+
     private String encrypt(String username, String password) {
         String temp;
         if (!username.isEmpty() && !password.isEmpty()) {
@@ -64,6 +84,23 @@ public class GDSLoginBean {
             return temp;
         }
         return password;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "publishFlight")
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyName") String companyName, @WebParam(name = "cabinName") String cabinName, @WebParam(name = "price") Double price,@WebParam(name = "rowStart") Integer rowStart,@WebParam(name = "rowEnd") Integer rowEnd,@WebParam(name = "columnStart") char columnStart,@WebParam(name = "columnEnd")char columnEnd) {
+        //TODO write your implementation code here:
+        GDSFlight gdsFlight = new GDSFlight();
+
+        gdsFlight.createGDSFlight(flightNo, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota,companyName,cabinName,price);
+//            al.getFlightInstances().add(gdsFlight);
+
+        em.persist(gdsFlight);
+
+        return true;
+
     }
 
 }
