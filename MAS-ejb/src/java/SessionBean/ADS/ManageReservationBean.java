@@ -5,6 +5,8 @@
  */
 package SessionBean.ADS;
 
+import Entity.AAS.Expense;
+import Entity.AAS.Revenue;
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
@@ -17,6 +19,7 @@ import Entity.APS.Route;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -37,6 +40,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     @EJB
     PassengerBeanLocal psgLocal;
 
+    private Expense expense;
+    private Revenue revenue;
+
     public void upgradeCabinClass(List<Passenger> selectedPsgList, Reservation selectedRsv, BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName) {
         System.out.println("in upgradeCabinClass(): selectedPsgList is " + selectedPsgList);
         System.out.println("in upgradeCabinClass(): selectedRsv is " + selectedRsv);
@@ -53,9 +59,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             bookList.add(temp.get(i));
         }
         Double oldPrice = selectedPsgList.size() * computeAllFlightsPrice(bookList);
-        
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ size of bookList is "+bookList.size());
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ index of chosenBkInstance in bookList is "+bookList.indexOf(chosenBkInstance));
+
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ size of bookList is " + bookList.size());
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ index of chosenBkInstance in bookList is " + bookList.indexOf(chosenBkInstance));
 
         BookingClassInstance newBkInstance = findLowestBkInstance(chosenBkInstance.getFlightCabin().getFlightInstance(), cabinName, selectedPsgList.size());
         bookList.set(bookList.indexOf(chosenBkInstance), newBkInstance);
@@ -65,9 +71,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         ArrayList<Passenger> oldPsgList = getPassengerList(selectedRsv);
         List<FlightInstance> flights = getRsvFlights(selectedRsv);
         Collections.sort(flights);
-        
-        List<FlightInstance> departPackage=getFlightPackage(flights, selectedRsv.getOrigin(), selectedRsv.getDest(), 0);
-         List<FlightInstance> returnPackage=getFlightPackage(flights, selectedRsv.getDest(), selectedRsv.getOrigin(), departPackage.size());
+
+        List<FlightInstance> departPackage = getFlightPackage(flights, selectedRsv.getOrigin(), selectedRsv.getDest(), 0);
+        List<FlightInstance> returnPackage = getFlightPackage(flights, selectedRsv.getDest(), selectedRsv.getOrigin(), departPackage.size());
 
         ArrayList<FlightInstance> departSelected = (ArrayList<FlightInstance>) departPackage;
         ArrayList<FlightInstance> returnSelected = (ArrayList<FlightInstance>) returnPackage;
@@ -80,11 +86,11 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     public Double computeAllFlightsPrice(List<BookingClassInstance> bookList) {
         Double totalPrice = 0.0;
-        System.out.println("in computeAllFlightsPrice(): bookList is "+bookList);
-        
+        System.out.println("in computeAllFlightsPrice(): bookList is " + bookList);
+
         for (int i = 0; i < bookList.size(); i++) {
-            System.out.println("price is "+bookList.get(i).getPrice());
-            totalPrice+=bookList.get(i).getPrice();
+            System.out.println("price is " + bookList.get(i).getPrice());
+            totalPrice += bookList.get(i).getPrice();
 
         }
         return totalPrice;
@@ -111,12 +117,12 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         query.setParameter("cabinName", cabinName);
 
         List<BookingClassInstance> bookList = query.getResultList();
-        System.out.println("in findLowewstBkInstance(): bookList is "+bookList);
-          System.out.println("in findLowewstBkInstance(): psgCount is "+psgCount);
+        System.out.println("in findLowewstBkInstance(): bookList is " + bookList);
+        System.out.println("in findLowewstBkInstance(): psgCount is " + psgCount);
         if (!bookList.isEmpty()) {
             Collections.sort(bookList);
             for (int i = 0; i < bookList.size(); i++) {
-                System.out.println("price of booklist "+i+" price is "+bookList.get(i).getPrice());
+                System.out.println("price of booklist " + i + " price is " + bookList.get(i).getPrice());
                 if ((bookList.get(i).getSeatNo() - bookList.get(i).getBookedSeatNo()) > psgCount) {
                     return bookList.get(i);
                 }
@@ -350,6 +356,26 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             payment.setRefund(refund);
             em.merge(payment);
             em.flush();
+            //////////////////////////////
+            String channel = rsv.getBkSystem();
+            String name;
+            revenue = new Revenue();
+            revenue.setChannel(channel);
+            revenue.setReceivable(0.0);
+            revenue.setType("Ticket Sale");
+            if (channel.equals("DDS")) {
+                name = rsv.getCompanyName();
+            } else {
+                String ln = rsv.getBkLastName();
+                name = ln.concat(ln);
+            }
+            revenue.setPayer(name);
+            revenue.setPaymentDate(new Date());
+            revenue.setRefund(refund);
+            em.persist(revenue);
+            em.flush();
+            //////////////////////////
+
         }
 
         List<BookingClassInstance> bkInstanceList = rsv.getBkcInstance();
@@ -388,7 +414,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 List<Ticket> bcTickets = bcInstance.getTickets();
                 bcTickets.remove(ticket);
                 bcInstance.setTickets(bcTickets);
-                bcInstance.setBookedSeatNo(bcInstance.getBookedSeatNo()-psgList.size());
+                bcInstance.setBookedSeatNo(bcInstance.getBookedSeatNo() - psgList.size());
 
                 em.merge(psg);
                 em.merge(rsv);

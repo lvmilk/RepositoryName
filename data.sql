@@ -210,6 +210,8 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP777800","cp777800@mas.
 INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,NAME,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","travel agency","ag777@777.com","agency")
 INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777777","dd4960a35453b6d2098e4e75af873fd8","Korean Airline","al777777@mas.com","alliance")
 
+INSERT IGNORE INTO AIRLINE(ID,IATA,EMAIL,NAME)values(88,"KAL","AL777777@mas.com","Korean Airline")
+
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",3000,0)
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",3000,0)
 
@@ -761,12 +763,12 @@ INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(50505,"Va
 INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",4000.0,"G666631")
 
 
-INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(111,"CB888881","2015-08-10","2015-08-20",11,"Approved","None","CabinCrew","CB888881")
+INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(111,"CB888881","2015-08-10","2015-08-20",11,"Not reviewed","None","CabinCrew","CB888881")
 INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(222,"CB888881","2015-07-10","2015-07-20",11,"Approved","None","cabin","CB888881")
 INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(333,"CP777751","2015-10-10","2015-10-20",11,"Approved","None","CockpitCrew","CP777751")
-INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(444,"CP777778","2015-10-02","2015-10-14",13,"Approved","None","CockpitCrew","CP777778")
-INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType,userName) values(555,"O777777","2015-11-01","2015-11-13",13,"Approved","None","OfficeStaff","O777777")
-INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType,userName) values(666,"G666631","2015-09-10","2015-09-19",10,"Approved","None","GroundStaff","G666631")
+INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(444,"CP777778","2015-10-02","2015-10-14",13,"Not reviewed","None","CockpitCrew","CP777778")
+INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType,userName) values(555,"O777777","2015-11-01","2015-11-13",13,"Not reviewed","None","OfficeStaff","O777777")
+INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType,userName) values(666,"G666631","2015-09-10","2015-09-19",10,"Not reviewed","None","GroundStaff","G666631")
 
  
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(111,"CB888881",3000.0,15.0)
@@ -775,4 +777,3 @@ INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777751",10000.0,
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,80.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)
-
