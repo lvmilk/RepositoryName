@@ -55,6 +55,8 @@ public class CancelFlightManagedBean implements Serializable {
     private String stfType;
     private String bkSystem;
     private String companyName;
+    
+    private Double totalRefund;
 
     public CancelFlightManagedBean() {
     }
@@ -85,11 +87,14 @@ public class CancelFlightManagedBean implements Serializable {
     }
 
     public void onChooseConfirm() {
+        totalRefund=mr.computeCancelRefund(selectedRsv.getBkcInstance(), selectedPsgList.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dlgGrd').show()");
     }
 
     public void rsvConfirm() throws IOException {
+        
+        
         System.out.println("in the rsvConfirmation passengerlist size is: " + selectedPsgList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + selectedPsgList.get(0).getId());
 //        if (stfType.equals("agency")) {
@@ -303,5 +308,16 @@ public class CancelFlightManagedBean implements Serializable {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
+    public Double getTotalRefund() {
+        return totalRefund;
+    }
+
+    public void setTotalRefund(Double totalRefund) {
+        this.totalRefund = totalRefund;
+    }
+    
+    
+    
 
 }
