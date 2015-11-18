@@ -25,7 +25,7 @@ public interface AssignPriceBeanLocal {
 
     public List<FlightInstance> getFlightInstanceList(String flightNo);
 
-    public void generateBookingClass(FlightInstance fi);
+    public void generateBookingClass(FlightInstance fi)throws Exception;
 
     public List<BookingClassInstance> getBkiList(FlightInstance fi);
     

@@ -35,12 +35,15 @@ public class GDSFlight implements Serializable {
     private String flightStatus;
 
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date actualDepTime;
+    private Date depTime;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
-    private Date actualArrTime;
+    private Date arrTime;
 
     private String depAirport;
     private String arrAirport;
+    private String depIATA;
+    private String arrIATA;
+    
     private Integer bookedSeat;
     private Integer availableSeat;
     private Integer seatQuota;
@@ -54,7 +57,21 @@ public class GDSFlight implements Serializable {
     public GDSFlight() {
     }
 
-   
+
+    public void createGDSFlight(String flightNo,Date flightDate,Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota)
+    {
+        this.flightNo=flightNo;
+        this.flightDate=flightDate;
+        this.depTime=depTime;
+        this.arrTime=arrTime;
+        this.depAirport=depAirport;
+        this.arrAirport=arrAirport;
+        this.depIATA=depIATA;
+        this.arrIATA=arrIATA;
+        this.seatQuota=seatQuota;
+        this.bookedSeat=0;
+        this.availableSeat=seatQuota-bookedSeat;
+    }
 
     public String getFlightNo() {
         return flightNo;
@@ -82,20 +99,20 @@ public class GDSFlight implements Serializable {
     }
 
 
-    public Date getActualDepTime() {
-        return actualDepTime;
+    public Date getDepTime() {
+        return depTime;
     }
 
-    public void setActualDepTime(Date actualDepTime) {
-        this.actualDepTime = actualDepTime;
+    public void setDepTime(Date depTime) {
+        this.depTime = depTime;
     }
 
-    public Date getActualArrTime() {
-        return actualArrTime;
+    public Date getArrTime() {
+        return arrTime;
     }
 
-    public void setActualArrTime(Date actualArrTime) {
-        this.actualArrTime = actualArrTime;
+    public void setArrTime(Date arrTime) {
+        this.arrTime = arrTime;
     }
 
 
@@ -198,6 +215,34 @@ public class GDSFlight implements Serializable {
      */
     public void setSeatQuota(Integer seatQuota) {
         this.seatQuota = seatQuota;
+    }
+
+    /**
+     * @return the depIATA
+     */
+    public String getDepIATA() {
+        return depIATA;
+    }
+
+    /**
+     * @param depIATA the depIATA to set
+     */
+    public void setDepIATA(String depIATA) {
+        this.depIATA = depIATA;
+    }
+
+    /**
+     * @return the arrIATA
+     */
+    public String getArrIATA() {
+        return arrIATA;
+    }
+
+    /**
+     * @param arrIATA the arrIATA to set
+     */
+    public void setArrIATA(String arrIATA) {
+        this.arrIATA = arrIATA;
     }
 
 }

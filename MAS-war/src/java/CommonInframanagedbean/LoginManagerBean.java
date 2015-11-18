@@ -142,6 +142,7 @@ public class LoginManagerBean implements Serializable {
 
         blCreateAcc = mal.checkAccDuplicate(username, stfType);
         blCreateEmail = mal.checkEmailExists(email);
+        System.out.println("!!! Create Acc email: " + blCreateAcc);
         System.out.println("!!! Create Acc email: " + blCreateEmail);
         if (!blCreateAcc && !blCreateEmail) {
             System.out.println(username);

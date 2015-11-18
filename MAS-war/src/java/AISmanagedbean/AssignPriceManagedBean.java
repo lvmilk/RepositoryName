@@ -123,35 +123,41 @@ public class AssignPriceManagedBean implements Serializable {
     }
 
     public void generateBookingClass(ActionEvent event) throws IOException {
-        flightInst = (FlightInstance) event.getComponent().getAttributes().get("fi");
-        System.out.println("flightInsantance: " + flightInst.getDate());
-        apb.generateBookingClass(flightInst);
-        System.out.println("fiList size before Remove: " + fiList.size());
-        //fiList.remove(flightInst);
-        int size = fiList.size();
-        List<FlightInstance> fiListCopy = new ArrayList<FlightInstance>();
-        for (Iterator<FlightInstance> it = fiList.iterator(); it.hasNext();) {
-            FlightInstance temp = it.next();
-            fiListCopy.add(temp);
-        }
-        
-        for (int i = 0; i < size; i++) {
-            System.out.print("Two compare element: "+fiListCopy.get(i).getId()+" " + flightInst.getId());
-            if (fiListCopy.get(i).getId()==flightInst.getId()) {
-                System.out.println("REMOVED");
-                fiList.remove(i);
+        try {
+            flightInst = (FlightInstance) event.getComponent().getAttributes().get("fi");
+            System.out.println("flightInsantance: " + flightInst.getDate());
+            apb.generateBookingClass(flightInst);
+            System.out.println("fiList size before Remove: " + fiList.size());
+            //fiList.remove(flightInst);
+            int size = fiList.size();
+            List<FlightInstance> fiListCopy = new ArrayList<FlightInstance>();
+            for (Iterator<FlightInstance> it = fiList.iterator(); it.hasNext();) {
+                FlightInstance temp = it.next();
+                fiListCopy.add(temp);
             }
+
+            for (int i = 0; i < size; i++) {
+                System.out.print("Two compare element: " + fiListCopy.get(i).getId() + " " + flightInst.getId());
+                if (fiListCopy.get(i).getId() == flightInst.getId()) {
+                    System.out.println("REMOVED");
+                    fiList.remove(i);
+                }
+            }
+
+            System.out.println("fiList size after Remove: " + fiList.size());
+            this.setFiList(fiList);
+            this.setBkiList(apb.getBkiList(flightInst));
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
+            System.out.println("PUT SESSION MAP? " + fiList.size());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInst", flightInst);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkiList", bkiList);
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPriceSuccess.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+
         }
 
-        System.out.println("fiList size after Remove: " + fiList.size());
-        this.setFiList(fiList);
-        this.setBkiList(apb.getBkiList(flightInst));
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiList", fiList);
-        System.out.println("PUT SESSION MAP? "+ fiList.size() );
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightInst", flightInst);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bkiList", bkiList);
-
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./AssignPriceSuccess.xhtml");
     }
 
     public FlightInstance getFlightInst() {

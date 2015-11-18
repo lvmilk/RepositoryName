@@ -33,6 +33,7 @@ public class CreatePartnerManagedBean implements Serializable {
     
     private Boolean visiAg = true;
     private Boolean visiAl;
+    private String IATA;
 
     public void valueChanged(ValueChangeEvent event) {
         Object newValue = event.getNewValue();
@@ -61,7 +62,7 @@ public class CreatePartnerManagedBean implements Serializable {
             System.out.println(email);
             System.out.println(stfType);
             System.out.println("We are in create partner account managed bean");
-            mal.addPartnerAcc(partnerID, password, companyName,email, stfType);
+            mal.addPartnerAcc(partnerID, password, companyName,email, stfType, IATA);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Created Successfully"));
 
@@ -190,5 +191,19 @@ public class CreatePartnerManagedBean implements Serializable {
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    /**
+     * @return the IATA
+     */
+    public String getIATA() {
+        return IATA;
+    }
+
+    /**
+     * @param IATA the IATA to set
+     */
+    public void setIATA(String IATA) {
+        this.IATA = IATA;
     }
 }
