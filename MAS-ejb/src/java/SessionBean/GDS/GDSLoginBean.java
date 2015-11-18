@@ -6,7 +6,10 @@
 package SessionBean.GDS;
 
 import Entity.CommonInfa.AirAlliances;
+import Entity.GDS.Airline;
+import Entity.GDS.GDSFlight;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -55,25 +58,22 @@ public class GDSLoginBean {
             return true;
         }
     }
-    
-        /**
+
+    /**
      * Web service operation
      */
     @WebMethod(operationName = "retrieveAccInfo")
-    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId, @WebParam(name = "gdsPwd") String gdsPwd) {
+    public AirAlliances retrieveAccInfo(@WebParam(name = "gdsUserId") String gdsUserId) throws Exception {
         Query query = null;
 
-        hPwd = this.encrypt(gdsUserId, gdsPwd);
-        System.out.println("validatelogin:" + hPwd);
-        System.out.println("validatelogin:" + gdsPwd);
-
-        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName and u.allPwd= :inPassWord ");
-        query.setParameter("inPassWord", hPwd);
+        query = em.createQuery("SELECT u FROM AirAlliances u WHERE u.allianceID = :inUserName ");
         query.setParameter("inUserName", gdsUserId);
-        
-        AirAlliances al=new AirAlliances();
-        al=(AirAlliances)query.getSingleResult();
+
+        AirAlliances al = new AirAlliances();
+        al = (AirAlliances) query.getSingleResult();
+
         return al;
+
     }
 
     private String encrypt(String username, String password) {
@@ -86,6 +86,26 @@ public class GDSLoginBean {
         return password;
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "publishFlight")
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "flightDate") Date flightDate, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyIATA") String companyIATA) {
+        //TODO write your implementation code here:
+        GDSFlight gdsFlight = new GDSFlight();
+        Airline al = new Airline();
+        al = em.find(Airline.class, companyIATA);
+        if (al != null) {
+            gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
+            al.getFlightInstances().add(gdsFlight);
 
+            em.persist(gdsFlight);
+            
+            return true;
+        } else {
+
+            return false;
+        }
+    }
 
 }

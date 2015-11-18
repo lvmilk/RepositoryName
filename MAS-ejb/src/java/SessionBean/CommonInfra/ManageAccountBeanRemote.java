@@ -23,7 +23,7 @@ public interface ManageAccountBeanRemote {
     public boolean validateLogin (String username, String password, String staffType);
     public void addAdmin(String username,String password, String stfType);
     public void addAccount(String username, String password,String email, String stfType, String firstName,String lastName, String stfLevel, Double salary);
-    public void addPartnerAcc(String pid, String pPwd,String companyName, String email, String stfType);
+    public void addPartnerAcc(String pid, String pPwd,String companyName, String email, String stfType, String IATA);
     
     public void addCocpitAcc(String username, String password, String email ,String stfType, String firstName,String lastName, String stfLevel, Double salary,String licence );
     public boolean checkAccDuplicate(String username,String stfType);

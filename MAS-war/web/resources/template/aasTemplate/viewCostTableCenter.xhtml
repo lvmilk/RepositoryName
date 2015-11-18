@@ -27,19 +27,19 @@
                     <p:column headerText="Category" sortBy="#{VCMB.cateMap[key]}" filterBy="#{VCMB.cateMap[key]}" style="table-layout: auto">
                         <h:outputText value="#{VCMB.cateMap[key]}" />
                     </p:column>
-                    <p:column headerText="Payable (per unit)" sortBy="#{VCMB.payableMap[key]}" filterBy="#{VCMB.payableMap[key]}" style="table-layout: auto">
+                    <p:column id="track" headerText="Payable (per unit)" sortBy="#{VCMB.payableMap[key]}" filterBy="#{VCMB.payableMap[key]}" style="table-layout: auto">
                         <h:outputText value="$#{VCMB.payableMap[key]}">
-                            <f:convertNumber pattern="0.0"/>
+                            <f:convertNumber pattern="0.00"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Unit" sortBy="#{VCMB.amountMap[key]}" filterBy="#{VCMB.amountMap[key]}" style="table-layout: auto">
                         <h:outputText value="#{VCMB.amountMap[key]}">
-                        <f:convertNumber pattern="0.0"/>
-                         </h:outputText>
+                            <f:convertNumber pattern="0.00"/>
+                        </h:outputText>
                     </p:column>
                     <p:column headerText="Total" sortBy="#{VCMB.totalMap[key]}" filterBy="#{VCMB.totalMap[key]}" style="table-layout: auto">
                         <h:outputText value="$#{VCMB.totalMap[key]}" >
-                            <f:convertNumber pattern="0.0"/>
+                            <f:convertNumber pattern="0.00"/>
                         </h:outputText>
                     </p:column>
                     <p:column headerText="Cost Source" sortBy="#{VCMB.sourceMap[key]}" filterBy="#{VCMB.sourceMap[key]}" style="table-layout: auto">
@@ -47,13 +47,13 @@
                     </p:column>
                     <p:column headerText="Payment Date" sortBy="#{VCMB.dateMap[key]}" filterBy="#{VCMB.dateMap[key]}" style="table-layout: auto">
                         <h:outputText value="#{VCMB.dateMap[key]}" >
-                        <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
-                         </h:outputText>
+                            <f:convertDateTime type="date" pattern="yyyy-MM-dd"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:columnGroup type="footer">
                         <p:row>
-                            <p:column footerText="Total Revenue: " style="text-align:right"/>
+                            <p:column footerText="Total Cost: " style="text-align:right"/>
                             <p:column colspan="7" style="text-align:left" footerText="$#{VCMB.sumString}" />
                         </p:row>
                         <p:row>
@@ -61,8 +61,12 @@
                             <p:column colspan="7" style="text-align:left" footerText="SGD" />
                         </p:row>
                         <p:row>
-                            <p:column footerText="Period:  " style="text-align:right"/>
+                            <p:column footerText="Period (up-to-date):  " style="text-align:right"/>
                             <p:column colspan="7" style="text-align:left" footerText="Year #{VCMB.costYear} Quarter #{VCMB.costQuarter}" />
+                        </p:row>
+                        <p:row>
+                            <p:column footerText="Note:  " style="text-align:right; color: #006699"/>
+                            <p:column colspan="7" style="text-align:left; color: #006699"  footerText="Employee Salary (per unit) does not include bonus, please refer to payroll for details" />
                         </p:row>
 
                     </p:columnGroup>
