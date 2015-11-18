@@ -5,6 +5,7 @@
  */
 package Entity.GDS;
 
+import Entity.AIS.CabinClass;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,8 +49,11 @@ public class GDSFlight implements Serializable {
     private Integer availableSeat;
     private Integer seatQuota;
     
+    private String cabinName;
+    private Double price;
+    
     @ManyToOne
-    private Airline airline;
+    private GDSReservation rsv;
     
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "flight")
     private List<GDSSeat> seats=new ArrayList<>();
@@ -71,6 +75,7 @@ public class GDSFlight implements Serializable {
         this.seatQuota=seatQuota;
         this.bookedSeat=0;
         this.availableSeat=seatQuota-bookedSeat;
+      
     }
 
     public String getFlightNo() {
@@ -140,13 +145,7 @@ public class GDSFlight implements Serializable {
         this.bookedSeat = bookedSeat;
     }
 
-    public Airline getAirline() {
-        return airline;
-    }
 
-    public void setAirline(Airline airline) {
-        this.airline = airline;
-    }
 
     public List<GDSSeat> getSeats() {
         return seats;
@@ -244,5 +243,31 @@ public class GDSFlight implements Serializable {
     public void setArrIATA(String arrIATA) {
         this.arrIATA = arrIATA;
     }
+
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public GDSReservation getRsv() {
+        return rsv;
+    }
+
+    public void setRsv(GDSReservation rsv) {
+        this.rsv = rsv;
+    }
+    
+    
 
 }

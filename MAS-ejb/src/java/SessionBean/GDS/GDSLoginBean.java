@@ -90,18 +90,22 @@ public class GDSLoginBean {
      * Web service operation
      */
     @WebMethod(operationName = "publishFlight")
-    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "flightDate") Date flightDate, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota) {
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "flightDate") Date flightDate, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyIATA") String companyIATA) {
         //TODO write your implementation code here:
-        GDSFlight gdsFlight=new GDSFlight();
-        Airline al=new Airline();
-        
-        gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
-        al.getFlightInstances().add(gdsFlight);
-        
-        em.persist(gdsFlight);
-        
-        return false;
-    }
+        GDSFlight gdsFlight = new GDSFlight();
+        Airline al = new Airline();
+        al = em.find(Airline.class, companyIATA);
+        if (al != null) {
+            gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
+//            al.getFlightInstances().add(gdsFlight);
 
+            em.persist(gdsFlight);
+            
+            return true;
+        } else {
+
+            return false;
+        }
+    }
 
 }

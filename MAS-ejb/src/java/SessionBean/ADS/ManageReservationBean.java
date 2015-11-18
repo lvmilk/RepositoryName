@@ -453,7 +453,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             rsv.setRsvStatus("Cancelled");
         }
 
+        em.merge(rsv);
         em.flush();
+        
 //
 //        em.remove(rsv);
 //        em.flush();

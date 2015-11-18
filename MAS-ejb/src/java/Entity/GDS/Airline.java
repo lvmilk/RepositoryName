@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,15 +28,18 @@ public class Airline implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique=true)
     private String email;
+    @Column(unique=true)
     private String name;
+    @Column(unique=true)
     private String IATA;
 
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSFlight> flightInstances=new ArrayList<>();
-
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSReservation> reservations=new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSFlight> flightInstances=new ArrayList<>();
+//
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSReservation> reservations=new ArrayList<>();
 
     public Airline() {
     }
@@ -81,21 +85,21 @@ public class Airline implements Serializable {
         this.IATA = IATA;
     }
 
-    public List<GDSFlight> getFlightInstances() {
-        return flightInstances;
-    }
-
-    public void setFlightInstances(List<GDSFlight> flightInstances) {
-        this.flightInstances = flightInstances;
-    }
-
-    public List<GDSReservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<GDSReservation> reservations) {
-        this.reservations = reservations;
-    }
+//    public List<GDSFlight> getFlightInstances() {
+//        return flightInstances;
+//    }
+//
+//    public void setFlightInstances(List<GDSFlight> flightInstances) {
+//        this.flightInstances = flightInstances;
+//    }
+//
+//    public List<GDSReservation> getReservations() {
+//        return reservations;
+//    }
+//
+//    public void setReservations(List<GDSReservation> reservations) {
+//        this.reservations = reservations;
+//    }
 
     @Override
     public int hashCode() {
