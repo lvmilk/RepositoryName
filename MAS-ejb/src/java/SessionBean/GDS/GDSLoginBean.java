@@ -90,22 +90,17 @@ public class GDSLoginBean {
      * Web service operation
      */
     @WebMethod(operationName = "publishFlight")
-    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "flightDate") Date flightDate, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyIATA") String companyIATA) {
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyName") String companyName, @WebParam(name = "cabinName") String cabinName, @WebParam(name = "price") Double price,@WebParam(name = "rowStart") Integer rowStart,@WebParam(name = "rowEnd") Integer rowEnd,@WebParam(name = "columnStart") char columnStart,@WebParam(name = "columnEnd")char columnEnd) {
         //TODO write your implementation code here:
         GDSFlight gdsFlight = new GDSFlight();
-        Airline al = new Airline();
-        al = em.find(Airline.class, companyIATA);
-        if (al != null) {
-            gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
+
+        gdsFlight.createGDSFlight(flightNo, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota,companyName,cabinName,price);
 //            al.getFlightInstances().add(gdsFlight);
 
-            em.persist(gdsFlight);
-            
-            return true;
-        } else {
+        em.persist(gdsFlight);
 
-            return false;
-        }
+        return true;
+
     }
 
 }

@@ -30,8 +30,6 @@ public class GDSFlight implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String flightNo;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date flightDate;
 
     private String flightStatus;
 
@@ -49,6 +47,7 @@ public class GDSFlight implements Serializable {
     private Integer availableSeat;
     private Integer seatQuota;
     
+    private String companyName;
     private String cabinName;
     private Double price;
     
@@ -62,10 +61,9 @@ public class GDSFlight implements Serializable {
     }
 
 
-    public void createGDSFlight(String flightNo,Date flightDate,Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota)
+    public void createGDSFlight(String flightNo,Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota, String companyName, String cabinName, Double price)
     {
         this.flightNo=flightNo;
-        this.flightDate=flightDate;
         this.depTime=depTime;
         this.arrTime=arrTime;
         this.depAirport=depAirport;
@@ -75,6 +73,9 @@ public class GDSFlight implements Serializable {
         this.seatQuota=seatQuota;
         this.bookedSeat=0;
         this.availableSeat=seatQuota-bookedSeat;
+        this.companyName=companyName;
+        this.cabinName=cabinName;
+        this.price=price;
       
     }
 
@@ -85,15 +86,6 @@ public class GDSFlight implements Serializable {
     public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
     }
-
-    public Date getFlightDate() {
-        return flightDate;
-    }
-
-    public void setFlightDate(Date flightDate) {
-        this.flightDate = flightDate;
-    }
-
 
     public String getFlightStatus() {
         return flightStatus;
@@ -266,6 +258,20 @@ public class GDSFlight implements Serializable {
 
     public void setRsv(GDSReservation rsv) {
         this.rsv = rsv;
+    }
+
+    /**
+     * @return the companyName
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * @param companyName the companyName to set
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
     
     

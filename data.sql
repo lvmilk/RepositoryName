@@ -212,7 +212,7 @@ INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777
 
 INSERT IGNORE INTO AIRLINE(ID,IATA,EMAIL,NAME)values(88,"KAL","AL777777@mas.com","Korean Airline")
 
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","HR",3000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","Normal",3000,0)
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",3000,0)
 
 INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G666631","g666631@mas.com","2d6b33c6e8f0b395858795f782a5a488","groundStaff",0,0,"G666631","YIXIAOXING","JIAOSHOU","Normal",4000,0)
@@ -617,10 +617,10 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 
 
 
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS","2015-10-12")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS","2015-11-12")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars","2015-11-12")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars","2015-10-12")
 
 
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(111111,10000)
@@ -769,7 +769,6 @@ INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,sta
 INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(444,"CP777778","2015-10-02","2015-10-14",13,"Not reviewed","None","CockpitCrew","CP777778")
 INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType,userName) values(555,"O777777","2015-11-01","2015-11-13",13,"Not reviewed","None","OfficeStaff","O777777")
 INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType,userName) values(666,"G666631","2015-09-10","2015-09-19",10,"Not reviewed","None","GroundStaff","G666631")
-
  
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(111,"CB888881",3000.0,15.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(222,"CB888851",5000.0,20.0)
@@ -777,3 +776,4 @@ INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777751",10000.0,
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,80.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)
+
