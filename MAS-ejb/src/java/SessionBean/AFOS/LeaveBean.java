@@ -34,8 +34,10 @@ public class LeaveBean implements LeaveBeanLocal {
         if (startDate == null) {
             throw new Exception("Date Invalid");
         } else {
+            System.out.println("Leavebean:Detecte staff! " + userName);
             StaffLeave staffLeave = new StaffLeave();
-            if (userName.subSequence(0, 1).equals("G")) {
+            if (userName.charAt(0) == 'G') {
+                System.out.println("Leavebean:Detecte as ground staff! ");
                 Query query = em.createQuery("SELECT g FROM GroundStaff g where g.grdName=:gname");
                 query.setParameter("gname", userName);
                 if (query.getResultList().isEmpty()) {
@@ -54,9 +56,17 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStatus("Not reviewed");
                     staffLeave.setUserName(userName);
                     em.persist(staffLeave);
+                    em.flush();
+                    List<StaffLeave> newList = gStaff.getLeaves();
+                    newList.add(staffLeave);
+                    gStaff.setLeaves(newList);
+                    em.merge(gStaff);
+                    em.flush();
+
                 }
 
-            } else if (userName.subSequence(0, 2).equals("CP")) {
+            } else if (userName.subSequence(0, 1).equals("CP")) {
+                System.out.println("Leavebean:Detecte as CockpitCrew! ");
                 Query query = em.createQuery("SELECT c FROM CockpitCrew c  where c.cpName =:cpname");
                 query.setParameter("cpname", userName);
                 if (query.getResultList().isEmpty()) {
@@ -74,10 +84,17 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStaffType("CockpitCrew");
                     staffLeave.setStatus("Not reviewed");
                     staffLeave.setUserName(userName);
-
                     em.persist(staffLeave);
+                    em.flush();
+                    List<StaffLeave> newList = cpCrew.getLeaves();
+                    newList.add(staffLeave);
+                    cpCrew.setLeaves(newList);
+                    em.merge(cpCrew);
+                    em.flush();
+
                 }
-            } else if (userName.subSequence(0, 2).equals("CB")) {
+            } else if (userName.subSequence(0, 1).equals("CB")) {
+                System.out.println("Leavebean:Detecte as CabinCrew! ");
                 Query query = em.createQuery("SELECT c FROM CabinCrew c where c.cbName =:cbname");
                 query.setParameter("cbname", userName);
                 if (query.getResultList().isEmpty()) {
@@ -95,17 +112,27 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStaffType("CabinCrew");
                     staffLeave.setStatus("Not reviewed");
                     staffLeave.setUserName(userName);
-
                     em.persist(staffLeave);
+                    em.flush();
+
+                    List<StaffLeave> newList = cbCrew.getLeaves();
+                    newList.add(staffLeave);
+                    cbCrew.setLeaves(newList);
+                    em.merge(cbCrew);
+                    em.flush();
+
                 }
-            } else if (userName.subSequence(0, 1).equals("O")) {
+
+            } else if (userName.charAt(0) == 'O') {
+                System.out.println("Leavebean:Detect as OfficeStaff! ");
                 Query query = em.createQuery("SELECT o FROM OfficeStaff o  where o.offName =:oname");
                 query.setParameter("oname", userName);
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
                 } else {
+
                     OfficeStaff oStaff = (OfficeStaff) query.getSingleResult();
-                    staffLeave.setOfficeStaff(oStaff);
+                    System.out.println("Leavebean:Detect as OfficeStaff is " + oStaff.getFirstName());
                     staffLeave.setStartDate(startDate);
                     Calendar c1 = Calendar.getInstance();
                     c1.setTime(startDate);
@@ -116,8 +143,17 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStaffType("OfficeStaff");
                     staffLeave.setStatus("Not reviewed");
                     staffLeave.setUserName(userName);
-
                     em.persist(staffLeave);
+                    em.flush();
+                    List<StaffLeave> newList = oStaff.getLeaves();
+                    newList.add(staffLeave);
+                    oStaff.setLeaves(newList);
+                    em.merge(oStaff);
+                    em.flush();
+                    staffLeave.setOfficeStaff(oStaff);
+                    em.merge(staffLeave);
+                    em.flush();
+
                 }
 
             } else {
@@ -141,7 +177,13 @@ public class LeaveBean implements LeaveBeanLocal {
     @Override
     public void rejectLeave(StaffLeave staffleave) throws Exception {
         if (em.find(StaffLeave.class, staffleave.getId()) != null) {
-            em.remove(staffleave);
+            staffleave.setCabinCrew(null);
+            staffleave.setCockpitCrew(null);
+            staffleave.setGroundStaff(null);
+            staffleave.setOfficeStaff(null);
+            staffleave.setRemark("Deleted");
+            em.merge(staffleave);
+            // em.remove(staffleave);
         } else {
             throw new Exception("Leave Application Not Found");
         }
@@ -152,7 +194,13 @@ public class LeaveBean implements LeaveBeanLocal {
         if (query.getResultList().isEmpty()) {
             throw new Exception("Leave Not Found");
         } else {
-            return query.getResultList();
+            List<StaffLeave> newList = new ArrayList<>();
+            for (StaffLeave temp : (List<StaffLeave>) query.getResultList()) {
+                if (!temp.getRemark().equals("Deleted")) {
+                    newList.add(temp);
+                }
+            }
+            return newList;
         }
     }
 
@@ -163,7 +211,7 @@ public class LeaveBean implements LeaveBeanLocal {
         if (query.getResultList().isEmpty()) {
             throw new Exception("Leave Not Found");
         } else {
-            return query.getResultList();
+            return (List<StaffLeave>) query.getResultList();
         }
     }
 
