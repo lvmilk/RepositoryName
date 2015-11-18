@@ -59,7 +59,7 @@ public class AuthFilter implements Filter {
                             res.sendRedirect("/MAS-war/Permission.xhtml");
                         }
                     } else if (stfType.equals("groundStaff")) {
-                        if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages") && !path.startsWith("/DCSpages")) {
+                        if (!path.equals("/staffWorkspace.xhtml") && !path.startsWith("/CMIpages") && !path.startsWith("/DCSpages") ) {
                             res.sendRedirect("/MAS-war/Permission.xhtml");
                         }
                     } else if (stfType.equals("cabin")) {
