@@ -309,21 +309,26 @@ public class LeaveBean implements LeaveBeanLocal {
         }
     }
 
+    @Override
     public List<StaffLeave> getAllLeaves() throws Exception {
         Query query = em.createQuery("SELECT l FROM StaffLeave l");
         if (query.getResultList().isEmpty()) {
             throw new Exception("Leave Not Found");
         } else {
+            System.out.println("Number of leaves: " + query.getResultList().size());
             List<StaffLeave> newList = new ArrayList<>();
             for (StaffLeave temp : (List<StaffLeave>) query.getResultList()) {
                 if (!temp.getRemark().equals("Deleted")) {
                     newList.add(temp);
                 }
             }
+            System.out.println("Number of returned leaves: " + newList.size());
+
             return newList;
         }
     }
 
+    @Override
     public List<StaffLeave> getAllNotReviewedLeaves() throws Exception {
         Query query = em.createQuery("SELECT l FROM StaffLeave l where l.status=:lstatus");
         query.setParameter("lstatus", "Not reviewed");
@@ -339,7 +344,12 @@ public class LeaveBean implements LeaveBeanLocal {
     public List<StaffLeave> getOneStaffLeaves(String userName) throws Exception {
         List<StaffLeave> allLeaves = this.getAllLeaves();
         List<StaffLeave> oneStaffLeaves = new ArrayList<>();
+        System.out.println("StaffName: " + userName);
+        System.out.println("allLeaves size: " + allLeaves.size());
+
         for (StaffLeave temp : allLeaves) {
+            System.out.println("allLeaves size: " + temp.getUserName());
+
             if (temp.getUserName().equals(userName)) {
                 oneStaffLeaves.add(temp);
             }
