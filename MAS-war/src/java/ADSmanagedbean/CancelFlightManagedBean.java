@@ -107,11 +107,13 @@ public class CancelFlightManagedBean implements Serializable {
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
 
         }

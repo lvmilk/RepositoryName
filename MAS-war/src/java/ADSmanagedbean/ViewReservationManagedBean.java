@@ -75,6 +75,8 @@ public class ViewReservationManagedBean implements Serializable {
         psgList = mr.getPassengerList(rsv);
 
         departed = mr.getFlightPackage(flights, origin, dest, index);
+        
+        System.out.println("In onSelectRsv(): departed is "+departed);
 
         for (int i = 0; i < bookList.size(); i++) {
             for (int j = 0; j < departed.size(); j++) {
