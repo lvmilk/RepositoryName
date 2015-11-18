@@ -139,7 +139,7 @@ public class PassengerBean implements PassengerBeanLocal {
                 name = rsv.getCompanyName();
             } else {
                 String ln = rsv.getBkLastName();
-                name = ln.concat(ln);
+                name = ln.concat(rsv.getBkFirstName());
             }
             revenue.setPayer(name);
             revenue.setPaymentDate(new Date());
@@ -182,7 +182,7 @@ public class PassengerBean implements PassengerBeanLocal {
                 name = rsv.getCompanyName();
             } else {
                 String ln = rsv.getBkLastName();
-                name = ln.concat(ln);
+                name = ln.concat(rsv.getBkFirstName());
             }
             revenue.setPayer(name);
             revenue.setPaymentDate(new Date());
