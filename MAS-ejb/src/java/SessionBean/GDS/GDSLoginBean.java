@@ -97,7 +97,7 @@ public class GDSLoginBean {
         al = em.find(Airline.class, companyIATA);
         if (al != null) {
             gdsFlight.createGDSFlight(flightNo, flightDate, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota);
-            al.getFlightInstances().add(gdsFlight);
+//            al.getFlightInstances().add(gdsFlight);
 
             em.persist(gdsFlight);
             

@@ -41,8 +41,9 @@ public class GDSReservation implements Serializable {
     private Double totalPayment;
     private String status;
 
-    @ManyToOne
-    private Airline airline;
+
+    @OneToMany(mappedBy="rsv")
+    private List<GDSFlight> gdsFlightList=new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "rsv")
     private List<GDSTicket> tickets = new ArrayList<>();
@@ -50,7 +51,7 @@ public class GDSReservation implements Serializable {
     @OneToOne(mappedBy = "reservation")
     private GDSPayment payment=new GDSPayment();
 
-    @OneToOne(mappedBy = "GDSreservation")
+    @ManyToOne
     private MasterPNR pnr=new MasterPNR();
 
     public GDSReservation() {
@@ -112,13 +113,7 @@ public class GDSReservation implements Serializable {
         this.status = status;
     }
 
-    public Airline getAirline() {
-        return airline;
-    }
 
-    public void setAirline(Airline airline) {
-        this.airline = airline;
-    }
 
     public List<GDSTicket> getTickets() {
         return tickets;
@@ -144,6 +139,16 @@ public class GDSReservation implements Serializable {
         this.pnr = pnr;
     }
 
+    public List<GDSFlight> getGdsFlightList() {
+        return gdsFlightList;
+    }
+
+    public void setGdsFlightList(List<GDSFlight> gdsFlightList) {
+        this.gdsFlightList = gdsFlightList;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

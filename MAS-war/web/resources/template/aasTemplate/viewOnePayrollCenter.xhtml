@@ -10,15 +10,17 @@
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <p:growl id="msgs" showDetail="true" />
             <p:panel id="panel" header="View Payroll Report" style="width: 100%">
+               
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
                     <p:outputLabel for="name" value="Staff ID : " />
                     <p:inputText id="name" value="#{PPMB.name}" required="true" requiredMessage="Please enter a valid staff ID" label="Staff ID" size="50"/>
                     <p:commandButton value="View Payroll" update="msgs" action="#{PPMB.viewOnePayroll()}" icon="ui-icon-check" />
-                    </h:panelGrid>
+                     <p:growl id="msgs" showDetail="true" autoUpdate="false"/>
+                </h:panelGrid>
+                
             </p:panel>
-            
+
         </h:form>
     </h:body>
 </html>

@@ -306,6 +306,7 @@ public class UpdateReservationManagedBean implements Serializable {
             returned = mr.getFlightPackage(flights, dest, origin, departed.size());
         }
         System.out.println("booker found is " + selectedRsv.getBooker());
+        System.out.println("selectedRsv.getBkcInstance() is "+selectedRsv.getBkcInstance());
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", selectedRsv.getBkcInstance().get(0).getFlightCabin().getCabinClass().getCabinName());

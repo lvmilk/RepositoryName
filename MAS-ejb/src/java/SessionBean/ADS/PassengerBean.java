@@ -5,6 +5,8 @@
  */
 package SessionBean.ADS;
 
+import Entity.AAS.Expense;
+import Entity.AAS.Revenue;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
 import Entity.ADS.*;
@@ -30,6 +32,8 @@ public class PassengerBean implements PassengerBeanLocal {
 
     private Passenger passenger = new Passenger();
     private Booker booker = new Booker();
+    private Expense expense;
+    private Revenue revenue;
 
     private Ticket ticket = new Ticket();
     private Passenger psg = new Passenger();
@@ -75,7 +79,7 @@ public class PassengerBean implements PassengerBeanLocal {
         }
 
         Reservation rsv = new Reservation();
-        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip,bkSystem,companyName);
+        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip, bkSystem, companyName);
         rsv = makeRsvBooker(rsv, booker);
 
         rsv = makeRsvBookInstance(rsv, BookClassInstanceList, psgCount);
@@ -113,8 +117,8 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action) {
-System.out.println("------------------In makersvpayment(): action  is "+action);
-        
+        System.out.println("------------------In makersvpayment(): action  is " + action);
+
         if (action.equals("rebook")) {
             Payment payment = new Payment();
             payment.createPayment(totalPrice);
@@ -123,6 +127,37 @@ System.out.println("------------------In makersvpayment(): action  is "+action);
             rsv.setPayment(payment);
             em.persist(payment);
             em.merge(rsv);
+
+            ///////////////////////////
+            String channel = rsv.getBkSystem();
+            String name;
+            revenue = new Revenue();
+            revenue.setChannel(channel);
+            revenue.setReceivable(totalPrice);
+            revenue.setType("Ticket Sale");
+            if (channel.equals("DDS")) {
+                name = rsv.getCompanyName();
+            } else {
+                String ln = rsv.getBkLastName();
+                name = ln.concat(ln);
+            }
+            revenue.setPayer(name);
+            revenue.setPaymentDate(new Date());
+            revenue.setRefund(0.0);
+            em.persist(revenue);
+            em.flush();
+            //////////////////////////
+            if (channel.equals("DDS")) {
+                expense = new Expense();
+                expense.setType("Variable Operation Cost");
+                expense.setCategory("DDS Commission");
+                expense.setPaymentDate(new Date());
+                expense.setPayable(0.1 * totalPrice);
+                expense.setCostSource(rsv.getCompanyName());
+                em.persist(expense);
+                em.flush();
+            }
+            ////////////////////////////////
             return payment;
         } else {
             for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
@@ -136,6 +171,36 @@ System.out.println("------------------In makersvpayment(): action  is "+action);
             rsv.setPayment(payment);
             em.persist(payment);
             em.merge(rsv);
+            ///////////////////////////
+            String channel = rsv.getBkSystem();
+            String name;
+            revenue = new Revenue();
+            revenue.setChannel(channel);
+            revenue.setReceivable(totalPrice);
+            revenue.setType("Ticket Sale");
+            if (channel.equals("DDS")) {
+                name = rsv.getCompanyName();
+            } else {
+                String ln = rsv.getBkLastName();
+                name = ln.concat(ln);
+            }
+            revenue.setPayer(name);
+            revenue.setPaymentDate(new Date());
+            revenue.setRefund(0.0);
+            em.persist(revenue);
+            em.flush();
+            /////////////////////////////////
+            if (channel.equals("DDS")) {
+                expense = new Expense();
+                expense.setType("Variable Operation Cost");
+                expense.setCategory("DDS Commission");
+                expense.setPaymentDate(new Date());
+                expense.setPayable(0.1 * totalPrice);
+                expense.setCostSource(rsv.getCompanyName());
+                em.persist(expense);
+                em.flush();
+            }
+            ////////////////////////////////
             return payment;
         }
     }

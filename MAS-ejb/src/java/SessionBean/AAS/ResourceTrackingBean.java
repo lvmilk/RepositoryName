@@ -12,6 +12,7 @@ import Entity.CommonInfa.CockpitCrew;
 import Entity.CommonInfa.CabinCrew;
 import Entity.CommonInfa.GroundStaff;
 import Entity.CommonInfa.OfficeStaff;
+import Entity.CommonInfa.UserEntity;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,6 +43,20 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
     CrewSchedulingBeanLocal csb;
 
     public ResourceTrackingBean() {
+    }
+
+    @Override
+    public String getUserName(String userName) {
+        String name;
+        if (userName.equals("admin")) {
+            name = "admin";
+        } else {
+            Query query = em.createQuery("SELECT u FROM UserEntity u where u.username=:userName");
+            query.setParameter("userName", userName);
+            List<UserEntity> resultList = query.getResultList();
+            name = resultList.get(0).getUsername();
+        }
+        return name;
     }
 
     @Override
@@ -93,7 +108,7 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
         }
         return resultList.get(0);
     }
-    
+
     @Override
     public Integer getLeaveAmount(String name, long year, int month) {
         Integer amount = 0;
