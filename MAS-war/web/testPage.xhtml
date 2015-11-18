@@ -13,7 +13,7 @@
 
     <h:body>
         <h:form>
-            <panelgrid>
+<!--            <panelgrid>
             <p:selectOneMenu id="test" onchange="submit()" value="#{testPageManagedBean.flag}" style="width:250px">
                 <f:selectItem itemLabel="-Select-" itemValue="" />
                 <f:selectItems value="#{testPageManagedBean.testMap}" />
@@ -27,7 +27,8 @@
       
             <h:outputText value="pdf417" />
             <p:barcode value="#{testPageManagedBean.testStr} #{testPageManagedBean.testStr2}" type="pdf417" />
-        </panelgrid>
+        </panelgrid>-->
+<p:commandButton value="send" action="#{testPageManagedBean.sendEmail}"></p:commandButton>
         </h:form>
     </h:body>
 

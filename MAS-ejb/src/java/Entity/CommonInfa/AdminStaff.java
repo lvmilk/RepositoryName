@@ -5,11 +5,16 @@
  */
 package Entity.CommonInfa;
 
+import Entity.AFOS.StaffLeave;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -25,7 +30,7 @@ public class AdminStaff implements Serializable {
     private String admName;
     private String admPassword;
     private String stfType;
-    
+  
     public void create(String strAdmName, String strAdmPassword, String strStfType)
     {
         this.setAdmName(strAdmName);
@@ -94,6 +99,15 @@ public class AdminStaff implements Serializable {
     public void setAdmPasswprd(String admPassword) {
         this.admPassword = admPassword;
     }
+
+    public String getStfType() {
+        return stfType;
+    }
+
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
+    }
+
 
     /**
      * @return the type

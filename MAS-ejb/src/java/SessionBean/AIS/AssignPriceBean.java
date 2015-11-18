@@ -39,15 +39,15 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
         List<Route> newList = new ArrayList<Route>();
         routeList = query.getResultList();
         if (routeList.size() != 0) {
-            for(Route r:routeList){
-                if(!r.getOrigin().equals(r.getDest())){
+            for (Route r : routeList) {
+                if (!r.getOrigin().equals(r.getDest())) {
                     newList.add(r);
                 }
-                    
+
             }
-           routeList = newList;
+            routeList = newList;
         }
-        
+
         return routeList;
     }
 
@@ -94,62 +94,91 @@ public class AssignPriceBean implements AssignPriceBeanLocal {
     }
 
     @Override
-    public void generateBookingClass(FlightInstance fi) {
+    public void generateBookingClass(FlightInstance fi) throws Exception {
+
         for (CabinClass temp : fi.getFlightFrequency().getRoute().getAcType().getCabinList()) {
-            FlightCabin flightCabin = new FlightCabin();
-            flightCabin.setCabinClass(temp);
-            flightCabin.setFlightInstance(fi);
-            em.persist(flightCabin);
-            em.flush();
-           // update Flightintance
-            List<FlightCabin> flightCabins = fi.getFlightCabins();
-            flightCabins.add(flightCabin);
-            fi.setFlightCabins(flightCabins);
-            em.merge(fi);
-            em.flush();
-            //  generate seat entity instsance
-            int seatNo= temp.getSeatCount();
-            for (int i=0;i<seatNo;i++){
-                Seat seat =new Seat();
-                seat.setFlightCabin(flightCabin);
-                seat.setStatus("Unoccupied");
-                em.persist(seat);
-            }
-           
-            List<BookingClass> bookingClassList = new ArrayList<BookingClass>();
-            List<BookingClassInstance> biList=new ArrayList<BookingClassInstance>();
-            Query queryBclass = em.createQuery("SELECT b FROM BookingClass b WHERE b.cabinName=:fcabinName");
-            queryBclass.setParameter("fcabinName", temp.getCabinName());
-            bookingClassList = queryBclass.getResultList();
-            for (BookingClass temp2 : bookingClassList) {
-                BookingClassInstance bki = new BookingClassInstance();
-                bki.setBookingClass(temp2);
-                bki.setFlightCabin(flightCabin);
-                bki.setSeatNo(0);
-                System.out.println("APB: Cabin Name :" + temp.getCabinName());
-                if (temp.getCabinName().equals("Suite")) {
-                    bki.setPrice(fi.getFlightFrequency().getRoute().getBasicScFare() * temp2.getPrice_percentage());
-                } else if (temp.getCabinName().equals("First Class")) {
-                    bki.setPrice(fi.getFlightFrequency().getRoute().getBasicFcFare() * temp2.getPrice_percentage());
-                } else if (temp.getCabinName().equals("Business Class")) {
-                    bki.setPrice(fi.getFlightFrequency().getRoute().getBasicBcFare() * temp2.getPrice_percentage());
-                } else if (temp.getCabinName().equals("Premium Economy Class")) {
-                    bki.setPrice(fi.getFlightFrequency().getRoute().getBasicPecFare() * temp2.getPrice_percentage());
-                } else if (temp.getCabinName().equals("Economy Class")) {
-                    bki.setPrice(fi.getFlightFrequency().getRoute().getBasicEcFare() * temp2.getPrice_percentage());
+            if (fi.getFlightFrequency().getRoute().getBasicScFare() != null || fi.getFlightFrequency().getRoute().getBasicFcFare() != null || fi.getFlightFrequency().getRoute().getBasicBcFare() != null || fi.getFlightFrequency().getRoute().getBasicPecFare() != null || fi.getFlightFrequency().getRoute().getBasicEcFare() != null) {
+
+                if (temp.getRowCount() != null && temp.getRowSeatCount() != null && temp.getSeatChart() != null) {
+
+                    System.out.println("Caibin class is " + temp.getCabinName());
+                    FlightCabin flightCabin = new FlightCabin();
+                    flightCabin.setCabinClass(temp);
+                    flightCabin.setFlightInstance(fi);
+                    em.persist(flightCabin);
+                    em.flush();
+                    // update Flightintance
+                    List<FlightCabin> flightCabins = fi.getFlightCabins();
+                    flightCabins.add(flightCabin);
+                    fi.setFlightCabins(flightCabins);
+                    em.merge(fi);
+                    em.flush();
+                    //  generate seat entity instsance
+                    int seatNo = temp.getSeatCount();
+                    List<String> seatNoList = new ArrayList<String>();
+                    for (int i = 0; i < temp.getSeatChart().length; i++) {
+                        for (int j = 0; j < temp.getSeatChart()[i].length; j++) {
+                          if (!temp.getSeatChart()[i][j].isEmpty() && temp.getSeatChart()[i][j]!= null);
+                            seatNoList.add(temp.getSeatChart()[i][j]);
+                        }
+                    }
+                    System.out.println("APB: Print seat number list! " + seatNoList);
+                    System.out.println("APB: seat number! " + seatNo);
+
+                    for (int i = 0; i < seatNoList.size(); i++) {
+                       if(!seatNoList.get(i).isEmpty()&&seatNoList.get(i)!=null){
+                            Seat seat = new Seat();
+                            seat.setFlightCabin(flightCabin);
+                            seat.setStatus("Unoccupied");
+                            seat.setSeatNumberToPassenger(seatNoList.get(i));
+                            em.persist(seat);
+                       }
+                       
+                    }
+
+                    List<BookingClass> bookingClassList = new ArrayList<BookingClass>();
+                    List<BookingClassInstance> biList = new ArrayList<BookingClassInstance>();
+                    Query queryBclass = em.createQuery("SELECT b FROM BookingClass b WHERE b.cabinName=:fcabinName");
+                    queryBclass.setParameter("fcabinName", temp.getCabinName());
+                    bookingClassList = queryBclass.getResultList();
+                    for (BookingClass temp2 : bookingClassList) {
+                        BookingClassInstance bki = new BookingClassInstance();
+                        bki.setBookingClass(temp2);
+                        bki.setFlightCabin(flightCabin);
+                        bki.setSeatNo(0);
+                        System.out.println("APB: Cabin Name :" + temp.getCabinName());
+                        if (temp.getCabinName().equals("Suite")) {
+                            bki.setPrice(fi.getFlightFrequency().getRoute().getBasicScFare() * temp2.getPrice_percentage());
+                        } else if (temp.getCabinName().equals("First Class")) {
+                            bki.setPrice(fi.getFlightFrequency().getRoute().getBasicFcFare() * temp2.getPrice_percentage());
+                        } else if (temp.getCabinName().equals("Business Class")) {
+                            bki.setPrice(fi.getFlightFrequency().getRoute().getBasicBcFare() * temp2.getPrice_percentage());
+                        } else if (temp.getCabinName().equals("Premium Economy Class")) {
+                            bki.setPrice(fi.getFlightFrequency().getRoute().getBasicPecFare() * temp2.getPrice_percentage());
+                        } else if (temp.getCabinName().equals("Economy Class")) {
+                            bki.setPrice(fi.getFlightFrequency().getRoute().getBasicEcFare() * temp2.getPrice_percentage());
+                        } else {
+                            System.out.print("It not gonna happen!!!!!!!");
+                        }
+                        biList.add(bki);
+                        em.persist(bki);
+                        em.flush();
+
+                    }
+                    flightCabin.setBookingClassInstances(biList);
+                    em.merge(flightCabin);
+
                 } else {
-                    System.out.print("It not gonna happen!!!!!!!");
+                    throw new Exception("Cabin Configuration is not complete for the aircraft serving this flight task");
                 }
-                biList.add(bki);
-                em.persist(bki);
-                em.flush();
+            } else {
+                throw new Exception("Basic fare has not been determined yet.");
 
             }
-            flightCabin.setBookingClassInstances(biList);
-            em.merge(flightCabin);
-        }
-        em.flush();
 
+            em.flush();
+
+        }
     }
 
     @Override

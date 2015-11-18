@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View All Leave Application</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="View All Leave Application"  style="width:100%">
+                <p:messages id="msgs" />
+
+            
+
+                </h:panelGrid>
+                <p:dataTable id="leaveList" var="lv" value="#{valmb.allLeaves}" emptyMessage="No leaves!" style="margin-bottom:20px">
+                   <p:column headerText="Serial Number">
+                        <h:outputText value="#{lv.id}" style="center"/>
+                    </p:column>
+                    <p:column headerText="Username">
+                        <h:outputText value="#{lv.userName}" style="center" />
+                    </p:column>
+                    <p:column headerText="Staff Type">
+                        <h:outputText value="#{lv.staffType}" style="center" />
+                    </p:column>
+                    <p:column headerText="Application Date">
+                        <h:outputText value="#{lv.applyDate}" style="center">
+                            <f:convertDateTime pattern="dd-MM-yyyy HH:mm" />
+                        </h:outputText>
+                    </p:column>
+                   
+                    <p:column headerText="Leave Start Date">
+                        <h:outputText value="#{lv.startDate}" style="center">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+                    </p:column>
+                     <p:column headerText="Leave End Date">
+                        <h:outputText value="#{lv.endDate}" style="center">
+                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Application Status">
+                        <h:outputText value="#{lv.status}" style="center"/>
+                    </p:column>
+
+                    <p:column headerText="Approve">
+                        <p:commandButton value="Check in"   update=":#{p:component('panel')}" actionListener="#{valmb.onApproveLeave}">
+                            <f:attribute name="lv" value="#{lv}"/>
+                        </p:commandButton>   
+                    </p:column>
+                    <p:column headerText="Reject">
+                        <p:commandButton value="Standby"  update=":#{p:component('panel')}" actionListener="#{valmb.onRejectLeave}">
+                            <f:attribute name="lv" value="#{lv}"/>
+                        </p:commandButton>   
+                    </p:column>
+                </p:dataTable>
+               <!--<p:commandButton value="Back"  action="#{cmb.goBack}" icon="ui-icon-carat-1-w"/>-->
+
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>
