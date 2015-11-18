@@ -59,8 +59,11 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
     public void init() {
         startDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startViewDate");
         endDate = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endViewDate");
-        startDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
-        endDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        startDateString = df.format(startDate);
+        endDateString = df.format(endDate);
+//        startDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("startDateString");
+//        endDateString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("endDateString");
         fiList = fsb.getSortedFiWithinPeriod(startDate, endDate);
         initFCMap(fiList);
     }
@@ -87,9 +90,6 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     pilotString = pilotString + cc.getCpName() + " ";
                 }
             }
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainString is " + captainString);
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotString is " + pilotString);
-
             for (CockpitCrew cc : cc3) {
                 if (cc.getStfLevel().equals("Captain")) {
                     captainSBString = captainSBString + cc.getCpName() + " ";
@@ -97,9 +97,6 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     pilotSBString = pilotSBString + cc.getCpName() + " ";
                 }
             }
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " captainSBString is " + captainSBString);
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " pilotSBString is " + pilotSBString);
-
             for (CabinCrew cc : cc2) {
                 if (cc.getStfLevel().equals("Cabin Crew")) {
                     cabinString = cabinString + cc.getCbName() + " ";
@@ -107,9 +104,6 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     cabinLeaderString = cabinLeaderString + cc.getCbName() + " ";
                 }
             }
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinString is " + cabinString);
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderString is " + cabinLeaderString);
-
             for (CabinCrew cc : cc4) {
                 if (cc.getStfLevel().equals("Cabin Crew")) {
                     cabinSBString = cabinSBString + cc.getCbName() + " ";
@@ -117,9 +111,6 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
                     cabinLeaderSBString = cabinLeaderSBString + cc.getCbName() + " ";
                 }
             }
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinSBString is " + cabinSBString);
-//            System.out.println(" ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** for fi [ " + fi.toString() + " ]" + " cabinLeaderSBString is " + cabinLeaderSBString);
-
             captainMap.put(fi, captainString);
             pilotMap.put(fi, pilotString);
             cabinMap.put(fi, cabinString);
@@ -132,17 +123,17 @@ public class ViewFiCrewArrangementManagedBean implements Serializable {
     }
 
     public void viewFlightCrew(FlightInstance fi) throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fi", fi);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFlightCrew.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("fiId", fi.getId());
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./viewFiCrewDetail.xhtml");
     }
 
-    public void viewCabinCrewSchedule() {
-
-    }
-
-    public void viewCockpitCrewSchedule() {
-
-    }
+//    public void viewCabinCrewSchedule() {
+//
+//    }
+//
+//    public void viewCockpitCrewSchedule() {
+//
+//    }
 
     public Date getStartDate() {
         return startDate;

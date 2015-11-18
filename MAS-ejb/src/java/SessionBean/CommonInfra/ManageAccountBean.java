@@ -426,27 +426,27 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
         em.merge(cbCrew);
         em.flush();
         //////////////////////////////
-            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
-            q1.setParameter("username", username);
-            if (q1.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                expense = (Expense) q1.getResultList().get(0);
-                expense.setPayable(salary);
-                em.merge(expense);
-                em.flush();
-            }
-            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
-            q2.setParameter("username", username);
-            if (q2.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                payroll = (Payroll) q2.getResultList().get(0);
-                payroll.setSalary(salary);
-                payroll.setBonus(hourPay);
-                em.merge(payroll);
-                em.flush();
-            }
+        Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+        q1.setParameter("username", username);
+        if (q1.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            expense = (Expense) q1.getResultList().get(0);
+            expense.setPayable(salary);
+            em.merge(expense);
+            em.flush();
+        }
+        Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+        q2.setParameter("username", username);
+        if (q2.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            payroll = (Payroll) q2.getResultList().get(0);
+            payroll.setSalary(salary);
+            payroll.setBonus(hourPay);
+            em.merge(payroll);
+            em.flush();
+        }
     }
 
     @Override
@@ -475,29 +475,29 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
         em.merge(cpCrew);
         em.flush();
-        
-          //////////////////////////////
-            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
-            q1.setParameter("username", username);
-            if (q1.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                expense = (Expense) q1.getResultList().get(0);
-                expense.setPayable(salary);
-                em.merge(expense);
-                em.flush();
-            }
-            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
-            q2.setParameter("username", username);
-            if (q2.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                payroll = (Payroll) q2.getResultList().get(0);
-                payroll.setSalary(salary);
-                payroll.setBonus(hourPay);
-                em.merge(payroll);
-                em.flush();
-            }
+
+        //////////////////////////////
+        Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+        q1.setParameter("username", username);
+        if (q1.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            expense = (Expense) q1.getResultList().get(0);
+            expense.setPayable(salary);
+            em.merge(expense);
+            em.flush();
+        }
+        Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+        q2.setParameter("username", username);
+        if (q2.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            payroll = (Payroll) q2.getResultList().get(0);
+            payroll.setSalary(salary);
+            payroll.setBonus(hourPay);
+            em.merge(payroll);
+            em.flush();
+        }
     }
 
     @Override
@@ -650,28 +650,28 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             em.flush();
 
         }
-          //////////////////////////////
-            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
-            q1.setParameter("username", username);
-            if (q1.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                expense = (Expense) q1.getResultList().get(0);
-                expense.setPayable(salary);
-                em.merge(expense);
-                em.flush();
-            }
-            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
-            q2.setParameter("username", username);
-            if (q2.getResultList().isEmpty()) {
-                System.out.println("There is no existing expense related to this staff " + username);
-            } else {
-                payroll = (Payroll) q2.getResultList().get(0);
-                payroll.setSalary(salary);
-                payroll.setBonus(hourPay);
-                em.merge(payroll);
-                em.flush();
-            }
+        //////////////////////////////
+        Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+        q1.setParameter("username", username);
+        if (q1.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            expense = (Expense) q1.getResultList().get(0);
+            expense.setPayable(salary);
+            em.merge(expense);
+            em.flush();
+        }
+        Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+        q2.setParameter("username", username);
+        if (q2.getResultList().isEmpty()) {
+            System.out.println("There is no existing expense related to this staff " + username);
+        } else {
+            payroll = (Payroll) q2.getResultList().get(0);
+            payroll.setSalary(salary);
+            payroll.setBonus(hourPay);
+            em.merge(payroll);
+            em.flush();
+        }
     }
 
     @Override
@@ -1008,4 +1008,26 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
     }
 
+    //////////////////////////////
+    public String getStaffName(String username, String type) {
+        String name = "";
+        if (type.equals("administrator")) {
+            Query q1 = em.createQuery("SELECT u FROM AdminStaff u WHERE u.admName=:username and u.stfType=:type");
+            q1.setParameter("username", username);
+            q1.setParameter("type", type);
+            List<AdminStaff> resultList = new ArrayList<>();
+            resultList = (List) q1.getResultList();
+            if (!resultList.isEmpty()) {
+                name = resultList.get(0).getAdmName();
+            }
+        } else if (type.equals("officeStaff")) {
+
+        } else if (type.equals("groundStaff")) {
+
+        } else if (type.equals("cabin")) {
+
+        } else if (type.equals("cockpit")) {
+        }
+        return name;
+    }
 }

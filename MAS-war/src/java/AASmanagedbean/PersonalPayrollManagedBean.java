@@ -61,29 +61,27 @@ public class PersonalPayrollManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("name") != null) {
-            name = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("name");
-        } else {
-            name = "";
-        }
-        username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
-        user = rtb.getUserName(username);
-        salary = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("salary");
-        bonus = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bonus");
-        leave = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("leave");
-        total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
-        totalString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString");
-    }
+//        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("name") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username") != null
+//                && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("salary") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bonus") != null
+//                && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("leave") != null && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total") != null
+//                && FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString") != null) {
+//            name = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("name");
 
-    public void viewOnePayroll() throws IOException, Exception {
-        if (name == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please enter staff ID ! "));
-        } else {
-            if (!user.equals(name) && !user.equals("admin")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Staff Id", "You are only allowed to view your own payroll !"));
-            } else {
+//            salary = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("salary");
+//            bonus = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bonus");
+//            leave = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("leave");
+//            total = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("total");
+//            totalString = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("totalString");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username") != null) {
+            username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
+//            user = rtb.getUserName(username);
+            //////////////////////////
+//            if (!user.equals(name) && !user.equals("admin")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Staff Id", "You are only allowed to view your own payroll !"));
+//            } else {
                 try {
-                    payroll = rtb.getOnePayroll(name);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!username: "+username);
+                    payroll = rtb.getOnePayroll(username);
                     salary = payroll.getSalary();
                     bonus = payroll.getBonus();
                     Double totalBonus = 0.0;
@@ -93,31 +91,72 @@ public class PersonalPayrollManagedBean implements Serializable {
                     Calendar cal = new GregorianCalendar((int) year, month, 1);
                     int dayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-                    leave = rtb.getLeaveAmount(name, year, month + 1);
-                    totalBonus = rtb.getTotalBonus(name, year, month + 1);
+                    leave = rtb.getLeaveAmount(username, year, month + 1);
+                    totalBonus = rtb.getTotalBonus(username, year, month + 1);
                     total = (1 - ((double) leave / (double) dayOfMonth)) * salary + totalBonus;
 
                     NumberFormat formatter = new DecimalFormat("#0.00");
                     totalString = formatter.format(total);
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("name", name);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("username", username);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("salary", salary);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bonus", bonus);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leave", leave);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
-
-                    Map<String, Object> options = new HashMap<String, Object>();
-                    options.put("resizable", true);
-                    options.put("draggable", false);
-                    options.put("modal", true);
-                    RequestContext.getCurrentInstance().openDialog("dialogPayroll", options, null);
-
                 } catch (Exception ex) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
                 }
-            }
+            
+//
+        } else {
+            System.out.println("Invalid Session!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
+//
+//    public void viewOnePayroll() throws IOException, Exception {
+//        if (name == null) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid Input", "Please enter staff ID ! "));
+//        } else {
+//            user = rtb.getUserName(username);
+//            if (!user.equals(name) && !user.equals("admin")) {
+//                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Staff Id", "You are only allowed to view your own payroll !"));
+//            } else {
+//                try {
+//                    payroll = rtb.getOnePayroll(name);
+//                    salary = payroll.getSalary();
+//                    bonus = payroll.getBonus();
+//                    Double totalBonus = 0.0;
+//                    Calendar now = Calendar.getInstance();
+//                    int year = now.get(Calendar.YEAR);
+//                    int month = now.get(Calendar.MONTH);
+//                    Calendar cal = new GregorianCalendar((int) year, month, 1);
+//                    int dayOfMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//
+//                    leave = rtb.getLeaveAmount(name, year, month + 1);
+//                    totalBonus = rtb.getTotalBonus(name, year, month + 1);
+//                    total = (1 - ((double) leave / (double) dayOfMonth)) * salary + totalBonus;
+//
+//                    NumberFormat formatter = new DecimalFormat("#0.00");
+//                    totalString = formatter.format(total);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("name", name);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("salary", salary);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bonus", bonus);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("leave", leave);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("total", total);
+//                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("totalString", totalString);
+//
+//                    Map<String, Object> options = new HashMap<String, Object>();
+//                    options.put("resizable", true);
+//                    options.put("draggable", false);
+//                    options.put("modal", true);
+//                    RequestContext.getCurrentInstance().openDialog("dialogPayroll", options, null);
+//
+//                } catch (Exception ex) {
+//                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+//                }
+//            }
+//        }
+//    }
 
     public long getCurrentYear() {
         return currentYear;
