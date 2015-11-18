@@ -130,7 +130,7 @@ public class PricingManagedBean implements Serializable {
 //    }
     public void checkFinal() throws IOException {   // set fare
 
-        totalCost = pb.getCrewCost(crewNo, crewUnitCost, blockHour, annualDepartures) + getMaintenance() + getOwnershipCost() + getFuelCost() + getAdminCost() * blockHour * annualDepartures + getOtherCost() * blockHour * annualDepartures;
+        totalCost = pb.getCrewCost(crewNo, crewUnitCost, blockHour, annualDepartures) + getMaintenance() + getOwnershipCost() + getFuelCost() + getAdminCost() * blockHour * annualDepartures + getOtherCost();
         setExpectedRev(totalCost * (profitMargin + 1));
         System.out.println("MB:calculated total cost: " + totalCost);
         int count = 0;
@@ -235,6 +235,7 @@ public class PricingManagedBean implements Serializable {
         distance = route.getDistance();
         blockHour = route.getBlockhour();
         aircraftType = route.getAcType();
+        otherCost=route.getOtherCost();
         System.out.println("AnnualDeaprture First: " + this.annualDepartures);
         System.out.println("size of FlightFrequency of this route: " + route.getFlightFreqList().size());
         for (FlightFrequency f : route.getFlightFreqList()) {
@@ -267,7 +268,7 @@ public class PricingManagedBean implements Serializable {
         if (aircraftType.getAircraft().isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + "No aircraft under the aircraft type associated with the route", ""));
         } else {
-            ownershipCost = aircraftType.getAircraft().get(0).getPurchaseCost(); ////////////should be changed later
+            ownershipCost = aircraftType.getAircraft().get(0).getPurchaseCost()*0.7/aircraftType.getAircraft().get(0).getYearDiff(); ////////////should be changed later
             if (aircraftType.getSuiteNo() > 0) {
                 cabinInfo.put("Suite", aircraftType.getSuiteNo());
                 loadfactorMap.put("Suite", 0.0);
@@ -296,7 +297,7 @@ public class PricingManagedBean implements Serializable {
             }
 
             totalSeatNo = suiteNo + fcSeatNo + ecSeatNo + pecSeatNo + bcSeatNo;
-            System.out.println("MB: AircraftType Seat No: " + totalSeatNo);
+            
             
             //crewNum and purserNo is porpotional to the totol number of seats
             Double crewNum = aircraftType.getCabinCrew() * totalSeatNo;
@@ -306,7 +307,6 @@ public class PricingManagedBean implements Serializable {
             keyList = new ArrayList<String>(cabinInfo.keySet());
             System.out.println("MB: AircraftType key List Size: " + keyList.size());
             System.out.println("AircraftInfo Retrieved!");
-
         }
     }
 

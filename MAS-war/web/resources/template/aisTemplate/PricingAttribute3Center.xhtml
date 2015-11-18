@@ -21,12 +21,12 @@
                     <p:messages id="msgs" />
                     <h:panelGrid columns="2" cellpadding="5">
 
-                        <p:outputLabel for="crew_cost" value="Crew cost per block hour per person in SGD" />
+                        <p:outputLabel for="crew_cost" value="Estimated crew cost per block hour per person in SGD" />
                         <p:inputText id="crew_cost"  value="#{pricingManagedBean.crewUnitCost}" label="Crew cost per block hour per person" required="true" requiredMessage="Please enter crew cost per block hour per person" validatorMessage="Please check crew cost is lower than $80/hr"  size="10">
                             <f:validateDoubleRange minimum="0.1" maximum="80.0000" />
                         </p:inputText>
 
-                        <p:outputLabel for="maintenance" value="Maintenance cost per year in SGD" />
+                        <p:outputLabel for="maintenance" value="Estimated maintenance cost per year in SGD" />
                         <p:inputText id="maintenance"  value="#{pricingManagedBean.maintenance}" label="Maintenance cost per year" required="true" requiredMessage="Please enter maintenance cost per year" validatorMessage="Please check the annual maintenance cost is lower than 5 million"  size="10">
                             <f:validateDoubleRange minimum="0.1" maximum="5000000.0000" />
                         </p:inputText>
@@ -38,15 +38,16 @@
                         <h:outputText id="fuel_cost" value="#{pricingManagedBean.fuelCost}" />
 
                         
-                        <p:outputLabel for="admin" value="Admin cost per block hour in SGD" />
+                        <p:outputLabel for="admin" value="Estimated admin cost per block hour in SGD" />
                         <p:inputText id="admin"  value="#{pricingManagedBean.adminCost}" label="Admin cost per block hour" required="true" requiredMessage="Please enter admin cost per block hour" validatorMessage="Please check admin cost is lower than $80/hr"  size="10">
                             <f:validateDoubleRange minimum="5.0" maximum="80.0" />
                         </p:inputText>
                         
-                        <p:outputLabel for="otherCost" value="Other costs per block hour in SGD" />
-                        <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please check other cost is lower than $2000/hr"  size="10">
+                        <p:outputLabel for="otherCost" value="Other costs per year in SGD" />
+                        <h:outputText id="otherCost" value="#{pricingManagedBean.otherCost}" />
+<!--                        <p:inputText id="otherCost"  value="#{pricingManagedBean.otherCost}" label="Other costs per block hour" required="true" requiredMessage="Please enter other costs per block hour" validatorMessage="Please check other cost is lower than $2000/hr"  size="10">
                             <f:validateDoubleRange minimum="2000.0" maximum="10000.0" />
-                        </p:inputText>
+                        </p:inputText>-->
                         
                     </h:panelGrid>
 
