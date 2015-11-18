@@ -35,11 +35,11 @@ public class Airline implements Serializable {
     @Column(unique=true)
     private String IATA;
 
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSFlight> flightInstances=new ArrayList<>();
-
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
-    private List<GDSReservation> reservations=new ArrayList<>();
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSFlight> flightInstances=new ArrayList<>();
+//
+//    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "airline")
+//    private List<GDSReservation> reservations=new ArrayList<>();
 
     public Airline() {
     }
@@ -85,21 +85,21 @@ public class Airline implements Serializable {
         this.IATA = IATA;
     }
 
-    public List<GDSFlight> getFlightInstances() {
-        return flightInstances;
-    }
-
-    public void setFlightInstances(List<GDSFlight> flightInstances) {
-        this.flightInstances = flightInstances;
-    }
-
-    public List<GDSReservation> getReservations() {
-        return reservations;
-    }
-
-    public void setReservations(List<GDSReservation> reservations) {
-        this.reservations = reservations;
-    }
+//    public List<GDSFlight> getFlightInstances() {
+//        return flightInstances;
+//    }
+//
+//    public void setFlightInstances(List<GDSFlight> flightInstances) {
+//        this.flightInstances = flightInstances;
+//    }
+//
+//    public List<GDSReservation> getReservations() {
+//        return reservations;
+//    }
+//
+//    public void setReservations(List<GDSReservation> reservations) {
+//        this.reservations = reservations;
+//    }
 
     @Override
     public int hashCode() {

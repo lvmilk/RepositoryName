@@ -6,10 +6,13 @@
 package Entity.GDS;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -23,8 +26,8 @@ public class MasterPNR implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
-    private GDSReservation GDSreservation;
+    @OneToMany(mappedBy = "pnr")
+    private List<GDSReservation> GDSrsvList=new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -37,15 +40,17 @@ public class MasterPNR implements Serializable {
     public MasterPNR() {
     }
 
+    public List<GDSReservation> getGDSrsvList() {
+        return GDSrsvList;
+    }
+
+    public void setGDSrsvList(List<GDSReservation> GDSrsvList) {
+        this.GDSrsvList = GDSrsvList;
+    }
+
   
 
-    public GDSReservation getGDSreservation() {
-        return GDSreservation;
-    }
 
-    public void setGDSreservation(GDSReservation GDSreservation) {
-        this.GDSreservation = GDSreservation;
-    }
 
     @Override
     public int hashCode() {
