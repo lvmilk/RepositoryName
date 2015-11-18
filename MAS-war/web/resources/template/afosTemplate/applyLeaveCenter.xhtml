@@ -8,26 +8,21 @@
       xmlns:pm="http://primefaces.org/mobile">
 
     <h:head>
-        <title>Annual Leave Preference Exercise</title>
+        <title>Leave Application</title>
     </h:head>
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Annual Leave Preference Exercise:Please select the first day of the weeks you intend to take annual leave"  style="width:100%">
+            <p:panel id="panel" header="Leave Application"  style="width:100%">
                 <p:messages id="msgs" />
-
-
                 <h:panelGrid columns="2" cellpadding="5">
-
-                    <p:outputLabel for="date1" value="First preference date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date1" value="#{almb.firstDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Start Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
-                    <p:outputLabel for="date2" value="Second preference date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date2" value="#{almb.secondDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Second Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
-                    <p:outputLabel for="date3" value="Third preference date:(YYYY-MM-DD) (Optional)  " />     
-                    <p:calendar id="date3" value="#{almb.thirdDate}" pattern="yyyy-MM-dd" mask="true" navigator="true" label="date"  validatorMessage="Third Preference: Please enter a valid date"  />
-
+                    <p:outputLabel for="date1" value="Start Date (YYYY-MM-DD) " />     
+                    <p:calendar id="date1" value="#{almb.startDate}" pattern="yyyy-MM-dd" mindate="#{almb.minDate}" navigator="true" mask="true" label="date" required="true"  validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter start date" />
+                    <p:outputLabel for="date2" value="End Date (YYYY-MM-DD) " />     
+                    <p:calendar id="date2" value="#{almb.endDate}" pattern="yyyy-MM-dd"  mindate="#{almb.minDate}" navigator="true" mask="true" label="date" required="true"  validatorMessage="End Date: Please enter a valid date"  requiredMessage="Please enter end date" />
+                   
                 </h:panelGrid>
-                <p:commandButton value="Sumbit Preference" update="panel" style="margin-right:0" action="#{almb.onSubmitPreference}"  icon="ui-icon-check" />
+                <p:commandButton value="Sumbit Preference" update="panel" style="margin-right:0" action="#{almb.onSubmitApplication}"  icon="ui-icon-check" />
             </p:panel>
 
         </h:form>

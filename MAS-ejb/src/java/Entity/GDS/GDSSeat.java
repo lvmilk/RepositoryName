@@ -27,7 +27,7 @@ public class GDSSeat implements Serializable {
     private String seatNo;
     private Integer rowNo;
     private Integer colNo;
-    private Integer width;
+    
     private String status;
     private String cabinClass;
     private String bookingClass;
@@ -76,13 +76,6 @@ public class GDSSeat implements Serializable {
         this.colNo = colNo;
     }
 
-    public Integer getWidth() {
-        return width;
-    }
-
-    public void setWidth(Integer width) {
-        this.width = width;
-    }
 
     public String getStatus() {
         return status;

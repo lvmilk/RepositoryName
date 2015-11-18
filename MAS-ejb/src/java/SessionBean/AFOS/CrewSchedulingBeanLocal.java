@@ -89,4 +89,26 @@ public interface CrewSchedulingBeanLocal {
 
     public List<CockpitCrew> getFiCaptain(FlightInstance fi);
 
+    public void removeCpFromFlight(FlightInstance fi1, CockpitCrew cp1);
+
+    public void removeCcFromFlight(FlightInstance fi1, CabinCrew cc1);
+
+    public GroundStaff findGSById(String gsId);
+
+    public CockpitCrew findCPById(String cpId);
+
+    public CabinCrew findCCById(String ccId);
+
+    public List<CabinCrew> getIdleCabin(String cabinType, FlightInstance fi);
+
+    public List<CockpitCrew> getIdleCockpit(String cabinType, FlightInstance fi);
+
+    public String getCrewType(String id);
+
+    public void addCPToFlight(String crewId, Long fiId) throws Exception;
+
+    public void addCCToFlight(String crewId, Long fiId) throws Exception;
+
+    public List<CockpitCrew> getIdleLicensedCockpit(String cabinType, FlightInstance fi);
+
 }

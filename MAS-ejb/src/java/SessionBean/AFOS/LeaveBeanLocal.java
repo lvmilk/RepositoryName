@@ -28,5 +28,7 @@ public interface LeaveBeanLocal {
     public List<StaffLeave> getAllNotReviewedLeaves() throws Exception;
 
     public List<StaffLeave> getAllLeaves() throws Exception;
-    
+     public void addNormalLeave (Date startDate, Date endDate, String userName)throws Exception;
+
+    public String getStaffLevel(String userName) throws Exception;
 }
