@@ -53,7 +53,7 @@ public class GDSFlight implements Serializable {
     private Double price;
     
     @ManyToOne
-    private Airline airline;
+    private GDSReservation rsv;
     
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "flight")
     private List<GDSSeat> seats=new ArrayList<>();
@@ -145,13 +145,7 @@ public class GDSFlight implements Serializable {
         this.bookedSeat = bookedSeat;
     }
 
-    public Airline getAirline() {
-        return airline;
-    }
 
-    public void setAirline(Airline airline) {
-        this.airline = airline;
-    }
 
     public List<GDSSeat> getSeats() {
         return seats;
@@ -264,6 +258,14 @@ public class GDSFlight implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public GDSReservation getRsv() {
+        return rsv;
+    }
+
+    public void setRsv(GDSReservation rsv) {
+        this.rsv = rsv;
     }
     
     
