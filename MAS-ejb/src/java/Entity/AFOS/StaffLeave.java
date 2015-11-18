@@ -43,13 +43,13 @@ public class StaffLeave implements Serializable {
     
 
     @ManyToOne
-    private CockpitCrew cockpitCrew = new CockpitCrew();
+    private CockpitCrew cockpitCrew ;
     @ManyToOne
-    private OfficeStaff officeStaff = new OfficeStaff();
+    private OfficeStaff officeStaff;
     @ManyToOne
-    private GroundStaff groundStaff = new GroundStaff();
+    private GroundStaff groundStaff;
     @ManyToOne
-    private CabinCrew cabinCrew = new CabinCrew();
+    private CabinCrew cabinCrew;
 
     
   

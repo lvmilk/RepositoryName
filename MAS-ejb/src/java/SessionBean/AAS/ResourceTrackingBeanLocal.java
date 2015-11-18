@@ -27,5 +27,7 @@ public interface ResourceTrackingBeanLocal {
     public double getTotalBonus(String name, long year, int month);
 
     public Payroll getOnePayroll(String name) throws Exception;
+
+    public String getUserName(String userName);
     
 }

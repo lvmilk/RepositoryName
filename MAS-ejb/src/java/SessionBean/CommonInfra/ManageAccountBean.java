@@ -16,6 +16,8 @@ import Entity.CommonInfa.CockpitCrew;
 import javax.ejb.Stateless;
 import java.util.*;
 import Entity.*;
+import Entity.AAS.Expense;
+import Entity.AAS.Payroll;
 import Entity.GDS.Airline;
 import static java.time.Clock.system;
 import javax.ejb.Stateless;
@@ -42,13 +44,15 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
     CockpitCrew cpCrew;
     Agency agency;
     AirAlliances alliance;
+    Expense expense;
+    Payroll payroll;
     private UserEntity userEntity;
 
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
     private String hPwd = new String();
     private Integer temp;
     private Integer locked;
-    
+
     private Airline al;
 
     public ManageAccountBean() {
@@ -92,7 +96,6 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             return false;
         }
     }
-    
 
     @Override
     public void addPartnerAcc(String pid, String pPwd, String companyName, String email, String stfType, String iata) {
@@ -106,12 +109,12 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             alliance = new AirAlliances();
             alliance.createAllianceAcc(pid, hPwd, companyName, email, stfType);
             em.persist(alliance);
-            
-            al=new Airline();
-            al.createAirline(companyName,iata, email);
+
+            al = new Airline();
+            al.createAirline(companyName, iata, email);
             em.persist(al);
             em.flush();
-            
+
         }
     }
 
@@ -258,6 +261,20 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             offStaff.setUser(userEntity);
             userEntity.setOffStaff(offStaff);
             em.persist(offStaff);
+            ///////////////////////////////////
+            expense = new Expense();
+            expense.setCategory("Office Staff");
+            expense.setType("Variable Operation Cost");
+            expense.setPayable(salary);
+            expense.setCostSource(username);
+            em.persist(expense);
+            em.flush();
+            payroll = new Payroll();
+            payroll.setName(username);
+            payroll.setSalary(salary);
+            payroll.setBonus(0.0);
+            em.persist(payroll);
+            em.flush();
         } else if (stfType.equals("groundStaff")) {
             grdStaff = new GroundStaff();
             userEntity = new UserEntity();
@@ -266,6 +283,19 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             grdStaff.setUser(userEntity);
             userEntity.setGrdStaff(grdStaff);
             em.persist(grdStaff);
+            expense = new Expense();
+            expense.setCategory("Ground Staff");
+            expense.setType("Variable Operation Cost");
+            expense.setPayable(salary);
+            expense.setCostSource(username);
+            em.persist(expense);
+            em.flush();
+            payroll = new Payroll();
+            payroll.setName(username);
+            payroll.setSalary(salary);
+            payroll.setBonus(0.0);
+            em.persist(payroll);
+            em.flush();
         }
 //        else if (stfType.equals("cabin")) {
 //            System.out.println(stfType);
@@ -290,6 +320,20 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
         cbCrew.setUser(userEntity);
         userEntity.setCbCrew(cbCrew);
         em.persist(cbCrew);
+        ///////////////////////////////////////
+        expense = new Expense();
+        expense.setCategory(stfLevel);
+        expense.setType("Variable Operation Cost");
+        expense.setPayable(salary);
+        expense.setCostSource(username);
+        em.persist(expense);
+        em.flush();
+        payroll = new Payroll();
+        payroll.setName(username);
+        payroll.setSalary(salary);
+        payroll.setBonus(0.0);
+        em.persist(payroll);
+        em.flush();
     }
 
     @Override
@@ -302,6 +346,20 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
         cpCrew.setUser(userEntity);
         userEntity.setCpCrew(cpCrew);
         em.persist(cpCrew);
+        ////////////////
+        expense = new Expense();
+        expense.setCategory(stfLevel);
+        expense.setType("Variable Operation Cost");
+        expense.setPayable(salary);
+        expense.setCostSource(username);
+        em.persist(expense);
+        em.flush();
+        payroll = new Payroll();
+        payroll.setName(username);
+        payroll.setSalary(salary);
+        payroll.setBonus(0.0);
+        em.persist(payroll);
+        em.flush();
     }
 
     public String encrypt(String username, String password) {
@@ -340,7 +398,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
         }
     }
 
-   @Override
+    @Override
     public void editCbCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String firstName, String lastName, String stfLevel, Double salary, Double hourPay, String secondLang, Integer attempt, Integer locked) {
 
         CabinCrew cbCrew = em.find(CabinCrew.class, username);
@@ -367,9 +425,30 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
         em.merge(cbCrew);
         em.flush();
+        //////////////////////////////
+            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+            q1.setParameter("username", username);
+            if (q1.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                expense = (Expense) q1.getResultList().get(0);
+                expense.setPayable(salary);
+                em.merge(expense);
+                em.flush();
+            }
+            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+            q2.setParameter("username", username);
+            if (q2.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                payroll = (Payroll) q2.getResultList().get(0);
+                payroll.setSalary(salary);
+                payroll.setBonus(hourPay);
+                em.merge(payroll);
+                em.flush();
+            }
+    }
 
-    }    
-    
     @Override
     public void editCpCrew(String username, String stfType, String password, String pswEdited, String email, String emailEdited, String firstName, String lastName, String stfLevel, Double salary, Double hourPay, String licence, Integer attempt, Integer locked) {
         CockpitCrew cpCrew = em.find(CockpitCrew.class, username);
@@ -396,6 +475,29 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
         em.merge(cpCrew);
         em.flush();
+        
+          //////////////////////////////
+            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+            q1.setParameter("username", username);
+            if (q1.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                expense = (Expense) q1.getResultList().get(0);
+                expense.setPayable(salary);
+                em.merge(expense);
+                em.flush();
+            }
+            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+            q2.setParameter("username", username);
+            if (q2.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                payroll = (Payroll) q2.getResultList().get(0);
+                payroll.setSalary(salary);
+                payroll.setBonus(hourPay);
+                em.merge(payroll);
+                em.flush();
+            }
     }
 
     @Override
@@ -548,6 +650,28 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             em.flush();
 
         }
+          //////////////////////////////
+            Query q1 = em.createQuery("SELECT e FROM Expense e where e.costSource=:username");
+            q1.setParameter("username", username);
+            if (q1.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                expense = (Expense) q1.getResultList().get(0);
+                expense.setPayable(salary);
+                em.merge(expense);
+                em.flush();
+            }
+            Query q2 = em.createQuery("SELECT p FROM Payroll p where p.name=:username");
+            q2.setParameter("username", username);
+            if (q2.getResultList().isEmpty()) {
+                System.out.println("There is no existing expense related to this staff " + username);
+            } else {
+                payroll = (Payroll) q2.getResultList().get(0);
+                payroll.setSalary(salary);
+                payroll.setBonus(hourPay);
+                em.merge(payroll);
+                em.flush();
+            }
     }
 
     @Override
@@ -873,23 +997,15 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
 
     @Override
     public String getDDSCompanyName(String userName) {
-        Agency tempAg=new Agency();
-        tempAg=em.find(Agency.class, userName);
-        
-        if(tempAg!=null)
-        {
+        Agency tempAg = new Agency();
+        tempAg = em.find(Agency.class, userName);
+
+        if (tempAg != null) {
             return tempAg.getName();
-        }else{
+        } else {
             return null;
         }
-        
+
     }
-
-
-
-
-
-
- 
 
 }
