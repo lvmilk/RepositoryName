@@ -106,6 +106,14 @@ public class CabinCrew implements Serializable {
         return "Entity.CommonInfaEntity.CabinCrew[ id=" + cbName + " ]";
     }
 
+    public List<StaffLeave> getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(List<StaffLeave> leaves) {
+        this.leaves = leaves;
+    }
+
     public String getCbName() {
         return cbName;
     }

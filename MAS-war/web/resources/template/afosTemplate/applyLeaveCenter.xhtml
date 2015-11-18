@@ -19,12 +19,12 @@
 
                 <h:panelGrid columns="2" cellpadding="5">
 
-                    <p:outputLabel for="First preference" value="Date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date" value="#{almb.firstDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Start Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
-                    <p:outputLabel for="Second preference" value="Date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date" value="#{almb.secondDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Second Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
-                    <p:outputLabel for="Third preference(Optional)" value="Date:(YYYY-MM-DD) " />     
-                    <p:calendar id="date" value="#{almb.thirdDate}" pattern="yyyy-MM-dd" mask="true" navigator="true" label="date"  validatorMessage="Third Preference: Please enter a valid date"  />
+                    <p:outputLabel for="date1" value="First preference date:(YYYY-MM-DD) " />     
+                    <p:calendar id="date1" value="#{almb.firstDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Start Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
+                    <p:outputLabel for="date2" value="Second preference date:(YYYY-MM-DD) " />     
+                    <p:calendar id="date2" value="#{almb.secondDate}" pattern="yyyy-MM-dd" navigator="true" mask="true" label="date" required="true"  validatorMessage="Second Preference: Please enter a valid date"  requiredMessage="Please enter the flight date" />
+                    <p:outputLabel for="date3" value="Third preference date:(YYYY-MM-DD) (Optional)  " />     
+                    <p:calendar id="date3" value="#{almb.thirdDate}" pattern="yyyy-MM-dd" mask="true" navigator="true" label="date"  validatorMessage="Third Preference: Please enter a valid date"  />
 
                 </h:panelGrid>
                 <p:commandButton value="Sumbit Preference" update="panel" style="margin-right:0" action="#{almb.onSubmitPreference}"  icon="ui-icon-check" />
