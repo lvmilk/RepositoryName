@@ -18,8 +18,6 @@
                 <p:messages id="msgs" />
 
             
-
-                </h:panelGrid>
                 <p:dataTable id="leaveList" var="lv" value="#{valmb.allLeaves}" emptyMessage="No leaves!" style="margin-bottom:20px">
                    <p:column headerText="Serial Number">
                         <h:outputText value="#{lv.id}" style="center"/>
@@ -51,12 +49,12 @@
                     </p:column>
 
                     <p:column headerText="Approve">
-                        <p:commandButton value="Check in"   update=":#{p:component('panel')}" actionListener="#{valmb.onApproveLeave}">
+                        <p:commandButton value="Approve"   update=":#{p:component('panel')}" actionListener="#{valmb.onApproveLeave}">
                             <f:attribute name="lv" value="#{lv}"/>
                         </p:commandButton>   
                     </p:column>
                     <p:column headerText="Reject">
-                        <p:commandButton value="Standby"  update=":#{p:component('panel')}" actionListener="#{valmb.onRejectLeave}">
+                        <p:commandButton value="Reject"  update=":#{p:component('panel')}" actionListener="#{valmb.onRejectLeave}">
                             <f:attribute name="lv" value="#{lv}"/>
                         </p:commandButton>   
                     </p:column>

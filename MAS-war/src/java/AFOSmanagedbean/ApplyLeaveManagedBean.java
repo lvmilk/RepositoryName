@@ -55,8 +55,8 @@ public class ApplyLeaveManagedBean implements Serializable {
   
 
     public String getUserName() {
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        return session.getAttribute("username").toString();
+       return (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
+       
     }
 
     public void goBack() throws IOException {
