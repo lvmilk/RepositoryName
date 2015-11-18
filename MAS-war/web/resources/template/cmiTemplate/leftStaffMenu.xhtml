@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+
+    <h:body>
+        <h:form> 
+            <p:panel id="panel" header="Staff Tool List" >
+                <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
+                    <p:menu id='staff'  style="width:300px" toggleable="true">
+
+                        <p:submenu label="Personal Payroll">
+                            <p:menuitem value="View Your Monthly Payroll" url="/CMIpages/viewPersonalPayroll.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+
+                        <p:submenu label="Personal Leave">
+                            <p:menuitem value="Apply Leave" url="viewLeave.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+                        
+                        <p:submenu label="View Scheduled Tasks">
+                            <p:menuitem value="View Schedule" url="viewSchedule.xhtml"  icon="ui-icon-disk" />
+                        </p:submenu>
+
+                    </p:menu>
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

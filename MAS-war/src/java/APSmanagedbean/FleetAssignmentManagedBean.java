@@ -25,6 +25,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.primefaces.extensions.component.timeline.TimelineUpdater;
 import org.primefaces.extensions.event.timeline.TimelineAddEvent;
 import org.primefaces.extensions.event.timeline.TimelineModificationEvent;
@@ -164,18 +165,6 @@ public class FleetAssignmentManagedBean implements Serializable {
         }
     }
 
-//    public void onAdd(TimelineAddEvent e) {
-//        System.out.println("-------------------------------aaaabbbbbbbbbbb");
-//        // get TimelineEvent to be added  
-//        event = new TimelineEvent(new FlightInstance(), e.getStartDate(), e.getEndDate(), true, e.getGroup());
-//        // add the new event to the model in case if user will close or cancel the "Add dialog"  
-//        // without to update details of the new event. Note: the event is already added in UI.  
-//        model.add(event);
-//    }
-//    public void onEdit(TimelineModificationEvent e) {  
-//        // get clone of the TimelineEvent to be edited  
-//        event = e.getTimelineEvent();  
-//    }  
     public void onDelete(TimelineModificationEvent e) {
         System.out.println("-------------------------------aaaacccccccccccc");
         System.out.println("onDelete(): ");
@@ -185,10 +174,22 @@ public class FleetAssignmentManagedBean implements Serializable {
         System.out.println("onDelete(): " + e.getTimelineEvent());
     }
 
-//    public void onSelect() {
-//        System.out.println("FAMB.onSelect(): select task type: " + taskType);
-//        setSelectTypeAlr(true);
-//    }
+    public void onDeleteShowDialog(TimelineModificationEvent e) {
+        event = e.getTimelineEvent();
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.err.println("Is onDeleteShowDialog called ? ");
+        if (event.getData().getClass().getSimpleName().equals("FlightInstance")) {
+            System.err.println(" onDeleteShowDialog 1->FlightInstance is called ");
+            context.execute("PF('deleteTaskWdgt').show();");
+            System.err.println("1->FlightInstance ");
+        }
+        if (event.getData().getClass().getSimpleName().equals("Maintenance")) {
+            System.err.println(" onDeleteShowDialog 2->Maintenance called ");
+            context.execute("PF('deleteMtTaskWdgt').show();");
+            System.err.println("2->Maintenance ");
+        }
+    }
+
     public void delete() {
         TimelineUpdater timelineUpdater = TimelineUpdater.getCurrentInstance(":formMain:timeline");
         System.out.println("--------------------------------->" + event.getData().getClass().getSimpleName());
@@ -445,11 +446,11 @@ public class FleetAssignmentManagedBean implements Serializable {
 
         if (event != null) {
             if (event.getData().getClass().getSimpleName().equals("FlightInstance")) {
-                FlightInstance fi = ((FlightInstance) event.getData());
-                System.err.println("**************************** Here");
-                return "Do you want to delete the flight task " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " ?";
-            } else {
-                return "";
+            FlightInstance fi = ((FlightInstance) event.getData());
+            System.err.println("**************************** Here");
+            return "Do you want to delete the flight task " + fi.getFlightFrequency().getFlightNo() + " on " + fi.getDate() + " ?";
+//            } else {
+//                return "";
             }
         }
         return "Do you want to delete the flight task? ";
@@ -465,11 +466,11 @@ public class FleetAssignmentManagedBean implements Serializable {
 
         if (event != null) {
             if (event.getData().getClass().getSimpleName().equals("Maintenance")) {
-                Maintenance mt = ((Maintenance) event.getData());
-                System.err.println("**************************** Here MT");
-                return "Do you want to delete the maintenance " + mt.getObjective() + " from " + mt.getStartTime() + " to " + mt.getStartTime() + " ?";
-            } else {
-                return "";
+            Maintenance mt = ((Maintenance) event.getData());
+            System.err.println("**************************** Here MT");
+            return "Do you want to delete [" + mt.getObjective() + "] on " + mt.getStartTime() + " ?";
+//            } else {
+//                return "";
             }
         }
         return "Do you want to delete the maintenance? ";

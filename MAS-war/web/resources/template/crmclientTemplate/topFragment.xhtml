@@ -16,34 +16,36 @@
 
             <style>
                 .topMenu.ui-menubar{
-                    background-color: #35bad6;   
+                    background-color: #35bad6; 
+                    border-width: 4px;
                 }
-                
+
                 .topMenu.ui-menuitem-text {
                     font-family: Verdana;
-                    font-size: 200%
+                    font-weight: bold;
+                    font-size: large;
                 }
-                
+
             </style>
-                
-            
-            <p:menubar styleClass = "topMenu" style="text-align: center">
+
+
+            <p:menubar styleClass = "topMenu">
                 <p:menuitem>
                     <h:link outcome="/CRMClient/home.xhtml">
-                        <h:graphicImage name="/images/logoname.png" height="50" />
+                        <h:graphicImage value="/images/logoname.png" height="30" />
                     </h:link>
                 </p:menuitem>
 
-                <p:menuitem value="Contact us" style="margin-right: 30px !important;" url="/CRMClient/contactus.xhtml" />
+                <p:menuitem value="Contact us" style="margin-right: 30px;" url="/CRMClient/contactus.xhtml" />
 
-                <p:menuitem value="Create my account"  style="margin-right: 30px !important;" url="/CRMClient/createMemberAccount.xhtml" />
+                <p:menuitem value="Create my account"  style="margin-right: 30px;" url="/CRMClient/createMemberAccount.xhtml" />
 
-                <p:menuitem value="My account"  style="margin-right: 30px !important;" url="/CRMClient/memberLogin.xhtml" icon=""/>
+                <p:menuitem value="My account"  style="margin-right: 30px;" url="/CRMClient/memberLogin.xhtml" />
 
             </p:menubar>
 
             <p:separator/>
-            
+
             <p:menubar styleClass = "funcMenu" style="text-align: center">
 
                 <p:menuitem value="HOME"  style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" />

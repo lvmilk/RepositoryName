@@ -302,6 +302,24 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         em.flush();
     }
 
+    @Override
+    public GroundStaff findGSById(String gsId) {
+        GroundStaff gs = em.find(GroundStaff.class, gsId);
+        return gs;
+    }
+
+    @Override
+    public CockpitCrew findCPById(String cpId) {
+        CockpitCrew cp = em.find(CockpitCrew.class, cpId);
+        return cp;
+    }
+
+    @Override
+    public CabinCrew findCCById(String ccId) {
+        CabinCrew cc = em.find(CabinCrew.class, ccId);
+        return cc;
+    }
+
 // pre-condition: startDate should be Monday of the first week, endDate should be Sunday of the fourth week
     @Override
     public void scheduleFlightCrew(Date startDate, Date endDate) throws ParseException {
@@ -342,6 +360,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             System.err.println("*******&&&&&&&&&&&%%%%%%%%%%%% " + seatNum);
             Double temp1 = 0.0;
             temp1 = ccRate * seatNum;
+            System.err.println("*******&&&&&&&&&&&%%%%%%%%%%%% cabinLeaderNo " + temp1.intValue());
             Integer cabinLeaderNo = temp1.intValue();
             temp1 = act.getCabinCrew() * act.getTotalSeatNum();
             Integer cabinCrewNo = temp1.intValue();
@@ -371,9 +390,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             for (CockpitCrew cp : captain) {
                 if (cp.getLicence().equals(act.getType())) {
                     if (fiCaptain < captainNo) {
-                        if ((cp.getYearAccumMin() + fiMin) / 60 < 1000) {
-                            if ((cp.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                if ((cp.getWeekAccumMin() + fiMin) / 60 < 36) {
+                        if ((cp.getYearAccumMin() + fiMin) / 60 <= 1000) {
+                            if ((cp.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                                if ((cp.getWeekAccumMin() + fiMin) / 60 <= 36) {
                                     if (checkAvailable(cp, fi)) {
                                         FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
 //                                        System.out.println("************* CockpitCrew cp: captain: fiInDB is " + fi);
@@ -419,9 +438,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             for (CockpitCrew cp : pilot) {
                 if (cp.getLicence().equals(act.getType())) {
                     if (fiPilot < pilotNo) {
-                        if ((cp.getYearAccumMin() + fiMin) / 60 < 1000) {
-                            if ((cp.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                if ((cp.getWeekAccumMin() + fiMin) / 60 < 36) {
+                        if ((cp.getYearAccumMin() + fiMin) / 60 <= 1000) {
+                            if ((cp.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                                if ((cp.getWeekAccumMin() + fiMin) / 60 <= 36) {
                                     if (checkAvailable(cp, fi)) {
                                         System.out.println("************* CockpitCrew cp: CAN assign >>>> pilot " + cp);
                                         FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
@@ -472,9 +491,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             System.out.println("\n************* CabinCrew cc: START assign >>>> cabinLeader for " + fi);
             for (CabinCrew cc : cabinLeader) {
                 if (fiCabinLeader < cabinLeaderNo) {
-                    if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
-                        if ((cc.getMonthAccumMin() + fiMin) / 60 < 100) {
-                            if ((cc.getWeekAccumMin() + fiMin) / 60 < 36) {
+                    if ((cc.getYearAccumMin() + fiMin) / 60 <= 1000) {
+                        if ((cc.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                            if ((cc.getWeekAccumMin() + fiMin) / 60 <= 36) {
                                 if (checkAvailable(cc, fi)) {
                                     System.out.println("************* CabinCrew cc: CAN assign >>>> cabinLeader " + cc);
                                     FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
@@ -522,9 +541,9 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             System.out.println("\n************* CabinCrew cc: START assign >>>> cabin for " + fi);
             for (CabinCrew cc : cabin) {
                 if (fiCabin < cabinCrewNo) {
-                    if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
-                        if ((cc.getMonthAccumMin() + fiMin) / 60 < 100) {
-                            if ((cc.getWeekAccumMin() + fiMin) / 60 < 36) {
+                    if ((cc.getYearAccumMin() + fiMin) / 60 <= 1000) {
+                        if ((cc.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                            if ((cc.getWeekAccumMin() + fiMin) / 60 <= 36) {
                                 if (checkAvailable(cc, fi)) {
                                     System.out.println("************* CabinCrew cc: CAN assign >>>> cabin " + cc);
                                     FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
@@ -565,15 +584,19 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
         // arrange stand-by crew
         for (FlightInstance fi : fiList) {
-            System.out.println(" SBSBSBSB (A-A)^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** schedule crew for flight instance " + fi);
+            System.out.println(" *************** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*********************************** schedule crew for flight instance " + fi);
 
             AircraftType act = fi.getFlightFrequency().getRoute().getAcType();
             long fiMin = fsb.getFlightAccumMinute(fi.getFlightFrequency());
 
-            List<CockpitCrew> idleCaptain = getIdleCockpit("captain", fi);
-            List<CockpitCrew> idlePilot = getIdleCockpit("pilot", fi);
-            List<CabinCrew> idleCabin = getIdleCabin("cabin", fi);
-            List<CabinCrew> idleCabinLeader = getIdleCabin("cabinLeader", fi);
+            List<CockpitCrew> idleCaptain = getIdleCockpit("Captain", fi);
+            List<CockpitCrew> idlePilot = getIdleCockpit("Pilot", fi);
+            List<CabinCrew> idleCabin = getIdleCabin("Cabin Crew", fi);
+            List<CabinCrew> idleCabinLeader = getIdleCabin("Cabin Leader", fi);
+            System.out.println("FOR FI " + fi + " IDLE CAPTAIN >>>>>>>>>>>>> >>>>>>>>>>>>> >>>>>>>>>>>>> " + idleCaptain);
+            System.out.println("FOR FI " + fi + " IDLE PILOT >>>>>>>>>>>>> >>>>>>>>>>>>> >>>>>>>>>>>>> " + idlePilot);
+            System.out.println("FOR FI " + fi + " IDLE CABIN CREW >>>>>>>>>>>>> >>>>>>>>>>>>> >>>>>>>>>>>>> " + idleCabin);
+            System.out.println("FOR FI " + fi + " IDLE CABIN LEADER >>>>>>>>>>>>> >>>>>>>>>>>>> >>>>>>>>>>>>> " + idleCabinLeader);
 
             String lang1 = fi.getFlightFrequency().getRoute().getOrigin().getLang();
             String lang2 = fi.getFlightFrequency().getRoute().getDest().getLang();
@@ -583,67 +606,69 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
             if (!lang2.equals("English")) {
                 sortCabinByLang(idleCabin, lang2);
-                sortCabinByLang(idleCabinLeader, lang1);
+                sortCabinByLang(idleCabinLeader, lang2);
             }
 
             Integer fiCaptain = getFiCaptainSB(fi).size();
             Integer fiPilot = getFiPilotSB(fi).size();
             Integer fiCabin = getFiCabinCrewSB(fi).size();
             Integer fiCabinLeader = getFiCabinLeaderSB(fi).size();
+            System.out.println("fiCaptain initial value " + fiCaptain);
+            System.out.println("fiPilot initial value " + fiPilot);
+            System.out.println("fiCabin initial value " + fiCabin);
+            System.out.println("fiCabinLeader initial value " + fiCabinLeader);
 
             for (CockpitCrew cp : idleCaptain) {
-                if (fiCaptain >= 2) {
-                    break;
-                } else {
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cp " + cp.getCpName());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCockpitSBEmpty() " + checkCockpitSBEmpty(fi, "Captain"));
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getFirstSB() " + cp.getFirstSB());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getSecondSB() " + cp.getSecondSB());
+                if (fiCaptain < 2) {
+                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check COCKPIT CAPTAIN cp " + cp.getCpName());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCockpitSBEmpty() " + checkCockpitSBEmpty(fi, "Captain"));
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getFirstSB() " + cp.getFirstSB());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getSecondSB() " + cp.getSecondSB());
                     if (!fi.getCockpitStandByList().contains(cp)) {
                         if (cp.getLicence().equals(act.getType())) {
                             if (((cp.getFirstSB() < 2) && checkCockpitSBEmpty(fi, "Captain")) || ((cp.getSecondSB() < 3) && !checkCockpitSBEmpty(fi, "Captain"))) {
-                                if ((cp.getYearAccumMin() + fiMin) / 60 < 1000) {
-                                    if ((cp.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                        if (checkAvailable(cp, fi)) {
-                                            FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
-                                            CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
-                                            List<CockpitCrew> cps = fiInDB.getCockpitStandByList();
-                                            List<FlightInstance> fiStandBy = cpInDB.getFiStandByList();
+//                                if ((cp.getYearAccumMin() + fiMin) / 60 <= 1000) {
+//                                    if ((cp.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                                if (checkAvailable(cp, fi)) {
+                                    FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
+                                    CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
+                                    List<CockpitCrew> cps = fiInDB.getCockpitStandByList();
+                                    List<FlightInstance> fiStandBy = cpInDB.getFiStandByList();
 
-                                            // get number of captain in the fi standby list
-                                            Integer capSBNum = 0;
-                                            for (CockpitCrew cp1 : cps) {
-                                                if (cp1.getStfLevel().equalsIgnoreCase("Captain")) {
-                                                    ++capSBNum;
-                                                }
-                                            }
+                                    // get number of captain in the fi standby list
+                                    Integer capSBNum = 0;
+                                    for (CockpitCrew cp1 : cps) {
+                                        if (cp1.getStfLevel().equalsIgnoreCase("Captain")) {
+                                            ++capSBNum;
+                                        }
+                                    }
 
-                                            cps.add(cp);
-                                            fiStandBy.add(fi);
-                                            fiInDB.setCockpitStandByList(cps);
-                                            cpInDB.setFiStandByList(fiStandBy);
+                                    cps.add(cp);
+                                    fiStandBy.add(fi);
+                                    fiInDB.setCockpitStandByList(cps);
+                                    cpInDB.setFiStandByList(fiStandBy);
 
-                                            // ***************************** ?? *****************************
+                                    // ***************************** ?? *****************************
 //                                    long yr = cpInDB.getYearAccumMin() + fiMin;
 //                                    long mon = cpInDB.getMonthAccumMin() + fiMin;
 //                                    cpInDB.setYearAccumMin(yr);
 //                                    cpInDB.setMonthAccumMin(mon);
-                                            // set stand by times of the crew
-                                            if (capSBNum == 0) {
-                                                cpInDB.setFirstSB((cpInDB.getFirstSB() + 1));
-                                                System.out.println("P_P assign crew as first standby" + cp.getCpName() + " " + fi.getId());
-                                            } else {
-                                                cpInDB.setSecondSB((cpInDB.getSecondSB() + 1));
-                                                System.out.println("P_P assign crew as second standby" + cp.getCpName() + " " + fi.getId());
-                                            }
-
-                                            em.merge(fiInDB);
-                                            em.merge(cpInDB);
-                                            em.flush();
-                                            fiCaptain++;
-                                        }
+                                    // set stand by times of the crew
+                                    if (capSBNum == 0) {
+                                        cpInDB.setFirstSB((cpInDB.getFirstSB() + 1));
+                                        System.out.println("P_P assign crew as first standby" + cp.getCpName() + " " + fi.getId());
+                                    } else {
+                                        cpInDB.setSecondSB((cpInDB.getSecondSB() + 1));
+                                        System.out.println("P_P assign crew as second standby" + cp.getCpName() + " " + fi.getId());
                                     }
+
+                                    em.merge(fiInDB);
+                                    em.merge(cpInDB);
+                                    em.flush();
+                                    fiCaptain += 1;
                                 }
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -651,57 +676,55 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
 
             for (CockpitCrew cp : idlePilot) {
-                if (fiPilot >= 2) {
-                    break;
-                } else {
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cp " + cp.getCpName());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCockpitSBEmpty() " + checkCockpitSBEmpty(fi, "Pilot"));
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getFirstSB() " + cp.getFirstSB());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getSecondSB() " + cp.getSecondSB());
+                if (fiPilot < 2) {
+                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check COCKPIT PILOT cp " + cp.getCpName());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCockpitSBEmpty() " + checkCockpitSBEmpty(fi, "Pilot"));
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getFirstSB() " + cp.getFirstSB());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cp.getSecondSB() " + cp.getSecondSB());
                     if (!fi.getCockpitStandByList().contains(cp)) {
                         if (cp.getLicence().equals(act.getType())) {
                             if (((cp.getFirstSB() < 2) && checkCockpitSBEmpty(fi, "Pilot")) || ((cp.getSecondSB() < 3) && !checkCockpitSBEmpty(fi, "Pilot"))) {
-                                if ((cp.getYearAccumMin() + fiMin) / 60 < 1000) {
-                                    if ((cp.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                        if (checkAvailable(cp, fi)) {
-                                            FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
-                                            CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
-                                            List<CockpitCrew> cps = fiInDB.getCockpitStandByList();
-                                            List<FlightInstance> fiStandBy = cpInDB.getFiStandByList();
+//                                if ((cp.getYearAccumMin() + fiMin) / 60 <= 1000) {
+//                                    if ((cp.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                                if (checkAvailable(cp, fi)) {
+                                    FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
+                                    CockpitCrew cpInDB = em.find(CockpitCrew.class, cp.getCpName());
+                                    List<CockpitCrew> cps = fiInDB.getCockpitStandByList();
+                                    List<FlightInstance> fiStandBy = cpInDB.getFiStandByList();
 
-                                            // get number of pilot in the fi standby list
-                                            Integer piSBNum = 0;
-                                            for (CockpitCrew cp1 : cps) {
-                                                if (cp1.getStfLevel().equalsIgnoreCase("Pilot")) {
-                                                    ++piSBNum;
-                                                }
-                                            }
+                                    // get number of pilot in the fi standby list
+                                    Integer piSBNum = 0;
+                                    for (CockpitCrew cp1 : cps) {
+                                        if (cp1.getStfLevel().equalsIgnoreCase("Pilot")) {
+                                            ++piSBNum;
+                                        }
+                                    }
 
-                                            cps.add(cp);
-                                            fiStandBy.add(fi);
-                                            fiInDB.setCockpitStandByList(cps);
-                                            cpInDB.setFiStandByList(fiStandBy);
+                                    cps.add(cp);
+                                    fiStandBy.add(fi);
+                                    fiInDB.setCockpitStandByList(cps);
+                                    cpInDB.setFiStandByList(fiStandBy);
 
 //                                    long yr = cpInDB.getYearAccumMin() + fiMin;
 //                                    long mon = cpInDB.getMonthAccumMin() + fiMin;
 //                                    cpInDB.setYearAccumMin(yr);
 //                                    cpInDB.setMonthAccumMin(mon);
-                                            // set stand by times of the crew
-                                            if (piSBNum == 0) {
-                                                cpInDB.setFirstSB((cpInDB.getFirstSB() + 1));
-                                                System.out.println("P_P assign crew as first standby" + cp.getCpName() + " " + fi.getId());
-                                            } else {
-                                                cpInDB.setSecondSB((cpInDB.getSecondSB() + 1));
-                                                System.out.println("P_P assign crew as second standby" + cp.getCpName() + " " + fi.getId());
-                                            }
-
-                                            em.merge(fiInDB);
-                                            em.merge(cpInDB);
-                                            em.flush();
-                                            fiPilot++;
-                                        }
+                                    // set stand by times of the crew
+                                    if (piSBNum == 0) {
+                                        cpInDB.setFirstSB((cpInDB.getFirstSB() + 1));
+                                        System.out.println("P_P assign crew as first standby" + cp.getCpName() + " " + fi.getId());
+                                    } else {
+                                        cpInDB.setSecondSB((cpInDB.getSecondSB() + 1));
+                                        System.out.println("P_P assign crew as second standby" + cp.getCpName() + " " + fi.getId());
                                     }
+
+                                    em.merge(fiInDB);
+                                    em.merge(cpInDB);
+                                    em.flush();
+                                    fiPilot += 1;
                                 }
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -709,116 +732,114 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
             }
 
             for (CabinCrew cc : idleCabinLeader) {
-                if (fiCabinLeader >= 2) {
-                    System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader " + fiCabinLeader);
-                    break;
-                } else {
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Leader"));
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getFirstSB() " + cc.getFirstSB());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getSecondSB() " + cc.getSecondSB());
+//                if (fiCabinLeader >= 2) {
+//                    System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader " + fiCabinLeader);
+//                    break;
+//                } else {
+                if (fiCabinLeader < 2) {
+                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check CABIN CABINLEADER cc " + cc.getCbName());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Leader"));
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getFirstSB() " + cc.getFirstSB());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getSecondSB() " + cc.getSecondSB());
                     if (!fi.getCabinStandByList().contains(cc)) {
                         if (((cc.getFirstSB() < 2) && checkCabinSBEmpty(fi, "Cabin Leader")) || ((cc.getSecondSB() < 3) && !checkCabinSBEmpty(fi, "Cabin Leader"))) {
-                            if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
-                                if ((cc.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                    if (checkAvailable(cc, fi)) {
-                                        FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
-                                        CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
-                                        List<CabinCrew> ccs = fiInDB.getCabinStandByList();
-                                        List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
+//                            if ((cc.getYearAccumMin() + fiMin) / 60 <= 1000) {
+//                                if ((cc.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                            if (checkAvailable(cc, fi)) {
+                                FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
+                                CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
+                                List<CabinCrew> ccs = fiInDB.getCabinStandByList();
+                                List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
 
-                                        // get number of cabin leader in the fi standby list
-                                        Integer clSBNum = 0;
-                                        for (CabinCrew cc1 : ccs) {
-                                            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
-                                                ++clSBNum;
-                                            }
-                                        }
+                                // get number of cabin leader in the fi standby list
+                                Integer clSBNum = 0;
+                                for (CabinCrew cc1 : ccs) {
+                                    if (cc1.getStfLevel().equalsIgnoreCase("Cabin Leader")) {
+                                        ++clSBNum;
+                                    }
+                                }
 
-                                        ccs.add(ccInDB);
-                                        fiStandBy.add(fiInDB);
-                                        fiInDB.setCabinStandByList(ccs);
-                                        ccInDB.setFiStandByList(fiStandBy);
+                                ccs.add(ccInDB);
+                                fiStandBy.add(fiInDB);
+                                fiInDB.setCabinStandByList(ccs);
+                                ccInDB.setFiStandByList(fiStandBy);
 
 //                                long yr = ccInDB.getYearAccumMin() + fiMin;
 //                                long mon = ccInDB.getMonthAccumMin() + fiMin;
 //                                ccInDB.setYearAccumMin(yr);
 //                                ccInDB.setMonthAccumMin(mon);
-                                        // set stand by times of the crew
-                                        if (clSBNum == 0) {
-                                            ccInDB.setFirstSB((ccInDB.getFirstSB() + 1));
-                                            System.out.println("P_P assign crew as first standby" + cc.getCbName() + " " + fi.getId());
-                                        } else {
-                                            ccInDB.setSecondSB((ccInDB.getSecondSB() + 1));
-                                            System.out.println("P_P assign crew as second standby" + cc.getCbName() + " " + fi.getId());
-                                        }
-
-                                        em.merge(fiInDB);
-                                        em.merge(ccInDB);
-                                        em.flush();
-                                        fiCabinLeader++;
-                                        System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader " + fiCabinLeader);
-                                    }
+                                // set stand by times of the crew
+                                if (clSBNum == 0) {
+                                    ccInDB.setFirstSB((ccInDB.getFirstSB() + 1));
+                                    System.out.println("P_P assign crew as first standby" + cc.getCbName() + " for " + fi.getId());
+                                } else {
+                                    ccInDB.setSecondSB((ccInDB.getSecondSB() + 1));
+                                    System.out.println("P_P assign crew as second standby" + cc.getCbName() + " for " + fi.getId());
                                 }
+
+                                em.merge(fiInDB);
+                                em.merge(ccInDB);
+                                em.flush();
+                                fiCabinLeader += 1;
+                                System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabinLeader after adding a sb is " + fiCabinLeader);
                             }
+//                                }
+//                            }
                         }
                     }
                 }
             }
 
             for (CabinCrew cc : idleCabin) {
-                if (fiCabin >= 2) {
-                    System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabin " + fiCabin);
-                    break;
-                } else {
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check cabin cc " + cc.getCbName());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Crew"));
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getFirstSB() " + cc.getFirstSB());
-                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getSecondSB() " + cc.getSecondSB());
+                if (fiCabin < 2) {
+                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: check CABIN CABINCREW cc " + cc.getCbName());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: checkCabinSBEmpty() " + checkCabinSBEmpty(fi, "Cabin Crew"));
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getFirstSB() " + cc.getFirstSB());
+//                    System.out.println("………………*************&&&&&&&&&&&&&%%%%%%%%%%%%%% idleCabin: cc.getSecondSB() " + cc.getSecondSB());
                     if (!fi.getCabinStandByList().contains(cc)) {
                         if (((cc.getFirstSB() < 2) && checkCabinSBEmpty(fi, "Cabin Crew")) || ((cc.getSecondSB() < 3) && !checkCabinSBEmpty(fi, "Cabin Crew"))) {
-                            if ((cc.getYearAccumMin() + fiMin) / 60 < 1000) {
-                                if ((cc.getMonthAccumMin() + fiMin) / 60 < 100) {
-                                    if (checkAvailable(cc, fi)) {
-                                        FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
-                                        CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
-                                        List<CabinCrew> ccs = fiInDB.getCabinStandByList();
-                                        List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
+//                            if ((cc.getYearAccumMin() + fiMin) / 60 <= 1000) {
+//                                if ((cc.getMonthAccumMin() + fiMin) / 60 <= 100) {
+                            if (checkAvailable(cc, fi)) {
+                                FlightInstance fiInDB = em.find(FlightInstance.class, fi.getId());
+                                CabinCrew ccInDB = em.find(CabinCrew.class, cc.getCbName());
+                                List<CabinCrew> ccs = fiInDB.getCabinStandByList();
+                                List<FlightInstance> fiStandBy = ccInDB.getFiStandByList();
 
-                                        // get number of cabin leader in the fi standby list
-                                        Integer ccSBNum = 0;
-                                        for (CabinCrew cc1 : ccs) {
-                                            if (cc1.getStfLevel().equalsIgnoreCase("Cabin Crew")) {
-                                                ++ccSBNum;
-                                            }
-                                        }
+                                // get number of cabin leader in the fi standby list
+                                Integer ccSBNum = 0;
+                                for (CabinCrew cc1 : ccs) {
+                                    if (cc1.getStfLevel().equalsIgnoreCase("Cabin Crew")) {
+                                        ++ccSBNum;
+                                    }
+                                }
 
-                                        ccs.add(ccInDB);
-                                        fiStandBy.add(fiInDB);
-                                        fiInDB.setCabinStandByList(ccs);
-                                        ccInDB.setFiStandByList(fiStandBy);
+                                ccs.add(ccInDB);
+                                fiStandBy.add(fiInDB);
+                                fiInDB.setCabinStandByList(ccs);
+                                ccInDB.setFiStandByList(fiStandBy);
 
 //                                long yr = ccInDB.getYearAccumMin() + fiMin;
 //                                long mon = ccInDB.getMonthAccumMin() + fiMin;
 //                                ccInDB.setYearAccumMin(yr);
 //                                ccInDB.setMonthAccumMin(mon);
-                                        // set stand by times of the crew
-                                        if (ccSBNum == 0) {
-                                            ccInDB.setFirstSB((ccInDB.getFirstSB() + 1));
-                                            System.out.println("P_P assign crew as first standby" + cc.getCbName() + " " + fi.getId());
-                                        } else {
-                                            ccInDB.setSecondSB((ccInDB.getSecondSB() + 1));
-                                            System.out.println("P_P assign crew as second standby" + cc.getCbName() + " " + fi.getId());
-                                        }
-
-                                        em.merge(fiInDB);
-                                        em.merge(ccInDB);
-                                        em.flush();
-                                        fiCabin++;
-                                        System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabin " + fiCabin);
-                                    }
+                                // set stand by times of the crew
+                                if (ccSBNum == 0) {
+                                    ccInDB.setFirstSB((ccInDB.getFirstSB() + 1));
+                                    System.out.println("P_P assign crew as first standby" + cc.getCbName() + " " + fi.getId());
+                                } else {
+                                    ccInDB.setSecondSB((ccInDB.getSecondSB() + 1));
+                                    System.out.println("P_P assign crew as second standby" + cc.getCbName() + " " + fi.getId());
                                 }
+
+                                em.merge(fiInDB);
+                                em.merge(ccInDB);
+                                em.flush();
+                                fiCabin += 1;
+                                System.err.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS fiCabin after adding a sb is  " + fiCabin);
                             }
+//                                }
+//                            }
                         }
                     }
                 }
@@ -827,24 +848,78 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
         // reset monthly counter
         for (CabinCrew cc : getAllCabinCrew()) {
+            CabinCrew cc1 = em.find(CabinCrew.class, cc.getCbName());
 //            cc.setFirstSB(0);
 //            cc.setSecondSB(0);
-            cc.setWeekAccumMin(0);
-            cc.setMonthAccumMin(0);
+            cc1.setWeekAccumMin(0);
+            cc1.setMonthAccumMin(0);
+            em.merge(cc1);
+            em.flush();
         }
         for (CockpitCrew cc : getAllCockpitCrew()) {
+            CockpitCrew cc1 = em.find(CockpitCrew.class, cc.getCpName());
 //            cc.setFirstSB(0);
 //            cc.setSecondSB(0);
             cc.setWeekAccumMin(0);
             cc.setMonthAccumMin(0);
+            em.merge(cc1);
+            em.flush();
         }
+    }
 
+    @Override
+    public void removeCpFromFlight(FlightInstance fi1, CockpitCrew cp1) {
+        FlightInstance fi = em.find(FlightInstance.class, fi1.getId());
+        CockpitCrew cp = em.find(CockpitCrew.class, cp1.getCpName());
+
+        List<CockpitCrew> cpList = fi.getCockpitList();
+        cpList.remove(cp);
+        fi.setCockpitList(cpList);
+
+        List<FlightInstance> fiList = cp.getFiList();
+        fiList.remove(fi);
+        cp.setFiList(fiList);
+
+        List<FlightTask> fiTaskList = cp.getTaskList();
+        FlightTask toRemove = this.findCpFlightTask(cp, fi);
+        fiTaskList.remove(toRemove);
+        cp.setTaskList(fiTaskList);
+
+        em.remove(toRemove);
+        em.merge(fi);
+        em.merge(cp);
+        em.flush();
+    }
+
+    @Override
+    public void removeCcFromFlight(FlightInstance fi1, CabinCrew cc1) {
+        System.out.println("AAAAA here removeCc in session bean");
+        FlightInstance fi = em.find(FlightInstance.class, fi1.getId());
+        CabinCrew cc = em.find(CabinCrew.class, cc1.getCbName());
+
+        List<CabinCrew> ccList = fi.getCabinList();
+        ccList.remove(cc);
+        fi.setCabinList(ccList);
+
+        List<FlightInstance> fiList = cc.getFiList();
+        fiList.remove(fi);
+        cc.setFiList(fiList);
+
+        List<FlightTask> fiTaskList = cc.getTaskList();
+        FlightTask toRemove = this.findCbFlightTask(cc, fi);
+        fiTaskList.remove(toRemove);
+        cc.setTaskList(fiTaskList);
+
+        em.remove(toRemove);
+        em.merge(fi);
+        em.merge(cc);
+        em.flush();
     }
 
     public boolean checkCabinSBEmpty(FlightInstance fi, String level) {
         List<CabinCrew> cbSB = fi.getCabinStandByList();
         for (CabinCrew cc : cbSB) {
-            if (cc.getStfLevel().equals(level)) {
+            if (cc.getStfLevel().equalsIgnoreCase(level)) {
                 return false;
             }
         }
@@ -869,9 +944,11 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         Calendar cal = new GregorianCalendar();
         cal.setTime(fiDep);
         cal.add(Calendar.HOUR, -1);
+        cal.add(Calendar.SECOND, 1);
         fiDep = cal.getTime();
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
+        cal.add(Calendar.SECOND, -1);
         fiArr = cal.getTime();
         System.out.println("************************ CHECK AVAILABLE CAN FLY : CP == " + cp.getCpName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
@@ -910,24 +987,29 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
     public boolean checkAvailable(CabinCrew cc, FlightInstance fi) {
         boolean canFly = false;
-        List<FlightInstance> fiTasks = sortFiList(cc.getFiList());
+        List<FlightInstance> fiTasks = this.sortFiList(cc.getFiList());
         Date fiDep = fi.getStandardDepTimeDateType();
         Date fiArr = fi.getStandardArrTimeDateType();
         Calendar cal = new GregorianCalendar();
         cal.setTime(fiDep);
         cal.add(Calendar.HOUR, -1);
+        cal.add(Calendar.SECOND, 1);
         fiDep = cal.getTime();
         cal.setTime(fiArr);
         cal.add(Calendar.HOUR, 1);
+        cal.add(Calendar.SECOND, -1);
         fiArr = cal.getTime();
         System.out.println("************************ CHECK AVAILABLE CAN FLY : CC == " + cc.getCbName() + " FI == " + fi);
         if (fiTasks.isEmpty()) {    // fiTasks is empty
+            System.out.println("CHECK CABIN CAN FLY : PASS CHECK IN 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiArr.before(fiTasks.get(0).getStandardDepTimeDateType())
                 && fi.getFlightFrequency().getRoute().getDest().equals(fiTasks.get(0).getFlightFrequency().getRoute().getOrigin())) {   // fi is before the first of fiTasks
+            System.out.println("CHECK CABIN CAN FLY : PASS CHECK IN 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else if (fiDep.after(fiTasks.get(fiTasks.size() - 1).getStandardArrTimeDateType())
-                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(0).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+                && fi.getFlightFrequency().getRoute().getOrigin().equals(fiTasks.get(fiTasks.size() - 1).getFlightFrequency().getRoute().getDest())) {   // fi is after the last of fiTasks
+            System.out.println("CHECK CABIN CAN FLY : PASS CHECK IN 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             canFly = true;
         } else {
             for (int i = 0; i < fiTasks.size() - 1; i++) {
@@ -936,6 +1018,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 if (fiDep.after(f1.getStandardArrTimeDateType()) && fiArr.before(f2.getStandardDepTimeDateType())
                         && fi.getFlightFrequency().getRoute().getOrigin().equals(f1.getFlightFrequency().getRoute().getDest())
                         && fi.getFlightFrequency().getRoute().getDest().equals(f2.getFlightFrequency().getRoute().getOrigin())) {
+                    System.out.println("CHECK CABIN CAN FLY : PASS CHECK IN 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                     canFly = true;
                 }
             }
@@ -943,10 +1026,11 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return canFly;
     }
 
+    @Override
     public List<CabinCrew> getIdleCabin(String cabinType, FlightInstance fi) {
         List<CabinCrew> cbList = new ArrayList<>();
         List<CabinCrew> idleCb = new ArrayList<>();
-        if (cabinType.equals("Cabin Crew")) {
+        if (cabinType.equalsIgnoreCase("Cabin Crew")) {
             cbList = getAllCabin();
         } else {
             cbList = getAllCabinLeader();
@@ -959,6 +1043,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         return idleCb;
     }
 
+    @Override
     public List<CockpitCrew> getIdleCockpit(String cabinType, FlightInstance fi) {
         List<CockpitCrew> cpList = new ArrayList<>();
         List<CockpitCrew> idleCp = new ArrayList<>();
@@ -1325,6 +1410,150 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         ft1.setStatus("signed-in");
         em.merge(ft1);
         em.flush();
+    }
+
+    @Override
+    public String getCrewType(String id) {
+        String type = "";
+        Query q1 = em.createQuery("SELECT c FROM CockpitCrew c");
+        List<CockpitCrew> cpList = (List<CockpitCrew>) q1.getResultList();
+        for (CockpitCrew cp : cpList) {
+            if (cp.getCpName().equalsIgnoreCase(id)) {
+                type = "Cockpit";
+                break;
+            }
+        }
+        Query q2 = em.createQuery("SELECT c FROM CabinCrew c");
+        List<CabinCrew> ccList = (List<CabinCrew>) q2.getResultList();
+        for (CabinCrew cc : ccList) {
+            if (cc.getCbName().equalsIgnoreCase(id)) {
+                type = "Cabin";
+                break;
+            }
+        }
+        return type;
+    }
+
+    @Override
+    public void addCPToFlight(String crewId, Long fiId) throws Exception {
+        CockpitCrew cc = this.findCPById(crewId);
+        FlightInstance fi = em.find(FlightInstance.class, fiId);
+        List<CockpitCrew> ccList = fi.getCockpitList();
+        List<CockpitCrew> captain = new ArrayList<>();
+        List<CockpitCrew> pilot = new ArrayList<>();
+        for (CockpitCrew cc1 : ccList) {
+            if (cc1.getStfType().equalsIgnoreCase("Captain")) {
+                captain.add(cc1);
+            }
+            if (cc1.getStfType().equalsIgnoreCase("Pilot")) {
+                pilot.add(cc1);
+            }
+        }
+        Integer captainNo = captain.size();
+        System.out.println("captainNo = " + captainNo);
+        Integer pilotNo = pilot.size();
+        System.out.println("pilotNo = " + pilotNo);
+        switch (cc.getStfLevel()) {
+            case "Captain": {
+                System.out.println("here = ");
+                if (captainNo >= fi.getFlightFrequency().getRoute().getAcType().getCaptain()) {
+                    System.out.println("here ==");
+                    throw new Exception("Enough captain for this flight.");
+                }
+                break;
+            }
+            case "Pilot": {
+                System.out.println("here2 = ");
+                if (pilotNo >= fi.getFlightFrequency().getRoute().getAcType().getPilot()) {
+                    System.out.println("here2 == ");
+                    throw new Exception("Enough pilot for this flight.");
+                }
+                break;
+            }
+        }
+        ccList.add(cc);
+        fi.setCockpitList(ccList);
+        List<FlightInstance> fiList = cc.getFiList();
+        fiList.add(fi);
+        cc.setFiList(fiList);
+
+        List<FlightTask> cpFiTasks = cc.getTaskList();
+        FlightTask cpFiT = new FlightTask();
+        cpFiT.create(cc.getCpName(), fi.getFlightFrequency().getFlightNo(), fi.getStandardDepTimeDateType(), "assigned");
+        em.persist(cpFiT);
+        cpFiTasks.add(cpFiT);
+        cc.setTaskList(cpFiTasks);
+
+        em.merge(cc);
+        em.merge(fi);
+        em.flush();
+    }
+
+    @Override
+    public void addCCToFlight(String crewId, Long fiId) throws Exception {
+        CabinCrew cc = this.findCCById(crewId);
+        FlightInstance fi = em.find(FlightInstance.class, fiId);
+        List<CabinCrew> ccList = fi.getCabinList();
+        List<CabinCrew> cabinLeader = new ArrayList<>();
+        List<CabinCrew> cabinCrew = new ArrayList<>();
+        for (CabinCrew cc1 : ccList) {
+            if (cc1.getStfType().equalsIgnoreCase("Cabin Leader")) {
+                cabinLeader.add(cc1);
+            }
+            if (cc1.getStfType().equalsIgnoreCase("Cabin Crew")) {
+                cabinCrew.add(cc1);
+            }
+        }
+        Integer clNo = cabinLeader.size();
+        Integer ccNo = cabinCrew.size();
+        Integer seatNum = fi.getFlightFrequency().getRoute().getAcType().getTotalSeatNum();
+        Double temp1 = 0.0;
+        temp1 = fi.getFlightFrequency().getRoute().getAcType().getCabinLeader() * seatNum;
+        Integer reqClNo = temp1.intValue();
+        temp1 = fi.getFlightFrequency().getRoute().getAcType().getCabinCrew() * seatNum;
+        Integer reqCcNo = temp1.intValue();
+        switch (cc.getStfLevel()) {
+            case "Cabin Leader": {
+                if (clNo >= reqClNo) {
+                    throw new Exception("Enough cabin leader for this flight.");
+                }
+                break;
+            }
+            case "Cabin Crew": {
+                if (ccNo >= reqCcNo) {
+                    throw new Exception("Enough cabin crew for this flight.");
+                }
+                break;
+            }
+        }
+        ccList.add(cc);
+        fi.setCabinList(ccList);
+        List<FlightInstance> fiList = cc.getFiList();
+        fiList.add(fi);
+        cc.setFiList(fiList);
+
+        List<FlightTask> cpFiTasks = cc.getTaskList();
+        FlightTask cpFiT = new FlightTask();
+        cpFiT.create(cc.getCbName(), fi.getFlightFrequency().getFlightNo(), fi.getStandardDepTimeDateType(), "assigned");
+        em.persist(cpFiT);
+        cpFiTasks.add(cpFiT);
+        cc.setTaskList(cpFiTasks);
+
+        em.merge(cc);
+        em.merge(fi);
+        em.flush();
+    }
+
+    @Override
+    public List<CockpitCrew> getIdleLicensedCockpit(String cabinType, FlightInstance fi) {
+        List<CockpitCrew> cpList = new ArrayList<>();
+        List<CockpitCrew> idleCp = this.getIdleCockpit(cabinType, fi);
+        for (CockpitCrew cc : idleCp) {
+            if (cc.getLicence().equalsIgnoreCase(fi.getFlightFrequency().getRoute().getAcType().getType())) {
+                cpList.add(cc);
+            }
+        }
+        return cpList;
     }
 
 }
