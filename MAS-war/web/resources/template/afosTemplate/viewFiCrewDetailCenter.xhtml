@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>View Flight Crew Arrangement Detail</title>
+    </h:head>
+    <h:body>
+
+        <style>
+            .buttonAdd.ui-button {
+                color: #3c9fb4;   
+                position: absolute;
+                right: 20px;
+            }
+
+            .buttonAdd1.ui-button {
+                color: #3c9fb4;   
+                position: absolute;
+                right: 350px;
+            }
+
+            .buttonAdd2.ui-button {
+                color: #3c9fb4;   
+                position: absolute;
+                right: 450px;
+            }
+
+            .ui-datatable {
+                /*                position: relative;*/
+                position: relative;
+                left: 15px;
+            }
+
+            .specialDialog.ui-panel {
+                border: none;
+            }
+
+            .specialDialog.ui-panel-content {
+                border: none;
+            }
+
+        </style>
+
+        <!--<h:form id="formMain">-->
+        <p:panel id="panel" header="View Flight Crew Arrangement Detail"  style="width:100%">
+            <p:growl id="growl" autoUpdate="false" showDetail="true"/>
+            <h:panelGrid columns="2"  style="margin-bottom:20px; width: 60%;" cellpadding="10" columnClasses="ui-grid-col-3, ui-grid-col-9">
+
+                <p:outputLabel value="Flight No: " style="font-weight: bold;"/>
+                <h:outputText value="#{VFCDMB.fi.flightFrequency.flightNo}" />
+
+                <p:outputLabel value="Origin Airport: " style="font-weight: bold;"/>
+                <h:outputText value="#{VFCDMB.fi.flightFrequency.route.origin}" />
+
+                <p:outputLabel value="Destination Airport: " style="font-weight: bold;"/>
+                <h:outputText value="#{VFCDMB.fi.flightFrequency.route.dest}" />
+
+                <p:outputLabel value="Departure Time: " style="font-weight: bold;"/>
+                <h:outputText value="#{VFCDMB.fi.standardDepTimeDateType}" >                   
+                    <f:convertDateTime pattern ="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/>
+                </h:outputText>
+
+                <p:outputLabel value="Arrival Time: " style="font-weight: bold;"/>
+                <h:outputText value="#{VFCDMB.fi.standardArrTimeDateType}" >                   
+                    <f:convertDateTime pattern ="yyyy-MM-dd HH:mm" timeZone="Asia/Singapore"/>
+                </h:outputText>
+            </h:panelGrid>
+
+            <p:commandButton value="Refresh List" update="panel" styleClass="buttonAdd1" >
+                <f:ajax event="click" listener="#{VFCDMB.refresh}" immediate="true" />
+            </p:commandButton>  
+            <p:commandButton value="Add Flight Crew" onclick="PF('dlg3').show();" styleClass="buttonAdd2"/>
+            <br/><br/>
+            <p:dataTable var="cp" value="#{VFCDMB.captainList}" emptyMessage="No captain assigned to this flight" style="width:70%">
+                <f:facet name="header">
+                    Captain
+                </f:facet>
+
+                <p:column headerText="Staff Id" >
+                    <h:outputText value="#{cp.cpName}" />
+                </p:column>
+
+                <p:column headerText="Staff Name" >
+                    <h:outputText value="#{cp.firstName} / #{cp.lastName}" />
+                </p:column>
+
+                <p:column headerText="License" >
+                    <h:outputText value="#{cp.licence}" />
+                </p:column>
+
+                <p:column headerText="Remove From Flight" >
+                    <p:commandButton value="Remove" action="#{VFCDMB.setCpCrewInfo}"  onclick="PF('dlg1').show();" >
+                        <f:param name="removeCp" value="#{cp.cpName}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <h:form id="diaForm1">
+                <p:dialog id="dlg1" header="Delete crew from the flight" widgetVar="dlg1" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                    <h:outputText value="Do you want to delete selected cockpit crew from the flight?"/>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Delete"  update="growl" action="#{VFCDMB.deleteCpFromFlight()}" oncomplete="PF('dlg1').hide();" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg1').hide()" />
+                        </h:panelGroup>
+                    </f:facet>  
+                </p:dialog>
+            </h:form>
+
+            <p:dataTable var="cp" value="#{VFCDMB.pilotList}" emptyMessage="No pilot assigned to this flight" style="width:70%">
+                <f:facet name="header">
+                    Pilot 
+                </f:facet>
+
+                <p:column headerText="Staff Id" >
+                    <h:outputText value="#{cp.cpName}" />
+                </p:column>
+
+                <p:column headerText="Staff Name" >
+                    <h:outputText value="#{cp.firstName} / #{cp.lastName}" />
+                </p:column>
+
+                <p:column headerText="License" >
+                    <h:outputText value="#{cp.licence}" />
+                </p:column>
+
+                <p:column headerText="Remove From Flight" >
+                    <p:commandButton value="Remove"  action="#{VFCDMB.setCpCrewInfo}" onclick="PF('dlg1').show();" >
+                        <f:param name="removeCp" value="#{cp.cpName}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <h:form id="diaForm2">
+                <p:dialog id="dlg2" header="Delete crew from the flight" widgetVar="dlg2" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                    <h:outputText value="Do you want to delete selected cabin crew from the flight?"/>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Delete"  update="growl" action="#{VFCDMB.deleteCcFromFlight()}" oncomplete="PF('dlg2').hide();" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg2').hide()" />
+                        </h:panelGroup>
+                    </f:facet>  
+                </p:dialog>
+            </h:form>
+
+            <h:form id="diaForm3">
+                <p:dialog id="dlg3" header="Assign flight crew" widgetVar="dlg3" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                    <h:panelGroup layout="block" styleClass="specialDialog" style="margin:15px;">
+                        <p:panelGrid columns="2" >  
+                            <p:outputLabel for="staffType" value="Select flight crew type; " />
+                            <p:selectOneMenu id="staffType" value="#{VFCDMB.addCrewType}" required="true" requiredMessage="Please select the flight crew type" style="width:150px">
+                                <p:ajax listener="#{VFCDMB.onCrewTypeChange}" update="staffList" />
+                                <f:selectItem itemLabel="-Select One-" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{VFCDMB.crewTypeList}" />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="staffList" value="Select a staff: " />
+                            <p:selectOneMenu id="staffList" value="#{VFCDMB.addCrewId}" required="true" requiredMessage="Please select a flight crew" style="width:150px">
+                                <f:selectItem itemLabel="-Select One-" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{VFCDMB.addCrewIdList}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </h:panelGroup>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                            <p:commandButton value="Confirm"  update="growl" action="#{VFCDMB.addCrewToFlight()}" oncomplete="PF('dlg3').hide();" />
+                            <p:commandButton value="Cancel"  onclick="PF('dlg3').hide()" immediate="true" />
+                        </h:panelGroup>
+                    </f:facet>  
+                </p:dialog>
+            </h:form>
+
+            <p:dataTable var="cc" value="#{VFCDMB.cabinleaderList}" emptyMessage="No cabin leader assigned to this flight" style="width:70%">
+                <f:facet name="header">
+                    Cabin Leader
+                </f:facet>
+
+                <p:column headerText="Staff Id" >
+                    <h:outputText value="#{cc.cbName}" />
+                </p:column>
+
+                <p:column headerText="Staff Name" >
+                    <h:outputText value="#{cc.firstName} / #{cc.lastName}" />
+                </p:column>
+
+                <p:column headerText="Second Language" >
+                    <h:outputText value="#{cc.secondLang}" />
+                </p:column>
+
+                <p:column headerText="Remove From Flight" >
+                    <p:commandButton value="Remove"  action="#{VFCDMB.setCcCrewInfo}" onclick="PF('dlg2').show();" >
+                        <f:param name="removeCc" value="#{cc.cbName}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dataTable var="cc" value="#{VFCDMB.cabincrewList}" emptyMessage="No cabin crew assigned to this flight" style="width:70%; ">
+                <f:facet name="header">
+                    Cabin Crew
+                </f:facet>
+
+                <p:column headerText="Staff Id" >
+                    <h:outputText value="#{cc.cbName}" />
+                </p:column>
+
+                <p:column headerText="Staff Name" >
+                    <h:outputText value="#{cc.firstName} / #{cc.lastName}" />
+                </p:column>
+
+                <p:column headerText="Second Language" >
+                    <h:outputText value="#{cc.secondLang}" />
+                </p:column>
+
+                <p:column headerText="Remove From Flight" >
+                    <p:commandButton value="Remove"  action="#{VFCDMB.setCcCrewInfo}" onclick="PF('dlg2').show();" >
+                        <f:param name="removeCc" value="#{cc.cbName}" />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <br/><br/>
+            <p:commandButton value="Back to list"  action="#{VFCDMB.viewFCDetailBack}" icon="ui-icon-carat-1-w"/>
+
+        </p:panel>
+        <!--</h:form>-->
+    </h:body>
+</html>
