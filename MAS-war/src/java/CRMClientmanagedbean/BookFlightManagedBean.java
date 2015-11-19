@@ -542,6 +542,10 @@ public class BookFlightManagedBean implements Serializable {
         }
     }
 
+    public void onSelectBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight1.xhtml");
+    }
+
     public void onSelectOption() throws IOException {
         int checkCount = 0;
         String selectedDay = "";

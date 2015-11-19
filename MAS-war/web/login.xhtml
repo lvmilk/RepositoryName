@@ -13,7 +13,7 @@
         <div style="width:50%; margin-right:15%;margin-top:10%; margin-bottom:auto;margin-left:auto; border:0px ;">
             <h:form>
 
-                <p:panel id="panel" header="Login" style="width: 50%">
+                <p:panel id="panel" header="Login" style="width: 58%">
 
                     <p:messages id="msgs" showDetail="true" />
                     <h:panelGrid columns="3" cellpadding="10">
@@ -31,7 +31,7 @@
                         <p:message for="password" id="msgPassword" display="icon" />
 
                         <p:outputLabel for="domain" value="Staff domain:" />
-                        <h:selectOneMenu id="domain" value="#{login.stfType}">
+                        <h:selectOneMenu id="domain" value="#{login.stfType}" style="width: 150px">
                             <f:selectItem itemValue="administrator" itemLabel="Admin Staff" />
                             <f:selectItem itemValue="officeStaff" itemLabel="Office Staff" />
                             <f:selectItem itemValue="groundStaff" itemLabel="Ground Staff" />

@@ -42,11 +42,13 @@ public class PersonalScheduleGroundStaffManagedBean implements Serializable {
         if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username") != null) {
             username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username");
             grd = csb.findGSById(username);
-            rtList = grd.getGroundStaffTeam().getRotationList();
-            Date today = new Date();
-            for (Rotation r : rtList) {
-                if (!r.getWorkDate().before(today)) {
-                    viewRt.add(r);
+            if (grd.getGroundStaffTeam() != null && grd.getGroundStaffTeam().getTeamId() != 5) {
+                rtList = grd.getGroundStaffTeam().getRotationList();
+                Date today = new Date();
+                for (Rotation r : rtList) {
+                    if (!r.getWorkDate().before(today)) {
+                        viewRt.add(r);
+                    }
                 }
             }
         }
@@ -84,6 +86,4 @@ public class PersonalScheduleGroundStaffManagedBean implements Serializable {
         this.grd = grd;
     }
 
-    
-    
 }

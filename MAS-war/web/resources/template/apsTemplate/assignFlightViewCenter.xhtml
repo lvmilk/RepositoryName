@@ -33,12 +33,17 @@
                     position: absolute;
                     left: 15px;
                 }
-                
+
                 .buttonAdd2.ui-button {
                     position: absolute;
                     left: 135px;
                 }
-                
+
+                .unplanned.ui-datatable {
+                    float: left;
+                    margin-left: 15px;
+                }
+
             </style>
 
             <p:panel id="panel" header="Fleet Assignment" style="width: 100%">
@@ -81,8 +86,8 @@
 
             <br/><br/>
 
-            <p:dataTable id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights of the planning period remain unassigned." style="width:60%">
-                <f:facet name="header" class="unassignedFlightTable">
+            <p:dataTable styleClass="unplanned" id="unplanned" var="flight" value="#{FAMB.unassignedFlight}"  emptyMessage="No flights of the planning period remain unassigned." style="width:60%">
+                <f:facet name="header" >
                     <h:outputText value="Unassigned Flight Instance(s) within Planning Period #{FAMB.startPl} - #{FAMB.endPl}"/>
                 </f:facet>
                 <p:column headerText="Flight No">
@@ -107,8 +112,8 @@
 
             <br/>
 
-            <p:dataTable id="unplannedAll" var="flight" value="#{FAMB.unassignedFlightAll}"  emptyMessage="No flights of previous planning period remain unassigned." style="width:60%">
-                <f:facet name="header" class="unassignedFlightTable">
+            <p:dataTable styleClass="unplanned" id="unplannedAll" var="flight" value="#{FAMB.unassignedFlightAll}"  emptyMessage="No flights of previous planning period remain unassigned." style="width:60%">
+                <f:facet name="header">
                     Unassigned Flight Instance(s) of Previous Planning Period
                 </f:facet>
                 <p:column headerText="Flight No">
