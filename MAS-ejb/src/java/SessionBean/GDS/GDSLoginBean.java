@@ -8,6 +8,7 @@ package SessionBean.GDS;
 import Entity.CommonInfa.AirAlliances;
 import Entity.GDS.Airline;
 import Entity.GDS.GDSFlight;
+import Entity.GDS.GDSSeat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,15 +91,32 @@ public class GDSLoginBean {
      * Web service operation
      */
     @WebMethod(operationName = "publishFlight")
-    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyName") String companyName, @WebParam(name = "cabinName") String cabinName, @WebParam(name = "price") Double price,@WebParam(name = "rowStart") Integer rowStart,@WebParam(name = "rowEnd") Integer rowEnd,@WebParam(name = "columnStart") char columnStart,@WebParam(name = "columnEnd")char columnEnd) {
+    public boolean publishFlight(@WebParam(name = "flightNo") String flightNo, @WebParam(name = "depTime") Date depTime, @WebParam(name = "arrTime") Date arrTime, @WebParam(name = "depAirport") String depAirport, @WebParam(name = "arrAirport") String arrAirport, @WebParam(name = "depIATA") String depIATA, @WebParam(name = "arrIATA") String arrIATA, @WebParam(name = "seatQuota") Integer seatQuota, @WebParam(name = "companyName") String companyName, @WebParam(name = "cabinName") String cabinName, @WebParam(name = "price") Double price, @WebParam(name = "rowStart") Integer rowStart, @WebParam(name = "rowEnd") Integer rowEnd, @WebParam(name = "columnStart") char columnStart, @WebParam(name = "columnEnd") char columnEnd) {
         //TODO write your implementation code here:
         GDSFlight gdsFlight = new GDSFlight();
-
-        gdsFlight.createGDSFlight(flightNo, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota,companyName,cabinName,price);
+        gdsFlight.createGDSFlight(flightNo, depTime, arrTime, depAirport, arrAirport, depIATA, arrIATA, seatQuota, companyName, cabinName, price);
 //            al.getFlightInstances().add(gdsFlight);
 
-        em.persist(gdsFlight);
+        Integer i;
+        char j;
+        String seatNo;
+        String status="available";
 
+        for (i = rowStart; i <= rowEnd; i++) {
+            for (j = columnStart; j <= columnEnd; j++) {
+                GDSSeat gdsSeat=new GDSSeat();
+                seatNo=i.toString()+j;
+                System.out.println("********GDSSessionBean: seatNo"+seatNo);
+                gdsSeat.createSeat(seatNo, i, j, status, cabinName);
+                gdsSeat.setFlight(gdsFlight);
+                gdsFlight.getSeats().add(gdsSeat);
+
+            }
+        }
+
+        em.persist(gdsFlight);
+        em.flush();
+        
         return true;
 
     }

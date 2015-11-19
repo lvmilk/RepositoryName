@@ -11,6 +11,7 @@ import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
+import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.CabinClass;
@@ -42,6 +43,28 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
     private Expense expense;
     private Revenue revenue;
+
+    public List<Reservation> searchAllRsv(String email) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email").setParameter("email", email);
+        List<Reservation> rsvList = query.getResultList();
+
+        return rsvList;
+    }
+
+    public Reservation searchOneRsv(String email, Long bookRef) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email AND r.id=:bookRef");
+        query.setParameter("email", email);
+        query.setParameter("bookRef", bookRef);
+
+        List<Reservation> rsvList = query.getResultList();
+
+        if (rsvList.size() == 1) {
+            return rsvList.get(0);
+        } else {
+            return new Reservation();
+        }
+    }
+    
 
     public void upgradeCabinClass(List<Passenger> selectedPsgList, Reservation selectedRsv, BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName) {
         System.out.println("in upgradeCabinClass(): selectedPsgList is " + selectedPsgList);
@@ -403,6 +426,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 ticket.setRsv(null);
                 ticket.setBkInstance(null);
 
+                if (ticket.getSeat() != null) {
+                    Seat seat = em.find(Seat.class, ticket.getSeat().getId());
+                    seat.setTicket(null);
+                    ticket.setSeat(null);
+                    em.merge(seat);
+                }
+
                 List<Ticket> psgTickets = psg.getTickets();
                 psgTickets.remove(ticket);
                 psg.setTickets(psgTickets);
@@ -431,31 +461,36 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         }
 
         rsv = em.find(Reservation.class, rsv.getId());
-        List<BookingClassInstance> bookList = rsv.getBkcInstance();
-        for (int i = 0; i < bookList.size(); i++) {
-            BookingClassInstance bookInstance = em.find(BookingClassInstance.class, bookList.get(i).getId());
 
-            List<BookingClassInstance> bkList = rsv.getBkcInstance();
-            bkList.remove(bookInstance);
-            rsv.setBkcInstance(bkList);
+        if (oldPsgList.size() == psgList.size()) {
+            List<BookingClassInstance> bookList = rsv.getBkcInstance();
+            for (int i = 0; i < bookList.size(); i++) {
+                BookingClassInstance bookInstance = em.find(BookingClassInstance.class, bookList.get(i).getId());
 
-            Collection<Reservation> rsvList = bookInstance.getReservation();
-            rsvList.remove(rsv);
-            bookInstance.setReservation(rsvList);
+                List<BookingClassInstance> bkList = rsv.getBkcInstance();
+                bkList.remove(bookInstance);
+                rsv.setBkcInstance(bkList);
+                rsv.setRsvStatus("Cancelled");
 
-            em.merge(bookInstance);
-            em.flush();
+                Collection<Reservation> rsvList = bookInstance.getReservation();
+                rsvList.remove(rsv);
+                bookInstance.setReservation(rsvList);
 
+                em.merge(bookInstance);
+
+                em.flush();
+
+            }
         }
-
 //        em.remove(rsv);
+
         if (oldPsgList.size() == psgList.size()) {
             rsv.setRsvStatus("Cancelled");
         }
 
         em.merge(rsv);
         em.flush();
-        
+
 //
 //        em.remove(rsv);
 //        em.flush();

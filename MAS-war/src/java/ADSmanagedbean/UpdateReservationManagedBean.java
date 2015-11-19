@@ -192,6 +192,8 @@ public class UpdateReservationManagedBean implements Serializable {
             System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
         }
         mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
+         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cabin Class Upgraded successfully!"));
 
     }

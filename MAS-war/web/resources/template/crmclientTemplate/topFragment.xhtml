@@ -9,59 +9,72 @@
 
 
     <h:head>
-        <title>Top Fragment for Merlion Airlines Customer Website</title>
+        <style>
+            .topMenu.ui-menubar{
+                background-color: #DC8700 !important; 
+                border-width: 4px !important;
+            }/*
+
+            .topMenu.ui-menuitem-text {
+                font-family: Verdana  !important;
+                font-weight: bold  !important;
+                font-size: medium !important;
+            }
+
+            /*            .buttonMenu.ui-button {
+                            margin-right: 80px !important; 
+                            float: right !important;
+                            border: 0px solid red;
+                        }*/
+        </style>
+
     </h:head>
     <h:body>
         <h:form> 
 
-            <style>
-                .topMenu.ui-menubar{
-                    background-color: #35bad6; 
-                    border-width: 4px;
-                }
+            <div>
+                <p:menubar styleClass="topMenu" style="text-align: left; width: 80% !important; margin-left: 10% !important;" >
+                    <p:menuitem>
+                        <h:link outcome="/CRMClient/home.xhtml">
+                            <!--<h:graphicImage value="/images/brand_no background.png" height="40" />-->
+                            <h:graphicImage value="/images/banner_logo.png" height="45"/>
+                        </h:link>
+                    </p:menuitem>
 
-                .topMenu.ui-menuitem-text {
-                    font-family: Verdana;
-                    font-weight: bold;
-                    font-size: large;
-                }
+                    <!--                <p:menuitem value="Contact us" style="margin-right: 30px;" url="/CRMClient/contactus.xhtml" />
+                    
+                                    <p:menuitem value="Create my account"  style="margin-right: 30px;" url="/CRMClient/createMemberAccount.xhtml" />
+                    
+                                    <p:menuitem value="My account"  style="margin-right: 80px;" url="/CRMClient/memberLogin.xhtml" />-->
 
-            </style>
+                    <f:facet name="options">
+                        <p:inputText style="margin-right:10px" placeholder="Search"/>
+                        <p:commandButton value="Contact us" style="margin-right: 10px;" />
+                        <p:commandButton value="Create my account"  style="margin-right: 10px;"  icon="ui-icon-person" />
+                        <p:commandButton value="My Account" icon="ui-icon-person" styleClass="buttonMenu" />
+                    </f:facet>
 
+                </p:menubar>
+            </div>
 
-            <p:menubar styleClass = "topMenu">
-                <p:menuitem>
-                    <h:link outcome="/CRMClient/home.xhtml">
-                        <h:graphicImage value="/images/logoname.png" height="30" />
-                    </h:link>
-                </p:menuitem>
+            <p:separator style="text-align: left; width: 80% !important; margin-left: 10% !important;"/>
 
-                <p:menuitem value="Contact us" style="margin-right: 30px;" url="/CRMClient/contactus.xhtml" />
+            <p:menubar styleClass = "funcMenu" style="text-align: left; width: 80% !important; margin-left: 10% !important;">
 
-                <p:menuitem value="Create my account"  style="margin-right: 30px;" url="/CRMClient/createMemberAccount.xhtml" />
+                <p:menuitem value="HOME"  style="margin-left: 50px !important; margin-right: 50px !important;" url="/CRMClient/home.xhtml" />
 
-                <p:menuitem value="My account"  style="margin-right: 30px;" url="/CRMClient/memberLogin.xhtml" />
+                <p:menuitem value="MAKE A BOOKING" style="margin-right: 50px !important;" url="/CRMClient/BookFlight1.xhtml" />
 
-            </p:menubar>
+                <p:menuitem value="CHECK-IN"  style="margin-right: 50px !important;" url="/CRMClient/checkin.xhtml" />
 
-            <p:separator/>
+                <p:menuitem value="YOUR RESERVATIONS"  style="margin-right: 50px !important;" url="/CRMClient/QueryReservation1.xhtml" />
 
-            <p:menubar styleClass = "funcMenu" style="text-align: center">
-
-                <p:menuitem value="HOME"  style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" />
-
-                <p:menuitem value="MAKE A BOOKING" style="margin-right: 30px !important;" url="/CRMClient/booking.xhtml" />
-
-                <p:menuitem value="CHECK-IN"  style="margin-right: 30px !important;" url="/CRMClient/checkin.xhtml" />
-
-                <p:menuitem value="YOUR RESERVATIONS"  style="margin-right: 30px !important;" url="/CRMClient/viewReservation.xhtml" />
-
-                <p:submenu label="INFORMATION"  style="margin-right: 30px !important;" >
-                    <p:menuitem value="BAGGAGE" url="/CMIpages/staffProfile.xhtml"/>
-                    <p:menuitem value="FLIGHT AND AIRPORT INFO" />
-                    <p:menuitem value="CABIN AND IN-FLIGHT SERVICES" />
-                    <p:menuitem value="THE FLYING PROGRAM" />
-                    <p:menuitem value="BEST OFFERS AND PROMOTIONS" />
+                <p:submenu label="INFORMATION"  style="margin-right: 80px !important; float: right !important;" >
+                    <p:menuitem value="BAGGAGE" url="/CMIpages/home.xhtml"/>
+                    <p:menuitem value="FLIGHT AND AIRPORT INFO" url="/CMIpages/home.xhtml"/>
+                    <p:menuitem value="CABIN AND IN-FLIGHT SERVICES" url="/CMIpages/home.xhtml"/>
+                    <p:menuitem value="THE FLYING PROGRAM" url="/CMIpages/home.xhtml"/>
+                    <p:menuitem value="BEST OFFERS AND PROMOTIONS" url="/CMIpages/home.xhtml"/>
                 </p:submenu>
 
             </p:menubar>

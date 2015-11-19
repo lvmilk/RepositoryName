@@ -6,11 +6,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <!--<h:outputStylesheet name="./css/default.css"/>-->
+        <h:outputStylesheet name="./css/crmclient.css"/>
         <title></title>
-        <!--<link type="text/css" rel="stylesheet" href="./css/default.css" />-->
+        <link type="text/css" rel="stylesheet" href="./css/crmclient.css" />
         <style type="text/css">
-/*            .ui-layout-north {
+            .ui-layout-north {
                 z-index:20 !important;
                 overflow:visible !important;;
             }
@@ -18,21 +18,27 @@
             .ui-layout-north .ui-layout-unit-content {
                 overflow:visible !important;
             }
-            
-             .ui-layout-south {
+
+            .ui-layout-south {
                 z-index:20 !important;
                 overflow:visible !important;;
             }
 
             .ui-layout-south .ui-layout-unit-content {
                 overflow:visible !important;
-            }*/
+            }
+
+            .ui-layout-center {
+                float: left;
+                margin-left: 100px;
+                margin-right: 100px;
+            }
         </style>
     </h:head>
 
     <h:body>
         <p:layout fullPage="true" >
-            <p:layoutUnit id="top" position="north" size="150" style="width:100%;" >
+            <p:layoutUnit id="top" position="north" size="150" style="width:90%; margin-right: 5%" >
                 <ui:insert name="top"></ui:insert>
             </p:layoutUnit>
 
@@ -40,7 +46,7 @@
                 <ui:insert name="center"></ui:insert>
             </p:layoutUnit>
 
-            <p:layoutUnit id="bottom" position="south" size="220" style="width:100%;">
+            <p:layoutUnit id="bottom" position="south" size="150" style="width: 90%; margin-right: 5%">
                 <ui:insert name="bottom"></ui:insert>
             </p:layoutUnit>
         </p:layout>

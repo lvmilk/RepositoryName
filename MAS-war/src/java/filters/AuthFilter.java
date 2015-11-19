@@ -55,7 +55,7 @@ public class AuthFilter implements Filter {
                     String stfType = (String) ses.getAttribute("stfType");
                     System.out.println(stfType);
                     if (stfType.equals("officeStaff")) {
-                        if (path.contains("sAdm") || path.equals("/EditStaffPage.xhtml") || path.equals("/EditCockpitPage.xhtml")) {
+                        if (path.contains("sAdm") || path.equals("/EditStaffPage.xhtml") || path.equals("/EditCockpitPage.xhtml") || path.startsWith("/DCSpages")) {
                             res.sendRedirect("/MAS-war/Permission.xhtml");
                         }
                     } else if (stfType.equals("groundStaff")) {

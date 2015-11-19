@@ -8,17 +8,20 @@
     </h:head>
     <h:body>
         <p:lightBox style="text-align:center;margin-top:20px;">
-            <h:outputLink value="#{request.contextPath}/images/fleet1.jpg" title="fleet1" style="margin-bottom:4px;">
-                <h:graphicImage value="/images/fleet1.jpg"  width="200" height="150"/>
+          <p:calendar value="#{calendarManagedBean.date}" mode="inline"></p:calendar>
+              <h:outputLink value="#{request.contextPath}/images/logo.PNG" title="logo" style="margin-bottom:4px;">
+                <h:graphicImage value="/images/logo.PNG"  width="200" height="150"/>
+            </h:outputLink>
+            
+            <h:outputLink value="#{request.contextPath}/images/cabin.jpg" title="cabin" style="margin-bottom:4px;">
+                <h:graphicImage value="/images/cabin.jpg"  width="200" height="150"/>
             </h:outputLink>
 
-            <h:outputLink value="#{request.contextPath}/images/fleet2.jpg" title="fleet2" style="margin-bottom:4px;">
-                <h:graphicImage value="/images/fleet2.jpg"  width="200" height="150"/>
+            <h:outputLink value="#{request.contextPath}/images/pilot.jpg" title="pilot" style="margin-bottom:4px;">
+                <h:graphicImage value="/images/pilot.jpg"  width="200" height="150"/>
             </h:outputLink>
-
-            <h:outputLink value="#{request.contextPath}/images/fleet3.jpg" title="fleet3" style="margin-bottom:4px;">
-                <h:graphicImage value="/images/fleet3.jpg"  width="200" height="150"/>
-            </h:outputLink>
+            
+          
 
         </p:lightBox>
     </h:body>

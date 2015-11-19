@@ -17,20 +17,20 @@
 
                 <p:tabView>
                     <p:tab title="List View">
-                        <p:dataTable var="fi" value="#{VCPCSDMB.fiList}" paginator="true" rows="40" emptyMessage="No flight instances for this cockpit crew">
+                        <p:dataTable var="fi" value="#{VCPCSDMB.fiList}" paginator="true" rows="40" emptyMessage="No flights for this cockpit crew">
                             <p:column headerText="Flight No" sortBy="#{fi.flightFrequency.flightNo}" filterBy="#{fi.flightFrequency.flightNo}" >
                                 <h:outputText value="#{fi.flightFrequency.flightNo}" />
                             </p:column>
-                            <p:column headerText="Departure Time">
+                            <p:column headerText="Departure Time" sortBy="#{fi.standardDepTime}">
                                 <h:outputText value="#{fi.standardDepTime}" />
                             </p:column>
                             <p:column headerText="Arrival Time">
                                 <h:outputText value="#{fi.standardArrTime}" />
                             </p:column>
-                            <p:column headerText="Origin">
+                            <p:column headerText="Origin" sortBy="#{fi.flightFrequency.route.origin.IATA}" filterBy="#{fi.flightFrequency.route.origin.IATA}">
                                 <h:outputText value="#{fi.flightFrequency.route.origin.IATA}" />
                             </p:column>
-                            <p:column headerText="Destination">
+                            <p:column headerText="Destination" sortBy="#{fi.flightFrequency.route.dest.IATA}" filterBy="#{fi.flightFrequency.route.dest.IATA}">
                                 <h:outputText value="#{fi.flightFrequency.route.dest.IATA}" />
                             </p:column>
 
@@ -38,7 +38,7 @@
                     </p:tab>
 
                     <p:tab title="Calendar View">
-                        <p:schedule id="schedule" value="#{VCPCSDMB.eventModel}" widgetVar="cpschedule" timeZone="Asia/Singapore">
+                        <p:schedule id="schedule" value="#{VCPCSDMB.eventModel}" initialDate="#{VCPCSDMB.startDate}" widgetVar="cpschedule" timeZone="Asia/Singapore">
 
                         </p:schedule>
 
