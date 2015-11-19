@@ -1431,6 +1431,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 break;
             }
         }
+        Query q3 = em.createQuery("SELECT c FROM GroundStaff c");
+        List<GroundStaff> gsList = (List<GroundStaff>) q3.getResultList();
+        for (GroundStaff gs : gsList) {
+            if (gs.getGrdName().equalsIgnoreCase(id)) {
+                type = "Ground";
+                break;
+            }
+        }
         return type;
     }
 
