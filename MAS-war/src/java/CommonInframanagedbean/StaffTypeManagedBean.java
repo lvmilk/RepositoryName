@@ -21,12 +21,17 @@ import javax.inject.Named;
 public class StaffTypeManagedBean implements Serializable{
     
     private String stfType;
-    
+    private String username;
+    private String  firstName;
+    private String lastName;
     
     @PostConstruct
     public void init()
     {
         setStfType((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType"));
+        setUsername((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
+        setFirstName((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstName"));
+        setLastName((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lastName"));
     }
 
     /**
@@ -41,6 +46,30 @@ public class StaffTypeManagedBean implements Serializable{
      */
     public void setStfType(String stfType) {
         this.stfType = stfType;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
     
 }

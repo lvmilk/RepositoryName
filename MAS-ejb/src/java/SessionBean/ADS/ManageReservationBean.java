@@ -11,6 +11,7 @@ import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
+import Entity.ADS.Seat;
 import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.CabinClass;
@@ -403,6 +404,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 ticket.setRsv(null);
                 ticket.setBkInstance(null);
 
+                if (ticket.getSeat() != null) {
+                    Seat seat = em.find(Seat.class, ticket.getSeat().getId());
+                    seat.setTicket(null);
+                    ticket.setSeat(null);
+                    em.merge(seat);
+                }
+
                 List<Ticket> psgTickets = psg.getTickets();
                 psgTickets.remove(ticket);
                 psg.setTickets(psgTickets);
@@ -431,31 +439,37 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         }
 
         rsv = em.find(Reservation.class, rsv.getId());
-        List<BookingClassInstance> bookList = rsv.getBkcInstance();
-        for (int i = 0; i < bookList.size(); i++) {
-            BookingClassInstance bookInstance = em.find(BookingClassInstance.class, bookList.get(i).getId());
 
-            List<BookingClassInstance> bkList = rsv.getBkcInstance();
-            bkList.remove(bookInstance);
-            rsv.setBkcInstance(bkList);
+        if (oldPsgList.size() == psgList.size()) {
+            List<BookingClassInstance> bookList = rsv.getBkcInstance();
+            for (int i = 0; i < bookList.size(); i++) {
+                BookingClassInstance bookInstance = em.find(BookingClassInstance.class, bookList.get(i).getId());
 
-            Collection<Reservation> rsvList = bookInstance.getReservation();
-            rsvList.remove(rsv);
-            bookInstance.setReservation(rsvList);
+                List<BookingClassInstance> bkList = rsv.getBkcInstance();
+                bkList.remove(bookInstance);
+                rsv.setBkcInstance(bkList);
+                rsv.setRsvStatus("Cancelled");
 
-            em.merge(bookInstance);
-            em.flush();
+                Collection<Reservation> rsvList = bookInstance.getReservation();
+                rsvList.remove(rsv);
+                bookInstance.setReservation(rsvList);
 
+                
+                em.merge(bookInstance);
+                
+                em.flush();
+
+            }
         }
-
 //        em.remove(rsv);
+
         if (oldPsgList.size() == psgList.size()) {
             rsv.setRsvStatus("Cancelled");
         }
 
         em.merge(rsv);
         em.flush();
-        
+
 //
 //        em.remove(rsv);
 //        em.flush();
