@@ -121,26 +121,25 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
         for (int i = 0; i < resultList.size(); i++) {
             StaffLeave thisleave = resultList.get(i);
             if (thisleave.getCabinCrew() != null) {
-                if (thisleave.getCabinCrew().getCbName().equals(name)) {
+                if (thisleave.getCabinCrew().getCbName().equals(name) && thisleave.getLength() > 3) {
                     list.add(thisleave);
                 }
             } else if (thisleave.getCockpitCrew() != null) {
-                if (thisleave.getCockpitCrew().getCpName().equals(name)) {
+                if (thisleave.getCockpitCrew().getCpName().equals(name) && thisleave.getLength() > 3) {
                     list.add(thisleave);
                 }
             } else if (thisleave.getGroundStaff() != null) {
-                if (thisleave.getGroundStaff().getGrdName().equals(name)) {
+                if (thisleave.getGroundStaff().getGrdName().equals(name) && thisleave.getLength() > 3) {
                     list.add(thisleave);
                 }
             } else if (thisleave.getOfficeStaff() != null) {
-                if (thisleave.getOfficeStaff().getOffName().equals(name)) {
+                if (thisleave.getOfficeStaff().getOffName().equals(name) && thisleave.getLength() > 3) {
                     list.add(thisleave);
                 }
             } else {
                 System.out.println("AAS:RTB: There is no leave record for this staff");
             }
         }
-        System.out.println("cccccccccccccheck leave list: "+list);
         Date startDate = new Date(); //set default 
         Date endDate = new Date();//set default
         Calendar leaveEndCal = Calendar.getInstance();
@@ -247,18 +246,18 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
                     System.out.println("AAS:RTB: Invalid month input: " + month);
                     break;
             }
-            if(endDate.after(new Date())){
+            if (endDate.after(new Date())) {
                 endDate = new Date();
             }
             /////leave period within the selected month
             if (!leaveStart.before(startDate) && !leaveEnd.after(endDate)) {
-                amount = amount + list.get(i).getLength();
+                amount = amount + list.get(i).getLength() + 1;
             } else if (leaveStart.after(startDate) && !leaveStart.after(endDate) && leaveEnd.after(endDate)) {
                 long diff = (endDate.getTime() - leaveStart.getTime()) / (24 * 60 * 60 * 1000);
-                amount = amount  + (int) diff;
+                amount = amount + (int) diff + 1;
             } else if (leaveStart.before(startDate) && !leaveEnd.before(startDate) && leaveEnd.before(endDate)) {
                 long diff = (leaveEnd.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000);
-                amount = amount + (int) diff;
+                amount = amount + (int) diff + 1;
             } else {
                 System.out.println("AAS:RTB: No leave in this period: year " + year + " month " + month);
             }

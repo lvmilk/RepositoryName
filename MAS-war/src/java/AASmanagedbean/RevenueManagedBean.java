@@ -86,9 +86,9 @@ public class RevenueManagedBean implements Serializable {
         channelList.add("ARS");
         channelList.add("DDS");
         channelList.add("GDS");
-        channelList.add("HOTEL");
-        channelList.add("CAR RENTAL");
-        channelList.add("HIGH-SPEED RAILWAY");
+//        channelList.add("HOTEL");
+//        channelList.add("CAR RENTAL");
+//        channelList.add("HIGH-SPEED RAILWAY");
         channelList.add("OTHER");
         saleMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("saleMap");
         commissionMap = (Map<String, Double>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("commissionMap");

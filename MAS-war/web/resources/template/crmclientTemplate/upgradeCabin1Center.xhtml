@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Update Reservation</title>
+    </h:head>
+    <h:body>
+
+
+        <h:form id="upgradeCabin" >
+            <p:messages id="msgs" showDetail="true"/>
+            <p:panel id="panel" header="View All Reservation"  style="width:100%">
+                <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
+
+
+                    <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
+                        <h:outputText value="#{rsv.id}" />
+                    </p:column>
+
+                    <p:column headerText="Reservation Date" sortBy="#{rsv.rsvDate}" >
+                        <h:outputText value="#{rsv.rsvDate}" />
+                    </p:column>
+
+                    <p:column headerText="Depart From" >
+                        <h:outputText value="#{rsv.origin}" />
+                    </p:column>
+                    <p:column headerText="Arrive At">
+                        <h:outputText value="#{rsv.dest}" />
+                    </p:column>
+                    <p:column headerText="Round Trip">
+                        <h:outputText value="#{rsv.returnTrip}" />
+                    </p:column>
+
+                    <p:column headerText="Booking Person">
+                        <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
+                    </p:column>
+                    <p:column headerText="Contact Email" sortBy="#{rsv.bkEmail}" filterBy="#{rsv.bkEmail}" filterMatchMode="contains">
+                        <h:outputText value="#{rsv.bkEmail}" />
+                    </p:column>
+
+
+                    <p:column headerText="View ">
+                        <p:commandButton value="View Detail" actionListener="#{queryBooking.onSelectUpgradeRsv(rsv)}" partialSubmit="true" update="upgradeCabin"/>
+
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <p:panel  header="Reservation Details" rendered="#{queryBooking.allFlights.size()>0}" >
+                <p:panel header="Flight Legs" toggleable="true" >
+                    <p:dataTable var="flight" rowKey="#{flight.id}" selection="#{queryBooking.selectedFlight}" value="#{queryBooking.allFlights}" paginator="true" rows="10" emptyMessage="No Reservations" >
+
+                        <p:column headerText="Select One" selectionMode="single" style="width: 50px"/>
+
+                        <p:column headerText="Departure time" sortBy="#{flight.standardDepTimeDateType}" filterBy="#{rsv.id}" >
+                            <h:outputText value="#{flight.standardDepTimeDateType}" />
+                        </p:column>
+
+                        <p:column headerText="Arrival Time" sortBy="#{flight.standardArrTimeDateType}" >
+                            <h:outputText value="#{flight.standardArrTimeDateType}" />
+                        </p:column>
+
+                        <p:column headerText="Depart From" >
+                            <h:outputText value="#{flight.flightFrequency.route.origin.airportName}" />
+                        </p:column>
+                        <p:column headerText="Arrive At">
+                            <h:outputText value="#{flight.flightFrequency.route.dest.airportName}}" />
+                        </p:column>
+
+                        <p:column headerText="Cabin Class">
+                            <h:outputText value="#{queryBooking.flightToBkInstance[flight].flightCabin.cabinClass.cabinName}" />
+                        </p:column>
+                    </p:dataTable>
+
+                </p:panel>
+
+                <br/>
+                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
+                    <p:dataTable var="passenger" rowKey="#{passenger.id}" selection="#{queryBooking.selectedPsgList}" value="#{queryBooking.psgList}" rows="10"  emptyMessage="No Reservations" style="text-align: center">
+
+                        <p:column headerText="Select All" selectionMode="multiple" style="width: 50px"/>
+
+                        <p:column headerText="Title" >
+                            <h:outputText value="#{passenger.title}" />
+                        </p:column>
+
+                        <p:column headerText="Given Name" >
+                            <h:outputText value="#{passenger.firstName}" />
+                        </p:column>
+
+                        <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                            <h:outputText value="#{passenger.lastName}" />
+                        </p:column>
+
+                        <p:column headerText="Passport No.">
+                            <h:outputText value="#{passenger.passport}" />
+                        </p:column>
+
+                    </p:dataTable>       
+
+                </p:panel>
+
+                <br/>
+
+                <p:commandButton value="Upgrade Cabin Class" update="upgradeCabin" actionListener="#{queryBooking.onChooseUpgradePsg()}"/>
+
+            </p:panel>
+
+        </h:form>
+
+    </h:body>
+</html>
+
+

@@ -12,12 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
  * @author LI HAO
  */
 @Entity
+@XmlAccessorType( XmlAccessType.FIELD)
 public class GDSSeat implements Serializable {
 
     private static final long serialVersionUID = 1L;

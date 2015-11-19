@@ -116,7 +116,7 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, "Reserve flight successfully."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
         }

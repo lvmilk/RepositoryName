@@ -9,105 +9,108 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <h:form >
-            <ui:repeat var="psg" value="#{enterPsg.passengerList}" varStatus="myStatus">
-                <p:growl id="msgs" showDetail="true" />
+        <h:form style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+            <p:panel id="departSpecific" header="Fill In Passenger Information" style="width: 100%">
 
-                <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold"/>
-                <h:panelGrid columns="2" cellpadding="15">
-               
-                    <p:outputLabel for="title" value="Title:" />
-                    <h:selectOneMenu id="title" value="#{psg.title}">
-                        <f:selectItem itemValue="Mr" itemLabel="Dr" />
-                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
-                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
-                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
-                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
-                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
-                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
+                <ui:repeat var="psg" value="#{enterPsg.passengerList}" varStatus="myStatus">
+                    <p:growl id="msgs" showDetail="true" />
 
-                    </h:selectOneMenu>
+                    <br/>
+                    <p:outputLabel value="Passenger#{myStatus.index+1}" style="font-weight: bold; font-size: medium !important;"/>
+                    <h:panelGrid columns="2" cellpadding="12" columnClasses="ui-grid-col-5, ui-grid-col-7" style="width: 50%">
 
-                    <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{psg.firstName}" required="true" requiredMessage="please enter first name"/>
+                        <p:outputLabel for="title" value="Title:" />
+                        <h:selectOneMenu id="title" value="#{psg.title}" style="width: 100px">
+                            <f:selectItem itemValue="Mr" itemLabel="Mr" />
+                            <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                            <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                            <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                            <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                            <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                            <f:selectItem itemValue="Prof" itemLabel="Prof" />
 
-                    <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{psg.lastName}" required="true" requiredMessage="please enter last name"/>            
+                        </h:selectOneMenu>
 
-                    <p:outputLabel  value="Passport: " />
-                    <p:inputText value="#{psg.passport}" required="true" requiredMessage="please enter passport"/>       
+                        <p:outputLabel  value="First Name: " />
+                        <p:inputText value="#{psg.firstName}" required="true" requiredMessage="Please enter first name" style="width: 170px"/>
+
+                        <p:outputLabel  value="Last Name: " />
+                        <p:inputText value="#{psg.lastName}" required="true" requiredMessage="Please enter last name" style="width: 170px"/>            
+
+                        <p:outputLabel  value="Passport: " />
+                        <p:inputText value="#{psg.passport}" required="true" requiredMessage="Please enter passport number" style="width: 170px"/>       
 
 
-                    <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
-                    <h:selectOneMenu id="ffpProgram" value="#{psg.ffpName}">
-                        <f:selectItem itemValue="TFP" itemLabel="MAS - The Flying Program(TFP) " />
-                    </h:selectOneMenu>
+                        <p:outputLabel for="ffpProgram" value="Frequent Flyer Programme:" />
+                        <h:selectOneMenu id="ffpProgram" value="#{psg.ffpName}" style="width: 190px">
+                            <f:selectItem itemValue="TFP" itemLabel="MAS - The Flying Program(TFP) " />
+                        </h:selectOneMenu>
 
-                    <p:outputLabel  value="Frequent flyer membership number: " />
-                    <p:inputText value="#{psg.ffpNo}"/>    
+                        <p:outputLabel  value="Frequent Flyer Membership Number: "/>
+                        <p:inputText value="#{psg.ffpNo}" style="width: 170px"/>    
 
-                    <p:separator/>
-                    <p:separator/>
-                </h:panelGrid>
+                        <p:separator/>
+                        <p:separator/>
+                    </h:panelGrid>
 
-            </ui:repeat>
+                </ui:repeat>
 
-            <p:outputLabel value="Contact Information - Booker" style="font-weight: bold"/>
+                <p:outputLabel value="Contact Information - Booker" style="font-weight: bold; font-size: medium !important;"/>
+                <br/><br/>
+                <p:selectOneRadio id="memberStatus" value="#{enterPsg.selectedOption}" required="true" requiredMessage="Please select either member or non-member" >
+                    <f:selectItem itemLabel="Member" itemValue="true" />
+                    <f:selectItem itemLabel="Non-Member" itemValue="false" />
+                    <p:ajax  event="click" listener="#{enterPsg.onSelectReturn}" update="memberPanel, nonMemberPanel"/>
+                </p:selectOneRadio>
 
-            <p:selectOneRadio id="memberStatus" value="#{enterPsg.selectedOption}" required="true" requiredMessage="Please select either member or non-member" >
-                <f:selectItem itemLabel="Member" itemValue="true" />
-                <f:selectItem itemLabel="Non-Member" itemValue="false" />
-                <p:ajax  event="click" listener="#{enterPsg.onSelectReturn}" update="memberPanel, nonMemberPanel"/>
-            </p:selectOneRadio>
+                <p:panel id="memberPanel"  visible="#{enterPsg.visiMember}" style="margin-bottom:20px">
+                    <h:panelGrid  columns="2"   cellpadding="10">
+                        <p:outputLabel  value="Member Account: " />
+                        <p:inputText value="#{enterPsg.bookerId}" required="#{enterPsg.visiMember}"/>
 
-            <p:panel id="memberPanel"  visible="#{enterPsg.visiMember}" style="margin-bottom:20px">
-                <h:panelGrid  columns="2"   cellpadding="10">
-                    <p:outputLabel  value="Member Account: " />
-                    <p:inputText value="#{enterPsg.bookerId}" required="#{enterPsg.visiMember}"/>
+                        <p:outputLabel  value="Email: " />
+                        <p:inputText value="#{enterPsg.existEmail}" required="#{enterPsg.visiMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
+                            <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                        </p:inputText>
+                    </h:panelGrid>
+                </p:panel>
 
-                    <p:outputLabel  value="Email: " />
-                    <p:inputText value="#{enterPsg.existEmail}" required="#{enterPsg.visiMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
-                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
-                    </p:inputText>
-                </h:panelGrid>
+                <p:panel id="nonMemberPanel"  visible="#{enterPsg.visiNonMember}" style="margin-bottom:20px">
+                    <h:panelGrid  columns="2"   cellpadding="10">
+
+                        <p:outputLabel for="title" value="Title:" />
+                        <h:selectOneMenu id="title" value="#{enterPsg.title}">
+                            <f:selectItem itemValue="Mr" itemLabel="Mr" />
+                            <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                            <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                            <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                            <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                            <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                            <f:selectItem itemValue="Prof" itemLabel="Prof" />
+
+                        </h:selectOneMenu>
+
+                        <p:outputLabel  value="First Name: " />
+                        <p:inputText value="#{enterPsg.firstName}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter first name"/>
+
+                        <p:outputLabel  value="Last Name: " />
+                        <p:inputText value="#{enterPsg.lastName}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter last name"/>
+
+                        <p:outputLabel  value="Address: " />
+                        <p:inputText value="#{enterPsg.address}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter address"/>
+
+                        <p:outputLabel  value="Email Address: " />
+                        <p:inputText value="#{enterPsg.email}" required="#{enterPsg.visiNonMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
+                            <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
+                        </p:inputText>
+
+                        <p:outputLabel  value="Contact Number: " />
+                        <p:inputText value="#{enterPsg.contactNo}" required="#{enterPsg.visiNonMember}"/>   
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:commandButton value="Confirm" actionListener="#{enterPsg.makeReserve}" icon="ui-icon-check" />
             </p:panel>
-
-            <p:panel id="nonMemberPanel"  visible="#{enterPsg.visiNonMember}" style="margin-bottom:20px">
-                <h:panelGrid  columns="2"   cellpadding="10">
-
-                    <p:outputLabel for="title" value="Title:" />
-                    <h:selectOneMenu id="title" value="#{enterPsg.title}">
-                        <f:selectItem itemValue="Mr" itemLabel="Dr" />
-                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
-                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
-                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
-                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
-                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
-                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
-
-                    </h:selectOneMenu>
-
-                    <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{enterPsg.firstName}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter first name"/>
-
-                    <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{enterPsg.lastName}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter last name"/>
-
-                    <p:outputLabel  value="Address: " />
-                    <p:inputText value="#{enterPsg.address}" required="#{enterPsg.visiNonMember}" requiredMessage="please enter address"/>
-
-                    <p:outputLabel  value="Email Address: " />
-                    <p:inputText value="#{enterPsg.email}" required="#{enterPsg.visiNonMember}" validatorMessage="Invalid email format" requiredMessage="please enter email address">
-                        <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
-                    </p:inputText>
-
-                    <p:outputLabel  value="Contact Number: " />
-                    <p:inputText value="#{enterPsg.contactNo}" required="#{enterPsg.visiNonMember}"/>   
-                </h:panelGrid>
-            </p:panel>
-
-
-            <p:commandButton value="Confirm" actionListener="#{enterPsg.makeReserve}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>

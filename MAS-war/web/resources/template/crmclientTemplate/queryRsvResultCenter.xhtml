@@ -37,8 +37,8 @@
                     <p:column headerText="Booking Person">
                         <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
                     </p:column>
-                    <p:column headerText="Contact Email" sortBy="#{rsv.bkEmail}" filterBy="#{rsv.bkEmail}" filterMatchMode="contains">
-                        <h:outputText value="#{rsv.bkEmail}" />
+                    <p:column headerText="Contact Email" sortBy="#{rsv.booker.email}" filterBy="#{rsv.booker.email}" filterMatchMode="contains">
+                        <h:outputText value="#{rsv.booker.email}" />
                     </p:column>
 
 

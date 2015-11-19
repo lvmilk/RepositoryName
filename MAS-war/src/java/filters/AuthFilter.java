@@ -46,7 +46,7 @@ public class AuthFilter implements Filter {
 
             if (path.startsWith("/javax.faces.resource")
                     || path.equals("/login.xhtml") || path.equals("/staffMain.xhtml") || path.equals("/Permission.xhtml") || path.equals("/CMIpages/forgetPwd.xhtml")
-                    || path.equals("/CMIpages/resetPwd.xhtml") || path.equals("/DDSpages/ddsLogin.xhtml")) {
+                    || path.equals("/CMIpages/resetPwd.xhtml") || path.equals("/DDSpages/ddsLogin.xhtml")||path.startsWith("/CRMClient") ) {
                 chain.doFilter(request, response);
             } else {
                 if (ses.getAttribute("stfType") == null) {
