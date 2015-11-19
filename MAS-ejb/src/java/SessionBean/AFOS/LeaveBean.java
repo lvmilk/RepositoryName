@@ -49,7 +49,7 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStartDate(startDate);
                     Calendar c1 = Calendar.getInstance();
                     c1.setTime(startDate);
-                    c1.add(Calendar.DATE, 7);
+                    c1.add(Calendar.DATE, 6);
                     Date endDate = c1.getTime();
                     staffLeave.setEndDate(endDate);
                     staffLeave.setLength(7);
@@ -66,10 +66,12 @@ public class LeaveBean implements LeaveBeanLocal {
 
                 }
 
-            } else if (userName.subSequence(0, 1).equals("CP")) {
-                System.out.println("Leavebean:Detecte as CockpitCrew! ");
-                Query query = em.createQuery("SELECT c FROM CockpitCrew c  where c.cpName =:cpname");
+            } else if (userName.substring(0, 2).equals("CP")) {
+                System.out.println("Leavebean:Detect as CockpitCrew! ");
+                Query query = em.createQuery("SELECT c FROM CockpitCrew c where c.cpName =:cpname");
                 query.setParameter("cpname", userName);
+                System.out.println("query.getResultList().isEmpty() "+query.getResultList().isEmpty());
+
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
                 } else {
@@ -94,7 +96,7 @@ public class LeaveBean implements LeaveBeanLocal {
                     em.flush();
 
                 }
-            } else if (userName.subSequence(0, 1).equals("CB")) {
+            } else if (userName.substring(0, 2).equals("CB")) {
                 System.out.println("Leavebean:Detecte as CabinCrew! ");
                 Query query = em.createQuery("SELECT c FROM CabinCrew c where c.cbName =:cbname");
                 query.setParameter("cbname", userName);
@@ -126,7 +128,7 @@ public class LeaveBean implements LeaveBeanLocal {
 
             } else if (userName.charAt(0) == 'O') {
                 System.out.println("Leavebean:Detect as OfficeStaff! ");
-                Query query = em.createQuery("SELECT o FROM OfficeStaff o  where o.offName =:oname");
+                Query query = em.createQuery("SELECT o FROM OfficeStaff o where o.offName =:oname");
                 query.setParameter("oname", userName);
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
