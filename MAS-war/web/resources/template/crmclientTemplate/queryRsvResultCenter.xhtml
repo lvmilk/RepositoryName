@@ -117,7 +117,7 @@
                 </p:panel>
                 <br />
 
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:65%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
                         <p:outputLabel value="#{queryBooking.selectedRsv.booker.title}" />
@@ -139,7 +139,7 @@
 
 
                 <br/>
-                <p:panel id="passenger" header="Passenger"  rendered="#{viewReservation.departed.size()>0}" toggleable="true" style="width:45%">
+                <p:panel id="passenger" header="Passenger"  rendered="#{viewReservation.departed.size()>0}" toggleable="true" style="width:65%">
                     <p:dataTable var="passenger" value="#{viewReservation.psgList}" rows="10" emptyMessage="No Reservations" >
 
                         <p:column headerText="Title" >
@@ -162,7 +162,7 @@
                     </p:dataTable>
                 </p:panel>
                 
-                <p:panel id="payment" header="Payment"   toggleable="true" style="width:45%">
+                <p:panel id="payment" header="Payment"   toggleable="true" style="width:65%">
                     <h:panelGrid columns="4" cellpadding="10" >
 
                         <p:outputLabel  value="Payment ID: " />
