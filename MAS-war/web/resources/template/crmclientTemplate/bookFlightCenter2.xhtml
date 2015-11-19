@@ -15,7 +15,7 @@
     <h:body>
 
 
-        <h:form id="chooseFlight">
+        <h:form id="chooseFlight" style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
             <c:choose>
                 <c:when test="${bookFlight.dateSpecific}">
 
@@ -46,17 +46,17 @@
                                             <p:outputLabel  value="Arrive At: " />
                                             <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                                            <p:outputLabel  value="Departure Time: " />
-                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
-
-                                            <p:outputLabel  value="Arrival Time Time: " />
-                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
-
                                             <p:outputLabel  value="Aircraft Type: " />
                                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                                             <p:outputLabel  value="Cabin Class: " />
                                             <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                                         </h:panelGrid>
                                         <p:separator />
@@ -96,17 +96,17 @@
                                             <p:outputLabel  value="Arrive At: " />
                                             <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                                            <p:outputLabel  value="Departure Time: " />
-                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
-
-                                            <p:outputLabel  value="Arrival Time Time: " />
-                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
-
                                             <p:outputLabel  value="Aircraft Type: " />
                                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                                             <p:outputLabel  value="Cabin Class: " />
                                             <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                                            <p:outputLabel  value="Departure Time: " />
+                                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                            <p:outputLabel  value="Arrival Time: " />
+                                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                                         </h:panelGrid>
                                         <p:separator />
@@ -160,7 +160,7 @@
 
                                                     <h:panelGrid columns="8"   cellpadding="10">
 
-                                                        <p:outputLabel  value="FlightNo: " />
+                                                        <p:outputLabel  value="Flight No: " />
                                                         <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
 
                                                         <p:outputLabel  value="Depart From: " />
@@ -169,17 +169,17 @@
                                                         <p:outputLabel  value="Arrive At: " />
                                                         <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                                                        <p:outputLabel  value="Departure Time: " />
-                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
-
-                                                        <p:outputLabel  value="Arrival Time Time: " />
-                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
-
                                                         <p:outputLabel  value="Aircraft Type: " />
                                                         <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                                                         <p:outputLabel  value="Cabin Class: " />
                                                         <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                                                        <p:outputLabel  value="Departure Time: " />
+                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                                        <p:outputLabel  value="Arrival Time: " />
+                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                                                     </h:panelGrid>
                                                     <p:separator />
@@ -239,17 +239,17 @@
                                                         <p:outputLabel  value="Arrive At: " />
                                                         <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
 
-                                                        <p:outputLabel  value="Departure Time: " />
-                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
-
-                                                        <p:outputLabel  value="Arrival Time Time: " />
-                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
-
                                                         <p:outputLabel  value="Aircraft Type: " />
                                                         <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                                                         <p:outputLabel  value="Cabin Class: " />
                                                         <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                                                        <p:outputLabel  value="Departure Time: " />
+                                                        <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                                        <p:outputLabel  value="Arrival Time: " />
+                                                        <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                                                     </h:panelGrid>
                                                     <p:separator />
@@ -271,7 +271,8 @@
 
             <br />
             <p:separator />
-            <p:commandButton update="chooseFlight" value="Next" action="#{bookFlight.onSelectOption()}" />
+            <p:commandButton value="Back to search" icon="ui-icon-carat-1-w" style="margin-left: 10px !important" action="#{bookFlight.onSelectBack()}" />
+            <p:commandButton update="chooseFlight" value="Enter passenger information" style="margin-right: 10px !important; float: right;" action="#{bookFlight.onSelectOption()}" />
         </h:form>
 
     </h:body>
@@ -280,12 +281,14 @@
         .buttonBack.ui-button{
             position: absolute;
             left: 20px;
+            margin-left: 10% !important;
         }
 
 
         .buttonForward.ui-button{
             position: absolute;
             right:20px;
+            margin-right: 10% !important;
         }
 
         .buttonForward.ui-button-text {

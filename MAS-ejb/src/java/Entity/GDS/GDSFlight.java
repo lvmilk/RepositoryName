@@ -18,12 +18,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
  *
  * @author LI HAO
  */
 @Entity
+@XmlAccessorType( XmlAccessType.FIELD)
 public class GDSFlight implements Serializable {
 
     @Id

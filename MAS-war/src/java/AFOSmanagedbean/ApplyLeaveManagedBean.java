@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -32,10 +33,15 @@ public class ApplyLeaveManagedBean implements Serializable {
     
     private String userName;
 
-    private Date minDate=new Date();
+    private Date minDate;
     
     @EJB
     LeaveBeanLocal lb;
+    
+    @PostConstruct
+    public void init(){
+        minDate=new Date();
+    }
 
     public void onSubmitPreference() {
         try {

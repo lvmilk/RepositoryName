@@ -289,7 +289,7 @@ INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888885","69467f0374b8a816a58ae6d67261101b","cb888885@mas.com","cabin",0,0,"CB888885","Angelababy","Yang","Cabin Crew",3000,15,"French",0,0,0,0,0)
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888886","55fd81408d16fe9fef7c8230ecf6bbc6","cb888886@mas.com","cabin",0,0,"CB888886","Angelababy","Yang","Cabin Crew",3000,15,"French",0,0,0,0,0)
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888887","815d7d537ad932cf6b6d4f8242130af4","cb888887@mas.com","cabin",0,0,"CB888887","Angelababy","Yang","Cabin Crew",3000,15,"French",0,0,0,0,0)
-INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888888","d77c897797e7edf03bf5cd8509493314","cb888888@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin",8000,15,"French",0,0,0,0,0)
+INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888888","d77c897797e7edf03bf5cd8509493314","cb888888@mas.com","cabin",0,0,"CB888888","LI","HAO","Cabin Crew",3000,15,"French",0,0,0,0,0)
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888889","1bd6c1f94616abf3ff83157cd254e084","cb888889@mas.com","cabin",0,0,"CB888889","Angelababy","Yang","Cabin Crew",3000,15,"Mandarin",0,0,0,0,0)
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888890","f808f15b1cef5e7fc60a28ef4ea86956","cb888890@mas.com","cabin",0,0,"CB888890","Angelababy","Yang","Cabin Crew",3000,15,"Mandarin",0,0,0,0,0)
 INSERT IGNORE INTO Cabincrew(CBNAME,CBPASSWORD,EMAIL,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,SECONDLANG,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CB888891","ac64c0ede52c2beb93d4b1a0da137747","cb888891@mas.com","cabin",0,0,"CB888891","Angelababy","Yang","Cabin Crew",3000,15,"Mandarin",0,0,0,0,0)
@@ -351,13 +351,13 @@ INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,L
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777774","96e3a29f06ac65aef055c79032ce3e84","cp777774@mas.com","cockpit","777-300",0,0,"CP777774","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777775","9e30283edbc586af9d30565d0a9fd553","cp777775@mas.com","cockpit","777-300",0,0,"CP777775","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777776","d676d72b291828b7e9fa399d4109579b","cp777776@mas.com","cockpit","777-300",0,0,"CP777776","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
-INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777777","91da5b4c6cb97677b5b66f0f07ef993b","cp777777@mas.com","cockpit","A380",0,0,"CP777777","XIAOMING","HUANG","Pilot",15000,90,0,0,0,0,0)
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777777","91da5b4c6cb97677b5b66f0f07ef993b","cp777777@mas.com","cockpit","777-300",0,0,"CP777777","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777778","ba1bcb02747bc4e18269a6efc7a9cf90","cp777778@mas.com","cockpit","777-300",0,0,"CP777778","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777779","cd1902af38a6e242e92959f96aa01df7","cp777779@mas.com","cockpit","777-300",0,0,"CP777779","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777780","b85de9a11b1a8cc4184e3d4295bd24c5","cp777780@mas.com","cockpit","777-300",0,0,"CP777780","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777781","a7e21c2493f5fcb86cf9d2b2853dfc16","cp777781@mas.com","cockpit","777-300",0,0,"CP777781","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777782","d712df13dede06925178b224ad5d2ceb","cp777782@mas.com","cockpit","777-300",0,0,"CP777782","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
-INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777783","5c46c15adfe860011fca01cd7d5c4432","cp777783@mas.com","cockpit","777-300",0,0,"CP777783","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
+INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777783","5c46c15adfe860011fca01cd7d5c4432","cp777783@mas.com","cockpit","A380",0,0,"CP777783","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777784","ae85cabace46c4cb4145125b84279f80","cp777784@mas.com","cockpit","A380",0,0,"CP777784","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777785","24f9e69a3d1ee6bb6064ef5e0bdf33a3","cp777785@mas.com","cockpit","A380",0,0,"CP777785","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
 INSERT IGNORE INTO Cockpitcrew(CPNAME,CPPASSWORD,EMAIL,STFTYPE,LICENCE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY,YEARACCUMMIN,MONTHACCUMMIN,WEEKACCUMMIN,FIRSTSB,SECONDSB) values("CP777786","bae58b94a6f1f2c94d9f85a22ab5f492","cp777786@mas.com","cockpit","A380",0,0,"CP777786","XIAOMING","HUANG","Pilot",8000,80,0,0,0,0,0)
@@ -592,10 +592,11 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,500,55,0)
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","Hao","Li",true,0,"G12345678","Mr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","Xi","Lu",true,0,"G87654321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"22/05/1989","xixixi@gmail.com","Yuqi","Liu",true,0,"G12354321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"22/05/1989","pupupu@gmail.com","Bohan","Xu",true,0,"G88882321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,2431,"G12345678","Mr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr")
+
 
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
@@ -623,8 +624,11 @@ INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,ret
 INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars")
 
 
+
 INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (1111, '2015-10-10 10:00', 14900, 111111 )
 INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (2222, '2015-10-10 10:00', 11500, 222222 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (3333, '2015-10-10 10:00', 9900, 333333 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (4444, '2015-10-10 10:00', 8200, 444444 )
 
 
 
@@ -708,15 +712,16 @@ INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) 
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(4444,"GDS",4000.00,"Ticket Sale","MR","2015-11-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(5555,"GDS",2200.00,"Ticket Sale","MR","2015-11-10",0.0)
 
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10",0.0)
+
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(1111,"GDS",150.00,"Commission","DL","2015-03-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(2222,"GDS",600.00,"Commission","KE","2015-04-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(3333,"GDS",300.00,"Commission","KE","2015-08-10",0.0)
@@ -778,7 +783,7 @@ INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,st
  
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(111,"CB888881",3000.0,15.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(222,"CB888851",5000.0,20.0)
-INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777751",10000.0,150.0)
+INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777760",10000.0,150.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,80.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)

@@ -8,6 +8,7 @@ package SessionBean.AFOS;
 import Entity.AFOS.FlightTask;
 import Entity.AFOS.GroundStaffTeam;
 import Entity.AFOS.Rotation;
+import Entity.AFOS.StaffLeave;
 import Entity.APS.AircraftType;
 import Entity.APS.FlightInstance;
 import Entity.CommonInfa.CabinCrew;
@@ -938,10 +939,25 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
 
     public boolean checkAvailable(CockpitCrew cp, FlightInstance fi) {
         boolean canFly = false;
+        boolean notLeave = true;
         List<FlightInstance> fiTasks = sortFiList(cp.getFiList());
         Date fiDep = fi.getStandardDepTimeDateType();
         Date fiArr = fi.getStandardArrTimeDateType();
-        Calendar cal = new GregorianCalendar();
+
+        // check leave
+        List<StaffLeave> leaves = cp.getLeaves();
+        for (StaffLeave l : leaves) {
+            Date start = l.getStartDate();
+            Date end = l.getEndDate();
+            cal.setTime(end);
+            cal.add(Calendar.HOUR, 24);
+            end = cal.getTime();
+            if (fiDep.after(start) && fiDep.before(end) || fiArr.after(start) && fiArr.before(end)) {
+                notLeave = false;
+            }
+        }
+
+        // check with other flights
         cal.setTime(fiDep);
         cal.add(Calendar.HOUR, -1);
         cal.add(Calendar.SECOND, 1);
@@ -982,7 +998,7 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
                 }
             }
         }
-        return canFly;
+        return canFly && notLeave;
     }
 
     public boolean checkAvailable(CabinCrew cc, FlightInstance fi) {
@@ -1428,6 +1444,14 @@ public class CrewSchedulingBean implements CrewSchedulingBeanLocal {
         for (CabinCrew cc : ccList) {
             if (cc.getCbName().equalsIgnoreCase(id)) {
                 type = "Cabin";
+                break;
+            }
+        }
+        Query q3 = em.createQuery("SELECT c FROM GroundStaff c");
+        List<GroundStaff> gsList = (List<GroundStaff>) q3.getResultList();
+        for (GroundStaff gs : gsList) {
+            if (gs.getGrdName().equalsIgnoreCase(id)) {
+                type = "Ground";
                 break;
             }
         }
