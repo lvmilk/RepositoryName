@@ -108,12 +108,15 @@ public class GDSLoginBean {
                 seatNo=i.toString()+j;
                 System.out.println("********GDSSessionBean: seatNo"+seatNo);
                 gdsSeat.createSeat(seatNo, i, j, status, cabinName);
+                gdsSeat.setFlight(gdsFlight);
                 gdsFlight.getSeats().add(gdsSeat);
+
             }
         }
 
         em.persist(gdsFlight);
-
+        em.flush();
+        
         return true;
 
     }
