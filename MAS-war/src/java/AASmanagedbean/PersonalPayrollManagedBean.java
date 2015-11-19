@@ -80,7 +80,7 @@ public class PersonalPayrollManagedBean implements Serializable {
 //                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Staff Id", "You are only allowed to view your own payroll !"));
 //            } else {
                 try {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!username: "+username);
+                    //System.out.println("!!!!!!!!!!!!!!!!!!!username: "+username);
                     payroll = rtb.getOnePayroll(username);
                     salary = payroll.getSalary();
                     bonus = payroll.getBonus();
@@ -109,7 +109,7 @@ public class PersonalPayrollManagedBean implements Serializable {
             
 //
         } else {
-            System.out.println("Invalid Session!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println("Invalid Session!");
         }
     }
 //

@@ -21,11 +21,13 @@
                         </p:submenu>
 
                         <p:submenu label="Personal Leave">
-                            <p:menuitem value="Apply Leave" url="viewLeave.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Leave Application" url="/CMIpages/applyLeave.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="Annual Leave Preference Exercise" url="/CMIpages/applyAnnualLeave.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="View My Leave" url="/CMIpages/viewMyLeave.xhtml"  icon="ui-icon-disk" />
                         </p:submenu>
-                        
+
                         <p:submenu label="View Scheduled Tasks">
-                            <p:menuitem value="View Schedule" url="viewSchedule.xhtml"  icon="ui-icon-disk" />
+                            <p:menuitem value="View Schedule" action="#{PSMB.viewSchedule()}" icon="ui-icon-disk" />
                         </p:submenu>
 
                     </p:menu>
