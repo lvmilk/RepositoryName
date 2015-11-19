@@ -66,10 +66,12 @@ public class LeaveBean implements LeaveBeanLocal {
 
                 }
 
-            } else if (userName.subSequence(0, 1).equals("CP")) {
-                System.out.println("Leavebean:Detecte as CockpitCrew! ");
-                Query query = em.createQuery("SELECT c FROM CockpitCrew c  where c.cpName =:cpname");
+            } else if (userName.substring(0, 1).equals("CP")) {
+                System.out.println("Leavebean:Detect as CockpitCrew! ");
+                Query query = em.createQuery("SELECT c FROM Cockpitcrew c where c.cpName =:cpname");
                 query.setParameter("cpname", userName);
+                System.out.println("query.getResultList().isEmpty() "+query.getResultList().isEmpty());
+
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
                 } else {
@@ -94,9 +96,9 @@ public class LeaveBean implements LeaveBeanLocal {
                     em.flush();
 
                 }
-            } else if (userName.subSequence(0, 1).equals("CB")) {
+            } else if (userName.substring(0, 1).equals("CB")) {
                 System.out.println("Leavebean:Detecte as CabinCrew! ");
-                Query query = em.createQuery("SELECT c FROM CabinCrew c where c.cbName =:cbname");
+                Query query = em.createQuery("SELECT c FROM Cabincrew c where c.cbName =:cbname");
                 query.setParameter("cbname", userName);
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
@@ -126,7 +128,7 @@ public class LeaveBean implements LeaveBeanLocal {
 
             } else if (userName.charAt(0) == 'O') {
                 System.out.println("Leavebean:Detect as OfficeStaff! ");
-                Query query = em.createQuery("SELECT o FROM OfficeStaff o  where o.offName =:oname");
+                Query query = em.createQuery("SELECT o FROM OfficeStaff o where o.offName =:oname");
                 query.setParameter("oname", userName);
                 if (query.getResultList().isEmpty()) {
                     throw new Exception("Username Invalid");
