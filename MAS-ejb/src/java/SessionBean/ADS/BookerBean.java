@@ -24,6 +24,7 @@ public class BookerBean implements BookerBeanLocal {
     EntityManager em;
     
     public void editThisBooker(Booker bookPerson){
+        System.out.println("bookPerson.email is "+bookPerson.getEmail());
         Booker booker = em.find(Booker.class, bookPerson.getId());
         booker.setTitle(bookPerson.getTitle());
         booker.setFirstName(bookPerson.getFirstName());

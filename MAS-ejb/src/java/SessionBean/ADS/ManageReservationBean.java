@@ -188,10 +188,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         em.refresh(newPsg);
         newPsg = em.find(Passenger.class, newPsg.getId());
+        if(selectedPsg.getTickets()!=null){
+        System.out.println(selectedPsg.getTickets());
+        }
 
         Passenger oldPsg = em.find(Passenger.class, selectedPsg.getId());
         Reservation rsv = em.find(Reservation.class, selectedPsg.getTickets().get(0).getRsv().getId());
-        List<Ticket> tickets = rsv.getTickets();
+        List<Ticket> tickets = oldPsg.getTickets();
         for (int i = 0; i < tickets.size(); i++) {
 
             Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());

@@ -9,7 +9,7 @@
         <title>Reservation Confirmation</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="confirmBook">
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
 
@@ -87,7 +87,7 @@
             </p:panel>
             
             
-            <p:commandButton value="Confirm" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
+            <p:commandButton value="Confirm" update="confirmBook" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>
