@@ -49,7 +49,7 @@ public class LeaveBean implements LeaveBeanLocal {
                     staffLeave.setStartDate(startDate);
                     Calendar c1 = Calendar.getInstance();
                     c1.setTime(startDate);
-                    c1.add(Calendar.DATE, 7);
+                    c1.add(Calendar.DATE, 6);
                     Date endDate = c1.getTime();
                     staffLeave.setEndDate(endDate);
                     staffLeave.setLength(7);

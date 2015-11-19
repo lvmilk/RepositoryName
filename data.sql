@@ -212,7 +212,7 @@ INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777
 
 INSERT IGNORE INTO AIRLINE(ID,IATA,EMAIL,NAME)values(88,"KAL","AL777777@mas.com","Korean Airline")
 
-INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","HAO","LI","HR",3000,0)
+INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","Erkang","Fu","HR",3000,0)
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",3000,0)
 
 INSERT IGNORE INTO Groundstaff(GRDNAME,EMAIL,GRDPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("G666631","g666631@mas.com","2d6b33c6e8f0b395858795f782a5a488","groundStaff",0,0,"G666631","YIXIAOXING","JIAOSHOU","Normal",4000,0)
@@ -592,10 +592,11 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,500,55,0)
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"22/05/1989","hahaha@gmail.com","Hao","Li",true,0,"G12345678","Mr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"22/05/1989","hehehe@gmail.com","Xi","Lu",true,0,"G87654321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"22/05/1989","xixixi@gmail.com","Yuqi","Liu",true,0,"G12354321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"22/05/1989","pupupu@gmail.com","Bohan","Xu",true,0,"G88882321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,2431,"G12345678","Mr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr")
+
 
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
 INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
@@ -617,10 +618,18 @@ INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) value
 
 
 
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS","2015-10-12")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS","2015-11-12")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars","2015-11-12")
-INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName,rsvDate) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars","2015-10-12")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (111111,"Hao","Li","hahaha@gmail.com","SIN","DXB",True,11111,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (222222,"Xi","Lu","hahaha@gmail.com","SIN","DXB",True,22222,"Reserved","ARS","MAS")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (333333,"Yuqi","Liu","hahaha@gmail.com","SIN","DXB",True,33333,"Reserved","DDS","3Stars")
+INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,returnTrip,booker_id,rsvStatus,bkSystem,companyName) values (444444,"Bohan","Xu","hahaha@gmail.com","SIN","DXB",True,44444,"Reserved","DDS","3Stars")
+
+
+
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (1111, '2015-10-10 10:00', 14900, 111111 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (2222, '2015-10-10 10:00', 11500, 222222 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (3333, '2015-10-10 10:00', 9900, 333333 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (4444, '2015-10-10 10:00', 8200, 444444 )
+
 
 
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(111111,10000)
@@ -653,14 +662,14 @@ INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,lugg
 
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(111111,9999, 1500.00,"ARS","2015-08-10",111111,"Unused",10000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(111112,9999, 1500.00,"ARS","2015-08-10",111111,"Unused",270000)
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(222222,8888, 6000.00,"ARS","2015-09-10",111111,"Unused",10000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(222222,8888, 6000.00,"ARS","2015-08-10",111111,"Unused",10000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(333333,6666, 3000.00,"ARS","2015-10-10",222222,"Unused",20000)
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(444444,7777, 4000.00,"ARS","2015-11-10",111111,"Unused",10000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(444444,7777, 4000.00,"ARS","2015-08-10",111111,"Unused",10000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(555555,5555, 2200.00,"ARS","2015-11-10",333333,"Unused",140000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(666666,4444, 1700.00,"DDS","2015-08-10",444444,"Unused",150000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id,seat_id) values(777777,33333, 1900.00,"DDS","2015-09-10",111111,"OnlineCheckedIn",10000,11111)
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(888888,77777, 6000.00,"DDS","2015-11-10",222222,"Unused",20000)
-INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(999999,66666, 2500.00,"DDS","2015-11-10",222222,"Unused",20000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(888888,77777, 6000.00,"DDS","2015-10-10",222222,"Unused",20000)
+INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(999999,66666, 2500.00,"DDS","2015-10-10",222222,"Unused",20000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(1111,55555, 1500.00,"GDS","2015-03-10",333333,"Unused",140000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(2222,44444, 6000.00,"GDS","2015-04-10",444444,"Unused",150000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(3333,33333, 3000.00,"GDS","2015-08-10",333333,"Unused",140000)
@@ -703,15 +712,16 @@ INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) 
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(4444,"GDS",4000.00,"Ticket Sale","MR","2015-11-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(5555,"GDS",2200.00,"Ticket Sale","MR","2015-11-10",0.0)
 
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10",0.0)
-INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(11111,"HOTEL",200.00,"Commission","Hilton","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(33333,"HOTEL",100.0,"Commission","Marina Bay Sands","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(44444,"HOTEL",150.0,"Commission","Marina Bay Sands","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(55555,"CARRENTAL",120.0,"Commission","GrabCar","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(66666,"CARRENTAL",180.0,"Commission","GrabCar","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(77777,"CARRENTAL",100.0,"Commission","GrabCar","2015-01-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(88888,"HIGH-SPEED RAILWAY",300.0,"Commission","Japan Railway","2015-10-12",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(99999,"HIGH-SPEED RAILWAY",220.0,"Commission","Japan Railway","2015-05-10",0.0)
+-- INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(100000,"HIGH-SPEED RAILWAY",250.0,"Commission","Japan Railway","2015-01-10",0.0)
+
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(1111,"GDS",150.00,"Commission","DL","2015-03-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(2222,"GDS",600.00,"Commission","KE","2015-04-10",0.0)
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(3333,"GDS",300.00,"Commission","KE","2015-08-10",0.0)
@@ -763,17 +773,30 @@ INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(50505,"Va
 INSERT IGNORE INTO Expense(id,type,category,payable,costSource) values(60606,"Variable Operation Cost","Ground Staff",4000.0,"G666631")
 
 
-INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(111,"CB888881","2015-08-10","2015-08-20",11,"Not reviewed","None","CabinCrew","CB888881")
+INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(111,"CB888881","2015-08-10","2015-08-20",11,"Approved","None","CabinCrew","CB888881")
 INSERT IGNORE INTO StaffLeave(id,cabincrew_cbname,startDate,endDate,length,status,remark,staffType,userName) values(222,"CB888881","2015-07-10","2015-07-20",11,"Approved","None","cabin","CB888881")
 INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(333,"CP777751","2015-10-10","2015-10-20",11,"Approved","None","CockpitCrew","CP777751")
-INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(444,"CP777778","2015-10-02","2015-10-14",13,"Not reviewed","None","CockpitCrew","CP777778")
-INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType,userName) values(555,"O777777","2015-11-01","2015-11-13",13,"Not reviewed","None","OfficeStaff","O777777")
-INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType,userName) values(666,"G666631","2015-09-10","2015-09-19",10,"Not reviewed","None","GroundStaff","G666631")
+INSERT IGNORE INTO StaffLeave(id,cockpitcrew_cpname,startDate,endDate,length,status,remark,staffType,userName) values(444,"CP777778","2015-10-02","2015-10-14",13,"Approved","None","CockpitCrew","CP777778")
+INSERT IGNORE INTO StaffLeave(id,officestaff_offname,startDate,endDate,length,status,remark,staffType,userName) values(555,"O777777","2015-11-01","2015-11-13",13,"Approved","None","OfficeStaff","O777777")
+INSERT IGNORE INTO StaffLeave(id,GROUNDSTAFF_GRDNAME,startDate,endDate,length,status,remark,staffType,userName) values(666,"G666631","2015-09-10","2015-09-19",10,"Approved","None","GroundStaff","G666631")
+
  
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(111,"CB888881",3000.0,15.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(222,"CB888851",5000.0,20.0)
-INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777751",10000.0,150.0)
+INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(333,"CP777760",10000.0,150.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,80.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)
 
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(99,"SQ100","2015-12-08 19:09:00.000","2015-12-08 23:09:00.000","Singapore Changi Airport","Shanghai Pudong Airport","SIN","SPD",0,2,2,"Singapore Airline","First Class",900)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(100,"MU999","2015-12-09 00:09:00.000","2015-12-09 03:09:00.000","Shanghai Pudong Airport","Seoul Incheon Airport","SPD","ICN",0,2,2,"China Eastern Airline","First Class",800)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(101,"MU888","2015-12-09 03:09:00.000","2015-12-09 06:09:00.000","Shanghai Pudong Airport","Tokyo Haneda Airport","SPD","HND",0,2,2,"China Eastern Airline","First Class",800)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(102,"KE567","2015-12-23 19:09:00.000","2015-12-23 23:39:00.000","Seoul Incheon Airport","Singapore Changi Airport","ICN","SIN",0,1,1,"Korean Airline","First Class",900)
+
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(100,"1A",1,"A","available","First Class",99)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(101,"1B",1,"A","available","First Class",99)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(110,"1A",1,"A","available","First Class",100)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(111,"1B",1,"A","available","First Class",100)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(120,"2A",2,"A","available","First Class",101)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(121,"2B",2,"A","available","First Class",101)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(130,"2A",2,"A","available","First Class",102)
