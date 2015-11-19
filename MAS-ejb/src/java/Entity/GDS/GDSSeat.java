@@ -26,11 +26,11 @@ public class GDSSeat implements Serializable {
     private Long id;
     private String seatNo;
     private Integer rowNo;
-    private Integer colNo;
+    private char colNo;
     
     private String status;
     private String cabinClass;
-    private String bookingClass;
+
 
     @ManyToOne
     private GDSFlight flight;
@@ -41,7 +41,14 @@ public class GDSSeat implements Serializable {
     public GDSSeat() {
     }
 
-
+    public void createSeat(String seatNo,Integer rowNo, char colNo, String status,String cabinClass ){
+        this.seatNo=seatNo;
+        this.rowNo=rowNo;
+        this.colNo=colNo;
+        this.status=status;
+        this.cabinClass=cabinClass;
+        
+    }
     
     
     public Long getId() {
@@ -68,11 +75,11 @@ public class GDSSeat implements Serializable {
         this.rowNo = rowNo;
     }
 
-    public Integer getColNo() {
+    public char getColNo() {
         return colNo;
     }
 
-    public void setColNo(Integer colNo) {
+    public void setColNo(char colNo) {
         this.colNo = colNo;
     }
 
@@ -91,14 +98,6 @@ public class GDSSeat implements Serializable {
 
     public void setCabinClass(String cabinClass) {
         this.cabinClass = cabinClass;
-    }
-
-    public String getBookingClass() {
-        return bookingClass;
-    }
-
-    public void setBookingClass(String bookingClass) {
-        this.bookingClass = bookingClass;
     }
 
     public GDSFlight getFlight() {
