@@ -1009,6 +1009,7 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
     }
 
     //////////////////////////////
+    @Override
     public String getStaffName(String username, String type) {
         String name = "";
         if (type.equals("administrator")) {
@@ -1021,12 +1022,44 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
                 name = resultList.get(0).getAdmName();
             }
         } else if (type.equals("officeStaff")) {
-
+            Query q1 = em.createQuery("SELECT u FROM OfficeStaff u WHERE u.offName=:username and u.stfType=:type");
+            q1.setParameter("username", username);
+            q1.setParameter("type", type);
+            List<OfficeStaff> resultList = new ArrayList<>();
+            resultList = (List) q1.getResultList();
+            if (!resultList.isEmpty()) {
+                name = resultList.get(0).getFirstName();
+            }
         } else if (type.equals("groundStaff")) {
+            Query q1 = em.createQuery("SELECT u FROM GroundStaff u WHERE u.grdName=:username and u.stfType=:type");
+            q1.setParameter("username", username);
+            q1.setParameter("type", type);
+            List<GroundStaff> resultList = new ArrayList<>();
+            resultList = (List) q1.getResultList();
+            if (!resultList.isEmpty()) {
+                name = resultList.get(0).getFirstName();
+            }
 
         } else if (type.equals("cabin")) {
-
+            Query q1 = em.createQuery("SELECT u FROM CabinCrew u WHERE u.cbName=:username and u.stfType=:type");
+            q1.setParameter("username", username);
+            q1.setParameter("type", type);
+            List<CabinCrew> resultList = new ArrayList<>();
+            resultList = (List) q1.getResultList();
+            if (!resultList.isEmpty()) {
+                name = resultList.get(0).getFirstName();
+            }
         } else if (type.equals("cockpit")) {
+            Query q1 = em.createQuery("SELECT u FROM CockpitCrew u WHERE u.cpName=:username and u.stfType=:type");
+            q1.setParameter("username", username);
+            q1.setParameter("type", type);
+            List<CockpitCrew> resultList = new ArrayList<>();
+            resultList = (List) q1.getResultList();
+            if (!resultList.isEmpty()) {
+                name = resultList.get(0).getFirstName();
+            }
+        }else{
+            name = type;
         }
         return name;
     }

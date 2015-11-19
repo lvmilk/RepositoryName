@@ -83,4 +83,6 @@ public interface ManageAccountBeanLocal {
     public void addCabinAcc(String username, String password, String email, String stfType, String firstName, String lastName, String stfLevel, Double salary, String secondLang);
 
     public String getDDSCompanyName(String userName);
+
+    public String getStaffName(String username, String type);
 }

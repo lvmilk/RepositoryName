@@ -23,6 +23,7 @@
                     position: relative;
                     margin-right: 2em;
                 }
+                
             </style>
 
             <p:menubar  styleClass = "menu" style="text-align: center">
@@ -50,7 +51,7 @@
                 <p:menuitem value="CRM"   style="margin-right: 30px !important;" url="#" icon="ui-icon-person"/>
 
                 <p:menuitem value="CRMClient"   style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" icon="ui-icon-person"/>
-                
+
                 <p:submenu label="Help" icon="ui-icon-help" style="margin-right: 30px !important;">
                     <p:menuitem value="FAQs" url="#" />
                     <p:submenu label="Search" icon="ui-icon-search">
@@ -61,12 +62,17 @@
                     </p:submenu>
                 </p:submenu>
 
-                <p:menuitem value="Logout" style="margin-right: 30px !important;" actionListener="#{SslManagedBean.endSsl}"  icon="ui-icon-extlink" />
+                <p:menuitem value="Logout" style="margin-right: 30px !important; float: right !important; " actionListener="#{SslManagedBean.endSsl}"  icon="ui-icon-extlink" />
 
-<!--                <p:menuitem styleClass="clock">
-                    <p:clock pattern="yyyy-MM-dd HH:mm:ss"/>
-                </p:menuitem>-->
-
+                <!--                <p:menuitem styleClass="clock">
+                                    <p:clock pattern="yyyy-MM-dd HH:mm:ss"/>
+                                </p:menuitem>-->
+            
+                <p:menuitem style="margin-right: 30px !important; float: right !important; ">
+                        <h:graphicImage value="/images/logoname.png" height="30" />
+                </p:menuitem>
+             
+                
             </p:menubar>
 
         </h:form>
