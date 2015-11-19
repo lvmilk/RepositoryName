@@ -51,6 +51,10 @@ public interface ManageReservationBeanLocal {
     public BookingClassInstance findLowestBkInstance(FlightInstance flight, String cabinName, Integer psgCount);
 
     public Double computeCancelRefund(List<BookingClassInstance> bookList, Integer psgCount);
+
+    public Reservation searchOneRsv(String email, Long bookRef);
+
+    public List<Reservation> searchAllRsv(String email);
     
 
 }
