@@ -8,7 +8,6 @@ package Entity.ADS;
 import Entity.CommonInfa.Agency;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +48,7 @@ public class Booker implements Serializable {
     
     @OneToMany(cascade={CascadeType.PERSIST},mappedBy="booker")
     private List<Reservation> rsvList;
+    
     
     @ManyToOne
     private Agency agency;
