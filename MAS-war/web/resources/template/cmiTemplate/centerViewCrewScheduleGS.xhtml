@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>View Schedule</title>
+    </h:head>
+    <h:body>
+        <h:form>
+
+            <p:panel id="panel" header="Schedule arrangement for #{PSGSMB.username} for next scheduling period"  style="width:100%"  visible="#{PPMB.username != 'admin'}" >
+                <h:panelGrid columns="2" style="margin-bottom:10px; width:60%" cellpadding="10">
+                    <p:outputLabel value="Staff ID: " />
+                    <p:outputLabel  value="#{PSGSMB.username}" />
+
+                    <p:outputLabel value="Ground Staff Team: "/>
+                    <p:outputLabel  value="Group #{PSGSMB.grd.groundStaffTeam.teamId}"/>
+                </h:panelGrid>
+                
+                <p:dataTable var="rt" value="#{PSGSMB.viewRt}" emptyMessage="No working shift arrangement">
+                    <p:column headerText="Date" sortBy="#{rt.workDate}" filterBy="#{rt.workDate}" >
+                        <h:outputText value="#{rt.workDate}" >
+                            <f:convertDateTime pattern="yyyy-MM-dd"/>  
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Working Shift">
+                        <h:outputText value="#{rt.workShift}" style="font-weight:bold; color: #{rt.workShift == 'morning' ? '#00b189' : rt.workShift == 'afternoon' ? '#c318be' : rt.workShift == 'night' ?  '#ce8f1d' : '#5f5f5f'};"/>
+                    </p:column>
+                </p:dataTable>
+
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
