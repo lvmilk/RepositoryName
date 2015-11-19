@@ -112,9 +112,11 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
     @Override
     public Integer getLeaveAmount(String name, long year, int month) {
         Integer amount = 0;
+        String status = "Approved";
         List<StaffLeave> resultList = new ArrayList<>();
         List<StaffLeave> list = new ArrayList<>();
-        Query q = em.createQuery("SELECT l FROM StaffLeave l ");
+        Query q = em.createQuery("SELECT l FROM StaffLeave l where l.status=:status ");
+        q.setParameter("status", status);
         resultList = (List) q.getResultList();
         for (int i = 0; i < resultList.size(); i++) {
             StaffLeave thisleave = resultList.get(i);
@@ -138,7 +140,7 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
                 System.out.println("AAS:RTB: There is no leave record for this staff");
             }
         }
-
+        System.out.println("cccccccccccccheck leave list: "+list);
         Date startDate = new Date(); //set default 
         Date endDate = new Date();//set default
         Calendar leaveEndCal = Calendar.getInstance();
@@ -245,15 +247,18 @@ public class ResourceTrackingBean implements ResourceTrackingBeanLocal {
                     System.out.println("AAS:RTB: Invalid month input: " + month);
                     break;
             }
+            if(endDate.after(new Date())){
+                endDate = new Date();
+            }
             /////leave period within the selected month
             if (!leaveStart.before(startDate) && !leaveEnd.after(endDate)) {
-                amount = list.get(i).getLength();
+                amount = amount + list.get(i).getLength();
             } else if (leaveStart.after(startDate) && !leaveStart.after(endDate) && leaveEnd.after(endDate)) {
                 long diff = (endDate.getTime() - leaveStart.getTime()) / (24 * 60 * 60 * 1000);
-                amount = (int) diff;
+                amount = amount  + (int) diff;
             } else if (leaveStart.before(startDate) && !leaveEnd.before(startDate) && leaveEnd.before(endDate)) {
                 long diff = (leaveEnd.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000);
-                amount = (int) diff;
+                amount = amount + (int) diff;
             } else {
                 System.out.println("AAS:RTB: No leave in this period: year " + year + " month " + month);
             }
