@@ -29,10 +29,10 @@ public class GalleriaManagedBean implements Serializable {
     public void init() {
         images = new ArrayList<String>();
         for (int i = 1; i <= 5; i++) {
-            images.add("flight" + i);
+            images.add("homepage" + i + ".jpg");
         }
     }
-
+ 
     public List<String> getImages() {
         return images;
     }
