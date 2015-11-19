@@ -598,7 +598,7 @@ public class BookFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                         } else {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                         }
                     }
 
@@ -660,7 +660,7 @@ public class BookFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                             } else {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                             }
                         }
 
@@ -746,7 +746,7 @@ public class BookFlightManagedBean implements Serializable {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                                 } else {
                                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                                 }
                             }
 
@@ -857,7 +857,7 @@ public class BookFlightManagedBean implements Serializable {
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                                     } else {
                                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                                     }
                                 }
                             }

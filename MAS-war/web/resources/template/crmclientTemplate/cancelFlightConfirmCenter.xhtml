@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Reservation Confirmation</title>
+    </h:head>
+    <h:body>
+        <h:form id="cancelConfirm">
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel id="rsvConfirm"  style="margin-bottom:20px">
+                <h:panelGrid  columns="2"   cellpadding="10">
+
+                    <p:outputLabel  value="Reserved by: " />
+                    <p:outputLabel value="#{flightCancel.selectedRsv.booker.firstName} #{flightCancel.selectedRsv.booker.lastName}" />
+
+                    <p:outputLabel  value="Passengers request for cancellation " />
+                    <ui:repeat var="psg" value="#{flightCancel.selectedPsgList}" >
+                        <p:outputLabel value="#{psg.firstName} #{psg.lastName}" />
+                    </ui:repeat>
+
+
+                </h:panelGrid>
+            </p:panel>
+
+
+
+            <p:panel header=" Flights to be Cancelled" >
+                <p:dataGrid value="Departure trip " >             
+                    <ui:repeat value="#{flightCancel.departed}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+                </p:dataGrid>
+                <br/>
+
+                <p:dataGrid value="return trip " rendered="#{flightCancel.returned.size()>0}">             
+                    <ui:repeat value="#{flightCancel.returned}" var="instance">
+                        <h:panelGrid columns="8" cellpadding="10" >
+
+                            <p:outputLabel  value="FlightNo: " />
+                            <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                            <p:outputLabel  value="Depart From: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                            <p:outputLabel  value="Arrive At: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                            <p:outputLabel  value="Departure Time: " />
+                            <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            <p:outputLabel  value="Aircraft Type: " />
+                            <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                            <p:outputLabel  value="Cabin Class: " />
+                            <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                        </h:panelGrid>
+                        <p:separator />
+                    </ui:repeat>
+
+                </p:dataGrid>
+            </p:panel>
+
+            <br/><br/><br/>
+
+
+
+            <p:commandButton value="Confirm" actionListener="#{flightCancel.onChooseConfirm}" icon="ui-icon-check" />
+        </h:form>
+
+        <!--        <h:form id="dlgGrd">
+                    <p:dialog id="dlgGrd" header="Confirm cancel the Flight?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
+                        <p:outputLabel value="A total penalty of $#{rescheduleConfirm.totalPenalty} will be charged on you after you confirm this change of schedule "/>
+        
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <p:commandButton value="Confirm"  oncomplete="PF('dlgGrd').hide()" action="#{cancelFlight.rsvConfirm()}" />
+                            <p:commandButton value="Quit"  onclick="PF('dlgGrd').hide()" />
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>-->
+
+        <h:form id="dlgGrd">
+            <p:dialog id="dlgGrd" header="Confirm cancel the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
+                <p:outputLabel value="A total penalty of $#{flightCancel.totalRefund} will be refunded to you after you confirm this change of schedule "/>
+
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:commandButton value="Confirm" update="cancelConfirm" oncomplete="PF('dlgGrd').hide()" action="#{flightCancel.rsvConfirm()}" />
+                    <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</html>

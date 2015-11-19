@@ -3,14 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package CRMClientmanagedbean;
+package ADSmanagedbean;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.BookerBeanLocal;
-import SessionBean.ADS.DDSBookingBeanLocal;
+import SessionBean.ADS.ManageReservationBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
 import SessionBean.ADS.RsvConfirmationBeanLocal;
 import java.io.IOException;
@@ -23,14 +24,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author LI HAO
  */
-@Named(value = "confirmBook")
+@Named(value = "confirmReschedule")
 @ViewScoped
-public class ConfirmBookFlightManagedBean implements Serializable {
+public class confirmRescheduleManagedBean implements Serializable {
 
     @EJB
     private PassengerBeanLocal psgSBlocal;
@@ -38,8 +40,9 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     private BookerBeanLocal msblocal;
     @EJB
     private RsvConfirmationBeanLocal rsvCflocal;
+
     @EJB
-    private DDSBookingBeanLocal ddsBkblocal;
+    private ManageReservationBeanLocal mrLocal;
 
     private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
     private Long bookerId;
@@ -54,7 +57,15 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 
     private ArrayList<FlightInstance> departSelected = new ArrayList<>();
     private ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+
+    private ArrayList<FlightInstance> departed = new ArrayList<>();
+    private ArrayList<FlightInstance> returned = new ArrayList<>();
+
     private Double totalPrice;
+    private Double priceDiff = 0.0;
+    private Double changeRoutePenalty = 0.0;
+    private Double changeDatePenalty = 0.0;
+    private Double totalPenalty = 0.0;
 
     private String origin;
     private String dest;
@@ -63,23 +74,32 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 
     private ArrayList<Passenger> psgList;
     private String stfType;
-    private String username;
+
+    private Reservation selectedRsv;
+    private String manageStatus;
+
     private String bkSystem;
+    private String cabinName;
     private String companyName;
 
     @PostConstruct
     public void init() {
         try {
 
-            booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
+            cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
+            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
+            selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
+            bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+            companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
             stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
-            username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
-
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
             dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
             returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
+
+            departed = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
+            returned = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
 
             departSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departSelected");
             returnSelected = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnSelected");
@@ -89,35 +109,52 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             setPsgCount((Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson"));
 
             BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
-            bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-            companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
-            
+
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
+
+            priceDiff = mrLocal.computePriceDiff(totalPrice, selectedRsv.getPayment().getTotalPrice());
+
+            changeRoutePenalty = mrLocal.getChangeRoutePenalty(departed, returned, departSelected, returnSelected, selectedRsv.getBkcInstance(), BookClassInstanceList);
+
+            changeDatePenalty = mrLocal.getChangeDatePenalty(departed, returned, departSelected, returnSelected, selectedRsv.getBkcInstance());
+
+            totalPenalty = psgCount * (priceDiff + changeRoutePenalty + changeDatePenalty);
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
+    public void onChooseConfirm() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dlgGrd').show()");
+
+    }
+
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-//        if (stfType.equals("agency")) {
-//            this.bkSystem = "DDS";
-//        } else {
-//            this.bkSystem = "ARS";
-//        }
-        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book", companyName);
-
         if (stfType.equals("agency")) {
-            ddsBkblocal.setAgency_Booker(username, booker);
+            this.setBkSystem("DDS");
+        } else {
+            this.setBkSystem("ARS");
+        }
+
+        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem, companyName);
+
+//        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
+        if (stfType.equals("agency")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+            
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, "Reschedule flight successfully."));
 
         }
 
@@ -259,18 +296,74 @@ public class ConfirmBookFlightManagedBean implements Serializable {
         this.stfType = stfType;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
+    public ArrayList<FlightInstance> getDeparted() {
+        return departed;
+    }
+
+    public void setDeparted(ArrayList<FlightInstance> departed) {
+        this.departed = departed;
+    }
+
+    public ArrayList<FlightInstance> getReturned() {
+        return returned;
+    }
+
+    public void setReturned(ArrayList<FlightInstance> returned) {
+        this.returned = returned;
+    }
+
+    public Reservation getSelectedRsv() {
+        return selectedRsv;
+    }
+
+    public void setSelectedRsv(Reservation selectedRsv) {
+        this.selectedRsv = selectedRsv;
+    }
+
+    public Double getPriceDiff() {
+        return priceDiff;
+    }
+
+    public void setPriceDiff(Double priceDiff) {
+        this.priceDiff = priceDiff;
+    }
+
+    public Double getChangeRoutePenalty() {
+        return changeRoutePenalty;
+    }
+
+    public void setChangeRoutePenalty(Double changeRoutePenalty) {
+        this.changeRoutePenalty = changeRoutePenalty;
+    }
+
+    public Double getChangeDatePenalty() {
+        return changeDatePenalty;
+    }
+
+    public void setChangeDatePenalty(Double changeDatePenalty) {
+        this.changeDatePenalty = changeDatePenalty;
+    }
+
+    public Double getTotalPenalty() {
+        return totalPenalty;
+    }
+
+    public void setTotalPenalty(Double totalPenalty) {
+        this.totalPenalty = totalPenalty;
     }
 
     /**
-     * @param username the username to set
+     * @return the manageStatus
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public String getManageStatus() {
+        return manageStatus;
+    }
+
+    /**
+     * @param manageStatus the manageStatus to set
+     */
+    public void setManageStatus(String manageStatus) {
+        this.manageStatus = manageStatus;
     }
 
     /**
@@ -299,6 +392,14 @@ public class ConfirmBookFlightManagedBean implements Serializable {
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getCabinName() {
+        return cabinName;
+    }
+
+    public void setCabinName(String cabinName) {
+        this.cabinName = cabinName;
     }
 
 }
