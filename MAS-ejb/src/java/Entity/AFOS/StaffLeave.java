@@ -34,8 +34,8 @@ public class StaffLeave implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date endDate;
     private Integer length; // number of days
-    private String status;
-    private String remark;
+    private String status=new String();
+    private String remark="Normal";
     private String staffType;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date applyDate = new Date();

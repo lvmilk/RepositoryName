@@ -80,6 +80,7 @@ public class ApplyLeaveManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + "Please check the length of leave should be less than 3 days", ""));
             } else {
                 userName = this.getUserName();
+                System.out.println("Username "+userName);
                 lb.addNormalLeave(startDate,endDate, userName);
                 
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./applyLeaveSuccess.xhtml");
