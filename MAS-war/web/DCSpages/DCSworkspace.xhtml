@@ -12,7 +12,7 @@
 
         <ui:decorate template="./../resources/template/skeleton.xhtml">
             <ui:define name="top">
-                <ui:include src="./../resources/template/cmiTemplate/grdTopFragment.xhtml"></ui:include>
+                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
                 <ui:include src="./../resources/template/dcsTemplate/LeftMenu.xhtml"></ui:include>
@@ -21,16 +21,15 @@
                 <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
 
                 <p:lightBox style="text-align:center;margin-top:20px;">
-                    <h:outputLink value="#{request.contextPath}/images/aas1.jpg" title="aas1" style="margin-bottom:4px;">
-                        <h:graphicImage value="/images/aas1.jpg"  width="200" height="150"/>
+                     <h:outputLink value="#{request.contextPath}/images/logo.PNG" title="logo" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/logo.PNG"  width="200" height="130"/>
+                    </h:outputLink>
+                    <h:outputLink value="#{request.contextPath}/images/dcs1.jpg" title="dcs1" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/dcs1.jpg"  width="200" height="130"/>
                     </h:outputLink>
 
-                    <h:outputLink value="#{request.contextPath}/images/aas2.jpg" title="aas2" style="margin-bottom:4px;">
-                        <h:graphicImage value="/images/aas2.jpg"  width="200" height="150"/>
-                    </h:outputLink>
-                    
-                    <h:outputLink value="#{request.contextPath}/images/aas3.jpg" title="aas3" style="margin-bottom:4px;">
-                        <h:graphicImage value="/images/aas3.jpg"  width="200" height="150"/>
+                    <h:outputLink value="#{request.contextPath}/images/dcs2.jpg" title="dcs2" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/dcs2.jpg"  width="200" height="150"/>
                     </h:outputLink>
                     
                 </p:lightBox>

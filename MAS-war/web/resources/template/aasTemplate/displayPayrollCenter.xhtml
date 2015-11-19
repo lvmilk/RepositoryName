@@ -14,7 +14,7 @@
         <h:form id="form">
 
             <p:panel id="panel" header="Staff Payroll Report"  style="width:100%" >
-                <p:dataTable id="tbl" var="key" value="#{PMB.keyList}" resizableColumns="true" tableStyle="width:auto" style="margin-bottom:40px" sortMode="multiple" paginator="true" rows="40">
+                <p:dataTable id="tbl" var="key" value="#{PMB.keyList}" resizableColumns="true" style="margin-bottom:40px" sortMode="multiple" paginator="true" rows="40">
                     <f:facet name="header">
                         Merlion Airlines Staff Payroll
                     </f:facet>
@@ -46,19 +46,19 @@
                     <p:columnGroup type="footer">
                         <p:row>
                             <p:column footerText="Total Cost: " style="text-align:right"/>
-                            <p:column colspan="6" style="text-align:left" footerText="$#{PMB.sumString}" />
+                            <p:column colspan="5" style="text-align:left" footerText="$#{PMB.sumString}" />
                         </p:row>
                         <p:row>
                             <p:column footerText="Currency: " style="text-align:right"/>
-                            <p:column colspan="6" style="text-align:left" footerText="SGD" />
+                            <p:column colspan="5" style="text-align:left" footerText="SGD" />
                         </p:row>
                         <p:row>
                             <p:column footerText="Period (up-to-date):  " style="text-align:right"/>
-                            <p:column colspan="6" style="text-align:left" footerText="Year #{PMB.year} Month #{PMB.month}" />
+                            <p:column colspan="5" style="text-align:left" footerText="Year #{PMB.year} Month #{PMB.month}" />
                         </p:row>
                         <p:row>
                             <p:column footerText="Note:  " style="text-align:right; color: #006699"/>
-                            <p:column colspan="6" style="text-align:left; color: #006699" footerText="Total Payroll is the sum of monthly salary and total hour pay, excluding the salary of those absent days." />
+                            <p:column colspan="5" style="text-align:left; color: #006699" footerText="Total Payroll is the sum of monthly salary and total hour pay, excluding the salary of those absent days." />
                         </p:row>
                     </p:columnGroup>
                 </p:dataTable>

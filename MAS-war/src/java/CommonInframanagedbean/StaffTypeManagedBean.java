@@ -5,8 +5,10 @@
  */
 package CommonInframanagedbean;
 
+import SessionBean.CommonInfra.ManageAccountBeanLocal;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
@@ -20,18 +22,21 @@ import javax.inject.Named;
 @ViewScoped
 public class StaffTypeManagedBean implements Serializable{
     
+    @EJB
+    private ManageAccountBeanLocal mab;
+    
     private String stfType;
     private String username;
-    private String  firstName;
-    private String lastName;
+private String name;
     
     @PostConstruct
     public void init()
     {
         setStfType((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType"));
         setUsername((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
-        setFirstName((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("firstName"));
-        setLastName((String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lastName"));
+        if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType")!=null &&FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username")!=null){
+       name = mab.getStaffName(username, stfType);
+        }
     }
 
     /**
@@ -56,20 +61,14 @@ public class StaffTypeManagedBean implements Serializable{
         this.username = username;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
     
 }

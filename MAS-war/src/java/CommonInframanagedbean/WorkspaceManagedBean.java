@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 @ViewScoped
 public class WorkspaceManagedBean implements Serializable {
 
+    String stfType;
+    
     public void direction() throws IOException {
-        String stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
-        if (stfType.equals("admin")) {
+        stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
+        if (stfType.equals("administrator")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/sAdmWorkspace.xhtml");
         } else if (stfType.equals("groundStaff")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/CMIpages/grdStaffWorkspace.xhtml");
@@ -34,4 +36,13 @@ public class WorkspaceManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("/MAS-war/staffWorkspace.xhtml");
         }
     }
+
+    public String getStfType() {
+        return stfType;
+    }
+
+    public void setStfType(String stfType) {
+        this.stfType = stfType;
+    }
+    
 }
