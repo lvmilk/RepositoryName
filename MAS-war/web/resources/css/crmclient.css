@@ -28,7 +28,7 @@ h2 {
 }
 
 h3 {
-    font-size: 1em;
+    font-size: 1.2em;
     margin-top:20px;
 }
 
@@ -60,7 +60,7 @@ img.right {
 /* Header */
 #header {
     padding: 4px 0px;
-    height: 75px;
+    height: 50px;
     position: relative;
 }
 
@@ -269,7 +269,7 @@ img.right {
 }
 
 .ui-widget {
-    font-size: 12px !important;
+    font-size: 20px !important;
 }
 
 .ui-layout-north {
