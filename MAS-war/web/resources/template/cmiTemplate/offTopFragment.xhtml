@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+
+    <h:head>
+        <title>Top Fragment for office staff</title>
+    </h:head>
+    <h:body>
+        <h:form> 
+
+            <p:growl id="topbar"/>
+
+
+            <style>
+                .clock.ui-clock {
+                    color: #35bad6;
+                    position: relative;
+                    margin-right: 2em;
+                }
+                
+            </style>
+
+            <p:menubar  styleClass = "menu" style="text-align: center">
+
+                <p:submenu label="Home" icon="ui-icon-home" style="margin-right: 30px!important;" >
+                    <p:menuitem value="My Profile" icon="ui-icon-gear" url="/CMIpages/staffProfile.xhtml"/>
+                    <p:menuitem value="My Workspace" icon="ui-icon-bookmark" action="#{wsMB.direction}"/>
+                    <p:menuitem value= "Internal Messaging" icon="ui-icon-comment" url = "/CMIpages/message.xhtml"/>
+                    <p:separator />
+                    <p:menuitem value="Quit" actionListener="#{SslManagedBean.endSsl}"/>
+                </p:submenu>
+
+                <p:menuitem value="APS"  style="margin-right: 30px !important;" url="/APSpages/APSworkspace.xhtml" icon="ui-icon-flag"/>
+
+                <p:menuitem value="AFOS" style="margin-right: 30px !important;" url="/AFOSpages/AFOSworkspace.xhtml" icon="ui-icon-clock"/>
+
+                <p:menuitem value="AIS"  style="margin-right: 30px !important;" url="/AISpages/aisPage.xhtml" icon="ui-icon-bookmark"/>
+
+                <p:menuitem value="ADS"  style="margin-right: 30px !important;" url="/ADSpages/adsPage.xhtml" icon="ui-icon-calendar"/>
+
+                <p:menuitem value="AAS"  style="margin-right: 30px !important;" url="/AASpages/AASworkspace.xhtml" icon="ui-icon-calculator"/>
+
+                <p:menuitem value="CRM"   style="margin-right: 30px !important;" url="#" icon="ui-icon-person"/>
+
+                <p:menuitem value="CRMClient"   style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" icon="ui-icon-person"/>
+
+                <p:submenu label="Help" icon="ui-icon-help" style="margin-right: 30px !important;">
+                    <p:menuitem value="FAQs" url="#" />
+                    <p:submenu label="Search" icon="ui-icon-search">
+                        <p:submenu label="Text">
+                            <p:menuitem value="Workspace" url="#" />
+                        </p:submenu>
+                        <p:menuitem value="File" url="#" />
+                    </p:submenu>
+                </p:submenu>
+
+                <p:menuitem value="Logout" style="margin-right: 30px !important; float: right !important; " actionListener="#{SslManagedBean.endSsl}"  icon="ui-icon-extlink" />
+
+                <!--                <p:menuitem styleClass="clock">
+                                    <p:clock pattern="yyyy-MM-dd HH:mm:ss"/>
+                                </p:menuitem>-->
+            
+                <p:menuitem style="margin-right: 30px !important; float: right !important; ">
+                        <h:graphicImage value="/images/logoname.png" height="30" />
+                </p:menuitem>
+             
+                
+            </p:menubar>
+
+        </h:form>
+
+    </h:body>
+</html>

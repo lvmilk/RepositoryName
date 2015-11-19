@@ -13,7 +13,7 @@
             <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
             <p:row>
                 <p:column>
-                    <p:outputLabel for ="Subject" style ="front-weight:bold" value ="Subject :" />
+                    <p:outputLabel for ="Subject" style ="font-weight: bold" value ="Subject :" />
                 </p:column>
                 <p:column>
                     <p:inputText required ="true" label ="Subject" requiredMessage ="The Subject cannot be blank." id ="Subject" value ="#{msgManagedBean.msgTitle}" >
@@ -26,7 +26,7 @@
             <h:panelGrid columns="2" cellpadding="10"></h:panelGrid>
             <p:row>
                 <p:column>
-                    <p:outputLabel value="Receivers:" for="autoCompleteReceiverList" />
+                    <p:outputLabel value="Receivers:" style ="font-weight: bold" for="autoCompleteReceiverList" />
                     <p:autoComplete required = "true" requiredMessage="You must at least have a receiver." id="autoCompleteReceiverList" multiple="true" value="#{msgManagedBean.selectedUsers}" completeMethod="#{msgManagedBean.usersList}"
                                     var="user" itemLabel="#{user.username}  " itemValue="#{user}" forceSelection="true" converter="userConverter" />  
                 </p:column>  

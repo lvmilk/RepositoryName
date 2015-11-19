@@ -44,6 +44,28 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     private Expense expense;
     private Revenue revenue;
 
+    public List<Reservation> searchAllRsv(String email) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email").setParameter("email", email);
+        List<Reservation> rsvList = query.getResultList();
+
+        return rsvList;
+    }
+
+    public Reservation searchOneRsv(String email, Long bookRef) {
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email AND r.id=:bookRef");
+        query.setParameter("email", email);
+        query.setParameter("bookRef", bookRef);
+
+        List<Reservation> rsvList = query.getResultList();
+
+        if (rsvList.size() == 1) {
+            return rsvList.get(0);
+        } else {
+            return new Reservation();
+        }
+    }
+    
+
     public void upgradeCabinClass(List<Passenger> selectedPsgList, Reservation selectedRsv, BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName) {
         System.out.println("in upgradeCabinClass(): selectedPsgList is " + selectedPsgList);
         System.out.println("in upgradeCabinClass(): selectedRsv is " + selectedRsv);
@@ -454,9 +476,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
                 rsvList.remove(rsv);
                 bookInstance.setReservation(rsvList);
 
-                
                 em.merge(bookInstance);
-                
+
                 em.flush();
 
             }
