@@ -21,18 +21,16 @@
                 <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
 
                 <p:lightBox style="text-align:center;margin-top:20px;">
+                    <h:outputLink value="#{request.contextPath}/images/logo.PNG" title="logo" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/logo.PNG"  width="200" height="150"/>
+                    </h:outputLink>
                     <h:outputLink value="#{request.contextPath}/images/aas1.jpg" title="aas1" style="margin-bottom:4px;">
                         <h:graphicImage value="/images/aas1.jpg"  width="200" height="150"/>
                     </h:outputLink>
-
-                    <h:outputLink value="#{request.contextPath}/images/aas2.jpg" title="aas2" style="margin-bottom:4px;">
-                        <h:graphicImage value="/images/aas2.jpg"  width="200" height="150"/>
-                    </h:outputLink>
-                    
                     <h:outputLink value="#{request.contextPath}/images/aas3.jpg" title="aas3" style="margin-bottom:4px;">
-                        <h:graphicImage value="/images/aas3.jpg"  width="200" height="150"/>
+                        <h:graphicImage value="/images/aas3.jpg"  width="200" height="130"/>
                     </h:outputLink>
-                    
+
                 </p:lightBox>
 
             </ui:define>

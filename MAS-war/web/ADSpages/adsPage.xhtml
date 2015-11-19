@@ -10,12 +10,30 @@
     </h:head>
     <h:body>
 
-        <ui:decorate template="./../resources/template/adsTemplate/ars_skeleton.xhtml">
+        <ui:decorate template="./../resources/template/skeleton.xhtml">
             <ui:define name="top">
                 <ui:include src="./../resources/template/topFragment.xhtml"></ui:include>
             </ui:define>
             <ui:define name="left">
                 <ui:include src="./../resources/template/adsTemplate/LeftMenu.xhtml"></ui:include>
+            </ui:define>
+              <ui:define name="right">
+                <ui:include src="./../resources/template/cmiTemplate/rightFragment.xhtml"></ui:include>
+
+                <p:lightBox style="text-align:center;margin-top:20px;">
+                    <h:outputLink value="#{request.contextPath}/images/logo.PNG" title="logo" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/logo.PNG"  width="200" height="130"/>
+                    </h:outputLink>
+                    <h:outputLink value="#{request.contextPath}/images/ADS1.jpg" title="ADS1" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/ADS1.jpg"  width="200" height="150"/>
+                    </h:outputLink>
+
+                    <h:outputLink value="#{request.contextPath}/images/ads2.jpg" title="ADS2" style="margin-bottom:4px;">
+                        <h:graphicImage value="/images/ads2.jpg"  width="200" height="150"/>
+                    </h:outputLink>
+                    
+                </p:lightBox>
+
             </ui:define>
             <ui:define name="center">
                 <ui:include src="./../resources/template/cmiTemplate/centerFragment.xhtml"></ui:include>
