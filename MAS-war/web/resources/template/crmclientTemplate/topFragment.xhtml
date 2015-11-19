@@ -10,10 +10,10 @@
 
     <h:head>
         <style>
-/*            .topMenu.ui-menubar{
-                background-color: #35bad6 !important; 
-                border-width: 4px  !important;
-            }
+            .topMenu.ui-menubar{
+                background-color: #DC8700 !important; 
+                border-width: 4px !important;
+            }/*
 
             .topMenu.ui-menuitem-text {
                 font-family: Verdana  !important;
@@ -21,42 +21,52 @@
                 font-size: medium !important;
             }
 
-            .rightAlignMenu.ui-menubar {
-                margin-right: 60px;
-                float: right  !important;
-            }*/
+            /*            .buttonMenu.ui-button {
+                            margin-right: 80px !important; 
+                            float: right !important;
+                            border: 0px solid red;
+                        }*/
         </style>
 
     </h:head>
     <h:body>
         <h:form> 
 
-            <p:menubar>
-                <p:menuitem>
-                    <h:link outcome="/CRMClient/home.xhtml">
-                        <h:graphicImage value="/images/logoname.png" height="30" />
-                    </h:link>
-                </p:menuitem>
+            <div>
+                <p:menubar styleClass="topMenu" style="text-align: left; width: 80% !important; margin-left: 10% !important;" >
+                    <p:menuitem>
+                        <h:link outcome="/CRMClient/home.xhtml">
+                            <h:graphicImage value="/images/logoname.png" height="30" />
+                        </h:link>
+                    </p:menuitem>
 
-                <p:menuitem value="Contact us" style="margin-right: 30px;" url="/CRMClient/contactus.xhtml" />
+                    <!--                <p:menuitem value="Contact us" style="margin-right: 30px;" url="/CRMClient/contactus.xhtml" />
+                    
+                                    <p:menuitem value="Create my account"  style="margin-right: 30px;" url="/CRMClient/createMemberAccount.xhtml" />
+                    
+                                    <p:menuitem value="My account"  style="margin-right: 80px;" url="/CRMClient/memberLogin.xhtml" />-->
 
-                <p:menuitem value="Create my account"  style="margin-right: 30px;" url="/CRMClient/createMemberAccount.xhtml" />
+                    <f:facet name="options">
+                        <p:inputText style="margin-right:10px" placeholder="Search"/>
+                        <p:commandButton value="Contact us" style="margin-right: 10px;" />
+                        <p:commandButton value="Create my account"  style="margin-right: 10px;"  icon="ui-icon-person" />
+                        <p:commandButton value="My Account" icon="ui-icon-person" styleClass="buttonMenu" />
+                    </f:facet>
 
-                <p:menuitem value="My account"  style="margin-right: 80px !important; float: right !important;" url="/CRMClient/memberLogin.xhtml" />
+                </p:menubar>
+            </div>
 
-            </p:menubar>
+            <p:separator style="text-align: left; width: 80% !important; margin-left: 10% !important;"/>
 
-            <p:separator/>
+            <p:menubar styleClass = "funcMenu" style="text-align: left; width: 80% !important; margin-left: 10% !important;">
 
-            <p:menubar styleClass = "funcMenu" style="text-align: left">
+                <p:menuitem value="HOME"  style="margin-left: 50px !important; margin-right: 50px !important;" url="/CRMClient/home.xhtml" />
 
-                <p:menuitem value="HOME"  style="margin-right: 30px !important;" url="/CRMClient/home.xhtml" />
+                <p:menuitem value="MAKE A BOOKING" style="margin-right: 50px !important;" url="/CRMClient/booking.xhtml" />
 
-                <p:menuitem value="MAKE A BOOKING" style="margin-right: 30px !important;" url="/CRMClient/booking.xhtml" />
+                <p:menuitem value="CHECK-IN"  style="margin-right: 50px !important;" url="/CRMClient/checkin.xhtml" />
 
-                <p:menuitem value="CHECK-IN"  style="margin-right: 30px !important;" url="/CRMClient/checkin.xhtml" />
-
-                <p:menuitem value="YOUR RESERVATIONS"  style="margin-right: 200px !important; float: right !important;" url="/CRMClient/viewReservation.xhtml" />
+                <p:menuitem value="YOUR RESERVATIONS"  style="margin-right: 50px !important;" url="/CRMClient/viewReservation.xhtml" />
 
                 <p:submenu label="INFORMATION"  style="margin-right: 80px !important; float: right !important;" >
                     <p:menuitem value="BAGGAGE" url="/CMIpages/staffProfile.xhtml"/>
