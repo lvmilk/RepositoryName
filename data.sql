@@ -783,3 +783,15 @@ INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(444,"CP777778",8000.0,8
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(555,"O777777",3000.0,0.0)
 INSERT IGNORE INTO Payroll(id,name,salary, bonus) values(666,"G666631",4000.0,0.0)
 
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(99,"SQ100","2015-12-08 19:09:00.000","2015-12-08 23:09:00.000","Singapore Changi Airport","Shanghai Pudong Airport","SIN","SPD",0,2,2,"Singapore Airline","First Class",900)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(100,"MU999","2015-12-09 00:09:00.000","2015-12-09 03:09:00.000","Shanghai Pudong Airport","Seoul Incheon Airport","SPD","ICN",0,2,2,"China Eastern Airline","First Class",800)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(101,"MU888","2015-12-09 03:09:00.000","2015-12-09 06:09:00.000","Shanghai Pudong Airport","Tokyo Haneda Airport","SPD","HND",0,2,2,"China Eastern Airline","First Class",800)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(102,"KE567","2015-12-23 19:09:00.000","2015-12-23 23:39:00.000","Seoul Incheon Airport","Singapore Changi Airport","ICN","SIN",0,1,1,"Korean Airline","First Class",900)
+
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(100,"1A",1,"A","available","First Class",99)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(101,"1B",1,"A","available","First Class",99)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(110,"1A",1,"A","available","First Class",100)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(111,"1B",1,"A","available","First Class",100)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(120,"2A",2,"A","available","First Class",101)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(121,"2B",2,"A","available","First Class",101)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(130,"2A",2,"A","available","First Class",102)
