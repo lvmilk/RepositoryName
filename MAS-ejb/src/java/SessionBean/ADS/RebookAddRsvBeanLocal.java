@@ -9,21 +9,20 @@ import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
 import Entity.ADS.Payment;
 import Entity.ADS.Reservation;
-import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.Local;
 
 /**
  *
- * @author LI HAO
+ * @author LIU YUQI'
  */
 @Local
-public interface PassengerBeanLocal {
+public interface RebookAddRsvBeanLocal {
 
-    public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName);
+   
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName);
 
     public boolean checkPassportExist(String passport);
 
@@ -34,7 +33,6 @@ public interface PassengerBeanLocal {
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo);
 
     public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action);
-
 
 
 }

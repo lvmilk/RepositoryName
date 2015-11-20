@@ -159,7 +159,7 @@ public class ManageAccountBeanLocalTest {
     @Test
     public void test13DeleteCockpitAcc() {
         System.out.println("test13DeleteCockpitAcc");
-        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>(); 
+        List<CockpitCrew> selectedCpCrew = new ArrayList<CockpitCrew>();
         CockpitCrew cpCrew = new CockpitCrew();
         cpCrew.setCpName("CP777751");
         selectedCpCrew.add(cpCrew);
@@ -195,7 +195,7 @@ public class ManageAccountBeanLocalTest {
 
     @Test
     public void test17GetGroundStaff_NotFound() {
-        System.out.println("test17GetGroundStaff");
+        System.out.println("test17GetGroundStaff_NotFound");
         GroundStaff grdStaff = new GroundStaff();
         grdStaff = mabl.getGroundStaff("G666631");
         assertNull(grdStaff);
@@ -203,19 +203,44 @@ public class ManageAccountBeanLocalTest {
 
     @Test
     public void test18GetCabinCrew() {
-        System.out.println("test16GetCabinCrew");
+        System.out.println("test18GetCabinCrew");
+        CabinCrew cb = new CabinCrew();
+        cb = mabl.getCabinCrew("CB888852");
+        assertEquals("CB888852", cb.getCbName());
 
     }
 
     @Test
-    public void test19GetCockpitCrew() {
-        System.out.println("test17GetCockpitCrew");
+    public void test19GetCabinCrew_NotFound() {
+        System.out.println("test19GetCabinCrew_NotFound");
+        CabinCrew cb = new CabinCrew();
+        cb = mabl.getCabinCrew("CB888851");
+        assertNull(cb);
 
     }
 
     @Test
-    public void test20GetLockedOutStatus() {
-        System.out.println("test18GetLockedOutStatus");
+    public void test20GetCockpitCrew() {
+        System.out.println("test20GetCockpitCrew");
+        CockpitCrew cp = new CockpitCrew();
+        cp = mabl.getCockpitCrew("CP777752");
+        assertEquals("CP777752", cp.getCpName());
+    }
+
+    @Test
+    public void test21GetCockpitCrew_NotFound() {
+        System.out.println("test21GetCockpitCrew_NotFound");
+        CockpitCrew cp = new CockpitCrew();
+        cp = mabl.getCockpitCrew("CP777751");
+        assertNull(cp);
+    }
+
+    @Test
+    public void test22GetLockedOutStatus() {
+        System.out.println("test22GetLockedOutStatus");
+        int result;
+        result=mabl.getLockedOutStatus("O777777","officeStaff");
+        assertEquals(0,result);
 
     }
 

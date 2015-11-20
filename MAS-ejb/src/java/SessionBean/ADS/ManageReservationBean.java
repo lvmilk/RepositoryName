@@ -41,6 +41,9 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     @EJB
     PassengerBeanLocal psgLocal;
 
+    @EJB
+    RebookAddRsvBeanLocal rbLocal;
+
     private Expense expense;
     private Revenue revenue;
 
@@ -107,7 +110,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         removeOldFlt(selectedRsv, psgList, oldPsgList, "rebook", 0.0);
 
-        psgLocal.makeReservation(selectedRsv.getBooker(), (ArrayList<Passenger>) selectedPsgList, departSelected, returnSelected, bookList, selectedPsgList.size(), selectedRsv.getOrigin(), selectedRsv.getDest(), selectedRsv.getReturnTrip(), bkSystem, totalPrice, "rebook", companyName);
+        rbLocal.makeReservation(selectedRsv.getBooker(), (ArrayList<Passenger>) selectedPsgList, departSelected, returnSelected, bookList, selectedPsgList.size(), selectedRsv.getOrigin(), selectedRsv.getDest(), selectedRsv.getReturnTrip(), bkSystem, totalPrice, "rebook", companyName);
 
     }
 
@@ -192,30 +195,68 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         em.refresh(newPsg);
         newPsg = em.find(Passenger.class, newPsg.getId());
+
         if (selectedPsg.getTickets() != null) {
+            System.out.println("in changePassenger(): " + selectedPsg.getId() + ", name=" + selectedPsg.getFirstName() + " " + selectedPsg.getLastName());
             System.out.println(selectedPsg.getTickets());
         }
 
         Passenger oldPsg = em.find(Passenger.class, selectedPsg.getId());
         Reservation rsv = em.find(Reservation.class, selectedPsg.getTickets().get(0).getRsv().getId());
-        List<Ticket> tickets = oldPsg.getTickets();
-        for (int i = 0; i < tickets.size(); i++) {
+        List<Ticket> tickets = new ArrayList<>();
+        for (int i = 0; i < oldPsg.getTickets().size(); i++) {
+            tickets.add(oldPsg.getTickets().get(i));
+        }
 
-            Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());
+        System.out.println("Before loop size of tickets is " + tickets.size());
+        System.out.println("Before loop old psg tickets is " + oldPsg.getTickets());
+
+        while (oldPsg.getTickets() != null && !oldPsg.getTickets().isEmpty()) {
+
+//            System.out.println("In changePassenger loop, i " + i);
+            Ticket ticket = em.find(Ticket.class, oldPsg.getTickets().get(0).getTicketID());
+
             List<Ticket> psgTickets = oldPsg.getTickets();
+            System.out.println("In changePassenger loop,  size of oldPsg ticket is " + psgTickets.size());
             psgTickets.remove(ticket);
+            oldPsg.setTickets(psgTickets);
 
             ticket.setPassenger(newPsg);
-            newPsg.getTickets().add(ticket);
-
             em.merge(ticket);
+            em.refresh(ticket);
+
+            newPsg.getTickets().add(ticket);
+            System.out.println("In changePassenger loop,  size of newPsg ticket is " + newPsg.getTickets().size());
+
             em.flush();
 
         }
-        em.remove(oldPsg);
-        em.flush();
-        em.merge(newPsg);
 
+//
+//        for (int i = 0; i < tickets.size(); i++) {
+//
+//            System.out.println("In changePassenger loop, i " + i);
+//            Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());
+//
+//            List<Ticket> psgTickets = oldPsg.getTickets();
+//            System.out.println("In changePassenger loop, i " + i + " size of oldPsg ticket is " + psgTickets.size());
+//            psgTickets.remove(ticket);
+//            oldPsg.setTickets(psgTickets);
+//
+//            ticket.setPassenger(newPsg);
+//            em.merge(ticket);
+//            em.refresh(ticket);
+//
+//            newPsg.getTickets().add(ticket);
+//            System.out.println("In changePassenger loop, i+" + i + " size of newPsg ticket is " + newPsg.getTickets().size());
+//
+//            em.flush();
+//
+//        }
+//        em.refresh(oldPsg);
+//        em.remove(oldPsg);
+//        em.flush();
+//        em.merge(newPsg);
         Payment payment = em.find(Payment.class, rsv.getPayment().getPaymentID());
         Double penalty = computeChangePersonPenalty(rsv.getBkcInstance());
         Double totalPayment = payment.getTotalPrice() + penalty;
@@ -328,7 +369,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         em.flush();
         System.out.println("Before reschedule: totalPrice is " + totalPrice);
 
-        psgLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem, totalPrice, "rebook", companyName);
+        rbLocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, passengerList.size(), origin, dest, returnTrip, bkSystem, totalPrice, "rebook", companyName);
 
     }
 

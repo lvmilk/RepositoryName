@@ -62,10 +62,12 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     private Boolean visiMember;
 
     private ArrayList<Passenger> psgList;
-    private String stfType;
+//    private String stfType;
     private String username;
     private String bkSystem;
     private String companyName;
+    
+    private Double miles;
 
     @PostConstruct
     public void init() {
@@ -74,7 +76,7 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
-            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
+//            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
             username = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserId");
 
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
@@ -92,6 +94,8 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
             companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
             
+            miles = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("miles");
+            
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
 
@@ -108,18 +112,20 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 //        } else {
 //            this.bkSystem = "ARS";
 //        }
+        this.bkSystem="ARS";
         psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book", companyName);
-
-        if (stfType.equals("agency")) {
-            ddsBkblocal.setAgency_Booker(username, booker);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
-
-        } else {
+        
+   //     Double miles = (ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10;
+//        if (stfType.equals("agency")) {
+//            ddsBkblocal.setAgency_Booker(username, booker);
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
+//
+//        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
-        }
+//        }
 
     }
 
@@ -246,18 +252,18 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     }
 
     /**
-     * @return the stfType
-     */
-    public String getStfType() {
-        return stfType;
-    }
-
-    /**
-     * @param stfType the stfType to set
-     */
-    public void setStfType(String stfType) {
-        this.stfType = stfType;
-    }
+//     * @return the stfType
+//     */
+//    public String getStfType() {
+//        return stfType;
+//    }
+//
+//    /**
+//     * @param stfType the stfType to set
+//     */
+//    public void setStfType(String stfType) {
+//        this.stfType = stfType;
+//    }
 
     /**
      * @return the username
