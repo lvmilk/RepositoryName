@@ -100,13 +100,13 @@ public class GDSLoginBean {
         Integer i;
         char j;
         String seatNo;
-        String status="available";
+        String status = "available";
 
         for (i = rowStart; i <= rowEnd; i++) {
             for (j = columnStart; j <= columnEnd; j++) {
-                GDSSeat gdsSeat=new GDSSeat();
-                seatNo=i.toString()+j;
-                System.out.println("********GDSSessionBean: seatNo"+seatNo);
+                GDSSeat gdsSeat = new GDSSeat();
+                seatNo = i.toString() + j;
+                System.out.println("********GDSSessionBean: seatNo" + seatNo);
                 gdsSeat.createSeat(seatNo, i, j, status, cabinName);
                 gdsSeat.setFlight(gdsFlight);
                 gdsFlight.getSeats().add(gdsSeat);
@@ -116,9 +116,27 @@ public class GDSLoginBean {
 
         em.persist(gdsFlight);
         em.flush();
-        
+
         return true;
 
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "viewReleasedFlight")
+    public List<GDSFlight> viewReleasedFlight(@WebParam(name = "companyName") String companyName) {
+        //TODO write your implementation code here:
+        Query query = em.createQuery("SELECT r FROM GDSFlight r WHERE r.companyName=:inCompanyName");
+        query.setParameter("inCompanyName", companyName);
+;
+        List<GDSFlight> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList;
+        } else {
+            resultList = new ArrayList<>();
+            return resultList;
+        }
     }
 
 }
