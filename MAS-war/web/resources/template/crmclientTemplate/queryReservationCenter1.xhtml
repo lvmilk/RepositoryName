@@ -14,7 +14,7 @@
        <h:form id="queryRsv">
            
             <p:panel id="thisPanel" header="Search For Reservation" style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
-                <p:messages id="msgs" showDetail="false" />
+                <p:messages id="msgs" showDetail="true" />
 
                 <h:panelGrid columns="2" cellpadding="10">
 
@@ -42,7 +42,7 @@
 
                 <p:separator />
 
-                <p:commandButton value="Submit" update="queryRsv" actionListener="#{queryBooking.searchRsv}" icon="ui-icon-check" />
+                <p:commandButton value="View Reservation" update="queryRsv" actionListener="#{queryBooking.searchRsv}" icon="ui-icon-check" />
             </p:panel>
              
            

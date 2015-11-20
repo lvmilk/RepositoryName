@@ -104,6 +104,14 @@ public class QueryBookingManagedBean implements Serializable {
         }
 
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
+        if (selectedPsg != null) {
+            newPsg.setFirstName(selectedPsg.getFirstName());
+            newPsg.setLastName(selectedPsg.getLastName());
+            newPsg.setPassport(selectedPsg.getPassport());
+            newPsg.setTitle(selectedPsg.getTitle());
+            newPsg.setFfpName(selectedPsg.getFfpName());
+            newPsg.setFfpNo(selectedPsg.getFfpNo());
+        }
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
@@ -162,7 +170,7 @@ public class QueryBookingManagedBean implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dlgGrd').show()");
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No Change of Cabin Class!"));
+            FacesContext.getCurrentInstance().addMessage("Message", new FacesMessage("No Change of Cabin Class!"));
         }
 
     }
@@ -197,7 +205,7 @@ public class QueryBookingManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabin2.xhtml");
 
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
+                FacesContext.getCurrentInstance().addMessage("ERROR", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one flight leg for for upgrade of cabin ", ""));
@@ -255,12 +263,14 @@ public class QueryBookingManagedBean implements Serializable {
         } else {
             System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
         }
-        mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
+               
+            bkSystem="ARS";
+            mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
 
-        FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!"));
-
+            FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!"));
+   
     }
 
     public void onSavePsgChange() throws IOException {
@@ -271,8 +281,7 @@ public class QueryBookingManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsvList", new ArrayList<>());
 
-        FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Change passenger Successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Change passenger Successfully"));
 
     }
 
@@ -280,21 +289,29 @@ public class QueryBookingManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePerson.xhtml");
     }
 
+    public void onSelectPsgBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./reschedule1.xhtml");
+    }
+
     public void onSelectPsg() throws IOException {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (selectedPsgList.isEmpty()) {
+            context.execute("alert('Please select passenger(s) for rescheduling flight(s).');");
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select passenger(s) ", "Please select passenger(s) for rescheduling flight(s) "));
+        } else {
+            System.out.println("Selected passenger list is " + selectedPsgList.size());
 
-        System.out.println("Selected passenger list is " + selectedPsgList.size());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookedFlights", flights);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", selectedPsgList);
+            manageStatus = "rebook";
+            System.out.println("onSelectPsg(): manageStatus is " + manageStatus);
 
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookedFlights", flights);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", selectedPsgList);
-        manageStatus = "rebook";
-        System.out.println("onSelectPsg(): manageStatus is " + manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
 
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
-
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./reschedule3.xhtml");
-
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./reschedule3.xhtml");
+        }
     }
 
     public void onSelectRescheduleRsv(Reservation rsv) throws IOException {
@@ -355,6 +372,8 @@ public class QueryBookingManagedBean implements Serializable {
             mbsbl.editThisBooker(booker);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
+              manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("",manageStatus);
+            
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }

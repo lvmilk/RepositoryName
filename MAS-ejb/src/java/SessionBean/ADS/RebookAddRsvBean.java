@@ -7,26 +7,30 @@ package SessionBean.ADS;
 
 import Entity.AAS.Expense;
 import Entity.AAS.Revenue;
-import java.util.ArrayList;
-import javax.ejb.Stateless;
-import Entity.ADS.*;
+import Entity.ADS.Booker;
+import Entity.ADS.Passenger;
+import Entity.ADS.Payment;
+import Entity.ADS.Reservation;
+import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.FlightCabin;
 import Entity.APS.FlightInstance;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  *
- * @author LI HAO
+ * @author LIU YUQI'
  */
 @Stateless
-public class PassengerBean implements PassengerBeanLocal {
+public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
 
     @PersistenceContext
     private EntityManager em;
@@ -69,7 +73,7 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
@@ -96,8 +100,6 @@ public class PassengerBean implements PassengerBeanLocal {
         setupTicket_BookInstance(BookClassInstanceList, tickets);
 
         Payment payment = makeRsvPayment(rsv, psgCount, totalPrice, action);
-        
-        return rsv.getId();
 
     }
 
@@ -235,7 +237,31 @@ public class PassengerBean implements PassengerBeanLocal {
 
     }
 
-    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
+    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> depSelected, ArrayList<FlightInstance> retSelected, ArrayList<Passenger> pasgList, Booker booker, ArrayList<BookingClassInstance> BciList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
+        ArrayList<FlightInstance> departSelected = new ArrayList<>();
+        for (FlightInstance f1 : depSelected) {
+            FlightInstance f = em.find(FlightInstance.class, f1.getId());
+            departSelected.add(f);
+        }
+
+        ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+        for (FlightInstance f1 : retSelected) {
+            FlightInstance f = em.find(FlightInstance.class, f1.getId());
+            returnSelected.add(f);
+        }
+
+        ArrayList<Passenger> passengerList = new ArrayList<>();
+        for (Passenger f1 : pasgList) {
+            Passenger f = em.find(Passenger.class, f1.getId());
+            passengerList.add(f);
+        }
+
+        ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+        for (BookingClassInstance f1 : BciList) {
+            BookingClassInstance f = em.find(BookingClassInstance.class, f1.getId());
+            BookClassInstanceList.add(f);
+        }
+
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -253,7 +279,6 @@ public class PassengerBean implements PassengerBeanLocal {
             temp = departSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
-            
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
@@ -261,39 +286,42 @@ public class PassengerBean implements PassengerBeanLocal {
                 psg = passengerList.get(j);
                 System.out.println("*************Passenger Id is :" + psg.getId());
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                em.refresh(thisPsg);
                 System.out.println("in depart loop: before add ticket, all tickets in psg are " + thisPsg.getTickets());
 
-               
                 if (thisPsg != null) {
-                    em.refresh(thisPsg);
+
+//                    thisPsg=em.find(Passenger.class, thisPsg.getId());
                     depTicket.setPassenger(thisPsg);
                     em.persist(depTicket);
+                    em.flush();
 
                     List<Ticket> tkt = thisPsg.getTickets();
                     System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
                     tkt.add(depTicket);
                     thisPsg.setTickets(tkt);
+                    em.merge(thisPsg);
                     System.out.println("tkt in thisPsg after adding " + tkt);
-//                    em.merge(thisPsg);
-                    System.out.println("tkt in thisPsg after merge " + tkt); 
+
+                    System.out.println("tkt in thisPsg after merge " + tkt);
 
                     tkList.add(depTicket);
-//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+                    thisPsg = em.find(Passenger.class, thisPsg.getId());
+                    em.refresh(thisPsg);
+                    passengerList.set(j, thisPsg);
 
                     System.out.println("depTicket is " + depTicket.getTicketID());
                     System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
-                      
-                
+
+//                    em.merge(thisPsg);
                     em.flush();
 
                 }
             }
-          
 
         }
         em.flush();
-        
-        
+
         for (int i = 0; i < returnSelected.size(); i++) {
 //            arrTicket=new Ticket();
             depCity = returnSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
@@ -309,22 +337,32 @@ public class PassengerBean implements PassengerBeanLocal {
                 arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                em.refresh(thisPsg);
+
                 if (thisPsg != null) {
+
                     arrTicket.setPassenger(thisPsg);
                     em.persist(arrTicket);
-
+                    em.flush();
 //                    thisPsg.getTickets().add(arrTicket);
 //                    em.merge(thisPsg);
                     List<Ticket> tkt = thisPsg.getTickets();
+                    System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
                     tkt.add(arrTicket);
                     thisPsg.setTickets(tkt);
+                    
+                    System.out.println("tkt in thisPsg after adding " + tkt);
                     em.merge(thisPsg);
+                    System.out.println("tkt in thisPsg after merge " + tkt);
 
                     tkList.add(arrTicket);
-//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+                    thisPsg = em.find(Passenger.class, thisPsg.getId());
+                    em.refresh(thisPsg);
+                    passengerList.set(j, thisPsg);
 
                     System.out.println("arrTicket is " + arrTicket.getTicketID());
                     System.out.println("all tickets in psg are " + thisPsg.getTickets());
+                    em.flush();
                 }
             }
 

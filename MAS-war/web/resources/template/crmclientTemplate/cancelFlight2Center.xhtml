@@ -12,6 +12,7 @@
     </h:head>
     <h:body>
         <h:form id="cancelRsv">
+            <p:messages id="msgs" />
 
             <p:panel id="detail" header="Reservation Detail" toggleable="true">
                 <p:panel header="Departure Trip " >  
@@ -125,7 +126,7 @@
                         </p:column>
                     </p:dataTable>
                     
-                    <p:commandButton value="Cancel Flight" actionListener="#{flightCancel.onSelectPsg()}"/>
+                    <p:commandButton value="Cancel Flight" update="cancelRsv" actionListener="#{flightCancel.onSelectPsg()}"/>
 
                 </p:panel>
 

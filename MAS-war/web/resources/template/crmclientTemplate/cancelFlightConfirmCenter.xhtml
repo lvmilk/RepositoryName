@@ -52,7 +52,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{flightCancel.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
                         </h:panelGrid>
                         <p:separator />
@@ -83,7 +83,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{flightCancel.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
                         </h:panelGrid>
                         <p:separator />
