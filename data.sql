@@ -472,7 +472,7 @@ INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(100000,'M','Economy Class',1.6,0.7,0.1,0.1,0.05,0.1,0.6,3,60,3,1,True,True,True)
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(110000,'H','Economy Class',1.4,0.5,0.1,0.1,0.05,0.1,0.4,3,60,7,3,False,True,False)
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(120000,'Q','Economy Class',1.2,0,0.15,0.15,0.1,0.15,0.2,3,30,14,7,False,False,False)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(130000,'N','Economy Class',1, 0,0.2,0.2,0.1,0.2,0,3,30,21,14,False,False,False)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(130000,'N','Economy Class',1, 0,0.2,0.2,0.1,0.2,0.05,3,30,21,14,False,False,False)
 
 
 
@@ -592,7 +592,7 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,500,55,0)
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,2431,"G12345678","Mr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,243111,"G12345678","Mr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr")
