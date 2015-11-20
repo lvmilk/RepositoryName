@@ -11,8 +11,8 @@
     <h:body>
         <h:form id="rescheduleConfirm">
             <p:growl id="msgs" showDetail="true" />
-            <p:panel id="rsvConfirm"  style="text-align: left; width: 85% !important; margin-left: 1% !important;">
-                <h:panelGrid  columns="2"   cellpadding="10">
+            <p:panel id="rsvConfirm" header="Reschedule Flight Confirmation"  style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+                <h:panelGrid  columns="2" cellpadding="10">
 
                     <p:outputLabel  value="Reserved by: " />
                     <p:outputLabel value="#{confirmReschedule.selectedRsv.booker.firstName} #{confirmReschedule.selectedRsv.booker.lastName}" />
@@ -24,24 +24,24 @@
                 </h:panelGrid>
             </p:panel>
 
-            <p:panel id="penalty"  header="Rescheduling penalty" style="margin-bottom:20px; width:35%">
-                <h:panelGrid  columns="2"   cellpadding="10">
+            <p:panel id="penalty"  header="Rescheduling penalty" style="margin-bottom:20px; width:65%; margin-left: 1% !important;" toggleable="true">
+                <h:panelGrid  columns="2" cellpadding="10">
 
-                    <p:outputLabel  value="Price increase: " />
+                    <p:outputLabel  value="Price Increase: " />
                     <p:outputLabel value="#{confirmReschedule.priceDiff}" />
 
 
                     <p:outputLabel  value="Change Route Penalty: " />
                     <p:outputLabel value="#{confirmReschedule.changeRoutePenalty}" />
 
-                    <p:outputLabel  value="Change Date Penalty " />
+                    <p:outputLabel  value="Change Date Penalty: " />
                     <p:outputLabel value="#{confirmReschedule.changeDatePenalty}" />
 
                     <p:separator />    <p:separator />
-                    <p:outputLabel  value="No. of passengers involved " />
+                    <p:outputLabel  value="No. of Passengers Involved: " />
                     <p:outputLabel value="#{confirmReschedule.psgCount}" />
                     <p:separator />    <p:separator />
-                    <p:outputLabel  value="Total Penalty " />
+                    <p:outputLabel  value="Total Penalty: " />
                     <p:outputLabel value="#{confirmReschedule.totalPenalty}" />
 
 
@@ -52,7 +52,7 @@
 
 
 
-            <p:panel header="Original flights" >
+            <p:panel header="Original flights" style="margin-bottom:20px; width:80%; margin-left: 1% !important;">
                 <p:dataGrid value="Departure trip " >             
                     <ui:repeat value="#{confirmReschedule.departed}" var="instance">
                         <h:panelGrid columns="8" cellpadding="10" >
@@ -69,7 +69,7 @@
                             <p:outputLabel  value="Departure Time: " />
                             <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Aircraft Type: " />
@@ -100,7 +100,7 @@
                             <p:outputLabel  value="Departure Time: " />
                             <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Aircraft Type: " />
@@ -121,7 +121,7 @@
 
 
 
-            <p:panel header="Updated Flights"   >
+            <p:panel header="Updated Flights" style="margin-bottom:20px; width:80%; margin-left: 1% !important;">
                 <p:dataGrid value="Departure trip " >             
                     <ui:repeat value="#{confirmReschedule.departSelected}" var="instance">
                         <h:panelGrid columns="8" cellpadding="10" >
@@ -138,7 +138,7 @@
                             <p:outputLabel  value="Departure Time: " />
                             <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Aircraft Type: " />
@@ -169,7 +169,7 @@
                             <p:outputLabel  value="Departure Time: " />
                             <p:outputLabel value="#{instance.standardDepTimeDateType}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Aircraft Type: " />
@@ -184,19 +184,21 @@
                 </p:dataGrid>
             </p:panel>
 
-            <p:commandButton value="Confirm" actionListener="#{confirmReschedule.onChooseConfirm}" icon="ui-icon-check" />
+            <p:commandButton value="Confirm Reschedule" actionListener="#{confirmReschedule.onChooseConfirm}" icon="ui-icon-check" style="margin-left: 1% !important; margin-bottom: 1%;" />
         </h:form>
 
         <h:form id="dlgGrd">
-            <p:dialog id="dlgGrd" header="Confirm change the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
-                <p:outputLabel value="A total penalty of $#{confirmReschedule.totalPenalty} will be charged on you after you confirm this change of schedule "/>
-
-                <h:panelGrid columns="2" cellpadding="10">
-                    <p:commandButton value="Confirm"  update="rescheduleConfirm" oncomplete="PF('dlgGrd').hide()" action="#{confirmReschedule.rsvConfirm()}" />
-                    <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
-                </h:panelGrid>
+            <p:dialog id="dlgGrd" header="Confirm change the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="clip" hideEffect="clip" dynamic="true" >
+                <p:outputLabel style="font-size: medium;" value="A total penalty of $#{confirmReschedule.totalPenalty} will be charged on you after you confirm this change of schedule "/>
+                <f:facet name="footer">
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;">  
+                        <p:commandButton value="Confirm"  update="rescheduleConfirm" oncomplete="PF('dlgGrd').hide()" action="#{confirmReschedule.rsvConfirm()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
+                    </h:panelGroup>
+                </f:facet>  
             </p:dialog>
         </h:form>
+
     </h:body>
 </html>
 
