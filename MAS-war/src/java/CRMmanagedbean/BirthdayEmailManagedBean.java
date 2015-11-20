@@ -90,7 +90,7 @@ public class BirthdayEmailManagedBean implements Serializable {
                 String to = temp.getEmail();
 
                 // Sender's email ID needs to be mentioned
-                String from = "snowky1993@gmail.com";
+                String from = "welovemas@gmail.com";
 
                 // Assuming you are sending email from localhost
                 String host = "smtp.gmail.com";
@@ -142,7 +142,7 @@ public class BirthdayEmailManagedBean implements Serializable {
                     message.setContent(multipart);
                     // Send message
                     SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
-                    t.connect("smtp.gmail.com", "snowky1993@gmail.com", "WHyq1993");
+                    t.connect("smtp.gmail.com", "welovemas@gmail.com", "iloveis3102");
                     t.sendMessage(message, message.getAllRecipients());
                     // Transport.send(message);
 

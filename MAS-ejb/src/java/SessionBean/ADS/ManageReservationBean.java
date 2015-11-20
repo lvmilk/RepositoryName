@@ -45,16 +45,21 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
     private Revenue revenue;
 
     public List<Reservation> searchAllRsv(String email) {
-        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email").setParameter("email", email);
+        String status = "Cancelled";
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email AND r.rsvStatus!=:status");
+        query.setParameter("status", status);
+        query.setParameter("email", email);
         List<Reservation> rsvList = query.getResultList();
 
         return rsvList;
     }
 
     public Reservation searchOneRsv(String email, Long bookRef) {
-        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email AND r.id=:bookRef");
+        String status = "Cancelled";
+        Query query = em.createQuery("SELECT r FROM Reservation r WHERE r.booker.email=:email AND r.id=:bookRef AND r.rsvStatus!=:status");
         query.setParameter("email", email);
         query.setParameter("bookRef", bookRef);
+        query.setParameter("status", status);
 
         List<Reservation> rsvList = query.getResultList();
 
@@ -64,7 +69,6 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
             return new Reservation();
         }
     }
-    
 
     public void upgradeCabinClass(List<Passenger> selectedPsgList, Reservation selectedRsv, BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName) {
         System.out.println("in upgradeCabinClass(): selectedPsgList is " + selectedPsgList);
@@ -188,10 +192,13 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
         em.refresh(newPsg);
         newPsg = em.find(Passenger.class, newPsg.getId());
+        if (selectedPsg.getTickets() != null) {
+            System.out.println(selectedPsg.getTickets());
+        }
 
         Passenger oldPsg = em.find(Passenger.class, selectedPsg.getId());
         Reservation rsv = em.find(Reservation.class, selectedPsg.getTickets().get(0).getRsv().getId());
-        List<Ticket> tickets = rsv.getTickets();
+        List<Ticket> tickets = oldPsg.getTickets();
         for (int i = 0; i < tickets.size(); i++) {
 
             Ticket ticket = em.find(Ticket.class, tickets.get(i).getTicketID());
