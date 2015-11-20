@@ -23,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -66,8 +67,9 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     private String username;
     private String bkSystem;
     private String companyName;
-    
+
     private Double miles;
+    private Long bookRef;
 
     @PostConstruct
     public void init() {
@@ -91,11 +93,11 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             setPsgCount((Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson"));
 
             BookClassInstanceList = (ArrayList<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("BookClassInstanceList");
-            bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-            companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
-            
+            bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+            companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+
             miles = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("miles");
-            
+
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
 
@@ -112,21 +114,22 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 //        } else {
 //            this.bkSystem = "ARS";
 //        }
-        this.bkSystem="ARS";
-        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book", companyName);
-        
-   //     Double miles = (ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10;
+        this.bkSystem = "ARS";
+        bookRef = psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0, "book", companyName);
+
+        //     Double miles = (ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10;
 //        if (stfType.equals("agency")) {
 //            ddsBkblocal.setAgency_Booker(username, booker);
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
 //
 //        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dlgGrd').show()");
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
 //        }
-
     }
 
     /**
@@ -252,8 +255,8 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     }
 
     /**
-//     * @return the stfType
-//     */
+     * // * @return the stfType //
+     */
 //    public String getStfType() {
 //        return stfType;
 //    }
@@ -264,7 +267,6 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 //    public void setStfType(String stfType) {
 //        this.stfType = stfType;
 //    }
-
     /**
      * @return the username
      */
@@ -305,6 +307,14 @@ public class ConfirmBookFlightManagedBean implements Serializable {
      */
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public Long getBookRef() {
+        return bookRef;
+    }
+
+    public void setBookRef(Long bookRef) {
+        this.bookRef = bookRef;
     }
 
 }
