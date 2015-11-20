@@ -251,6 +251,7 @@ public class PassengerBean implements PassengerBeanLocal {
             temp = departSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
+            
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
@@ -278,6 +279,8 @@ public class PassengerBean implements PassengerBeanLocal {
 
                 }
             }
+            
+            
 
         }
 
