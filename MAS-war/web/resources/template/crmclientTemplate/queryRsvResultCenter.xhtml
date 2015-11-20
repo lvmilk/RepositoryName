@@ -11,8 +11,8 @@
         <title>View Reservation</title>
     </h:head>
     <h:body>
-        <h:form id="viewReserve" >
-            <p:panel id="panel" header="View All Reservation"  style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+        <h:form id="viewReserve"  style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+            <p:panel id="panel" header="View All Reservation" >
                 <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
