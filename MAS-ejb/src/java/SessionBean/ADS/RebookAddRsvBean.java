@@ -7,28 +7,32 @@ package SessionBean.ADS;
 
 import Entity.AAS.Expense;
 import Entity.AAS.Revenue;
-import java.util.ArrayList;
-import javax.ejb.Stateless;
-import Entity.ADS.*;
+import Entity.ADS.Booker;
+import Entity.ADS.Passenger;
+import Entity.ADS.Payment;
+import Entity.ADS.Reservation;
+import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.AIS.FlightCabin;
 import Entity.APS.FlightInstance;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  *
- * @author LI HAO
+ * @author LIU YUQI'
  */
 @Stateless
-public class PassengerBean implements PassengerBeanLocal {
+public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
 
-    @PersistenceContext
+   @PersistenceContext
     private EntityManager em;
 
     private Passenger passenger = new Passenger();
@@ -69,7 +73,7 @@ public class PassengerBean implements PassengerBeanLocal {
     }
 
     @Override
-    public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
+    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
@@ -96,8 +100,6 @@ public class PassengerBean implements PassengerBeanLocal {
         setupTicket_BookInstance(BookClassInstanceList, tickets);
 
         Payment payment = makeRsvPayment(rsv, psgCount, totalPrice, action);
-        
-        return rsv.getId();
 
     }
 
@@ -274,7 +276,9 @@ public class PassengerBean implements PassengerBeanLocal {
                     tkt.add(depTicket);
                     thisPsg.setTickets(tkt);
                     System.out.println("tkt in thisPsg after adding " + tkt);
-//                    em.merge(thisPsg);
+              
+                    em.refresh(thisPsg);
+                    em.flush();
                     System.out.println("tkt in thisPsg after merge " + tkt); 
 
                     tkList.add(depTicket);
@@ -310,6 +314,7 @@ public class PassengerBean implements PassengerBeanLocal {
                 psg = passengerList.get(j);
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
                 if (thisPsg != null) {
+                    em.refresh(thisPsg);
                     arrTicket.setPassenger(thisPsg);
                     em.persist(arrTicket);
 
@@ -318,13 +323,15 @@ public class PassengerBean implements PassengerBeanLocal {
                     List<Ticket> tkt = thisPsg.getTickets();
                     tkt.add(arrTicket);
                     thisPsg.setTickets(tkt);
-                    em.merge(thisPsg);
+                    em.refresh(thisPsg);
+                    em.flush();
 
                     tkList.add(arrTicket);
 //                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
 
                     System.out.println("arrTicket is " + arrTicket.getTicketID());
                     System.out.println("all tickets in psg are " + thisPsg.getTickets());
+                    em.flush();
                 }
             }
 
