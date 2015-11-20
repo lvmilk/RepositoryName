@@ -162,6 +162,23 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
             throw new Exception("No such ticket exist!");
         }
     }
+        @Override
+    public boolean changeOnlineCheckinStatus(Ticket tkt) throws Exception {
+        if (em.find(Ticket.class, tkt.getTicketID()) != null) {
+            if (tkt.getTicketStatus().equals("Checkedin") || tkt.getTicketStatus().equals("OnlineCheckedin") || tkt.getTicketStatus().equals("Standby")) {
+                throw new Exception("Passenger already checked in!");
+            } else {
+                tkt.setTicketStatus("OnlineCheckedin");
+                Date date = new Date();
+                tkt.setCheckinTime(date);
+                em.merge(tkt);
+                return true;
+            }
+        } else {
+            throw new Exception("No such ticket exist!");
+        }
+    }
+
 
     @Override
     public boolean changeStandbyStatus(Ticket tkt) throws Exception {
@@ -230,6 +247,7 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
 
     }
 
+    @Override
     public void selectSeat(Seat seat, Ticket ticket) throws Exception {
         Seat newSeat = em.find(Seat.class, seat.getId());
         if (newSeat != null && newSeat.getStatus().equals("Unoccupied")) {
@@ -240,6 +258,11 @@ public class DepartureControlBean implements DepartureControlBeanLocal {
                 em.merge(newSeat);
                 ticket.setSeat(seat);
                 em.merge(ticket);
+//                FlightCabin fc=newSeat.getFlightCabin();
+//                fc.setBookedSeat(fc.getBookedSeat()+1);
+//                em.merge(fc);
+                
+                
             }
         } else {
             throw new Exception("Cannot Select This Seat!");

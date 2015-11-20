@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Online Check in: Preview Boarding Pass</title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <style>
+                .specialDialog.ui-panel {
+                    border: none;
+                }
+
+                .specialDialog.ui-panel-content {
+                    border: none;
+                }
+
+                .buttonAdd.ui-button {
+                    color: #3c9fb4;   
+                    position: absolute;
+                    right: 5px;
+                }
+            </style>
+ 
+            <p:panel id="panel" header="Online Check in: Preview Boarding Pass"  styleClass="specialDialog">
+                <p:messages id="msgs" autoUpdate="false"/>
+
+                <p:panelGrid id="boardingpass" style="margin-top:20px">
+                    <!--row 1-->
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold; font-size:x-large;text-align:left">
+                            <h:outputText value="#{ocmb.firstName} / #{ocmb.lastName}" style="text-align:left" />
+                        </p:column>
+                        <p:column colspan="2" >
+                                <h:graphicImage value="/images/logoname.png"/>
+                        </p:column>
+                        <p:column colspan="2">
+                                <h:graphicImage value="/images/logoname.png"/>
+                        </p:column>
+                    </p:row>
+                    <!--row2-->
+                    <p:row>
+                        <p:column colspan="1">Departure</p:column>
+                        <p:column colspan="1">From</p:column>
+                        <p:column colspan="1"> </p:column>
+                        <p:column colspan="1">To</p:column>
+                        <p:column colspan="1">Landing</p:column>
+                        <p:column colspan="1">Passenger Name</p:column>
+                        <p:column colspan="1"  style="font-weight: bold; text-align:left">
+                            <h:outputText value="#{ocmb.firstName} / #{ocmb.lastName}"  />
+                        </p:column>
+                    </p:row>
+                    <!--row3-->
+                    <p:row>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTimeDateType.time}" style="text-align:center">
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.timeZone}" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column rowspan="2" style="font-weight: bold;" colspan="1">
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.IATA}" style="text-align:center" >
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rowspan="2" style="font-weight: bold;" colspan="1">
+                            <h:outputText value="--------"   style="text-align:center"/> 
+                        </p:column>
+
+                        <p:column rowspan="2" style="font-weight: bold;" colspan="1">
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.IATA}" style="text-align:center" >
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.standardArrTimeDateType.time}" style="text-align:center">
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.timeZone}" />
+                            </h:outputText>
+                        </p:column>
+                      
+                        <p:column colspan="1">Flight Number</p:column>
+                        <p:column colspan="1">
+                            <h:outputText value="#{ocmb.flightNo}" style="text-align:left" />
+                        </p:column>
+                    </p:row>
+
+                    <!--row4-->                
+
+                    <p:row>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.standardDepTimeDateType}" style="text-align:center" >
+                                <f:convertDateTime type="date"  pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.standardArrTimeDateType}" style="text-align:center" >
+                                <f:convertDateTime type="date"  pattern="dd-MM-yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column colspan="1">Flight Number</p:column>
+                        <p:column colspan="1">
+                            <h:outputText value="#{ocmb.seatSelected.seatNumberToPassenger}" style="text-align:center" />
+                        </p:column>
+                    </p:row>
+                    <!--row5-->
+                    <p:row>
+                        <p:column colspan="1">             </p:column>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.depTerminal}" style="text-align:center"/>
+                        </p:column>                       
+                        <p:column colspan="1">             </p:column>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.arrTerminal}" style="text-align:center"/>
+                        </p:column>
+                        <p:column colspan="1">             </p:column>
+                        <p:column colspan="1">Date </p:column>
+                        <p:column colspan="1">
+                            <h:outputText value="#{ocmb.dateString}" style="text-align:center" />
+                        </p:column>
+
+                    </p:row>
+                    <!--row6-->
+                    <p:row>
+                        <p:column colspan="1"> Flight No. </p:column>
+                        <p:column colspan="1"> Seat No. </p:column>                       
+                        <p:column colspan="1"> Boarding Time </p:column>
+                        <p:column colspan="1"> Gate </p:column>
+                        <p:column colspan="1"> Bar Code      </p:column>
+                        <p:column  colspan="1">
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.IATA}" style="text-align:center"/>
+                        </p:column>
+                        <p:column  colspan="1">
+                            <h:outputText value="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.dest.IATA}" style="text-align:center"/>
+                        </p:column>
+                    </p:row>
+                    <!--last row-->
+                    <p:row>
+                        <p:column colspan="1">  
+                            <h:outputText value="#{ocmb.flightNo}" style="text-align:center"/> </p:column>
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.seatSelected.seatNumberToPassenger}" style="text-align:center"/>
+                        </p:column>   
+                        <p:column colspan="1"> 
+                            <h:outputText value="#{ocmb.boardingTime}" style="text-align:center">
+                                <f:convertDateTime type="time" pattern="HH:mm" timeZone="#{ocmb.ticket.bkInstance.flightCabin.flightInstance.flightFrequency.route.origin.timeZone}" />
+                            </h:outputText>
+                        </p:column>  
+
+                        <p:column colspan="1">
+                            <h:outputText value="#{ocmb.seatSelected.flightCabin.flightInstance.depGate}" style="text-align:center"/>
+                        </p:column>
+
+                        <p:column colspan="1">  
+                            <p:barcode value="#{ocmb.flightNo} #{ocmb.dateString} #{ocmb.firstName} #{ocmb.lastName} #{ocmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                        </p:column>
+
+                        <p:column colspan="1">Bar Code </p:column>
+                        <p:column colspan="1">
+                            <p:barcode value="#{ocmb.flightNo}  #{ocmb.dateString} #{ocmb.firstName} #{ocmb.lastName} #{ocmb.seatSelected.seatNumberToPassenger}" type="pdf417"/>
+                       </p:column>
+
+                    </p:row>
+
+                </p:panelGrid>
+                <br></br>
+                <p:commandButton value="Print Boarding Pass" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="boardingpass" />
+                </p:commandButton>
+
+                <p:commandButton value="Confirm check in" update="panel" style="margin-right:0" action="#{ocmb.goLast}"  icon="ui-icon-check" />
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>
