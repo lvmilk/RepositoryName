@@ -6,6 +6,7 @@
 package Entity.GDS;
 
 import Entity.AIS.CabinClass;
+import com.sun.xml.bind.CycleRecoverable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,15 +21,18 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author LI HAO
  */
 @Entity
-@XmlAccessorType( XmlAccessType.FIELD)
 public class GDSFlight implements Serializable {
-
+    private static final long serialVersionUID = 1L; 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -57,7 +61,10 @@ public class GDSFlight implements Serializable {
     @ManyToOne
     private GDSReservation rsv;
     
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "flight")
+    
+    
+    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "flight")
+    @XmlTransient
     private List<GDSSeat> seats=new ArrayList<>();
 
     public GDSFlight() {
@@ -141,7 +148,8 @@ public class GDSFlight implements Serializable {
     }
 
 
-
+//    @XmlIDREF
+    @XmlTransient
     public List<GDSSeat> getSeats() {
         return seats;
     }
@@ -150,6 +158,8 @@ public class GDSFlight implements Serializable {
         this.seats = seats;
     }
 
+//    @XmlID
+//    @XmlJavaTypeAdapter(value = LongAdapter.class, type = String.class)
     public Long getId() {
         return id;
     }

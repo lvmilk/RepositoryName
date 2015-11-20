@@ -797,22 +797,26 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.commons-math3-3.5.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${file.reference.barcode4j-light.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.jaxb.classpath}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${libs.commons-math3-3.5.classpath}" property="manifest.libs.commons-math3-3.5.classpath"/>
         <basename file="${libs.PrimeFaces_5.2.classpath}" property="manifest.libs.PrimeFaces_5.2.classpath"/>
         <basename file="${file.reference.barcode4j-light.jar}" property="manifest.file.reference.barcode4j-light.jar"/>
+        <basename file="${libs.jaxb.classpath}" property="manifest.libs.jaxb.classpath"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.libs.commons-math3-3.5.classpath}"/>
             <attribute name="jar-2-Extension-Name" value="${manifest.libs.PrimeFaces_5.2.classpath}"/>
             <attribute name="jar-3-Extension-Name" value="${manifest.file.reference.barcode4j-light.jar}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.libs.jaxb.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${libs.commons-math3-3.5.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.PrimeFaces_5.2.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${file.reference.barcode4j-light.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.jaxb.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

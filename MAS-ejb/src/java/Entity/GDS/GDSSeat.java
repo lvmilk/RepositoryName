@@ -14,15 +14,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import com.sun.xml.bind.CycleRecoverable;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author LI HAO
  */
 @Entity
-@XmlAccessorType( XmlAccessType.FIELD)
 public class GDSSeat implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,10 +37,12 @@ public class GDSSeat implements Serializable {
     private String status;
     private String cabinClass;
 
-
+    
     @ManyToOne
+    @XmlTransient
     private GDSFlight flight;
 
+    
     @OneToOne
     private GDSTicket ticket;
 
@@ -53,7 +58,8 @@ public class GDSSeat implements Serializable {
         
     }
     
-    
+//    @XmlID
+//    @XmlJavaTypeAdapter(value = LongAdapter.class, type = String.class)
     public Long getId() {
         return id;
     }
