@@ -14,7 +14,7 @@
         <h:form id="updateRsv">
             <p:messages id="msgs" />
 
-            <p:panel id="detail" header="Reservation Detail" toggleable="true">
+            <p:panel id="detail" header="Reservation Detail" toggleable="true" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
                 <p:panel header="Departure Trip " >  
 
                     <ui:repeat value="#{queryBooking.departed}" var="instance" varStatus="myStatus">
@@ -49,7 +49,7 @@
                 </p:panel>
 
                 <br/>
-                <p:panel header="Return Trip " rendered="#{queryBooking.returned.size()>0}">    
+                <p:panel header="Return Trip " rendered="#{queryBooking.returned.size()>0}" >    
 
                     <ui:repeat value="#{queryBooking.returned}" var="instance">
 
@@ -84,7 +84,7 @@
 
 
                 <br/>
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:50%">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:80%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
                         <p:outputLabel value="#{queryBooking.selectedRsv.booker.title}" />
@@ -104,7 +104,7 @@
 
                 </p:panel>
 
-                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:50%">
+                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:80%">
                     <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{queryBooking.selectedPsgList}" value="#{queryBooking.psgList}" rows="10"  emptyMessage="No Reservations" >
 
                         <p:column selectionMode="multiple" headerText="Select all" style="width:60px" /> 

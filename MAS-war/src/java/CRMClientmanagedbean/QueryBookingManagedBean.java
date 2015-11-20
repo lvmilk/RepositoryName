@@ -278,6 +278,10 @@ public class QueryBookingManagedBean implements Serializable {
 
     }
 
+    public void onSavePsgChangeCancel() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePerson.xhtml");
+    }
+
     public void onSelectPsg() throws IOException {
 
         System.out.println("Selected passenger list is " + selectedPsgList.size());
@@ -356,6 +360,10 @@ public class QueryBookingManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
+    }
+
+    public void editBookerAccountBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePerson.xhtml");
     }
 
     public void onUpdatePsg(Passenger psg) throws IOException {

@@ -11,16 +11,16 @@
         <title>View Reservation</title>
     </h:head>
     <h:body>
-        <h:form id="viewReserve"  style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+        <h:form id="viewReserve"  style="text-align: left; width: 85% !important; margin-left: 1% !important; margin-bottom:10px;">
             <p:panel id="panel" header="View All Reservation" >
                 <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
-                    <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
+                    <p:column headerText="Reservation id">
                         <h:outputText value="#{rsv.id}" />
                     </p:column>
 
-                    <p:column headerText="Reservation Date" sortBy="#{rsv.rsvDate}" >
+                    <p:column headerText="Reservation Date" >
                         <h:outputText value="#{rsv.rsvDate}" />
                     </p:column>
 
@@ -37,7 +37,7 @@
                     <p:column headerText="Booking Person">
                         <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
                     </p:column>
-                    <p:column headerText="Contact Email" sortBy="#{rsv.booker.email}" filterBy="#{rsv.booker.email}" filterMatchMode="contains">
+                    <p:column headerText="Contact Email" sortBy="#{rsv.booker.email}">
                         <h:outputText value="#{rsv.booker.email}" />
                     </p:column>
 
@@ -72,7 +72,7 @@
                             <p:outputLabel  value="Cabin Class: " />
                             <p:outputLabel value="#{queryBooking.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Arrive At: " />
