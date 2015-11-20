@@ -13,7 +13,7 @@
     <h:body>
         <h:form id="updateRsv">
             <p:panel id="panel" header="View All Reservation"  style="width:100%">
-                <p:dataTable var="rsv" value="#{flightCancel.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
+                <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
                     <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
@@ -43,7 +43,7 @@
 
 
                     <p:column headerText="View ">
-                        <p:commandButton value="View Detail" actionListener="#{flightCancel.onSelectCancelRsv(rsv)}" update="updateRsv"/>
+                        <p:commandButton value="View Detail" actionListener="#{queryBooking.onSelectRescheduleRsv(rsv)}" update="updateRsv"/>
 
                     </p:column>
                 </p:dataTable>

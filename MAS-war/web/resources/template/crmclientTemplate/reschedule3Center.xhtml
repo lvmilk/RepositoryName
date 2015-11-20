@@ -8,15 +8,15 @@
       xmlns:pm="http://primefaces.org/mobile"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Search For Flight</title>
+        <title>Facelet Title</title>
     </h:head>
     <h:body>
         <h:form id="allocate" >
 
-            <p:panel id="thisPanel" header="Select a Flight" style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+            <p:panel id="thisPanel" header="Select a Flight" style="margin-bottom:10px;">
                 <p:messages id="msgs" showDetail="false" />
 
-                <h:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid columns="2" cellpadding="20">
 
 
                     <p:selectOneRadio id="whetherReturn" value="#{bookFlight.returnTrip}" required="true" requiredMessage="Please select to search one-way or returned trip" >
@@ -55,27 +55,17 @@
 
                     <p:outputLabel for="destination" value="To: " />
                     <p:selectOneMenu id="destination" value="#{bookFlight.dest}" required="true" requiredMessage="Please select destination" style="width:100%;">    
-                        <p:ajax  listener="#{bookFlight.onDestChange}"  update="flightCabin" /> 
                         <f:selectItem itemLabel="Select Destination" itemValue="1" />
                         <f:selectItems value="#{bookFlight.otherPlaces}"  var="place" itemValue="#{place.airportName}" itemLabel="#{place.cityName} #{place.airportName} #{place.IATA}"/>
                     </p:selectOneMenu>
 
 
-                    <p:outputLabel for="flightCabin" value="Select a Cabin Class: " />
-                    <p:selectOneMenu id="flightCabin" value="#{bookFlight.cabinName}" required="true" requiredMessage="Please select a cabin class" style=" width:100%">    
-                        <f:selectItem itemLabel="Select One Cabin Class" itemValue="" />
-                        <f:selectItem itemLabel="Suite" itemValue="Suite" />
-                        <f:selectItem itemLabel="First Class" itemValue="First Class" />
-                        <f:selectItem itemLabel="Business Class" itemValue="Business Class" />
-                        <f:selectItem itemLabel="Premium Economy Class" itemValue="Premium Economy Class" />
-                        <f:selectItem itemLabel="Economy Class" itemValue="Economy Class" />
-                    </p:selectOneMenu>
+                    <p:outputLabel  value="Cabin Class" />
+                    <p:outputLabel  value="#{bookFlight.cabinName} " />
 
 
-                    <p:outputLabel for="countPerson" value="No. of people: " />
-                     <p:inputText id="countPerson" value="#{bookFlight.countPerson}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
-                        <f:validateLongRange minimum="1"/>
-                    </p:inputText>
+                    <p:outputLabel  value="No. of people: " />
+                    <p:outputLabel  value="#{bookFlight.countPerson} " />
 
                 </h:panelGrid>
 
@@ -86,4 +76,3 @@
         </h:form>
     </h:body>
 </html>
-

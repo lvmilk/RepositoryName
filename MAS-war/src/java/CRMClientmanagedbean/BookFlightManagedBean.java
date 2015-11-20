@@ -542,6 +542,10 @@ public class BookFlightManagedBean implements Serializable {
         }
     }
 
+    public void onSelectBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight1.xhtml");
+    }
+
     public void onSelectOption() throws IOException {
         int checkCount = 0;
         String selectedDay = "";
@@ -598,7 +602,7 @@ public class BookFlightManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                         } else {
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                         }
                     }
 
@@ -660,7 +664,7 @@ public class BookFlightManagedBean implements Serializable {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                             } else {
                                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                             }
                         }
 
@@ -746,7 +750,7 @@ public class BookFlightManagedBean implements Serializable {
                                     FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                                 } else {
                                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                    FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                                 }
                             }
 
@@ -857,7 +861,7 @@ public class BookFlightManagedBean implements Serializable {
                                         FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight3.xhtml");
                                     } else {
                                         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", psgList);
-                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./reBookConfirmPage.xhtml");
+                                        FacesContext.getCurrentInstance().getExternalContext().redirect("./rescheduleConfirm.xhtml");
                                     }
                                 }
                             }
