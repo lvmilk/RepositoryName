@@ -132,7 +132,7 @@ public class QueryBookingManagedBean implements Serializable {
 
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
-         bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
 
     }
 
@@ -162,7 +162,7 @@ public class QueryBookingManagedBean implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dlgGrd').show()");
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No Change of Cabin Class!"));
+            FacesContext.getCurrentInstance().addMessage("Message", new FacesMessage("No Change of Cabin Class!"));
         }
 
     }
@@ -197,7 +197,7 @@ public class QueryBookingManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabin2.xhtml");
 
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
+                FacesContext.getCurrentInstance().addMessage("ERROR", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one or more passengers for for upgrade of cabin ", ""));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select one flight leg for for upgrade of cabin ", ""));
@@ -255,12 +255,14 @@ public class QueryBookingManagedBean implements Serializable {
         } else {
             System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
         }
-        mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
+               
+            bkSystem="ARS";
+            mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
 
-        FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!"));
-
+            FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!"));
+   
     }
 
     public void onSavePsgChange() throws IOException {

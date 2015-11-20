@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ADSmanagedbean;
+package CRMClientmanagedbean;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
@@ -73,7 +73,7 @@ public class confirmRescheduleManagedBean implements Serializable {
     private Boolean visiMember;
 
     private ArrayList<Passenger> psgList;
-    private String stfType;
+//    private String stfType;
 
     private Reservation selectedRsv;
     private String manageStatus;
@@ -93,7 +93,7 @@ public class confirmRescheduleManagedBean implements Serializable {
             companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
             visiMember = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("visiMember");
-            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
+//            stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
             dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
             returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
@@ -135,28 +135,29 @@ public class confirmRescheduleManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
-        if (stfType.equals("agency")) {
-            this.setBkSystem("DDS");
-        } else {
-            this.setBkSystem("ARS");
-        }
+//        if (stfType.equals("agency")) {
+//            this.setBkSystem("DDS");
+//        } else {
+//            this.setBkSystem("ARS");
+//        }
+        bkSystem="ARS";
 
         mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem, companyName);
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-            
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
-
-        } else {
+//        if (stfType.equals("agency")) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+//            
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
+//
+//        } else {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, "Reschedule flight successfully."));
 
-        }
+//        }
 
     }
 
@@ -284,17 +285,17 @@ public class confirmRescheduleManagedBean implements Serializable {
 
     /**
      * @return the stfType
-     */
-    public String getStfType() {
-        return stfType;
-    }
-
-    /**
-     * @param stfType the stfType to set
-     */
-    public void setStfType(String stfType) {
-        this.stfType = stfType;
-    }
+//     */
+//    public String getStfType() {
+//        return stfType;
+//    }
+//
+//    /**
+//     * @param stfType the stfType to set
+//     */
+//    public void setStfType(String stfType) {
+//        this.stfType = stfType;
+//    }
 
     public ArrayList<FlightInstance> getDeparted() {
         return departed;
