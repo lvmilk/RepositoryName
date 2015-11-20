@@ -266,15 +266,20 @@ public class PassengerBean implements PassengerBeanLocal {
                     em.persist(depTicket);
 
                     List<Ticket> tkt = thisPsg.getTickets();
+                    System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
                     tkt.add(depTicket);
                     thisPsg.setTickets(tkt);
+                    System.out.println("tkt in thisPsg after adding " + tkt);
                     em.merge(thisPsg);
+                    System.out.println("tkt in thisPsg after merge " + tkt); 
 
                     tkList.add(depTicket);
 //                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
 
                     System.out.println("depTicket is " + depTicket.getTicketID());
                     System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
+                    
+                    em.flush();
 
                 }
             }
