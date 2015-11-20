@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Service And Fees</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:outputPanel deferred="true" style="text-align: left; width: 60% !important; margin-left: 20% !important;">
+                <div align="center" >
+                    <h2>Optional Service and Fees</h2>
+                </div>
+                <p style=" color:  #3A6DA0; font-size:  medium">To optimize your Merlion Airlines travel experience, we offer many services that you can add to your flight for a fee</p>
+                <br/>
+
+                <p:panelGrid style="text-align: left; width: 100% !important;"   >
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="1">Product</p:column>
+                            <p:column colspan="1">Economy Class and Premium Economy Class</p:column>
+                            <p:column colspan="1">Business Class</p:column>
+                            <p:column colspan="1">First Class and Suite</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4">Baggage Between Asia and the Americas</p:column>
+                        </p:row>
+                    </f:facet>
+
+                    <p:row>
+                        <p:column style="font-weight: bold;">Carry-on Baggage</p:column>
+                        <p:column colspan="3" style="font-weight: bold;">Complimentary</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">First Checked Bag</p:column>
+                        <p:column colspan="3" style="font-weight: bold;">Complimentary</p:column>   
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">Second Checked Bag</p:column>
+                        <p:column colspan="2" style="font-weight: bold;">Complimentary [To/From Micronesia (ex. Guam, Saipan): SGD100 </p:column>  
+                        <p:column style="font-weight: bold;">Complimentary</p:column>  
+                    </p:row>
+                    <p:row>
+                        <p:column  rowspan="4" style="font-weight: bold;">Oversized(62 to 80 in /158 to 203 cm) or Overweight (50-70 lbs/ 23-32 kg)</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">Between Americas-Asia, Between Americas- Europe/Middle East/Africa, Between Americas/Europe/Middle East/Africa-Micronesia (ex. Guam, Saipan, etc.): SGD200 </p:column>  
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">Asia-Micronesia (ex. Guam, Saipan, etc.): SGD500</p:column>  
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">Within Americas: : SGD750</p:column>  
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="4" styleClass="ui-widget-header" style="text-align:  center">
+                            <p:spacer height="0"/>
+                            Additional Fees
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rowspan="2" style="font-weight: bold;">Unaccompanied Minor</p:column>
+                        <p:column colspan="3" style="font-weight: bold;">5-11 years old: Applicable adult fare</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">12-16 years old: Applicable adult fare + additional service fee SGD 100</p:column>
+                    </p:row>
+
+                     <p:row>
+                        <p:column colspan="4" styleClass="ui-widget-header" style="text-align:  center">
+                            <p:spacer height="0"/>
+                            Traveling with Pets
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rowspan="2" style="font-weight: bold;">Pets as Carry-on Bag and Pets as Checked Bag</p:column>
+                        <p:column colspan="3" style="font-weight: bold;">Between Americas-Asia, Between Americas- Europe/Middle East/Africa, Between Americas/Europe/Middle East/Africa-Micronesia (ex. Guam, Saipan, etc.): SGD200</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">Within Americas: SGD 100</p:column>
+                    </p:row>
+
+
+                </p:panelGrid>
+
+            </p:outputPanel>
+        </h:form>
+    </h:body>
+</html>
+
