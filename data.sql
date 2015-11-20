@@ -472,7 +472,7 @@ INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(100000,'M','Economy Class',1.6,0.7,0.1,0.1,0.05,0.1,0.6,3,60,3,1,True,True,True)
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available) values(110000,'H','Economy Class',1.4,0.5,0.1,0.1,0.05,0.1,0.4,3,60,7,3,False,True,False)
 INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(120000,'Q','Economy Class',1.2,0,0.15,0.15,0.1,0.15,0.2,3,30,14,7,False,False,False)
-INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(130000,'N','Economy Class',1, 0,0.2,0.2,0.1,0.2,0,3,30,21,14,False,False,False)
+INSERT IGNORE INTO BookingClass(id,annotation,cabinName,price_percentage,refund_percentage,change_route_percentage,change_date_percentage,change_passenger_percentage,open_jaw_percentage,earn_mile_percentage,min_stay,max_stay,ticket_advance,reserve_advance,can_standby,dds_available,gds_available)  values(130000,'N','Economy Class',1, 0,0.2,0.2,0.1,0.2,0.05,3,30,21,14,False,False,False)
 
 
 
@@ -592,29 +592,29 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,500,55,0)
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,2431,"G12345678","Mr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,243111,"G12345678","Mr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr")
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr")
 
 
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Hao","Li","TFP","A123")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Yuqi","Liu","TFP","A456")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(7777,"G2345678","Xi","Lu","TFP","A123")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(6666,"G3456789","Bohan","Xu","TFP","A123")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Mr","Hao","Li","TFP","A123")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Miss","Yuqi","Liu","TFP","A456")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(7777,"G2345678","Miss","Xi","Lu","TFP","A123")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(6666,"G3456789","Miss","Bohan","Xu","TFP","A123")
 
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(5555,"G1234555","Xinhong","Chen","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(4444,"G1234444","Jinghang","Shi","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(3333,"G1234333","Shangyi","Wen","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(2222,"G1234222","Yanming","Liu","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(1111,"G1234111","Harry","Potter","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(11111,"G1231111","Ron","Wesley","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(22222,"G1232222","Hanqing","Wang","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(33333,"G44125087","Hanyu","Wang","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(44444,"G1234444","Hao","Jiang","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(55555,"G1235555","Rensheng","Liu","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(66666,"G1236666","Yueyi","Fan","TFP","")
-INSERT IGNORE INTO Passenger(id,passport,firstName,lastName,ffpName,ffpNo) values(77777,"G1237777","Liang","Fang","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(5555,"G1234555","Mr","Xinhong","Chen","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(4444,"G1234444","Mr","Jinghang","Shi","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(3333,"G1234333","Mr","Shangyi","Wen","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(2222,"G1234222","Mr","Yanming","Liu","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(1111,"G1234111","Mr","Harry","Potter","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(11111,"G1231111","Mr","Ron","Wesley","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(22222,"G1232222","Miss","Hanqing","Wang","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(33333,"G4412508","Miss","Hanyu","Wang","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(44444,"G1234444","Mr","Hao","Jiang","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(55555,"G1235555","Mr","Rensheng","Liu","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(66666,"G1236666","Miss","Yueyi","Fan","TFP","")
+INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(77777,"G1237777","Miss","Liang","Fang","TFP","")
 
 
 
