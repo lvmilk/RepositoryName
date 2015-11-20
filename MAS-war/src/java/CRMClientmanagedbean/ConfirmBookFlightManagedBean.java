@@ -66,6 +66,8 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     private String username;
     private String bkSystem;
     private String companyName;
+    
+    private Double miles;
 
     @PostConstruct
     public void init() {
@@ -92,6 +94,8 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
             companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
             
+            miles = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("miles");
+            
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
 
@@ -110,7 +114,8 @@ public class ConfirmBookFlightManagedBean implements Serializable {
 //        }
         this.bkSystem="ARS";
         psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0,"book", companyName);
-
+        
+   //     Double miles = (ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10;
 //        if (stfType.equals("agency")) {
 //            ddsBkblocal.setAgency_Booker(username, booker);
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));

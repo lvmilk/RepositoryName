@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
         <h:form id="confirmPsgChange">
-            <p:panel id="memberGuest" header="Update Booker Information" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+            <p:panel id="memberGuest" header="Update Passenger Information" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
 
                 <p:growl id="msgs" showDetail="true" />
 
@@ -30,14 +30,13 @@
                     </h:selectOneMenu>
 
                     <p:outputLabel  value="First Name: " />
-                    <p:inputText value="#{queryBooking.newPsg.firstName}" required="true" requiredMessage="please enter first name"/>
+                    <p:inputText value="#{queryBooking.newPsg.firstName}" required="true" requiredMessage="Please enter first name"/>
 
                     <p:outputLabel  value="Last Name: " />
-                    <p:inputText value="#{queryBooking.newPsg.lastName}" required="true" requiredMessage="please enter last name"/>            
+                    <p:inputText value="#{queryBooking.newPsg.lastName}" required="true" requiredMessage="Please enter last name"/>            
 
                     <p:outputLabel  value="Passport: " />
-                    <p:inputText value="#{queryBooking.newPsg.passport}" required="true" requiredMessage="please enter passport"/>       
-
+                    <p:inputText value="#{queryBooking.newPsg.passport}" required="true" requiredMessage="Please enter passport"/>       
 
                     <p:outputLabel for="ffpProgram" value="Frequent flyer programme:" />
                     <h:selectOneMenu id="ffpProgram" value="#{queryBooking.newPsg.ffpName}">
@@ -51,9 +50,8 @@
                     <p:separator/>
                 </h:panelGrid>
 
-
+                <p:commandButton value="Back" immediate="true" action="#{queryBooking.onSavePsgChangeCancel()}" icon="ui-icon-carat-1-w" />
                 <p:commandButton value="Save" update="confirmPsgChange" actionListener="#{queryBooking.onSavePsgChange()}" icon="ui-icon-check" />
-                                <p:commandButton value="Cancel" immediate="true" action="#{queryBooking.onSavePsgChangeCancel()}" icon="ui-icon-cancel" />
             </p:panel>
         </h:form>
     </h:body>

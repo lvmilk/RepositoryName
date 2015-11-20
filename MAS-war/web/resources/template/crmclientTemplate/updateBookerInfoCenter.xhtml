@@ -10,8 +10,8 @@
     <h:body>
         <h:form>
             <p:panel id="memberGuest" header="Update Booker Information" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
-                <p:messages id="msgs" />
-
+                <!--<p:messages id="msgs" />-->
+                <p:growl id="msgs" showDetail="true" />
                 <h:panelGrid columns="3" cellpadding="10">
 
 
@@ -74,9 +74,9 @@
                     <p:message for="mbPassport" display="icon" />
 
                 </h:panelGrid>
-
+                
+                <p:commandButton value="Back" action="#{queryBooking.editBookerAccountBack}" immediate="true" icon="ui-icon-carat-1-w" />
                 <p:commandButton value="Save" update="memberGuest" actionListener="#{queryBooking.editBookerAccount}" icon="ui-icon-check" />
-                <p:commandButton value="Cancel" action="#{queryBooking.editBookerAccountBack}" immediate="true" icon="ui-icon-cancel" />
             </p:panel>
 
         </h:form>
