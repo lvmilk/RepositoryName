@@ -10,12 +10,13 @@
     </h:head>
     <h:body>
         <h:form id="confirmPsgChange">
-            
+            <p:panel id="memberGuest" header="Update Booker Information" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+
                 <p:growl id="msgs" showDetail="true" />
 
                 <p:outputLabel value="Passenger" style="font-weight: bold"/>
                 <h:panelGrid columns="2" cellpadding="15">
-               
+
                     <p:outputLabel for="title" value="Title:" />
                     <h:selectOneMenu id="title" value="#{queryBooking.newPsg.title}">
                         <f:selectItem itemValue="Mr" itemLabel="Dr" />
@@ -51,7 +52,9 @@
                 </h:panelGrid>
 
 
-            <p:commandButton value="Confirm" update="confirmPsgChange" actionListener="#{queryBooking.onSavePsgChange()}" icon="ui-icon-check" />
+                <p:commandButton value="Save" update="confirmPsgChange" actionListener="#{queryBooking.onSavePsgChange()}" icon="ui-icon-check" />
+                                <p:commandButton value="Cancel" immediate="true" action="#{queryBooking.onSavePsgChangeCancel()}" icon="ui-icon-cancel" />
+            </p:panel>
         </h:form>
     </h:body>
 </html>
