@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile">
+
+    <h:head>
+        <title>Online Check in: Select Seat </title>
+    </h:head>
+    <h:body>
+
+        <h:form id="display">
+            <p:panel id="panel" header="Online Check in: Select Seat"  style="width:100%">
+                <p:messages id="msgs" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="name" value="Passenger Name" />
+                    <h:outputText id="name" value="#{ocmb.firstName} #{ocmb.lastName}" />
+
+                    <p:outputLabel for="passportno" value="Passport Number" />
+                    <h:outputText id="passportno" value="#{ocmb.passportNo}" />
+                </h:panelGrid>
+                <p:dataTable id="seatList" var="seat" value="#{ocmb.unOccupiedSeats}" emptyMessage="No Available Seat!" style="margin-bottom:20px">
+                    <p:column headerText="Seat Number">
+                        <h:outputText value="#{seat.seatNumberToPassenger}" style="center" />
+                    </p:column>
+                    <p:column headerText="Seat Status">
+                        <h:outputText value="#{seat.status}" style="center"/>
+                    </p:column>
+
+                    <p:column headerText="Select Seat">
+                        <p:commandButton value="Select and Preview Boarding Pass"  update=":#{p:component('panel')}" actionListener="#{ocmb.onSelectSeat}">
+                            <f:attribute name="seat" value="#{seat}"/>
+                        </p:commandButton>   
+                    </p:column>
+
+                </p:dataTable>
+                <!--<p:commandButton value="Preview Boarding Pass" update="panel" style="margin-right:0" action="#{ocmb.previewBoardingPass}"  icon="ui-icon-check" />-->
+
+                <p:commandButton value="Back"  action="#{ocmb.goBackOnlineCheckin}" icon="ui-icon-carat-1-w"/>
+
+            </p:panel>
+
+        </h:form>
+
+
+
+
+
+
+
+    </h:body>
+</html>

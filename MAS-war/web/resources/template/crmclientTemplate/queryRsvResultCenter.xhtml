@@ -11,8 +11,8 @@
         <title>View Reservation</title>
     </h:head>
     <h:body>
-        <h:form id="viewReserve" >
-            <p:panel id="panel" header="View All Reservation"  style="width:100%">
+        <h:form id="viewReserve"  style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+            <p:panel id="panel" header="View All Reservation" >
                 <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
@@ -37,8 +37,8 @@
                     <p:column headerText="Booking Person">
                         <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
                     </p:column>
-                    <p:column headerText="Contact Email" sortBy="#{rsv.bkEmail}" filterBy="#{rsv.bkEmail}" filterMatchMode="contains">
-                        <h:outputText value="#{rsv.bkEmail}" />
+                    <p:column headerText="Contact Email" sortBy="#{rsv.booker.email}" filterBy="#{rsv.booker.email}" filterMatchMode="contains">
+                        <h:outputText value="#{rsv.booker.email}" />
                     </p:column>
 
 
@@ -70,7 +70,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{viewReservation.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel value="#{queryBooking.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
 
                             <p:outputLabel  value="Arrival Time Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
@@ -102,7 +102,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{viewReservation.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
+                            <p:outputLabel value="#{queryBooking.flightToBkInstance[instance].getFlightCabin().getCabinClass().getCabinName()}" />
 
                             <p:outputLabel  value="Arrival Time Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />

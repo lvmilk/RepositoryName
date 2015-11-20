@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.ejb.Stateless;
 import Entity.ADS.*;
 import Entity.AIS.BookingClassInstance;
+import Entity.AIS.FlightCabin;
 import Entity.APS.FlightInstance;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -313,7 +314,10 @@ public class PassengerBean implements PassengerBeanLocal {
         if (rsv != null) {
             for (int i = 0; i < BookClassInstanceList.size(); i++) {
                 instance = em.find(BookingClassInstance.class, BookClassInstanceList.get(i).getId());
+                FlightCabin flightCabin=em.find(FlightCabin.class, instance.getFlightCabin().getId());
                 em.refresh(instance);
+                flightCabin.setBookedSeat(flightCabin.getBookedSeat()+psgCount);
+                em.merge(flightCabin);
                 instance.setBookedSeatNo(instance.getBookedSeatNo() + psgCount);
                 instance.getReservation().add(rsv);
                 em.merge(instance);

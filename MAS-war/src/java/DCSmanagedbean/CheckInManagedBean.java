@@ -127,6 +127,36 @@ public class CheckInManagedBean implements Serializable {
         }
 
     }
+        public void getUnusedTicket2() throws Exception {
+//        try {
+        List<Ticket> newList = new ArrayList<Ticket>();
+        if (flightNo != null && !flightNo.equals("") && !dateString.equals("")) {
+            System.out.println("cmb:getUnusedTicket(): check1");
+            FlightInstance requestedFi = dcb.getRequestFlight(flightNo, dateString);
+            System.out.println("cmb:getUnusedTicket(): check2 get requested flight instance: " + requestedFi.getDate());
+            System.out.println("cmb:no of tickets found: " + dcb.getAllTicket(passportNo, firstName, lastName).size());
+            for (Ticket ticket : dcb.getAllTicket(passportNo, firstName, lastName)) {
+
+                Date dateTemp = ticket.getBkInstance().getFlightCabin().getFlightInstance().getStandardDepTimeDateType();
+                Calendar c1 = Calendar.getInstance();
+                c1.setTime(dateTemp);
+                c1.add(Calendar.DATE, -1);
+                dateTemp = c1.getTime();
+                System.out.println("cmb: dateTemp " + dateTemp);
+                System.out.println("cmb: date " + date);
+
+                if (date.after(dateTemp) &&ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo().equals(flightNo)&&ticket.getTicketStatus().equals("Unused")) {
+                    System.out.println("cmb: One ticket to be added!");
+                    newList.add(ticket);
+                    System.out.println("cmb: One ticket added!");
+                }
+            }
+            this.setTickets(newList);
+            System.out.println("cmb:Final no of tickets found: " + tickets.size());
+
+        }
+
+    }
 
     //choose tickets within 24 hours
     public void getOnlineCheckedinTicket() throws Exception {
@@ -181,6 +211,23 @@ public class CheckInManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("./checkIn2.xhtml");
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+
+    }
+      public void onGetTicketChange2() throws Exception {
+        try {
+            this.getUnusedTicket2();
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tickets", tickets);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", dateString);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", firstName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", lastName);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", passportNo);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", flightNo);
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./onlineCheckIn2.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
@@ -448,6 +495,27 @@ public class CheckInManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
+      public void goBackOnlineCheckin() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("firstName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lastName", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("passportNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("ticket", new Ticket());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("seat", new Seat());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("flightNo", "");
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("luggageCount", 0);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("loungeEligibility", false);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("boardingTime", new Date());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("unOccupiedSeats", new ArrayList<Seat>());
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./onlineCheckIn1.xhtml");
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
+        }
+    }
+
 
     public void goBacktocheckin2() {
         try {
