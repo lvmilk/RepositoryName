@@ -25,7 +25,7 @@ import util.CryptoHelper;
  * @author LI HAO
  */
 @Stateless
-public class VerifyAccountBean implements VerifyAccountBeanLocal {
+public class VerifyAccountBean implements VerifyAccountBeanLocal,VerifyAccountBeanRemote {
 
     @PersistenceContext
     EntityManager em;

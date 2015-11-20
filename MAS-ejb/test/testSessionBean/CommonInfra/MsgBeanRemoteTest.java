@@ -5,10 +5,13 @@
  */
 package testSessionBean.CommonInfra;
 
+import Entity.CommonInfa.MsgReceiver;
+import Entity.CommonInfa.MsgSender;
 import Entity.CommonInfa.UserEntity;
 import SessionBean.CommonInfra.ManageAccountBeanRemote;
 import SessionBean.CommonInfra.MsgBeanRemote;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +34,8 @@ import org.junit.runners.MethodSorters;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MsgBeanRemoteTest {
 
-    MsgBeanRemote mbr=lookupMsgBeanRemote();
+    MsgBeanRemote mbr = lookupMsgBeanRemote();
+
     public MsgBeanRemoteTest() {
     }
 
@@ -59,9 +63,34 @@ public class MsgBeanRemoteTest {
     @Test
     public void test01GetAllUsers() {
         System.out.println("test01GetAllUsers");
-        List<UserEntity> rList=new ArrayList<UserEntity>();
-        rList=mbr.getAllUsers();
+        List<UserEntity> rList = new ArrayList<UserEntity>();
+        rList = mbr.getAllUsers();
         assertFalse(rList.isEmpty());
+    }
+
+    @Test
+    public void test02ViewSendMessage() throws Exception {
+        System.out.println("test02ViewSendMessage");
+        Collection<MsgSender> senderList = new ArrayList<MsgSender>();
+        senderList = mbr.viewSendMessage("O777777");
+        assertTrue(senderList.isEmpty());
+    }
+
+    @Test(expected = Exception.class)
+    public void test03ViewSendMessage_NoSuchUser() throws Exception {
+        System.out.println("test03ViewSendMessage_NoSuchUser");
+        Collection<MsgSender> senderList = new ArrayList<MsgSender>();
+        senderList = mbr.viewSendMessage("O999999");
+
+    }
+
+    @Test
+    public void test04tViewReceiveMessage() {
+        System.out.println("test04ViewSendMessage");
+        Collection<MsgReceiver> rcvList = new ArrayList<MsgReceiver>();
+        rcvList = mbr.viewReceiveMessage("O777777");
+        assertTrue(rcvList.isEmpty());
+
     }
 
     private MsgBeanRemote lookupMsgBeanRemote() {
