@@ -111,7 +111,7 @@
         
         <h:form id="dlgGrd">
             <p:dialog id="dlgGrd" header="Confirm cancel the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
-                <p:outputLabel value="A total penalty of $#{cancelFlight.totalRefund} will be refunded to you after you confirm this change of schedule "/>
+                <p:outputLabel value="A total amount of $#{cancelFlight.totalRefund} will be refunded to you after you confirm this change of schedule "/>
 
                 <h:panelGrid columns="2" cellpadding="10">
                     <p:commandButton value="Confirm"  oncomplete="PF('dlgGrd').hide()" action="#{cancelFlight.rsvConfirm()}" />

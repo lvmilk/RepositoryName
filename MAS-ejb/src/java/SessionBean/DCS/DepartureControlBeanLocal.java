@@ -60,6 +60,8 @@ public interface DepartureControlBeanLocal {
 
     public List<Seat> getAllSeats(String flightNo, String dateString) throws Exception;
 
+    public boolean changeOnlineCheckinStatus(Ticket tkt) throws Exception;
+
     
     
 }
