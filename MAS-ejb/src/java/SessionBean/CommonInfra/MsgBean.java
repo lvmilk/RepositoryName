@@ -23,7 +23,7 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class MsgBean implements MsgBeanLocal {
+public class MsgBean implements MsgBeanLocal,MsgBeanRemote {
 
     @PersistenceContext
     private EntityManager em;
