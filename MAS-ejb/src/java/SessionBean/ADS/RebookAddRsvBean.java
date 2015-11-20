@@ -32,7 +32,7 @@ import javax.persistence.Query;
 @Stateless
 public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
 
-   @PersistenceContext
+    @PersistenceContext
     private EntityManager em;
 
     private Passenger passenger = new Passenger();
@@ -237,7 +237,31 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
 
     }
 
-    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<Passenger> passengerList, Booker booker, ArrayList<BookingClassInstance> BookClassInstanceList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
+    public ArrayList<Ticket> setupPsg_Ticket(ArrayList<FlightInstance> depSelected, ArrayList<FlightInstance> retSelected, ArrayList<Passenger> pasgList, Booker booker, ArrayList<BookingClassInstance> BciList, int psgCount, String origin, String dest, Boolean returnTrip, String bkSystem) {
+        ArrayList<FlightInstance> departSelected = new ArrayList<>();
+        for (FlightInstance f1 : depSelected) {
+            FlightInstance f = em.find(FlightInstance.class, f1.getId());
+            departSelected.add(f);
+        }
+
+        ArrayList<FlightInstance> returnSelected = new ArrayList<>();
+        for (FlightInstance f1 : retSelected) {
+            FlightInstance f = em.find(FlightInstance.class, f1.getId());
+            returnSelected.add(f);
+        }
+
+        ArrayList<Passenger> passengerList = new ArrayList<>();
+        for (Passenger f1 : pasgList) {
+            Passenger f = em.find(Passenger.class, f1.getId());
+            passengerList.add(f);
+        }
+
+        ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
+        for (BookingClassInstance f1 : BciList) {
+            BookingClassInstance f = em.find(BookingClassInstance.class, f1.getId());
+            BookClassInstanceList.add(f);
+        }
+
         Ticket depTicket;
         Ticket arrTicket;
         ArrayList<Ticket> tkList = new ArrayList<Ticket>();
@@ -255,7 +279,6 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
             temp = departSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
-            
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
@@ -263,41 +286,42 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
                 psg = passengerList.get(j);
                 System.out.println("*************Passenger Id is :" + psg.getId());
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                em.refresh(thisPsg);
                 System.out.println("in depart loop: before add ticket, all tickets in psg are " + thisPsg.getTickets());
 
-               
                 if (thisPsg != null) {
-                    em.refresh(thisPsg);
+
+//                    thisPsg=em.find(Passenger.class, thisPsg.getId());
                     depTicket.setPassenger(thisPsg);
                     em.persist(depTicket);
+                    em.flush();
 
                     List<Ticket> tkt = thisPsg.getTickets();
                     System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
                     tkt.add(depTicket);
                     thisPsg.setTickets(tkt);
+                    em.merge(thisPsg);
                     System.out.println("tkt in thisPsg after adding " + tkt);
-              
-                    em.refresh(thisPsg);
-                    em.flush();
-                    System.out.println("tkt in thisPsg after merge " + tkt); 
+
+                    System.out.println("tkt in thisPsg after merge " + tkt);
 
                     tkList.add(depTicket);
-//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+                    thisPsg = em.find(Passenger.class, thisPsg.getId());
+                    em.refresh(thisPsg);
+                    passengerList.set(j, thisPsg);
 
                     System.out.println("depTicket is " + depTicket.getTicketID());
                     System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
-                      
-                
+
+//                    em.merge(thisPsg);
                     em.flush();
 
                 }
             }
-          
 
         }
         em.flush();
-        
-        
+
         for (int i = 0; i < returnSelected.size(); i++) {
 //            arrTicket=new Ticket();
             depCity = returnSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
@@ -313,21 +337,28 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
                 arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                em.refresh(thisPsg);
+
                 if (thisPsg != null) {
-                    em.refresh(thisPsg);
+
                     arrTicket.setPassenger(thisPsg);
                     em.persist(arrTicket);
-
+                    em.flush();
 //                    thisPsg.getTickets().add(arrTicket);
 //                    em.merge(thisPsg);
                     List<Ticket> tkt = thisPsg.getTickets();
+                    System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
                     tkt.add(arrTicket);
                     thisPsg.setTickets(tkt);
-                    em.refresh(thisPsg);
-                    em.flush();
+                    
+                    System.out.println("tkt in thisPsg after adding " + tkt);
+                    em.merge(thisPsg);
+                    System.out.println("tkt in thisPsg after merge " + tkt);
 
                     tkList.add(arrTicket);
-//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+                    thisPsg = em.find(Passenger.class, thisPsg.getId());
+                    em.refresh(thisPsg);
+                    passengerList.set(j, thisPsg);
 
                     System.out.println("arrTicket is " + arrTicket.getTicketID());
                     System.out.println("all tickets in psg are " + thisPsg.getTickets());
