@@ -86,6 +86,7 @@ public class PassengerBean implements PassengerBeanLocal {
         rsv = makeRsvBookInstance(rsv, BookClassInstanceList, psgCount);
 
         ArrayList<Ticket> tickets = new ArrayList<>();
+
         createPsgList(passengerList);
 
         tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem);
@@ -250,25 +251,41 @@ public class PassengerBean implements PassengerBeanLocal {
             temp = departSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
+            
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
                 depTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
                 System.out.println("*************Passenger Id is :" + psg.getId());
-                Passenger psgl = em.find(Passenger.class, psg.getId());
-                em.refresh(psgl);
-                if (psgl != null) {
-                    depTicket.setPassenger(psgl);
+                Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                System.out.println("in depart loop: before add ticket, all tickets in psg are " + thisPsg.getTickets());
+
+                em.refresh(thisPsg);
+                if (thisPsg != null) {
+                    depTicket.setPassenger(thisPsg);
                     em.persist(depTicket);
 
-                    psgl.getTickets().add(depTicket);
-                    em.merge(psgl);
+                    List<Ticket> tkt = thisPsg.getTickets();
+                    System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
+                    tkt.add(depTicket);
+                    thisPsg.setTickets(tkt);
+                    System.out.println("tkt in thisPsg after adding " + tkt);
+                    em.merge(thisPsg);
+                    System.out.println("tkt in thisPsg after merge " + tkt); 
 
                     tkList.add(depTicket);
-                    passengerList.set(j, em.find(Passenger.class, psgl.getId()));
+//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+
+                    System.out.println("depTicket is " + depTicket.getTicketID());
+                    System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
+                    
+                    em.flush();
+
                 }
             }
+            
+            
 
         }
 
@@ -286,22 +303,30 @@ public class PassengerBean implements PassengerBeanLocal {
                 arrTicket = new Ticket();
                 arrTicket.createTicket(depCity, arrCity, depTime, arrTime, flightNo, bkSystem);
                 psg = passengerList.get(j);
-                Passenger psgl = em.find(Passenger.class, psg.getId());
-                if (psgl != null) {
-                    arrTicket.setPassenger(psgl);
+                Passenger thisPsg = em.find(Passenger.class, psg.getId());
+                if (thisPsg != null) {
+                    arrTicket.setPassenger(thisPsg);
                     em.persist(arrTicket);
 
-                    psgl.getTickets().add(arrTicket);
-                    em.merge(psgl);
+//                    thisPsg.getTickets().add(arrTicket);
+//                    em.merge(thisPsg);
+                    List<Ticket> tkt = thisPsg.getTickets();
+                    tkt.add(arrTicket);
+                    thisPsg.setTickets(tkt);
+                    em.merge(thisPsg);
 
                     tkList.add(arrTicket);
-                    passengerList.set(j, em.find(Passenger.class, psgl.getId()));
+//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+
+                    System.out.println("arrTicket is " + arrTicket.getTicketID());
+                    System.out.println("all tickets in psg are " + thisPsg.getTickets());
                 }
             }
 
         }
 
         em.flush();
+        System.out.println("in setUpPsg_tickets: passenger 1 has tickets:　" + passengerList.get(0).getTickets());
         System.out.println("LEAVING setupPsg_Ticket");
 
         return tkList;
@@ -314,9 +339,9 @@ public class PassengerBean implements PassengerBeanLocal {
         if (rsv != null) {
             for (int i = 0; i < BookClassInstanceList.size(); i++) {
                 instance = em.find(BookingClassInstance.class, BookClassInstanceList.get(i).getId());
-                FlightCabin flightCabin=em.find(FlightCabin.class, instance.getFlightCabin().getId());
+                FlightCabin flightCabin = em.find(FlightCabin.class, instance.getFlightCabin().getId());
                 em.refresh(instance);
-                flightCabin.setBookedSeat(flightCabin.getBookedSeat()+psgCount);
+                flightCabin.setBookedSeat(flightCabin.getBookedSeat() + psgCount);
                 em.merge(flightCabin);
                 instance.setBookedSeatNo(instance.getBookedSeatNo() + psgCount);
                 instance.getReservation().add(rsv);

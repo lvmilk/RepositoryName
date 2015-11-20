@@ -12,6 +12,7 @@
     </h:head>
     <h:body>
         <h:form id="updateRsv">
+            <p:messages id="msgs" />
 
             <p:panel id="detail" header="Reservation Detail" toggleable="true" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
                 <p:panel header="Departure Trip " >  
@@ -125,7 +126,7 @@
                         </p:column>
                     </p:dataTable>
                     
-                    <p:commandButton value="Reschedule Flight" actionListener="#{queryBooking.onSelectPsg()}"/>
+                    <p:commandButton value="Reschedule Flight" update="updateRsv" actionListener="#{queryBooking.onSelectPsg()}"/>
 
                 </p:panel>
 

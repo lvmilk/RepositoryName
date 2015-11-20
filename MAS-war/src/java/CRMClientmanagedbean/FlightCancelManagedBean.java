@@ -52,7 +52,7 @@ public class FlightCancelManagedBean implements Serializable {
 
     private String emailOrigin;
     private String manageStatus;
-    private String stfType;
+//    private String stfType;
     private String bkSystem;
     private String companyName;
 
@@ -84,7 +84,7 @@ public class FlightCancelManagedBean implements Serializable {
         emailOrigin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emailOrigin");
         booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
-        stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
+//        stfType = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("StaffType");
 //        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
 //        System.out.println("CancelFlightManagedBean:ini: print booking system"+bkSystem);
         allRsv = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allRsv");
@@ -128,19 +128,19 @@ public class FlightCancelManagedBean implements Serializable {
         mr.cancelFlight(selectedRsv, selectedPsgList, departed, returned, selectedRsv.getBkcInstance(), origin, dest, selectedRsv.getReturnTrip(), 0.0, bkSystem);
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
-
-        } else {
+//        if (stfType.equals("agency")) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+//            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
+//
+//        } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Cancel flight successfully."));
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
 
-        }
+//        }
 
     }
 
@@ -157,11 +157,11 @@ public class FlightCancelManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
 
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmCancelFlight.xhtml");
-        } else {
+//        if (stfType.equals("agency")) {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmCancelFlight.xhtml");
+//        } else {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlightConfirm.xhtml");
-        }
+//        }
     }
 
     public void onSelectCancelRsv(Reservation rsv) throws IOException {
@@ -194,12 +194,12 @@ public class FlightCancelManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", returned);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgList", psgList);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", manageStatus);
-
-        if (stfType.equals("agency")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCancelation2.xhtml");
-        } else {
+//
+//        if (stfType.equals("agency")) {
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCancelation2.xhtml");
+//        } else {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
-        }
+//        }
 
     }
 
