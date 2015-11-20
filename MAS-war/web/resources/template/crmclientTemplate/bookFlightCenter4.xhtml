@@ -87,6 +87,11 @@
                 </ui:repeat>
             </p:panel>
             
+          <br></br>
+                <p:commandButton value="Print Itinerary" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="confirmBook" />
+                </p:commandButton>
+            
             
             <p:commandButton value="Confirm" update="confirmBook" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
