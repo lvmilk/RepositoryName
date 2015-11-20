@@ -13,33 +13,29 @@
     <h:body>
         <h:form id="queryRsv">
 
-            <p:panel id="thisPanel" header="Contact Us" style="margin-bottom:10px;">
+            <p:panel id="thisPanel" header="Contact Us" style="text-align: left; width: 80% !important; margin-left: 10% !important;">
                 <p:messages id="msgs" showDetail="false" />
 
                 <h:panelGrid columns="2" cellpadding="10">
-                    
 
-
-                    <p:outputLabel for="email" value="Email Address: " />
-                    <p:inputText id="email" value="#{comb.email}" required="true" validatorMessage="Invalid email format" requiredMessage="please enter email address">
+                    <p:outputLabel for="email" value="Your email Address: " />
+                    <p:inputText id="email" value="#{comb.email}" required="true" validatorMessage="Invalid email format" requiredMessage="Please enter email address for us to reach you" size="50" >
                         <f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$)?" />
                     </p:inputText>
 
 
                     <p:outputLabel for="subject"  value="Subject: " />
-                    <p:inputText id="subject" value="#{comb.subject}" required="true" requiredMessage="Please enter a subject" validatorMessage="The length should be within 50 characters">
+                    <p:inputText id="subject" value="#{comb.subject}" required="true" requiredMessage="Please enter a subject" validatorMessage="The length should be within 50 characters" size="50">
                         <f:validateLength minimum="1" maximum="50" />
                     </p:inputText>
 
                      <p:outputLabel for="text"  value="Text: " />
-                    <p:inputTextarea id="text" rows="5" cols="30" value="#{comb.text}"  counter="display" maxlength="300" counterTemplate="{0} characters remaining" autoResize="false" required="true" requiredMessage="Please enter the main text." validatorMessage="The length should be within 300 characters">
-                        <f:validateLength minimum="1" maximum="300" />
+                    <p:inputTextarea id="text" rows="8" cols="50" value="#{comb.text}"  counter="display" maxlength="1000" counterTemplate="{0} characters remaining" autoResize="false" required="true" requiredMessage="Please enter the main text." validatorMessage="The length should be within 1000 characters">
+                        <f:validateLength minimum="1" maximum="1000" />
                     </p:inputTextarea>
                          <h:outputText id="display" />
 
-                </h:panelGrid>
-
-               
+                </h:panelGrid>               
 
                 <p:commandButton value="Submit" update="queryRsv" action="#{comb.sendEmail}" icon="ui-icon-mail-closed" />
             </p:panel>
