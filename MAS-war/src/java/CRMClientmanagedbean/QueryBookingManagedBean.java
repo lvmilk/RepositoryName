@@ -127,8 +127,8 @@ public class QueryBookingManagedBean implements Serializable {
         allBookClassList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allBookClassList");
         flightToBkInstance = (Map<FlightInstance, BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightToBkInstance");
 
-        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight") != null) {
-            selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("upgSelectedFlight") != null) {
+            selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("upgSelectedFlight");
         }
 
         flights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flights");
@@ -196,7 +196,7 @@ public class QueryBookingManagedBean implements Serializable {
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("chosenBkInstance", chosenBkInstance);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("PsgList", selectedPsgList);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFlight", selectedFlight);
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("upgSelectedFlight", selectedFlight);
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinList", cabinList);
 
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", cabinName);
