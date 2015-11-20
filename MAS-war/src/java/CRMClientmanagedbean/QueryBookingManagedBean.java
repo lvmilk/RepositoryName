@@ -357,6 +357,8 @@ public class QueryBookingManagedBean implements Serializable {
             mbsbl.editThisBooker(booker);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
+              manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("",manageStatus);
+            
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }

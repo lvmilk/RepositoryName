@@ -9,7 +9,7 @@
         <title>Reservation Confirmation</title>
     </h:head>
     <h:body>
-        <h:form>
+        <h:form id="form">
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
 
@@ -25,7 +25,7 @@
 
 
 
-            <p:panel header="Departure trip " >             
+            <p:panel id="dep" header="Departure trip " >             
                 <ui:repeat value="#{tkMB.departSelected}" var="instance">
                     <h:panelGrid columns="8" cellpadding="15" >
 
@@ -56,7 +56,7 @@
             </p:panel>
 
             <br/>
-            <p:panel header="return trip " rendered="#{tkMB.returnSelected.size()>0}">             
+            <p:panel id="arr" header="return trip " rendered="#{tkMB.returnSelected.size()>0}">             
                 <ui:repeat value="#{tkMB.returnSelected}" var="instance">
                     <h:panelGrid columns="8" cellpadding="15" >
 
@@ -86,6 +86,10 @@
                 </ui:repeat>
             </p:panel>
             
+                      <br></br>
+                <p:commandButton value="Print Itinerary" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                    <p:printer target="form" />
+                </p:commandButton>
             
             <p:commandButton value="Confirm" actionListener="#{tkMB.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
