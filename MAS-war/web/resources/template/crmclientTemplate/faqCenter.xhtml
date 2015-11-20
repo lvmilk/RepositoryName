@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>FAQs</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel id="toggleable1" header="1. How can I check fares from your site?" toggleable="true" toggleSpeed="500" style="text-align: left; width: 80% !important; margin-left: 10% !important;">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="You can search our fares through:"></h:outputText>
+                    <br/>
+                    <h:outputText value="Online Booking (Feel free to check our fares even if you decide not to make the purchase immediately) and/or Unique Local Offers in different local sites" />
+                </h:panelGrid>
+            </p:panel>
+
+            <p:panel id="toggleable2" header="2. Can I change my tickets booked online?" toggleable="true" toggleSpeed="500"  style="text-align: left; width: 80% !important; margin-left: 10% !important;">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="Currently, changing the ticket online function is available for original Merlion Airlines tickets purchased online with journeys commencing from Africa, Australia, Bahrain, Bangladesh, Belgium, Canada, China, Denmark, France, Germany, Hong Kong, India, Italy, Japan, Korea, Luxembourg, Malaysia, the Maldives, Mexico, Netherlands, New Zealand, Pakistan, Peru, Republic of Ireland, Russia, Saudi Arabia, Singapore, Sri Lanka, Switzerland, the USA, U. A. Emirates, United Kingdom, Taiwan, Thailand and Vietnam."/>
+                    <br/>
+                    <h:outputText value="Note 1: If the changing ticket online function is not available for your itinerary after verified by the system, you simply contact our reservations office and we will arrange it for you." />
+                    <br/>
+                    <h:outputText value="Note 2: Subject to the terms associated with your purchased fare, change/rebooking may NOT be allowed. Or there may be a change/rebooking fee involved." />
+                </h:panelGrid>
+            </p:panel>
+
+              <p:panel id="toggleable3" header="3. Can I change the booking online if I have purchased my ticket via a travel agent or Merlione Airlines reservations office?" toggleable="true" toggleSpeed="500"  style="text-align: left; width: 80% !important; margin-left: 10% !important;">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="Yes, you could manage your booking as long as you have valid booing reference number. If the change booking function is not available for your itinerary, you may contact Merlion Airlines reservations office for assistance."/>
+                </h:panelGrid>
+            </p:panel>
+            
+            <p:panel id="toggleable4" header="4. What is online reservation?" toggleable="true" toggleSpeed="500"  style="text-align: left; width: 80% !important; margin-left: 10% !important;">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:outputText value="Online Reservation - available on selected routes, are a convenient alternative to traditional paper tickets. After purchasing your ticket online, we will summarize your reservation and provide you a reference number. This information is stored in our computers so that when you arrive at the airport, all you need to do is to present your passport and reference number at the check-in counter in exchange for a boarding pass."/>
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+

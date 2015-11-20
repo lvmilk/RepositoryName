@@ -14,27 +14,27 @@
     <h:body>
 
         <h:form> 
-            <p:panel id="panel" header="Airline Distribution Tool List" >
-                <h:panelGrid  style="margin-bottom:0; width:200px" cellpadding="5">
+            <p:panel id="panel" header="Manage Reservation" style="width:25% !important; margin-left: 30% !important; margin-bottom:10px;">
+                <h:panelGrid  style="margin-bottom:0; width:100%" cellpadding="5">
                     <p:menu id='ARS'  style="width:250px" toggleable="true">
                          <p:submenu label="View Reservation">
-                           <p:menuitem value="View Reservation" url="./QueryReservationResult.xhtml"  icon="ui-icon-disk" />               
+                           <p:menuitem value="View Reservation" url="./QueryReservationResult.xhtml" />               
                         </p:submenu>
                         
                         <p:submenu label="Reservation update">                        
-                            <p:menuitem value="Update Booker Information /Change Passenger" url="./updatePerson.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="ReSchedule flight" url="./reschedule1.xhtml"  icon="ui-icon-disk" />
-                            <p:menuitem value="Upgrade Cabin Class" url="./upgradeCabin1.xhtml"  icon="ui-icon-disk" />
-<!--                            <p:menuitem value="Additional Services" url="./DeleteBookingClass.xhtml"  icon="ui-icon-disk" />-->
+                            <p:menuitem value="Update Booker Information /Change Passenger" url="./updatePerson.xhtml" />
+                            <p:menuitem value="ReSchedule flight" url="./reschedule1.xhtml" />
+                            <p:menuitem value="Upgrade Cabin Class" url="./upgradeCabin1.xhtml" />
+<!--                            <p:menuitem value="Additional Services" url="./DeleteBookingClass.xhtml" />-->
 
                         </p:submenu> 
                         
                         <p:submenu label="Cancel Flight">
-                           <p:menuitem value="Cancel Flight" url="./cancelFlight1.xhtml"  icon="ui-icon-disk" />               
+                           <p:menuitem value="Cancel Flight" url="./cancelFlight1.xhtml" />               
                         </p:submenu>
                         
                          <p:submenu label="Others">
-                           <p:menuitem value="Additional Service" url="./ViewReservation1.xhtml"  icon="ui-icon-disk" />               
+                           <p:menuitem value="Additional Service" url="./ViewReservation1.xhtml" />               
                         </p:submenu>
                         
                         

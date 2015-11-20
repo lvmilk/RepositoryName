@@ -14,15 +14,15 @@
 
 
         <h:form id="viewReserve" >
-            <p:panel id="panel" header="View All Reservation"  style="width:100%">
+            <p:panel id="panel" header="View All Reservation"  style="text-align: left; width: 85% !important; margin-left: 1% !important; margin-bottom:10px;">
                 <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
-                    <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
+                    <p:column headerText="Reservation id">
                         <h:outputText value="#{rsv.id}" />
                     </p:column>
 
-                    <p:column headerText="Reservation Date" sortBy="#{rsv.rsvDate}" >
+                    <p:column headerText="Reservation Date">
                         <h:outputText value="#{rsv.rsvDate}" />
                     </p:column>
 
@@ -39,7 +39,7 @@
                     <p:column headerText="Booking Person">
                         <h:outputText value="#{rsv.bkFirstName} #{rsv.bkLastName}" />
                     </p:column>
-                    <p:column headerText="Contact Email" sortBy="#{rsv.bkEmail}" filterBy="#{rsv.bkEmail}" filterMatchMode="contains">
+                    <p:column headerText="Contact Email">
                         <h:outputText value="#{rsv.bkEmail}" />
                     </p:column>
 
@@ -52,23 +52,23 @@
             </p:panel>
 
 
-            <p:panel id="reservation" header="Reservation Information" rendered="#{queryBooking.departed.size()>0}" toggleable="true">
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:65%">
-                    <h:panelGrid columns="2" cellpadding="10" >
+            <p:panel id="reservation" header="Reservation Information" rendered="#{queryBooking.departed.size()>0}" toggleable="true" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+                <p:panel id="booker" header="Booker Information"   toggleable="true" style="width:80%">
+                    <h:panelGrid columns="2" cellpadding="10">
                         <h:panelGrid columns="4" cellpadding="10" >
-                            <p:outputLabel  value="Title" />
+                            <p:outputLabel  value="Title: " />
                             <p:outputLabel value="#{queryBooking.selectedRsv.booker.title}" />
 
-                            <p:outputLabel  value="Name" />
+                            <p:outputLabel  value="Name: " />
                             <p:outputLabel value="#{queryBooking.selectedRsv.booker.firstName} #{queryBooking.selectedRsv.booker.lastName}" />
 
-                            <p:outputLabel  value="Email" />
+                            <p:outputLabel  value="Email: " />
                             <p:outputLabel value="#{queryBooking.selectedRsv.booker.email}" />
 
-                            <p:outputLabel  value="Address" />
+                            <p:outputLabel  value="Address: " />
                             <p:outputLabel value="#{queryBooking.selectedRsv.booker.address}" />
 
-                            <p:outputLabel  value="Contact No" />
+                            <p:outputLabel  value="Contact No: " />
                             <p:outputLabel value="#{queryBooking.selectedRsv.booker.contact}" />
                         </h:panelGrid>
                         <p:commandButton value="Edit" actionListener="#{queryBooking.onSelectBooker()}"/>
@@ -76,9 +76,8 @@
 
                 </p:panel>
 
-
                 <br/>
-                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:65%">
+                <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:80%">
                     <p:dataTable var="passenger" value="#{queryBooking.psgList}" rows="10"  emptyMessage="No Reservations" >
 
                         <p:column headerText="Title" >
@@ -96,8 +95,8 @@
                         <p:column headerText="Passport No.">
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
-                        <p:column headerText="Change Passenger" >
-                            <p:commandButton value="Change Passenger" actionListener="#{queryBooking.onUpdatePsg(passenger)}"/>
+                        <p:column headerText="Edit Passenger" >
+                            <p:commandButton value="Edit Passenger" actionListener="#{queryBooking.onUpdatePsg(passenger)}"/>
                         </p:column>
 
                     </p:dataTable>
@@ -107,16 +106,16 @@
                 </p:panel>
 
                 <br/>
-                <p:panel id="payment" header="Payment"   toggleable="true" style="width:65%">
+                <p:panel id="payment" header="Payment"   toggleable="true" style="width:80%">
                     <h:panelGrid columns="4" cellpadding="10" >
 
                         <p:outputLabel  value="Payment ID: " />
                         <p:outputLabel value="#{queryBooking.selectedRsv.payment.paymentID}" />
 
-                        <p:outputLabel  value="Date of Payment: " />
+                        <p:outputLabel  value="Payment Date: " />
                         <p:outputLabel value="#{queryBooking.selectedRsv.payment.paymentDate.toString()}" />
 
-                        <p:outputLabel  value="Amount of Payment" />
+                        <p:outputLabel  value="Payment Amount: " />
                         <p:outputLabel value="#{queryBooking.selectedRsv.payment.totalPrice}" />
                     </h:panelGrid>
 
