@@ -32,6 +32,7 @@ import javax.faces.view.ViewScoped;
 @Named(value = "ocmb")
 @ViewScoped
 public class OnlineCheckinManagedBean implements Serializable {
+
     @EJB
     DepartureControlBeanLocal dcb;
 
@@ -51,7 +52,7 @@ public class OnlineCheckinManagedBean implements Serializable {
     private Date boardingTime;
     private List<Seat> allSeats = new ArrayList<Seat>();
     private Date minDate = new Date();
-    private Date maxDate=new Date();
+    private Date maxDate = new Date();
 
     @PostConstruct
     public void init() {
@@ -126,7 +127,7 @@ public class OnlineCheckinManagedBean implements Serializable {
 //        }
 //
 //    }
-        public void getUnusedTicket2() throws Exception {
+    public void getUnusedTicket2() throws Exception {
 //        try {
         List<Ticket> newList = new ArrayList<Ticket>();
         if (flightNo != null && !flightNo.equals("") && !dateString.equals("")) {
@@ -144,7 +145,7 @@ public class OnlineCheckinManagedBean implements Serializable {
                 System.out.println("cmb: dateTemp " + dateTemp);
                 System.out.println("cmb: date " + date);
 
-                if (date.after(dateTemp) &&ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo().equals(flightNo)&&ticket.getTicketStatus().equals("Unused")) {
+                if (date.after(dateTemp) && ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo().equals(flightNo) && ticket.getTicketStatus().equals("Unused")) {
                     System.out.println("cmb: One ticket to be added!");
                     newList.add(ticket);
                     System.out.println("cmb: One ticket added!");
@@ -215,7 +216,7 @@ public class OnlineCheckinManagedBean implements Serializable {
 //        }
 //
 //    }
-      public void onGetTicketChange2() throws Exception {
+    public void onGetTicketChange2() throws Exception {
         try {
             this.getUnusedTicket2();
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
@@ -250,7 +251,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //        }
 //
 //    }
-
     public void onCheckinChange(ActionEvent event) {
         try {
             ticket = (Ticket) event.getComponent().getAttributes().get("tkt");
@@ -302,7 +302,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
 //        }
 //    }
-
     public void onStandbyChange(ActionEvent event) {
         try {
 
@@ -336,7 +335,7 @@ public class OnlineCheckinManagedBean implements Serializable {
         try {
             this.seatSelected = (Seat) event.getComponent().getAttributes().get("seat");
             this.previewBoardingPass();
-            
+
 //            
 //            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", date);
 //            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tickets", tickets);
@@ -450,7 +449,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //        }
 //
 //    }
-
 //    public void goLuggageCheckinLast() {
 //        try {
 //            dcb.updateLuggageCount(seatSelected, luggageCount);
@@ -474,7 +472,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //        }
 //
 //    }
-
 //    public void goBack() {
 //        try {
 //            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
@@ -495,7 +492,7 @@ public class OnlineCheckinManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
 //        }
 //    }
-      public void goBackOnlineCheckin() {
+    public void goBackOnlineCheckin() {
         try {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("date", new Date());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateString", "");
@@ -515,7 +512,6 @@ public class OnlineCheckinManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-
 
 //    public void goBacktocheckin2() {
 //        try {
@@ -540,7 +536,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
 //        }
 //    }
-
 //    public void luggageCheckIngoBack() {
 //        try {
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./luggageCheckIn.xhtml");
@@ -549,7 +544,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
 //        }
 //    }
-
     public boolean isOnlineCheckedIn(Ticket tkt) {
         return tkt.getTicketStatus().equals("OnlineCheckedin");
     }
@@ -769,5 +763,5 @@ public class OnlineCheckinManagedBean implements Serializable {
      */
     public OnlineCheckinManagedBean() {
     }
-    
+
 }
