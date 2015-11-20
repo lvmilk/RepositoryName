@@ -167,7 +167,7 @@ public class MemberLoyaltyManagedBean implements Serializable {
                 properties.setProperty("mail.smtp.socketFactory.fallback", "false");
                 properties.setProperty("mail.smtp.port", "465");
                 properties.setProperty("mail.smtps.auth", "true");
-                properties.setProperty("mail.user", "snowky1993@gmail.com");
+                 properties.setProperty("mail.user", "snowky1993@gmail.com");
                 properties.setProperty("mail.password", "WHyq1993");
                 // Get the default Session object.
                 Session session = Session.getDefaultInstance(properties);
@@ -206,7 +206,7 @@ public class MemberLoyaltyManagedBean implements Serializable {
                     message.setContent(multipart);
                     // Send message
                     SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
-                    t.connect("smtp.gmail.com", "welovemas@gmail.com", "iloveis3102");
+                    t.connect("smtp.gmail.com", "snowky1993@gmail.com", "WHyq1993");
                     t.sendMessage(message, message.getAllRecipients());
                     // Transport.send(message);
 
@@ -215,7 +215,7 @@ public class MemberLoyaltyManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info : " + "Emails has been sent to" + temp.getFirstName() + " " + temp.getLastName() + "successfully!", ""));
 
                 } catch (MessagingException mex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : " + "Emails has not been sent to" + temp.getFirstName() + " " + temp.getLastName(), ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : " + "Emails has not been sent to " + temp.getFirstName() + " " + temp.getLastName(), ""));
                     System.out.println("Error");
                     //    mex.printStackTrace();
                 }
