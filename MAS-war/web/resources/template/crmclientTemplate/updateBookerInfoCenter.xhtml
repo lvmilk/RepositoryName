@@ -9,7 +9,7 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:panel id="memberGuest"  style="margin-bottom:20px">
+            <p:panel id="memberGuest" header="Update Booker Information" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="3" cellpadding="10">
@@ -75,7 +75,8 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="Edit" update="memberGuest" actionListener="#{queryBooking.editBookerAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Save" update="memberGuest" actionListener="#{queryBooking.editBookerAccount}" icon="ui-icon-check" />
+                <p:commandButton value="Cancel" action="#{queryBooking.editBookerAccountBack}" immediate="true" icon="ui-icon-cancel" />
             </p:panel>
 
         </h:form>
