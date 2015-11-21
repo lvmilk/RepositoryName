@@ -18,7 +18,7 @@
 
                 <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel for="date" value="Select Date (YYYY-MM-DD): " />
-                    <p:calendar id="date" value="#{FCSISFMB.dateSelected}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="date" required="true" requiredMessage="Please select date of the flight to sign-in" size="30"> 
+                    <p:calendar id="date" value="#{FCSISFMB.dateSelected}" navigator="true" mindate="#{FCSISFMB.today}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" requiredMessage="Please select date of the flight to sign-in" size="30"> 
                     </p:calendar>
                     <br></br>
                     <p:commandButton id="ondatechange" partialSubmit="true" value="Get flights on the date" update="flight msgs" style="margin-right:0" action="#{FCSISFMB.onDateChange}"  icon="ui-icon-check" />

@@ -109,6 +109,10 @@ public class FlightCancelManagedBean implements Serializable {
 
     }
 
+    public void onChooseConfirmBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
+    }
+
     public void onChooseConfirm() {
         totalRefund = mr.computeCancelRefund(selectedRsv.getBkcInstance(), selectedPsgList.size());
         RequestContext context = RequestContext.getCurrentInstance();
@@ -135,13 +139,16 @@ public class FlightCancelManagedBean implements Serializable {
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 //
 //        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Cancel flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Cancel flight successfully."));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
 
 //        }
+    }
 
+    public void onSelectPsgBack() throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight1.xhtml");
     }
 
     public void onSelectPsg() throws IOException {
@@ -160,7 +167,7 @@ public class FlightCancelManagedBean implements Serializable {
 //        if (stfType.equals("agency")) {
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsConfirmCancelFlight.xhtml");
 //        } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlightConfirm.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlightConfirm.xhtml");
 //        }
     }
 
@@ -198,7 +205,7 @@ public class FlightCancelManagedBean implements Serializable {
 //        if (stfType.equals("agency")) {
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsCancelation2.xhtml");
 //        } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./cancelFlight2.xhtml");
 //        }
 
     }
