@@ -19,12 +19,12 @@
                 <h:panelGrid columns="2" cellpadding="10">
 
 
-                    <p:selectOneRadio id="whetherAll" value="#{queryBooking.allRsv}" required="true" requiredMessage="Please select to search one-way or returned trip" >
+<!--                    <p:selectOneRadio id="whetherAll" value="#{queryBooking.allRsv}" required="true" requiredMessage="Please select to search one-way or returned trip" >
                         <f:selectItem itemLabel="Search Specific Reservation" itemValue="false" />
                         <f:selectItem itemLabel="View All Reservations" itemValue="true" />
                         <p:ajax  event="click" listener="#{queryBooking.onSelectSearchType}" update=":queryRsv:BookRef "/>
                     </p:selectOneRadio>
-                    <p:separator/>
+                    <p:separator/>-->
 
 
                     <p:outputLabel  value="Booker Email Address: " />
@@ -34,7 +34,7 @@
                     
                     
                     <p:outputLabel for="BookRef"  value="Booking Reference: " />
-                     <p:inputText id="BookRef" value="#{queryBooking.bookRef}" disabled="#{queryBooking.allRsv}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
+                     <p:inputText id="BookRef" value="#{queryBooking.bookRef}" required="true" requiredMessage="Please enter a positive integer" validatorMessage="Please ebter a positive Integer">
                         <f:validateLongRange minimum="0"/>
                     </p:inputText>
 

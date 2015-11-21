@@ -73,7 +73,7 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
     }
 
     @Override
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
+    public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName) {
         Booker tempBk;
         String bookerEmail = booker.getEmail();
         Query query = em.createQuery("SELECT b FROM Booker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
@@ -101,6 +101,7 @@ public class RebookAddRsvBean implements RebookAddRsvBeanLocal {
 
         Payment payment = makeRsvPayment(rsv, psgCount, totalPrice, action);
 
+        return rsv.getId();
     }
 
     public void setupTicket_BookInstance(ArrayList<BookingClassInstance> BookClassInstanceList, ArrayList<Ticket> tickets) {

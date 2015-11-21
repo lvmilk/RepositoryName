@@ -142,7 +142,7 @@ public class confirmRescheduleManagedBean implements Serializable {
 //        }
         bkSystem="ARS";
 
-        mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem, companyName);
+        Long rsvId = mrLocal.rescheduleRsv(selectedRsv, passengerList, departSelected, returnSelected, BookClassInstanceList, origin, dest, returnTrip, totalPenalty, bkSystem, companyName);
 
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
 //        if (stfType.equals("agency")) {
@@ -155,8 +155,9 @@ public class confirmRescheduleManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
              FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
               FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(null, "Reschedule flight successfully."));
-
+         //  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Reschedule flight successfully!","You new booking reference ID is "+ rsvId));
+           FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsvId", rsvId);
+           FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmNewReservation.xhtml");
 //        }
 
     }

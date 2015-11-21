@@ -533,7 +533,7 @@ public class CRMPassengerBean implements CRMPassengerBeanLocal {
             throw new Exception("The booker is not existed!");
         } else {
             if (!booker.isMemberStatus()) {
-                throw new Exception("The booker is NOT a TFP member!");
+                throw new Exception("Sorry! You are NOT a TFP member. Please register first if you want to use TFP miles.");
             } else {
                 System.out.println("CRMPassengerBean: deductMiles: this member" + booker.getId() + " has miles " + booker.getMiles() + " before dedcuting");
                 int size = rsv.getTickets().size();
@@ -545,9 +545,13 @@ public class CRMPassengerBean implements CRMPassengerBeanLocal {
                 }
                 Double originalMiles = booker.getMiles();
                 Double newMiles = originalMiles - miles;
+                if(newMiles<0){
+                      throw new Exception("Cannot redeem! Sorry, you do not have enough TFP miles to redeem this flight. Please pay by credit card if you want to proceed.");
+                }else{
                 booker.setMiles(newMiles);
                 em.merge(booker);
                 em.flush();
+                }
             }
         }
     }

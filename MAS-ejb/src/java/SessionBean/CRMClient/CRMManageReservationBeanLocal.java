@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBean.ADS;
+package SessionBean.CRMClient;
 
+import SessionBean.ADS.*;
 import Entity.ADS.Passenger;
 import Entity.ADS.Reservation;
 import Entity.AIS.BookingClassInstance;
@@ -16,18 +17,18 @@ import javax.ejb.Local;
 
 /**
  *
- * @author LIU YUQI'
+ * @author Lu Xi
  */
 @Local
-public interface ManageReservationBeanLocal {
+public interface CRMManageReservationBeanLocal {
     
-   public void upgradeCabinClass(List<Passenger>selectedPsgList,Reservation selectedRsv,BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName); 
+   public Long upgradeCabinClass(List<Passenger>selectedPsgList,Reservation selectedRsv,BookingClassInstance chosenBkInstance, String cabinName, String bkSystem, String companyName); 
    
    public List<CabinClass> getUpgradeCabinList(BookingClassInstance BkInstance, Integer psgCount);
     
     public void ChangePassenger(Passenger selectedPsg,Passenger newPsg);
     
-    public Long rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance>departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem, String companyName);
+    public void rescheduleRsv(Reservation selectedRsv, ArrayList<Passenger> passengerList, ArrayList<FlightInstance>departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, String origin, String dest, Boolean returnTrip, Double totalPenalty, String bkSystem, String companyName);
 
     public Double getChangeDatePenalty(ArrayList<FlightInstance> oldDepart, ArrayList<FlightInstance> oldReturn, ArrayList<FlightInstance> newDepart, ArrayList<FlightInstance> newReturn, List<BookingClassInstance> oldInstance);
 
@@ -52,9 +53,11 @@ public interface ManageReservationBeanLocal {
 
     public Double computeCancelRefund(List<BookingClassInstance> bookList, Integer psgCount);
 
-    public Reservation searchOneRsv(String email, Long bookRef);
+    public Reservation searchOneRsv(String email, Long bookRef) throws Exception;
 
     public List<Reservation> searchAllRsv(String email);
+
+    public List<FlightInstance> getRsvFlights(Reservation rsv);
     
 
 }

@@ -57,7 +57,7 @@ public class MemberRegistrationManagedBean implements Serializable {
             DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
             this.setDob(df1.format(dobDateType));
            createdID= mrb.createMember(title, password, firstName, lastName, passport, email, address, contact, dob);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "A member account has been created successfully!", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "A member account has been created successfully!", "Member ID is: "+createdID));
             this.sendEamil();
 // FacesContext.getCurrentInstance().getExternalContext().redirect("./onlineCheckin2.xhtml");
         } catch (Exception ex) {
