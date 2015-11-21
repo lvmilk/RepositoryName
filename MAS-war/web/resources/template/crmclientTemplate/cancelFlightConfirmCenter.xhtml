@@ -11,19 +11,89 @@
     <h:body>
         <h:form id="cancelConfirm">
             <p:growl id="msgs" showDetail="true" />
-            <p:panel id="rsvConfirm"  style="margin-bottom:20px">
+            <p:panel id="rsvConfirm" header="View All Reservation > Reservation Detail > Confirmation" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
                 <h:panelGrid  columns="2"   cellpadding="10">
 
                     <p:outputLabel  value="Reserved by: " />
                     <p:outputLabel value="#{flightCancel.selectedRsv.booker.firstName} #{flightCancel.selectedRsv.booker.lastName}" />
 
-                    <p:outputLabel  value="Passengers request for cancellation " />
+                    <p:outputLabel  value="Passengers request for cancellation: " />
                     <ui:repeat var="psg" value="#{flightCancel.selectedPsgList}" >
                         <p:outputLabel value="#{psg.firstName} #{psg.lastName}" />
                     </ui:repeat>
 
-
                 </h:panelGrid>
+
+
+                <p:panel header=" Flights to be Cancelled" >
+                    <p:dataGrid value="Departure trip " >             
+                        <ui:repeat value="#{flightCancel.departed}" var="instance">
+                            <h:panelGrid columns="8" cellpadding="10" >
+
+                                <p:outputLabel  value="FlightNo: " />
+                                <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                <p:outputLabel  value="Depart From: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                <p:outputLabel  value="Arrive At: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+                                
+                                <p:outputLabel  value="Aircraft Type: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                <p:outputLabel  value="Cabin Class: " />
+                                <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+                                
+                                <p:outputLabel  value="Departure Time: " />
+                                <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                <p:outputLabel  value="Arrival Time: " />
+                                <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            </h:panelGrid>
+                            <p:separator />
+                        </ui:repeat>
+                    </p:dataGrid>
+                    <br/>
+
+                    <p:dataGrid value="return trip " rendered="#{flightCancel.returned.size()>0}">             
+                        <ui:repeat value="#{flightCancel.returned}" var="instance">
+                            <h:panelGrid columns="8" cellpadding="10" >
+
+                                <p:outputLabel  value="FlightNo: " />
+                                <p:outputLabel value="#{instance.flightFrequency.flightNo}" />
+
+                                <p:outputLabel  value="Depart From: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.origin.airportName}" />
+
+                                <p:outputLabel  value="Arrive At: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.dest.airportName}" />
+
+                                <p:outputLabel  value="Aircraft Type: " />
+                                <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
+
+                                <p:outputLabel  value="Cabin Class: " />
+                                <p:outputLabel value="#{bookFlight.selectedCabin.cabinName}" />
+
+                                <p:outputLabel  value="Departure Time: " />
+                                <p:outputLabel value="#{instance.standardDepTimeDateType}" />
+
+                                <p:outputLabel  value="Arrival Time: " />
+                                <p:outputLabel value="#{instance.standardArrTimeDateType}" />
+
+                            </h:panelGrid>
+                            <p:separator />
+                        </ui:repeat>
+
+                    </p:dataGrid>
+                </p:panel>
+
+                <br/><br/><br/>
+                
+                <p:commandButton value="Back to Select Reservation" actionListener="#{flightCancel.onChooseConfirmBack}" icon="ui-icon-carat-1-w" />
+                <p:commandButton value="Confirm Cancellation" actionListener="#{flightCancel.onChooseConfirm}" icon="ui-icon-check" />
+
             </p:panel>
 
 
@@ -98,7 +168,6 @@
 
             <p:commandButton value="Confirm" actionListener="#{flightCancel.onChooseConfirm}" icon="ui-icon-check" />
         </h:form>
-
         <!--        <h:form id="dlgGrd">
                     <p:dialog id="dlgGrd" header="Confirm cancel the Flight?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
                         <p:outputLabel value="A total penalty of $#{rescheduleConfirm.totalPenalty} will be charged on you after you confirm this change of schedule "/>
@@ -111,14 +180,16 @@
                 </h:form>-->
 
         <h:form id="dlgGrd">
-            <p:dialog id="dlgGrd" header="Confirm cancel the schedule?" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="50" width="400">
-                <p:outputLabel value="A total penalty of $#{flightCancel.totalRefund} will be refunded to you after you confirm this change of schedule "/>
-
-                <h:panelGrid columns="2" cellpadding="10">
-                    <p:commandButton value="Confirm" update="cancelConfirm" oncomplete="PF('dlgGrd').hide()" action="#{flightCancel.rsvConfirm()}" />
-                    <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
-                </h:panelGrid>
+            <p:dialog id="dlgGrd" header="Confirm cancel the schedule?" widgetVar="dlgGrd" resizable="false" width="300" showEffect="clip" hideEffect="clip" dynamic="true" >
+                <p:outputLabel style="font-size: large;" value="A total penalty of $#{flightCancel.totalRefund} will be refunded to you after you confirm this change of schedule "/>
+                <f:facet name="footer">
+                    <h:panelGroup layout="block" style="text-align:right; padding:2px; white-space:nowrap;"> 
+                        <p:commandButton value="Confirm" update="cancelConfirm" oncomplete="PF('dlgGrd').hide()" action="#{flightCancel.rsvConfirm()}" />
+                        <p:commandButton value="Cancel"  onclick="PF('dlgGrd').hide()" />
+                    </h:panelGroup>
+                </f:facet> 
             </p:dialog>
+
         </h:form>
 
     </h:body>

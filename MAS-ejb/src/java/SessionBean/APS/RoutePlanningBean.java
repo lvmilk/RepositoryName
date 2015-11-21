@@ -24,14 +24,14 @@ import javax.persistence.Query;
  * @author Xu
  */
 @Stateless
-public class RoutePlanningBean implements RoutePlanningBeanLocal {
+public class RoutePlanningBean implements RoutePlanningBeanLocal,RoutePlanningBeanRemote {
 
     @PersistenceContext
     EntityManager em;
 
-    Airport airport;
-    Route route;
-    Expense expense;
+    private Airport airport;
+    private Route route;
+    private Expense expense;
 
     public RoutePlanningBean() {
     }

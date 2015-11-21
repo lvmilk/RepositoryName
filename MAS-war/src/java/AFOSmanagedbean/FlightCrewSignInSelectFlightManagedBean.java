@@ -6,8 +6,6 @@
 package AFOSmanagedbean;
 
 import Entity.APS.FlightInstance;
-import Entity.CommonInfa.CabinCrew;
-import Entity.CommonInfa.CockpitCrew;
 import SessionBean.AFOS.CrewSchedulingBeanLocal;
 import SessionBean.APS.FlightSchedulingBeanLocal;
 import java.io.Serializable;
@@ -15,9 +13,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -43,6 +39,7 @@ public class FlightCrewSignInSelectFlightManagedBean implements Serializable {
     private String dateString;
     private String flightNo;
     private FlightInstance selectedFi;
+    private Date today;
 
     public FlightCrewSignInSelectFlightManagedBean() {
     }
@@ -73,7 +70,6 @@ public class FlightCrewSignInSelectFlightManagedBean implements Serializable {
 //        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedFi", selectedFi);
 //        FacesContext.getCurrentInstance().getExternalContext().redirect("./addDebriefingReport.xhtml");
 //    }
-
     public FlightInstance getSelectedFi() {
         return selectedFi;
     }
@@ -112,6 +108,15 @@ public class FlightCrewSignInSelectFlightManagedBean implements Serializable {
 
     public void setFlightNo(String flightNo) {
         this.flightNo = flightNo;
+    }
+
+    public Date getToday() {
+        Date today1 = new Date();
+        return today1;
+    }
+
+    public void setToday(Date today) {
+        this.today = new Date();
     }
 
 }

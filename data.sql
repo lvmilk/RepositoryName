@@ -625,10 +625,10 @@ INSERT IGNORE INTO Reservation(id,bkFirstName,bkLastName,bkEmail,origin,dest,ret
 
 
 
-INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (1111, '2015-10-10 10:00', 14900, 111111 )
-INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (2222, '2015-10-10 10:00', 11500, 222222 )
-INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (3333, '2015-10-10 10:00', 9900, 333333 )
-INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id) values (4444, '2015-10-10 10:00', 8200, 444444 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id,cardNo,securityCode) values (1111, '2015-10-10 10:00', 14900, 111111,1234567890987654,123 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id,cardNo,securityCode) values (2222, '2015-10-10 10:00', 11500, 222222,2345678909876543,456 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id,cardNo,securityCode) values (3333, '2015-10-10 10:00', 9900, 333333,345678909765432,345 )
+INSERT IGNORE INTO Payment(paymentID,paymentDate,totalPrice,reservation_id,cardNo,securityCode) values (4444, '2015-10-10 10:00', 8200, 444444,4567890987654321,456 )
 
 
 

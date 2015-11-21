@@ -7,12 +7,15 @@ package CRMClientmanagedbean;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
+import Entity.ADS.Reservation;
+import Entity.ADS.Ticket;
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.BookerBeanLocal;
 import SessionBean.ADS.DDSBookingBeanLocal;
 import SessionBean.ADS.PassengerBeanLocal;
 import SessionBean.ADS.RsvConfirmationBeanLocal;
+import SessionBean.CRM.CRMPassengerBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,20 +30,14 @@ import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author LI HAO
+ * @author Lu Xi
  */
 @Named(value = "confirmBook")
 @ViewScoped
 public class ConfirmBookFlightManagedBean implements Serializable {
 
     @EJB
-    private PassengerBeanLocal psgSBlocal;
-    @EJB
-    private BookerBeanLocal msblocal;
-    @EJB
-    private RsvConfirmationBeanLocal rsvCflocal;
-    @EJB
-    private DDSBookingBeanLocal ddsBkblocal;
+    private CRMPassengerBeanLocal crmpb;
 
     private ArrayList<BookingClassInstance> BookClassInstanceList = new ArrayList<>();
     private Long bookerId;
@@ -68,8 +65,15 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     private String bkSystem;
     private String companyName;
 
-    private Double miles;
-    private Long bookRef;
+    private Double currentMiles;
+    private Long rsvId;
+    private Reservation rsv = new Reservation();
+    private List<Ticket> ticketList = new ArrayList<>();
+    private boolean select = true;
+    private boolean selectCard = true;
+    private boolean selectFTP;
+    private String cardNo;
+    private String code;
 
     @PostConstruct
     public void init() {
@@ -96,8 +100,12 @@ public class ConfirmBookFlightManagedBean implements Serializable {
             bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
             companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
 
-            miles = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("miles");
-
+            currentMiles = (Double) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentMiles");
+            rsvId = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rsvId");
+            rsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("rsv");
+            psgCount = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("countPerson");
+//            selectCard= (boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectCard");
+//            selectFTP= (boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectFTP");
             System.out.println("in the ticketManagedBean init passengerlist size is: " + passengerList.size());
             System.out.println("in the ticketManagedBean init first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
 
@@ -109,27 +117,86 @@ public class ConfirmBookFlightManagedBean implements Serializable {
     public void rsvConfirm() throws IOException {
         System.out.println("in the rsvConfirmation passengerlist size is: " + passengerList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + passengerList.get(0).getId());
+        System.out.println("in rsvConfirm: BookClassIntanceList" + BookClassInstanceList);
+        System.out.println("in rsvConfirm:psgCount" + psgCount);
 //        if (stfType.equals("agency")) {
 //            this.bkSystem = "DDS";
 //        } else {
 //            this.bkSystem = "ARS";
 //        }
-        this.bkSystem = "ARS";
-        bookRef = psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0, "book", companyName);
 
-        //     Double miles = (ticket.getBkInstance().getBookingClass().getEarn_mile_percentage() * ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10;
+        this.bkSystem = "ARS";
+        rsvId = crmpb.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip, bkSystem, 0.0, "book", companyName);
+
+        rsv = crmpb.getRsv(rsvId);
+        int size = rsv.getTickets().size();
+        ticketList = rsv.getTickets();
+        System.out.println("ConfirmBookFlightManagedBean: rsvConfirm:ticketList: " + ticketList);
+        currentMiles = 0.0;
+        for (int i = 0; i < ticketList.size(); i++) {
+            double thisMile = (ticketList.get(i).getBkInstance().getBookingClass().getEarn_mile_percentage() * ticketList.get(i).getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10 + 10000;
+            System.out.println("ConfirmBookFlightManagedBean: rsvConfirm: thisMile: " + thisMile);
+            currentMiles = currentMiles + thisMile;
+            System.out.println("ConfirmBookFlightManagedBean: rsvConfirm: booking class: " + ticketList.get(i).getBkInstance().getBookingClass());
+            System.out.println("ConfirmBookFlightManagedBean: rsvConfirm: mile percenntage: " + ticketList.get(i).getBkInstance().getBookingClass().getEarn_mile_percentage());
+            System.out.println("ConfirmBookFlightManagedBean: rsvConfirm: current miles: " + currentMiles);
+            System.out.println("ConfirmBookFlightManagedBean: rsvConfirm: totalPrice: " + totalPrice);
+        }
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("booker", booker);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsv", rsv);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsvId", rsvId);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgCount", psgCount);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("psgCount", psgCount);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentMiles", currentMiles);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./BookFlight5.xhtml");
 //        if (stfType.equals("agency")) {
 //            ddsBkblocal.setAgency_Booker(username, booker);
 //            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRsvSuccess.xhtml");
 //
 //        } else {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dlgGrd').show()");
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
 //            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
-
 //        }
+    }
+
+    public void onSelectReturn() {
+        if (isSelect() == true) {
+            selectCard = true;
+            selectFTP = false;
+            System.out.println("ConfirmBookFlightManagedBean: onSelectReturn: SELECT CARD: selectCard: " + selectCard + " selectFTP: " + selectFTP);
+        } else if (isSelect() == false) {
+            selectFTP = true;
+            selectCard = false;
+            System.out.println("ConfirmBookFlightManagedBean: onSelectReturn: SELECT TFP: selectCard: " + selectCard + " selectFTP: " + selectFTP);
+        }
+    }
+
+    public void makePayment() throws IOException, Exception {
+        System.out.println("ConfirmBookFlightManagedBean: makePayment(): selectCard: " + selectCard + " selectFTP: " + selectFTP);
+        if (selectCard == true) {
+            System.out.println("ConfirmBookFlightManagedBean: makePayment: Card Payement!");
+            if (cardNo.length() != 16 && code.length() != 3) {
+                System.out.println("ConfirmBookFlightManagedBean: makePayment: cardNo should be 16 digits and security code shoud be 2 digits!");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "invalid input", "cardNo should be 16 digits and security code shoud be 2 digits!"));
+            } else {
+                crmpb.makeRsvPayment(rsv, psgCount, totalPrice, "book", cardNo, code);
+                System.out.println("ConfirmBookFlightManagedBean: makePayment: Payment Successful!");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./reserveSuccess.xhtml");
+            }
+        } else if (selectFTP == true) {
+            if (booker.getId() != null) {
+                crmpb.deductMiles(booker.getId(), rsv);
+                System.out.println("ConfirmBookFlightManagedBean: makePayment: TFP Miles Payement Successful!");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
+                FacesContext.getCurrentInstance().getExternalContext().redirect("./reserveSuccess.xhtml");
+            } else {
+                System.out.println("ConfirmBookFlightManagedBean: makePayment: TFP Miles Payement --->>> No Booker");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No such a booker ", "Please register first!"));
+            }
+        }
+
     }
 
     /**
@@ -309,12 +376,132 @@ public class ConfirmBookFlightManagedBean implements Serializable {
         this.companyName = companyName;
     }
 
-    public Long getBookRef() {
-        return bookRef;
+    public Double getCurrentMiles() {
+        return currentMiles;
     }
 
-    public void setBookRef(Long bookRef) {
-        this.bookRef = bookRef;
+    public void setCurrentMiles(Double currentMiles) {
+        this.currentMiles = currentMiles;
+    }
+
+    public Long getRsvId() {
+        return rsvId;
+    }
+
+    public void setRsvId(Long rsvId) {
+        this.rsvId = rsvId;
+    }
+
+    public Reservation getRsv() {
+        return rsv;
+    }
+
+    public void setRsv(Reservation rsv) {
+        this.rsv = rsv;
+    }
+
+    public List<Ticket> getTicketList() {
+        return ticketList;
+    }
+
+    public void setTicketList(List<Ticket> ticketList) {
+        this.ticketList = ticketList;
+    }
+
+    public boolean isSelectCard() {
+        return selectCard;
+    }
+
+    public void setSelectCard(boolean selectCard) {
+        this.selectCard = selectCard;
+    }
+
+    public boolean isSelectFTP() {
+        return selectFTP;
+    }
+
+    public void setSelectFTP(boolean selectFTP) {
+        this.selectFTP = selectFTP;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public ArrayList<BookingClassInstance> getBookClassInstanceList() {
+        return BookClassInstanceList;
+    }
+
+    public void setBookClassInstanceList(ArrayList<BookingClassInstance> BookClassInstanceList) {
+        this.BookClassInstanceList = BookClassInstanceList;
+    }
+
+    public Long getBookerId() {
+        return bookerId;
+    }
+
+    public void setBookerId(Long bookerId) {
+        this.bookerId = bookerId;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public Boolean getReturnTrip() {
+        return returnTrip;
+    }
+
+    public void setReturnTrip(Boolean returnTrip) {
+        this.returnTrip = returnTrip;
+    }
+
+    public Boolean getVisiMember() {
+        return visiMember;
+    }
+
+    public void setVisiMember(Boolean visiMember) {
+        this.visiMember = visiMember;
+    }
+
+    public ArrayList<Passenger> getPsgList() {
+        return psgList;
+    }
+
+    public void setPsgList(ArrayList<Passenger> psgList) {
+        this.psgList = psgList;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    public void setSelect(boolean select) {
+        this.select = select;
     }
 
 }

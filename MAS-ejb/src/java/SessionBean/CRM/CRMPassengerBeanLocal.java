@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBean.ADS;
+package SessionBean.CRM;
 
 import Entity.ADS.Booker;
 import Entity.ADS.Passenger;
@@ -21,7 +21,7 @@ import javax.ejb.Local;
  * @author LI HAO
  */
 @Local
-public interface PassengerBeanLocal {
+public interface CRMPassengerBeanLocal {
 
     public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName);
 
@@ -33,10 +33,10 @@ public interface PassengerBeanLocal {
 
     public Booker createTempBooker(String title, String firstName, String lastName, String address, String email, String contactNo);
 
-    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action);
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action, String cardNo, String code);
 
     public Reservation getRsv(Long rsvId);
 
-
+    public void deductMiles(Long id, Reservation rsv) throws Exception;
 
 }

@@ -14,8 +14,8 @@
         <h:form id="cancelRsv">
             <p:messages id="msgs" />
 
-            <p:panel id="detail" header="Reservation Detail" toggleable="true">
-                <p:panel header="Departure Trip " >  
+            <p:panel id="detail" header="View All Reservation > Reservation Detail" toggleable="true" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+                <p:panel header="Departure Trip ">  
 
                     <ui:repeat value="#{flightCancel.departed}" var="instance" varStatus="myStatus">
 
@@ -36,7 +36,7 @@
                             <p:outputLabel  value="Cabin Class: " />
                             <p:outputLabel value="#{flightCancel.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Arrive At: " />
@@ -70,7 +70,7 @@
                             <p:outputLabel  value="Cabin Class: " />
                             <p:outputLabel value="#{flightCancel.selectedRsv.bkcInstance.get(myStatus.index).getFlightCabin().getCabinClass().getCabinName()}" />
 
-                            <p:outputLabel  value="Arrival Time Time: " />
+                            <p:outputLabel  value="Arrival Time: " />
                             <p:outputLabel value="#{instance.standardArrTimeDateType}" />
 
                             <p:outputLabel  value="Arrive At: " />
@@ -84,7 +84,7 @@
 
 
                 <br/>
-                <p:panel id="booker" header="Booker"   toggleable="true" style="width:50%">
+                <p:panel id="booker" header="Booker"   toggleable="true" style="width:65%; margin-bottom: 1%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
                         <p:outputLabel value="#{flightCancel.selectedRsv.booker.title}" />
@@ -104,7 +104,7 @@
 
                 </p:panel>
 
-                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:50%">
+                <p:panel id="passenger" header="Passenger"  toggleable="true" style="width:65%; margin-bottom: 1%">
                     <p:dataTable var="passenger" rowKey ="#{passenger.id}" selection="#{flightCancel.selectedPsgList}" value="#{flightCancel.psgList}" style="text-align: center" rows="10"  emptyMessage="No Reservations" >
 
                         <p:column selectionMode="multiple" headerText="Select all" style="width:60px; text-align: center" /> 
@@ -125,10 +125,11 @@
                             <h:outputText value="#{passenger.passport}" />
                         </p:column>
                     </p:dataTable>
-                    
-                    <p:commandButton value="Cancel Flight" update="cancelRsv" actionListener="#{flightCancel.onSelectPsg()}"/>
 
                 </p:panel>
+
+                <p:commandButton value="Back to Reservation List" actionListener="#{flightCancel.onSelectPsgBack()}" icon="ui-icon-carat-1-w"/>
+                <p:commandButton value="Cancel Flight" update="cancelRsv" actionListener="#{flightCancel.onSelectPsg()}"/>
 
             </p:panel>
 

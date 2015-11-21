@@ -27,9 +27,10 @@ public class ViewFlightCrewScheduleEnterPeriodManagedBean implements Serializabl
     }
 
     public void viewFlightCrewScheduleEnterPeriod() throws Exception {
-        if (startViewScheduleDate.before(new Date())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Start date should be after today.", ""));
-        } else if (endViewScheduleDate.before(startViewScheduleDate)) {
+//        if (startViewScheduleDate.before(new Date())) {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : Start date should be after today.", ""));
+//        } else 
+        if (endViewScheduleDate.before(startViewScheduleDate)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : End date should be after start date.", ""));
         } else {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("startViewScheduleDate", startViewScheduleDate);
