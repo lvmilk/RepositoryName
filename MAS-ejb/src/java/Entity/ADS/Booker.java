@@ -47,6 +47,8 @@ public class Booker implements Serializable {
     
     private String password;
     
+    private boolean subscribe;
+    
     
     @OneToMany(cascade={CascadeType.PERSIST},mappedBy="booker")
     private List<Reservation> rsvList;
@@ -275,6 +277,14 @@ public class Booker implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isSubscribe() {
+        return subscribe;
+    }
+
+    public void setSubscribe(boolean subscribe) {
+        this.subscribe = subscribe;
     }
 
     

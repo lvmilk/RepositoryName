@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:pm="http://primefaces.org/mobile"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>TFP Member Account Management</title>
+    </h:head>
+    <h:body>
+        <h:form id="update" style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+
+            <p:panel id="thisPanel" header="Update TFP Account Infomation" style="margin-bottom:10px;">
+                <p:growl id="msgs" showDetail="false" />
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:outputLabel  value="Member Name: " />
+                    <p:outputLabel value="#{CRMAMB.booker.firstName} #{CRAMAB.booker.lastName}" />
+
+                    <p:outputLabel  value="Member ID: " />
+                    <p:outputLabel value="#{CRMAMB.booker.id}" />
+
+                    <p:outputLabel  value="Email Address: " />
+                    <p:outputLabel value="#{CRMAMB.booker.email}" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:outputLabel for="mbTitle" value="Title:" />
+                    <h:selectOneMenu id="mbTitle" value="#{CRMAMB.title}">
+                        <f:selectItem itemValue="Dr" itemLabel="Dr" />
+                        <f:selectItem itemValue="Mr" itemLabel="Mr" />
+                        <f:selectItem itemValue="Mdm" itemLabel="Mdm" />
+                        <f:selectItem itemValue="Miss" itemLabel="Miss" />
+                        <f:selectItem itemValue="Mrs" itemLabel="Mrs" />
+                        <f:selectItem itemValue="Ms" itemLabel="Ms" />
+                        <f:selectItem itemValue="Prof" itemLabel="Prof" />
+                    </h:selectOneMenu>
+
+                    <p:outputLabel for="password" value="Password: " />
+                    <p:password id="password" value="#{CRMAMB.password}" required="true" validatorMessage="Invalid password" requiredMessage="please enter password">
+                    </p:password> 
+
+
+                    <p:outputLabel for="address" value="Address " />
+                    <p:inputText id="address" value="#{CRMAMB.address}" required="true" validatorMessage="Invalid address format" requiredMessage="please enter address address">
+                        <f:validateLength minimum="1" maximum="100" />
+                    </p:inputText>
+
+                    <p:outputLabel for="contact" value="Contact: " />
+                    <p:inputText id="contact" value="#{CRMAMB.contact}" required="true" validatorMessage="Invalid contact format" requiredMessage="please enter contact address">
+                        <f:validateLength minimum="1" maximum="15" />
+                    </p:inputText>
+
+                    <p:outputLabel for="passport" value="Passport: " />
+                    <p:inputText id="passport" value="#{CRMAMB.passport}" required="true" validatorMessage="Invalid passport format" requiredMessage="please enter passport address">
+                        <f:validateLength minimum="1" maximum="15" />
+                    </p:inputText>
+
+                    <p:outputLabel for="dob" value="Date of birth " />
+                    <p:calendar id="dob" value="#{CRMAMB.dobDateType}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" navigator="true" validatorMessage="Date of birth: Please enter a valid date"  requiredMessage="Please enter date of birth" />
+
+                    <p:outputLabel value="Subscribe Merlion Airlines Email: "></p:outputLabel>
+                    <h:selectOneRadio  value="#{CRMAMB.sub}">
+                        <f:selectItem itemValue="#{true}" itemLabel="Yes" />
+                        <f:selectItem itemValue="#{false}" itemLabel="No" />
+                    </h:selectOneRadio>
+
+                </h:panelGrid>
+                <p:commandButton value="Confirm Edit" update="update" action="#{CRMAMB.editAccountInfor(booker)}" icon="ui-icon-pencil" />
+            </p:panel>
+
+
+        </h:form>
+
+
+
+    </h:body>
+</html>
+

@@ -592,10 +592,10 @@ INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price
 INSERT IGNORE INTO BookingClassInstance(id, bookingClass_id,flightCabin_id,price,seatNo,bookedSeatNo) values(1050000,130000,400000,500,55,0)
 
 
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,243111,"G12345678","Mr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr")
-INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr")
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title,subscribe) values(11111,"Strathmore Ave", 7788414,"1989-05-22","hanyuw1993@gmail.com","Hao","Li",true,243111,"G12345678","Mr",true)
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title,subscribe) values(22222,"Strathmore Ave", 66666666,"1993-11-20","81807205@qq.com","Xi","Lu",true,5423,"G87654321","Dr",true)
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title,subscribe) values(33333,"Strathmore Ave", 76676454,"1993-11-04","christinewang1993@hotmail.com","Yuqi","Liu",true,2513,"G12354321","Dr",true)
+INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title,subscribe) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr",true)
 
 
 INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Mr","Hao","Li","TFP","A123")

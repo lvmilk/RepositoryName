@@ -18,20 +18,20 @@
 
                     <h:panelGrid columns="3" cellpadding="10">
                         <p:outputLabel for="username" value="Member ID:" />
-                        <p:inputText id="username" value="#{CRMAMB}" required="true" label="Username" size="10">
+                        <p:inputText id="username" value="#{CRMAMB.memberId}" required="true" label="Username" size="10">
                             <f:validateLength minimum="1" />
                         </p:inputText>
                         <p:message for="username" display="icon" />
 
                         <p:outputLabel for="password" value="Password:" />
-                        <p:inputText id="password" type="password" value="#{CRMAMB}" label="Password" required="true" size="10">
+                        <p:inputText id="password" type="password" value="#{CRMAMB.password}" label="Password" required="true" size="10">
                             <f:validateLength minimum="2" />
                             <p:ajax update="msgPassword" event="keyup" />
                         </p:inputText>
                         <p:message for="password" id="msgPassword" display="icon" />
                     </h:panelGrid>
 
-                <p:commandButton value="Log in" update="form" actionListener="#{CRMAMB}" icon="ui-icon-check" />
+                <p:commandButton value="Log in" update="form" actionListener="#{CRMAMB.getMember}" icon="ui-icon-check" />
             </p:panel>
              
            

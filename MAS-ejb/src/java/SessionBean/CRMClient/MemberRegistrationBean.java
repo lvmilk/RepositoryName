@@ -34,6 +34,7 @@ public class MemberRegistrationBean implements MemberRegistrationBeanLocal {
         newBooker.setPassport(passport);
         newBooker.setMiles(0.0);
         newBooker.setMemberStatus(true);
+        newBooker.setSubscribe(true);
         if (password.length() >= 8 && password.length() <= 12) {
             String pattern = "((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,})";
             if (!password.matches(pattern)) {
