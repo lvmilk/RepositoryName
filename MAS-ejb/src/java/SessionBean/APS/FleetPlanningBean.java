@@ -365,10 +365,15 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal,FleetPlanningBe
     }
 
     @Override
-    public List<Aircraft> getThisTypeAircraft(String type) {
+    public List<Aircraft> getThisTypeAircraft(String type) throws Exception{
         aircraftType = em.find(AircraftType.class, type);
         List<Aircraft> aircraftList = aircraftType.getAircraft();
+        if(aircraftList.isEmpty()){
+            throw new Exception("This aircraftList is not linked with any airccraft type!");
+        }
+        else{
         return aircraftList;
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

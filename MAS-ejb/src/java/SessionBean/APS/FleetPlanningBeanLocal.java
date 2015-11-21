@@ -52,7 +52,7 @@ public interface FleetPlanningBeanLocal {
 
     public Map<String, List<String>> getAllNum(String type);
 
-    public List<Aircraft> getThisTypeAircraft(String type);
+    public List<Aircraft> getThisTypeAircraft(String type) throws Exception;
 
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
 

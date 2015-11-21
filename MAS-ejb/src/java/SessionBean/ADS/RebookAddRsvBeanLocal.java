@@ -22,7 +22,7 @@ import javax.ejb.Local;
 public interface RebookAddRsvBeanLocal {
 
    
-    public void makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName);
+    public Long makeReservation(Booker booker, ArrayList<Passenger> passengerList, ArrayList<FlightInstance> departSelected, ArrayList<FlightInstance> returnSelected, ArrayList<BookingClassInstance> BookClassInstanceList, Integer psgCount, String origin, String dest, Boolean returnTrip, String bkSystem, Double totalPrice, String action, String companyName);
 
     public boolean checkPassportExist(String passport);
 
