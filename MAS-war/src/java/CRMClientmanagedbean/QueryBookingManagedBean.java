@@ -44,7 +44,7 @@ public class QueryBookingManagedBean implements Serializable {
     @EJB
     private BookerBeanLocal mbsbl;
 
-    private Boolean allRsv = true;
+    private Boolean allRsv = false;
     private String email;
     private Long bookRef;
 
@@ -91,12 +91,6 @@ public class QueryBookingManagedBean implements Serializable {
         email = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("email");
 
         if (allRsv != null) {
-            if (allRsv) {
-                System.out.println("In init(): email is " + email);
-                rsvList = mr.searchAllRsv(email);
-                System.out.println("In init(): rsvList is " + rsvList);
-
-            } else {
                 bookRef = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookRef");
                 Reservation rsv;
                 try {
@@ -106,8 +100,6 @@ public class QueryBookingManagedBean implements Serializable {
                 } catch (Exception ex) {
                     Logger.getLogger(QueryBookingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
-            }
         } else {
             allRsv = true;
         }

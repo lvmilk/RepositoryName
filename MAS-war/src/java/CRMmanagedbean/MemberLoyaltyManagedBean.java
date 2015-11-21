@@ -138,6 +138,7 @@ public class MemberLoyaltyManagedBean implements Serializable {
 
     public void sendEamil() {
         List<Booker> mailList = new ArrayList<>();
+        List<Booker> selectedList = new ArrayList<>();
         if (viewWhich == 1) {
             mailList = lvl1Bookers;
         } else if (viewWhich == 2) {
@@ -145,11 +146,17 @@ public class MemberLoyaltyManagedBean implements Serializable {
         } else if (viewWhich == 3) {
             mailList = lvl3Bookers;
         } 
+        
+        for(int i=0;i<mailList.size();i++){
+            if(mailList.get(i).isSubscribe()){
+                selectedList.add(mailList.get(i));
+            }
+        }
 
-        if (mailList.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + "No booker is in this level!", ""));
+        if (selectedList.isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + "No booker is subscribing email in this level!", ""));
         } else {
-            for (Booker temp : mailList) {
+            for (Booker temp : selectedList) {
                 // Recipient's email ID needs to be mentioned.
                 String to = temp.getEmail();
 
