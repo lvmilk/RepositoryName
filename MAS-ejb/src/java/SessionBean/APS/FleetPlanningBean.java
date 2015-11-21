@@ -26,7 +26,7 @@ import javax.persistence.Query;
  * @author Lu Xi
  */
 @Stateless
-public class FleetPlanningBean implements FleetPlanningBeanLocal {
+public class FleetPlanningBean implements FleetPlanningBeanLocal,FleetPlanningBeanRemote {
 
     @PersistenceContext
     EntityManager em;
@@ -360,8 +360,7 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     @Override
     public AircraftType getAircraftType(String type) {
         aircraftType = em.find(AircraftType.class, type);
-        System.out.println(
-                "getAircraftType: " + aircraftType.getType());
+        System.out.println("getAircraftType: " + aircraftType.getType());
         return aircraftType;
     }
 

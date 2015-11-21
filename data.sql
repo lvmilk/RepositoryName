@@ -34,6 +34,8 @@ INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPe
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare,otherCost) values(40000,6500,4,800,700,600,500,"A380","SIN","DXB","Pending",1000,1900000)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare,otherCost) values(50000,6900,4,1000,800,700,600,"A380","LHR","DXB","Pending",1500,2000000)
 INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare,otherCost) values(60000,6900,4,1000,800,700,600,"A380","DXB","LHR","Pending",1500,2000000)
+INSERT IGNORE INTO Route (id,distance,blockhour,basicFcFare,basicBcFare, basicPecFare, basicEcFare,acType_type,dest_iata,origin_iata,status,basicScFare,otherCost) values(99999,6900,4,1000,800,700,600,"A380","DXB","LHR","Pending",1500,2000000)
+
 
 INSERT IGNORE INTO Adminstaff(ID,ADMNAME,ADMPASSWORD,STFTYPE) values(10000,"admin", "admin", "administrator")
 INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("O777777","o777777@mas.com")
