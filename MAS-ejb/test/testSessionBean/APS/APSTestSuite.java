@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author LI HAO
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({testSessionBean.APS.RoutePlannigBeanRemoteTest.class})
+@Suite.SuiteClasses({testSessionBean.APS.RoutePlannigBeanRemoteTest.class,testSessionBean.APS.FleetPlanningBeanRemoteTest.class})
 public class APSTestSuite {
 
     @BeforeClass
