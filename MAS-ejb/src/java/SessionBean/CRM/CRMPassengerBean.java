@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SessionBean.ADS;
+package SessionBean.CRM;
 
 import Entity.AAS.Expense;
 import Entity.AAS.Revenue;
@@ -26,7 +26,7 @@ import javax.persistence.Query;
  * @author LI HAO
  */
 @Stateless
-public class PassengerBean implements PassengerBeanLocal {
+public class CRMPassengerBean implements CRMPassengerBeanLocal {
 
     @PersistenceContext
     private EntityManager em;
@@ -96,10 +96,7 @@ public class PassengerBean implements PassengerBeanLocal {
 
         setupTicket_BookInstance(BookClassInstanceList, tickets);
 
-        Payment payment = makeRsvPayment(rsv, psgCount, totalPrice, action);
-        
         return rsv.getId();
-
     }
 
     public void setupTicket_BookInstance(ArrayList<BookingClassInstance> BookClassInstanceList, ArrayList<Ticket> tickets) {
@@ -121,7 +118,7 @@ public class PassengerBean implements PassengerBeanLocal {
         em.flush();
     }
 
-    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action) {
+    public Payment makeRsvPayment(Reservation rsv, Integer psgCount, Double totalPrice, String action, String cardNo, String code) {
         System.out.println("------------------In makersvpayment(): action  is " + action);
 
         if (action.equals("rebook")) {
@@ -168,9 +165,11 @@ public class PassengerBean implements PassengerBeanLocal {
             for (int i = 0; i < rsv.getBkcInstance().size(); i++) {
                 totalPrice += rsv.getBkcInstance().get(i).getPrice();
             }
-            totalPrice *= psgCount;
+//            totalPrice *= psgCount;
             Payment payment = new Payment();
             payment.createPayment(totalPrice);
+            payment.setCardNo(cardNo);
+            payment.setSecurityCode(code);
             rsv = em.find(Reservation.class, rsv.getId());
             payment.setReservation(rsv);
             rsv.setPayment(payment);
@@ -254,7 +253,6 @@ public class PassengerBean implements PassengerBeanLocal {
             temp = departSelected.get(i).getStandardArrTimeDateType();
             arrTime = df.format(temp);
             flightNo = departSelected.get(i).getFlightFrequency().getFlightNo();
-            
 
             for (int j = 0; j < passengerList.size(); j++) {
                 depTicket = new Ticket();
@@ -264,7 +262,6 @@ public class PassengerBean implements PassengerBeanLocal {
                 Passenger thisPsg = em.find(Passenger.class, psg.getId());
                 System.out.println("in depart loop: before add ticket, all tickets in psg are " + thisPsg.getTickets());
 
-               
                 if (thisPsg != null) {
                     em.refresh(thisPsg);
                     depTicket.setPassenger(thisPsg);
@@ -276,25 +273,22 @@ public class PassengerBean implements PassengerBeanLocal {
                     thisPsg.setTickets(tkt);
                     System.out.println("tkt in thisPsg after adding " + tkt);
 //                    em.merge(thisPsg);
-                    System.out.println("tkt in thisPsg after merge " + tkt); 
+                    System.out.println("tkt in thisPsg after merge " + tkt);
 
                     tkList.add(depTicket);
 //                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
 
                     System.out.println("depTicket is " + depTicket.getTicketID());
                     System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
-                      
-                
+
                     em.flush();
 
                 }
             }
-          
 
         }
         em.flush();
-        
-        
+
         for (int i = 0; i < returnSelected.size(); i++) {
 //            arrTicket=new Ticket();
             depCity = returnSelected.get(i).getFlightFrequency().getRoute().getOrigin().getCityName();
@@ -524,12 +518,38 @@ public class PassengerBean implements PassengerBeanLocal {
             return true;
         }
     }
-    
+
     @Override
-    public Reservation getRsv(Long rsvId){
-          reservation = em.find(Reservation.class, rsvId);
-        System.out.println("PassengerBean: getRsv: reservation:"+reservation);
+    public Reservation getRsv(Long rsvId) {
+        reservation = em.find(Reservation.class, rsvId);
+        System.out.println("PassengerBean: getRsv: reservation:" + reservation);
         return reservation;
+    }
+
+    @Override
+    public void deductMiles(Long id, Reservation rsv) throws Exception {
+        booker = em.find(Booker.class, id);
+        if (booker == null) {
+            throw new Exception("The booker is not existed!");
+        } else {
+            if (!booker.isMemberStatus()) {
+                throw new Exception("The booker is NOT a TFP member!");
+            } else {
+                System.out.println("CRMPassengerBean: deductMiles: this member" + booker.getId() + " has miles " + booker.getMiles() + " before dedcuting");
+                int size = rsv.getTickets().size();
+                Double miles = 0.0;
+                List<Ticket> ticketList = rsv.getTickets();
+                System.out.println("ConfirmBookFlightManagedBean: rsvConfirm:ticketList: " + ticketList);
+                for (int i = 0; i < ticketList.size(); i++) {
+                   miles = (ticketList.get(i).getBkInstance().getBookingClass().getEarn_mile_percentage() * ticketList.get(i).getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getRoute().getDistance()) * 10 + 10000;
+                }
+                Double originalMiles = booker.getMiles();
+                Double newMiles = originalMiles - miles;
+                booker.setMiles(newMiles);
+                em.merge(booker);
+                em.flush();
+            }
+        }
     }
 
 }

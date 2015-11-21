@@ -87,27 +87,13 @@
                 </ui:repeat>
             </p:panel>
             
-            <p:panel id="tfp">
-                <h:panelGrid  columns="2"   cellpadding="10">
-                <p:outputLabel  value="The Flying Program (TFP) Member Name: " style="font-style: italic " />
-                <p:outputLabel value="#{confirmBook.booker.firstName} #{confirmBook.booker.lastName} " />
-                <p:outputLabel  value="The Flying Program (TFP) Remaining Miles: " style="font-style: italic " />
-                <p:outputLabel value="#{confirmBook.booker.miles}" />
-                <p:outputLabel  value="Total Price for this Reservation: " style="font-style: italic " />
-                <p:outputLabel value="#{confirmBook.totalPrice}" />
-                <p:outputLabel  value="Miles Required for this Reservation: " style="font-style: italic " />
-                <p:outputLabel value="#{confirmBook.totalPrice}" />
-                </h:panelGrid>
-            </p:panel>
-            
-            
           <br></br><br/>
                 <p:commandButton value="Print Itinerary" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
                     <p:printer target="confirmBook" />
                 </p:commandButton>
             
             
-            <p:commandButton value="Confirm" update="confirmBook" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
+            <p:commandButton value="Make Payment" update="confirmBook" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>
