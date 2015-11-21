@@ -102,7 +102,11 @@ public class FleetEstimateManagedBean implements Serializable {
             System.out.println("initLinearModel() Current year: " + year);
             type = typeList.get(i).getType();
             System.out.println("initLinearModel() type: " + type); //got
-            aircraftList = fpb.getThisTypeAircraft(type);
+            try {
+                aircraftList = fpb.getThisTypeAircraft(type);
+            } catch (Exception ex) {
+                Logger.getLogger(FleetEstimateManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
             size = aircraftList.size();  // in case of IndirectList: not instantiated
             LineChartSeries thisSeries = new LineChartSeries();
             System.out.println("initLinearModel() aircraft list: " + aircraftList); // got
