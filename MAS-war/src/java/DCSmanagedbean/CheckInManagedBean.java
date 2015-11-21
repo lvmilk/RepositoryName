@@ -563,7 +563,6 @@ public class CheckInManagedBean implements Serializable {
     }
 
     public List<Ticket> getTickets() {
-        System.err.println("Get Ticket List!" + tickets.size());
         return tickets;
     }
 

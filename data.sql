@@ -638,9 +638,12 @@ INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values
 INSERT IGNORE INTO RESERVATION_BKCINSTANCE(reservation_id,bkcInstance_id) values(444444,150000)
 
 
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "21A",21,1,20,"Occupied",0,10000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "21B",21,1,20,"Unoccupied",0,10000)
-INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "21C",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(11111, "1A",21,1,20,"Occupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(22222, "1B",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(33333, "1C",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(111110, "2A",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(222220, "2B",21,1,20,"Unoccupied",0,10000)
+INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(333330, "2C",21,1,20,"Unoccupied",0,10000)
 INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(44444, "21D",21,1,20,"Unoccupied",0,20000)
 INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(55555, "21E",21,1,20,"Unoccupied",0,20000)
 INSERT IGNORE INTO Seat (id, SeatNumberToPassenger,rowNo,colNo,width,status,luggageCount,flightCabin_id) values(66666, "21F",21,1,20,"Unoccupied",0,20000)

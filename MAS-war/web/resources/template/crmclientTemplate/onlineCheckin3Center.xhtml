@@ -13,7 +13,7 @@
     <h:body>
 
         <h:form id="display">
-            <p:panel id="panel" header="Online Check in: Select Seat"  style="width:100%">
+            <p:panel id="panel" header="Online Check in: Select Seat"  style="text-align: center;width:100%">
                 <p:messages id="msgs" />
 
                 <h:panelGrid columns="2" cellpadding="5">
@@ -22,7 +22,69 @@
 
                     <p:outputLabel for="passportno" value="Passport Number" />
                     <h:outputText id="passportno" value="#{ocmb.passportNo}" />
+                    <p:outputLabel for="cabinclass" value="Cabin Class" />
+                    <h:outputText id="cabinclass" value="#{ocmb.ticket.bkInstance.flightCabin.cabinClass.cabinName}" />
                 </h:panelGrid>
+
+                <p:dataTable id="suite" var="row" value="#{ocmb.suiteSeating}" rendered="#{ocmb.suiteSeating.size()!=0}" style="margin-bottom:20px">
+                    <p:column>
+                        <ui:repeat value="#{row}" var="seatNo">
+                            <!--#{seatNo}--> 
+                            <p:graphicImage value="/images/Pecons.png" rendered="#{ocmb.isSeatOccupied(seatNo)==2}" />
+                            <p:graphicImage value="/images/Peconsoccupied.png" rendered="#{ocmb.isSeatOccupied(seatNo)==1}"/>
+                            <p:graphicImage value="/images/seperator.png" rendered="#{ocmb.isSeatOccupied(seatNo)==3}"/>
+
+
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+
+                <p:dataTable id="fc" var="row" value="#{ocmb.fcSeating}" rendered="#{ocmb.fcSeating.size()!=0}" style="margin-bottom:20px">
+                    <p:column>
+                        <ui:repeat value="#{row}" var="seatNo"> 
+                            <!--#{seatNo}--> 
+                             <p:graphicImage value="/images/Pecons.png" rendered="#{ocmb.isSeatOccupied(seatNo)==2}" />
+                            <p:graphicImage value="/images/Peconsoccupied.png" rendered="#{ocmb.isSeatOccupied(seatNo)==1}"/>
+                            <p:graphicImage value="/images/seperator.png" rendered="#{ocmb.isSeatOccupied(seatNo)==3}"/>
+
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="biz" var="row" value="#{ocmb.bizSeating}" rendered="#{ocmb.bizSeating.size()!=0}" style="margin-bottom:20px">
+                    <p:column>
+                        <ui:repeat value="#{row}" var="seatNo">
+                            <!--#{seatNo}--> 
+                             <p:graphicImage value="/images/Pecons.png" rendered="#{ocmb.isSeatOccupied(seatNo)==2}" />
+                            <p:graphicImage value="/images/Peconsoccupied.png" rendered="#{ocmb.isSeatOccupied(seatNo)==1}"/>
+                            <p:graphicImage value="/images/seperator.png" rendered="#{ocmb.isSeatOccupied(seatNo)==3}"/>
+
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="pe" var="row" value="#{ocmb.peSeating}" rendered="#{ocmb.peSeating.size()!=0}" style="margin-bottom:20px">
+                    <p:column>
+                        <ui:repeat value="#{row}" var="seatNo"> 
+                            <!--#{seatNo}-->
+                             <p:graphicImage value="/images/Pecons.png" rendered="#{ocmb.isSeatOccupied(seatNo)==2}" />
+                            <p:graphicImage value="/images/Peconsoccupied.png" rendered="#{ocmb.isSeatOccupied(seatNo)==1}"/>
+                            <p:graphicImage value="/images/seperator.png" rendered="#{ocmb.isSeatOccupied(seatNo)==3}"/>
+
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="econ" var="row" value="#{ocmb.econSeating}" rendered="#{ocmb.econSeating.size()!=0}" style="margin-bottom:20px">
+                    <p:column>
+                        <ui:repeat value="#{row}" var="seatNo">
+                            <!--#{seatNo}--> 
+                             <p:graphicImage value="/images/Pecons.png" rendered="#{ocmb.isSeatOccupied(seatNo)==2}" />
+                            <p:graphicImage value="/images/Peconsoccupied.png" rendered="#{ocmb.isSeatOccupied(seatNo)==1}"/>
+                            <p:graphicImage value="/images/seperator.png" rendered="#{ocmb.isSeatOccupied(seatNo)==3}"/>
+
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+
+
                 <p:dataTable id="seatList" var="seat" value="#{ocmb.unOccupiedSeats}" emptyMessage="No Available Seat!" style="margin-bottom:20px">
                     <p:column headerText="Seat Number">
                         <h:outputText value="#{seat.seatNumberToPassenger}" style="center" />
