@@ -6,6 +6,8 @@
 package SessionBean.GDS;
 
 import Entity.AIS.CabinClass;
+import Entity.AIS.FlightCabin;
+import Entity.APS.FlightInstance;
 import Entity.CommonInfa.AirAlliances;
 import Entity.GDS.Airline;
 import Entity.GDS.GDSFlight;
@@ -22,6 +24,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 import util.CryptoHelper;
 
 /**
@@ -132,7 +136,7 @@ public class GDSLoginBean {
         //TODO write your implementation code here:
         Query query = em.createQuery("SELECT r FROM GDSFlight r WHERE r.companyName=:inCompanyName");
         query.setParameter("inCompanyName", companyName);
-;
+        ;
         List<GDSFlight> resultList = query.getResultList();
         if (!resultList.isEmpty()) {
             return resultList;
@@ -141,8 +145,9 @@ public class GDSLoginBean {
             return resultList;
         }
     }
+
     @WebMethod(operationName = "searchFlight")
-    public boolean searchFlight(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest,@WebParam(name = "departDate") Date departDate) {
+    public boolean searchFlight(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate) {
         //TODO write your implementation code here:
         return false;
     }
@@ -150,135 +155,162 @@ public class GDSLoginBean {
     /**
      * Web service operation
      */
-//    @WebMethod(operationName = "findResultInstanceList")
-//    public ArrayList<ArrayList<GDSFlight>> findResultInstanceList(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate, @WebParam(name = "selectedCabin") CabinClass selectedCabin, @WebParam(name = "countPerson") int countPerson, @WebParam(name = "manageStatus") String manageStatus, @WebParam(name = "bookedFlights") List<GDSFlight> bookedFlights) {
-//         System.out.println("#########################3getting into session bean findResultInstanceList() ");
-//        
-//        ArrayList<ArrayList<GDSFlight>> resultByDay = new ArrayList<>();
-//        ArrayList<GDSFlight> resultOptionTrue = new ArrayList<>();
-//        ArrayList<GDSFlight> resultOptionFalse = new ArrayList<>();
-//        ArrayList<ArrayList<GDSFlight>> tempUncomplete = new ArrayList<>();
-//        ArrayList<ArrayList<GDSFlight>> tempComplete = new ArrayList<>();
-//        List<GDSFlight> gdsFlightList = getAllGDSFlights();
-//
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(departDate);
-//
-//        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-//        String departString = s.format(departDate);
-//
-//        System.out.println("origin is " + origin);
-//        System.out.println("dest is " + dest);
-//        System.out.println("departDate is " + departDate);
-//
-//        for (int i = 0; i < 3; i++) {
-//            if (i == 0) {
-//                System.out.println("tempUncomplete is Empty");
-//                for (int k = 0; k < gdsFlightList.size(); k++) {
-//                    SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-//                   String depDate=df.format(gdsFlightList.get(k).getDepTime());
-//                   String ArrDate=df.format(gdsFlightList.get(k).getArrTime());
-//                 
-//
-//                    if (gdsFlightList.get(k).getDepAirport().equals(origin) && gdsFlightList.get(k).getArrAirport().equals(dest) && depDate.equals(departString)) {
-//                        System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
-//                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                            resultOptionTrue.add(gdsFlightList.get(k));
-//                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate+ " fulfills criteria");
-//                            tempComplete.add(resultOptionTrue);
-//                            resultOptionTrue = new ArrayList<>();
-//                        }
-//                    } else if (gdsFlightList.get(k).getDepAirport().equals(origin) && !(gdsFlightList.get(k).getArrAirport().equals(dest)) && depDate.equals(departString)) {
-//                        System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
-//                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                         System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate+ " fulfills intermediate criteria");
-//                            resultOptionFalse.add(gdsFlightList.get(k));
-//                            tempUncomplete.add(resultOptionFalse);
-//                            resultOptionFalse = new ArrayList<>();
-//                        }
-//                    }
-//                }
-//
-//            } else if (i > 0 && !(tempUncomplete.isEmpty())) {
-//
-//                System.out.println("size of tempUncomplete is " + tempUncomplete.size());
-//
-//                for (int f = 0; f < tempUncomplete.size(); f++) {
-//                    c = Calendar.getInstance();
-//                    c.setTime(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType());
-//                    c.add(Calendar.HOUR, 24);
-//                    Date maxLimit = c.getTime();
-//
-//                    for (int k = 0; k < gdsFlightList.size(); k++) {
-//
-//                        Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), gdsFlightList.get(k));
-//
-//                        if (!checkDuplicate && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && gdsFlightList.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && gdsFlightList.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && gdsFlightList.get(k).getStandardDepTimeDateType().before(maxLimit)) {
-//                            System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
-//                            if (!tempUncomplete.get(f).contains(gdsFlightList.get(k)) && this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                                System.out.println("Final leg is " + gdsFlightList.get(k));
-//                                System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName());
-//                                System.out.println("New leg's dest is " + dest);
-//
-//                                ArrayList<FlightInstance> temp = tempUncomplete.get(f);
-//                                temp.add(gdsFlightList.get(k));
-//                                tempComplete.add(temp);
-//                                tempUncomplete.set(f, temp);
-//                            }
-////                            tempUncomplete.remove(temp2);
-//                        } else if (i < 2 && this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).contains(gdsFlightList.get(k))) && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && gdsFlightList.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && gdsFlightList.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && gdsFlightList.get(k).getStandardDepTimeDateType().before(maxLimit)) {
-//
-//                            System.out.println("%%%%%%%%%%%%%%%getting into 4th step");
-//                            ArrayList<FlightInstance> temp = tempUncomplete.get(f);
-//                            temp.add(gdsFlightList.get(k));
-//                            tempUncomplete.set(f, temp);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (!tempComplete.isEmpty()) {
-//            System.out.println("size of tempComplete is " + tempComplete.size());
-//            for (int i = 0; i < tempComplete.size(); i++) {
-//                System.out.println("size of flightlegs for option " + i + " is " + tempComplete.get(i).size());
-//            }
-//        }
-//
-//        return tempComplete;
-//    }
-//
-//    /**
-//     * Web service operation
-//     */
-//    @WebMethod(operationName = "getAllGDSFlights")
-//    public List<GDSFlight> getAllGDSFlights() {
-//         Query q1 = em.createQuery("SELECT fi FROM GDSFlight fi");
-//        List<GDSFlight> flightInstList = q1.getResultList();
-//        if (flightInstList.isEmpty()) {
-//            System.out.println("flightInstList: No flight instance.");
-//        } else {
-//            //    System.out.println("flightInstList got");
-//        }
-//        return flightInstList;
-//    }
-//
-//    /**
-//     * Web service operation
-//     */
-//    @WebMethod(operationName = "whetherAvailable")
-//    public String whetherAvailable(@WebParam(name = "thisFlight") GDSFlight thisFlight, @WebParam(name = "selectedCabin") CabinClass selectedCabin, @WebParam(name = "countPerson") int countPerson, @WebParam(name = "manageStatus") String manageStatus, @WebParam(name = "bookedFlights") List<GDSFlight> bookedFlights) {
-//      boolean available = false;
-//        int countAvailable = 0;
-//        if(thisFlight.getCabinName().equals(selectedCabin.getCabinName()) && thisFlight.getAvailableSeat()>=countPerson){
-//                 
-//             
-//            
-//            
-//            
-//        }
-//    }
+    @WebMethod(operationName = "findResultInstanceList")
+    public ArrayList<ArrayList<GDSFlight>> findResultInstanceList(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate, @WebParam(name = "selectedCabin") CabinClass selectedCabin, @WebParam(name = "countPerson") int countPerson, @WebParam(name = "manageStatus") String manageStatus, @WebParam(name = "bookedFlights") List<GDSFlight> bookedFlights) {
+        System.out.println("#########################3getting into session bean findResultInstanceList() ");
 
-    
+        ArrayList<ArrayList<GDSFlight>> resultByDay = new ArrayList<>();
+        ArrayList<GDSFlight> resultOptionTrue = new ArrayList<>();
+        ArrayList<GDSFlight> resultOptionFalse = new ArrayList<>();
+        ArrayList<ArrayList<GDSFlight>> tempUncomplete = new ArrayList<>();
+        ArrayList<ArrayList<GDSFlight>> tempComplete = new ArrayList<>();
+        List<GDSFlight> gdsFlightList = getAllGDSFlights();
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(departDate);
+
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        String departString = s.format(departDate);
+
+        System.out.println("origin is " + origin);
+        System.out.println("dest is " + dest);
+        System.out.println("departDate is " + departDate);
+
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                System.out.println("tempUncomplete is Empty");
+                for (int k = 0; k < gdsFlightList.size(); k++) {
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String depDate = df.format(gdsFlightList.get(k).getDepTime());
+                    String ArrDate = df.format(gdsFlightList.get(k).getArrTime());
+
+                    if (gdsFlightList.get(k).getDepAirport().equals(origin) && gdsFlightList.get(k).getArrAirport().equals(dest) && depDate.equals(departString)) {
+                        System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
+                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin.getCabinName(), countPerson)) {
+                            resultOptionTrue.add(gdsFlightList.get(k));
+                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate + " fulfills criteria");
+                            tempComplete.add(resultOptionTrue);
+                            resultOptionTrue = new ArrayList<>();
+                        }
+                    } else if (gdsFlightList.get(k).getDepAirport().equals(origin) && !(gdsFlightList.get(k).getArrAirport().equals(dest)) && depDate.equals(departString)) {
+                        System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
+                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin.getCabinName(), countPerson)) {
+                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate + " fulfills intermediate criteria");
+                            resultOptionFalse.add(gdsFlightList.get(k));
+                            tempUncomplete.add(resultOptionFalse);
+                            resultOptionFalse = new ArrayList<>();
+                        }
+                    }
+                }
+
+            } else if (i > 0 && !(tempUncomplete.isEmpty())) {
+
+                System.out.println("size of tempUncomplete is " + tempUncomplete.size());
+
+                for (int f = 0; f < tempUncomplete.size(); f++) {
+                    c = Calendar.getInstance();
+                    c.setTime(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrTime());
+                    c.add(Calendar.HOUR, 24);
+                    Date maxLimit = c.getTime();
+
+                    for (int k = 0; k < gdsFlightList.size(); k++) {
+
+                        Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), gdsFlightList.get(k));
+
+                        if (!checkDuplicate && !(gdsFlightList.get(k).getArrAirport().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrAirport().equals(dest)) && gdsFlightList.get(k).getArrAirport().equals(dest) && gdsFlightList.get(k).getArrAirport().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrAirport()) && gdsFlightList.get(k).getDepTime().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrTime()) && gdsFlightList.get(k).getDepTime().before(maxLimit)) {
+                            System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
+                            if (!tempUncomplete.get(f).contains(gdsFlightList.get(k)) && this.whetherAvailable(gdsFlightList.get(k), selectedCabin.getCabinName(), countPerson)) {
+                                System.out.println("Final leg is " + gdsFlightList.get(k));
+                                System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrAirport());
+                                System.out.println("New leg's dest is " + dest);
+
+                                ArrayList<GDSFlight> temp = tempUncomplete.get(f);
+                                temp.add(gdsFlightList.get(k));
+                                tempComplete.add(temp);
+                                tempUncomplete.set(f, temp);
+                            }
+
+                        } else if (i < 2 && this.whetherAvailable(gdsFlightList.get(k), selectedCabin.getCabinName(), countPerson) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrAirport().equals(dest)) && !(gdsFlightList.get(k).getArrAirport().equals(origin)) && !(tempUncomplete.get(f).contains(gdsFlightList.get(k))) && !(gdsFlightList.get(k).getArrAirport().equals(dest)) && gdsFlightList.get(k).getDepAirport().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrAirport()) && gdsFlightList.get(k).getDepTime().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getArrTime()) && gdsFlightList.get(k).getDepTime().before(maxLimit)) {
+
+                            System.out.println("%%%%%%%%%%%%%%%getting into 4th step");
+                            ArrayList<GDSFlight> temp = tempUncomplete.get(f);
+                            temp.add(gdsFlightList.get(k));
+                            tempUncomplete.set(f, temp);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!tempComplete.isEmpty()) {
+            System.out.println("size of tempComplete is " + tempComplete.size());
+            for (int i = 0; i < tempComplete.size(); i++) {
+                System.out.println("size of flightlegs for option " + i + " is " + tempComplete.get(i).size());
+            }
+        }
+
+        return tempComplete;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getAllGDSFlights")
+    public List<GDSFlight> getAllGDSFlights() {
+        Query q1 = em.createQuery("SELECT fi FROM GDSFlight fi");
+        List<GDSFlight> flightInstList = q1.getResultList();
+        if (flightInstList.isEmpty()) {
+            System.out.println("flightInstList: No flight instance.");
+        } else {
+            //    System.out.println("flightInstList got");
+        }
+        return flightInstList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "whetherAvailable")
+    @RequestWrapper(className = "SessionBean.whetherAvailable")
+    @ResponseWrapper(className = "SessionBean.whetherAvailableResponse")
+    public boolean whetherAvailable(@WebParam(name = "flight") GDSFlight flight, @WebParam(name = "cabin") String cabin, @WebParam(name = "countPerson") int countPerson) {
+        boolean available = false;
+        int countAvailable = 0;
+        FlightCabin fCabin;
+        System.out.println("flightinstance is " + flight);
+        if (flight.getCabinName() != null) {
+            System.out.println("~~~~~~~~~getflightcabin size is " + flight.getSeatQuota());
+
+            if (flight.getCabinName().equals(cabin)) {
+
+                if (flight.getSeatQuota() != null && flight.getBookedSeat() != null) {
+                    countAvailable = flight.getSeatQuota() - flight.getBookedSeat();
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~for GDSFlight " + flight);
+
+                }
+                if (countAvailable >= countPerson) {
+                    available = true;
+
+                }
+            }
+        }
+
+        return available;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "findDuplicateInstance")
+    public boolean findDuplicateInstance(@WebParam(name = "tempList") ArrayList<GDSFlight> tempList, @WebParam(name = "flight") GDSFlight flight) {
+    if (tempList.contains(flight)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Web service operation
+     */
 }
