@@ -45,6 +45,8 @@ public class Booker implements Serializable {
     private String dob;
     private Double miles;
     
+    private String password;
+    
     
     @OneToMany(cascade={CascadeType.PERSIST},mappedBy="booker")
     private List<Reservation> rsvList;
@@ -267,7 +269,15 @@ public class Booker implements Serializable {
         this.agency = agency;
     }
 
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    
 
     
     

@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author LI HAO
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({testSessionBean.CommonInfra.ManageAccountBeanLocalTest.class,testSessionBean.CommonInfra.MsgBeanRemoteTest.class})
+@Suite.SuiteClasses({testSessionBean.CommonInfra.ManageAccountBeanLocalTest.class,testSessionBean.CommonInfra.MsgBeanRemoteTest.class,testSessionBean.CommonInfra.VerifyAccountBeanRemoteTest.class})
 public class CommonInfraTestSuite {
 
     @BeforeClass

@@ -13,8 +13,8 @@
     <h:body>
         <h:form id="allocate" >
 
-            <p:panel id="thisPanel" header="Select a Flight" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
-                <p:messages id="msgs" showDetail="false" />
+            <p:panel id="thisPanel" header="View All Reservation > Reservation Detail > Select a Flight" style="text-align: left; width: 85% !important; margin-left: 1% !important;">
+                <p:messages id="msgs" showDetail="true" />
 
                 <h:panelGrid columns="2" cellpadding="20">
 
@@ -71,7 +71,8 @@
 
                 <p:separator />
 
-                <p:commandButton value="Submit" update="allocate" actionListener="#{bookFlight.findFlightInstance}" icon="ui-icon-check" />
+                <p:commandButton value="Back to Select Passenger" action="#{bookFlight.findFlightInstanceBack}" icon="ui-icon-carat-1-w" />
+                <p:commandButton value="Select" update="allocate" actionListener="#{bookFlight.findFlightInstance}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>

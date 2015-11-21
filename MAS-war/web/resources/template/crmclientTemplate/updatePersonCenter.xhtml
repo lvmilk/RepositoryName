@@ -113,7 +113,9 @@
                         <p:outputLabel value="#{queryBooking.selectedRsv.payment.paymentID}" />
 
                         <p:outputLabel  value="Payment Date: " />
-                        <p:outputLabel value="#{queryBooking.selectedRsv.payment.paymentDate.toString()}" />
+                        <p:outputLabel value="#{queryBooking.selectedRsv.payment.paymentDate}" >
+                            <f:convertDateTime pattern="EEE MMM dd, yyyy" timeZone="Asia/Singapore"/>
+                        </p:outputLabel>
 
                         <p:outputLabel  value="Payment Amount: " />
                         <p:outputLabel value="#{queryBooking.selectedRsv.payment.totalPrice}" />

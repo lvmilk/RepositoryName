@@ -18,7 +18,7 @@
                 <p:messages id="msgs" autoUpdate="true" />
                 <h:panelGrid columns="2" style="margin-bottom:10px; width:800px" cellpadding="20">
                     <p:outputLabel for="startPlanDate" value="Start Date (yyyy-MM-dd): " />
-                    <p:calendar id="startPlanDate" value="#{GCSEPMB.startDate}" navigator="true" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
+                    <p:calendar id="startPlanDate" value="#{GCSEPMB.startDate}" navigator="true" mindate="#{GCSEPMB.today}" pattern="yyyy-MM-dd" mask="true" label="startDate" required="true" requiredMessage="Please enter flight crew arragement start viewing date" size="30"> 
                     </p:calendar>
 
                     <p:outputLabel for="endPlanDate" value="End Date (yyyy-MM-dd): " />

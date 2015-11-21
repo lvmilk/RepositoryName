@@ -12,7 +12,7 @@
         <h:form id="confirmBook">
             <p:growl showDetail="true"/>
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
-                <h:panelGrid  columns="2"   cellpadding="10">
+                <h:panelGrid  columns="2"   cellpadding="15">
 
                     <p:outputLabel  value="Reserved by: " />
                     <p:outputLabel value="#{confirmBook.booker.firstName} #{confirmBook.booker.lastName}" />
@@ -22,7 +22,51 @@
 
                 </h:panelGrid>
             </p:panel>
+            <br />
+            <p:panel id="booker" header="Booker Information"   toggleable="true" style="width:50%">
+                <h:panelGrid columns="2" cellpadding="15">
 
+                    <p:outputLabel  value="Title: " />
+                    <p:outputLabel value="#{confirmBook.booker.title}" />
+
+                    <p:outputLabel  value="Name: " />
+                    <p:outputLabel value="#{confirmBook.booker.firstName} #{confirmBook.booker.lastName}" />
+
+                    <p:outputLabel  value="Email: " />
+                    <p:outputLabel value="#{confirmBook.booker.email}" />
+
+                    <p:outputLabel  value="Address: " />
+                    <p:outputLabel value="#{confirmBook.booker.address}" />
+
+                    <p:outputLabel  value="Contact No: " />
+                    <p:outputLabel value="#{confirmBook.booker.contact}" />
+                </h:panelGrid>
+
+            </p:panel>
+
+            <br/>
+            <p:panel id="passenger" header="Passenger List"  toggleable="true" style="width:50%">
+                <p:dataTable var="passenger" value="#{confirmBook.passengerList}" rows="10"  emptyMessage="No Reservations" >
+
+                    <p:column headerText="Title" >
+                        <h:outputText value="#{passenger.title}" />
+                    </p:column>
+
+                    <p:column headerText="Given Name" >
+                        <h:outputText value="#{passenger.firstName}" />
+                    </p:column>
+
+                    <p:column headerText="Surname" sortBy="#{passenger.lastName}" >
+                        <h:outputText value="#{passenger.lastName}" />
+                    </p:column>
+
+                    <p:column headerText="Passport No.">
+                        <h:outputText value="#{passenger.passport}" />
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <br/>
 
 
 
@@ -94,6 +138,17 @@
             
             
             <p:commandButton value="Make Payment" update="confirmBook" actionListener="#{confirmBook.rsvConfirm}" icon="ui-icon-check" />
+        </h:form>
+        
+         <h:form id="dlgGrd">
+            <p:dialog id="dlgGrd" header="Booking Success" widgetVar="dlgGrd" resizable="false" showEffect="fade" dynamic="true" height="100" width="400">
+                <p:outputLabel value="Book Flights SuccessFully"/>
+                <br/>
+                <p:outputLabel value="Your Booking Reference No, is #{confirmBook.bookRef}" />
+                <p:separator/>
+                <p:commandButton value="Ok"  onclick="PF('dlgGrd').hide()" />
+               
+            </p:dialog>
         </h:form>
     </h:body>
 </html>

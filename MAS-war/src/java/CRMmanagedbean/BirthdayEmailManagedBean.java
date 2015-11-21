@@ -142,7 +142,7 @@ public class BirthdayEmailManagedBean implements Serializable {
                     message.setContent(multipart);
                     // Send message
                     SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
-                    t.connect("smtp.gmail.com", "welovemas@gmail.com", "iloveis3102");
+                    t.connect("smtp.gmail.com", "snowky1993@gmail.com", "WHyq1993");
                     t.sendMessage(message, message.getAllRecipients());
                     // Transport.send(message);
 
@@ -151,7 +151,7 @@ public class BirthdayEmailManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info : " + "Emails has been sent to" + temp.getFirstName() + " " + temp.getLastName() + "successfully!", ""));
 
                 } catch (MessagingException mex) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : " + "Emails has not been sent to" + temp.getFirstName() + " " + temp.getLastName(), ""));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occured : " + "Emails has not been sent to " + temp.getFirstName() + " " + temp.getLastName(), ""));
 
                     System.out.println("Error");
                     mex.printStackTrace();

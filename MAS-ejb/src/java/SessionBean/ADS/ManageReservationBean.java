@@ -193,16 +193,19 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         em.persist(newPsg);
         em.flush();
 
-        em.refresh(newPsg);
+        
         newPsg = em.find(Passenger.class, newPsg.getId());
-
+        em.refresh(newPsg);
         if (selectedPsg.getTickets() != null) {
             System.out.println("in changePassenger(): " + selectedPsg.getId() + ", name=" + selectedPsg.getFirstName() + " " + selectedPsg.getLastName());
             System.out.println(selectedPsg.getTickets());
         }
 
         Passenger oldPsg = em.find(Passenger.class, selectedPsg.getId());
+         em.refresh(oldPsg);
+        
         Reservation rsv = em.find(Reservation.class, selectedPsg.getTickets().get(0).getRsv().getId());
+         em.refresh(rsv);
         List<Ticket> tickets = new ArrayList<>();
         for (int i = 0; i < oldPsg.getTickets().size(); i++) {
             tickets.add(oldPsg.getTickets().get(i));
@@ -215,6 +218,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
 //            System.out.println("In changePassenger loop, i " + i);
             Ticket ticket = em.find(Ticket.class, oldPsg.getTickets().get(0).getTicketID());
+            em.refresh(ticket);
 
             List<Ticket> psgTickets = oldPsg.getTickets();
             System.out.println("In changePassenger loop,  size of oldPsg ticket is " + psgTickets.size());
@@ -223,7 +227,7 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
 
             ticket.setPassenger(newPsg);
             em.merge(ticket);
-            em.refresh(ticket);
+//            em.refresh(ticket);
 
             newPsg.getTickets().add(ticket);
             System.out.println("In changePassenger loop,  size of newPsg ticket is " + newPsg.getTickets().size());

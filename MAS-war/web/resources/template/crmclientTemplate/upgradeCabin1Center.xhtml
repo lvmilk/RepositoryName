@@ -15,7 +15,7 @@
 
         <h:form id="upgradeCabin" >
             <p:messages id="msgs" showDetail="true"/>
-            <p:panel id="panel" header="View All Reservation"  style="width:100%">
+            <p:panel id="panel" header="View All Reservation"  style="text-align: left; width: 85% !important; margin-left: 1% !important;">
                 <p:dataTable var="rsv" value="#{queryBooking.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
@@ -55,7 +55,7 @@
             <br/>
             <br/>
             <p:panel  header="Reservation Details" rendered="#{queryBooking.allFlights.size()>0}" >
-\
+
                     <p:dataTable var="flight"  rowKey="#{flight.id}" selection="#{queryBooking.selectedFlight}" value="#{queryBooking.allFlights}"  rows="10" emptyMessage="No Reservations" >
                         <f:facet name="header">
                             Flight Legs

@@ -32,6 +32,7 @@ public class FlightCrewSchedulingEnterPeriodManagedBean implements Serializable 
     private Date endDate;
     private String startDateString;
     private String endDateString;
+    private Date today;
 
     public FlightCrewSchedulingEnterPeriodManagedBean() {
     }
@@ -52,6 +53,15 @@ public class FlightCrewSchedulingEnterPeriodManagedBean implements Serializable 
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("endDateString", endDateString);
             FacesContext.getCurrentInstance().getExternalContext().redirect("./scheduleFlightCrewSuccess.xhtml");
         }
+    }
+
+    public Date getToday() {
+        Date today1 = new Date();
+        return today1;
+    }
+
+    public void setToday(Date today) {
+        this.today = new Date();
     }
 
     public Date getStartDate() {
