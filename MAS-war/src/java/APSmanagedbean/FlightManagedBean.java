@@ -159,8 +159,8 @@ public class FlightManagedBean implements Serializable {
         endDate = formatter2.parse(flightFreq.getEndDate());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("editFlightEndDate", endDate);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("dateAdjust", flightFreq.getDateAdjust().toString());
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("depTerminal", depTerminal);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("arrTerminal", arrTerminal);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("depTerminal", flightFreq.getDepTerminal());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("arrTerminal", flightFreq.getArrTerminal());
 
         FacesContext.getCurrentInstance().getExternalContext().redirect("./editFlightFrequencyDetail.xhtml");
     }
