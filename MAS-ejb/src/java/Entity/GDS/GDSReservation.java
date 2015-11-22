@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -42,20 +44,42 @@ public class GDSReservation implements Serializable {
     private String status;
 
 
-    @OneToMany(mappedBy="rsv")
+    @ManyToMany
+    @JoinTable(name = "GDSRESERVATION_GDSFLIGHT")
     private List<GDSFlight> gdsFlightList=new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "rsv")
     private List<GDSTicket> tickets = new ArrayList<>();
 
     @OneToOne(mappedBy = "reservation")
-    private GDSPayment payment=new GDSPayment();
+    private GDSPayment payment;
 
     @ManyToOne
-    private MasterPNR pnr=new MasterPNR();
+    private MasterPNR pnr;
+    
+    @ManyToOne
+    private GDSBooker gdsBooker=new GDSBooker();
+    
+    private String origin;
+    private String dest;
+    private Boolean returnTrip;
+    private String bkSystem;
+    
 
     public GDSReservation() {
     }
+    
+   public void createReservation(String firstName, String lastName, String email, String origin,String dest,Boolean returnTrip,String bkSystem){
+   this.bkGivenName=firstName;
+   this.bkSurname=lastName;
+   this.bkEmail=email;
+   this.origin=origin;
+   this.dest=dest;
+   this.returnTrip=returnTrip;
+   this.bkSystem=bkSystem;
+   
+   
+   }
 
     public Long getAirlineRsvCode() {
         return airlineRsvCode;
@@ -127,7 +151,7 @@ public class GDSReservation implements Serializable {
         return payment;
     }
 
-    public void setPaymet(GDSPayment payment) {
+    public void setPayment(GDSPayment payment) {
         this.payment = payment;
     }
 
@@ -146,6 +170,48 @@ public class GDSReservation implements Serializable {
     public void setGdsFlightList(List<GDSFlight> gdsFlightList) {
         this.gdsFlightList = gdsFlightList;
     }
+
+    public GDSBooker getGdsBooker() {
+        return gdsBooker;
+    }
+
+    public void setGdsBooker(GDSBooker gdsBooker) {
+        this.gdsBooker = gdsBooker;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
+    public Boolean getReturnTrip() {
+        return returnTrip;
+    }
+
+    public void setReturnTrip(Boolean returnTrip) {
+        this.returnTrip = returnTrip;
+    }
+
+    public String getBkSystem() {
+        return bkSystem;
+    }
+
+    public void setBkSystem(String bkSystem) {
+        this.bkSystem = bkSystem;
+    }
+    
+    
 
     
     

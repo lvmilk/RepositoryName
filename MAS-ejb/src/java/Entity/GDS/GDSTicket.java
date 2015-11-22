@@ -30,8 +30,8 @@ public class GDSTicket implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ticketID;
-    private String depCity;
-    private String arrCity;
+    private String depAirport;
+    private String arrAirport;
     private String depTime;
     private String arrTime;
     private String flightNo;
@@ -72,6 +72,16 @@ public class GDSTicket implements Serializable {
 
     public GDSTicket() {
     }
+    
+    public void createTicket(String depAirport,String arrAirport, String depTime,String arrTime,String flightNo,String bkSystem){
+    this.depAirport=depAirport;
+    this.arrAirport=arrAirport;
+    this.depTime=depTime;
+    this.arrTime=arrTime;
+    this.flightNo=flightNo;
+    this.bookSystem=bkSystem;
+    
+    }
 
     public Long getTicketID() {
         return ticketID;
@@ -82,19 +92,19 @@ public class GDSTicket implements Serializable {
     }
 
     public String getDepCity() {
-        return depCity;
+        return depAirport;
     }
 
     public void setDepCity(String depCity) {
-        this.depCity = depCity;
+        this.depAirport = depCity;
     }
 
     public String getArrCity() {
-        return arrCity;
+        return arrAirport;
     }
 
     public void setArrCity(String arrCity) {
-        this.arrCity = arrCity;
+        this.arrAirport = arrCity;
     }
 
     public String getDepTime() {

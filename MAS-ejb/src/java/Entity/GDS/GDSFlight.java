@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -32,7 +34,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @Entity
 public class GDSFlight implements Serializable {
-    private static final long serialVersionUID = 1L; 
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -49,44 +52,40 @@ public class GDSFlight implements Serializable {
     private String arrAirport;
     private String depIATA;
     private String arrIATA;
-    
+
     private Integer bookedSeat;
     private Integer availableSeat;
     private Integer seatQuota;
-    
+
     private String companyName;
     private String cabinName;
     private Double price;
-    
-    @ManyToOne
-    private GDSReservation rsv;
-    
-    
-    
-    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "flight")
+
+    @ManyToMany(mappedBy = "gdsFlightList")
+    private List<GDSReservation> rsv = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flight")
     @XmlTransient
-    private List<GDSSeat> seats=new ArrayList<>();
+    private List<GDSSeat> seats = new ArrayList<>();
 
     public GDSFlight() {
     }
 
+    public void createGDSFlight(String flightNo, Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota, String companyName, String cabinName, Double price) {
+        this.flightNo = flightNo;
+        this.depTime = depTime;
+        this.arrTime = arrTime;
+        this.depAirport = depAirport;
+        this.arrAirport = arrAirport;
+        this.depIATA = depIATA;
+        this.arrIATA = arrIATA;
+        this.seatQuota = seatQuota;
+        this.bookedSeat = 0;
+        this.availableSeat = seatQuota - bookedSeat;
+        this.companyName = companyName;
+        this.cabinName = cabinName;
+        this.price = price;
 
-    public void createGDSFlight(String flightNo,Date depTime, Date arrTime, String depAirport, String arrAirport, String depIATA, String arrIATA, Integer seatQuota, String companyName, String cabinName, Double price)
-    {
-        this.flightNo=flightNo;
-        this.depTime=depTime;
-        this.arrTime=arrTime;
-        this.depAirport=depAirport;
-        this.arrAirport=arrAirport;
-        this.depIATA=depIATA;
-        this.arrIATA=arrIATA;
-        this.seatQuota=seatQuota;
-        this.bookedSeat=0;
-        this.availableSeat=seatQuota-bookedSeat;
-        this.companyName=companyName;
-        this.cabinName=cabinName;
-        this.price=price;
-      
     }
 
     public String getFlightNo() {
@@ -105,7 +104,6 @@ public class GDSFlight implements Serializable {
         this.flightStatus = flightStatus;
     }
 
-
     public Date getDepTime() {
         return depTime;
     }
@@ -121,7 +119,6 @@ public class GDSFlight implements Serializable {
     public void setArrTime(Date arrTime) {
         this.arrTime = arrTime;
     }
-
 
     public String getDepAirport() {
         return depAirport;
@@ -146,7 +143,6 @@ public class GDSFlight implements Serializable {
     public void setBookedSeat(Integer bookedSeat) {
         this.bookedSeat = bookedSeat;
     }
-
 
 //    @XmlIDREF
     @XmlTransient
@@ -265,11 +261,11 @@ public class GDSFlight implements Serializable {
         this.price = price;
     }
 
-    public GDSReservation getRsv() {
+    public List<GDSReservation> getRsv() {
         return rsv;
     }
 
-    public void setRsv(GDSReservation rsv) {
+    public void setRsv(List<GDSReservation> rsv) {
         this.rsv = rsv;
     }
 
@@ -286,7 +282,5 @@ public class GDSFlight implements Serializable {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
-    
-    
 
 }
