@@ -19,7 +19,7 @@ import javax.persistence.Query;
  * @author LIU YUQI'
  */
 @Stateless
-public class BookingClassBean implements BookingClassBeanLocal {
+public class BookingClassBean implements BookingClassBeanLocal,BookingClassBeanRemote {
 
     @PersistenceContext
     EntityManager entityManager;

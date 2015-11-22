@@ -7,10 +7,8 @@ package testSessionBean.APS;
 
 import Entity.APS.Aircraft;
 import Entity.APS.AircraftType;
-import Entity.APS.Airport;
 import Entity.APS.FlightInstance;
 import SessionBean.APS.FleetPlanningBeanRemote;
-import SessionBean.APS.RoutePlanningBeanRemote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
