@@ -22,7 +22,7 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateful
-public class ModifyPriceBean implements ModifyPriceBeanLocal {
+public class ModifyPriceBean implements ModifyPriceBeanLocal,ModifyPriceBeanRemote {
 
     @PersistenceContext
     EntityManager em;
