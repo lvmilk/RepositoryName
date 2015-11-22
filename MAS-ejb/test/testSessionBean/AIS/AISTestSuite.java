@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
  * @author LI HAO
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({testSessionBean.AIS.BookingClassBeanRemoteTest.class,testSessionBean.AIS.SeatPlanBeanRemoteTest.class})
+@Suite.SuiteClasses({testSessionBean.AIS.BookingClassBeanRemoteTest.class, testSessionBean.AIS.SeatPlanBeanRemoteTest.class,
+    testSessionBean.AIS.SeatAssignBeanRemoteTest.class})
 public class AISTestSuite {
 
     @BeforeClass

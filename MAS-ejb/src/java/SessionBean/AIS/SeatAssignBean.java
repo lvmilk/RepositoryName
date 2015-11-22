@@ -24,7 +24,7 @@ import org.apache.commons.math3.distribution.NormalDistribution;
  * @author LIU YUQI'
  */
 @Stateless
-public class SeatAssignBean implements SeatAssignBeanLocal {
+public class SeatAssignBean implements SeatAssignBeanLocal,SeatAssignBeanRemote {
 
     @PersistenceContext
     EntityManager em;

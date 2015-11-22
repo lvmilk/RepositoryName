@@ -41,7 +41,7 @@ import util.CryptoHelper;
  * @author LI HAO
  */
 @WebService(serviceName = "GDSLoginBean")
-@Stateless()
+@Stateless
 public class GDSLoginBean {
 
     @PersistenceContext

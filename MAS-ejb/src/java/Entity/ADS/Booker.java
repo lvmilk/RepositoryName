@@ -43,7 +43,7 @@ public class Booker implements Serializable {
     
     private boolean memberStatus;
     private String dob;
-    private Double miles;
+    private Double miles=0.0;
     
     private String password;
     
