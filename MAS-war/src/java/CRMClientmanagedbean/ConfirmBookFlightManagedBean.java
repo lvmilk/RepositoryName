@@ -186,23 +186,22 @@ public class ConfirmBookFlightManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./reserveSuccess.xhtml");
             }
         } else if (selectFTP == true) {
-            if (booker.getId() != null) {
+            try {
                 crmpb.deductMiles(booker.getId(), rsv);
                 System.out.println("ConfirmBookFlightManagedBean: makePayment: TFP Miles Payement Successful!");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Congratulations!", "Reserve flight successfully."));
                 FacesContext.getCurrentInstance().getExternalContext().redirect("./reserveSuccess.xhtml");
-            } else {
+            } catch (Exception ex) {
                 System.out.println("ConfirmBookFlightManagedBean: makePayment: TFP Miles Payement --->>> No Booker");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "No such a booker ", "Please register first!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
             }
         }
-
     }
 
-    /**
-     * @return the passengerList
-     */
-    public ArrayList<Passenger> getPassengerList() {
+/**
+ * @return the passengerList
+ */
+public ArrayList<Passenger> getPassengerList() {
         return passengerList;
     }
 

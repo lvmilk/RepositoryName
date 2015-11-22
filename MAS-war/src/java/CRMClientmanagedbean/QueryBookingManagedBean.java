@@ -12,7 +12,8 @@ import Entity.AIS.BookingClassInstance;
 import Entity.AIS.CabinClass;
 import Entity.APS.FlightInstance;
 import SessionBean.ADS.BookerBeanLocal;
-import SessionBean.ADS.ManageReservationBeanLocal;
+import SessionBean.CRMClient.CRMManageReservationBeanLocal;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -37,11 +40,11 @@ import org.primefaces.context.RequestContext;
 public class QueryBookingManagedBean implements Serializable {
 
     @EJB
-    ManageReservationBeanLocal mr;
+    CRMManageReservationBeanLocal mr;
     @EJB
     private BookerBeanLocal mbsbl;
 
-    private Boolean allRsv = true;
+    private Boolean allRsv = false;
     private String email;
     private Long bookRef;
 
@@ -88,17 +91,15 @@ public class QueryBookingManagedBean implements Serializable {
         email = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("email");
 
         if (allRsv != null) {
-            if (allRsv) {
-                System.out.println("In init(): email is " + email);
-                rsvList = mr.searchAllRsv(email);
-                System.out.println("In init(): rsvList is " + rsvList);
-
-            } else {
                 bookRef = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookRef");
-                Reservation rsv = mr.searchOneRsv(email, bookRef);
-                rsvList = new ArrayList<>();
-                rsvList.add(rsv);
-            }
+                Reservation rsv;
+                try {
+                    rsv = mr.searchOneRsv(email, bookRef);
+                    rsvList = new ArrayList<>();
+                    rsvList.add(rsv);
+                } catch (Exception ex) {
+                    Logger.getLogger(QueryBookingManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
         } else {
             allRsv = true;
         }
@@ -254,7 +255,7 @@ public class QueryBookingManagedBean implements Serializable {
 //        FacesContext.getCurrentInstance().getExternalContext().redirect("./upgradeCabinClass2.xhtml");
     }
 
-    public void confirmUpgradeCabin() {
+    public void confirmUpgradeCabin() throws IOException {
 
         System.out.println("in onChooseUpgradePsg(): chosenBkInstance is " + chosenBkInstance);
         System.out.println("in onChooseUpgradePsg(): selectedRsv.bcInstanceList is " + selectedRsv.getBkcInstance());
@@ -263,14 +264,15 @@ public class QueryBookingManagedBean implements Serializable {
         } else {
             System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
         }
-               
-            bkSystem="ARS";
-            mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
 
-            FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!"));
-   
+        bkSystem = "ARS";
+        Long rsvId = mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allFlights", new ArrayList<>());
+        //FacesContext.getCurrentInstance().addMessage("message:", new FacesMessage("Cabin Class Upgraded successfully!", "Your new booking reference number is " + rsvId));
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsvId", rsvId);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("./confirmNewReservation.xhtml");
+
     }
 
     public void onSavePsgChange() throws IOException {
@@ -372,8 +374,8 @@ public class QueryBookingManagedBean implements Serializable {
             mbsbl.editThisBooker(booker);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage("Account Edited Successfully"));
-              manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("",manageStatus);
-            
+            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email has already been used ", ""));
         }
@@ -401,28 +403,19 @@ public class QueryBookingManagedBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("allRsv", allRsv);
     }
 
-    public void searchRsv() throws IOException {
-        if (allRsv) {
-            rsvList = mr.searchAllRsv(email);
-            if (rsvList != null && !rsvList.isEmpty()) {
-                System.out.println("rsvList is " + rsvList);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("email", email);
-
-            }
-
-        } else {
+    public void searchRsv() throws IOException, Exception {
+        try {
             Reservation rsv = mr.searchOneRsv(email, bookRef);
-            if (rsv != null) {
-                System.out.println("rsv is " + rsv);
-                rsvList = new ArrayList<>();
-                rsvList.add(rsv);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("email", email);
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookRef", bookRef);
+            System.out.println("rsv is " + rsv);
+            rsvList = new ArrayList<>();
+            rsvList.add(rsv);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("email", email);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("bookRef", bookRef);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("./QueryReservationResult.xhtml");
 
-            }
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
-//        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("rsvList", rsvList);
-        FacesContext.getCurrentInstance().getExternalContext().redirect("./QueryReservationResult.xhtml");
     }
 
     public void onSelectRsv(Reservation rsv) {
@@ -498,21 +491,16 @@ public class QueryBookingManagedBean implements Serializable {
 
     public List<Reservation> getRsvList() {
         if (allRsv != null) {
-            if (allRsv) {
-                System.out.println("email is " + email);
-                rsvList = mr.searchAllRsv(email);
-                System.out.println("rsvList is " + rsvList);
-
-            } else {
-                bookRef = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookRef");
-                Reservation rsv = mr.searchOneRsv(email, bookRef);
+            bookRef = (Long) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bookRef");
+            Reservation rsv;
+            try {
+                rsv = mr.searchOneRsv(email, bookRef);
                 rsvList = new ArrayList<>();
                 rsvList.add(rsv);
+            } catch (Exception ex) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
             }
-        } else {
-            allRsv = true;
         }
-
         System.out.println("in getRsvList(): " + rsvList);
         return rsvList;
     }

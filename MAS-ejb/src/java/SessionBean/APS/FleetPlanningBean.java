@@ -26,7 +26,7 @@ import javax.persistence.Query;
  * @author Lu Xi
  */
 @Stateless
-public class FleetPlanningBean implements FleetPlanningBeanLocal {
+public class FleetPlanningBean implements FleetPlanningBeanLocal,FleetPlanningBeanRemote {
 
     @PersistenceContext
     EntityManager em;
@@ -360,16 +360,20 @@ public class FleetPlanningBean implements FleetPlanningBeanLocal {
     @Override
     public AircraftType getAircraftType(String type) {
         aircraftType = em.find(AircraftType.class, type);
-        System.out.println(
-                "getAircraftType: " + aircraftType.getType());
+        System.out.println("getAircraftType: " + aircraftType.getType());
         return aircraftType;
     }
 
     @Override
-    public List<Aircraft> getThisTypeAircraft(String type) {
+    public List<Aircraft> getThisTypeAircraft(String type) throws Exception{
         aircraftType = em.find(AircraftType.class, type);
         List<Aircraft> aircraftList = aircraftType.getAircraft();
+        if(aircraftList.isEmpty()){
+            throw new Exception("This aircraftList is not linked with any airccraft type!");
+        }
+        else{
         return aircraftList;
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 /**
  *
  * @author Lu Xi
  */
-@Local
-public interface FleetPlanningBeanLocal {
+@Remote
+public interface FleetPlanningBeanRemote {
 
     public List<AircraftType> getAllAircraftType();
 
@@ -52,7 +52,7 @@ public interface FleetPlanningBeanLocal {
 
     public Map<String, List<String>> getAllNum(String type);
 
-    public List<Aircraft> getThisTypeAircraft(String type) throws Exception;
+    public List<Aircraft> getThisTypeAircraft(String type)throws Exception;
 
     public List<FlightInstance> getThisFlightInstance(String registrationNo) throws Exception;
 

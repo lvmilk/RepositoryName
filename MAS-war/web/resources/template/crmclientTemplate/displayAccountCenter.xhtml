@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>View Member Account</title>
+    </h:head>
+    <h:body>
+        <h:form id="form" style="text-align: left; width: 80% !important; margin-left: 10% !important; margin-bottom:10px;">
+            <p:messages id="msgs" showDetail="true" />
+            <p:panel id="rsvConfirm" header="View Your Account"  style="margin-bottom:20px">
+                <p:growl showDetail="true"/>
+                <h:panelGrid  columns="2"   cellpadding="10">
+                    <p:outputLabel  value="Title: " />
+                    <p:outputLabel value="#{CRMAMB.booker.title}" />
+                     
+                    <p:outputLabel  value="Member Name: " />
+                    <p:outputLabel value="#{CRMAMB.booker.firstName} #{CRAMAB.booker.lastName}" />
+                    
+                    <p:outputLabel  value="Member ID: " />
+                    <p:outputLabel value="#{CRMAMB.booker.id}" />
+
+                    <p:outputLabel  value="Email Address: " />
+                    <p:outputLabel value="#{CRMAMB.booker.email}" />
+                    
+                     <p:outputLabel  value="Day Of Birth: " />
+                     <p:outputLabel value="#{CRMAMB.booker.dob}" />
+                     
+                     <p:outputLabel  value="Contact: " />
+                     <p:outputLabel value="#{CRMAMB.booker.contact}" />
+                     
+                     <p:outputLabel  value="Address: " />
+                     <p:outputLabel value="#{CRMAMB.booker.address}" />
+                     
+                     <p:outputLabel  value="Passport Number: " />
+                     <p:outputLabel value="#{CRMAMB.booker.passport}" />
+                     
+                     <p:outputLabel  value="The Flying Program (TFP) Miles: " style="font-style: italic " />
+                     <p:outputLabel value="#{CRMAMB.booker.miles}" />
+                </h:panelGrid>
+
+                
+                <p:dataTable var="rsv" value="#{CRMAMB.rsvList}" paginator="true" rows="10" emptyMessage="No Reservation Record">
+                    <p:column headerText="Booking Reference" sortBy="#{rsv.id}" filterBy="#{rsv.id}">
+                        <h:outputText value="#{rsv.id}" />
+                    </p:column>
+                    <p:column headerText="Origin" sortBy="#{rsv.origin}" filterBy="#{rsv.origin}">
+                        <h:outputText value="#{rsv.origin}" />
+                    </p:column>
+                    <p:column headerText="Destination" sortBy="#{rsv.dest}" filterBy="#{rsv.dest}">
+                        <h:outputText value="#{rsv.dest}" />
+                    </p:column>
+                    <p:column headerText="Reservation Date" sortBy="#{rsv.rsvDate}" filterBy="#{rsv.rsvDate}">
+                        <h:outputText value="#{rsv.rsvDate}" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+8" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Number of Tickets" sortBy="#{rsv.tickets.size}" filterBy="#{rsv.tickets.size}">
+                        <h:outputText value="#{rsv.tickets.size}" />
+                    </p:column>
+                    <p:column headerText="Total Payment" sortBy="#{rsv.payment.totalPrice}" filterBy="#{rsv.payment.totalPrice}">
+                         <h:outputText value="#{rsv.payment.totalPrice}" />
+                    </p:column>
+
+                </p:dataTable>
+                <br/>
+                <p:commandButton value="Back" update="form" actionListener="#{CRMAMB.goToLogin()}" icon="ui-icon-check" />
+                <p:commandButton value="Edit Personal Information" action="#{CRMAMB.editAccount(booker)}" icon="ui-icon-pencil" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

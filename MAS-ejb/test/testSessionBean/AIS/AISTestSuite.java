@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testSessionBean.APS;
+package testSessionBean.AIS;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -17,8 +17,8 @@ import org.junit.runners.Suite;
  * @author LI HAO
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({testSessionBean.APS.RoutePlannigBeanRemoteTest.class,testSessionBean.APS.FleetPlanningBeanRemoteTest.class,testSessionBean.APS.ManageCabinBeanRemoteTest.class,testSessionBean.APS.FlightSchedulingBeanRemoteTest.class})
-public class APSTestSuite {
+@Suite.SuiteClasses({testSessionBean.AIS.BookingClassBeanRemoteTest.class,testSessionBean.AIS.SeatPlanBeanRemoteTest.class})
+public class AISTestSuite {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -35,5 +35,5 @@ public class APSTestSuite {
     @After
     public void tearDown() throws Exception {
     }
-    
+
 }

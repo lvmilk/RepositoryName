@@ -41,7 +41,7 @@ import javax.persistence.Query;
  * @author Xu
  */
 @Stateful
-public class FlightSchedulingBean implements FlightSchedulingBeanLocal {
+public class FlightSchedulingBean implements FlightSchedulingBeanLocal,FlightSchedulingBeanRemote {
 
     @PersistenceContext
     EntityManager em;
