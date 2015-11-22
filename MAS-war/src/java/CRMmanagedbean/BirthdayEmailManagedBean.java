@@ -129,16 +129,16 @@ public class BirthdayEmailManagedBean implements Serializable {
                     multipart.addBodyPart(messageBodyPart);
 
                     // Attachment
-//                    messageBodyPart = new MimeBodyPart();
-//                    String filename = "file:///Users/wang/NetBeansProjects/MAS/MAS-war/web/images/Happybirthday.jpg";
-////                    String path = "file:///Users/wang/NetBeansProjects/MAS/MAS-war/web/images/Happybirthday.jpg";
-////                    String base = "file:///Users/wang/NetBeansProjects/MAS/MAS-war/src/java/CRMmanagedbean/BirthdayEmailManagedBean.java";
-////                    String filename = new File(base).toURI().relativize(new File(path).toURI()).getPath();
-////                    System.out.println("Path: "+filename);
-//                    DataSource source = new FileDataSource(filename);
-//                    messageBodyPart.setDataHandler(new DataHandler(source));
-//                    messageBodyPart.setFileName(filename);
-//                    multipart.addBodyPart(messageBodyPart);
+                    messageBodyPart = new MimeBodyPart();
+                    String filename = "/C:/Users/Xi/Desktop/Happybirthday.jpg";
+//                    String path = "file:///Users/wang/NetBeansProjects/MAS/MAS-war/web/images/Happybirthday.jpg";
+//                    String base = "file:///Users/wang/NetBeansProjects/MAS/MAS-war/src/java/CRMmanagedbean/BirthdayEmailManagedBean.java";
+//                    String filename = new File(base).toURI().relativize(new File(path).toURI()).getPath();
+//                    System.out.println("Path: "+filename);
+                    DataSource source = new FileDataSource(filename);
+                    messageBodyPart.setDataHandler(new DataHandler(source));
+                    messageBodyPart.setFileName(filename);
+                    multipart.addBodyPart(messageBodyPart);
                     message.setContent(multipart);
                     // Send message
                     SMTPTransport t = (SMTPTransport) session.getTransport("smtps");
