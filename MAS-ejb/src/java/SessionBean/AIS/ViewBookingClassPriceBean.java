@@ -20,7 +20,7 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateful
-public class ViewBookingClassPriceBean implements ViewBookingClassPriceBeanLocal {
+public class ViewBookingClassPriceBean implements ViewBookingClassPriceBeanLocal,ViewBookingClassPriceBeanRemote {
 
     @PersistenceContext
     EntityManager em;
