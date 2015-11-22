@@ -6,10 +6,19 @@
 package SessionBean.GDS;
 
 import Entity.AIS.CabinClass;
+import Entity.AIS.FlightCabin;
+import Entity.APS.FlightInstance;
 import Entity.CommonInfa.AirAlliances;
+import Entity.AAS.Revenue;
+import Entity.AAS.Expense;
 import Entity.GDS.Airline;
 import Entity.GDS.GDSFlight;
 import Entity.GDS.GDSSeat;
+import Entity.GDS.GDSBooker;
+import Entity.GDS.GDSPassenger;
+import Entity.GDS.GDSPayment;
+import Entity.GDS.GDSReservation;
+import Entity.GDS.GDSTicket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,9 +28,12 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.ejb.Stateless;
+import javax.jws.Oneway;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 import util.CryptoHelper;
 
 /**
@@ -29,7 +41,7 @@ import util.CryptoHelper;
  * @author LI HAO
  */
 @WebService(serviceName = "GDSLoginBean")
-@Stateless()
+@Stateless
 public class GDSLoginBean {
 
     @PersistenceContext
@@ -37,6 +49,8 @@ public class GDSLoginBean {
 
     private String hPwd = new String();
     private CryptoHelper cryptoHelper = CryptoHelper.getInstanceOf();
+    private Revenue revenue;
+    private Expense expense;
 
     /**
      * Web service operation
@@ -132,7 +146,7 @@ public class GDSLoginBean {
         //TODO write your implementation code here:
         Query query = em.createQuery("SELECT r FROM GDSFlight r WHERE r.companyName=:inCompanyName");
         query.setParameter("inCompanyName", companyName);
-;
+        ;
         List<GDSFlight> resultList = query.getResultList();
         if (!resultList.isEmpty()) {
             return resultList;
@@ -141,8 +155,9 @@ public class GDSLoginBean {
             return resultList;
         }
     }
+
     @WebMethod(operationName = "searchFlight")
-    public boolean searchFlight(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest,@WebParam(name = "departDate") Date departDate) {
+    public boolean searchFlight(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate) {
         //TODO write your implementation code here:
         return false;
     }
@@ -150,135 +165,507 @@ public class GDSLoginBean {
     /**
      * Web service operation
      */
-//    @WebMethod(operationName = "findResultInstanceList")
-//    public ArrayList<ArrayList<GDSFlight>> findResultInstanceList(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate, @WebParam(name = "selectedCabin") CabinClass selectedCabin, @WebParam(name = "countPerson") int countPerson, @WebParam(name = "manageStatus") String manageStatus, @WebParam(name = "bookedFlights") List<GDSFlight> bookedFlights) {
-//         System.out.println("#########################3getting into session bean findResultInstanceList() ");
-//        
-//        ArrayList<ArrayList<GDSFlight>> resultByDay = new ArrayList<>();
-//        ArrayList<GDSFlight> resultOptionTrue = new ArrayList<>();
-//        ArrayList<GDSFlight> resultOptionFalse = new ArrayList<>();
-//        ArrayList<ArrayList<GDSFlight>> tempUncomplete = new ArrayList<>();
-//        ArrayList<ArrayList<GDSFlight>> tempComplete = new ArrayList<>();
-//        List<GDSFlight> gdsFlightList = getAllGDSFlights();
-//
-//        Calendar c = Calendar.getInstance();
-//        c.setTime(departDate);
-//
-//        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-//        String departString = s.format(departDate);
-//
-//        System.out.println("origin is " + origin);
-//        System.out.println("dest is " + dest);
-//        System.out.println("departDate is " + departDate);
-//
-//        for (int i = 0; i < 3; i++) {
-//            if (i == 0) {
-//                System.out.println("tempUncomplete is Empty");
-//                for (int k = 0; k < gdsFlightList.size(); k++) {
-//                    SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-//                   String depDate=df.format(gdsFlightList.get(k).getDepTime());
-//                   String ArrDate=df.format(gdsFlightList.get(k).getArrTime());
-//                 
-//
-//                    if (gdsFlightList.get(k).getDepAirport().equals(origin) && gdsFlightList.get(k).getArrAirport().equals(dest) && depDate.equals(departString)) {
-//                        System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
-//                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                            resultOptionTrue.add(gdsFlightList.get(k));
-//                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate+ " fulfills criteria");
-//                            tempComplete.add(resultOptionTrue);
-//                            resultOptionTrue = new ArrayList<>();
-//                        }
-//                    } else if (gdsFlightList.get(k).getDepAirport().equals(origin) && !(gdsFlightList.get(k).getArrAirport().equals(dest)) && depDate.equals(departString)) {
-//                        System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
-//                        if (this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                         System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate+ " fulfills intermediate criteria");
-//                            resultOptionFalse.add(gdsFlightList.get(k));
-//                            tempUncomplete.add(resultOptionFalse);
-//                            resultOptionFalse = new ArrayList<>();
-//                        }
-//                    }
-//                }
-//
-//            } else if (i > 0 && !(tempUncomplete.isEmpty())) {
-//
-//                System.out.println("size of tempUncomplete is " + tempUncomplete.size());
-//
-//                for (int f = 0; f < tempUncomplete.size(); f++) {
-//                    c = Calendar.getInstance();
-//                    c.setTime(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType());
-//                    c.add(Calendar.HOUR, 24);
-//                    Date maxLimit = c.getTime();
-//
-//                    for (int k = 0; k < gdsFlightList.size(); k++) {
-//
-//                        Boolean checkDuplicate = findDuplicateInstance(tempUncomplete.get(f), gdsFlightList.get(k));
-//
-//                        if (!checkDuplicate && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest) && gdsFlightList.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && gdsFlightList.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && gdsFlightList.get(k).getStandardDepTimeDateType().before(maxLimit)) {
-//                            System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
-//                            if (!tempUncomplete.get(f).contains(gdsFlightList.get(k)) && this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights)) {
-//                                System.out.println("Final leg is " + gdsFlightList.get(k));
-//                                System.out.println("Last leg's destination is " + tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName());
-//                                System.out.println("New leg's dest is " + dest);
-//
-//                                ArrayList<FlightInstance> temp = tempUncomplete.get(f);
-//                                temp.add(gdsFlightList.get(k));
-//                                tempComplete.add(temp);
-//                                tempUncomplete.set(f, temp);
-//                            }
-////                            tempUncomplete.remove(temp2);
-//                        } else if (i < 2 && this.whetherAvailable(gdsFlightList.get(k), selectedCabin, countPerson, manageStatus, bookedFlights) && !(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(origin)) && !(tempUncomplete.get(f).contains(gdsFlightList.get(k))) && !(gdsFlightList.get(k).getFlightFrequency().getRoute().getDest().getAirportName().equals(dest)) && gdsFlightList.get(k).getFlightFrequency().getRoute().getOrigin().getAirportName().equals(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getFlightFrequency().getRoute().getDest().getAirportName()) && gdsFlightList.get(k).getStandardDepTimeDateType().after(tempUncomplete.get(f).get(tempUncomplete.get(f).size() - 1).getStandardArrTimeDateType()) && gdsFlightList.get(k).getStandardDepTimeDateType().before(maxLimit)) {
-//
-//                            System.out.println("%%%%%%%%%%%%%%%getting into 4th step");
-//                            ArrayList<FlightInstance> temp = tempUncomplete.get(f);
-//                            temp.add(gdsFlightList.get(k));
-//                            tempUncomplete.set(f, temp);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (!tempComplete.isEmpty()) {
-//            System.out.println("size of tempComplete is " + tempComplete.size());
-//            for (int i = 0; i < tempComplete.size(); i++) {
-//                System.out.println("size of flightlegs for option " + i + " is " + tempComplete.get(i).size());
-//            }
-//        }
-//
-//        return tempComplete;
-//    }
-//
-//    /**
-//     * Web service operation
-//     */
-//    @WebMethod(operationName = "getAllGDSFlights")
-//    public List<GDSFlight> getAllGDSFlights() {
-//         Query q1 = em.createQuery("SELECT fi FROM GDSFlight fi");
-//        List<GDSFlight> flightInstList = q1.getResultList();
-//        if (flightInstList.isEmpty()) {
-//            System.out.println("flightInstList: No flight instance.");
-//        } else {
-//            //    System.out.println("flightInstList got");
-//        }
-//        return flightInstList;
-//    }
-//
-//    /**
-//     * Web service operation
-//     */
-//    @WebMethod(operationName = "whetherAvailable")
-//    public String whetherAvailable(@WebParam(name = "thisFlight") GDSFlight thisFlight, @WebParam(name = "selectedCabin") CabinClass selectedCabin, @WebParam(name = "countPerson") int countPerson, @WebParam(name = "manageStatus") String manageStatus, @WebParam(name = "bookedFlights") List<GDSFlight> bookedFlights) {
-//      boolean available = false;
-//        int countAvailable = 0;
-//        if(thisFlight.getCabinName().equals(selectedCabin.getCabinName()) && thisFlight.getAvailableSeat()>=countPerson){
-//                 
-//             
-//            
-//            
-//            
-//        }
-//    }
+    @WebMethod(operationName = "findResultInstanceList")
+    public List<GDSFlight> findResultInstanceList(@WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "departDate") Date departDate, @WebParam(name = "selectedCabin") String cabinName, @WebParam(name = "countPerson") int countPerson) {
+        System.out.println("#########################3getting into session bean findResultInstanceList() ");
 
-    
+        ArrayList<ArrayList<GDSFlight>> resultByDay = new ArrayList<>();
+        List<GDSFlight> resultOptionTrue = new ArrayList<>();
+        List<GDSFlight> resultOptionFalse = new ArrayList<>();
+        List<GDSFlight> tempUncomplete = new ArrayList<>();
+        List<GDSFlight> tempComplete = new ArrayList<>();
+        List<GDSFlight> gdsFlightList = getAllGDSFlights();
 
+        Calendar c = Calendar.getInstance();
+        c.setTime(departDate);
+
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+        String departString = s.format(departDate);
+
+        System.out.println("origin is " + origin);
+        System.out.println("dest is " + dest);
+        System.out.println("departDate is " + departDate);
+
+        for (int i = 0; i < 2; i++) {
+            if (i == 0) {
+                System.out.println("tempUncomplete is Empty");
+                for (int k = 0; k < gdsFlightList.size(); k++) {
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String depDate = df.format(gdsFlightList.get(k).getDepTime());
+                    String ArrDate = df.format(gdsFlightList.get(k).getArrTime());
+
+                    if (gdsFlightList.get(k).getDepAirport().equals(origin) && gdsFlightList.get(k).getArrAirport().equals(dest) && depDate.equals(departString)) {
+                        System.out.println("%%%%%%%%%%%%%%%getting into 1st step");
+                        if (this.whetherAvailable(gdsFlightList.get(k), cabinName, countPerson)) {
+                            resultOptionTrue.add(gdsFlightList.get(k));
+                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate + " fulfills criteria");
+                            tempComplete = resultOptionTrue;
+                            break;
+                        }
+                    } else if (gdsFlightList.get(k).getDepAirport().equals(origin) && !(gdsFlightList.get(k).getArrAirport().equals(dest)) && depDate.equals(departString)) {
+                        System.out.println("%%%%%%%%%%%%%%%getting into 2nd step");
+                        if (this.whetherAvailable(gdsFlightList.get(k), cabinName, countPerson)) {
+                            System.out.println("flight " + gdsFlightList.get(k).getFlightNo() + " on date " + depDate + " fulfills intermediate criteria");
+                            resultOptionFalse.add(gdsFlightList.get(k));
+                            tempUncomplete = resultOptionFalse;
+
+                        }
+                    }
+                }
+
+            } else if (i > 0 && !(tempUncomplete.isEmpty())) {
+
+                System.out.println("size of tempUncomplete is " + tempUncomplete.size());
+
+                c = Calendar.getInstance();
+                c.setTime(tempUncomplete.get(0).getArrTime());
+                c.add(Calendar.HOUR, 24);
+                Date maxLimit = c.getTime();
+
+                System.out.println(" maxLimit is " + maxLimit);
+
+                for (int k = 0; k < gdsFlightList.size(); k++) {
+
+                    Boolean checkDuplicate = findDuplicateInstance(tempUncomplete, gdsFlightList.get(k));
+
+                    if (gdsFlightList.get(k).getDepTime().after(tempUncomplete.get(tempUncomplete.size() - 1).getArrTime()) && gdsFlightList.get(k).getDepTime().before(maxLimit)) {
+                        System.out.println(" for flightNo " + gdsFlightList.get(k).getFlightNo() + " time constraint is fullfilled for second leg and checkduplicate is " + checkDuplicate);
+
+                    }
+
+                    if (!checkDuplicate && !(gdsFlightList.get(k).getArrAirport().equals(origin)) && !(tempUncomplete.get(tempUncomplete.size() - 1).getArrAirport().equals(dest)) && gdsFlightList.get(k).getArrAirport().equals(dest) && gdsFlightList.get(k).getDepAirport().equals(tempUncomplete.get(tempUncomplete.size() - 1).getArrAirport()) && gdsFlightList.get(k).getDepTime().after(tempUncomplete.get(tempUncomplete.size() - 1).getArrTime()) && gdsFlightList.get(k).getDepTime().before(maxLimit)) {
+                        System.out.println("%%%%%%%%%%%%%%%getting into 3rd step");
+                        if (!tempUncomplete.contains(gdsFlightList.get(k)) && this.whetherAvailable(gdsFlightList.get(k), cabinName, countPerson)) {
+                            System.out.println("Final leg is " + gdsFlightList.get(k));
+                            System.out.println("Last leg's destination is " + tempUncomplete.get(0).getArrAirport());
+                            System.out.println("New leg's dest is " + dest);
+
+                            List<GDSFlight> temp = tempUncomplete;
+                            temp.add(gdsFlightList.get(k));
+                            tempComplete = temp;
+                            tempUncomplete = temp;
+                        }
+
+                    }
+
+                }
+
+            }
+        }
+
+        if (!tempComplete.isEmpty()) {
+            System.out.println("size of tempComplete is " + tempComplete.size());
+            for (int i = 0; i < tempComplete.size(); i++) {
+                System.out.println("size of flightlegs for option " + i + " is " + tempComplete.size());
+            }
+        }
+
+        return tempComplete;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getAllGDSFlights")
+    public List<GDSFlight> getAllGDSFlights() {
+        Query q1 = em.createQuery("SELECT fi FROM GDSFlight fi");
+        List<GDSFlight> flightInstList = q1.getResultList();
+        if (flightInstList.isEmpty()) {
+            System.out.println("flightInstList: No flight instance.");
+        } else {
+            //    System.out.println("flightInstList got");
+        }
+        return flightInstList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "whetherAvailable")
+    @RequestWrapper(className = "SessionBean.whetherAvailable")
+    @ResponseWrapper(className = "SessionBean.whetherAvailableResponse")
+    public boolean whetherAvailable(@WebParam(name = "flight") GDSFlight flight, @WebParam(name = "cabin") String cabin, @WebParam(name = "countPerson") int countPerson) {
+        boolean available = false;
+        int countAvailable = 0;
+        FlightCabin fCabin;
+        System.out.println("flightinstance is " + flight);
+        if (flight.getCabinName() != null) {
+            System.out.println("~~~~~~~~~getflightcabin size is " + flight.getSeatQuota());
+
+            if (flight.getCabinName().equals(cabin)) {
+
+                if (flight.getAvailableSeat() != null) {
+                    countAvailable = flight.getAvailableSeat();
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~for GDSFlight " + flight);
+
+                }
+                if (countAvailable >= countPerson) {
+                    available = true;
+
+                }
+            }
+        }
+
+        return available;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "findDuplicateInstance")
+    public boolean findDuplicateInstance(@WebParam(name = "tempList") List<GDSFlight> tempList, @WebParam(name = "flight") GDSFlight flight) {
+        if (tempList.contains(flight)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getAllOrigins")
+    public List<String> getAllOrigins() {
+        List<String> allOrigin = new ArrayList<>();
+
+        Query query = em.createQuery("SELECT f FROM GDSFlight f");
+        List<GDSFlight> flightList = query.getResultList();
+        for (int i = 0; i < flightList.size(); i++) {
+            if (!allOrigin.contains(flightList.get(i).getDepAirport())) {
+                allOrigin.add(flightList.get(i).getDepAirport());
+            }
+        }
+
+        return allOrigin;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getRestCitys")
+    public List<String> getRestCitys(@WebParam(name = "selectedOrigin") String selectedOrigin) {
+        List<String> allDest = new ArrayList<>();
+
+        Query query = em.createQuery("SELECT f FROM GDSFlight f");
+        List<GDSFlight> flightList = query.getResultList();
+        for (int i = 0; i < flightList.size(); i++) {
+            if (!allDest.contains(flightList.get(i).getArrAirport()) && !flightList.get(i).getArrAirport().equals(selectedOrigin)) {
+                allDest.add(flightList.get(i).getArrAirport());
+            }
+            if (!allDest.contains(flightList.get(i).getDepAirport()) && !flightList.get(i).getDepAirport().equals(selectedOrigin)) {
+                allDest.add(flightList.get(i).getDepAirport());
+            }
+        }
+
+        return allDest;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "createTempGdsBooker")
+    public GDSBooker createTempGdsBooker(@WebParam(name = "title") String title, @WebParam(name = "firstName") String firstName, @WebParam(name = "lastName") String lastName, @WebParam(name = "address") String address, @WebParam(name = "email") String email, @WebParam(name = "contactNo") String contactNo) {
+        GDSBooker booker = new GDSBooker();
+
+        booker.createMember(title, firstName, lastName, email, address, contactNo);
+
+        return booker;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "makeReservation")
+    public Long makeReservation(@WebParam(name = "booker") GDSBooker booker, @WebParam(name = "passengerList") List<GDSPassenger> passengerList, @WebParam(name = "departSelected") List<GDSFlight> departSelected, @WebParam(name = "returnSelected") List<GDSFlight> returnSelected, @WebParam(name = "psgCount") Integer psgCount, @WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "returnTrip") Boolean returnTrip, @WebParam(name = "bkSystem") String bkSystem, @WebParam(name = "totalPrice") Double totalPrice, @WebParam(name = "companyName") String companyName) {
+        GDSBooker tempBk;
+        String bookerEmail = booker.getEmail();
+        Query query = em.createQuery("SELECT b FROM GDSBooker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
+        if (query.getResultList().isEmpty()) {
+            em.persist(booker);
+            System.out.println("booker email is " + booker.getEmail());
+        } else {
+            booker = (GDSBooker) query.getResultList().get(0);
+        }
+
+        GDSReservation rsv = new GDSReservation();
+        rsv.createReservation(booker.getFirstName(), booker.getLastName(), booker.getEmail(), origin, dest, returnTrip, bkSystem);
+        rsv = makeRsvBooker(rsv, booker);
+
+        rsv = makeRsv_GDSFlight(rsv, departSelected, returnSelected, psgCount);
+
+        ArrayList<GDSTicket> tickets = new ArrayList<>();
+
+        createPsgList(passengerList);
+
+        tickets = setupPsg_Ticket(departSelected, returnSelected, passengerList, booker, psgCount, origin, dest, returnTrip, bkSystem);
+
+        setupTicket_Reservation(rsv, tickets);
+
+        GDSPayment payment = makeRsvPayment(rsv, psgCount, totalPrice);
+
+        return rsv.getAirlineRsvCode();
+
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "makeRsvBooker")
+    public GDSReservation makeRsvBooker(@WebParam(name = "rsv") GDSReservation gdsRsv, @WebParam(name = "booker") GDSBooker booker) {
+        em.persist(gdsRsv);
+        GDSReservation rsv = em.find(GDSReservation.class, gdsRsv.getAirlineRsvCode());
+//        em.refresh(rsv);
+//        rsv=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+//        em.refresh(rsv);
+
+        booker = em.find(GDSBooker.class, booker.getId());
+        rsv.setGdsBooker(booker);
+
+//        List<Reservation> rsvList = new ArrayList<>();
+//
+//        booker.setRsvList(rsvList);
+        booker.getRsvList().add(rsv);
+//        em.merge(booker);
+        em.flush();
+//        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+//
+//        em.flush();
+
+        System.out.println("rsv found in makeRsvBooker is " + rsv);
+        return rsv;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "createPsgList")
+    public List<GDSPassenger> createPsgList(@WebParam(name = "passengerList") List<GDSPassenger> passengerList) {
+        for (int i = 0; i < passengerList.size(); i++) {
+            GDSPassenger psg = passengerList.get(i);
+            em.persist(psg);
+            passengerList.set(i, em.find(GDSPassenger.class, psg.getId()));
+
+        }
+        em.flush();
+
+        System.out.println("LEAVING createPsgList");
+
+        return passengerList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "makeRsv_GDSFlight")
+    public GDSReservation makeRsv_GDSFlight(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "departFlight") List<GDSFlight> departFlight, @WebParam(name = "returnFlight") List<GDSFlight> returnFlight, @WebParam(name = "psgCount") Integer psgCount) {
+        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        em.refresh(rsv);
+        GDSFlight instance = new GDSFlight();
+        if (rsv != null) {
+            for (int i = 0; i < departFlight.size(); i++) {
+                instance = em.find(GDSFlight.class, departFlight.get(i).getId());
+                em.refresh(instance);
+                instance.setBookedSeat(instance.getBookedSeat() + psgCount);
+                instance.setAvailableSeat(instance.getAvailableSeat() - psgCount);
+
+                instance.getRsv().add(rsv);
+                em.merge(instance);
+                rsv.getGdsFlightList().add(instance);
+                System.out.println("in depart loop, i is " + i + ", rsv.gdsList is " + rsv.getGdsFlightList());
+
+            }
+
+            for (int i = 0; i < returnFlight.size(); i++) {
+                instance = em.find(GDSFlight.class, returnFlight.get(i).getId());
+                em.refresh(instance);
+                instance.setBookedSeat(instance.getBookedSeat() + psgCount);
+                instance.setAvailableSeat(instance.getAvailableSeat() - psgCount);
+
+                instance.getRsv().add(rsv);
+                em.merge(instance);
+                rsv.getGdsFlightList().add(instance);
+                System.out.println("in return loop, i is " + i + ", rsv.gdsList is " + rsv.getGdsFlightList());
+
+            }
+
+            em.merge(rsv);
+            em.flush();
+
+            for (int i = 0; i < rsv.getGdsFlightList().size(); i++) {
+                System.out.println("i=" + i + " flightInstance is " + rsv.getGdsFlightList().get(i).getFlightNo());
+
+            }
+
+        }
+
+        em.flush();
+
+        System.out.println("LEAVING makeRsvBookInstance");
+
+        return rsv;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "setupPsg_Ticket")
+    public ArrayList<GDSTicket> setupPsg_Ticket(@WebParam(name = "departFlights") List<GDSFlight> departFlights, @WebParam(name = "returnFlights") List<GDSFlight> returnFlights, @WebParam(name = "passengerList") List<GDSPassenger> passengerList, @WebParam(name = "booker") GDSBooker booker, @WebParam(name = "psgCount") Integer psgCount, @WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "returnTrip") Boolean returnTrip, @WebParam(name = "bkSystem") String bkSystem) {
+        GDSTicket depTicket;
+        GDSTicket arrTicket;
+        ArrayList<GDSTicket> tkList = new ArrayList<GDSTicket>();
+        Date temp;
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String depAirport;
+        String arrAirport;
+        String depTime;
+        String arrTime;
+        String flightNo;
+        GDSPassenger psg;
+
+        System.out.println("^^^^^^^^^^^^^^^Size of passengerList is: " + passengerList.size());
+
+        for (int i = 0; i < departFlights.size(); i++) {
+//            depTicket=new Ticket();
+            depAirport = departFlights.get(i).getDepAirport();
+            arrAirport = departFlights.get(i).getArrAirport();
+            temp = departFlights.get(i).getDepTime();
+            depTime = df.format(temp);
+
+            temp = departFlights.get(i).getArrTime();
+            arrTime = df.format(temp);
+            flightNo = departFlights.get(i).getFlightNo();
+
+            for (int j = 0; j < passengerList.size(); j++) {
+                depTicket = new GDSTicket();
+                depTicket.createTicket(depAirport, arrAirport, depTime, arrTime, flightNo, bkSystem);
+                psg = passengerList.get(j);
+                System.out.println("*************Passenger Id is :" + psg.getId());
+                GDSPassenger thisPsg = em.find(GDSPassenger.class, psg.getId());
+                System.out.println("in depart loop: before add ticket, all tickets in psg are " + thisPsg.getTickets());
+
+                if (thisPsg != null) {
+                    em.refresh(thisPsg);
+                    depTicket.setPassenger(thisPsg);
+                    em.persist(depTicket);
+
+                    List<GDSTicket> tkt = thisPsg.getTickets();
+                    System.out.println("tkt in thisPsg before adding " + thisPsg.getTickets());
+                    tkt.add(depTicket);
+                    thisPsg.setTickets(tkt);
+                    System.out.println("tkt in thisPsg after adding " + tkt);
+//                    em.merge(thisPsg);
+                    System.out.println("tkt in thisPsg after merge " + tkt);
+
+                    tkList.add(depTicket);
+//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+
+                    System.out.println("depTicket is " + depTicket.getTicketID());
+                    System.out.println("in depart loop: after add ticket, all tickets in psg are " + thisPsg.getTickets());
+
+                    em.flush();
+
+                }
+            }
+
+        }
+        em.flush();
+
+        for (int i = 0; i < returnFlights.size(); i++) {
+//            arrTicket=new Ticket();
+            depAirport = returnFlights.get(i).getDepAirport();
+            arrAirport = returnFlights.get(i).getArrAirport();
+            temp = returnFlights.get(i).getDepTime();
+            depTime = df.format(temp);
+            temp = returnFlights.get(i).getArrTime();
+            arrTime = df.format(temp);
+            flightNo = returnFlights.get(i).getFlightNo();
+
+            for (int j = 0; j < passengerList.size(); j++) {
+                arrTicket = new GDSTicket();
+                arrTicket.createTicket(depAirport, arrAirport, depTime, arrTime, flightNo, bkSystem);
+                psg = passengerList.get(j);
+                GDSPassenger thisPsg = em.find(GDSPassenger.class, psg.getId());
+                if (thisPsg != null) {
+                    arrTicket.setPassenger(thisPsg);
+                    em.persist(arrTicket);
+
+//                    thisPsg.getTickets().add(arrTicket);
+//                    em.merge(thisPsg);
+                    List<GDSTicket> tkt = thisPsg.getTickets();
+                    tkt.add(arrTicket);
+                    thisPsg.setTickets(tkt);
+                    em.merge(thisPsg);
+
+                    tkList.add(arrTicket);
+//                    passengerList.set(j, em.find(Passenger.class, thisPsg.getId()));
+
+                    System.out.println("arrTicket is " + arrTicket.getTicketID());
+                    System.out.println("all tickets in psg are " + thisPsg.getTickets());
+                }
+            }
+
+        }
+
+        em.flush();
+        System.out.println("in setUpPsg_tickets: passenger 1 has tickets:　" + passengerList.get(0).getTickets());
+        System.out.println("LEAVING setupPsg_Ticket");
+
+        return tkList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "setupTicket_Reservation")
+    @Oneway
+    public void setupTicket_Reservation(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "tickets") ArrayList<GDSTicket> tickets) {
+        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+//        rsv.setTickets(tickets);
+//        em.merge(rsv);
+        System.out.println("in ricketRsv(): rsv found is " + rsv);
+
+//        List<Ticket> ticketList = new ArrayList<>();
+//        List<Ticket> t1 = rsv.getTickets();
+//        rsv.setTickets(ticketList);
+        for (int i = 0; i < tickets.size(); i++) {
+            System.out.println("@@@@@@This is in setupTicket_Reservation:" + tickets.get(i));
+            GDSTicket ticket = em.find(GDSTicket.class, tickets.get(i).getTicketID());
+            ticket.setRsv(rsv);
+//            em.merge(ticket);
+
+            rsv.getTickets().add(ticket);
+
+        }
+
+//        em.merge(rsv);
+        em.flush();
+        System.out.println("After setting ticket list");
+
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "makeRsvPayment")
+    public GDSPayment makeRsvPayment(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "psgCount") Integer psgCount, @WebParam(name = "totalPrice") Double totalPrice) {
+
+        for (int i = 0; i < rsv.getGdsFlightList().size(); i++) {
+            totalPrice += rsv.getGdsFlightList().get(i).getPrice();
+        }
+        totalPrice *= psgCount;
+        GDSPayment payment = new GDSPayment();
+        payment.createPayment(totalPrice);
+        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        payment.setReservation(rsv);
+        rsv.setPayment(payment);
+        em.persist(payment);
+        em.merge(rsv);
+
+        return payment;
+
+    }
+
+    /**
+     * Web service operation
+     */
 }

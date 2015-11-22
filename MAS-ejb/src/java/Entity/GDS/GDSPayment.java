@@ -6,6 +6,7 @@
 package Entity.GDS;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -35,6 +36,8 @@ public class GDSPayment implements Serializable {
     private String billAddress;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date paymentDate;
+    
+    private Double totalPrice;
 
     @OneToOne
     private GDSReservation reservation;
@@ -42,7 +45,10 @@ public class GDSPayment implements Serializable {
     public GDSPayment() {
     }
 
-    
+    public void createPayment(Double totalPrice) {
+        this.paymentDate = Calendar.getInstance().getTime();
+        this.totalPrice = totalPrice;
+    }
 
     public Long getPaymentID() {
         return paymentID;
@@ -119,10 +125,21 @@ public class GDSPayment implements Serializable {
     public GDSReservation getReservation() {
         return reservation;
     }
+   
 
     public void setReservation(GDSReservation reservation) {
         this.reservation = reservation;
     }
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
+    
 
     @Override
     public int hashCode() {

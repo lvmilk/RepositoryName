@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity.ADS;
+package Entity.GDS;
 
-import Entity.CommonInfa.Agency;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,59 +16,37 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-
 /**
  *
- * @author LI HAO
+ * @author LIU YUQI'
  */
 @Entity
-public class Booker implements Serializable {
+public class GDSBooker implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private String title;
     private String firstName;
     private String lastName;
-    
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String email;
     private String address;
     private String contact;
-    
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String passport;
-    
-    private boolean memberStatus;
+
     private String dob;
-    private Double miles=0.0;
-    
-    private String password;
-    
-    private boolean subscribe;
-    
-    
-    @OneToMany(cascade={CascadeType.PERSIST},mappedBy="booker")
-    private List<Reservation> rsvList;
-    
-    
-    @ManyToOne
-    private Agency agency;
-    
-    
-    public Booker()
-    {
-    }
-    
-    public void createMember(String title, String firstName, String lastName, String email, String address, String contact,boolean memberStatus)
-    {
-        this.title=title;
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.email=email;
-        this.address=address;
-        this.contact=contact;
-        this.memberStatus=memberStatus;
+
+
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "gdsBooker")
+    private List<GDSReservation> rsvList;
+
+    public GDSBooker() {
     }
 
     public Long getId() {
@@ -81,32 +57,16 @@ public class Booker implements Serializable {
         this.id = id;
     }
 
+    public void createMember(String title, String firstName, String lastName, String email, String address, String contact) {
+        this.title = title;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.address = address;
+        this.contact = contact;
 
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Booker)) {
-            return false;
-        }
-        Booker other = (Booker) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Entity.ADS.Member[ id=" + id + " ]";
-    }
 
     /**
      * @return the firstName
@@ -192,19 +152,6 @@ public class Booker implements Serializable {
         this.passport = passport;
     }
 
-    /**
-     * @return the memberStatus
-     */
-    public boolean isMemberStatus() {
-        return memberStatus;
-    }
-
-    /**
-     * @param memberStatus the memberStatus to set
-     */
-    public void setMemberStatus(boolean memberStatus) {
-        this.memberStatus = memberStatus;
-    }
 
     /**
      * @return the dob
@@ -218,20 +165,6 @@ public class Booker implements Serializable {
      */
     public void setDob(String dob) {
         this.dob = dob;
-    }
-
-    /**
-     * @return the miles
-     */
-    public Double getMiles() {
-        return miles;
-    }
-
-    /**
-     * @param miles the miles to set
-     */
-    public void setMiles(Double miles) {
-        this.miles = miles;
     }
 
 
@@ -249,46 +182,39 @@ public class Booker implements Serializable {
         this.title = title;
     }
 
-    public List<Reservation> getRsvList() {
+    public List<GDSReservation> getRsvList() {
         return rsvList;
     }
 
-    public void setRsvList(List<Reservation> rsvList) {
+    public void setRsvList(List<GDSReservation> rsvList) {
         this.rsvList = rsvList;
     }
 
-    /**
-     * @return the agency
-     */
-    public Agency getAgency() {
-        return agency;
+
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
-    /**
-     * @param agency the agency to set
-     */
-    public void setAgency(Agency agency) {
-        this.agency = agency;
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof GDSBooker)) {
+            return false;
+        }
+        GDSBooker other = (GDSBooker) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }
+        return true;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public String toString() {
+        return "Entity.GDS.GDSBooker[ id=" + id + " ]";
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isSubscribe() {
-        return subscribe;
-    }
-
-    public void setSubscribe(boolean subscribe) {
-        this.subscribe = subscribe;
-    }
-
-    
-
-    
-    
 }

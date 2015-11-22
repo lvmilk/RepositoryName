@@ -686,25 +686,7 @@ INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(4444,22222, 4000.00,"GDS","2015-11-10",444444,"Unused",150000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(5555,9999, 2200.00,"GDS","2015-11-10",444444,"Unused",150000)
 
-INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
-INSERT IGNORE INTO Hotel(hotelName)values("Hilton")
 
-INSERT IGNORE INTO CarRental(companyName)values("GrabCar")
-
-INSERT IGNORE INTO Railway(railwayName)values("Japan Railway")
-
-
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",1111,1000.0,"2015-10-12")
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",2222,1500.0,"2015-05-10")
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Hilton",1111,2000.0,"2015-01-10")
-
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1200.0,"2015-10-12")
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",2222,1800.0,"2015-05-10")
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1000.0,"2015-01-10")
-
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,3000.0,"2015-10-12")
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",2222,2200.0,"2015-05-10")
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,2500.0,"2015-01-10")
 
 
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(111111,"ARS",1500.00,"Ticket Sale","Li Hao","2015-08-10",0.0)
