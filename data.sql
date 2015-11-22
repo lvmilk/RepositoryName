@@ -600,6 +600,7 @@ INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,member
 INSERT IGNORE INTO Booker(id,address,contact,dob,email,firstname,lastname,memberstatus,miles,passport,title,subscribe) values(44444,"Strathmore Ave", 23456776,"1993-11-11","christine000@sina.com","Bohan","Xu",true,432,"G88882321","Dr",true)
 
 
+
 INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(9999,"G1234589","Mr","Hao","Li","TFP","A123")
 INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(8888,"G4567890","Miss","Yuqi","Liu","TFP","A456")
 INSERT IGNORE INTO Passenger(id,passport,title,firstName,lastName,ffpName,ffpNo) values(7777,"G2345678","Miss","Xi","Lu","TFP","A123")

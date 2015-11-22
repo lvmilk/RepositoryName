@@ -176,7 +176,7 @@ public class RoutePlannigBeanRemoteTest {
         List<Route> rt = new ArrayList<Route>();
         rt = rpbr.canDeleteRouteList();
 
-        assertTrue(rt.isEmpty());
+        assertFalse(rt.isEmpty());
     }
 
     @Test
@@ -294,7 +294,7 @@ public class RoutePlannigBeanRemoteTest {
         System.out.println("test27CanDeleteRoutePair");
         List<Route> rt=new ArrayList<Route>();
         rt=rpbr.canDeleteRoutePair();
-        assertTrue(rt.isEmpty());
+        assertFalse(rt.isEmpty());
     }
 
     @Test

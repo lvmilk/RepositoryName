@@ -22,7 +22,7 @@ import java.lang.*;
  * @author LIU YUQI'
  */
 @Stateless
-public class SeatPlanBean implements SeatPlanBeanLocal {
+public class SeatPlanBean implements SeatPlanBeanLocal,SeatPlanBeanRemote {
 
     AircraftType airType;
     @PersistenceContext
