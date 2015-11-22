@@ -37,17 +37,17 @@
                     <p:columnGroup type="header">
                         <p:row>
                             <p:column rowspan="2" headerText="Aircraft Type"/>
-                            <p:column colspan="4" headerText="Annual Cost Break Down (thousand SGD)"/>
-                            <p:column rowspan="2" headerText="Annual Total Cost (thousand SGD)" />
-                            <p:column rowspan="2" headerText="Expected Annual Revenue (thousand SGD)" />
-                            <p:column rowspan="2" headerText="Expected Annual Profit (thousand SGD)" />
-                            <p:column rowspan="2" headerText="Profit Margin Ratio" />
+                            <p:column colspan="4" headerText="Annual Cost Break Down (thousand SGD)"  style="color: #35bad6;"/>
+                            <p:column rowspan="2" headerText="Annual Total Cost (thousand SGD)" style="color: #3c9fb4;"/>
+                            <p:column rowspan="2" headerText="Expected Annual Revenue (thousand SGD)" style="color: #ff1493;"/>
+                            <p:column rowspan="2" headerText="Expected Annual Profit (thousand SGD)" style="color: #DC8700;"/>
+                            <p:column rowspan="2" headerText="Profit Margin Ratio" style="color: #003366;"/>
                         </p:row>
                         <p:row>
-                            <p:column headerText="Annual Fuel Cost (thousand SGD)"/>
-                            <p:column headerText="Annual Aircraft Depreciation Cost (thousand SGD)"/>
-                            <p:column headerText="Annual Maintenance Cost (thousand SGD)"/>
-                            <p:column headerText="Annual Flight Crew Cost (thousand SGD)"/>
+                            <p:column headerText="Annual Fuel Cost (thousand SGD)" style="color: #35bad6;"/>
+                            <p:column headerText="Annual Aircraft Depreciation Cost (thousand SGD)" style="color: #35bad6;"/>
+                            <p:column headerText="Annual Maintenance Cost (thousand SGD)" style="color: #35bad6;"/>
+                            <p:column headerText="Annual Flight Crew Cost (thousand SGD)" style="color: #35bad6;"/>
                         </p:row>
                     </p:columnGroup>
 
@@ -70,7 +70,7 @@
                         <h:outputText value="#{CRPMB.totalCostMap[key]}" />
                     </p:column>
                     <p:column>
-                        <h:outputText value="#{CRPMB.revenueMap[key]}" />
+                        <h:outputText value="#{CRPMB.revenueMap[key]}"/>
                     </p:column>
                     <p:column>
                         <h:outputText value="#{CRPMB.profitMap[key]}" />
