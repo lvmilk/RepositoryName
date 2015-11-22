@@ -18,7 +18,6 @@ import java.util.*;
 import Entity.*;
 import Entity.AAS.Expense;
 import Entity.AAS.Payroll;
-import Entity.GDS.Airline;
 import static java.time.Clock.system;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,7 +52,6 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
     private Integer temp;
     private Integer locked;
 
-    private Airline al;
 
     public ManageAccountBean() {
 
@@ -109,10 +107,6 @@ public class ManageAccountBean implements ManageAccountBeanLocal, ManageAccountB
             alliance = new AirAlliances();
             alliance.createAllianceAcc(pid, hPwd, companyName, email, stfType);
             em.persist(alliance);
-
-            al = new Airline();
-            al.createAirline(companyName, iata, email);
-            em.persist(al);
             em.flush();
 
         }

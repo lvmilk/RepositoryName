@@ -11,7 +11,6 @@ import Entity.APS.FlightInstance;
 import Entity.CommonInfa.AirAlliances;
 import Entity.AAS.Revenue;
 import Entity.AAS.Expense;
-import Entity.GDS.Airline;
 import Entity.GDS.GDSFlight;
 import Entity.GDS.GDSSeat;
 import Entity.GDS.GDSBooker;
