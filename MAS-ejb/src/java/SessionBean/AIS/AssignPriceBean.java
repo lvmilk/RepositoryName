@@ -25,7 +25,7 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateless
-public class AssignPriceBean implements AssignPriceBeanLocal {
+public class AssignPriceBean implements AssignPriceBeanLocal,AssignPriceBeanRemote {
 
     @PersistenceContext
     EntityManager em;
