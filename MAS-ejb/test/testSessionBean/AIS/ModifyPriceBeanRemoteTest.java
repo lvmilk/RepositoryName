@@ -7,10 +7,9 @@ package testSessionBean.AIS;
 
 import Entity.AIS.BookingClassInstance;
 import Entity.APS.FlightFrequency;
-import Entity.APS.FlightInstance;
 import Entity.APS.Route;
 import SessionBean.AIS.AssignPriceBeanRemote;
-import SessionBean.AIS.ViewBookingClassPriceBeanRemote;
+import SessionBean.AIS.ModifyPriceBeanRemote;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,11 +28,11 @@ import static org.junit.Assert.*;
  *
  * @author LI HAO
  */
-public class AssignPriceBeanRemoteTest {
+public class ModifyPriceBeanRemoteTest {
 
-    AssignPriceBeanRemote apbr = lookupAssignPriceBeanRemote();
+    ModifyPriceBeanRemote mpbr = lookupModifyPriceBeanRemote();
 
-    public AssignPriceBeanRemoteTest() {
+    public ModifyPriceBeanRemoteTest() {
     }
 
     @BeforeClass
@@ -58,49 +57,31 @@ public class AssignPriceBeanRemoteTest {
     // @Test
     // public void hello() {}
     @Test
-    public void test01getRouteList() throws Exception {
-        System.out.println("test01getRouteList");
-        List<Route> rt = new ArrayList<Route>();
-        rt = apbr.getRouteList();
-        assertFalse(rt.isEmpty());
-    }
-
-    @Test
-    public void test02getFlightFrequencyList() throws Exception {
-        System.out.println("test02getFlightFrequencyList");
-        List<FlightFrequency> ffList = new ArrayList<FlightFrequency>();
-        ffList = apbr.getFlightFrequencyList(Long.valueOf(30000));
+    public void test01getFlightList() throws Exception {
+        System.out.println("test01getFlightList");
+        List<FlightFrequency>  ffList=new ArrayList<FlightFrequency> ();
+        ffList=mpbr.getFlightList("2015-12-23");
         assertFalse(ffList.isEmpty());
     }
 
     @Test
-    public void test03getFlightInstanceList() throws Exception {
-        System.out.println("test03getFlightInstanceList");
-        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
-        fiList = apbr.getFlightInstanceList("MR003");
-        assertTrue(fiList.isEmpty());
-    }
-
-    @Test
-    public void test04getBkiList() throws Exception {
-        System.out.println("test04getBkiList");
-        List<FlightInstance> fiList = new ArrayList<FlightInstance>();
-        fiList = apbr.getFlightInstanceList("MR001");
-        
+    public void test02getBkiList() throws Exception {
+        System.out.println("test02getBkiList");
         List<BookingClassInstance> bkiList=new ArrayList<BookingClassInstance>();
-        bkiList=apbr.getBkiList(fiList.get(0));
-        assertNotNull(bkiList);
+        bkiList=mpbr.getBkiList("MR006","2015-12-23");
+        assertFalse(bkiList.isEmpty());
 
     }
 
-    private AssignPriceBeanRemote lookupAssignPriceBeanRemote() {
+    private ModifyPriceBeanRemote lookupModifyPriceBeanRemote() {
         try {
             Context c = new InitialContext();
-            return (AssignPriceBeanRemote) c.lookup("java:global/MAS/MAS-ejb/AssignPriceBean!SessionBean.AIS.AssignPriceBeanRemote");
+            return (ModifyPriceBeanRemote) c.lookup("java:global/MAS/MAS-ejb/ModifyPriceBean!SessionBean.AIS.ModifyPriceBeanRemote");
 
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
         }
     }
+
 }

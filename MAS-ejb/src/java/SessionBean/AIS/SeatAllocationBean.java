@@ -21,7 +21,7 @@ import javax.persistence.Query;
  * @author wang
  */
 @Stateless
-public class SeatAllocationBean implements SeatAllocationBeanLocal {
+public class SeatAllocationBean implements SeatAllocationBeanLocal,SeatAllocationBeanRemote {
  @PersistenceContext
     EntityManager em;
 
