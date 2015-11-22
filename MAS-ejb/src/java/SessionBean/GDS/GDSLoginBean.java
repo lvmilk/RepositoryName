@@ -382,7 +382,7 @@ public class GDSLoginBean {
         Query query = em.createQuery("SELECT b FROM GDSBooker b WHERE b.email=:bookerEmail").setParameter("bookerEmail", bookerEmail);
         if (query.getResultList().isEmpty()) {
             em.persist(booker);
-            System.out.println("booker email is "+booker.getEmail());
+            System.out.println("booker email is " + booker.getEmail());
         } else {
             booker = (GDSBooker) query.getResultList().get(0);
         }
@@ -401,7 +401,6 @@ public class GDSLoginBean {
 
         setupTicket_Reservation(rsv, tickets);
 
-
         GDSPayment payment = makeRsvPayment(rsv, psgCount, totalPrice);
 
         return rsv.getAirlineRsvCode();
@@ -414,11 +413,11 @@ public class GDSLoginBean {
     @WebMethod(operationName = "makeRsvBooker")
     public GDSReservation makeRsvBooker(@WebParam(name = "rsv") GDSReservation gdsRsv, @WebParam(name = "booker") GDSBooker booker) {
         em.persist(gdsRsv);
-        GDSReservation  rsv=em.find(GDSReservation.class, gdsRsv.getAirlineRsvCode());
+        GDSReservation rsv = em.find(GDSReservation.class, gdsRsv.getAirlineRsvCode());
 //        em.refresh(rsv);
 //        rsv=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
 //        em.refresh(rsv);
-        
+
         booker = em.find(GDSBooker.class, booker.getId());
         rsv.setGdsBooker(booker);
 
@@ -459,7 +458,7 @@ public class GDSLoginBean {
      */
     @WebMethod(operationName = "makeRsv_GDSFlight")
     public GDSReservation makeRsv_GDSFlight(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "departFlight") List<GDSFlight> departFlight, @WebParam(name = "returnFlight") List<GDSFlight> returnFlight, @WebParam(name = "psgCount") Integer psgCount) {
-       rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
         em.refresh(rsv);
         GDSFlight instance = new GDSFlight();
         if (rsv != null) {
@@ -467,12 +466,28 @@ public class GDSLoginBean {
                 instance = em.find(GDSFlight.class, departFlight.get(i).getId());
                 em.refresh(instance);
                 instance.setBookedSeat(instance.getBookedSeat() + psgCount);
+                instance.setAvailableSeat(instance.getAvailableSeat() - psgCount);
 
                 instance.getRsv().add(rsv);
                 em.merge(instance);
                 rsv.getGdsFlightList().add(instance);
+                System.out.println("in depart loop, i is " + i + ", rsv.gdsList is " + rsv.getGdsFlightList());
 
             }
+
+            for (int i = 0; i < returnFlight.size(); i++) {
+                instance = em.find(GDSFlight.class, returnFlight.get(i).getId());
+                em.refresh(instance);
+                instance.setBookedSeat(instance.getBookedSeat() + psgCount);
+                instance.setAvailableSeat(instance.getAvailableSeat() - psgCount);
+
+                instance.getRsv().add(rsv);
+                em.merge(instance);
+                rsv.getGdsFlightList().add(instance);
+                System.out.println("in return loop, i is " + i + ", rsv.gdsList is " + rsv.getGdsFlightList());
+
+            }
+
             em.merge(rsv);
             em.flush();
 
@@ -633,26 +648,23 @@ public class GDSLoginBean {
      */
     @WebMethod(operationName = "makeRsvPayment")
     public GDSPayment makeRsvPayment(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "psgCount") Integer psgCount, @WebParam(name = "totalPrice") Double totalPrice) {
-    
 
-  
-            for (int i = 0; i < rsv.getGdsFlightList().size(); i++) {
-                totalPrice += rsv.getGdsFlightList().get(i).getPrice();
-            }
-            totalPrice *= psgCount;
-            GDSPayment payment = new GDSPayment();
-            payment.createPayment(totalPrice);
-            rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
-            payment.setReservation(rsv);
-            rsv.setPayment(payment);
-            em.persist(payment);
-            em.merge(rsv);
-     
-            return payment;
-        
+        for (int i = 0; i < rsv.getGdsFlightList().size(); i++) {
+            totalPrice += rsv.getGdsFlightList().get(i).getPrice();
+        }
+        totalPrice *= psgCount;
+        GDSPayment payment = new GDSPayment();
+        payment.createPayment(totalPrice);
+        rsv = em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        payment.setReservation(rsv);
+        rsv.setPayment(payment);
+        em.persist(payment);
+        em.merge(rsv);
+
+        return payment;
+
     }
 
-   
     /**
      * Web service operation
      */
