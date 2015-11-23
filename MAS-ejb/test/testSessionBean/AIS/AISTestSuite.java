@@ -18,7 +18,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({testSessionBean.AIS.BookingClassBeanRemoteTest.class, testSessionBean.AIS.SeatPlanBeanRemoteTest.class,
-    testSessionBean.AIS.SeatAssignBeanRemoteTest.class})
+    testSessionBean.AIS.SeatAssignBeanRemoteTest.class, testSessionBean.AIS.ViewBookingClassPriceBeanRemoteTest.class, testSessionBean.AIS.AssignPriceBeanRemoteTest.class, 
+    testSessionBean.AIS.ModifyPriceBeanRemoteTest.class,testSessionBean.AIS.SeatPlanBeanRemoteTest.class,testSessionBean.AIS.PricingBeanRemoteTest.class})
 public class AISTestSuite {
 
     @BeforeClass

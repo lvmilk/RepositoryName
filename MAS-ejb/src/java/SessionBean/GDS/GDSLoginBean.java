@@ -11,7 +11,6 @@ import Entity.APS.FlightInstance;
 import Entity.CommonInfa.AirAlliances;
 import Entity.AAS.Revenue;
 import Entity.AAS.Expense;
-import Entity.GDS.Airline;
 import Entity.GDS.GDSFlight;
 import Entity.GDS.GDSSeat;
 import Entity.GDS.GDSBooker;
@@ -663,8 +662,26 @@ public class GDSLoginBean {
         em.persist(payment);
         em.merge(rsv);
 
+        /////////////////////
+        String channel = "GDS";
+        for (int j = 0; j < rsv.getGdsFlightList().size(); j++) {
+            revenue = new Revenue();
+            String name = rsv.getGdsFlightList().get(j).getCompanyName();
+            revenue.setPayer(name);
+            revenue.setChannel(channel);
+            if (name.equals("MAS")) {
+                revenue.setType("Ticket Sale");
+                revenue.setReceivable(totalPrice);
+            } else {
+                revenue.setType("Commission");
+                revenue.setReceivable(0.1 * totalPrice);
+            }
+            revenue.setPaymentDate(new Date());
+            revenue.setRefund(0.0);
+            em.persist(revenue);
+            em.flush();
+        }
         return payment;
-
     }
 
     /**

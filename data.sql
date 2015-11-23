@@ -212,8 +212,6 @@ INSERT IGNORE INTO UserEntity(USERNAME,COMEMAIL)values("CP777800","cp777800@mas.
 INSERT IGNORE INTO AGENCY(AGENCYID,AGENPWD,NAME,EMAIL,PTYPE)values("AG777777","16deddbdc8449f8e47ff8dc6d49e716c","travel agency","ag777@777.com","agency")
 INSERT IGNORE INTO AIRALLIANCES(ALLIANCEID,ALLPWD,NAME,EMAIL,PTYPE)values("AL777777","dd4960a35453b6d2098e4e75af873fd8","Korean Airline","al777777@mas.com","alliance")
 
-INSERT IGNORE INTO AIRLINE(ID,IATA,EMAIL,NAME)values(88,"KAL","AL777777@mas.com","Korean Airline")
-
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O777777","o777777@mas.com","72ebb4d2f49358f09e1811874bb487d1","officeStaff",0,0,"O777777","Erkang","Fu","HR",3000,0)
 INSERT IGNORE INTO Officestaff(OFFNAME,EMAIL,OFFPASSWORD,STFTYPE,ATTEMPT,LOCKED,USER_USERNAME,FIRSTNAME,LASTNAME,STFLEVEL,SALARY,HOURPAY) values("O888888","o888888@mas.com","0e267f2d45cd249730ca941395119dec","officeStaff",0,0,"O888888","LI","HAO","Normal",3000,0)
 
@@ -686,25 +684,7 @@ INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(4444,22222, 4000.00,"GDS","2015-11-10",444444,"Unused",150000)
 INSERT IGNORE INTO Ticket(ticketID,passenger_id,price,bookSystem,bookDate,rsv_id,ticketStatus,bkInstance_id) values(5555,9999, 2200.00,"GDS","2015-11-10",444444,"Unused",150000)
 
-INSERT IGNORE INTO Hotel(hotelName)values("Marina Bay Sands")
-INSERT IGNORE INTO Hotel(hotelName)values("Hilton")
 
-INSERT IGNORE INTO CarRental(companyName)values("GrabCar")
-
-INSERT IGNORE INTO Railway(railwayName)values("Japan Railway")
-
-
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",1111,1000.0,"2015-10-12")
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Marina Bay Sands",2222,1500.0,"2015-05-10")
--- INSERT IGNORE INTO HotelPayment(Hotel_hotelName,id,payment,paymentDate)values("Hilton",1111,2000.0,"2015-01-10")
-
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1200.0,"2015-10-12")
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",2222,1800.0,"2015-05-10")
--- INSERT IGNORE INTO CarPayment(CarRental_companyName,id,payment,paymentDate)values("GrabCar",1111,1000.0,"2015-01-10")
-
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,3000.0,"2015-10-12")
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",2222,2200.0,"2015-05-10")
--- INSERT IGNORE INTO RailwayPayment(Railway_railwayName,id,payment,paymentDate)values("Japan Railway",1111,2500.0,"2015-01-10")
 
 
 INSERT IGNORE INTO Revenue(id,channel,receivable,type,payer,paymentDate,refund) values(111111,"ARS",1500.00,"Ticket Sale","Li Hao","2015-08-10",0.0)
@@ -802,11 +782,14 @@ INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,d
 INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(100,"MU999","2015-12-09 00:09:00.000","2015-12-09 03:09:00.000","Shanghai Pudong Airport","Seoul Incheon Airport","SPD","ICN",0,2,2,"China Eastern Airline","First Class",800)
 INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(101,"MU888","2015-12-09 03:09:00.000","2015-12-09 06:09:00.000","Shanghai Pudong Airport","Tokyo Haneda Airport","SPD","HND",0,2,2,"China Eastern Airline","First Class",800)
 INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(102,"KE567","2015-12-23 19:09:00.000","2015-12-23 23:39:00.000","Seoul Incheon Airport","Singapore Changi Airport","ICN","SIN",0,1,1,"Korean Airline","First Class",900)
+INSERT IGNORE INTO GDSflight(id,flightNo,depTime,arrTime,depAirport,arrAirport,depIATA,arrIATA,bookedSeat,availableSeat,seatQuota,companyName,cabinName,price)values(103,"MR456","2015-12-23 19:09:00.000","2015-12-23 23:39:00.000","Seoul Incheon Airport","Singapore Changi Airport","ICN","SIN",1,1,2,"MAS","First Class",850)
 
 INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(100,"1A",1,"A","available","First Class",99)
-INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(101,"1B",1,"A","available","First Class",99)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(101,"1B",1,"B","available","First Class",99)
 INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(110,"1A",1,"A","available","First Class",100)
-INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(111,"1B",1,"A","available","First Class",100)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(111,"1B",1,"B","available","First Class",100)
 INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(120,"2A",2,"A","available","First Class",101)
-INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(121,"2B",2,"A","available","First Class",101)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(121,"2B",2,"B","available","First Class",101)
 INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(130,"2A",2,"A","available","First Class",102)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(131,"1A",1,"A","available","First Class",103)
+INSERT IGNORE INTO GDSSeat(id,seatNo,rowNo,colNo,status,cabinClass,FLIGHT_ID)values(132,"1B",1,"B","available","First Class",103)

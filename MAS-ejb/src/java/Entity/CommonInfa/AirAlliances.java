@@ -5,7 +5,7 @@
  */
 package Entity.CommonInfa;
 
-import Entity.ADS.PassengerNameRecord;
+
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,9 +28,6 @@ public class AirAlliances implements Serializable {
     private String email;
     private String pType;
     private String name;
-    
-    @OneToOne(mappedBy="alliance")
-    private PassengerNameRecord pnr;
 
     public void createAllianceAcc(String strAlId, String strAlPwd, String companyName, String strAlEmail, String strpType) {
         this.setAllianceID(strAlId);
@@ -115,19 +112,6 @@ public class AirAlliances implements Serializable {
         this.pType = pType;
     }
 
-    /**
-     * @return the pnr
-     */
-    public PassengerNameRecord getPnr() {
-        return pnr;
-    }
-
-    /**
-     * @param pnr the pnr to set
-     */
-    public void setPnr(PassengerNameRecord pnr) {
-        this.pnr = pnr;
-    }
 
     public String getName() {
         return name;
