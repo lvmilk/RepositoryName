@@ -97,6 +97,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
             origin = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("origin");
             dest = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("dest");
             returnTrip = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returnTrip");
+              booker = (Booker) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("booker");
 
             departed = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("departed");
             returned = (ArrayList<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("returned");
@@ -150,14 +151,14 @@ public class rescheduleConfirmManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
 
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
     
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
-            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
         }
 

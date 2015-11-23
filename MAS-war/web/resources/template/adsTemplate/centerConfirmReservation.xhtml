@@ -10,11 +10,12 @@
     </h:head>
     <h:body>
         <h:form id="form">
+            <p:messages id="msgs"/>
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
 
-<!--                    <p:outputLabel  value="Reserved by: " />
-                    <p:outputLabel value="#{tkMB.firstName} #{tkMB.lastName}" />-->
+                    <p:outputLabel  value="Reserved by: " />
+                    <p:outputLabel value="#{tkMB.booker.firstName} #{tkMB.booker.lastName}" />
 
                     <p:outputLabel  value="No. of Passenger: " />
                     <p:outputLabel value="#{tkMB.psgCount}" />
@@ -91,7 +92,7 @@
                     <p:printer target="form" />
                 </p:commandButton>
             
-            <p:commandButton value="Confirm" actionListener="#{tkMB.rsvConfirm}" icon="ui-icon-check" />
+            <p:commandButton value="Confirm" update="rsvConfirm" actionListener="#{tkMB.rsvConfirm}" icon="ui-icon-check" />
         </h:form>
     </h:body>
 </html>

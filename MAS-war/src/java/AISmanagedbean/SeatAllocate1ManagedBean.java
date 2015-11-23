@@ -204,7 +204,7 @@ public class SeatAllocate1ManagedBean implements Serializable {
         System.out.println("currentAllocated is " + currentAllocated);
 
         seatUnallocated = seatUnallocated + bInstance.getSeatNo();
-
+       if(currentAllocated!=null) {
         if (currentAllocated <= seatUnallocated) {
             bInstance.setSeatNo(currentAllocated);
             sa.editDemandInfo(bInstance);
@@ -222,6 +222,7 @@ public class SeatAllocate1ManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Seat No entered for bookingclass " + bInstance.getBookingClass().getAnnotation() + " exceeds unallocated seatNo ", ""));
 
         }
+       }
 
     }
 

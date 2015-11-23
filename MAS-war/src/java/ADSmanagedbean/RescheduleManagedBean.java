@@ -946,7 +946,7 @@ public class RescheduleManagedBean implements Serializable {
                             System.out.println("in findFlightInstance(): returnSpecificList size is " + returnSpecificList.size());
                             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnSpecificList", returnSpecificList);
                             if (stfType.equals("agency")) {
-                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                                FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling4.xhtml");
                             } else {
                                 FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight4.xhtml");
                             }
@@ -956,7 +956,7 @@ public class RescheduleManagedBean implements Serializable {
                         }
                     } else {
                         if (stfType.equals("agency")) {
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling4.xhtml");
                         } else {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight4.xhtml");
                         }
@@ -1015,7 +1015,7 @@ public class RescheduleManagedBean implements Serializable {
 
                 if (!returnTrip) {
                     if (stfType.equals("agency")) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling4.xhtml");
                     } else {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight4.xhtml");
                     }
@@ -1065,7 +1065,7 @@ public class RescheduleManagedBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returnDefault", returnDefault);
 
                     if (stfType.equals("agency")) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsBooking2.xhtml");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsRescheduling4.xhtml");
                     } else {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("./reScheduleFlight4.xhtml");
                     }
