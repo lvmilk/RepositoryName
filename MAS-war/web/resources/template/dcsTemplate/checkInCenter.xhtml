@@ -36,7 +36,6 @@
 
                     <p:outputLabel for="date" value="Date:(YYYY-MM-DD) " />     
                     <p:calendar id="date" value="#{cmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" navigator="true" mindate="#{cmb.minDate}" maxdate="#{cmb.maxDate}" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight date" />
-                    <p:calendar id="date" value="#{cmb.date}" pattern="yyyy-MM-dd" mask="true" label="date" required="true" navigator="true" validatorMessage="Start Date: Please enter a valid date"  requiredMessage="Please enter the flight date" />
 
                     <br></br>
                     <p:commandButton id="ondatechange" partialSubmit="true" value="Get flight list on that date" update="flight msgs" style="margin-right:0" action="#{cmb.onDateChange}"  icon="ui-icon-check" />
