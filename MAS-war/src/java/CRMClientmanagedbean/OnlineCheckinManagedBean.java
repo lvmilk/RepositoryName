@@ -126,7 +126,7 @@ public class OnlineCheckinManagedBean implements Serializable {
             System.out.println("cmb:getUnusedTicket(): check2 get requested flight instance: " + requestedFi.getDate());
             System.out.println("cmb:no of tickets found: " + dcb.getAllTicket(passportNo, firstName, lastName).size());
             for (Ticket ticket : dcb.getAllTicket(passportNo, firstName, lastName)) {
-
+                
                 Date dateTemp = ticket.getBkInstance().getFlightCabin().getFlightInstance().getStandardDepTimeDateType();
                 Calendar c1 = Calendar.getInstance();
                 c1.setTime(dateTemp);
@@ -135,6 +135,7 @@ public class OnlineCheckinManagedBean implements Serializable {
                 System.out.println("cmb: dateTemp " + dateTemp);
                 System.out.println("cmb: date " + date);
 
+        
                 if (date.after(dateTemp) && ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo().equals(flightNo) && ticket.getTicketStatus().equals("Unused")) {
                     System.out.println("cmb: One ticket to be added!");
                     newList.add(ticket);
