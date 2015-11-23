@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * @author LI HAO
  */
 @Entity
-public class GDSFlight implements Serializable {
+public class GDSFlight implements Serializable, Comparable<GDSFlight> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,6 +62,7 @@ public class GDSFlight implements Serializable {
     private Double price;
 
     @ManyToMany(mappedBy = "gdsFlightList")
+    @XmlTransient
     private List<GDSReservation> rsv = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "flight")
@@ -86,6 +87,18 @@ public class GDSFlight implements Serializable {
         this.cabinName = cabinName;
         this.price = price;
 
+    }
+
+    @Override
+    public int compareTo(GDSFlight fi) {
+        // System.err.println("**********Enter compare");
+        int result = 0;
+        if (this.depTime.before(fi.depTime)) {
+            result = -1;
+        } else if (this.depTime.after(fi.depTime)) {
+            result = 1;
+        }
+        return result;
     }
 
     public String getFlightNo() {
@@ -261,6 +274,7 @@ public class GDSFlight implements Serializable {
         this.price = price;
     }
 
+    @XmlTransient
     public List<GDSReservation> getRsv() {
         return rsv;
     }

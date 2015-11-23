@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,10 +37,11 @@ public class GDSPayment implements Serializable {
     private String billAddress;
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date paymentDate;
-    
+
     private Double totalPrice;
 
     @OneToOne
+    @XmlTransient
     private GDSReservation reservation;
 
     public GDSPayment() {
@@ -122,10 +124,10 @@ public class GDSPayment implements Serializable {
         this.paymentDate = paymentDate;
     }
 
+    @XmlTransient
     public GDSReservation getReservation() {
         return reservation;
     }
-   
 
     public void setReservation(GDSReservation reservation) {
         this.reservation = reservation;
@@ -138,8 +140,6 @@ public class GDSPayment implements Serializable {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
-    
-    
 
     @Override
     public int hashCode() {

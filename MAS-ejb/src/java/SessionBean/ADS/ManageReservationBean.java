@@ -559,6 +559,8 @@ public class ManageReservationBean implements ManageReservationBeanLocal {
         Collections.sort(oldReturn);
         Collections.sort(newDepart);
         Collections.sort(newReturn);
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@in getChangeDatePenalty(): size of oldDepart is "+oldDepart.size());
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@in getChangeDatePenalty(): size of newDepart is "+newDepart.size());
 
         if (!oldDepart.get(0).getDate().equals(newDepart.get(0).getDate())) {
 

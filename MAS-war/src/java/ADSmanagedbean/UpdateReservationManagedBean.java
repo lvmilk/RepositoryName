@@ -93,9 +93,9 @@ public class UpdateReservationManagedBean implements Serializable {
         allFlights = (List<FlightInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allFlights");
         allBookClassList = (List<BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allBookClassList");
         flightToBkInstance = (Map<FlightInstance, BookingClassInstance>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightToBkInstance");
-        
-        if(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight")!=null){
-        selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight");
+
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight") != null) {
+            selectedFlight = (FlightInstance) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedFlight");
         }
         selectedPsg = (Passenger) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedPsg");
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
@@ -115,7 +115,7 @@ public class UpdateReservationManagedBean implements Serializable {
         manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
     }
 
-       public void onChooseUpgradeCabin() {
+    public void onChooseUpgradeCabin() {
         Double oldPrice = 0.0;
         Double newPrice = 0.0;
 //        ArrayList<BookingClassInstance> bookList = new ArrayList<>();
@@ -142,11 +142,13 @@ public class UpdateReservationManagedBean implements Serializable {
             context.execute("PF('dlgGrd').show()");
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No Change of Cabin Class!"));
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", "");
         }
 
     }
-       
-       
+
     public void onChooseUpgradePsg() throws IOException {
         System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): flightToBkInstance map is " + flightToBkInstance);
         System.out.println("xxxxxxxxxxxxxxxxxxx in onChooseUpgradePsg(): selectedRsv.bookClassInstanceList is " + selectedRsv.getBkcInstance());
@@ -192,8 +194,10 @@ public class UpdateReservationManagedBean implements Serializable {
             System.out.println("!!!!!!!!!!!!!!!!!!!!rsv bookList DOES NOT contain chosen List");
         }
         mr.upgradeCabinClass(selectedPsgList, selectedRsv, chosenBkInstance, cabinName, bkSystem, companyName);
-         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-        
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", "");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cabin Class Upgraded successfully!"));
 
     }
@@ -260,13 +264,16 @@ public class UpdateReservationManagedBean implements Serializable {
 
         System.out.println("onSavePsgChange(): selectedPsg is " + selectedPsg);
         mr.ChangePassenger(selectedPsg, newPsg);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", "");
+
         if (bkSystem.equals("ARS")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./updatePsgSuccess.xhtml");
-        }else if (bkSystem.equals("DDS")) {
+        } else if (bkSystem.equals("DDS")) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsUpdatePsgSuccess.xhtml");
         }
     }
-    
 
     public void onSelectPsg() throws IOException {
 
@@ -310,7 +317,7 @@ public class UpdateReservationManagedBean implements Serializable {
             returned = mr.getFlightPackage(flights, dest, origin, departed.size());
         }
         System.out.println("booker found is " + selectedRsv.getBooker());
-        System.out.println("selectedRsv.getBkcInstance() is "+selectedRsv.getBkcInstance());
+        System.out.println("selectedRsv.getBkcInstance() is " + selectedRsv.getBkcInstance());
 
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("selectedRsv", selectedRsv);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("cabinName", selectedRsv.getBkcInstance().get(0).getFlightCabin().getCabinClass().getCabinName());

@@ -76,7 +76,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
     private String stfType;
 
     private Reservation selectedRsv;
-    private String manageStatus;
+
 
     private String bkSystem;
     private String cabinName;
@@ -87,7 +87,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
         try {
 
             cabinName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("cabinName");
-            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
+//            manageStatus = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("manageStatus");
             selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
             bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
             companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
@@ -146,13 +146,17 @@ public class rescheduleConfirmManagedBean implements Serializable {
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
-            
+
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
+
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Book flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+    
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("departed", new ArrayList<>());
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("returned", new ArrayList<>());
             FacesContext.getCurrentInstance().getExternalContext().redirect("./addRsvSuccess.xhtml");
 
         }
@@ -351,19 +355,7 @@ public class rescheduleConfirmManagedBean implements Serializable {
         this.totalPenalty = totalPenalty;
     }
 
-    /**
-     * @return the manageStatus
-     */
-    public String getManageStatus() {
-        return manageStatus;
-    }
-
-    /**
-     * @param manageStatus the manageStatus to set
-     */
-    public void setManageStatus(String manageStatus) {
-        this.manageStatus = manageStatus;
-    }
+    
 
     /**
      * @return the bkSystem

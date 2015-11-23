@@ -22,6 +22,8 @@ import Entity.GDS.GDSTicket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.jws.WebService;
@@ -663,6 +665,106 @@ public class GDSLoginBean {
 
         return payment;
 
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getFlightList")
+    public List<GDSFlight> getFlightList(@WebParam(name = "rsv") GDSReservation rsv, @WebParam(name = "origin") String origin, @WebParam(name = "dest") String dest, @WebParam(name = "index") Integer number) {
+        List<GDSFlight> newList = new ArrayList<>();
+        rsv=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        List<GDSFlight> resultList = rsv.getGdsFlightList();
+        System.out.println(" resultList of gdsFlight is " + resultList);
+        Collections.sort(resultList);
+        System.out.println(" resultList of gdsFlight is " + resultList);
+        for (int i = number; i < resultList.size(); i++) {
+            if (resultList.get(i).getArrAirport().equals(dest)) {
+                System.out.println("flight fulfills requirement is " + resultList.get(i));
+                newList.add(resultList.get(i));
+                break;
+            } else {
+                newList.add(resultList.get(i));
+            }
+        }
+        return newList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getPassengerList")
+    public List<GDSPassenger> getPassengerList(@WebParam(name = "rsv") GDSReservation rsv) {
+        rsv=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        List<GDSTicket> tickets = rsv.getTickets();
+        List<GDSPassenger> psgList = new ArrayList<>();
+        for (int i = 0; i < tickets.size(); i++) {
+            if (!psgList.contains(tickets.get(i).getPassenger())) {
+                psgList.add(tickets.get(i).getPassenger());
+            }
+        }
+
+        List<GDSPassenger> psgs = new ArrayList<>();
+        for (int i = 0; i < psgList.size(); i++) {
+            psgs.add(psgList.get(i));
+        }
+        return psgs;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getGdsReservationList")
+    public List<GDSReservation> getGdsReservationList(@WebParam(name = "companyName") String companyName) {
+        List<GDSReservation> rsvList = new ArrayList<>();
+        Query query = em.createQuery("SELECT g FROM GDSFlight g WHERE g.companyName=:companyName ").setParameter("companyName", companyName);
+        List<GDSFlight> resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+
+            System.out.println("size of flight list is System " + resultList);
+            for (GDSFlight fl : resultList) {
+                if (fl.getRsv() != null && !fl.getRsv().isEmpty()) {
+                    List<GDSReservation> temp = fl.getRsv();
+                    System.out.println("found reservation list is " + temp);
+                    for (GDSReservation r : temp) {
+                        System.out.println("individual rsv is " + r);
+                        rsvList.add(r);
+                    }
+                }
+            }
+        }
+        System.out.println("result rsvList is " + rsvList);
+        return rsvList;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getRsvFromDB")
+    public GDSReservation getRsvFromDB(@WebParam(name = "rsv") GDSReservation rsv) {
+        GDSReservation res=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        return res;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getBookerFromRsv")
+    public GDSBooker getBookerFromRsv(@WebParam(name = "rsv") GDSReservation rsv) {
+       GDSReservation res=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        GDSBooker booker =res.getGdsBooker();
+        return booker;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getPaymentFromRsv")
+    public GDSPayment getPaymentFromRsv(@WebParam(name = "rsv") GDSReservation rsv) {
+        GDSReservation res=em.find(GDSReservation.class, rsv.getAirlineRsvCode());
+        GDSPayment payment =res.getPayment();
+        return payment;
     }
 
     /**

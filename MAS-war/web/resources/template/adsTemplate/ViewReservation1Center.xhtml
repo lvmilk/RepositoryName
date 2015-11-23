@@ -13,7 +13,7 @@
     <h:body>
         <h:form id="viewReserve" >
             <p:panel id="panel" header="View All Reservation"  style="width:100%">
-                <p:dataTable var="rsv" value="#{gdsViewRsv.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
+                <p:dataTable var="rsv" value="#{viewReservation.rsvList}" paginator="true" rows="10" emptyMessage="No Reservations" >
 
 
                     <p:column headerText="Reservation id" sortBy="#{rsv.id}" filterBy="#{rsv.id}" >
@@ -43,7 +43,7 @@
 
 
                     <p:column headerText="View ">
-                        <p:commandButton value="View Detail" actionListener="#{gdsViewRsv.onSelectRsv(rsv)}" process="@this :viewReserve:panel" partialSubmit="true" update=":viewReserve"/>
+                        <p:commandButton value="View Detail" actionListener="#{viewReservation.onSelectRsv(rsv)}" process="@this :viewReserve:panel" partialSubmit="true" update=":viewReserve"/>
 
                     </p:column>
                 </p:dataTable>
@@ -52,9 +52,9 @@
             <br/>
             <br/>
 
-            <p:panel id="detail" header="Reservation Detail" rendered="#{gdsViewRsv.departed.size()>0}" toggleable="true">
+            <p:panel id="detail" header="Reservation Detail" rendered="#{viewReservation.departed.size()>0}" toggleable="true">
                 <p:panel header="Departure Trip " >             
-                    <ui:repeat value="#{gdsViewRsv.departed}" var="instance" varStatus="myStatus">
+                    <ui:repeat value="#{viewReservation.departed}" var="instance" varStatus="myStatus">
                         <h:panelGrid columns="8" cellpadding="15" >
 
                             <p:outputLabel  value="FlightNo: " />
@@ -84,8 +84,8 @@
                 </p:panel>
 
                 <br/>
-                <p:panel header="Return Trip " rendered="#{gdsViewRsv.returned.size()>0}">             
-                    <ui:repeat value="#{gdsViewRsv.returned}" var="instance">
+                <p:panel header="Return Trip " rendered="#{viewReservation.returned.size()>0}">             
+                    <ui:repeat value="#{viewReservation.returned}" var="instance">
 
                         <h:panelGrid columns="8" cellpadding="15" >
 
@@ -120,27 +120,27 @@
                 <p:panel id="booker" header="Booker"   toggleable="true" style="width:45%">
                     <h:panelGrid columns="4" cellpadding="10" >
                         <p:outputLabel  value="Title" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.booker.title}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.title}" />
 
                         <p:outputLabel  value="Name" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.booker.firstName} #{gdsViewRsv.selectedRsv.booker.lastName}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.firstName} #{viewReservation.selectedRsv.booker.lastName}" />
 
                         <p:outputLabel  value="Email" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.booker.email}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.email}" />
 
                         <p:outputLabel  value="Address" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.booker.address}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.address}" />
 
                         <p:outputLabel  value="Contact No" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.booker.contact}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.booker.contact}" />
                     </h:panelGrid>
 
                 </p:panel>
 
 
                 <br/>
-                <p:panel id="passenger" header="Passenger"  rendered="#{gdsViewRsv.departed.size()>0}" toggleable="true" style="width:45%">
-                    <p:dataTable var="passenger" value="#{gdsViewRsv.psgList}" rows="10" emptyMessage="No Reservations" >
+                <p:panel id="passenger" header="Passenger"  rendered="#{viewReservation.departed.size()>0}" toggleable="true" style="width:45%">
+                    <p:dataTable var="passenger" value="#{viewReservation.psgList}" rows="10" emptyMessage="No Reservations" >
 
                         <p:column headerText="Title" >
                             <h:outputText value="#{passenger.title}" />
@@ -166,13 +166,13 @@
                     <h:panelGrid columns="4" cellpadding="10" >
 
                         <p:outputLabel  value="Payment ID: " />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.payment.paymentID}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentID}" />
 
                         <p:outputLabel  value="Date of Payment: " />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.payment.paymentDate.toString()}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.paymentDate.toString()}" />
 
                         <p:outputLabel  value="Amount of Payment" />
-                        <p:outputLabel value="#{gdsViewRsv.selectedRsv.payment.totalPrice}" />
+                        <p:outputLabel value="#{viewReservation.selectedRsv.payment.totalPrice}" />
                     </h:panelGrid>
 
                 </p:panel>
