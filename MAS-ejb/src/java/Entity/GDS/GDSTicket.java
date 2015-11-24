@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,9 +46,11 @@ public class GDSTicket implements Serializable {
     private Seat seat;
 
     @ManyToOne
+    @XmlTransient
     private GDSPassenger passenger;
 
     @ManyToOne
+    @XmlTransient
     private GDSReservation rsv;
 
     @Override
@@ -72,15 +75,15 @@ public class GDSTicket implements Serializable {
 
     public GDSTicket() {
     }
-    
-    public void createTicket(String depAirport,String arrAirport, String depTime,String arrTime,String flightNo,String bkSystem){
-    this.depAirport=depAirport;
-    this.arrAirport=arrAirport;
-    this.depTime=depTime;
-    this.arrTime=arrTime;
-    this.flightNo=flightNo;
-    this.bookSystem=bkSystem;
-    
+
+    public void createTicket(String depAirport, String arrAirport, String depTime, String arrTime, String flightNo, String bkSystem) {
+        this.depAirport = depAirport;
+        this.arrAirport = arrAirport;
+        this.depTime = depTime;
+        this.arrTime = arrTime;
+        this.flightNo = flightNo;
+        this.bookSystem = bkSystem;
+
     }
 
     public Long getTicketID() {
@@ -171,6 +174,7 @@ public class GDSTicket implements Serializable {
         this.seat = seat;
     }
 
+    @XmlTransient
     public GDSPassenger getPassenger() {
         return passenger;
     }
@@ -178,7 +182,7 @@ public class GDSTicket implements Serializable {
     public void setPassenger(GDSPassenger passenger) {
         this.passenger = passenger;
     }
-
+    @XmlTransient
     public GDSReservation getRsv() {
         return rsv;
     }

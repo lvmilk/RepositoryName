@@ -23,7 +23,9 @@
                     </p:column>
 
                     <p:column headerText="Reservation Date">
-                        <h:outputText value="#{rsv.rsvDate}" />
+                        <h:outputText value="#{rsv.rsvDate}" >
+                          <f:convertDateTime pattern="yyyy-MM-dd"/>
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Depart From" >

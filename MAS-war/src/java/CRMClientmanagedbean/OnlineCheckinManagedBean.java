@@ -79,7 +79,11 @@ public class OnlineCheckinManagedBean implements Serializable {
         flightNo = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("flightNo");
         luggageCount = (Integer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("luggageCount");
         loungeEligibility = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoungeEligibility");
-        date = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+        if (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date") != null) {
+            date = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("date");
+        } else {
+            System.out.println("OnlineCheckinManagedBean: init: date...");
+        }
         unOccupiedSeats = (List<Seat>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("unOccupiedSeats");
         boardingTime = (Date) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("boardingTime");
         allSeats = (List<Seat>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("allSeats");
@@ -113,7 +117,6 @@ public class OnlineCheckinManagedBean implements Serializable {
         }
     }
 
-
     public void getUnusedTicket2() throws Exception {
 //        try {
         List<Ticket> newList = new ArrayList<Ticket>();
@@ -123,7 +126,7 @@ public class OnlineCheckinManagedBean implements Serializable {
             System.out.println("cmb:getUnusedTicket(): check2 get requested flight instance: " + requestedFi.getDate());
             System.out.println("cmb:no of tickets found: " + dcb.getAllTicket(passportNo, firstName, lastName).size());
             for (Ticket ticket : dcb.getAllTicket(passportNo, firstName, lastName)) {
-
+                
                 Date dateTemp = ticket.getBkInstance().getFlightCabin().getFlightInstance().getStandardDepTimeDateType();
                 Calendar c1 = Calendar.getInstance();
                 c1.setTime(dateTemp);
@@ -132,6 +135,7 @@ public class OnlineCheckinManagedBean implements Serializable {
                 System.out.println("cmb: dateTemp " + dateTemp);
                 System.out.println("cmb: date " + date);
 
+        
                 if (date.after(dateTemp) && ticket.getBkInstance().getFlightCabin().getFlightInstance().getFlightFrequency().getFlightNo().equals(flightNo) && ticket.getTicketStatus().equals("Unused")) {
                     System.out.println("cmb: One ticket to be added!");
                     newList.add(ticket);
@@ -145,7 +149,6 @@ public class OnlineCheckinManagedBean implements Serializable {
 
     }
 
-
     public void getUnoccupiedSeat(Ticket ticket) {
         try {
             this.setUnOccupiedSeats(dcb.getAllUnOccupiedSeats(ticket));
@@ -155,7 +158,6 @@ public class OnlineCheckinManagedBean implements Serializable {
         }
 
     }
-
 
     public void onGetTicketChange2() throws Exception {
         try {
@@ -174,7 +176,6 @@ public class OnlineCheckinManagedBean implements Serializable {
         }
 
     }
-
 
     public void getSeatingMaps(Ticket tkt) {
         try {
@@ -242,13 +243,13 @@ public class OnlineCheckinManagedBean implements Serializable {
     }
 
     public Integer isSeatOccupied(String seatNo) {
-        Integer flag=3;
+        Integer flag = 3;
         try {
             List<Seat> allSeats = dcb.getAllSeats(flightNo, dateString);
-             System.out.println("Seat size "+allSeats.size());
+            System.out.println("Seat size " + allSeats.size());
             for (Seat seatTemp : allSeats) {
                 if (seatTemp.getSeatNumberToPassenger().equals(seatNo)) {
-                    System.out.println("SeatStatus :"+seatTemp.getSeatNumberToPassenger()+" "+seatTemp.getStatus());
+                    System.out.println("SeatStatus :" + seatTemp.getSeatNumberToPassenger() + " " + seatTemp.getStatus());
                     if (seatTemp.getStatus().equals("Occupied")) {
                         flag = 1;
                     } else if (seatTemp.getStatus().equals("Unoccupied")) {
@@ -263,7 +264,7 @@ public class OnlineCheckinManagedBean implements Serializable {
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
-        System.out.println("-------------------isSeatOccupied "+flag);
+        System.out.println("-------------------isSeatOccupied " + flag);
         return flag;
     }
 
@@ -298,12 +299,11 @@ public class OnlineCheckinManagedBean implements Serializable {
         }
     }
 
-
     public void onSelectSeat(ActionEvent event) {
         try {
             this.seatSelected = (Seat) event.getComponent().getAttributes().get("seat");
             this.previewBoardingPass();
-       } catch (Exception ex) {
+        } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
 
         }
@@ -398,7 +398,6 @@ public class OnlineCheckinManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred : " + ex.getMessage(), ""));
         }
     }
-
 
     public boolean isOnlineCheckedIn(Ticket tkt) {
         return tkt.getTicketStatus().equals("OnlineCheckedin");

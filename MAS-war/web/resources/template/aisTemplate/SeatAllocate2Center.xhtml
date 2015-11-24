@@ -65,7 +65,7 @@
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText id="test" value="#{bki.seatNo}" /></f:facet>
                         <f:facet name="input">
-                            <p:inputText id="seatNo" value="#{seatAllocate1Bean.currentAllocated}" required="true" requiredMessage="please input a valid Seat No" validatorMessage="Please input an integer between 0 and total unallocated seat number" style="width:100%">
+                            <p:inputText id="seatNo" value="#{seatAllocate1Bean.currentAllocated}"  validatorMessage="Please input an integer between 0 and total unallocated seat number" style="width:100%">
                                 <f:validateLongRange minimum="0" />
                             </p:inputText>
                         </f:facet>

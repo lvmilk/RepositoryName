@@ -55,7 +55,7 @@ public class CancelFlightManagedBean implements Serializable {
     private String stfType;
     private String bkSystem;
     private String companyName;
-    
+
     private Double totalRefund;
 
     public CancelFlightManagedBean() {
@@ -65,9 +65,9 @@ public class CancelFlightManagedBean implements Serializable {
     public void init() {
 
         selectedPsgList = (List<Passenger>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("PsgList");
-        companyName=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
-        bkSystem=(String)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
-        
+        companyName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("companyName");
+        bkSystem = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("bkSystem");
+
 //        rsvList = mr.getAllReservations();
         rsvList = mr.getCompanyReservations(companyName);
         selectedRsv = (Reservation) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("selectedRsv");
@@ -87,14 +87,13 @@ public class CancelFlightManagedBean implements Serializable {
     }
 
     public void onChooseConfirm() {
-        totalRefund=mr.computeCancelRefund(selectedRsv.getBkcInstance(), selectedPsgList.size());
+        totalRefund = mr.computeCancelRefund(selectedRsv.getBkcInstance(), selectedPsgList.size());
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dlgGrd').show()");
     }
 
     public void rsvConfirm() throws IOException {
-        
-        
+
         System.out.println("in the rsvConfirmation passengerlist size is: " + selectedPsgList.size());
         System.out.println("in the first rsvConfirmation passenge ID is: " + selectedPsgList.get(0).getId());
 //        if (stfType.equals("agency")) {
@@ -108,12 +107,12 @@ public class CancelFlightManagedBean implements Serializable {
 //        psgSBlocal.makeReservation(booker, passengerList, departSelected, returnSelected, BookClassInstanceList, psgCount, origin, dest, returnTrip);
         if (stfType.equals("agency")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", "");
             FacesContext.getCurrentInstance().getExternalContext().redirect("./ddsWorkspace.xhtml");
 
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message", "Cancel flight successfully."));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("", manageStatus);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("manageStatus", "");
             FacesContext.getCurrentInstance().getExternalContext().redirect("./adsPage.xhtml");
 
         }
@@ -318,8 +317,5 @@ public class CancelFlightManagedBean implements Serializable {
     public void setTotalRefund(Double totalRefund) {
         this.totalRefund = totalRefund;
     }
-    
-    
-    
 
 }

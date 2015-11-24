@@ -19,59 +19,59 @@
                 <h:panelGrid columns="2" cellpadding="20">
 
 
-                    <p:selectOneRadio id="whetherReturn" value="#{reserveFlightManagedBean.returnTrip}" required="true" requiredMessage="Please select to search one-way or returned trip" >
+                    <p:selectOneRadio id="whetherReturn" value="#{rescheduleBean.returnTrip}" required="true" requiredMessage="Please select to search one-way or returned trip" >
                         <f:selectItem itemLabel="One-Way" itemValue="false" />
                         <f:selectItem itemLabel="Returned" itemValue="true" />
-                        <p:ajax  event="click" listener="#{reserveFlightManagedBean.onSelectReturn}" update=":allocate:returnDate "/>
+                        <p:ajax  event="click" listener="#{rescheduleBean.onSelectReturn}" update=":allocate:returnDate "/>
                     </p:selectOneRadio>
 
 
-                    <p:selectOneRadio id="dateSpecific" value="#{reserveFlightManagedBean.dateSpecific}" required="true" requiredMessage="Please select time requirement" >
+                    <p:selectOneRadio id="dateSpecific" value="#{rescheduleBean.dateSpecific}" required="true" requiredMessage="Please select time requirement" >
                         <f:selectItem itemLabel="Travel only on this day" itemValue="true" />
                         <f:selectItem itemLabel="Flexible travel time" itemValue="false" />
-<!--                        <p:ajax  event="click" listener="#{reserveFlightManagedBean.onSelectReturn}" update=":allocate:returnDate "/>-->
+<!--                        <p:ajax  event="click" listener="#{rescheduleBean.onSelectReturn}" update=":allocate:returnDate "/>-->
                     </p:selectOneRadio>
 
 
                     <h:outputLabel for="departDate"  value="Departure Date:(YYYY-MM-DD)" />
-                    <p:calendar  id="departDate"  value="#{reserveFlightManagedBean.departDate}"  mindate="#{reserveFlightManagedBean.currentDate}" pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
+                    <p:calendar  id="departDate"  value="#{rescheduleBean.departDate}"  mindate="#{rescheduleBean.currentDate}" pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
                         <p:ajax  event="dateSelect"  process="@this" update=":allocate:returnDate "/> 
                     </p:calendar>
 
 
 
                     <h:outputLabel for="returnDate"  value="Return Date:(YYYY-MM-DD) " />
-                    <p:calendar  id="returnDate" disabled="#{!reserveFlightManagedBean.returnTrip}" value="#{reserveFlightManagedBean.returnDate}" mindate="#{reserveFlightManagedBean.departDate}" pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
-                        <f:attribute name="departDate" value="#{reserveFlightManagedBean.departDate}" />
+                    <p:calendar  id="returnDate" disabled="#{!rescheduleBean.returnTrip}" value="#{rescheduleBean.returnDate}" mindate="#{rescheduleBean.departDate}" pattern="yyyy-MM-dd" mask="true"   validatorMessage="Date: Please enter a valid date in format yyyy-MM-dd"  size="20">   
+                        <f:attribute name="departDate" value="#{rescheduleBean.departDate}" />
                         <f:validator validatorId="DateRangeValidator" />
                     </p:calendar>
 
                     <p:outputLabel for="origin" value="From: " />
-                    <p:selectOneMenu id="origin" value="#{reserveFlightManagedBean.origin}" required="true" requiredMessage="Please select origination" style=" size:100px">    
-                        <p:ajax  listener="#{reserveFlightManagedBean.onOriginChange}"  update="destination" /> 
+                    <p:selectOneMenu id="origin" value="#{rescheduleBean.origin}" required="true" requiredMessage="Please select origination" style=" size:100px">    
+                        <p:ajax  listener="#{rescheduleBean.onOriginChange}"  update="destination" /> 
                         <f:selectItem itemLabel="Select origin" itemValue="1" />
-                        <f:selectItems value="#{reserveFlightManagedBean.initialFrequency}"  var="frequency" itemValue="#{frequency.route.origin.airportName}" itemLabel="#{frequency.route.origin.airportName} #{frequency.route.origin.IATA}"/>
+                        <f:selectItems value="#{rescheduleBean.initialFrequency}"  var="frequency" itemValue="#{frequency.route.origin.airportName}" itemLabel="#{frequency.route.origin.airportName} #{frequency.route.origin.IATA}"/>
                     </p:selectOneMenu>
 
                     <p:outputLabel for="destination" value="To: " />
-                    <p:selectOneMenu id="destination" value="#{reserveFlightManagedBean.dest}" required="true" requiredMessage="Please select destination" style="width:100%;">    
+                    <p:selectOneMenu id="destination" value="#{rescheduleBean.dest}" required="true" requiredMessage="Please select destination" style="width:100%;">    
                         <f:selectItem itemLabel="Select Destination" itemValue="1" />
-                        <f:selectItems value="#{reserveFlightManagedBean.otherPlaces}"  var="place" itemValue="#{place.airportName}" itemLabel="#{place.cityName} #{place.airportName} #{place.IATA}"/>
+                        <f:selectItems value="#{rescheduleBean.otherPlaces}"  var="place" itemValue="#{place.airportName}" itemLabel="#{place.cityName} #{place.airportName} #{place.IATA}"/>
                     </p:selectOneMenu>
 
 
                     <p:outputLabel  value="Cabin Class" />
-                    <p:outputLabel  value="#{reserveFlightManagedBean.cabinName} " />
+                    <p:outputLabel  value="#{rescheduleBean.cabinName} " />
 
 
                     <p:outputLabel  value="No. of people: " />
-                    <p:outputLabel  value="#{reserveFlightManagedBean.countPerson} " />
+                    <p:outputLabel  value="#{rescheduleBean.countPerson} " />
 
                 </h:panelGrid>
 
                 <p:separator />
 
-                <p:commandButton value="Submit" update="allocate" actionListener="#{reserveFlightManagedBean.findFlightInstance}" icon="ui-icon-check" />
+                <p:commandButton value="Submit" update="allocate" actionListener="#{rescheduleBean.findFlightInstance}" icon="ui-icon-check" />
             </p:panel>
         </h:form>
     </h:body>

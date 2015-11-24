@@ -10,11 +10,12 @@
     </h:head>
     <h:body>
         <h:form>
+            <p:messages id="msgs" />
             <p:panel id="rsvConfirm"  style="margin-bottom:20px">
                 <h:panelGrid  columns="2"   cellpadding="10">
 
                     <p:outputLabel  value="Reserved by: " />
-                    <p:outputLabel value="#{rescheduleConfirm.selectedRsv.booker.firstName} #{rescheduleConfirm.selectedRsv.booker.lastName}" />
+                    <p:outputLabel value="#{rescheduleConfirm.booker.firstName} #{rescheduleConfirm.booker.lastName}" />
 
                     <p:outputLabel  value="No. of Passenger: " />
                     <p:outputLabel value="#{rescheduleConfirm.psgCount}" />
@@ -75,7 +76,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{rescheduleConfirm.cabinName}" />
 
                         </h:panelGrid>
                         <p:separator />
@@ -106,7 +107,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{rescheduleConfirm.cabinName}" />
 
                         </h:panelGrid>
                         <p:separator />
@@ -144,7 +145,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{rescheduleConfirm.cabinName}" />
 
                         </h:panelGrid>
                         <p:separator />
@@ -175,7 +176,7 @@
                             <p:outputLabel value="#{instance.flightFrequency.route.acType.type}" />
 
                             <p:outputLabel  value="Cabin Class: " />
-                            <p:outputLabel value="#{reserveFlightManagedBean.selectedCabin.cabinName}" />
+                            <p:outputLabel value="#{rescheduleConfirm.cabinName}" />
 
                         </h:panelGrid>
                         <p:separator />

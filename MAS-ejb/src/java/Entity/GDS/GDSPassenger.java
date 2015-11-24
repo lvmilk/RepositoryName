@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -22,6 +23,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class GDSPassenger implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,16 +34,13 @@ public class GDSPassenger implements Serializable {
     private String surname;
     private String ffpName;
     private String ffpNo;
- 
 
-    
-    
-   @OneToMany(cascade = {CascadeType.PERSIST})
-   private List<GDSTicket> tickets=new ArrayList<>();
+    @OneToMany(cascade = {CascadeType.PERSIST})
+    @XmlTransient
+    private List<GDSTicket> tickets = new ArrayList<>();
 
     public GDSPassenger() {
     }
-
 
     public Long getId() {
         return id;
@@ -99,6 +98,7 @@ public class GDSPassenger implements Serializable {
         this.ffpNo = ffpNo;
     }
 
+    @XmlTransient
     public List<GDSTicket> getTickets() {
         return tickets;
     }
@@ -106,8 +106,6 @@ public class GDSPassenger implements Serializable {
     public void setTickets(List<GDSTicket> tickets) {
         this.tickets = tickets;
     }
-
-
 
     @Override
     public int hashCode() {
@@ -131,11 +129,9 @@ public class GDSPassenger implements Serializable {
         return true;
     }
 
-
-  
     @Override
     public String toString() {
         return "Entity.GDS.GDSPassenger[ id=" + id + " ]";
     }
-    
+
 }

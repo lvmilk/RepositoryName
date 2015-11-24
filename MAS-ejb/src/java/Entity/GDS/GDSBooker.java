@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,6 +45,7 @@ public class GDSBooker implements Serializable {
 
 
     @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "gdsBooker")
+    @XmlTransient
     private List<GDSReservation> rsvList;
 
     public GDSBooker() {
@@ -182,6 +184,7 @@ public class GDSBooker implements Serializable {
         this.title = title;
     }
 
+    @XmlTransient
     public List<GDSReservation> getRsvList() {
         return rsvList;
     }

@@ -7,6 +7,7 @@ package Entity.GDS;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,48 +40,50 @@ public class GDSReservation implements Serializable {
     private String bkGivenName;
     private String bkSurname;
     private String bkEmail;
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date rsvDate;
     private Double totalPayment;
     private String status;
 
-
     @ManyToMany
     @JoinTable(name = "GDSRESERVATION_GDSFLIGHT")
-    private List<GDSFlight> gdsFlightList=new ArrayList<>();
+    @XmlTransient
+    private List<GDSFlight> gdsFlightList = new ArrayList<>();
 
-    @OneToMany(cascade = {CascadeType.PERSIST},mappedBy = "rsv")
+    @OneToMany(cascade = {CascadeType.PERSIST}, mappedBy = "rsv")
+    @XmlTransient
     private List<GDSTicket> tickets = new ArrayList<>();
 
     @OneToOne(mappedBy = "reservation")
+    @XmlTransient
     private GDSPayment payment;
 
     @ManyToOne
     private MasterPNR pnr;
-    
+
     @ManyToOne
-    private GDSBooker gdsBooker=new GDSBooker();
-    
+    @XmlTransient
+    private GDSBooker gdsBooker = new GDSBooker();
+
     private String origin;
     private String dest;
     private Boolean returnTrip;
     private String bkSystem;
-    
 
     public GDSReservation() {
     }
-    
-   public void createReservation(String firstName, String lastName, String email, String origin,String dest,Boolean returnTrip,String bkSystem){
-   this.bkGivenName=firstName;
-   this.bkSurname=lastName;
-   this.bkEmail=email;
-   this.origin=origin;
-   this.dest=dest;
-   this.returnTrip=returnTrip;
-   this.bkSystem=bkSystem;
-   
-   
-   }
+
+    public void createReservation(String firstName, String lastName, String email, String origin, String dest, Boolean returnTrip, String bkSystem) {
+        this.bkGivenName = firstName;
+        this.bkSurname = lastName;
+        this.bkEmail = email;
+        this.origin = origin;
+        this.dest = dest;
+        this.returnTrip = returnTrip;
+        this.bkSystem = bkSystem;
+        this.rsvDate=Calendar.getInstance().getTime();
+
+    }
 
     public Long getAirlineRsvCode() {
         return airlineRsvCode;
@@ -137,8 +141,7 @@ public class GDSReservation implements Serializable {
         this.status = status;
     }
 
-
-
+    @XmlTransient
     public List<GDSTicket> getTickets() {
         return tickets;
     }
@@ -147,6 +150,7 @@ public class GDSReservation implements Serializable {
         this.tickets = tickets;
     }
 
+    @XmlTransient
     public GDSPayment getPayment() {
         return payment;
     }
@@ -163,6 +167,7 @@ public class GDSReservation implements Serializable {
         this.pnr = pnr;
     }
 
+    @XmlTransient
     public List<GDSFlight> getGdsFlightList() {
         return gdsFlightList;
     }
@@ -171,6 +176,7 @@ public class GDSReservation implements Serializable {
         this.gdsFlightList = gdsFlightList;
     }
 
+    @XmlTransient
     public GDSBooker getGdsBooker() {
         return gdsBooker;
     }
@@ -210,11 +216,7 @@ public class GDSReservation implements Serializable {
     public void setBkSystem(String bkSystem) {
         this.bkSystem = bkSystem;
     }
-    
-    
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
